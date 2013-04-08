@@ -1,9 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.internetics.flashcardcreator"
+    package="com.internectics.android_flashcardcreator"
     android:versionCode="1"
     android:versionName="1.0" >
-
+    
+    <uses-permission android:name="android.permission.INTERNET"></uses-permission>
+    
     <uses-sdk
         android:minSdkVersion="14"
         android:targetSdkVersion="17" />
@@ -14,7 +16,7 @@
         android:label="@string/app_name"
         android:theme="@style/AppTheme" >
         <activity
-            android:name="com.internetics.flashcardcreator.CardListActivity"
+            android:name="com.internectics.android_flashcardcreator.CardListActivity"
             android:label="@string/app_name" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -23,12 +25,26 @@
             </intent-filter>
         </activity>
         <activity
-            android:name="com.internetics.flashcardcreator.CardDetailActivity"
+            android:name="com.internectics.android_flashcardcreator.CardDetailActivity"
             android:label="@string/title_card_detail"
             android:parentActivityName=".CardListActivity" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".CardListActivity" />
+        </activity>
+        <activity
+            android:name="com.dropbox.client2.android.AuthActivity"
+            android:configChanges="orientation|keyboard"
+            android:launchMode="singleTask" >
+            <intent-filter>
+                <!-- Change this to be db- followed by your app key -->
+                <data android:scheme="db-rl7510fe1641dyl" />
+
+                <action android:name="android.intent.action.VIEW" />
+
+                <category android:name="android.intent.category.BROWSABLE" />
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
         </activity>
     </application>
 
