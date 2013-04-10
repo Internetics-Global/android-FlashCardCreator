@@ -3,9 +3,10 @@
     package="com.internectics.android_flashcardcreator"
     android:versionCode="1"
     android:versionName="1.0" >
-    
-    <uses-permission android:name="android.permission.INTERNET"></uses-permission>
-    
+
+    <uses-permission android:name="android.permission.INTERNET" >
+    </uses-permission>
+
     <uses-sdk
         android:minSdkVersion="14"
         android:targetSdkVersion="17" />
@@ -23,6 +24,14 @@
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+            <intent-filter>
+                <data
+                    android:host="twitter.com"
+                    android:scheme="fcc" />
+                <action android:name="android.intent.action.VIEW" />
+                <category android:name="android.intent.category.BROWSABLE" />
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
         </activity>
         <activity
             android:name="com.internectics.android_flashcardcreator.CardDetailActivity"
@@ -37,6 +46,7 @@
             android:configChanges="orientation|keyboard"
             android:launchMode="singleTask" >
             <intent-filter>
+
                 <!-- Change this to be db- followed by your app key -->
                 <data android:scheme="db-rl7510fe1641dyl" />
 
