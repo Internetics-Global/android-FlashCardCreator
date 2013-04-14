@@ -5,14 +5,13 @@ import com.dropbox.client2.android.AndroidAuthSession;
 import com.dropbox.client2.session.AccessTokenPair;
 import com.dropbox.client2.session.AppKeyPair;
 import com.dropbox.client2.session.Session.AccessType;
+import com.internectics.helper.SQLiteHelper;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.content.pm.PackageManager;
-import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
-import android.widget.Toast;
+
 
 /**
  * An activity representing a list of Cards. This activity has different
@@ -62,6 +61,9 @@ public class CardListActivity extends FragmentActivity implements
 		//Step1:We create a new AuthSession so that we can use the Dropbox API.
 		AndroidAuthSession session = buildSession();
         mApi = new DropboxAPI<AndroidAuthSession>(session);
+        
+        //Step2: check 
+        //SQLiteHelper.defaultDatabase(this);
 		
 		setContentView(R.layout.activity_card_list);
 
