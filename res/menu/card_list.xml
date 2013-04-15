@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android" >
+
+    <item
+        android:id="@+id/menu_packs"
+        android:icon="@android:drawable/btn_default"
+        android:showAsAction="ifRoom|withText"
+        android:title="@string/menu_packs">
+    </item>
+    <item
+        android:id="@+id/menu_edit"
+        android:icon="@android:drawable/btn_default"
+        android:title="@string/menu_edit" android:showAsAction="ifRoom|withText">
+    </item>
+    <item
+        android:id="@+id/add_pack"
+        android:icon="@drawable/menu_button_add_pack"
+        android:title="@string/menu_add_pack" android:showAsAction="ifRoom|withText">
+    </item>
+
+</menu>

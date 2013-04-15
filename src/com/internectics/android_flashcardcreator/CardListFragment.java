@@ -1,11 +1,15 @@
 package com.internectics.android_flashcardcreator;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+
 import android.app.Activity;
 import android.os.Bundle;
 import android.support.v4.app.ListFragment;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
+import android.widget.SimpleAdapter;
 
 import com.internectics.android_flashcardcreator.dummy.DummyContent;
 
@@ -71,9 +75,28 @@ public class CardListFragment extends ListFragment {
 		super.onCreate(savedInstanceState);
 
 		// TODO: replace with a real list adapter.
-		setListAdapter(new ArrayAdapter<DummyContent.DummyItem>(getActivity(),
-				android.R.layout.simple_list_item_activated_1,
-				android.R.id.text1, DummyContent.ITEMS));
+		//setListAdapter(new ArrayAdapter<DummyContent.DummyItem>(getActivity(),
+			//	android.R.layout.simple_list_item_activated_1,
+				//android.R.id.text1, DummyContent.ITEMS));
+		
+		ArrayList<HashMap<String, Object>> listItem 
+    	= new ArrayList<HashMap<String, Object>>();
+		
+    for(int i=0;i<10;i++)
+    {
+    	HashMap<String, Object> map = new HashMap<String, Object>();
+    	map.put("ItemSN", i+1);
+    	map.put("ItemImage", R.drawable.test_card_coverage);
+    	
+    	listItem.add(map);
+    }
+    
+    SimpleAdapter listAdapter = new SimpleAdapter(getActivity(), listItem, R.layout.card_list_item, 
+    		new String[] {"ItemSN","ItemImage"}, 
+            new int[] {R.id.CardItemSN,R.id.CardItemImage});
+    
+    setListAdapter(listAdapter);
+		
 	}
 
 	@Override

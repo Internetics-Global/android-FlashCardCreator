@@ -11,6 +11,11 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.widget.Adapter;
+import android.widget.AdapterView;
+import android.widget.ListAdapter;
 
 
 /**
@@ -66,6 +71,7 @@ public class CardListActivity extends FragmentActivity implements
         //SQLiteHelper.defaultDatabase(this);
 		
 		setContentView(R.layout.activity_card_list);
+	  
 
 		if (findViewById(R.id.card_detail_container) != null) {
 			// The detail container view will be present only in the
@@ -81,6 +87,14 @@ public class CardListActivity extends FragmentActivity implements
 		}
 
 		// TODO: If exposing deep links into your app, handle intents here.
+	}
+	
+	@Override
+	public boolean onCreateOptionsMenu(Menu menu) {
+		super.onCreateOptionsMenu(menu);
+		MenuInflater inflater = getMenuInflater();
+	    inflater.inflate(R.menu.card_list, menu);
+	    return true;
 	}
 
 	/**
