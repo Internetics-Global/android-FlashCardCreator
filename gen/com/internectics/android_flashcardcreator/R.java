@@ -9,26 +9,94 @@ package com.internectics.android_flashcardcreator;
 
 public final class R {
     public static final class attr {
+        /** <p>Must be one of the following constant values.</p>
+<table>
+<colgroup align="left" />
+<colgroup align="left" />
+<colgroup align="left" />
+<tr><th>Constant</th><th>Value</th><th>Description</th></tr>
+<tr><td><code>none</code></td><td>0</td><td></td></tr>
+<tr><td><code>thumbnail</code></td><td>1</td><td></td></tr>
+<tr><td><code>drop</code></td><td>2</td><td></td></tr>
+</table>
+         */
+        public static final int anr=0x7f010005;
+        /** <p>Must be a string value, using '\\;' to escape characters such as '\\n' or '\\uxxxx' for a unicode character.
+<p>This may also be a reference to a resource (in the form
+"<code>@[<i>package</i>:]<i>type</i>:<i>name</i></code>") or
+theme attribute (in the form
+"<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
+containing a value of this type.
+         */
+        public static final int legend=0x7f010004;
+        /** <p>Must be a dimension value, which is a floating point number appended with a unit such as "<code>14.5sp</code>".
+Available units are: px (pixels), dp (density-independent pixels), sp (scaled pixels based on preferred font size),
+in (inches), mm (millimeters).
+<p>This may also be a reference to a resource (in the form
+"<code>@[<i>package</i>:]<i>type</i>:<i>name</i></code>") or
+theme attribute (in the form
+"<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
+containing a value of this type.
+         */
+        public static final int radius=0x7f010003;
+        /** <p>Must be a string value, using '\\;' to escape characters such as '\\n' or '\\uxxxx' for a unicode character.
+<p>This may also be a reference to a resource (in the form
+"<code>@[<i>package</i>:]<i>type</i>:<i>name</i></code>") or
+theme attribute (in the form
+"<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
+containing a value of this type.
+         */
+        public static final int text=0x7f010000;
+        /** <p>Must be a color value, in the form of "<code>#<i>rgb</i></code>", "<code>#<i>argb</i></code>",
+"<code>#<i>rrggbb</i></code>", or "<code>#<i>aarrggbb</i></code>".
+<p>This may also be a reference to a resource (in the form
+"<code>@[<i>package</i>:]<i>type</i>:<i>name</i></code>") or
+theme attribute (in the form
+"<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
+containing a value of this type.
+         */
+        public static final int textColor=0x7f010001;
+        /** <p>Must be a dimension value, which is a floating point number appended with a unit such as "<code>14.5sp</code>".
+Available units are: px (pixels), dp (density-independent pixels), sp (scaled pixels based on preferred font size),
+in (inches), mm (millimeters).
+<p>This may also be a reference to a resource (in the form
+"<code>@[<i>package</i>:]<i>type</i>:<i>name</i></code>") or
+theme attribute (in the form
+"<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
+containing a value of this type.
+         */
+        public static final int textSize=0x7f010002;
     }
     public static final class color {
-        public static final int card_detail_background=0x7f040001;
-        public static final int card_list_background=0x7f040000;
+        public static final int card_detail_background=0x7f050001;
+        public static final int card_list_background=0x7f050000;
     }
     public static final class drawable {
-        public static final int ic_launcher=0x7f020000;
-        public static final int menu_button_add_pack=0x7f020001;
-        public static final int test_card_coverage=0x7f020002;
+        public static final int card_list_item_background=0x7f020000;
+        public static final int ic_launcher=0x7f020001;
+        public static final int menu_button_add_pack=0x7f020002;
+        public static final int pack_cover_default_image=0x7f020003;
+        public static final int pack_list_background=0x7f020004;
+        public static final int test_card_coverage=0x7f020005;
     }
     public static final class id {
-        public static final int CardItemImage=0x7f080003;
-        public static final int CardItemSN=0x7f080004;
-        public static final int RelativeLayout01=0x7f080002;
-        public static final int add_pack=0x7f080008;
-        public static final int card_detail=0x7f080005;
-        public static final int card_detail_container=0x7f080000;
-        public static final int card_list=0x7f080001;
-        public static final int menu_edit=0x7f080007;
-        public static final int menu_packs=0x7f080006;
+        public static final int CardItemImage=0x7f04000a;
+        public static final int CardItemSN=0x7f04000b;
+        public static final int RelativeLayout01=0x7f040009;
+        public static final int add_pack=0x7f040010;
+        public static final int card_detail=0x7f04000c;
+        public static final int card_detail_container=0x7f040003;
+        public static final int card_list=0x7f040004;
+        public static final int drop=0x7f040002;
+        public static final int editText1=0x7f040005;
+        public static final int editText2=0x7f040006;
+        public static final int editText3=0x7f040007;
+        public static final int imageView1=0x7f040008;
+        public static final int menu_edit=0x7f04000f;
+        public static final int menu_packs=0x7f04000e;
+        public static final int none=0x7f040000;
+        public static final int pack_list_gallery=0x7f04000d;
+        public static final int thumbnail=0x7f040001;
     }
     public static final class layout {
         public static final int activity_card_detail=0x7f030000;
@@ -49,23 +117,26 @@ public final class R {
          */
         public static final int activity_card_list=0x7f030001;
         public static final int activity_card_twopane=0x7f030002;
-        public static final int card_list_item=0x7f030003;
-        public static final int fragment_card_detail=0x7f030004;
+        public static final int add_pack=0x7f030003;
+        public static final int card_list_item=0x7f030004;
+        public static final int fragment_card_detail=0x7f030005;
+        public static final int fragment_pack_list=0x7f030006;
+        public static final int pack_list=0x7f030007;
     }
     public static final class menu {
-        public static final int card_list=0x7f070000;
+        public static final int card_list=0x7f080000;
     }
     public static final class string {
-        public static final int app_name=0x7f050000;
-        public static final int menu_add_pack=0x7f050004;
-        public static final int menu_change_template_color=0x7f050005;
-        public static final int menu_edit=0x7f050003;
-        public static final int menu_help=0x7f050006;
-        public static final int menu_more=0x7f050007;
-        public static final int menu_packs=0x7f050002;
-        public static final int menu_play=0x7f050009;
-        public static final int menu_share=0x7f050008;
-        public static final int title_card_detail=0x7f050001;
+        public static final int app_name=0x7f060000;
+        public static final int menu_add_pack=0x7f060004;
+        public static final int menu_change_template_color=0x7f060005;
+        public static final int menu_edit=0x7f060003;
+        public static final int menu_help=0x7f060006;
+        public static final int menu_more=0x7f060007;
+        public static final int menu_packs=0x7f060002;
+        public static final int menu_play=0x7f060009;
+        public static final int menu_share=0x7f060008;
+        public static final int title_card_detail=0x7f060001;
     }
     public static final class style {
         /** 
@@ -89,10 +160,200 @@ public final class R {
     
  API 14 theme customizations can go here. 
          */
-        public static final int AppBaseTheme=0x7f060000;
+        public static final int AppBaseTheme=0x7f070000;
         /**  Application theme. 
  All customizations that are NOT specific to a particular API-level can go here. 
          */
-        public static final int AppTheme=0x7f060001;
+        public static final int AppTheme=0x7f070001;
     }
+    public static final class styleable {
+        /**  These are attributes used with 'DraggableDot' drawables in
+         view/DragAndDropActivity.java and view/DraggableDot.java 
+           <p>Includes the following attributes:</p>
+           <table>
+           <colgroup align="left" />
+           <colgroup align="left" />
+           <tr><th>Attribute</th><th>Description</th></tr>
+           <tr><td><code>{@link #DraggableDot_anr com.internectics.android_flashcardcreator:anr}</code></td><td></td></tr>
+           <tr><td><code>{@link #DraggableDot_legend com.internectics.android_flashcardcreator:legend}</code></td><td></td></tr>
+           <tr><td><code>{@link #DraggableDot_radius com.internectics.android_flashcardcreator:radius}</code></td><td></td></tr>
+           </table>
+           @see #DraggableDot_anr
+           @see #DraggableDot_legend
+           @see #DraggableDot_radius
+         */
+        public static final int[] DraggableDot = {
+            0x7f010003, 0x7f010004, 0x7f010005
+        };
+        /**
+          <p>This symbol is the offset where the {@link com.internectics.android_flashcardcreator.R.attr#anr}
+          attribute's value can be found in the {@link #DraggableDot} array.
+
+
+          <p>Must be one of the following constant values.</p>
+<table>
+<colgroup align="left" />
+<colgroup align="left" />
+<colgroup align="left" />
+<tr><th>Constant</th><th>Value</th><th>Description</th></tr>
+<tr><td><code>none</code></td><td>0</td><td></td></tr>
+<tr><td><code>thumbnail</code></td><td>1</td><td></td></tr>
+<tr><td><code>drop</code></td><td>2</td><td></td></tr>
+</table>
+          @attr name android:anr
+        */
+        public static final int DraggableDot_anr = 2;
+        /**
+          <p>This symbol is the offset where the {@link com.internectics.android_flashcardcreator.R.attr#legend}
+          attribute's value can be found in the {@link #DraggableDot} array.
+
+
+          <p>Must be a string value, using '\\;' to escape characters such as '\\n' or '\\uxxxx' for a unicode character.
+<p>This may also be a reference to a resource (in the form
+"<code>@[<i>package</i>:]<i>type</i>:<i>name</i></code>") or
+theme attribute (in the form
+"<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
+containing a value of this type.
+          @attr name android:legend
+        */
+        public static final int DraggableDot_legend = 1;
+        /**
+          <p>This symbol is the offset where the {@link com.internectics.android_flashcardcreator.R.attr#radius}
+          attribute's value can be found in the {@link #DraggableDot} array.
+
+
+          <p>Must be a dimension value, which is a floating point number appended with a unit such as "<code>14.5sp</code>".
+Available units are: px (pixels), dp (density-independent pixels), sp (scaled pixels based on preferred font size),
+in (inches), mm (millimeters).
+<p>This may also be a reference to a resource (in the form
+"<code>@[<i>package</i>:]<i>type</i>:<i>name</i></code>") or
+theme attribute (in the form
+"<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
+containing a value of this type.
+          @attr name android:radius
+        */
+        public static final int DraggableDot_radius = 0;
+        /**  These are the attributes that we want to retrieve for
+         app/FragmentArguments.java 
+           <p>Includes the following attributes:</p>
+           <table>
+           <colgroup align="left" />
+           <colgroup align="left" />
+           <tr><th>Attribute</th><th>Description</th></tr>
+           <tr><td><code>{@link #FragmentArguments_android_label com.internectics.android_flashcardcreator:android_label}</code></td><td></td></tr>
+           </table>
+           @see #FragmentArguments_android_label
+         */
+        public static final int[] FragmentArguments = {
+            0x01010001
+        };
+        /**
+          <p>This symbol is the offset where the {@link com.internectics.android_flashcardcreator.R.attr#android_label}
+          attribute's value can be found in the {@link #FragmentArguments} array.
+          @attr name android:android_label
+        */
+        public static final int FragmentArguments_android_label = 0;
+        /**  These are the attributes that we want to retrieve from the theme
+         in view/Gallery1.java 
+           <p>Includes the following attributes:</p>
+           <table>
+           <colgroup align="left" />
+           <colgroup align="left" />
+           <tr><th>Attribute</th><th>Description</th></tr>
+           <tr><td><code>{@link #Gallery1_android_galleryItemBackground com.internectics.android_flashcardcreator:android_galleryItemBackground}</code></td><td></td></tr>
+           </table>
+           @see #Gallery1_android_galleryItemBackground
+         */
+        public static final int[] Gallery1 = {
+            0x0101004c
+        };
+        /**
+          <p>This symbol is the offset where the {@link com.internectics.android_flashcardcreator.R.attr#android_galleryItemBackground}
+          attribute's value can be found in the {@link #Gallery1} array.
+          @attr name android:android_galleryItemBackground
+        */
+        public static final int Gallery1_android_galleryItemBackground = 0;
+        /** Attributes that can be used with a LabelView.
+           <p>Includes the following attributes:</p>
+           <table>
+           <colgroup align="left" />
+           <colgroup align="left" />
+           <tr><th>Attribute</th><th>Description</th></tr>
+           <tr><td><code>{@link #LabelView_text com.internectics.android_flashcardcreator:text}</code></td><td></td></tr>
+           <tr><td><code>{@link #LabelView_textColor com.internectics.android_flashcardcreator:textColor}</code></td><td></td></tr>
+           <tr><td><code>{@link #LabelView_textSize com.internectics.android_flashcardcreator:textSize}</code></td><td></td></tr>
+           </table>
+           @see #LabelView_text
+           @see #LabelView_textColor
+           @see #LabelView_textSize
+         */
+        public static final int[] LabelView = {
+            0x7f010000, 0x7f010001, 0x7f010002
+        };
+        /**
+          <p>This symbol is the offset where the {@link com.internectics.android_flashcardcreator.R.attr#text}
+          attribute's value can be found in the {@link #LabelView} array.
+
+
+          <p>Must be a string value, using '\\;' to escape characters such as '\\n' or '\\uxxxx' for a unicode character.
+<p>This may also be a reference to a resource (in the form
+"<code>@[<i>package</i>:]<i>type</i>:<i>name</i></code>") or
+theme attribute (in the form
+"<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
+containing a value of this type.
+          @attr name android:text
+        */
+        public static final int LabelView_text = 0;
+        /**
+          <p>This symbol is the offset where the {@link com.internectics.android_flashcardcreator.R.attr#textColor}
+          attribute's value can be found in the {@link #LabelView} array.
+
+
+          <p>Must be a color value, in the form of "<code>#<i>rgb</i></code>", "<code>#<i>argb</i></code>",
+"<code>#<i>rrggbb</i></code>", or "<code>#<i>aarrggbb</i></code>".
+<p>This may also be a reference to a resource (in the form
+"<code>@[<i>package</i>:]<i>type</i>:<i>name</i></code>") or
+theme attribute (in the form
+"<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
+containing a value of this type.
+          @attr name android:textColor
+        */
+        public static final int LabelView_textColor = 1;
+        /**
+          <p>This symbol is the offset where the {@link com.internectics.android_flashcardcreator.R.attr#textSize}
+          attribute's value can be found in the {@link #LabelView} array.
+
+
+          <p>Must be a dimension value, which is a floating point number appended with a unit such as "<code>14.5sp</code>".
+Available units are: px (pixels), dp (density-independent pixels), sp (scaled pixels based on preferred font size),
+in (inches), mm (millimeters).
+<p>This may also be a reference to a resource (in the form
+"<code>@[<i>package</i>:]<i>type</i>:<i>name</i></code>") or
+theme attribute (in the form
+"<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
+containing a value of this type.
+          @attr name android:textSize
+        */
+        public static final int LabelView_textSize = 2;
+        /**  These are the attributes that we want to retrieve from the theme
+         in app/PreferencesFromCode.java 
+           <p>Includes the following attributes:</p>
+           <table>
+           <colgroup align="left" />
+           <colgroup align="left" />
+           <tr><th>Attribute</th><th>Description</th></tr>
+           <tr><td><code>{@link #TogglePrefAttrs_android_preferenceLayoutChild com.internectics.android_flashcardcreator:android_preferenceLayoutChild}</code></td><td></td></tr>
+           </table>
+           @see #TogglePrefAttrs_android_preferenceLayoutChild
+         */
+        public static final int[] TogglePrefAttrs = {
+            0x01010094
+        };
+        /**
+          <p>This symbol is the offset where the {@link com.internectics.android_flashcardcreator.R.attr#android_preferenceLayoutChild}
+          attribute's value can be found in the {@link #TogglePrefAttrs} array.
+          @attr name android:android_preferenceLayoutChild
+        */
+        public static final int TogglePrefAttrs_android_preferenceLayoutChild = 0;
+    };
 }
