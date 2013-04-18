@@ -106,7 +106,7 @@ public class CardListActivity extends FragmentActivity implements
 	public boolean onCreateOptionsMenu(Menu menu) {
 		super.onCreateOptionsMenu(menu);
 		MenuInflater inflater = getMenuInflater();
-	    inflater.inflate(R.menu.card_list, menu);
+	    inflater.inflate(R.menu.actionbar, menu);
 	    return true;
 	}
 	
@@ -116,7 +116,8 @@ public class CardListActivity extends FragmentActivity implements
 		LayoutInflater inflater = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 		
 		switch (item.getItemId()) {
-		case R.id.add_pack:
+		case R.id.actionbar_add_pack:
+		{
 			AlertDialog.Builder builder = new AlertDialog.Builder(this);
 			builder.setView(inflater.inflate(R.layout.add_pack, null))
 			       .setNegativeButton("Cancel", null)
@@ -132,18 +133,27 @@ public class CardListActivity extends FragmentActivity implements
 			ad.setMessage("Add a new pack");
 			ad.show();
 			break;
-		case R.id.menu_edit:
+		}
+		case R.id.actionbar_edit:
 			Toast.makeText(this, "edit", Toast.LENGTH_SHORT).show();
 			break;
-		case R.id.menu_packs:
+		case R.id.actionbar_packs:
 			Toast.makeText(this, "packs", Toast.LENGTH_SHORT).show();
-			Toast.makeText(this, "add_pack", Toast.LENGTH_SHORT).show();
             View popupLayout = inflater.inflate(R.layout.pack_list, null, false);
             final PopupWindow popupWindow = new PopupWindow(450, 200);
             popupWindow.setBackgroundDrawable(getResources().getDrawable(R.drawable.pack_list_background));
             popupWindow.setOutsideTouchable(true);
             popupWindow.setContentView(popupLayout);
-            popupWindow.showAsDropDown(findViewById(R.id.add_pack));
+            popupWindow.showAsDropDown(findViewById(R.id.actionbar_packs));
+			break;
+			
+		case R.id.actionbar_change_template_color:
+			new AlertDialog.Builder(this)
+			.setTitle("Select a template background")
+			.setSingleChoiceItems(new String[]{"Blue","Coffee","Gray","Purple","Red"}, 0, null)
+			.setPositiveButton("OK", null)
+			.setNegativeButton("Cancel", null)
+			.show();
 			break;
 
 		default:

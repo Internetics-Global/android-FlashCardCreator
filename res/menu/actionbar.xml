@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android" >
+
+    <item
+        android:id="@+id/actionbar_packs"
+        android:icon="@android:drawable/btn_default"
+        android:showAsAction="ifRoom|withText"
+        android:title="@string/title_packs">
+    </item>
+    <item
+        android:id="@+id/actionbar_edit"
+        android:icon="@android:drawable/btn_default"
+        android:title="@string/title_edit" android:showAsAction="ifRoom|withText">
+    </item>
+    <item
+        android:id="@+id/actionbar_add_pack"
+        android:icon="@drawable/menu_button_add_pack"
+        android:title="@string/title_add_pack" android:showAsAction="ifRoom|withText">
+    </item>
+    
+    <item
+        android:id="@+id/actionbar_change_template_color"
+        android:icon="@android:drawable/btn_default"
+        android:title="@string/title_change_template_color" android:showAsAction="ifRoom|withText">
+    </item>
+    
+    <item
+        android:id="@+id/actionbar_help"
+        android:icon="@android:drawable/btn_default"
+        android:title="@string/title_help" android:showAsAction="ifRoom|withText">
+    </item>
+    
+    <item
+        android:id="@+id/actionbar_more"
+        android:icon="@android:drawable/btn_default"
+        android:title="@string/title_more" android:showAsAction="ifRoom|withText">
+    </item>
+    
+    <item
+        android:id="@+id/actionbar_share"
+        android:icon="@android:drawable/btn_default"
+        android:title="@string/title_share" android:showAsAction="ifRoom|withText">
+    </item>
+    
+    <item
+        android:id="@+id/actionbar_play"
+        android:icon="@android:drawable/btn_default"
+        android:title="@string/title_play" android:showAsAction="ifRoom|withText">
+    </item>
+
+</menu>

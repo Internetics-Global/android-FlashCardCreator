@@ -3,13 +3,13 @@
 
     <string name="app_name">Android-FlashCardCreator</string>
     <string name="title_card_detail">Card Detail</string>
-    <string name="menu_packs">packs</string>
-    <string name="menu_edit">edit</string>
-    <string name="menu_add_pack">add</string>
-    <string name="menu_change_template_color">change template color</string>
-    <string name="menu_help">help</string>
-    <string name="menu_more">more</string>
-    <string name="menu_share">share</string>
-    <string name="menu_play">play</string>
+    <string name="title_packs">packs</string>
+    <string name="title_edit">edit</string>
+    <string name="title_add_pack">add</string>
+    <string name="title_change_template_color">change</string>
+    <string name="title_help">help</string>
+    <string name="title_more">more</string>
+    <string name="title_share">share</string>
+    <string name="title_play">play</string>
 
 </resources>
