@@ -6,7 +6,7 @@
     android:divider="?android:attr/dividerHorizontal"
     android:orientation="horizontal"
     android:showDividers="middle"
-    tools:context=".CardListActivity" >
+    tools:context=".MainActivity" >
 
     <!--
     This layout is a two-pane layout for the Cards
@@ -21,7 +21,7 @@
 
     <fragment
         android:id="@+id/card_list"
-        android:name="com.internectics.android_flashcardcreator.CardListFragment"
+        android:name="com.internectics.android_flashcardcreator.MasterFragment"
         android:layout_width="0dp"
         android:layout_height="match_parent"
         android:layout_weight="1"

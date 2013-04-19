@@ -17,12 +17,12 @@ import com.internectics.android_flashcardcreator.dummy.DummyContent;
  * A list fragment representing a list of Cards. This fragment also supports
  * tablet devices by allowing list items to be given an 'activated' state upon
  * selection. This helps indicate which item is currently being viewed in a
- * {@link CardDetailFragment}.
+ * {@link DetailFragment}.
  * <p>
  * Activities containing this fragment MUST implement the {@link Callbacks}
  * interface.
  */
-public class CardListFragment extends ListFragment {
+public class MasterFragment extends ListFragment {
 
 	/**
 	 * The serialization (saved instance state) Bundle key representing the
@@ -67,7 +67,7 @@ public class CardListFragment extends ListFragment {
 	 * Mandatory empty constructor for the fragment manager to instantiate the
 	 * fragment (e.g. upon screen orientation changes).
 	 */
-	public CardListFragment() {
+	public MasterFragment() {
 	}
 
 	@Override

@@ -25,7 +25,9 @@ import android.view.View;
 import android.widget.Adapter;
 import android.widget.AdapterView;
 import android.widget.ListAdapter;
+import android.widget.ListView;
 import android.widget.PopupWindow;
+import android.widget.ScrollView;
 import android.widget.Toast;
 
 
@@ -38,14 +40,14 @@ import android.widget.Toast;
  * vertical panes.
  * <p>
  * The activity makes heavy use of fragments. The list of items is a
- * {@link CardListFragment} and the item details (if present) is a
- * {@link CardDetailFragment}.
+ * {@link MasterFragment} and the item details (if present) is a
+ * {@link DetailFragment}.
  * <p>
- * This activity also implements the required {@link CardListFragment.Callbacks}
+ * This activity also implements the required {@link MasterFragment.Callbacks}
  * interface to listen for item selections.
  */
-public class CardListActivity extends FragmentActivity implements
-		CardListFragment.Callbacks {
+public class MasterActivity extends FragmentActivity implements
+		MasterFragment.Callbacks {
 
 	/**
 	 * Whether or not the activity is in two-pane mode, i.e. running on a tablet
@@ -93,7 +95,7 @@ public class CardListActivity extends FragmentActivity implements
 
 			// In two-pane mode, list items should be given the
 			// 'activated' state when touched.
-			((CardListFragment) getSupportFragmentManager().findFragmentById(
+			((MasterFragment) getSupportFragmentManager().findFragmentById(
 					R.id.card_list)).setActivateOnItemClick(true);
 		}
 		
@@ -135,9 +137,12 @@ public class CardListActivity extends FragmentActivity implements
 			break;
 		}
 		case R.id.actionbar_edit:
+		{
 			Toast.makeText(this, "edit", Toast.LENGTH_SHORT).show();
-			break;
+			break;	
+		}	
 		case R.id.actionbar_packs:
+		{
 			Toast.makeText(this, "packs", Toast.LENGTH_SHORT).show();
             View popupLayout = inflater.inflate(R.layout.pack_list, null, false);
             final PopupWindow popupWindow = new PopupWindow(450, 200);
@@ -145,9 +150,10 @@ public class CardListActivity extends FragmentActivity implements
             popupWindow.setOutsideTouchable(true);
             popupWindow.setContentView(popupLayout);
             popupWindow.showAsDropDown(findViewById(R.id.actionbar_packs));
-			break;
-			
+			break;	
+		}
 		case R.id.actionbar_change_template_color:
+		{
 			new AlertDialog.Builder(this)
 			.setTitle("Select a template background")
 			.setSingleChoiceItems(new String[]{"Blue","Coffee","Gray","Purple","Red"}, 0, null)
@@ -155,11 +161,22 @@ public class CardListActivity extends FragmentActivity implements
 			.setNegativeButton("Cancel", null)
 			.show();
 			break;
+		}
+		case R.id.actionbar_more:
+		{
+			new AlertDialog.Builder(this)
+			.setTitle("Select a template background")
+			.setItems(new String[]{"Dropbox","Random Play","Register", "Submit new listing","Help","About"}, null)
+			.setPositiveButton("OK", null)
+			.setNegativeButton("Cancel", null)
+			.show();
+			break;
+		}
+			
 
 		default:
 			break;
 		}
-		
 		
 		return super.onOptionsItemSelected(item);
 	}
@@ -171,7 +188,7 @@ public class CardListActivity extends FragmentActivity implements
 	}
 
 	/**
-	 * Callback method from {@link CardListFragment.Callbacks} indicating that
+	 * Callback method from {@link MasterFragment.Callbacks} indicating that
 	 * the item with the given ID was selected.
 	 */
 	@Override
@@ -181,8 +198,8 @@ public class CardListActivity extends FragmentActivity implements
 			// adding or replacing the detail fragment using a
 			// fragment transaction.
 			Bundle arguments = new Bundle();
-			arguments.putString(CardDetailFragment.ARG_ITEM_ID, id);
-			CardDetailFragment fragment = new CardDetailFragment();
+			arguments.putString(DetailFragment.ARG_ITEM_ID, id);
+			DetailFragment fragment = new DetailFragment();
 			fragment.setArguments(arguments);
 			getSupportFragmentManager().beginTransaction()
 					.replace(R.id.card_detail_container, fragment).commit();
@@ -191,7 +208,7 @@ public class CardListActivity extends FragmentActivity implements
 			// In single-pane mode, simply start the detail activity
 			// for the selected item ID.
 			Intent detailIntent = new Intent(this, CardDetailActivity.class);
-			detailIntent.putExtra(CardDetailFragment.ARG_ITEM_ID, id);
+			detailIntent.putExtra(DetailFragment.ARG_ITEM_ID, id);
 			startActivity(detailIntent);
 		}
 	}

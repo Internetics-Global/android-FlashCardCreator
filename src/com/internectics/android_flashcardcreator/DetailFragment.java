@@ -11,10 +11,10 @@ import com.internectics.android_flashcardcreator.dummy.DummyContent;
 
 /**
  * A fragment representing a single Card detail screen. This fragment is either
- * contained in a {@link MainActivity} in two-pane mode (on tablets) or a
+ * contained in a {@link MasterActivity} in two-pane mode (on tablets) or a
  * {@link CardDetailActivity} on handsets.
  */
-public class CardDetailFragment extends Fragment {
+public class DetailFragment extends Fragment {
 	/**
 	 * The fragment argument representing the item ID that this fragment
 	 * represents.
@@ -30,7 +30,7 @@ public class CardDetailFragment extends Fragment {
 	 * Mandatory empty constructor for the fragment manager to instantiate the
 	 * fragment (e.g. upon screen orientation changes).
 	 */
-	public CardDetailFragment() {
+	public DetailFragment() {
 	}
 
 	@Override
@@ -52,9 +52,9 @@ public class CardDetailFragment extends Fragment {
 		View rootView = inflater.inflate(R.layout.fragment_card_detail,
 				container, false);
 
-//		// Show the dummy content as text in a TextView.
+		// Show the dummy content as text in a TextView.
 //		if (mItem != null) {
-//			((TextView) rootView.findViewById(R.id.subheading))
+//			((TextView) rootView.findViewById(R.id.card_detail))
 //					.setText(mItem.content);
 //		}
 

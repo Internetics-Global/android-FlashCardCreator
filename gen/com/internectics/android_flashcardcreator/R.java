@@ -73,35 +73,52 @@ containing a value of this type.
     }
     public static final class drawable {
         public static final int card_list_item_background=0x7f020000;
-        public static final int ic_launcher=0x7f020001;
-        public static final int menu_button_add_pack=0x7f020002;
-        public static final int pack_cover_default_image=0x7f020003;
-        public static final int pack_list_background=0x7f020004;
-        public static final int test_card_coverage=0x7f020005;
+        public static final int change_template_button=0x7f020001;
+        public static final int edit_link_button=0x7f020002;
+        public static final int ic_launcher=0x7f020003;
+        public static final int logo_placeholder=0x7f020004;
+        public static final int menu_button_add_pack=0x7f020005;
+        public static final int pack_cover_default_image=0x7f020006;
+        public static final int pack_list_background=0x7f020007;
+        public static final int shape_card_background=0x7f020008;
+        public static final int shape_card_body=0x7f020009;
+        public static final int shape_card_header=0x7f02000a;
+        public static final int shape_card_list_item=0x7f02000b;
+        public static final int shape_card_sidebar=0x7f02000c;
+        public static final int test_card_coverage=0x7f02000d;
     }
     public static final class id {
-        public static final int CardItemImage=0x7f04000a;
-        public static final int CardItemSN=0x7f04000b;
-        public static final int RelativeLayout01=0x7f040009;
-        public static final int actionbar_add_pack=0x7f040010;
-        public static final int actionbar_change_template_color=0x7f040011;
-        public static final int actionbar_edit=0x7f04000f;
-        public static final int actionbar_help=0x7f040012;
-        public static final int actionbar_more=0x7f040013;
-        public static final int actionbar_packs=0x7f04000e;
-        public static final int actionbar_play=0x7f040015;
-        public static final int actionbar_share=0x7f040014;
-        public static final int card_detail=0x7f04000c;
+        public static final int CardItemImage=0x7f040015;
+        public static final int CardItemSN=0x7f040014;
+        public static final int RelativeLayout01=0x7f040013;
+        public static final int actionbar_add_pack=0x7f040019;
+        public static final int actionbar_change_template_color=0x7f04001a;
+        public static final int actionbar_edit=0x7f040018;
+        public static final int actionbar_help=0x7f04001b;
+        public static final int actionbar_more=0x7f04001c;
+        public static final int actionbar_packs=0x7f040017;
+        public static final int actionbar_play=0x7f04001e;
+        public static final int actionbar_share=0x7f04001d;
         public static final int card_detail_container=0x7f040003;
         public static final int card_list=0x7f040004;
+        public static final int change_template_button=0x7f040012;
+        public static final int creator=0x7f04000b;
         public static final int drop=0x7f040002;
         public static final int editText1=0x7f040005;
         public static final int editText2=0x7f040006;
         public static final int editText3=0x7f040007;
+        public static final int image=0x7f040011;
         public static final int imageView1=0x7f040008;
+        public static final int logo_image=0x7f04000d;
+        public static final int logo_url_btn=0x7f04000c;
+        public static final int main=0x7f04000f;
         public static final int none=0x7f040000;
-        public static final int pack_list_gallery=0x7f04000d;
+        public static final int pack_list_gallery=0x7f040016;
+        public static final int sidebar_title=0x7f040009;
+        public static final int sub=0x7f040010;
+        public static final int subheading=0x7f04000e;
         public static final int thumbnail=0x7f040001;
+        public static final int title=0x7f04000a;
     }
     public static final class layout {
         public static final int activity_card_detail=0x7f030000;
@@ -123,10 +140,11 @@ containing a value of this type.
         public static final int activity_card_list=0x7f030001;
         public static final int activity_card_twopane=0x7f030002;
         public static final int add_pack=0x7f030003;
-        public static final int card_list_item=0x7f030004;
-        public static final int fragment_card_detail=0x7f030005;
-        public static final int fragment_pack_list=0x7f030006;
-        public static final int pack_list=0x7f030007;
+        public static final int card=0x7f030004;
+        public static final int card_list_item=0x7f030005;
+        public static final int fragment_card_detail=0x7f030006;
+        public static final int fragment_pack_list=0x7f030007;
+        public static final int pack_list=0x7f030008;
     }
     public static final class menu {
         public static final int actionbar=0x7f080000;

@@ -1,33 +1,32 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout 
-	android:id="@+id/RelativeLayout01" 
-	android:layout_width="fill_parent" 
-	xmlns:android="http://schemas.android.com/apk/res/android" 
-	android:background="@color/card_list_background"
-	android:layout_height="130dip" 
-	android:paddingBottom="4dip" >
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/RelativeLayout01"
+    android:layout_width="fill_parent"
+    android:layout_height="130dip"
+    android:background="@android:color/black"
+    android:orientation="horizontal"
+    android:paddingBottom="4dip" >
 
-<ImageView
-    android:id="@+id/CardItemImage"
-    android:layout_width="160dip"
-    android:layout_height="104dip"
-    android:layout_alignParentRight="true"
-    android:layout_centerVertical="true"
-    android:layout_marginRight="17dp"
-    android:scaleType="fitXY"
-    android:paddingTop="12dip" />
+    <TextView
+        android:id="@+id/CardItemSN"
+        android:layout_width="20dip"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginLeft="16dp"
+        android:background="@drawable/card_list_item_background"
+        android:gravity="center"
+        android:text="1"
+        android:textColor="@android:color/white"
+        android:textSize="16sp" />
 
-<TextView
-    android:id="@+id/CardItemSN"
-    android:layout_width="20dip"
-    android:layout_height="wrap_content"
-    android:layout_alignParentLeft="true"
-    android:layout_centerVertical="true"
-    android:layout_marginLeft="16dp"
-    android:textColor="@android:color/white"
-    android:gravity="center"
-    android:background="@drawable/card_list_item_background"
-    android:text="1"
-    android:textSize="16sp" />
- 
-</RelativeLayout>
+    <ImageView
+        android:id="@+id/CardItemImage"
+        android:layout_width="160dip"
+        android:layout_height="104dip"
+        android:layout_gravity="center_vertical"
+        android:layout_marginLeft="17dp"
+        android:background="@drawable/shape_card_list_item"
+        android:scaleType="fitXY"
+        android:src="@drawable/test_card_coverage" />
+
+</LinearLayout>
