@@ -22,7 +22,7 @@
             android:layout_height="match_parent"
             android:inputType="text"
             android:background="@drawable/shape_card_sidebar"
-            android:text="title" >
+            android:text="I want to be like this" >
         </EditText>
     </LinearLayout>
 
@@ -45,7 +45,7 @@
                 android:layout_weight="440"
                 android:text="Question"
                 android:textStyle="bold"
-                android:shadowColor="@android:color/white"
+                android:shadowColor="@android:color/holo_orange_dark"
                 android:shadowRadius="16"
                 android:inputType="text"
                 android:textColor="@android:color/holo_blue_dark"
