@@ -6,6 +6,8 @@ import com.dropbox.client2.session.AccessTokenPair;
 import com.dropbox.client2.session.AppKeyPair;
 import com.dropbox.client2.session.Session.AccessType;
 import com.internectics.fragment.AddPackFragment;
+import com.internectics.fragment.CardDetailFragment;
+import com.internectics.fragment.MasterFragment;
 import com.internectics.helper.SQLiteHelper;
 import com.internectics.util.AppConfig;
 import com.internectics.util.AppContext;
@@ -36,33 +38,8 @@ import android.widget.AdapterView;
 import android.widget.ListAdapter;
 import android.widget.PopupWindow;
 import android.widget.Toast;
-
-
-/**
- * An activity representing a list of Cards. This activity has different
- * presentations for handset and tablet-size devices. On handsets, the activity
- * presents a list of items, which when touched, lead to a
- * {@link CardDetailActivity} representing item details. On tablets, the
- * activity presents the list of items and item details side-by-side using two
- * vertical panes.
- * <p>
- * The activity makes heavy use of fragments. The list of items is a
- * {@link CardListFragment} and the item details (if present) is a
- * {@link CardDetailFragment}.
- * <p>
- * This activity also implements the required {@link CardListFragment.Callbacks}
- * interface to listen for item selections.
- */
 public class MainActivity extends FragmentActivity implements
 		MasterFragment.Callbacks {
-
-	/**
-	 * Whether or not the activity is in two-pane mode, i.e. running on a tablet
-	 * device.
-	 */
-	private boolean mTwoPane;
-	
-	
 	/**
 	 * Dropbox key and secret
 	 */
@@ -97,25 +74,7 @@ public class MainActivity extends FragmentActivity implements
             Log.d(Global.debugTag, "OpenUDID_manager is not initialized");	
         }
 		
-		setContentView(R.layout.activity_card_list);
-	  
-
-		if (findViewById(R.id.card_detail_container) != null) {
-			// The detail container view will be present only in the
-			// large-screen layouts (res/values-large and
-			// res/values-sw600dp). If this view is present, then the
-			// activity should be in two-pane mode.
-			mTwoPane = true;
-
-			// In two-pane mode, list items should be given the
-			// 'activated' state when touched.
-			((MasterFragment) getSupportFragmentManager().findFragmentById(
-					R.id.card_list)).setActivateOnItemClick(true);
-		}
-		
-
-
-		// TODO: If exposing deep links into your app, handle intents here.
+		setContentView(R.layout.activity_card_twopane);
 	}
 	
 	@Override
@@ -192,7 +151,6 @@ public class MainActivity extends FragmentActivity implements
 	 */
 	@Override
 	public void onItemSelected(String id) {
-		if (mTwoPane) {
 			// In two-pane mode, show the detail view in this activity by
 			// adding or replacing the detail fragment using a
 			// fragment transaction.
@@ -202,14 +160,6 @@ public class MainActivity extends FragmentActivity implements
 			fragment.setArguments(arguments);
 			getSupportFragmentManager().beginTransaction()
 					.replace(R.id.card_detail_container, fragment).commit();
-
-		} else {
-			// In single-pane mode, simply start the detail activity
-			// for the selected item ID.
-			Intent detailIntent = new Intent(this, CardDetailActivity.class);
-			detailIntent.putExtra(CardDetailFragment.ARG_ITEM_ID, id);
-			startActivity(detailIntent);
-		}
 	}
 	
     private AndroidAuthSession buildSession() {

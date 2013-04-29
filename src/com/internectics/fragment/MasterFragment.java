@@ -1,4 +1,4 @@
-package com.internectics.android_flashcardcreator;
+package com.internectics.fragment;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -19,26 +19,18 @@ import android.widget.Button;
 import android.widget.ListView;
 import android.widget.SimpleAdapter;
 
-import com.internectics.android_flashcardcreator.dummy.DummyContent;
+import com.internectics.android_flashcardcreator.R;
+import com.internectics.android_flashcardcreator.R.id;
+import com.internectics.android_flashcardcreator.R.layout;
 import com.internectics.data.Card;
 import com.internectics.data.Pack;
 import com.internectics.data.User;
-import com.internectics.fragment.CardListBinder;
 import com.internectics.model.CardListModel;
 import com.internectics.util.AppConfig;
 import com.internectics.util.AppContext;
 import com.internectics.util.Global;
 import com.internectics.util.StringUtils;
 
-/**
- * A list fragment representing a list of Cards. This fragment also supports
- * tablet devices by allowing list items to be given an 'activated' state upon
- * selection. This helps indicate which item is currently being viewed in a
- * {@link DetailFragment}.
- * <p>
- * Activities containing this fragment MUST implement the {@link Callbacks}
- * interface.
- */
 public class MasterFragment extends ListFragment {
 
 	public Pack currentPack;
@@ -97,15 +89,11 @@ public class MasterFragment extends ListFragment {
 						R.id.card_list_item_cover_image });
 		listAdapter.setViewBinder(new CardListBinder());
 		setListAdapter(listAdapter);
-	}
+	} 
 
 	@Override
 	public void onViewCreated(View view, Bundle savedInstanceState) {
 		super.onViewCreated(view, savedInstanceState);
-
-		view.setBackgroundColor(Color.BLACK);
-		
-
 		// Restore the previously serialized activated item position.
 		if (savedInstanceState != null
 				&& savedInstanceState.containsKey(STATE_ACTIVATED_POSITION)) {
@@ -142,7 +130,7 @@ public class MasterFragment extends ListFragment {
 
 		// Notify the active callbacks interface (the activity, if the
 		// fragment is attached to one) that an item has been selected.
-		mCallbacks.onItemSelected(DummyContent.ITEMS.get(position).id);
+		mCallbacks.onItemSelected("need to be updated here, ccaa");
 	}
 
 	@Override

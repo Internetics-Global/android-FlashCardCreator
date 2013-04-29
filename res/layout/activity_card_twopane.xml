@@ -19,19 +19,50 @@
     http://developer.android.com/training/multiscreen/screensizes.html#TaskUseAliasFilters
     -->
 
-    <fragment
+    <FrameLayout
         android:id="@+id/card_list"
-        android:name="com.internectics.android_flashcardcreator.MasterFragment"
         android:layout_width="0dp"
         android:layout_height="match_parent"
         android:layout_weight="1"
-        tools:layout="@android:layout/list_content" />
+        android:background="@android:color/black" >
+        
+        <fragment
+                android:id="@+id/fragment_card_list"
+                android:name="com.internectics.fragment.MasterFragment"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                tools:layout="@android:layout/list_content" />
+
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="123dp"
+            android:layout_gravity="bottom"
+            android:background="@android:color/white" >
+
+            <Button
+                android:id="@+id/add_card_button"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:layout_gravity="center"
+                android:background="@drawable/plus_button" />
+    
+        </FrameLayout>
+
+        <FrameLayout
+            android:id= "@+id/master_view_mask"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" 
+            android:background="#C0000000"
+            android:visibility="visible">
+        </FrameLayout>
+
+    </FrameLayout>
 
     <FrameLayout
         android:id="@+id/card_detail_container"
         android:layout_width="0dp"
         android:layout_height="match_parent"
-        android:background="@color/card_detail_background"
-        android:layout_weight="3" />
+        android:layout_weight="3"
+        android:background="@color/card_detail_background" />
 
 </LinearLayout>

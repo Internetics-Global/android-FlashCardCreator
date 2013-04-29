@@ -23,21 +23,17 @@ public class CardListModel {
 		ArrayList<Card> cardArrayList = new ArrayList<Card>();
 
 		// Use simulator data only for test purpose
-		 Card tempCard = new Card();
-		 tempCard.cardSN = 1;
-		 tempCard.coverImageURL =
-		 "file:///data/data/com.internectics.android_flashcardcreator/cache/Images/53837dc1-4633-4e5d-9126-c178426ac5e3.jpg";
-		 cardArrayList.add(tempCard);
-		 Card tempCard2 = new Card();
-		 tempCard2.cardSN = 2;
-		 tempCard2.coverImageURL = String.format("%d",
-		 R.drawable.card_cover_image_placeholder);
-		 cardArrayList.add(tempCard2);
-		 Card tempCard3 = new Card();
-		 tempCard3.cardSN = 3;
-		 tempCard3.coverImageURL =
-		 "file:///data/data/com.internectics.android_flashcardcreator/cache/Images/53837dc1-4633-4e5d-9126-c178426ac5e3.jpg";
-		 cardArrayList.add(tempCard3);
+		for (int i = 0; i < 5; i++) {
+			Card tempCard = new Card();
+			 tempCard.cardSN = 1;
+			 tempCard.coverImageURL =
+			 "file:///data/data/com.internectics.android_flashcardcreator/cache/Images/af9e10f9-a1e8-47e0-ba1c-e0685c29f602.jpg";
+			 cardArrayList.add(tempCard);
+			 Card tempCard2 = new Card();
+			 tempCard2.cardSN = 2;
+			 tempCard2.coverImageURL = String.format("%d",R.drawable.card_cover_image_placeholder);
+			 cardArrayList.add(tempCard2);	
+		}
 
 		//cardArrayList = curentPack.cards;
 

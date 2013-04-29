@@ -165,74 +165,61 @@ containing a value of this type.
         public static final int shape_card_sidebar=0x7f02001a;
     }
     public static final class id {
-        public static final int RelativeLayout01=0x7f05000f;
-        public static final int actionbar_add_pack=0x7f050021;
-        public static final int actionbar_change_template_color=0x7f050022;
-        public static final int actionbar_edit=0x7f050020;
-        public static final int actionbar_help=0x7f050023;
-        public static final int actionbar_more=0x7f050024;
-        public static final int actionbar_packs=0x7f05001f;
-        public static final int actionbar_play=0x7f050026;
-        public static final int actionbar_share=0x7f050025;
-        public static final int button_answer=0x7f05001c;
-        public static final int button_question=0x7f05001b;
-        public static final int card_detail_container=0x7f050003;
-        public static final int card_list=0x7f050004;
-        public static final int card_list_item_card_sn=0x7f050010;
-        public static final int card_list_item_cover_image=0x7f050011;
-        public static final int change_template_button=0x7f05000e;
-        public static final int creator=0x7f050007;
-        public static final int dialog_head_close_btn=0x7f050013;
-        public static final int dialog_head_save_btn=0x7f050016;
+        public static final int RelativeLayout01=0x7f050012;
+        public static final int actionbar_add_pack=0x7f050024;
+        public static final int actionbar_change_template_color=0x7f050025;
+        public static final int actionbar_edit=0x7f050023;
+        public static final int actionbar_help=0x7f050026;
+        public static final int actionbar_more=0x7f050027;
+        public static final int actionbar_packs=0x7f050022;
+        public static final int actionbar_play=0x7f050029;
+        public static final int actionbar_share=0x7f050028;
+        public static final int add_card_button=0x7f050005;
+        public static final int button_answer=0x7f05001f;
+        public static final int button_question=0x7f05001e;
+        public static final int card_detail_container=0x7f050007;
+        public static final int card_list=0x7f050003;
+        public static final int card_list_item_card_sn=0x7f050013;
+        public static final int card_list_item_cover_image=0x7f050014;
+        public static final int change_template_button=0x7f050011;
+        public static final int creator=0x7f05000a;
+        public static final int dialog_head_close_btn=0x7f050016;
+        public static final int dialog_head_save_btn=0x7f050019;
         public static final int drop=0x7f050002;
-        public static final int fragment_add_pack_coverImage=0x7f05001a;
-        public static final int fragment_add_pack_creator=0x7f050019;
-        public static final int fragment_add_pack_pack_name=0x7f050017;
-        public static final int fragment_add_pack_sidebar_title=0x7f050018;
-        public static final int image=0x7f05000d;
-        public static final int logo_image=0x7f050009;
-        public static final int logo_url_btn=0x7f050008;
-        public static final int main=0x7f05000b;
-        public static final int main_head_progress=0x7f050015;
-        public static final int main_head_title=0x7f050014;
-        public static final int main_relativelayout_header=0x7f050012;
+        public static final int fragment_add_pack_coverImage=0x7f05001d;
+        public static final int fragment_add_pack_creator=0x7f05001c;
+        public static final int fragment_add_pack_pack_name=0x7f05001a;
+        public static final int fragment_add_pack_sidebar_title=0x7f05001b;
+        public static final int fragment_card_list=0x7f050004;
+        public static final int image=0x7f050010;
+        public static final int logo_image=0x7f05000c;
+        public static final int logo_url_btn=0x7f05000b;
+        public static final int main=0x7f05000e;
+        public static final int main_head_progress=0x7f050018;
+        public static final int main_head_title=0x7f050017;
+        public static final int main_relativelayout_header=0x7f050015;
+        public static final int master_view_mask=0x7f050006;
         public static final int none=0x7f050000;
-        public static final int pack_list_gallery=0x7f05001d;
-        public static final int play_close_button=0x7f05001e;
-        public static final int sidebar_title=0x7f050005;
-        public static final int sub=0x7f05000c;
-        public static final int subheading=0x7f05000a;
+        public static final int pack_list_gallery=0x7f050020;
+        public static final int play_close_button=0x7f050021;
+        public static final int sidebar_title=0x7f050008;
+        public static final int sub=0x7f05000f;
+        public static final int subheading=0x7f05000d;
         public static final int thumbnail=0x7f050001;
-        public static final int title=0x7f050006;
+        public static final int title=0x7f050009;
     }
     public static final class layout {
-        public static final int activity_card_detail=0x7f030000;
-        /** 
-    Layout alias to replace the single-pane version of the layout with a
-    two-pane version on Large screens.
-
-    For more on layout aliases, see:
-    http://developer.android.com/training/multiscreen/screensizes.html#TaskUseAliasFilters
-    
-
-    Layout alias to replace the single-pane version of the layout with a
-    two-pane version on Large screens.
-
-    For more on layout aliases, see:
-    http://developer.android.com/training/multiscreen/screensizes.html#TaskUseAliasFilters
-    
-         */
-        public static final int activity_card_list=0x7f030001;
-        public static final int activity_card_twopane=0x7f030002;
-        public static final int card=0x7f030003;
-        public static final int card_list_item=0x7f030004;
-        public static final int dialog_header=0x7f030005;
-        public static final int fragment_add_pack=0x7f030006;
-        public static final int fragment_card_detail=0x7f030007;
-        public static final int fragment_pack_list=0x7f030008;
-        public static final int layout_test=0x7f030009;
-        public static final int pack_list=0x7f03000a;
-        public static final int play=0x7f03000b;
+        public static final int activity_card_list=0x7f030000;
+        public static final int activity_card_twopane=0x7f030001;
+        public static final int card=0x7f030002;
+        public static final int card_list_item=0x7f030003;
+        public static final int dialog_header=0x7f030004;
+        public static final int fragment_add_pack=0x7f030005;
+        public static final int fragment_card_detail=0x7f030006;
+        public static final int fragment_pack_list=0x7f030007;
+        public static final int layout_test=0x7f030008;
+        public static final int pack_list=0x7f030009;
+        public static final int play=0x7f03000a;
     }
     public static final class menu {
         public static final int actionbar=0x7f0a0000;

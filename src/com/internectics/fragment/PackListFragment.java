@@ -1,4 +1,10 @@
-package com.internectics.android_flashcardcreator;
+package com.internectics.fragment;
+
+import com.internectics.android_flashcardcreator.R;
+import com.internectics.android_flashcardcreator.R.drawable;
+import com.internectics.android_flashcardcreator.R.id;
+import com.internectics.android_flashcardcreator.R.layout;
+import com.internectics.android_flashcardcreator.R.styleable;
 
 import android.content.Context;
 import android.content.res.TypedArray;

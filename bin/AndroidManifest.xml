@@ -40,14 +40,6 @@
             </intent-filter>
         </activity>
         <activity
-            android:name="com.internectics.android_flashcardcreator.CardDetailActivity"
-            android:label="@string/title_card_detail"
-            android:parentActivityName=".MainActivity" >
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value=".CardListActivity" />
-        </activity>
-        <activity
             android:name="com.dropbox.client2.android.AuthActivity"
             android:configChanges="orientation|keyboard"
             android:launchMode="singleTask" >
