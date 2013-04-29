@@ -43,34 +43,34 @@ public class MainActivity extends FragmentActivity implements
 	final static private String APP_KEY = "rl7510fe1641dyl";
     final static private String APP_SECRET = "3twb9tcccje56kg";
     final static private AccessType ACCESS_TYPE = AccessType.APP_FOLDER;
-    
+
     /**
 	 * You don't need to change these, leave them alone.
 	 */
     final static private String ACCOUNT_PREFS_NAME = "prefs";
     final static private String ACCESS_KEY_NAME = "ACCESS_KEY";
     final static private String ACCESS_SECRET_NAME = "ACCESS_SECRET";
-    
+
     private DropboxAPI<AndroidAuthSession> mApi;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		
+
 		//Step1:We create a new AuthSession so that we can use the Dropbox API.
 		AndroidAuthSession session = buildSession();
         mApi = new DropboxAPI<AndroidAuthSession>(session);
-       
-        
+
+
         //Step2: check table and default user
         SQLiteHelper.defaultDatabase(AppContext.getAppContext());
-        
+
         //Step3: OpenUDID
         OpenUDID_manager.sync(this);
         if (!OpenUDID_manager.isInitialized()) {
-            Log.d(Global.debugTag, "OpenUDID_manager is not initialized");	
+            Log.d(Global.debugTag, "OpenUDID_manager is not initialized");
         }
-		
+
 		setContentView(R.layout.activity_card_twopane);
 
         Button addCardButton = (Button) this.findViewById(R.id.add_card_button);
@@ -78,12 +78,21 @@ public class MainActivity extends FragmentActivity implements
             @Override
             public void onClick(View view) {
                 Log.d(Global.debugTag,"the add card button is clicked");
+                FrameLayout addCardFrameLayout = (FrameLayout) findViewById(R.id.add_card_frame_layout);
+                addCardFrameLayout.setVisibility(View.VISIBLE);
+
+                Bundle arguments = new Bundle();
+                arguments.putString("item_id", "3");  //temp value
+                CardDetailFragment fragment = new CardDetailFragment();
+                fragment.setArguments(arguments);
+                getSupportFragmentManager().beginTransaction()
+                        .replace(R.id.add_card_frame_layout, fragment).commit();
             }
         });
 
 
 	}
-	
+
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 		super.onCreateOptionsMenu(menu);
@@ -91,12 +100,12 @@ public class MainActivity extends FragmentActivity implements
 	    inflater.inflate(R.menu.actionbar, menu);
 	    return true;
 	}
-	
+
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
-		
+
 		LayoutInflater inflater = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-		
+
 		switch (item.getItemId()) {
 		case R.id.actionbar_add_pack:
 		{
@@ -105,8 +114,8 @@ public class MainActivity extends FragmentActivity implements
 			break;
 		}
 		case R.id.actionbar_edit:
-			AddPackFragment newFragment = AddPackFragment.getInstance();  
-	        newFragment.show(getFragmentManager(), "dialog");  
+			AddPackFragment newFragment = AddPackFragment.getInstance();
+	        newFragment.show(getFragmentManager(), "dialog");
 			break;
 		case R.id.actionbar_packs:
 			Toast.makeText(this, "packs", Toast.LENGTH_SHORT).show();
@@ -117,7 +126,7 @@ public class MainActivity extends FragmentActivity implements
             popupWindow.setContentView(popupLayout);
             popupWindow.showAsDropDown(findViewById(R.id.actionbar_packs));
 			break;
-			
+
 		case R.id.actionbar_change_template_color:
 			new AlertDialog.Builder(this)
 			.setTitle("Select a template background")
@@ -132,7 +141,7 @@ public class MainActivity extends FragmentActivity implements
 			.setItems(new String[]{"Dropbox","Random play","Register","Submit new listing","Help","About"}, null)
 			.show();
 			break;
-			
+
 		case R.id.actionbar_play:
 			startActivity(new Intent(MainActivity.this, PlayActivity.class));
 			overridePendingTransition(R.anim.in_from_bottom, R.anim.out_to_above);
@@ -141,11 +150,11 @@ public class MainActivity extends FragmentActivity implements
 		default:
 			break;
 		}
-		
-		
+
+
 		return super.onOptionsItemSelected(item);
 	}
-	
+
 	@Override
 	protected void onSaveInstanceState(Bundle outState) {
 		// TODO Auto-generated method stub
@@ -168,7 +177,7 @@ public class MainActivity extends FragmentActivity implements
 			getSupportFragmentManager().beginTransaction()
 					.replace(R.id.card_detail_container, fragment).commit();
 	}
-	
+
     private AndroidAuthSession buildSession() {
         AppKeyPair appKeyPair = new AppKeyPair(APP_KEY, APP_SECRET);
         AndroidAuthSession session;
@@ -183,7 +192,7 @@ public class MainActivity extends FragmentActivity implements
 
         return session;
     }
-    
+
     private String[] getKeys() {
         SharedPreferences prefs = getSharedPreferences(ACCOUNT_PREFS_NAME, 0);
         String key = prefs.getString(ACCESS_KEY_NAME, null);
