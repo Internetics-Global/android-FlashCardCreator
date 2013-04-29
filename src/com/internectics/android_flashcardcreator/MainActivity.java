@@ -1,5 +1,6 @@
 package com.internectics.android_flashcardcreator;
 
+import android.widget.*;
 import com.dropbox.client2.DropboxAPI;
 import com.dropbox.client2.android.AndroidAuthSession;
 import com.dropbox.client2.session.AccessTokenPair;
@@ -33,11 +34,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
-import android.widget.Adapter;
-import android.widget.AdapterView;
-import android.widget.ListAdapter;
-import android.widget.PopupWindow;
-import android.widget.Toast;
+
 public class MainActivity extends FragmentActivity implements
 		MasterFragment.Callbacks {
 	/**
@@ -75,6 +72,16 @@ public class MainActivity extends FragmentActivity implements
         }
 		
 		setContentView(R.layout.activity_card_twopane);
+
+        Button addCardButton = (Button) this.findViewById(R.id.add_card_button);
+        addCardButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Log.d(Global.debugTag,"the add card button is clicked");
+            }
+        });
+
+
 	}
 	
 	@Override
