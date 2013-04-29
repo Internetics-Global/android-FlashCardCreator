@@ -73,7 +73,7 @@ public class Question {
 	
 	public void save(Context context) {
 		if (questionID == -1) {
-		    update(context);	
+			insert(context);	
 		} else {
 		    if (SQLiteHelper.checkIntegerValueExists(context, questionID, "question_id", "Question_Tables")) {
 		    	update(context);

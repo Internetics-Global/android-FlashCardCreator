@@ -6,20 +6,23 @@
 
     <uses-permission android:name="android.permission.INTERNET" >
     </uses-permission>
+    <uses-permission android:name="com.google.android.gallery3d.permission.GALLERY_PROVIDER">
+    </uses-permission>    
 
     <uses-sdk
         android:minSdkVersion="14"
         android:targetSdkVersion="17" />
 
     <application
+        android:name="com.internectics.util.AppContext"
         android:allowBackup="true"
         android:icon="@drawable/ic_launcher"
         android:label="@string/app_name"
         android:theme="@style/AppTheme" >
         <activity
             android:name="com.internectics.android_flashcardcreator.MainActivity"
-            android:screenOrientation="landscape"
-            android:label="@string/app_name" >
+            android:label="@string/app_name"
+            android:screenOrientation="landscape" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -29,7 +32,9 @@
                 <data
                     android:host="twitter.com"
                     android:scheme="fcc" />
+
                 <action android:name="android.intent.action.VIEW" />
+
                 <category android:name="android.intent.category.BROWSABLE" />
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
@@ -57,6 +62,16 @@
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </activity>
+        <activity
+            android:name="com.internectics.android_flashcardcreator.PlayActivity"
+            android:screenOrientation="landscape" >
+        </activity>
+
+        <service android:name="org.openudid.OpenUDID_service" >
+            <intent-filter>
+                <action android:name="org.openudid.GETUDID" />
+            </intent-filter>
+        </service>
     </application>
 
 </manifest>

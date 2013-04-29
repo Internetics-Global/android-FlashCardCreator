@@ -8,6 +8,11 @@
 package com.internectics.android_flashcardcreator;
 
 public final class R {
+    public static final class anim {
+        public static final int in_from_bottom=0x7f040000;
+        public static final int loading=0x7f040001;
+        public static final int out_to_above=0x7f040002;
+    }
     public static final class attr {
         /** <p>Must be one of the following constant values.</p>
 <table>
@@ -68,61 +73,137 @@ containing a value of this type.
         public static final int textSize=0x7f010002;
     }
     public static final class color {
-        public static final int card_detail_background=0x7f050001;
-        public static final int card_list_background=0x7f050000;
+        public static final int card_detail_background=0x7f060001;
+        public static final int card_list_background=0x7f060000;
+        public static final int dialog_head_text=0x7f060002;
+    }
+    public static final class dimen {
+        public static final int space_1=0x7f070037;
+        public static final int space_10=0x7f07002e;
+        public static final int space_11=0x7f07002d;
+        public static final int space_12=0x7f07002c;
+        public static final int space_13=0x7f07002b;
+        public static final int space_14=0x7f07002a;
+        public static final int space_15=0x7f070029;
+        public static final int space_16=0x7f070028;
+        public static final int space_17=0x7f070027;
+        public static final int space_18=0x7f070026;
+        public static final int space_19=0x7f070025;
+        public static final int space_2=0x7f070036;
+        public static final int space_20=0x7f070024;
+        public static final int space_21=0x7f070023;
+        public static final int space_22=0x7f070022;
+        public static final int space_23=0x7f070021;
+        public static final int space_24=0x7f070020;
+        public static final int space_25=0x7f07001f;
+        public static final int space_26=0x7f07001e;
+        public static final int space_27=0x7f07001d;
+        public static final int space_28=0x7f07001c;
+        public static final int space_29=0x7f07001b;
+        public static final int space_3=0x7f070035;
+        public static final int space_30=0x7f07001a;
+        public static final int space_4=0x7f070034;
+        public static final int space_5=0x7f070033;
+        public static final int space_6=0x7f070032;
+        public static final int space_7=0x7f070031;
+        public static final int space_8=0x7f070030;
+        public static final int space_9=0x7f07002f;
+        public static final int text_size_10=0x7f070016;
+        public static final int text_size_11=0x7f070015;
+        public static final int text_size_12=0x7f070014;
+        public static final int text_size_13=0x7f070013;
+        public static final int text_size_14=0x7f070012;
+        public static final int text_size_15=0x7f070011;
+        public static final int text_size_16=0x7f070010;
+        public static final int text_size_17=0x7f07000f;
+        public static final int text_size_18=0x7f07000e;
+        public static final int text_size_19=0x7f07000d;
+        public static final int text_size_20=0x7f07000c;
+        public static final int text_size_21=0x7f07000b;
+        public static final int text_size_22=0x7f07000a;
+        public static final int text_size_23=0x7f070009;
+        public static final int text_size_24=0x7f070008;
+        public static final int text_size_25=0x7f070007;
+        public static final int text_size_26=0x7f070006;
+        public static final int text_size_27=0x7f070005;
+        public static final int text_size_28=0x7f070004;
+        public static final int text_size_29=0x7f070003;
+        public static final int text_size_30=0x7f070002;
+        public static final int text_size_31=0x7f070001;
+        public static final int text_size_32=0x7f070000;
+        public static final int text_size_7=0x7f070019;
+        public static final int text_size_8=0x7f070018;
+        public static final int text_size_9=0x7f070017;
     }
     public static final class drawable {
-        public static final int card_list_item_background=0x7f020000;
-        public static final int change_template_button=0x7f020001;
-        public static final int edit_link_button=0x7f020002;
-        public static final int ic_launcher=0x7f020003;
-        public static final int logo_placeholder=0x7f020004;
-        public static final int menu_button_add_pack=0x7f020005;
-        public static final int pack_cover_default_image=0x7f020006;
-        public static final int pack_list_background=0x7f020007;
-        public static final int segment_selected=0x7f020008;
-        public static final int segment_unselected=0x7f020009;
-        public static final int shape_card_background=0x7f02000a;
-        public static final int shape_card_body=0x7f02000b;
-        public static final int shape_card_header=0x7f02000c;
-        public static final int shape_card_list_item=0x7f02000d;
-        public static final int shape_card_sidebar=0x7f02000e;
-        public static final int test_card_coverage=0x7f02000f;
+        public static final int card_cover_image_placeholder=0x7f020000;
+        public static final int card_list_item_background=0x7f020001;
+        public static final int change_template_button=0x7f020002;
+        public static final int dialog_head_bg=0x7f020003;
+        public static final int edit_link_button=0x7f020004;
+        public static final int ic_launcher=0x7f020005;
+        public static final int loading_0=0x7f020006;
+        public static final int loading_1=0x7f020007;
+        public static final int loading_2=0x7f020008;
+        public static final int loading_3=0x7f020009;
+        public static final int loading_4=0x7f02000a;
+        public static final int loading_5=0x7f02000b;
+        public static final int loading_6=0x7f02000c;
+        public static final int loading_7=0x7f02000d;
+        public static final int logo_placeholder=0x7f02000e;
+        public static final int menu_button_add_pack=0x7f02000f;
+        public static final int pack_cover_default_image=0x7f020010;
+        public static final int pack_list_background=0x7f020011;
+        public static final int play_close_button=0x7f020012;
+        public static final int plus_button=0x7f020013;
+        public static final int segment_selected=0x7f020014;
+        public static final int segment_unselected=0x7f020015;
+        public static final int shape_card_background=0x7f020016;
+        public static final int shape_card_body=0x7f020017;
+        public static final int shape_card_header=0x7f020018;
+        public static final int shape_card_list_item=0x7f020019;
+        public static final int shape_card_sidebar=0x7f02001a;
     }
     public static final class id {
-        public static final int CardItemImage=0x7f040015;
-        public static final int CardItemSN=0x7f040014;
-        public static final int RelativeLayout01=0x7f040013;
-        public static final int actionbar_add_pack=0x7f04001b;
-        public static final int actionbar_change_template_color=0x7f04001c;
-        public static final int actionbar_edit=0x7f04001a;
-        public static final int actionbar_help=0x7f04001d;
-        public static final int actionbar_more=0x7f04001e;
-        public static final int actionbar_packs=0x7f040019;
-        public static final int actionbar_play=0x7f040020;
-        public static final int actionbar_share=0x7f04001f;
-        public static final int button_answer=0x7f040017;
-        public static final int button_question=0x7f040016;
-        public static final int card_detail_container=0x7f040003;
-        public static final int card_list=0x7f040004;
-        public static final int change_template_button=0x7f040012;
-        public static final int creator=0x7f04000b;
-        public static final int drop=0x7f040002;
-        public static final int editText1=0x7f040005;
-        public static final int editText2=0x7f040006;
-        public static final int editText3=0x7f040007;
-        public static final int image=0x7f040011;
-        public static final int imageView1=0x7f040008;
-        public static final int logo_image=0x7f04000d;
-        public static final int logo_url_btn=0x7f04000c;
-        public static final int main=0x7f04000f;
-        public static final int none=0x7f040000;
-        public static final int pack_list_gallery=0x7f040018;
-        public static final int sidebar_title=0x7f040009;
-        public static final int sub=0x7f040010;
-        public static final int subheading=0x7f04000e;
-        public static final int thumbnail=0x7f040001;
-        public static final int title=0x7f04000a;
+        public static final int RelativeLayout01=0x7f05000f;
+        public static final int actionbar_add_pack=0x7f050021;
+        public static final int actionbar_change_template_color=0x7f050022;
+        public static final int actionbar_edit=0x7f050020;
+        public static final int actionbar_help=0x7f050023;
+        public static final int actionbar_more=0x7f050024;
+        public static final int actionbar_packs=0x7f05001f;
+        public static final int actionbar_play=0x7f050026;
+        public static final int actionbar_share=0x7f050025;
+        public static final int button_answer=0x7f05001c;
+        public static final int button_question=0x7f05001b;
+        public static final int card_detail_container=0x7f050003;
+        public static final int card_list=0x7f050004;
+        public static final int card_list_item_card_sn=0x7f050010;
+        public static final int card_list_item_cover_image=0x7f050011;
+        public static final int change_template_button=0x7f05000e;
+        public static final int creator=0x7f050007;
+        public static final int dialog_head_close_btn=0x7f050013;
+        public static final int dialog_head_save_btn=0x7f050016;
+        public static final int drop=0x7f050002;
+        public static final int fragment_add_pack_coverImage=0x7f05001a;
+        public static final int fragment_add_pack_creator=0x7f050019;
+        public static final int fragment_add_pack_pack_name=0x7f050017;
+        public static final int fragment_add_pack_sidebar_title=0x7f050018;
+        public static final int image=0x7f05000d;
+        public static final int logo_image=0x7f050009;
+        public static final int logo_url_btn=0x7f050008;
+        public static final int main=0x7f05000b;
+        public static final int main_head_progress=0x7f050015;
+        public static final int main_head_title=0x7f050014;
+        public static final int main_relativelayout_header=0x7f050012;
+        public static final int none=0x7f050000;
+        public static final int pack_list_gallery=0x7f05001d;
+        public static final int play_close_button=0x7f05001e;
+        public static final int sidebar_title=0x7f050005;
+        public static final int sub=0x7f05000c;
+        public static final int subheading=0x7f05000a;
+        public static final int thumbnail=0x7f050001;
+        public static final int title=0x7f050006;
     }
     public static final class layout {
         public static final int activity_card_detail=0x7f030000;
@@ -143,28 +224,30 @@ containing a value of this type.
          */
         public static final int activity_card_list=0x7f030001;
         public static final int activity_card_twopane=0x7f030002;
-        public static final int add_pack=0x7f030003;
-        public static final int card=0x7f030004;
-        public static final int card_list_item=0x7f030005;
-        public static final int fragment_card_detail=0x7f030006;
-        public static final int fragment_pack_list=0x7f030007;
-        public static final int layout_test=0x7f030008;
-        public static final int pack_list=0x7f030009;
+        public static final int card=0x7f030003;
+        public static final int card_list_item=0x7f030004;
+        public static final int dialog_header=0x7f030005;
+        public static final int fragment_add_pack=0x7f030006;
+        public static final int fragment_card_detail=0x7f030007;
+        public static final int fragment_pack_list=0x7f030008;
+        public static final int layout_test=0x7f030009;
+        public static final int pack_list=0x7f03000a;
+        public static final int play=0x7f03000b;
     }
     public static final class menu {
-        public static final int actionbar=0x7f080000;
+        public static final int actionbar=0x7f0a0000;
     }
     public static final class string {
-        public static final int app_name=0x7f060000;
-        public static final int title_add_pack=0x7f060004;
-        public static final int title_card_detail=0x7f060001;
-        public static final int title_change_template_color=0x7f060005;
-        public static final int title_edit=0x7f060003;
-        public static final int title_help=0x7f060006;
-        public static final int title_more=0x7f060007;
-        public static final int title_packs=0x7f060002;
-        public static final int title_play=0x7f060009;
-        public static final int title_share=0x7f060008;
+        public static final int app_name=0x7f080000;
+        public static final int title_add_pack=0x7f080004;
+        public static final int title_card_detail=0x7f080001;
+        public static final int title_change_template_color=0x7f080005;
+        public static final int title_edit=0x7f080003;
+        public static final int title_help=0x7f080006;
+        public static final int title_more=0x7f080007;
+        public static final int title_packs=0x7f080002;
+        public static final int title_play=0x7f080009;
+        public static final int title_share=0x7f080008;
     }
     public static final class style {
         /** 
@@ -188,11 +271,13 @@ containing a value of this type.
     
  API 14 theme customizations can go here. 
          */
-        public static final int AppBaseTheme=0x7f070000;
+        public static final int AppBaseTheme=0x7f090000;
         /**  Application theme. 
  All customizations that are NOT specific to a particular API-level can go here. 
          */
-        public static final int AppTheme=0x7f070001;
+        public static final int AppTheme=0x7f090001;
+        public static final int dialog_head_title=0x7f090002;
+        public static final int loading_small=0x7f090003;
     }
     public static final class styleable {
         /**  These are attributes used with 'DraggableDot' drawables in

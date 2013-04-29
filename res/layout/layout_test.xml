@@ -8,18 +8,16 @@
         android:layout_width="141dp"
         android:layout_height="200dp"
         android:layout_weight="0.41"
-        android:rotation="-90"
         android:orientation="vertical" >
 
-        <EditText
-            android:id="@+id/sidebar_title"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:background="@drawable/shape_card_sidebar"
-            android:inputType="text"
-            android:rotation="-90"
-            android:text="I want to be like this" >
-        </EditText>
+        <ImageView
+                android:id="@+id/logo_image"
+                android:layout_height="wrap_content"
+                android:layout_width="wrap_content"
+                android:layout_marginRight="15dp"
+                android:paddingLeft="10dp"
+                android:scaleType="fitXY"
+                android:src="@drawable/pack_list_background" />
     </FrameLayout>
 
 </LinearLayout>

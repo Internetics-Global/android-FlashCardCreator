@@ -67,7 +67,7 @@ public class CSS {
 	
 	public void save(Context context) {
 		if (cssID == -1) {
-		    update(context);	
+			insert(context);	
 		} else {
 		    if (SQLiteHelper.checkIntegerValueExists(context,cssID, "css_id", "CSS_Tables")) {
 		    	update(context);

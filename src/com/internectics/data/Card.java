@@ -9,6 +9,7 @@ import android.content.Context;
 import android.database.Cursor;
 import android.util.Log;
 
+import com.internectics.android_flashcardcreator.R;
 import com.internectics.helper.SQLiteHelper;
 import com.internectics.util.Global;
 
@@ -28,6 +29,7 @@ public class Card {
 		cardSN = -1;
 		packID = -1;
 		templateBackground = "card_background_blue.png";
+		coverImageURL = String.format("%d", R.drawable.card_cover_image_placeholder);
 	}
 
 
@@ -51,7 +53,7 @@ public class Card {
 	public static ArrayList<HashMap<String, Object>> cardsForPackID (Context context,int packID) {
 		ArrayList<HashMap<String, Object>> returnArray = new ArrayList<HashMap<String,Object>>();
 		
-		String queryString = String.format("SELECT * FROM Question_Tables WHERE pack_id=%d", packID);
+		String queryString = String.format("SELECT * FROM Cards_Tables WHERE pack_id=%d", packID);
 		Cursor cur = SQLiteHelper.defaultDatabase(context).rawQuery(queryString, null);
 		while (cur.moveToNext()) {
 			HashMap<String, Object> cardDict = new HashMap<String, Object>();
@@ -69,7 +71,7 @@ public class Card {
 	
 	public void save(Context context) {
 		if (cardID == -1) {
-		    update(context);	
+			insert(context);	
 		} else {
 		    if (SQLiteHelper.checkIntegerValueExists(context,cardID, "card_id", "Cards_Tables")) {
 		    	update(context);

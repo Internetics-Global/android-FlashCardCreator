@@ -76,7 +76,7 @@ public class Answer {
 		this.cssID = css.cssID;
 		
 		if (answerID == -1) {
-		    update(context);	
+			insert(context);	
 		} else {
 		    if (SQLiteHelper.checkIntegerValueExists(context,answerID, "answer_id", "Answer_Tables")) {
 		    	update(context);

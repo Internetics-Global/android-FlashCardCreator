@@ -5,17 +5,26 @@ import com.dropbox.client2.android.AndroidAuthSession;
 import com.dropbox.client2.session.AccessTokenPair;
 import com.dropbox.client2.session.AppKeyPair;
 import com.dropbox.client2.session.Session.AccessType;
+import com.internectics.fragment.AddPackFragment;
 import com.internectics.helper.SQLiteHelper;
+import com.internectics.util.AppConfig;
+import com.internectics.util.AppContext;
+import com.internectics.util.Global;
+import com.internectics.util.OpenUDID_manager;
 
 import android.app.AlertDialog;
 import android.app.Dialog;
+import android.app.DialogFragment;
+import android.app.DownloadManager;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.drawable.BitmapDrawable;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -77,9 +86,16 @@ public class MainActivity extends FragmentActivity implements
 		//Step1:We create a new AuthSession so that we can use the Dropbox API.
 		AndroidAuthSession session = buildSession();
         mApi = new DropboxAPI<AndroidAuthSession>(session);
+       
         
-        //Step2: check 
-        //SQLiteHelper.defaultDatabase(this);
+        //Step2: check table and default user
+        SQLiteHelper.defaultDatabase(AppContext.getAppContext());
+        
+        //Step3: OpenUDID
+        OpenUDID_manager.sync(this);
+        if (!OpenUDID_manager.isInitialized()) {
+            Log.d(Global.debugTag, "OpenUDID_manager is not initialized");	
+        }
 		
 		setContentView(R.layout.activity_card_list);
 	  
@@ -118,24 +134,13 @@ public class MainActivity extends FragmentActivity implements
 		switch (item.getItemId()) {
 		case R.id.actionbar_add_pack:
 		{
-			AlertDialog.Builder builder = new AlertDialog.Builder(this);
-			builder.setView(inflater.inflate(R.layout.add_pack, null))
-			       .setNegativeButton("Cancel", null)
-			       .setPositiveButton("Save", new DialogInterface.OnClickListener() {
-					
-					@Override
-					public void onClick(DialogInterface dialog, int which) {
-						System.out.println("Click the Save button");
-						
-					}
-				});
-			AlertDialog ad = builder.create();
-			ad.setMessage("Add a new pack");
-			ad.show();
+			DialogFragment dialogFragment = AddPackFragment.getInstance();
+			dialogFragment.show(getFragmentManager(), "add_pack_fragment");
 			break;
 		}
 		case R.id.actionbar_edit:
-			Toast.makeText(this, "edit", Toast.LENGTH_SHORT).show();
+			AddPackFragment newFragment = AddPackFragment.getInstance();  
+	        newFragment.show(getFragmentManager(), "dialog");  
 			break;
 		case R.id.actionbar_packs:
 			Toast.makeText(this, "packs", Toast.LENGTH_SHORT).show();
@@ -160,6 +165,11 @@ public class MainActivity extends FragmentActivity implements
 			.setTitle("More")
 			.setItems(new String[]{"Dropbox","Random play","Register","Submit new listing","Help","About"}, null)
 			.show();
+			break;
+			
+		case R.id.actionbar_play:
+			startActivity(new Intent(MainActivity.this, PlayActivity.class));
+			overridePendingTransition(R.anim.in_from_bottom, R.anim.out_to_above);
 			break;
 
 		default:

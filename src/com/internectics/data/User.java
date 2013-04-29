@@ -48,6 +48,7 @@ public class User {
 		nickName = (String) dataDict.get("nick_name");
 		ArrayList<HashMap<String, Object>> packArray = (ArrayList<HashMap<String, Object>>) dataDict.get("packs");
 		for (int i = 0; i < packArray.size(); i++) {
+			
 		    Pack newPack = (Pack) (new Pack()).initWithDictionary(packArray.get(i));
 		    packs.add(newPack);
 		}

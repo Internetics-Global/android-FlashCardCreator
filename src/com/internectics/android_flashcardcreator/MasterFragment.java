@@ -2,16 +2,33 @@ package com.internectics.android_flashcardcreator;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.IllegalFormatCodePointException;
+import java.util.Iterator;
+import java.util.List;
 
+import android.R.integer;
 import android.app.Activity;
+import android.graphics.Color;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.ListFragment;
+import android.util.Log;
 import android.view.View;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.ListView;
 import android.widget.SimpleAdapter;
 
 import com.internectics.android_flashcardcreator.dummy.DummyContent;
+import com.internectics.data.Card;
+import com.internectics.data.Pack;
+import com.internectics.data.User;
+import com.internectics.fragment.CardListBinder;
+import com.internectics.model.CardListModel;
+import com.internectics.util.AppConfig;
+import com.internectics.util.AppContext;
+import com.internectics.util.Global;
+import com.internectics.util.StringUtils;
 
 /**
  * A list fragment representing a list of Cards. This fragment also supports
@@ -24,22 +41,18 @@ import com.internectics.android_flashcardcreator.dummy.DummyContent;
  */
 public class MasterFragment extends ListFragment {
 
-	/**
-	 * The serialization (saved instance state) Bundle key representing the
-	 * activated item position. Only used on tablets.
-	 */
+	public Pack currentPack;
+
+	private List<HashMap<String, Object>> cardArrayList;
+
 	private static final String STATE_ACTIVATED_POSITION = "activated_position";
-
-	/**
-	 * The fragment's current callback object, which is notified of list item
-	 * clicks.
-	 */
 	private Callbacks mCallbacks = sDummyCallbacks;
-
-	/**
-	 * The current activated item position. Only used on tablets.
-	 */
 	private int mActivatedPosition = ListView.INVALID_POSITION;
+
+	public MasterFragment() {
+		currentPack = new Pack();
+		cardArrayList = new ArrayList<HashMap<String, Object>>();;
+	}
 
 	/**
 	 * A callback interface that all activities containing this fragment must
@@ -63,45 +76,35 @@ public class MasterFragment extends ListFragment {
 		}
 	};
 
-	/**
-	 * Mandatory empty constructor for the fragment manager to instantiate the
-	 * fragment (e.g. upon screen orientation changes).
-	 */
-	public MasterFragment() {
-	}
-
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 
-		// TODO: replace with a real list adapter.
-		//setListAdapter(new ArrayAdapter<DummyContent.DummyItem>(getActivity(),
-			//	android.R.layout.simple_list_item_activated_1,
-				//android.R.id.text1, DummyContent.ITEMS));
+	}
+	
+	@Override
+	public void onResume() {
+		super.onResume();
 		
-		ArrayList<HashMap<String, Object>> listItem 
-    	= new ArrayList<HashMap<String, Object>>();
-		
-    for(int i=0;i<10;i++)
-    {
-    	HashMap<String, Object> map = new HashMap<String, Object>();
-    	map.put("ItemSN", i+1);
-    	map.put("ItemImage", R.drawable.test_card_coverage);
-    	
-    	listItem.add(map);
-    }
-    
-    SimpleAdapter listAdapter = new SimpleAdapter(getActivity(), listItem, R.layout.card_list_item, 
-    		new String[] {"ItemSN","ItemImage"}, 
-            new int[] {R.id.CardItemSN,R.id.CardItemImage});
-    
-    setListAdapter(listAdapter);
-		
+		currentPack = CardListModel.getCurrentPack();
+		if (currentPack != null) {
+			cardArrayList = CardListModel.getCardList(currentPack);
+		}
+		SimpleAdapter listAdapter = new SimpleAdapter(getActivity(),
+				cardArrayList, R.layout.card_list_item, new String[] {
+						"cardSN", "coverImageURL" }, new int[] {
+						R.id.card_list_item_card_sn,
+						R.id.card_list_item_cover_image });
+		listAdapter.setViewBinder(new CardListBinder());
+		setListAdapter(listAdapter);
 	}
 
 	@Override
 	public void onViewCreated(View view, Bundle savedInstanceState) {
 		super.onViewCreated(view, savedInstanceState);
+
+		view.setBackgroundColor(Color.BLACK);
+		
 
 		// Restore the previously serialized activated item position.
 		if (savedInstanceState != null
