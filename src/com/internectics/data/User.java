@@ -1,14 +1,14 @@
 package com.internectics.data;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import com.internectics.helper.SQLiteHelper;
-import com.internectics.util.Global;
-
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
+import com.internectics.helper.SQLiteHelper;
+import com.internectics.util.Global;
+
+import java.util.ArrayList;
+import java.util.HashMap;
 
 public class User {
 	public int              userID;

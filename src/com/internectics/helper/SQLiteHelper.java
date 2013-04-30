@@ -4,15 +4,14 @@
 
 package com.internectics.helper;
 
-import com.internectics.util.AppContext;
-import com.internectics.util.Global;
-
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteDatabase.CursorFactory;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
+import com.internectics.util.AppContext;
+import com.internectics.util.Global;
 
 public class SQLiteHelper {
 
@@ -42,7 +41,7 @@ public class SQLiteHelper {
 
 	public static int getMaxValueForColumn(Context context, String columnName,
 			String tableName) {
-		String queryString = String.format("SELECT max(%@) FROM %@",
+		String queryString = String.format("SELECT max(%s) FROM %s",
 				columnName, tableName);
 		Cursor cursor = SQLiteHelper.defaultDatabase(context).rawQuery(
 				queryString, null);
@@ -51,61 +50,6 @@ public class SQLiteHelper {
 			number = cursor.getInt(0);
 		}
 		return number;
-	}
-
-	/**
-	 * if not exist, then create automatically
-	 */
-	public static void checkTableExists() {
-		SQLiteDatabase db = SQLiteHelper.defaultDatabase(AppContext
-				.getAppContext());
-
-		db.execSQL("CREATE TABLE " + "Users_Tables" + " (" + "user_id"
-				+ " INTEGER PRIMARY KEY, " + "nick_name" + " TEXT)");
-
-		// compare with iOS version, we made changes:
-		// 1. delete is_public, language_name, 2. add question_title,
-		// answer_title, logo_image and logo_url;3. change creator to
-		// creator_id, logo to logo_image
-		db.execSQL("CREATE TABLE " + "Packs_Tables" + " (" + "pack_id"
-				+ " INTEGER PRIMARY KEY," + "pack_name" + " TEXT,"
-				+ "sidebar_title" + " TEXT," + "user_id" + " INTEGER,"
-				+ "question_title" + " TEXT," + "answer_title" + " TEXT,"
-				+ "cover_image" + " TEXT," + "logo_image" + " TEXT,"
-				+ "logo_url" + " TEXT," + "creator_id" + " TEXT,"
-				+ "creator_nick_name" + " TEXT)");
-
-		// compared with iOS version, we made changes:
-		// 1. delete creator, card_name
-		db.execSQL("CREATE TABLE " + "Cards_Tables" + " (" + "card_id"
-				+ " INTEGER PRIMARY KEY," + "pack_id" + " INTEGER,"
-				+ "cover_image" + " TEXT," + "template_background" + " TEXT,"
-				+ "card_sn" + " INTEGER)");
-
-		// compared with iOS version, we made changes:
-		// 1. delete title, log and logo_url
-		db.execSQL("CREATE TABLE " + "Question_Tables" + " (" + "question_id"
-				+ " INTEGER PRIMARY KEY," + "card_id" + " INTEGER,"
-				+ "subheading" + " TEXT," + "main" + " TEXT," + "sub"
-				+ " TEXT," + "image" + " TEXT," + "css_id" + " INTEGER,"
-				+ "template_id" + " INTEGER)");
-
-		// compared with iOS version, we made changes:
-		// 1. delete log and logo_url
-		db.execSQL("CREATE TABLE " + "Answer_Tables" + " (" + "answer_id"
-				+ " INTEGER PRIMARY KEY," + "card_id" + " INTEGER,"
-				+ "subheading" + " TEXT," + "main" + " TEXT," + "sub"
-				+ " TEXT," + "image" + " TEXT," + "css_id" + " INTEGER,"
-				+ "template_id" + " INTEGER)");
-
-		// compared with iOS version, we made changes:
-		// 1.
-		db.execSQL("CREATE TABLE " + "CSS_Tables" + " (" + "css_id"
-				+ " INTEGER PRIMARY KEY," + "subheading_size" + " INTEGER,"
-				+ "subheading_algn" + " TEXT," + "_subheading_color" + " TEXT,"
-				+ "main_size" + " INTEGER," + "main_align" + " TEXT,"
-				+ "main_color" + " TEXT," + "sub_size" + " INTEGER,"
-				+ "sub_align" + " TEXT," + "sub_color" + " TEXT)");
 	}
 
 	private static class DBOpenHelper extends SQLiteOpenHelper {
@@ -160,7 +104,7 @@ public class SQLiteHelper {
 			// 1.
 			db.execSQL("CREATE TABLE " + "CSS_Tables" + " (" + "css_id"
 					+ " INTEGER PRIMARY KEY," + "subheading_size" + " INTEGER,"
-					+ "subheading_algn" + " TEXT," + "_subheading_color" + " TEXT,"
+					+ "subheading_align" + " TEXT," + "subheading_color" + " TEXT,"
 					+ "main_size" + " INTEGER," + "main_align" + " TEXT,"
 					+ "main_color" + " TEXT," + "sub_size" + " INTEGER,"
 					+ "sub_align" + " TEXT," + "sub_color" + " TEXT)");

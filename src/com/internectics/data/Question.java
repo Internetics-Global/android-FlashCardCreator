@@ -1,17 +1,13 @@
 package com.internectics.data;
 
-import java.io.File;
-import java.sql.Date;
-import java.util.Calendar;
-import java.util.HashMap;
-import java.util.UUID;
-
 import android.content.Context;
 import android.database.Cursor;
 import android.util.Log;
-
 import com.internectics.helper.SQLiteHelper;
 import com.internectics.util.Global;
+
+import java.io.File;
+import java.util.HashMap;
 
 public class Question {
 	
@@ -30,8 +26,12 @@ public class Question {
 		super();
 		questionID = -1;
 		cardID = -1;
+        subheading = "";
+        main = "";
+        sub = "";
+        imageURL = "";
 		cssID = -1;
-		templateID = -1;
+		templateID = 0;
 		css = new CSS();
 	}
 
@@ -72,6 +72,10 @@ public class Question {
 	}
 	
 	public void save(Context context) {
+        //CSS save first, since we need cssID for Answer
+        css.save(context);
+        this.cssID = css.cssID;
+
 		if (questionID == -1) {
 			insert(context);	
 		} else {
@@ -93,7 +97,7 @@ public class Question {
 			questionID = (int)(System.currentTimeMillis()/1000L);
 		}
 		String query = String.format("INSERT INTO Question_Tables(question_id, card_id, subheading, main, sub, image, css_id, template_id) VALUES (%d,%d, \"%s\", \"%s\", \"%s\", \"%s\", %d, %d)",questionID, cardID, subheading, main, sub, imageURL, cssID, templateID);
-        SQLiteHelper.defaultDatabase(context).execSQL(query); 
+        SQLiteHelper.defaultDatabase(context).execSQL(query);
 	}
 	
 	public void destroy(Context context) {

@@ -1,22 +1,14 @@
 package com.internectics.data;
 
-import java.io.File;
-import java.lang.reflect.Array;
-import java.sql.Date;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.UUID;
-
+import android.content.Context;
+import android.database.Cursor;
+import android.util.Log;
 import com.internectics.helper.SQLiteHelper;
 import com.internectics.util.Global;
 
-import android.R;
-import android.R.integer;
-import android.content.Context;
-import android.database.Cursor;
-import android.provider.Contacts.Intents.Insert;
-import android.util.Log;
+import java.io.File;
+import java.util.ArrayList;
+import java.util.HashMap;
 
 public class Pack {
 	public int packID;

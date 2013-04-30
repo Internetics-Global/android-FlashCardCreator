@@ -21,16 +21,22 @@ import com.dropbox.client2.android.AndroidAuthSession;
 import com.dropbox.client2.session.AccessTokenPair;
 import com.dropbox.client2.session.AppKeyPair;
 import com.dropbox.client2.session.Session.AccessType;
+import com.internectics.data.Card;
+import com.internectics.data.Pack;
 import com.internectics.fragment.AddPackFragment;
 import com.internectics.fragment.CardDetailFragment;
 import com.internectics.fragment.MasterFragment;
 import com.internectics.helper.SQLiteHelper;
+import com.internectics.model.CardListModel;
 import com.internectics.util.AppContext;
 import com.internectics.util.Global;
 import com.internectics.util.OpenUDID_manager;
 
 public class MainActivity extends FragmentActivity implements
         MasterFragment.Callbacks {
+
+
+
     /**
      * Dropbox key and secret
      */
@@ -50,9 +56,15 @@ public class MainActivity extends FragmentActivity implements
     //Used to diff between card view and card creating
     private boolean isCreatingCard = false;
 
+    Pack mCurrentPack = new Pack();
+    int  mCurrentIndex = 0;
+    Card mCurrentCard = new Card();
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+
 
         //Step1:We create a new AuthSession so that we can use the Dropbox API.
         AndroidAuthSession session = buildSession();
@@ -187,8 +199,14 @@ public class MainActivity extends FragmentActivity implements
         Bundle arguments = new Bundle();
 
         arguments.putString(CardDetailFragment.ARG_ITEM_ID, id);
-        CardDetailFragment fragment = new CardDetailFragment();
-        fragment.setArguments(arguments);
+
+
+        mCurrentPack = CardListModel.getCurrentPack();
+        mCurrentIndex = Integer.parseInt(id);
+        mCurrentCard = mCurrentPack.cards.get(mCurrentIndex);
+
+
+        CardDetailFragment fragment = new CardDetailFragment(mCurrentPack,mCurrentCard);
         getSupportFragmentManager().beginTransaction()
                 .replace(R.id.card_detail_container, fragment).commit();
     }
@@ -225,6 +243,12 @@ public class MainActivity extends FragmentActivity implements
 
     private void startCreateCard() {
 
+        mCurrentPack = CardListModel.getCurrentPack();
+        boolean result = checkEntryConditionBeforeCreatingNewCard(mCurrentPack);
+        if (result == false) {
+            return;
+        }
+
         FrameLayout addCardLayout = (FrameLayout) findViewById(R.id.add_card_frame_layout);
         addCardLayout.setVisibility(View.VISIBLE);
 
@@ -237,10 +261,7 @@ public class MainActivity extends FragmentActivity implements
             }
         });
 
-        Bundle arguments = new Bundle();
-        arguments.putString("item_id", "3");  //temp value
-        CardDetailFragment fragment = new CardDetailFragment();
-        fragment.setArguments(arguments);
+        CardDetailFragment fragment = new CardDetailFragment(mCurrentPack,null);
         getSupportFragmentManager().beginTransaction()
                 .replace(R.id.add_card_frame_layout, fragment).commit();
 
@@ -250,7 +271,11 @@ public class MainActivity extends FragmentActivity implements
     }
 
     private void saveNewCreatedCard() {
+        Intent intent = new Intent();
+        intent.setAction(Global.BROADCAST_ACTION_SAVE_NEW_CARD);
+        sendBroadcast(intent);
         dismissCardCreateWindow();
+
 
     }
 
@@ -264,5 +289,24 @@ public class MainActivity extends FragmentActivity implements
         isCreatingCard = false;
         invalidateOptionsMenu();
 
+    }
+
+    private boolean checkEntryConditionBeforeCreatingNewCard(Pack currentPack) {
+
+       //case1: check whether pack is empty or not
+       if (currentPack == null) {
+           Toast.makeText(this,"Create a pack first before creating a new card", 1).show();
+           return false;
+       }
+       //case2: check owner
+       if (!currentPack.creatorID.equals(OpenUDID_manager.getOpenUDID())) {
+           Toast.makeText(this,"You cannot create a card in pack you haven't created yourself.", 1).show();
+
+
+           return false;
+
+       }
+
+       return  true;
     }
 }

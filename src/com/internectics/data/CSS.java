@@ -1,11 +1,12 @@
 package com.internectics.data;
 
-import java.util.HashMap;
-
 import android.content.Context;
 import android.database.Cursor;
-
+import android.util.Log;
 import com.internectics.helper.SQLiteHelper;
+import com.internectics.util.Global;
+
+import java.util.HashMap;
 
 public class CSS {
 	
@@ -35,7 +36,7 @@ public class CSS {
 		cssID = (Integer) dataDict.get("css_id");
 		subheadingSize = (Integer) dataDict.get("subheading_size");
 		subheadingAlign = (String) dataDict.get("subheading_align");
-		subheadingAlign = (String) dataDict.get("subheading_color");
+		subheadingColor = (String) dataDict.get("subheading_color");
 		mainSize = (Integer) dataDict.get("main_size");
 		mainAlign = (String) dataDict.get("main_align");
 		mainColor = (String) dataDict.get("main_color");
@@ -85,12 +86,13 @@ public class CSS {
 	private void insert(Context context) {
 		
 		if (cssID == -1) {
-			cssID = SQLiteHelper.getMaxValueForColumn(context,"css_id", "CSS_Tables");
+			cssID = SQLiteHelper.getMaxValueForColumn(context,"css_id", "CSS_Tables") + 1;
 		}
 		
 		String query = String.format("INSERT INTO CSS_Tables(css_id, subheading_size, subheading_align, subheading_color, main_size, main_align, main_color, sub_size, sub_align, sub_color) VALUES (%d,%d, \"%s\", \"%s\", %d, \"%s\", \"%s\", %d, \"%s\", \"%s\")",cssID, subheadingSize, subheadingAlign, subheadingColor, mainSize, mainAlign, mainColor, subSize, subAlign, subColor);
         SQLiteHelper.defaultDatabase(context).execSQL(query);
-	}
+
+    }
 	
 	public void destroy(Context context) {
 		String query = String.format("DELETE FROM CSS_Tables WHERE css_id=%d", cssID);

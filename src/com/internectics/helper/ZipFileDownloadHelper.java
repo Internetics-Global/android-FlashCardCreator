@@ -1,15 +1,8 @@
 package com.internectics.helper;
 
-import java.util.List;
-
 import android.app.DownloadManager;
-import android.app.DownloadManager.Request;
 import android.content.Context;
-import android.content.Intent;
-import android.content.pm.PackageManager;
-import android.content.pm.ResolveInfo;
 import android.net.Uri;
-import android.os.Build;
 
 public class ZipFileDownloadHelper {
 	

@@ -1,11 +1,10 @@
 package com.internectics.helper;
 
+import android.graphics.Bitmap;
+import com.internectics.util.AppContext;
+
 import java.io.File;
 import java.util.UUID;
-
-import android.graphics.Bitmap;
-
-import com.internectics.util.AppContext;
 
 public class FileOperationHelper {
 	public static File cacheDirectory() {

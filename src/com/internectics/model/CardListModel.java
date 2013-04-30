@@ -1,12 +1,7 @@
 package com.internectics.model;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-
 import android.net.Uri;
 import android.util.Log;
-
 import com.internectics.android_flashcardcreator.R;
 import com.internectics.data.Card;
 import com.internectics.data.Pack;
@@ -15,6 +10,10 @@ import com.internectics.util.AppConfig;
 import com.internectics.util.AppContext;
 import com.internectics.util.Global;
 import com.internectics.util.StringUtils;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
 
 public class CardListModel {
 
@@ -60,19 +59,31 @@ public class CardListModel {
 		return fillMaps;
 	}
 
-	public static Pack getCurrentPack() {
+    /**
+     * if no existing pack, return null
+     */
+    public static Pack getCurrentPack() {
 		Pack currentPack = null;
 		String packIDString = AppConfig.getAppConfigInstance(
 				AppContext.getAppContext()).get(Global.packID_Property);
 
 		ArrayList<Pack> packs = User.defaultUser(AppContext.getAppContext()).packs;
-		for (int i = 0; i < packs.size(); i++) {
+
+        //case1: no pack
+        if (packs.size() == 0)
+            return null;
+
+        //case2: existing last saved pack
+        for (int i = 0; i < packs.size(); i++) {
 			if (packs.get(i).packID == Integer.parseInt(packIDString)) {
 				currentPack = packs.get(i);
 				Log.d(Global.debugTag, "latest Pack's ID is:" + packIDString);
-				break;
+				return currentPack;
 			}
 		}
+
+        //case3: return first pack
+        currentPack = packs.get(0);
 
 		return currentPack;
 	}

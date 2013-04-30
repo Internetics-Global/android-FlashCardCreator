@@ -1,38 +1,25 @@
 package com.internectics.fragment;
 
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.IOException;
-
-import com.internectics.android_flashcardcreator.R;
-import com.internectics.data.Pack;
-import com.internectics.helper.FileOperationHelper;
-import com.internectics.util.AppConfig;
-import com.internectics.util.AppContext;
-import com.internectics.util.Global;
-import com.internectics.util.OpenUDID_manager;
-import com.internectics.util.StringUtils;
-
-import android.R.integer;
 import android.app.Activity;
 import android.app.DialogFragment;
-import android.content.ContentProvider;
 import android.content.ContentResolver;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
-import android.text.Editable;
 import android.util.Log;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
-import android.view.Window;
-import android.view.WindowManager;
+import android.view.*;
 import android.widget.EditText;
 import android.widget.ImageView;
+import com.internectics.android_flashcardcreator.R;
+import com.internectics.data.Pack;
+import com.internectics.helper.FileOperationHelper;
+import com.internectics.util.*;
+
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 
 public class AddPackFragment extends DialogFragment {
 
@@ -124,6 +111,7 @@ public class AddPackFragment extends DialogFragment {
 		
 		AppConfig.getAppConfigInstance(getActivity()).set(Global.packID_Property, String.format("%d", pack.packID));
 		AppConfig.getAppConfigInstance(getActivity()).set(Global.latestPackCreatedDate_Property, StringUtils.getCurrentTimeDate());
+
 
 	}
 

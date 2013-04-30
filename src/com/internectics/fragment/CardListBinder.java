@@ -1,12 +1,5 @@
 package com.internectics.fragment;
 
-import java.io.FileNotFoundException;
-
-import com.internectics.android_flashcardcreator.R;
-import com.internectics.helper.FileOperationHelper;
-import com.internectics.util.AppContext;
-import com.internectics.util.Global;
-
 import android.content.ContentResolver;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -15,6 +8,10 @@ import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.SimpleAdapter.ViewBinder;
+import com.internectics.util.AppContext;
+import com.internectics.util.Global;
+
+import java.io.FileNotFoundException;
 
 public class CardListBinder implements ViewBinder {  
 	  

@@ -1,10 +1,11 @@
 package com.internectics.util;
 
-import java.util.UUID;
 import android.app.Application;
 import android.content.Context;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
+
+import java.util.UUID;
 
 
 public class AppContext extends Application {

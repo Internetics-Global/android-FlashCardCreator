@@ -1,11 +1,5 @@
 package com.internectics.fragment;
 
-import com.internectics.android_flashcardcreator.R;
-import com.internectics.android_flashcardcreator.R.drawable;
-import com.internectics.android_flashcardcreator.R.id;
-import com.internectics.android_flashcardcreator.R.layout;
-import com.internectics.android_flashcardcreator.R.styleable;
-
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.graphics.Color;
@@ -15,14 +9,9 @@ import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
-import android.widget.BaseAdapter;
-import android.widget.Gallery;
-import android.widget.ImageView;
-import android.widget.LinearLayout;
-import android.widget.TextView;
-import android.widget.Toast;
+import android.widget.*;
 import android.widget.AdapterView.OnItemClickListener;
+import com.internectics.android_flashcardcreator.R;
 
 @SuppressWarnings("deprecation")
 public class PackListFragment extends Fragment {

@@ -1,19 +1,6 @@
 package com.internectics.util;
 
-import java.math.BigInteger;
-import java.security.SecureRandom;
-import java.util.Comparator;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Random;
-import java.util.TreeMap;
-
-import android.content.ComponentName;
-import android.content.Context;
-import android.content.Intent;
-import android.content.ServiceConnection;
-import android.content.SharedPreferences;
+import android.content.*;
 import android.content.SharedPreferences.Editor;
 import android.content.pm.ResolveInfo;
 import android.content.pm.ServiceInfo;
@@ -21,6 +8,10 @@ import android.os.IBinder;
 import android.os.RemoteException;
 import android.provider.Settings.Secure;
 import android.util.Log;
+
+import java.math.BigInteger;
+import java.security.SecureRandom;
+import java.util.*;
 
 
 public class OpenUDID_manager implements ServiceConnection{

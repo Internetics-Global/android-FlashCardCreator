@@ -1,15 +1,13 @@
 package com.internectics.data;
 
-import java.io.File;
-import java.util.HashMap;
-import java.util.UUID;
-
 import android.content.Context;
 import android.database.Cursor;
 import android.util.Log;
-
 import com.internectics.helper.SQLiteHelper;
 import com.internectics.util.Global;
+
+import java.io.File;
+import java.util.HashMap;
 
 public class Answer {
 
@@ -28,8 +26,12 @@ public class Answer {
 		super();
 		answerID = -1;
 		cardID = -1;
+        subheading = "";
+        main = "";
+        sub = "";
+        imageURL = "";
 		cssID = -1;
-		templateID = -1;
+		templateID = 0;
 		css = new CSS();
 	}
 

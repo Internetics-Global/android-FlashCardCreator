@@ -1,17 +1,15 @@
 package com.internectics.data;
 
-import java.io.File;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.UUID;
-
 import android.content.Context;
 import android.database.Cursor;
 import android.util.Log;
-
 import com.internectics.android_flashcardcreator.R;
 import com.internectics.helper.SQLiteHelper;
 import com.internectics.util.Global;
+
+import java.io.File;
+import java.util.ArrayList;
+import java.util.HashMap;
 
 public class Card {
 	public int      cardID;
@@ -30,6 +28,9 @@ public class Card {
 		packID = -1;
 		templateBackground = "card_background_blue.png";
 		coverImageURL = String.format("%d", R.drawable.card_cover_image_placeholder);
+
+        question = new Question();
+        answer = new Answer();
 	}
 
 
@@ -40,11 +41,19 @@ public class Card {
 		templateBackground = (String) dataDict.get("template_background");
 		cardSN = (Integer) dataDict.get("card_sn");
 		
-		HashMap<String, Object> questionArray = (HashMap<String, Object>) dataDict.get("question");
-		this.question = (new Question()).initWithDictionary(questionArray);
+		HashMap<String, Object> questionMap = (HashMap<String, Object>) dataDict.get("question");
+        if (questionMap.size() == 0) {
+            Log.d(Global.debugTag,"questionMap.size() is 0");
+        } else {
+            this.question = (new Question()).initWithDictionary(questionMap);
+        }
 		
-		HashMap<String, Object> answerArray = (HashMap<String, Object>) dataDict.get("answer");
-		this.answer = (new Answer()).initWithDictionary(answerArray);
+		HashMap<String, Object> answerMap = (HashMap<String, Object>) dataDict.get("answer");
+        if (answerMap.size() == 0) {
+            Log.d(Global.debugTag,"answerMap.size() is 0");
+        } else {
+            this.answer = (new Answer()).initWithDictionary(answerMap);
+        }
 		
 		return this;
 	}
@@ -61,10 +70,12 @@ public class Card {
 			cardDict.put("pack_id", cur.getInt(1));
 			cardDict.put("cover_image", cur.getString(2));
 			cardDict.put("template_background", cur.getString(3));
-			cardDict.put("card_sn", cur.getString(4));
+			cardDict.put("card_sn", cur.getInt(4));
 			cardDict.put("question",Question.questionForCardID(context, cur.getInt(0)));
 			cardDict.put("answer", Answer.answerForCardID(context, cur.getInt(0)));
 			returnArray.add(cardDict);
+
+
 		}
 		return returnArray;
 	}

@@ -1,35 +1,18 @@
 package com.internectics.fragment;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.IllegalFormatCodePointException;
-import java.util.Iterator;
-import java.util.List;
-
-import android.R.integer;
 import android.app.Activity;
-import android.graphics.Color;
-import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.ListFragment;
-import android.util.Log;
 import android.view.View;
-import android.widget.ArrayAdapter;
-import android.widget.Button;
 import android.widget.ListView;
 import android.widget.SimpleAdapter;
-
 import com.internectics.android_flashcardcreator.R;
-import com.internectics.android_flashcardcreator.R.id;
-import com.internectics.android_flashcardcreator.R.layout;
-import com.internectics.data.Card;
 import com.internectics.data.Pack;
-import com.internectics.data.User;
 import com.internectics.model.CardListModel;
-import com.internectics.util.AppConfig;
-import com.internectics.util.AppContext;
-import com.internectics.util.Global;
-import com.internectics.util.StringUtils;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
 
 public class MasterFragment extends ListFragment {
 
