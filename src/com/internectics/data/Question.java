@@ -109,7 +109,7 @@ public class Question {
         	if (file.delete()) {
         		Log.d(Global.debugTag, "Successful to delete imageURL file in Question");
         	} else {
-        		Log.d(Global.debugTag, "Fail to delete coverImageURL file in Question");	
+        		Log.d(Global.debugTag, "Fail to delete coverImageUriStr file in Question");
         	}
         }   
 	}

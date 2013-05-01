@@ -22,19 +22,19 @@ public class CardListModel {
 		ArrayList<Card> cardArrayList = new ArrayList<Card>();
 
 		// Use simulator data only for test purpose
-		for (int i = 0; i < 5; i++) {
-			Card tempCard = new Card();
-			 tempCard.cardSN = 1;
-			 tempCard.coverImageURL =
-			 "file:///data/data/com.internectics.android_flashcardcreator/cache/Images/af9e10f9-a1e8-47e0-ba1c-e0685c29f602.jpg";
-			 cardArrayList.add(tempCard);
-			 Card tempCard2 = new Card();
-			 tempCard2.cardSN = 2;
-			 tempCard2.coverImageURL = String.format("%d",R.drawable.card_cover_image_placeholder);
-			 cardArrayList.add(tempCard2);	
-		}
+//		for (int i = 0; i < 5; i++) {
+//			Card tempCard = new Card();
+//			 tempCard.cardSN = 1;
+//			 tempCard.coverImageURL =
+//			 "file:///data/data/com.internectics.android_flashcardcreator/cache/Images/af9e10f9-a1e8-47e0-ba1c-e0685c29f602.jpg";
+//			 cardArrayList.add(tempCard);
+//			 Card tempCard2 = new Card();
+//			 tempCard2.cardSN = 2;
+//			 tempCard2.coverImageURL = String.format("%d",R.drawable.card_cover_image_placeholder);
+//			 cardArrayList.add(tempCard2);
+//		}
 
-		//cardArrayList = curentPack.cards;
+		cardArrayList = curentPack.cards;
 
 		// Build data for adapter
 		List<HashMap<String, Object>> fillMaps = new ArrayList<HashMap<String, Object>>();
@@ -45,14 +45,14 @@ public class CardListModel {
 			map.put("cardSN", card.cardSN);
 			if (!StringUtils.isNumeric(card.coverImageURL)) {
 				// standard Uri
-				map.put("coverImageURL", Uri.parse(card.coverImageURL));
+				map.put("coverImageUriStr", Uri.parse(card.coverImageURL));
 			} else {
 				// local resources
 				String localResourceUriStr = "android.resource://"
 						+ AppContext.getAppContext().getPackageName() + "/"
 						+ card.coverImageURL;
 				Log.d(Global.debugTag, localResourceUriStr);
-				map.put("coverImageURL", Uri.parse(localResourceUriStr));
+				map.put("coverImageUriStr", Uri.parse(localResourceUriStr));
 			}
 			fillMaps.add(map);
 		}

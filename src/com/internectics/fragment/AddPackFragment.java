@@ -12,6 +12,7 @@ import android.util.Log;
 import android.view.*;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.Toast;
 import com.internectics.android_flashcardcreator.R;
 import com.internectics.data.Pack;
 import com.internectics.helper.FileOperationHelper;
@@ -103,7 +104,7 @@ public class AddPackFragment extends DialogFragment {
 		pack.packName = packNameEditText.getText().toString();
 		pack.sidebarTitle = sidebarTitleEditText.getText().toString();
 		pack.creatorNickName = creatorEditText.getText().toString();
-		// we set pack.coverImageURL in image select or by default
+		// we set pack.coverImageUriStr in image select or by default
 		pack.creatorID = OpenUDID_manager.getOpenUDID();
 		pack.userID = Global.USER_ID;
 		pack.packID = (int)(System.currentTimeMillis()/1000L);
@@ -112,6 +113,9 @@ public class AddPackFragment extends DialogFragment {
 		AppConfig.getAppConfigInstance(getActivity()).set(Global.packID_Property, String.format("%d", pack.packID));
 		AppConfig.getAppConfigInstance(getActivity()).set(Global.latestPackCreatedDate_Property, StringUtils.getCurrentTimeDate());
 
+        Intent intent = new Intent();
+        intent.setAction(Global.BROADCAST_ACTION_UPDATE_MASTER_VIEW);
+        getActivity().sendBroadcast(intent);
 
 	}
 
@@ -145,8 +149,8 @@ public class AddPackFragment extends DialogFragment {
 						oException.printStackTrace();
 					}
 					//4. update data (but not do persistence)
-					pack.coverImageURL = FileOperationHelper.covertToUriFormatString(toSaveFile);
-					Log.d(Global.debugTag, pack.coverImageURL);
+					pack.coverImageUriStr = FileOperationHelper.covertToUriFormatString(toSaveFile);
+					Log.d(Global.debugTag, pack.coverImageUriStr);
 					
 					
 					 

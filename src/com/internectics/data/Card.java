@@ -120,9 +120,9 @@ public class Card {
         if (this.coverImageURL.indexOf("card_cover_image_placeholder.jpg") == -1) {
         	File file = new File(this.coverImageURL);
         	if (file.delete()) {
-        		Log.d(Global.debugTag, "Successful to delete coverImageURL file");
+        		Log.d(Global.debugTag, "Successful to delete coverImageUriStr file");
         	} else {
-        		Log.d(Global.debugTag, "Fail to delete coverImageURL file");	
+        		Log.d(Global.debugTag, "Fail to delete coverImageUriStr file");
         	}
         }
         

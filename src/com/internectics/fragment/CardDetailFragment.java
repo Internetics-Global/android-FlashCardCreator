@@ -18,7 +18,7 @@ import com.internectics.util.Global;
 
 public class CardDetailFragment extends Fragment {
 
-    CardDetailReceiver mCardDetailReceiver;
+    CardDetailReceiver mReceiver;
 
     private Card mCurrentCard;
     private Pack mCurrentPack;
@@ -68,16 +68,16 @@ public class CardDetailFragment extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
-        mCardDetailReceiver = new CardDetailReceiver();
+        mReceiver = new CardDetailReceiver();
         IntentFilter filter = new IntentFilter();
         filter.addAction(Global.BROADCAST_ACTION_SAVE_NEW_CARD);
-        getActivity().registerReceiver(mCardDetailReceiver,filter);
+        getActivity().registerReceiver(mReceiver,filter);
     }
 
     @Override
     public void onPause() {
         super.onPause();
-        getActivity().unregisterReceiver(mCardDetailReceiver);
+        getActivity().unregisterReceiver(mReceiver);
     }
 
     private class CardDetailReceiver extends BroadcastReceiver {

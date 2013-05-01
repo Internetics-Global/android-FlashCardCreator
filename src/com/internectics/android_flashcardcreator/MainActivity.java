@@ -271,11 +271,17 @@ public class MainActivity extends FragmentActivity implements
     }
 
     private void saveNewCreatedCard() {
+        //1. do save action
         Intent intent = new Intent();
         intent.setAction(Global.BROADCAST_ACTION_SAVE_NEW_CARD);
         sendBroadcast(intent);
+
+        //2. dismiss windows
         dismissCardCreateWindow();
 
+        //3. notify MasterFragment view to update
+        intent.setAction(Global.BROADCAST_ACTION_UPDATE_MASTER_VIEW);
+        sendBroadcast(intent);
 
     }
 

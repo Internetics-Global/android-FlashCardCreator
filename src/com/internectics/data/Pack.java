@@ -17,8 +17,8 @@ public class Pack {
 	public int userID;
 	public String questionTitle;
 	public String answerTitle;
-	public String coverImageURL;
-	public String logoImageURL;
+	public String coverImageUriStr;
+	public String logoImageUriStr;
 	public String logoURL;
 	public String creatorID;
 	public String creatorNickName;
@@ -33,9 +33,9 @@ public class Pack {
 		cards = new ArrayList<Card>();
 		questionTitle = "Question";
 		answerTitle = "Answer";
-		logoURL = "";
-		logoImageURL= "http://www.";
-		coverImageURL = "R.drawable.pack_cover_default_image";
+		logoURL = "http://www.";
+		logoImageUriStr = "";
+		coverImageUriStr = "R.drawable.pack_cover_default_image";
 	}
 
 
@@ -46,8 +46,8 @@ public class Pack {
 		userID = (Integer) dataDict.get("user_id");
 		questionTitle = (String) dataDict.get("question_title");
 		answerTitle = (String) dataDict.get("answer_title");
-		coverImageURL = (String) dataDict.get("cover_image");
-		logoImageURL = (String) dataDict.get("logo_image");
+		coverImageUriStr = (String) dataDict.get("cover_image");
+		logoImageUriStr = (String) dataDict.get("logo_image");
 		logoURL = (String) dataDict.get("logo_url");
 		creatorID = (String) dataDict.get("creator_id");
 		creatorNickName = (String) dataDict.get("creator_nick_name");
@@ -100,7 +100,7 @@ public class Pack {
 	
 	
 	private void update(Context context) {
-		String query = String.format("UPDATE Packs_Tables SET pack_name=\"%s\",sidebar_title=\"%s\",user_id= %d,question_title=\"%s\",answer_title=\"%s\",cover_image=\"%s\",logo_image=\"%s\",logo_url=\"%s\",creator_id= \"%s\",creator_nick_name=\"%s\" WHERE pack_id=%d", packName, sidebarTitle, userID,questionTitle, answerTitle, coverImageURL, logoImageURL, logoURL, creatorID, creatorNickName,packID);
+		String query = String.format("UPDATE Packs_Tables SET pack_name=\"%s\",sidebar_title=\"%s\",user_id= %d,question_title=\"%s\",answer_title=\"%s\",cover_image=\"%s\",logo_image=\"%s\",logo_url=\"%s\",creator_id= \"%s\",creator_nick_name=\"%s\" WHERE pack_id=%d", packName, sidebarTitle, userID,questionTitle, answerTitle, coverImageUriStr, logoImageUriStr, logoURL, creatorID, creatorNickName,packID);
         SQLiteHelper.defaultDatabase(context).execSQL(query);
 	}
 	
@@ -110,7 +110,7 @@ public class Pack {
 			packID = (int)(System.currentTimeMillis()/1000L);
 		}
 		
-		String query = String.format("INSERT INTO Packs_Tables(pack_id, pack_name, sidebar_title, user_id, question_title, answer_title, cover_image,logo_image,logo_url,creator_id,creator_nick_name) VALUES (%d,\"%s\",\"%s\",%d,\"%s\",\"%s\",\"%s\",\"%s\",\"%s\",\"%s\",\"%s\")",packID,packName,sidebarTitle,userID,questionTitle,answerTitle,coverImageURL,logoImageURL,logoURL,creatorID,creatorNickName);
+		String query = String.format("INSERT INTO Packs_Tables(pack_id, pack_name, sidebar_title, user_id, question_title, answer_title, cover_image,logo_image,logo_url,creator_id,creator_nick_name) VALUES (%d,\"%s\",\"%s\",%d,\"%s\",\"%s\",\"%s\",\"%s\",\"%s\",\"%s\",\"%s\")",packID,packName,sidebarTitle,userID,questionTitle,answerTitle, coverImageUriStr, logoImageUriStr,logoURL,creatorID,creatorNickName);
         SQLiteHelper.defaultDatabase(context).execSQL(query);
 	}
 	
@@ -118,21 +118,21 @@ public class Pack {
 		String query = String.format("DELETE FROM Packs_Tables WHERE pack_id=%d", packID);
         SQLiteHelper.defaultDatabase(context).execSQL(query);	
         
-        if (this.logoImageURL.indexOf("card_logo.jpg") == -1) {
-        	File file = new File(this.logoImageURL);
+        if (this.logoImageUriStr.indexOf("card_logo.jpg") == -1) {
+        	File file = new File(this.logoImageUriStr);
         	if (file.delete()) {
-        		Log.d(Global.debugTag, "Successful to delete logoImageURL file");
+        		Log.d(Global.debugTag, "Successful to delete logoImageUriStr file");
         	} else {
-        		Log.d(Global.debugTag, "Fail to delete logoImageURL file");	
+        		Log.d(Global.debugTag, "Fail to delete logoImageUriStr file");
         	}
         }
         
-        if (this.coverImageURL.indexOf("default_pack_cover_image.jpg") == -1) {
-        	File file = new File(this.coverImageURL);
+        if (this.coverImageUriStr.indexOf("default_pack_cover_image.jpg") == -1) {
+        	File file = new File(this.coverImageUriStr);
         	if (file.delete()) {
-        		Log.d(Global.debugTag, "Successful to delete coverImageURL file in Pack");
+        		Log.d(Global.debugTag, "Successful to delete coverImageUriStr file in Pack");
         	} else {
-        		Log.d(Global.debugTag, "Fail to delete coverImageURL file in Pack");	
+        		Log.d(Global.debugTag, "Fail to delete coverImageUriStr file in Pack");
         	}
         }
 	}
