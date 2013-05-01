@@ -2,24 +2,26 @@ package com.internectics.util;
 
 import android.app.Application;
 import android.content.Context;
+import android.content.res.Resources;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
+import android.util.TypedValue;
 
 import java.util.UUID;
 
 
 public class AppContext extends Application {
 	
-	private static Context context;
+	private static Context mContext;
 	
 	@Override
 	public void onCreate() {
 		super.onCreate();
-		AppContext.context = getApplicationContext();
+		AppContext.mContext = getApplicationContext();
 	}
 	
 	public static Context getAppContext() {
-		return AppContext.context;
+		return AppContext.mContext;
 	}
 	
 	/**
@@ -53,10 +55,8 @@ public class AppContext extends Application {
 	public String getProperty(String key){
 		return AppConfig.getAppConfigInstance(this).get(key);
 	}
-	public void removeProperty(String...key){
+	public void removeProperty(String key){
 		AppConfig.getAppConfigInstance(this).remove(key);
 	}
-	
-
 
 }

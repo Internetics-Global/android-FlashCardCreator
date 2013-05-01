@@ -1,79 +1,79 @@
 package com.internectics.fragment;
 
+import android.content.ContentResolver;
 import android.content.Context;
+import android.content.Intent;
 import android.content.res.TypedArray;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Color;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.*;
 import android.widget.AdapterView.OnItemClickListener;
+import com.internectics.android_flashcardcreator.MainActivity;
 import com.internectics.android_flashcardcreator.R;
+import com.internectics.data.Pack;
+import com.internectics.data.User;
+import com.internectics.util.AppContext;
+import com.internectics.util.Global;
+import com.internectics.util.StringUtils;
+import com.internectics.util.UIHelper;
+
+import java.io.FileNotFoundException;
+import java.util.ArrayList;
 
 @SuppressWarnings("deprecation")
 public class PackListFragment extends Fragment {
-	@Override
-	public void onCreate(Bundle savedInstanceState) {
-		// TODO Auto-generated method stub
-		super.onCreate(savedInstanceState);
-	}
-	
-	@Override
-	public View onCreateView(LayoutInflater inflater, ViewGroup container,
-			Bundle savedInstanceState) {
-		Toast.makeText(getActivity(), "this is fragment", Toast.LENGTH_LONG).show();
-		View rootView = inflater.inflate(R.layout.fragment_pack_list,
-				container, false);
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+    }
+
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                             Bundle savedInstanceState) {
+        View rootView = inflater.inflate(R.layout.fragment_pack_list,
+                container, false);
         Gallery g = (Gallery) rootView.findViewById(R.id.pack_list_gallery);
         // Set the adapter to our custom adapter (below)
         g.setAdapter(new ImageAdapter(getActivity()));
         g.setOnItemClickListener(new OnItemClickListener() {
             public void onItemClick(AdapterView<?> parent, View v, int position, long id) {
-                System.out.println("Index of pack in pack list is:" + position);      
+                Log.d(Global.debugTag, "Index of pack in pack list is:" + position);
+                Intent intent = new Intent();
+                intent.setAction(Global.BROADCAST_ACTION_UPDATE_MASTER_VIEW);
+                intent.putExtra(Global.KEY_FROM, Global.BROADCAST_INTENT_EXTRA_FROM_PACK_SELECTED);
+                intent.putExtra("indexOfPack", id);  //id begin from 0
+                getActivity().sendBroadcast(intent);
+                ((MainActivity)getActivity()).mPopupWindow.dismiss();
+
             }
         });
-        
-		return rootView;
-	}
-	
-	
-	public class ImageAdapter extends BaseAdapter {
-        private static final int ITEM_WIDTH = 136;
-        private static final int ITEM_HEIGHT = 88;
 
-        private final int mGalleryItemBackground;
+        return rootView;
+    }
+
+
+    public class ImageAdapter extends BaseAdapter {
+
         private final Context mContext;
 
-        private final Integer[] mImageIds = {
-                R.drawable.pack_cover_default_image,
-                R.drawable.pack_cover_default_image,
-                R.drawable.pack_cover_default_image,
-                R.drawable.pack_cover_default_image,
-                R.drawable.pack_cover_default_image,
-                R.drawable.pack_cover_default_image,
-                R.drawable.pack_cover_default_image,
-                R.drawable.pack_cover_default_image
-        };
-
-        private final float mDensity;
+        private ArrayList<Pack> packs;
 
         public ImageAdapter(Context c) {
             mContext = c;
-            // See res/values/attrs.xml for the <declare-styleable> that defines
-            // Gallery1.
-            TypedArray a = c.obtainStyledAttributes(R.styleable.Gallery1);
-            mGalleryItemBackground = a.getResourceId(
-                    R.styleable.Gallery1_android_galleryItemBackground, 0);
-            a.recycle();
-
-            mDensity = c.getResources().getDisplayMetrics().density;
+            packs = User.defaultUser(AppContext.getAppContext()).packs;
         }
 
         public int getCount() {
-            return mImageIds.length;
+            return packs.size();
         }
 
         public Object getItem(int position) {
@@ -84,36 +84,54 @@ public class PackListFragment extends Fragment {
             return position;
         }
 
-        @SuppressWarnings("deprecation")
-		public View getView(int position, View convertView, ViewGroup parent) {
-        	System.out.println("getView method in ImageAdapter is called");
-        	
-        	LinearLayout baseView = new LinearLayout(mContext);
-        	baseView.setOrientation(LinearLayout.VERTICAL);
-        	
+        public View getView(int position, View convertView, ViewGroup parent) {
+
+            Pack currentPack =  packs.get(position);
+
+            LinearLayout baseView = new LinearLayout(mContext);
+            baseView.setOrientation(LinearLayout.VERTICAL);
+
             ImageView imageView;
             if (convertView == null) {
                 convertView = new ImageView(mContext);
-
                 imageView = (ImageView) convertView;
-                imageView.setScaleType(ImageView.ScaleType.FIT_XY);
+                imageView.setScaleType(ImageView.ScaleType.CENTER_INSIDE);
                 imageView.setLayoutParams(new Gallery.LayoutParams(
-                        (int) (ITEM_WIDTH * mDensity + 0.5f),
-                        (int) (ITEM_HEIGHT * mDensity + 0.5f)));
-            
-                // The preferred Gallery item background
-                imageView.setBackgroundResource(mGalleryItemBackground);
+                        UIHelper.getPixels(180),UIHelper.getPixels(150)));
+
             } else {
                 imageView = (ImageView) convertView;
             }
-            imageView.setImageResource(mImageIds[position]);
+
+            ContentResolver cResolver = AppContext.getAppContext().getContentResolver();
+            String str = currentPack.coverImageUriStr;
+            if (StringUtils.isNumeric(str)) {
+                imageView.setImageResource(Integer.parseInt(str));
+            } else {
+                Uri dataUri = Uri.parse(str);
+                try {
+                    Bitmap bitmap = BitmapFactory.decodeStream(cResolver
+                            .openInputStream(dataUri));
+                    imageView.setImageBitmap(bitmap);
+                } catch (FileNotFoundException e) {
+                    e.printStackTrace();
+                }
+            }
+
+
             baseView.addView(imageView);
-            
+
             TextView packNameView = new TextView(mContext);
             packNameView.setTextColor(Color.WHITE);
+            packNameView.setText(currentPack.packName);
+            LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(
+                    LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.FILL_PARENT);
             packNameView.setGravity(Gravity.CENTER);
-            packNameView.setText("pack name");
-            
+            packNameView.setWidth(UIHelper.getPixels(180));
+            packNameView.setHeight(UIHelper.getPixels(30));
+            lp.setMargins(0,UIHelper.getPixels(10),0,0);
+            packNameView.setLayoutParams(lp);
+
             baseView.addView(packNameView);
 
             return baseView;

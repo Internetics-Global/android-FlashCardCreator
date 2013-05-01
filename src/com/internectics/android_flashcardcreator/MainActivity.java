@@ -25,17 +25,19 @@ import com.internectics.data.Card;
 import com.internectics.data.Pack;
 import com.internectics.fragment.AddPackFragment;
 import com.internectics.fragment.CardDetailFragment;
-import com.internectics.fragment.MasterFragment;
+import com.internectics.fragment.CardListMasterFragment;
 import com.internectics.helper.SQLiteHelper;
-import com.internectics.model.CardListModel;
 import com.internectics.util.AppContext;
 import com.internectics.util.Global;
 import com.internectics.util.OpenUDID_manager;
 
+/**
+ * MainActivity is the entry for whole app
+ * Control both master - detail view
+ * Also responsbile for managing Actionbar(or Option Menu)
+ */
 public class MainActivity extends FragmentActivity implements
-        MasterFragment.Callbacks {
-
-
+        CardListMasterFragment.Callbacks {
 
     /**
      * Dropbox key and secret
@@ -54,11 +56,13 @@ public class MainActivity extends FragmentActivity implements
     private DropboxAPI<AndroidAuthSession> mApi;
 
     //Used to diff between card view and card creating
-    private boolean isCreatingCard = false;
+    private boolean mIsCreatingCard = false;
 
-    Pack mCurrentPack = new Pack();
-    int  mCurrentIndex = 0;
-    Card mCurrentCard = new Card();
+    public Pack mCurrentPack = new Pack();//mCurrentPack will be automatically refreshed after creating a new card, add a new pack and new pack selected
+    public int  mCurrentIndex = 0;
+    public Card mCurrentCard = new Card();
+
+    public PopupWindow mPopupWindow;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -107,10 +111,10 @@ public class MainActivity extends FragmentActivity implements
     @Override
     public boolean onPrepareOptionsMenu(Menu menu) {
         super.onPrepareOptionsMenu(menu);
-        if (isCreatingCard == true) {
+        if (mIsCreatingCard == true) {
             menu.clear();
             getMenuInflater().inflate(R.menu.actionbar_add_card, menu);
-            isCreatingCard = false;
+            mIsCreatingCard = false;
         } else {
             menu.clear();
             getMenuInflater().inflate(R.menu.actionbar, menu);
@@ -134,13 +138,13 @@ public class MainActivity extends FragmentActivity implements
                 newFragment.show(getFragmentManager(), "dialog");
                 break;
             case R.id.actionbar_packs:
-                Toast.makeText(this, "packs", Toast.LENGTH_SHORT).show();
+                Log.d(Global.debugTag, "You have selected menu item of pack");
                 View popupLayout = inflater.inflate(R.layout.pack_list, null, false);
-                final PopupWindow popupWindow = new PopupWindow(450, 200);
-                popupWindow.setBackgroundDrawable(getResources().getDrawable(R.drawable.pack_list_background));
-                popupWindow.setOutsideTouchable(true);
-                popupWindow.setContentView(popupLayout);
-                popupWindow.showAsDropDown(findViewById(R.id.actionbar_packs));
+                mPopupWindow = new PopupWindow(640, 320);
+                mPopupWindow.setBackgroundDrawable(getResources().getDrawable(R.drawable.pack_list_background));
+                mPopupWindow.setOutsideTouchable(true);
+                mPopupWindow.setContentView(popupLayout);
+                mPopupWindow.showAsDropDown(findViewById(R.id.actionbar_packs));
                 break;
 
             case R.id.actionbar_change_template_color:
@@ -183,12 +187,11 @@ public class MainActivity extends FragmentActivity implements
 
     @Override
     protected void onSaveInstanceState(Bundle outState) {
-        // TODO Auto-generated method stub
         super.onSaveInstanceState(outState);
     }
 
     /**
-     * Callback method from {@link CardListFragment.Callbacks} indicating that
+     * Callback method from {@link com.internectics.fragment.CardListMasterFragment.Callbacks} indicating that
      * the item with the given ID was selected.
      */
     @Override
@@ -201,7 +204,7 @@ public class MainActivity extends FragmentActivity implements
         arguments.putString(CardDetailFragment.ARG_ITEM_ID, id);
 
 
-        mCurrentPack = CardListModel.getCurrentPack();
+        //mCurrentPack = CardListModel.getCurrentPack(); //don't need to do here
         mCurrentIndex = Integer.parseInt(id);
         mCurrentCard = mCurrentPack.cards.get(mCurrentIndex);
 
@@ -243,7 +246,7 @@ public class MainActivity extends FragmentActivity implements
 
     private void startCreateCard() {
 
-        mCurrentPack = CardListModel.getCurrentPack();
+        //mCurrentPack = CardListModel.getCurrentPack();//don't need to do here
         boolean result = checkEntryConditionBeforeCreatingNewCard(mCurrentPack);
         if (result == false) {
             return;
@@ -265,7 +268,7 @@ public class MainActivity extends FragmentActivity implements
         getSupportFragmentManager().beginTransaction()
                 .replace(R.id.add_card_frame_layout, fragment).commit();
 
-        isCreatingCard = true;
+        mIsCreatingCard = true;
         invalidateOptionsMenu();
 
     }
@@ -279,8 +282,9 @@ public class MainActivity extends FragmentActivity implements
         //2. dismiss windows
         dismissCardCreateWindow();
 
-        //3. notify MasterFragment view to update
+        //3. notify CardListMasterFragment view to update
         intent.setAction(Global.BROADCAST_ACTION_UPDATE_MASTER_VIEW);
+        intent.putExtra(Global.KEY_FROM, Global.BROADCAST_INTENT_EXTRA_FROM_NEW_CARD);
         sendBroadcast(intent);
 
     }
@@ -292,7 +296,7 @@ public class MainActivity extends FragmentActivity implements
         Button masterMaskButton = (Button) findViewById(R.id.master_view_mask);
         masterMaskButton.setVisibility(View.INVISIBLE);
 
-        isCreatingCard = false;
+        mIsCreatingCard = false;
         invalidateOptionsMenu();
 
     }

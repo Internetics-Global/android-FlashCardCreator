@@ -17,8 +17,7 @@ public class CardListBinder implements ViewBinder {
 	  
     @Override  
     public boolean setViewValue(View view, Object data,  
-            String textRepresentation) {  
-        // TODO Auto-generated method stub  
+            String textRepresentation) {
         if((view instanceof ImageView) && (data instanceof Uri)) {  
             ImageView imageView = (ImageView) view;  
             
@@ -31,7 +30,6 @@ public class CardListBinder implements ViewBinder {
 						.openInputStream(dataUri));
 				imageView.setImageBitmap(bitmap); 
 			} catch (FileNotFoundException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			} 
              

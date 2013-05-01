@@ -3,7 +3,9 @@ package com.internectics.util;
 import android.R.bool;
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.content.res.Resources;
 import android.preference.PreferenceManager;
+import android.util.TypedValue;
 
 import java.io.File;
 import java.io.FileInputStream;

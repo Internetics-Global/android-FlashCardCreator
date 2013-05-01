@@ -68,4 +68,16 @@ public class StringUtils {
 	    return pattern.matcher(str).matches();    
 	 }
 
+
+    /**
+     * Convert String format local resource ID(for example: 323434433) to Uri format string
+     */
+    public static String convertToUriStr(String resouceIDStr) {
+        String localResourceUriStr = "android.resource://"
+                + AppContext.getAppContext().getPackageName() + "/"
+                + resouceIDStr;
+        Log.d(Global.debugTag, localResourceUriStr);
+        return localResourceUriStr;
+    }
+
 }

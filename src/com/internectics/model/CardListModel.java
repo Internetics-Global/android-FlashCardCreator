@@ -47,17 +47,17 @@ public class CardListModel {
 				// standard Uri
 				map.put("coverImageUriStr", Uri.parse(card.coverImageURL));
 			} else {
-				// local resources
-				String localResourceUriStr = "android.resource://"
-						+ AppContext.getAppContext().getPackageName() + "/"
-						+ card.coverImageURL;
-				Log.d(Global.debugTag, localResourceUriStr);
+				String localResourceUriStr = StringUtils.convertToUriStr(card.coverImageURL);
 				map.put("coverImageUriStr", Uri.parse(localResourceUriStr));
 			}
 			fillMaps.add(map);
 		}
 		return fillMaps;
 	}
+
+    public  static ArrayList<Pack> getAllPacks() {
+        return  User.defaultUser(AppContext.getAppContext()).packs;
+    }
 
     /**
      * if no existing pack, return null

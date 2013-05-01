@@ -57,7 +57,6 @@ public class SQLiteHelper {
 		public DBOpenHelper(Context context, String name,
 				CursorFactory factory, int version) {
 			super(context, name, factory, version);
-			// TODO Auto-generated constructor stub
 		}
 
 		@Override
@@ -127,7 +126,6 @@ public class SQLiteHelper {
 
 		@Override
 		public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-			// TODO Auto-generated method stub
 
 		}
 

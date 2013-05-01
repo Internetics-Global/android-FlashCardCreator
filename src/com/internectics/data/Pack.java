@@ -3,6 +3,7 @@ package com.internectics.data;
 import android.content.Context;
 import android.database.Cursor;
 import android.util.Log;
+import com.internectics.android_flashcardcreator.R;
 import com.internectics.helper.SQLiteHelper;
 import com.internectics.util.Global;
 
@@ -34,8 +35,8 @@ public class Pack {
 		questionTitle = "Question";
 		answerTitle = "Answer";
 		logoURL = "http://www.";
-		logoImageUriStr = "";
-		coverImageUriStr = "R.drawable.pack_cover_default_image";
+		logoImageUriStr = String.format("%d", R.drawable.logo_placeholder);
+		coverImageUriStr = String.format("%d", R.drawable.pack_cover_default_image);
 	}
 
 

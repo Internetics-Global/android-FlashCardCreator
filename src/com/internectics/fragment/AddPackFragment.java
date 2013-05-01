@@ -12,7 +12,6 @@ import android.util.Log;
 import android.view.*;
 import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.Toast;
 import com.internectics.android_flashcardcreator.R;
 import com.internectics.data.Pack;
 import com.internectics.helper.FileOperationHelper;
@@ -24,16 +23,16 @@ import java.io.FileOutputStream;
 
 public class AddPackFragment extends DialogFragment {
 
-	private static AddPackFragment dialogFragment;
-	public View contentView;
+	private static AddPackFragment mDialogFragment;
+	public View mContentView;
 	public Pack pack;
 	private int CODE_REQUEST_IMAGE_FROM_IMAGE_LIBRARY = 1001;
 
 	public static AddPackFragment getInstance() {
-		if (dialogFragment == null) {
+		if (mDialogFragment == null) {
 			return new AddPackFragment();
 		} else {
-			return dialogFragment;
+			return mDialogFragment;
 		}
 	}
 
@@ -48,14 +47,14 @@ public class AddPackFragment extends DialogFragment {
 			Bundle savedInstanceState) {
 		super.onCreateView(inflater, container, savedInstanceState);
 
-		contentView = inflater.inflate(R.layout.fragment_add_pack, container);
+		mContentView = inflater.inflate(R.layout.fragment_add_pack, container);
 		getDialog().getWindow().requestFeature(Window.FEATURE_NO_TITLE);
 		getDialog().getWindow().setSoftInputMode(
 				WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN);
 
-		ImageView closeImageView = (ImageView) contentView
+		ImageView closeImageView = (ImageView) mContentView
 				.findViewById(R.id.dialog_head_close_btn);
-		ImageView saveImageView = (ImageView) contentView
+		ImageView saveImageView = (ImageView) mContentView
 				.findViewById(R.id.dialog_head_save_btn);
 		closeImageView.setOnClickListener(new View.OnClickListener() {
 
@@ -75,7 +74,7 @@ public class AddPackFragment extends DialogFragment {
 			}
 		});
 
-		ImageView coverImageView = (ImageView) contentView
+		ImageView coverImageView = (ImageView) mContentView
 				.findViewById(R.id.fragment_add_pack_coverImage);
 		coverImageView.setOnClickListener(new View.OnClickListener() {
 
@@ -90,15 +89,15 @@ public class AddPackFragment extends DialogFragment {
 			}
 		});
 
-		return contentView;
+		return mContentView;
 	}
 
 	private void save() {
-		EditText packNameEditText = (EditText) contentView
+		EditText packNameEditText = (EditText) mContentView
 				.findViewById(R.id.fragment_add_pack_pack_name);
-		EditText sidebarTitleEditText = (EditText) contentView
+		EditText sidebarTitleEditText = (EditText) mContentView
 				.findViewById(R.id.fragment_add_pack_sidebar_title);
-		EditText creatorEditText = (EditText) contentView
+		EditText creatorEditText = (EditText) mContentView
 				.findViewById(R.id.fragment_add_pack_creator);
 
 		pack.packName = packNameEditText.getText().toString();
@@ -115,6 +114,7 @@ public class AddPackFragment extends DialogFragment {
 
         Intent intent = new Intent();
         intent.setAction(Global.BROADCAST_ACTION_UPDATE_MASTER_VIEW);
+        intent.putExtra(Global.KEY_FROM, Global.BROADCAST_INTENT_EXTRA_FROM_NEW_PACK);
         getActivity().sendBroadcast(intent);
 
 	}
@@ -132,7 +132,7 @@ public class AddPackFragment extends DialogFragment {
 					//1. scale image
 					Bitmap bitmap = BitmapFactory.decodeStream(cResolver
 							.openInputStream(selectedImageURI));
-					ImageView coverImageView = (ImageView) contentView
+					ImageView coverImageView = (ImageView) mContentView
 							.findViewById(R.id.fragment_add_pack_coverImage);
 					Bitmap resizeBitmap = FileOperationHelper.resizeBitmap(
 							bitmap, 400, 400);

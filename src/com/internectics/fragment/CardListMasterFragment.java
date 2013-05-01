@@ -9,6 +9,7 @@ import android.os.Bundle;
 import android.support.v4.app.ListFragment;
 import android.view.View;
 import android.widget.*;
+import com.internectics.android_flashcardcreator.MainActivity;
 import com.internectics.android_flashcardcreator.R;
 import com.internectics.data.Pack;
 import com.internectics.model.CardListModel;
@@ -18,23 +19,25 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-public class MasterFragment extends ListFragment {
+
+/**
+ * CardListMasterFragment manage ListAdapter including updating ListView
+ */
+public class CardListMasterFragment extends ListFragment {
 
     MasterFragmentReceiver mReceiver;
 
-    SimpleAdapter listAdapter;
+	public Pack mCurrentPack;
 
-	public Pack currentPack;
-
-	private List<HashMap<String, Object>> cardArrayList;
+	private List<HashMap<String, Object>> mCardArrayList;
 
 	private static final String STATE_ACTIVATED_POSITION = "activated_position";
 	private Callbacks mCallbacks = sDummyCallbacks;
 	private int mActivatedPosition = ListView.INVALID_POSITION;
 
-	public MasterFragment() {
-		currentPack = new Pack();
-		cardArrayList = new ArrayList<HashMap<String, Object>>();;
+	public CardListMasterFragment() {
+		mCurrentPack = new Pack();
+		mCardArrayList = new ArrayList<HashMap<String, Object>>();;
 	}
 
 	/**
@@ -74,17 +77,21 @@ public class MasterFragment extends ListFragment {
         filter.addAction(Global.BROADCAST_ACTION_UPDATE_MASTER_VIEW);
         getActivity().registerReceiver(mReceiver,filter);
 		
-		currentPack = CardListModel.getCurrentPack();
-		if (currentPack != null) {
-			cardArrayList = CardListModel.getCardList(currentPack);
+		mCurrentPack = CardListModel.getCurrentPack();
+		if (mCurrentPack != null) {
+			mCardArrayList = CardListModel.getCardList(mCurrentPack);
 		}
-        listAdapter = new SimpleAdapter(getActivity(),
-				cardArrayList, R.layout.card_list_item, new String[] {
+        SimpleAdapter listAdapter = new SimpleAdapter(getActivity(),
+                mCardArrayList, R.layout.card_list_item, new String[] {
 						"cardSN", "coverImageUriStr" }, new int[] {
 						R.id.card_list_item_card_sn,
 						R.id.card_list_item_cover_image });
 		listAdapter.setViewBinder(new CardListBinder());
 		setListAdapter(listAdapter);
+
+        //Finally, send back currenPack to activity
+        ((MainActivity) getActivity()).mCurrentPack = mCurrentPack;
+
 	}
 
     @Override
@@ -166,18 +173,34 @@ public class MasterFragment extends ListFragment {
 		mActivatedPosition = position;
 	}
 
+    /**
+     * deal with broadcast and update view
+     */
     private class MasterFragmentReceiver extends BroadcastReceiver {
 
         @Override
         public void onReceive(Context context, Intent intent) {
-            System.out.println("intent = " + intent);
             if (intent.getAction().equals(Global.BROADCAST_ACTION_UPDATE_MASTER_VIEW)) {
-                currentPack = CardListModel.getCurrentPack();
-                if (currentPack != null) {
-                    cardArrayList.clear();
-                    cardArrayList.addAll(CardListModel.getCardList(currentPack));
+
+                String extraStr = intent.getExtras().getString(Global.KEY_FROM);
+
+                if (extraStr.equals(Global.BROADCAST_INTENT_EXTRA_FROM_NEW_CARD) ||
+                        extraStr.equals(Global.BROADCAST_INTENT_EXTRA_FROM_NEW_PACK)) {
+                    mCurrentPack = CardListModel.getCurrentPack();
+                } else if (extraStr.equals(Global.BROADCAST_INTENT_EXTRA_FROM_PACK_SELECTED)) {
+                    int index = intent.getExtras().getInt("indexOfPack");
+                    mCurrentPack =  CardListModel.getAllPacks().get(index);
                 }
-                listAdapter.notifyDataSetChanged();
+
+                if (mCurrentPack != null) {
+                    mCardArrayList.clear();
+                    mCardArrayList.addAll(CardListModel.getCardList(mCurrentPack));
+                }
+                ((SimpleAdapter)getListAdapter()).notifyDataSetChanged();
+
+                //Finally, send back currenPack to activity
+                ((MainActivity) getActivity()).mCurrentPack = mCurrentPack;
+
             }
 
 

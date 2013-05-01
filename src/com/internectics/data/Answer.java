@@ -3,6 +3,7 @@ package com.internectics.data;
 import android.content.Context;
 import android.database.Cursor;
 import android.util.Log;
+import com.internectics.android_flashcardcreator.R;
 import com.internectics.helper.SQLiteHelper;
 import com.internectics.util.Global;
 
@@ -29,7 +30,7 @@ public class Answer {
         subheading = "";
         main = "";
         sub = "";
-        imageURL = "";
+        imageURL = String.format("%d", R.drawable.image_placeholder);
 		cssID = -1;
 		templateID = 0;
 		css = new CSS();
