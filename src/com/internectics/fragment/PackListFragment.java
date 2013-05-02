@@ -41,6 +41,15 @@ public class PackListFragment extends Fragment {
                              Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_pack_list,
                 container, false);
+
+
+        Button editButton = (Button) rootView.findViewById(R.id.dialog_head_save_btn);
+        editButton.setText("Edit");
+
+        Button closeButton = (Button) rootView.findViewById(R.id.dialog_head_close_btn);
+        closeButton.setVisibility(View.INVISIBLE);
+
+
         Gallery g = (Gallery) rootView.findViewById(R.id.pack_list_gallery);
         // Set the adapter to our custom adapter (below)
         g.setAdapter(new ImageAdapter(getActivity()));
@@ -56,6 +65,8 @@ public class PackListFragment extends Fragment {
 
             }
         });
+
+
 
         return rootView;
     }

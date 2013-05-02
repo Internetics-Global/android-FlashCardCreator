@@ -10,8 +10,10 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.*;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.TextView;
 import com.internectics.android_flashcardcreator.R;
 import com.internectics.data.Pack;
 import com.internectics.helper.FileOperationHelper;
@@ -52,11 +54,14 @@ public class AddPackFragment extends DialogFragment {
 		getDialog().getWindow().setSoftInputMode(
 				WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN);
 
-		ImageView closeImageView = (ImageView) mContentView
+        TextView titleTextView = (TextView) mContentView
+                .findViewById(R.id.dialog_title);
+        titleTextView.setText("Help");
+        Button closeButton = (Button) mContentView
 				.findViewById(R.id.dialog_head_close_btn);
-		ImageView saveImageView = (ImageView) mContentView
+		Button saveButton = (Button) mContentView
 				.findViewById(R.id.dialog_head_save_btn);
-		closeImageView.setOnClickListener(new View.OnClickListener() {
+        closeButton.setOnClickListener(new View.OnClickListener() {
 
 			@Override
 			public void onClick(View v) {
@@ -64,7 +69,7 @@ public class AddPackFragment extends DialogFragment {
 
 			}
 		});
-		saveImageView.setOnClickListener(new View.OnClickListener() {
+        saveButton.setOnClickListener(new View.OnClickListener() {
 
 			@Override
 			public void onClick(View v) {

@@ -3,19 +3,14 @@ package com.internectics.android_flashcardcreator;
 import android.app.AlertDialog;
 import android.app.DialogFragment;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.util.Log;
-import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuItem;
-import android.view.View;
-import android.widget.Button;
-import android.widget.FrameLayout;
-import android.widget.PopupWindow;
-import android.widget.Toast;
+import android.view.*;
+import android.widget.*;
 import com.dropbox.client2.DropboxAPI;
 import com.dropbox.client2.android.AndroidAuthSession;
 import com.dropbox.client2.session.AccessTokenPair;
@@ -26,6 +21,7 @@ import com.internectics.data.Pack;
 import com.internectics.fragment.AddPackFragment;
 import com.internectics.fragment.CardDetailFragment;
 import com.internectics.fragment.CardListMasterFragment;
+import com.internectics.fragment.HelpFragment;
 import com.internectics.helper.SQLiteHelper;
 import com.internectics.util.AppContext;
 import com.internectics.util.Global;
@@ -140,9 +136,9 @@ public class MainActivity extends FragmentActivity implements
             case R.id.actionbar_packs:
                 Log.d(Global.debugTag, "You have selected menu item of pack");
                 View popupLayout = inflater.inflate(R.layout.pack_list, null, false);
-                mPopupWindow = new PopupWindow(640, 320);
-                mPopupWindow.setBackgroundDrawable(getResources().getDrawable(R.drawable.pack_list_background));
+                mPopupWindow = new PopupWindow(640, 360);
                 mPopupWindow.setOutsideTouchable(true);
+                mPopupWindow.setBackgroundDrawable(getResources().getDrawable(R.drawable.popupwindow_background));
                 mPopupWindow.setContentView(popupLayout);
                 mPopupWindow.showAsDropDown(findViewById(R.id.actionbar_packs));
                 break;
@@ -158,7 +154,29 @@ public class MainActivity extends FragmentActivity implements
             case R.id.actionbar_more:
                 new AlertDialog.Builder(this)
                         .setTitle("More")
-                        .setItems(new String[]{"Dropbox", "Random play", "Register", "Submit new listing", "Help", "About"}, null)
+                        .setItems(new String[]{"Dropbox", "Random play", "Register", "Submit new listing", "Help", "About"}, new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                switch (which) {
+                                    case 0:
+                                        break;
+                                    case 1:
+                                        break;
+                                    case 2:
+                                        break;
+                                    case 3:
+                                        break;
+                                    case 4:
+                                        HelpFragment helpFragment = HelpFragment.getInstance();
+                                        helpFragment.show(getFragmentManager(),"help_dialog");
+                                        break;
+                                    case 5:
+                                        break;
+                                    default:
+                                        break;
+                                }
+                            }
+                        })
                         .show();
                 break;
 

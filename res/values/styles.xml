@@ -16,24 +16,33 @@
     <style name="AppTheme" parent="AppBaseTheme">
         <!-- All customizations that are NOT specific to a particular API-level can go here. -->
     </style>
-    
+
+    <!-- Dialog head title-->
     <style name="dialog_head_title">
         <item name="android:layout_width">wrap_content</item>
 		<item name="android:layout_height">wrap_content</item>
 		<item name="android:textSize">@dimen/text_size_19</item>
 		<item name="android:textColor">@color/dialog_head_text</item>
-		<item name="android:textStyle">bold</item>
+		<item name="android:textStyle">normal</item>
 		<item name="android:shadowColor">#ffffffff</item>
 		<item name="android:shadowDx">1</item>
 		<item name="android:shadowDy">1</item>
 		<item name="android:shadowRadius">1</item>
     </style>
-    
-    <style name="loading_small" parent="@android:style/Widget.ProgressBar.Small">
-		<item name="android:indeterminateDrawable">@anim/loading</item>
-		<item name="android:layout_width">21dip</item> 
-		<item name="android:layout_height">21dip</item>
-		<item name="android:layout_gravity">center_vertical</item>
-	</style>
+
+    <!-- Black button style -->
+    <style name="BlackButtonText">
+        <item name="android:layout_width">fill_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:textColor">#ffffff</item>
+        <item name="android:gravity">center</item>
+        <item name="android:layout_margin">3dp</item>
+        <item name="android:textSize">18dp</item>
+        <item name="android:textStyle">normal</item>
+        <item name="android:shadowColor">#000000</item>
+        <item name="android:shadowDx">1</item>
+        <item name="android:shadowDy">1</item>
+        <item name="android:shadowRadius">2</item>
+    </style>
 
 </resources>
