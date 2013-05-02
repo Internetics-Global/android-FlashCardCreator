@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:orientation="vertical" >
+    
+    <include layout="@layout/dialog_header" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical" >
+
+        <EditText
+            android:id="@+id/fragment_add_pack_pack_name"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Pack Name"
+            android:ems="10" >
+        </EditText>
+
+        <EditText
+            android:id="@+id/fragment_add_pack_sidebar_title"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Sidebar Title"
+            android:ems="10" />
+
+        <EditText
+            android:id="@+id/fragment_add_pack_creator"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Creator Name"
+            android:ems="10" />
+
+        <ImageView
+            android:id="@+id/fragment_add_pack_coverImage"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:layout_gravity="center"
+            android:layout_marginLeft="50dp"
+            android:layout_marginRight="50dp"
+            android:layout_marginTop="30dp"
+            android:scaleType="centerInside"
+            android:src="@drawable/pack_cover_default_image" />
+    </LinearLayout>
+
+</LinearLayout>
