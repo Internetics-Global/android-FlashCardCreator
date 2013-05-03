@@ -10,6 +10,7 @@ import android.support.v4.app.ListFragment;
 import android.view.View;
 import android.widget.*;
 import com.internectics.android_flashcardcreator.MainActivity;
+import com.internectics.android_flashcardcreator.R;
 import com.internectics.data.Pack;
 import com.internectics.model.CardListModel;
 import com.internectics.util.Global;
@@ -73,7 +74,7 @@ public class CardListMasterFragment extends ListFragment {
         SimpleAdapter listAdapter = new SimpleAdapter(getActivity(),
                 mCardArrayList, R.layout.card_list_item, new String[] {
 						"cardSN", "coverImageUriStr" }, new int[] {
-						R.id.card_list_item_card_sn,
+                R.id.card_list_item_card_sn,
 						R.id.card_list_item_cover_image });
 		listAdapter.setViewBinder(new CardListBinder());
 		setListAdapter(listAdapter);

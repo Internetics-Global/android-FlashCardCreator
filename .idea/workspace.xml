@@ -42,14 +42,12 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="4cdd1996-4a83-4768-87ba-370a47134935" name="Default" comment="">
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/com/internectics/fragment/AddPackFragment.java" afterPath="$PROJECT_DIR$/src/com/internectics/fragment/AddPackFragment.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/com/internectics/fragment/PackListFragment.java" afterPath="$PROJECT_DIR$/src/com/internectics/fragment/PackListFragment.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/com/internectics/util/UIHelper.java" afterPath="$PROJECT_DIR$/src/com/internectics/util/UIHelper.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/res/layout/dialog_header.xml" afterPath="$PROJECT_DIR$/res/layout/dialog_header.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/com/internectics/fragment/CardListMasterFragment.java" afterPath="$PROJECT_DIR$/src/com/internectics/fragment/CardListMasterFragment.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
     </list>
     <ignored path="android-FlashCardCreator.iws" />
     <ignored path=".idea/workspace.xml" />
-    <file path="/Dummy.txt" changelist="4cdd1996-4a83-4768-87ba-370a47134935" time="1367535668805" ignored="false" />
+    <file path="/Dummy.txt" changelist="4cdd1996-4a83-4768-87ba-370a47134935" time="1367585596542" ignored="false" />
     <file path="/a.java" changelist="4cdd1996-4a83-4768-87ba-370a47134935" time="1367281120160" ignored="false" />
     <file path="/MainActivity.java" changelist="4cdd1996-4a83-4768-87ba-370a47134935" time="1367499525470" ignored="false" />
     <file path="/activity_card_list.xml" changelist="4cdd1996-4a83-4768-87ba-370a47134935" time="1367218508443" ignored="false" />
@@ -87,7 +85,7 @@
     <file path="/pack_list.xml" changelist="4cdd1996-4a83-4768-87ba-370a47134935" time="1367477671027" ignored="false" />
     <file path="/blackbutton.xml" changelist="4cdd1996-4a83-4768-87ba-370a47134935" time="1367554754183" ignored="false" />
     <file path="/popupwindow_background.xml" changelist="4cdd1996-4a83-4768-87ba-370a47134935" time="1367481187412" ignored="false" />
-    <file path="/CardListMasterFragment.java" changelist="4cdd1996-4a83-4768-87ba-370a47134935" time="1367544875731" ignored="false" />
+    <file path="/CardListMasterFragment.java" changelist="4cdd1996-4a83-4768-87ba-370a47134935" time="1367585723964" ignored="false" />
     <file path="/UIHelper.java" changelist="4cdd1996-4a83-4768-87ba-370a47134935" time="1367559897587" ignored="false" />
     <option name="TRACKING_ENABLED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -114,7 +112,6 @@
   </component>
   <component name="DebuggerManager">
     <ui_properties default_suspend_policy="SuspendAll" default_condition_enabled="true" />
-    <line_breakpoints default_suspend_policy="SuspendAll" default_condition_enabled="true" />
     <breakpoint_any default_suspend_policy="SuspendAll" default_condition_enabled="true">
       <breakpoint>
         <option name="NOTIFY_CAUGHT" value="true" />
@@ -151,6 +148,7 @@
         <option name="LOG_MESSAGE" value="&#13;&#13;JAVA" />
       </breakpoint>
     </breakpoint_any>
+    <line_breakpoints default_suspend_policy="SuspendAll" default_condition_enabled="true" />
     <breakpoint_rules />
     <ui_properties />
   </component>
@@ -163,24 +161,31 @@
       <file leaf-file-name="AddPackFragment.java" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/com/internectics/fragment/AddPackFragment.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="129" column="58" selection-start="4170" selection-end="4181" vertical-scroll-proportion="-4.2">
+            <state line="131" column="58" selection-start="4222" selection-end="4233" vertical-scroll-proportion="0.0">
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="PackListFragment.java" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/com/internectics/fragment/PackListFragment.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state line="192" column="43" selection-start="7387" selection-end="7387" vertical-scroll-proportion="0.0">
               <folding>
-                <element signature="e#2272#2549#0" expanded="true" />
-                <element signature="e#2544#2545#0" expanded="true" />
+                <element signature="imports" expanded="true" />
+                <element signature="e#6810#7284#0" expanded="true" />
+                <element signature="e#7269#7270#0" expanded="true" />
               </folding>
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="PackListFragment.java" pinned="false" current="true" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/src/com/internectics/fragment/PackListFragment.java">
+      <file leaf-file-name="CardListMasterFragment.java" pinned="false" current="true" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/src/com/internectics/fragment/CardListMasterFragment.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="268" column="69" selection-start="10664" selection-end="10664" vertical-scroll-proportion="0.6923077">
+            <state line="76" column="43" selection-start="2287" selection-end="2287" vertical-scroll-proportion="2.6697893">
               <folding>
                 <element signature="imports" expanded="true" />
-                <element signature="e#917#949#0" expanded="true" />
-                <element signature="e#6810#7284#0" expanded="true" />
-                <element signature="e#7269#7270#0" expanded="true" />
               </folding>
             </state>
           </provider>
@@ -189,7 +194,7 @@
       <file leaf-file-name="UIHelper.java" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/com/internectics/util/UIHelper.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="36" column="25" selection-start="1002" selection-end="1002" vertical-scroll-proportion="0.0">
+            <state line="39" column="13" selection-start="1167" selection-end="1167" vertical-scroll-proportion="0.0">
               <folding />
             </state>
           </provider>
@@ -226,7 +231,6 @@
         <option value="$PROJECT_DIR$/res/drawable/popupwindow_background.xml" />
         <option value="$PROJECT_DIR$/res/layout/fragment_add_pack.xml" />
         <option value="$PROJECT_DIR$/res/layout/fragment_pack_list.xml" />
-        <option value="$PROJECT_DIR$/src/com/internectics/fragment/CardListMasterFragment.java" />
         <option value="$PROJECT_DIR$/src/com/internectics/data/Pack.java" />
         <option value="$PROJECT_DIR$/src/com/internectics/data/Card.java" />
         <option value="$PROJECT_DIR$/src/com/internectics/data/Answer.java" />
@@ -236,6 +240,7 @@
         <option value="$PROJECT_DIR$/src/com/internectics/util/UIHelper.java" />
         <option value="$PROJECT_DIR$/src/com/internectics/fragment/AddPackFragment.java" />
         <option value="$PROJECT_DIR$/src/com/internectics/fragment/PackListFragment.java" />
+        <option value="$PROJECT_DIR$/src/com/internectics/fragment/CardListMasterFragment.java" />
       </list>
     </option>
   </component>
@@ -245,7 +250,7 @@
   <component name="ProjectFrameBounds">
     <option name="y" value="22" />
     <option name="width" value="1280" />
-    <option name="height" value="693" />
+    <option name="height" value="690" />
   </component>
   <component name="ProjectInspectionProfilesVisibleTreeState">
     <entry key="Project Default">
@@ -592,11 +597,11 @@
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="ANDROID_EXTENDED_DEVICE_CHOOSER_AVD" value="googleTV" />
     <property name="restartRequiresConfirmation" value="true" />
-    <property name="MemberChooser.showClasses" value="true" />
     <property name="FullScreen" value="false" />
+    <property name="MemberChooser.showClasses" value="true" />
     <property name="GoToClass.includeLibraries" value="false" />
-    <property name="options.splitter.details.proportions" value="0.2" />
     <property name="options.searchVisible" value="true" />
+    <property name="options.splitter.details.proportions" value="0.2" />
   </component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
@@ -641,6 +646,19 @@
       <option name="PORT" value="5005" />
       <method />
     </configuration>
+    <configuration default="true" type="Applet" factoryName="Applet">
+      <module name="" />
+      <option name="MAIN_CLASS_NAME" />
+      <option name="HTML_FILE_NAME" />
+      <option name="HTML_USED" value="false" />
+      <option name="WIDTH" value="400" />
+      <option name="HEIGHT" value="300" />
+      <option name="POLICY_FILE" value="$APPLICATION_HOME_DIR$/bin/appletviewer.policy" />
+      <option name="VM_PARAMETERS" />
+      <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="false" />
+      <option name="ALTERNATIVE_JRE_PATH" />
+      <method />
+    </configuration>
     <configuration default="true" type="TestNG" factoryName="TestNG">
       <extension name="coverage" enabled="false" merge="false" sample_coverage="true" runner="idea" />
       <module name="" />
@@ -667,19 +685,6 @@
       <envs />
       <properties />
       <listeners />
-      <method />
-    </configuration>
-    <configuration default="true" type="Applet" factoryName="Applet">
-      <module name="" />
-      <option name="MAIN_CLASS_NAME" />
-      <option name="HTML_FILE_NAME" />
-      <option name="HTML_USED" value="false" />
-      <option name="WIDTH" value="400" />
-      <option name="HEIGHT" value="300" />
-      <option name="POLICY_FILE" value="$APPLICATION_HOME_DIR$/bin/appletviewer.policy" />
-      <option name="VM_PARAMETERS" />
-      <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="false" />
-      <option name="ALTERNATIVE_JRE_PATH" />
       <method />
     </configuration>
     <configuration default="true" type="Application" factoryName="Application">
@@ -812,14 +817,12 @@
     </todo-panel>
   </component>
   <component name="ToolWindowManager">
-    <frame x="0" y="22" width="1280" height="693" extended-state="6" />
+    <frame x="0" y="22" width="1280" height="690" extended-state="6" />
     <editor active="true" />
     <layout>
       <window_info id="Changes" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32809773" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="JetGradle" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.23019803" sideWeight="0.5508772" order="4" side_tool="false" content_ui="tabs" />
-      <window_info id="Preview" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33443162" sideWeight="0.67017543" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Palette" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
-      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.10471204" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.24917492" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.39092496" sideWeight="0.5648298" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.69982547" sideWeight="0.43517017" order="13" side_tool="true" content_ui="tabs" />
@@ -831,19 +834,21 @@
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.24554294" sideWeight="0.32763532" order="1" side_tool="true" content_ui="tabs" />
       <window_info id="Maven Projects" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32920793" sideWeight="0.5" order="9" side_tool="false" content_ui="tabs" />
       <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="SLIDING" type="SLIDING" visible="false" weight="0.4" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.26661265" sideWeight="0.79581153" order="0" side_tool="true" content_ui="combo" x="291" y="93" width="322" height="850" />
-      <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.27552673" sideWeight="0.75218153" order="3" side_tool="false" content_ui="combo" />
-      <window_info id="Run" active="true" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.20418848" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.26661265" sideWeight="0.7982456" order="0" side_tool="true" content_ui="combo" x="291" y="93" width="322" height="850" />
+      <window_info id="Run" active="true" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.20175439" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Palette&#9;" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.2139808" sideWeight="0.79298246" order="10" side_tool="false" content_ui="tabs" />
       <window_info id="Documentation" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="FLOATING" visible="false" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" x="100" y="122" width="1080" height="493" />
       <window_info id="Database" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32920793" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
       <window_info id="IDEtalk Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="9" side_tool="false" content_ui="tabs" />
       <window_info id="IDEtalk" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32920793" sideWeight="0.5" order="8" side_tool="false" content_ui="tabs" />
       <window_info id="Application Servers" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="11" side_tool="false" content_ui="tabs" />
+      <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.27552673" sideWeight="0.75218153" order="3" side_tool="false" content_ui="combo" />
       <window_info id="Thumbnails" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32867134" sideWeight="0.5" order="14" side_tool="false" content_ui="tabs" />
       <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="Designer" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.1755603" sideWeight="0.17894737" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Message" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
+      <window_info id="Preview" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33443162" sideWeight="0.67017543" order="7" side_tool="false" content_ui="tabs" />
+      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.10471204" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Inspection" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.4" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
     </layout>
   </component>
@@ -916,13 +921,6 @@
     <option name="FILTER_TARGETS" value="false" />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/src/com/internectics/data/User.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="27" column="23" selection-start="623" selection-end="623" vertical-scroll-proportion="0.0">
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file:///Applications/Android/sdk/sources/android-14/java/lang/Object.java">
       <provider selected="true" editor-type-id="text-editor">
         <state line="315" column="29" selection-start="13719" selection-end="13719" vertical-scroll-proportion="0.0">
@@ -932,9 +930,7 @@
     </entry>
     <entry file="file:///Applications/Android/sdk/sources/android-14/android/widget/BaseAdapter.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="57" column="16" selection-start="2054" selection-end="2054" vertical-scroll-proportion="0.0">
-          <folding />
-        </state>
+        <state line="57" column="16" selection-start="2054" selection-end="2054" vertical-scroll-proportion="0.0" />
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/res/drawable/dialog_head_bg.png">
@@ -943,43 +939,43 @@
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/res/layout/play.xml">
-      <provider editor-type-id="android-designer">
-        <state />
-      </provider>
       <provider selected="true" editor-type-id="text-editor">
         <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="0.0">
           <folding />
         </state>
+      </provider>
+      <provider editor-type-id="android-designer">
+        <state />
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/res/layout/pack_list.xml">
-      <provider editor-type-id="android-designer">
-        <state />
-      </provider>
       <provider selected="true" editor-type-id="text-editor">
         <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="0.0">
           <folding />
         </state>
+      </provider>
+      <provider editor-type-id="android-designer">
+        <state />
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/res/layout/layout_test.xml">
-      <provider editor-type-id="android-designer">
-        <state />
-      </provider>
       <provider selected="true" editor-type-id="text-editor">
         <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="0.0">
           <folding />
         </state>
       </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/res/layout/dialog_header.xml">
       <provider editor-type-id="android-designer">
         <state />
       </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/res/layout/dialog_header.xml">
       <provider selected="true" editor-type-id="text-editor">
         <state line="18" column="43" selection-start="672" selection-end="672" vertical-scroll-proportion="0.71428573">
           <folding />
         </state>
+      </provider>
+      <provider editor-type-id="android-designer">
+        <state />
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/com/internectics/helper/SQLiteHelper.java">
@@ -1011,40 +1007,45 @@
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/res/layout/fragment_pack_list.xml">
-      <provider editor-type-id="android-designer">
-        <state />
-      </provider>
       <provider selected="true" editor-type-id="text-editor">
         <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="0.0">
           <folding />
         </state>
       </provider>
+      <provider editor-type-id="android-designer">
+        <state />
+      </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/com/internectics/util/UIHelper.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="36" column="25" selection-start="1002" selection-end="1002" vertical-scroll-proportion="0.0">
+        <state line="39" column="13" selection-start="1167" selection-end="1167" vertical-scroll-proportion="0.0">
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/com/internectics/fragment/AddPackFragment.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="129" column="58" selection-start="4170" selection-end="4181" vertical-scroll-proportion="-4.2">
-          <folding>
-            <element signature="e#2272#2549#0" expanded="true" />
-            <element signature="e#2544#2545#0" expanded="true" />
-          </folding>
+        <state line="131" column="58" selection-start="4222" selection-end="4233" vertical-scroll-proportion="0.0">
+          <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/com/internectics/fragment/PackListFragment.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="268" column="69" selection-start="10664" selection-end="10664" vertical-scroll-proportion="0.6923077">
+        <state line="192" column="43" selection-start="7387" selection-end="7387" vertical-scroll-proportion="0.0">
           <folding>
             <element signature="imports" expanded="true" />
-            <element signature="e#917#949#0" expanded="true" />
             <element signature="e#6810#7284#0" expanded="true" />
             <element signature="e#7269#7270#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/com/internectics/fragment/CardListMasterFragment.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="76" column="43" selection-start="2287" selection-end="2287" vertical-scroll-proportion="2.6697893">
+          <folding>
+            <element signature="imports" expanded="true" />
           </folding>
         </state>
       </provider>
