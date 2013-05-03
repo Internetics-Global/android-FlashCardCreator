@@ -114,8 +114,8 @@ public class AddPackFragment extends DialogFragment {
 		pack.packID = (int)(System.currentTimeMillis()/1000L);
 		pack.save(AppContext.getAppContext());
 		
-		AppConfig.getAppConfigInstance(getActivity()).set(Global.packID_Property, String.format("%d", pack.packID));
-		AppConfig.getAppConfigInstance(getActivity()).set(Global.latestPackCreatedDate_Property, StringUtils.getCurrentTimeDate());
+		AppConfig.getInstance(getActivity()).set(Global.packID_Property, String.format("%d", pack.packID));
+		AppConfig.getInstance(getActivity()).set(Global.latestPackCreatedDate_Property, StringUtils.getCurrentTimeDate());
 
         Intent intent = new Intent();
         intent.setAction(Global.BROADCAST_ACTION_UPDATE_MASTER_VIEW);

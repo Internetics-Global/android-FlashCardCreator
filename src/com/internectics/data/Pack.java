@@ -5,7 +5,9 @@ import android.database.Cursor;
 import android.util.Log;
 import com.internectics.android_flashcardcreator.R;
 import com.internectics.helper.SQLiteHelper;
+import com.internectics.util.AppContext;
 import com.internectics.util.Global;
+import com.internectics.util.StringUtils;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -119,7 +121,7 @@ public class Pack {
 		String query = String.format("DELETE FROM Packs_Tables WHERE pack_id=%d", packID);
         SQLiteHelper.defaultDatabase(context).execSQL(query);	
         
-        if (this.logoImageUriStr.indexOf("card_logo.jpg") == -1) {
+        if (!StringUtils.isNumeric(logoImageUriStr)) {
         	File file = new File(this.logoImageUriStr);
         	if (file.delete()) {
         		Log.d(Global.debugTag, "Successful to delete logoImageUriStr file");
@@ -128,13 +130,17 @@ public class Pack {
         	}
         }
         
-        if (this.coverImageUriStr.indexOf("default_pack_cover_image.jpg") == -1) {
+        if (!StringUtils.isNumeric(coverImageUriStr)) {
         	File file = new File(this.coverImageUriStr);
         	if (file.delete()) {
         		Log.d(Global.debugTag, "Successful to delete coverImageUriStr file in Pack");
         	} else {
         		Log.d(Global.debugTag, "Fail to delete coverImageUriStr file in Pack");
         	}
+        }
+
+        for (Card card:cards) {
+            card.destroy(AppContext.getAppContext());
         }
 	}
 }

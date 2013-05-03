@@ -26,7 +26,7 @@ public class AppConfig {
 	/**
 	 * get AppConfig instance
 	 */
-	public static AppConfig getAppConfigInstance(Context context)
+	public static AppConfig getInstance(Context context)
 	{
 		if(appConfig == null){
 			appConfig = new AppConfig();

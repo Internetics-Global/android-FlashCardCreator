@@ -6,6 +6,7 @@ import android.util.Log;
 import com.internectics.android_flashcardcreator.R;
 import com.internectics.helper.SQLiteHelper;
 import com.internectics.util.Global;
+import com.internectics.util.StringUtils;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -117,7 +118,7 @@ public class Card {
         SQLiteHelper.defaultDatabase(context).execSQL(query);	
         
         //Step2: delete image resources
-        if (this.coverImageURL.indexOf("card_cover_image_placeholder.jpg") == -1) {
+        if (!StringUtils.isNumeric(coverImageURL)) {
         	File file = new File(this.coverImageURL);
         	if (file.delete()) {
         		Log.d(Global.debugTag, "Successful to delete coverImageUriStr file");

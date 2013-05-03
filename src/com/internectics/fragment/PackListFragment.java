@@ -3,7 +3,6 @@ package com.internectics.fragment;
 import android.content.ContentResolver;
 import android.content.Context;
 import android.content.Intent;
-import android.content.res.TypedArray;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
@@ -21,16 +20,17 @@ import com.internectics.android_flashcardcreator.MainActivity;
 import com.internectics.android_flashcardcreator.R;
 import com.internectics.data.Pack;
 import com.internectics.data.User;
-import com.internectics.util.AppContext;
-import com.internectics.util.Global;
-import com.internectics.util.StringUtils;
-import com.internectics.util.UIHelper;
+import com.internectics.util.*;
 
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
 
 @SuppressWarnings("deprecation")
 public class PackListFragment extends Fragment {
+
+    private boolean mIsEditStatus;
+    private Gallery mGallery;
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -43,23 +43,38 @@ public class PackListFragment extends Fragment {
                 container, false);
 
 
-        Button editButton = (Button) rootView.findViewById(R.id.dialog_head_save_btn);
+        final Button editButton = (Button) rootView.findViewById(R.id.dialog_head_save_btn);
         editButton.setText("Edit");
+        mIsEditStatus = false;
+        editButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (editButton.getText().equals("Edit")) {
+                    editButton.setText("Done");
+                    mIsEditStatus = true;
+                } else {
+                    editButton.setText("Edit");
+                    mIsEditStatus = false;
+                }
+                ((ImageAdapter)mGallery.getAdapter()).notifyDataSetChanged();
+
+            }
+        });
 
         Button closeButton = (Button) rootView.findViewById(R.id.dialog_head_close_btn);
         closeButton.setVisibility(View.INVISIBLE);
 
 
-        Gallery g = (Gallery) rootView.findViewById(R.id.pack_list_gallery);
+        mGallery = (Gallery) rootView.findViewById(R.id.pack_list_gallery);
         // Set the adapter to our custom adapter (below)
-        g.setAdapter(new ImageAdapter(getActivity()));
-        g.setOnItemClickListener(new OnItemClickListener() {
+        mGallery.setAdapter(new ImageAdapter(getActivity()));
+        mGallery.setOnItemClickListener(new OnItemClickListener() {
             public void onItemClick(AdapterView<?> parent, View v, int position, long id) {
                 Log.d(Global.debugTag, "Index of pack in pack list is:" + position);
                 Intent intent = new Intent();
                 intent.setAction(Global.BROADCAST_ACTION_UPDATE_MASTER_VIEW);
                 intent.putExtra(Global.KEY_FROM, Global.BROADCAST_INTENT_EXTRA_FROM_PACK_SELECTED);
-                intent.putExtra("indexOfPack", id);  //id begin from 0
+                intent.putExtra("indexOfPack", position);  //id begin from 0
                 getActivity().sendBroadcast(intent);
                 ((MainActivity)getActivity()).mPopupWindow.dismiss();
 
@@ -76,15 +91,12 @@ public class PackListFragment extends Fragment {
 
         private final Context mContext;
 
-        private ArrayList<Pack> packs;
-
         public ImageAdapter(Context c) {
             mContext = c;
-            packs = User.defaultUser(AppContext.getAppContext()).packs;
         }
 
         public int getCount() {
-            return packs.size();
+            return User.defaultUser(AppContext.getAppContext()).packs.size();
         }
 
         public Object getItem(int position) {
@@ -97,16 +109,29 @@ public class PackListFragment extends Fragment {
 
         public View getView(int position, View convertView, ViewGroup parent) {
 
-            Pack currentPack =  packs.get(position);
-
+            final Pack currentPack =  User.defaultUser(AppContext.getAppContext()).packs.get(position);
             LinearLayout baseView = new LinearLayout(mContext);
             baseView.setOrientation(LinearLayout.VERTICAL);
 
+            //part1
+            TextView packNameView = new TextView(mContext);
+            packNameView.setTextColor(Color.WHITE);
+            packNameView.setText(currentPack.packName);
+            LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(
+                    LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.FILL_PARENT);
+            packNameView.setGravity(Gravity.CENTER);
+            packNameView.setWidth(UIHelper.getPixels(180));
+            packNameView.setHeight(UIHelper.getPixels(30));
+            lp.setMargins(0,UIHelper.getPixels(10),0,0);
+            packNameView.setLayoutParams(lp);
+            baseView.addView(packNameView);
+
+            //part2
             ImageView imageView;
             if (convertView == null) {
                 convertView = new ImageView(mContext);
                 imageView = (ImageView) convertView;
-                imageView.setScaleType(ImageView.ScaleType.CENTER_INSIDE);
+                imageView.setScaleType(ImageView.ScaleType.CENTER_CROP);
                 imageView.setLayoutParams(new Gallery.LayoutParams(
                         UIHelper.getPixels(180),UIHelper.getPixels(150)));
 
@@ -132,18 +157,70 @@ public class PackListFragment extends Fragment {
 
             baseView.addView(imageView);
 
-            TextView packNameView = new TextView(mContext);
-            packNameView.setTextColor(Color.WHITE);
-            packNameView.setText(currentPack.packName);
-            LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(
-                    LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.FILL_PARENT);
-            packNameView.setGravity(Gravity.CENTER);
-            packNameView.setWidth(UIHelper.getPixels(180));
-            packNameView.setHeight(UIHelper.getPixels(30));
-            lp.setMargins(0,UIHelper.getPixels(10),0,0);
-            packNameView.setLayoutParams(lp);
+            //part3
+            LinearLayout editLayout = new LinearLayout(mContext);
+            editLayout.setOrientation(LinearLayout.HORIZONTAL);
+            lp = new LinearLayout.LayoutParams(
+                    UIHelper.getPixels(180), UIHelper.getPixels(40));
+            lp.setMargins(0,20,0,20);
+            editLayout.setLayoutParams(lp);
 
-            baseView.addView(packNameView);
+            Button changeCoverImageButton = new Button(mContext);
+            changeCoverImageButton.setText("Change");
+            changeCoverImageButton.setWidth(UIHelper.getPixels(80));
+            changeCoverImageButton.setBackgroundResource(R.drawable.graybutton);
+
+            Button deleteButton = new Button(mContext);
+            deleteButton.setText("Delete");
+            lp = new LinearLayout.LayoutParams(
+                    UIHelper.getPixels(80), LinearLayout.LayoutParams.FILL_PARENT);
+            lp.setMargins(20,0,0,0);
+            deleteButton.setLayoutParams(lp);
+            deleteButton.setBackgroundResource(R.drawable.redbutton);
+            deleteButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    User defaultUser = User.defaultUser(AppContext.getAppContext());
+                    defaultUser.removePack(currentPack);
+                    int count = defaultUser.packs.size();
+                    if (count >0) {
+                        Pack lastPack = defaultUser.packs.get(count-1);
+                        AppConfig.getInstance(getActivity()).set(Global.packID_Property, String.format("%d", lastPack.packID));
+                    }
+                    ((ImageAdapter)mGallery.getAdapter()).notifyDataSetChanged();
+                }
+            });
+
+
+            editLayout.addView(changeCoverImageButton);
+            editLayout.addView(deleteButton);
+            baseView.addView(editLayout);
+
+            if (mIsEditStatus) {
+                editLayout.setVisibility(View.VISIBLE);
+
+                if (currentPack.creatorID.equals(OpenUDID_manager.getOpenUDID())) {
+                    changeCoverImageButton.setVisibility(View.VISIBLE);
+                } else {
+                    changeCoverImageButton.setVisibility(View.INVISIBLE);
+                }
+
+                if (User.defaultUser(AppContext.getAppContext()).packs.size()<=1) {
+                    deleteButton.setVisibility(View.INVISIBLE);
+                } else {
+                    if (((MainActivity)getActivity()).mCurrentPack.packID == currentPack.packID) {
+                        deleteButton.setVisibility(View.INVISIBLE);
+                    } else {
+                        deleteButton.setVisibility(View.VISIBLE);
+                    }
+                }
+
+
+            } else {
+                editLayout.setVisibility(View.INVISIBLE);
+            }
+
+
 
             return baseView;
         }

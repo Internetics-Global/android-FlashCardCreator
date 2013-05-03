@@ -4,17 +4,18 @@
 	android:layout_width="fill_parent" 
 	xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical"
+    android:background="#555555"
 	android:layout_height="fill_parent">
 
     <include layout="@layout/dialog_header" />
 	
     <Gallery android:id="@+id/pack_list_gallery"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_marginLeft="10dip"
-        android:layout_marginRight="10dip"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
         android:gravity="center_vertical"
-        android:background="@android:color/white"
+        android:background="#555555"
         android:spacing="16dp"
     />
  

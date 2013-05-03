@@ -6,6 +6,7 @@ import android.util.Log;
 import com.internectics.android_flashcardcreator.R;
 import com.internectics.helper.SQLiteHelper;
 import com.internectics.util.Global;
+import com.internectics.util.StringUtils;
 
 import java.io.File;
 import java.util.HashMap;
@@ -105,7 +106,7 @@ public class Question {
 		String query = String.format("DELETE FROM Question_Tables WHERE card_id=%d", cardID);
         SQLiteHelper.defaultDatabase(context).execSQL(query);	
         
-        if (this.imageURL.indexOf("question_placeholder_logo.jpg") == -1) {
+        if (!StringUtils.isNumeric(imageURL)) {
         	File file = new File(this.imageURL);
         	if (file.delete()) {
         		Log.d(Global.debugTag, "Successful to delete imageURL file in Question");

@@ -2,7 +2,6 @@ package com.internectics.model;
 
 import android.net.Uri;
 import android.util.Log;
-import com.internectics.android_flashcardcreator.R;
 import com.internectics.data.Card;
 import com.internectics.data.Pack;
 import com.internectics.data.User;
@@ -64,8 +63,8 @@ public class CardListModel {
      */
     public static Pack getCurrentPack() {
 		Pack currentPack = null;
-		String packIDString = AppConfig.getAppConfigInstance(
-				AppContext.getAppContext()).get(Global.packID_Property);
+		String packIDString = AppConfig.getInstance(
+                AppContext.getAppContext()).get(Global.packID_Property);
 
 		ArrayList<Pack> packs = User.defaultUser(AppContext.getAppContext()).packs;
 

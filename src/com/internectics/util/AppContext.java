@@ -2,10 +2,8 @@ package com.internectics.util;
 
 import android.app.Application;
 import android.content.Context;
-import android.content.res.Resources;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
-import android.util.TypedValue;
 
 import java.util.UUID;
 
@@ -49,14 +47,14 @@ public class AppContext extends Application {
 	
 	
 	public void setProperty(String key,String value){
-		AppConfig.getAppConfigInstance(this).set(key, value);
+		AppConfig.getInstance(this).set(key, value);
 	}
 	
 	public String getProperty(String key){
-		return AppConfig.getAppConfigInstance(this).get(key);
+		return AppConfig.getInstance(this).get(key);
 	}
 	public void removeProperty(String key){
-		AppConfig.getAppConfigInstance(this).remove(key);
+		AppConfig.getInstance(this).remove(key);
 	}
 
 }
