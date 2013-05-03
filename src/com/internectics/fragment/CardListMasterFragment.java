@@ -10,7 +10,6 @@ import android.support.v4.app.ListFragment;
 import android.view.View;
 import android.widget.*;
 import com.internectics.android_flashcardcreator.MainActivity;
-import com.internectics.android_flashcardcreator.R;
 import com.internectics.data.Pack;
 import com.internectics.model.CardListModel;
 import com.internectics.util.Global;
@@ -32,7 +31,7 @@ public class CardListMasterFragment extends ListFragment {
 	private List<HashMap<String, Object>> mCardArrayList;
 
 	private static final String STATE_ACTIVATED_POSITION = "activated_position";
-	private Callbacks mCallbacks = sDummyCallbacks;
+	private Callbacks mCallbacks;
 	private int mActivatedPosition = ListView.INVALID_POSITION;
 
 	public CardListMasterFragment() {
@@ -49,18 +48,8 @@ public class CardListMasterFragment extends ListFragment {
 		/**
 		 * Callback for when an item has been selected.
 		 */
-		public void onItemSelected(String id);
+		public void onItemSelected(int index);
 	}
-
-	/**
-	 * A dummy implementation of the {@link Callbacks} interface that does
-	 * nothing. Used only when this fragment is not attached to an activity.
-	 */
-	private static Callbacks sDummyCallbacks = new Callbacks() {
-		@Override
-		public void onItemSelected(String id) {
-		}
-	};
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -124,22 +113,13 @@ public class CardListMasterFragment extends ListFragment {
 		mCallbacks = (Callbacks) activity;
 	}
 
-	@Override
-	public void onDetach() {
-		super.onDetach();
-
-		// Reset the active callbacks interface to the dummy implementation.
-		mCallbacks = sDummyCallbacks;
-	}
 
 	@Override
 	public void onListItemClick(ListView listView, View view, int position,
 			long id) {
 		super.onListItemClick(listView, view, position, id);
 
-		// Notify the active callbacks interface (the activity, if the
-		// fragment is attached to one) that an item has been selected.
-		mCallbacks.onItemSelected("need to be updated here, ccaa");
+		mCallbacks.onItemSelected(position);
 	}
 
 	@Override

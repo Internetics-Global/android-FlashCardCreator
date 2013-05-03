@@ -130,8 +130,7 @@ public class MainActivity extends FragmentActivity implements
                 break;
             }
             case R.id.actionbar_edit:
-                AddPackFragment newFragment = AddPackFragment.getInstance();
-                newFragment.show(getFragmentManager(), "dialog");
+
                 break;
             case R.id.actionbar_packs:
                 Log.d(Global.debugTag, "You have selected menu item of pack");
@@ -213,20 +212,10 @@ public class MainActivity extends FragmentActivity implements
      * the item with the given ID was selected.
      */
     @Override
-    public void onItemSelected(String id) {
-        // In two-pane mode, show the detail view in this activity by
-        // adding or replacing the detail fragment using a
-        // fragment transaction.
-        Bundle arguments = new Bundle();
+    public void onItemSelected(int index) {
 
-        arguments.putString(CardDetailFragment.ARG_ITEM_ID, id);
-
-
-        //mCurrentPack = CardListModel.getCurrentPack(); //don't need to do here
-        mCurrentIndex = Integer.parseInt(id);
+        mCurrentIndex = index;
         mCurrentCard = mCurrentPack.cards.get(mCurrentIndex);
-
-
         CardDetailFragment fragment = new CardDetailFragment(mCurrentPack,mCurrentCard);
         getSupportFragmentManager().beginTransaction()
                 .replace(R.id.card_detail_container, fragment).commit();
