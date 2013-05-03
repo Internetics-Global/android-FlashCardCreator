@@ -1,5 +1,6 @@
 package com.internectics.fragment;
 
+import android.app.Activity;
 import android.content.ContentResolver;
 import android.content.Context;
 import android.content.Intent;
@@ -20,16 +21,19 @@ import com.internectics.android_flashcardcreator.MainActivity;
 import com.internectics.android_flashcardcreator.R;
 import com.internectics.data.Pack;
 import com.internectics.data.User;
+import com.internectics.helper.FileOperationHelper;
 import com.internectics.util.*;
 
+import java.io.File;
 import java.io.FileNotFoundException;
-import java.util.ArrayList;
 
 @SuppressWarnings("deprecation")
 public class PackListFragment extends Fragment {
 
     private boolean mIsEditStatus;
     private Gallery mGallery;
+    private int CODE_REQUEST_IMAGE_FROM_IMAGE_LIBRARY = 1001;
+    private int mIndexOfCurrentPack;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -42,6 +46,9 @@ public class PackListFragment extends Fragment {
         View rootView = inflater.inflate(R.layout.fragment_pack_list,
                 container, false);
 
+
+        TextView titileTextView = (TextView) rootView.findViewById(R.id.dialog_title);
+        titileTextView.setText("Pack List");
 
         final Button editButton = (Button) rootView.findViewById(R.id.dialog_head_save_btn);
         editButton.setText("Edit");
@@ -109,6 +116,7 @@ public class PackListFragment extends Fragment {
 
         public View getView(int position, View convertView, ViewGroup parent) {
 
+            final int indexOfCurrentPack = position;
             final Pack currentPack =  User.defaultUser(AppContext.getAppContext()).packs.get(position);
             LinearLayout baseView = new LinearLayout(mContext);
             baseView.setOrientation(LinearLayout.VERTICAL);
@@ -169,6 +177,17 @@ public class PackListFragment extends Fragment {
             changeCoverImageButton.setText("Change");
             changeCoverImageButton.setWidth(UIHelper.getPixels(80));
             changeCoverImageButton.setBackgroundResource(R.drawable.graybutton);
+            changeCoverImageButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    mIndexOfCurrentPack = indexOfCurrentPack;
+                    Intent intent = new Intent(
+                            Intent.ACTION_PICK,
+                            android.provider.MediaStore.Images.Media.INTERNAL_CONTENT_URI);
+
+                    startActivityForResult(intent, CODE_REQUEST_IMAGE_FROM_IMAGE_LIBRARY);
+                }
+            });
 
             Button deleteButton = new Button(mContext);
             deleteButton.setText("Delete");
@@ -223,6 +242,29 @@ public class PackListFragment extends Fragment {
 
 
             return baseView;
+        }
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == CODE_REQUEST_IMAGE_FROM_IMAGE_LIBRARY) {
+            if (resultCode == Activity.RESULT_OK) {
+
+                Uri selectedImageURI = data.getData();
+
+                Bitmap resultBitmap = UIHelper.resizeImageTo400(getActivity(), selectedImageURI);
+                if (resultBitmap == null) {
+                    Log.d(Global.debugTag, "resultBitmap is null");
+                }else {
+                    File toSaveFile = UIHelper.saveImageToCaches(resultBitmap);
+                    Pack currentPack = User.defaultUser(AppContext.getAppContext()).packs.get(mIndexOfCurrentPack);
+                    currentPack.coverImageUriStr = FileOperationHelper.covertToUriFormatString(toSaveFile);
+                    Log.d(Global.debugTag, currentPack.coverImageUriStr);
+                    currentPack.save(AppContext.getAppContext());
+                    ((ImageAdapter)mGallery.getAdapter()).notifyDataSetChanged();
+                }
+            }
         }
     }
 

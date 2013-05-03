@@ -2,10 +2,8 @@ package com.internectics.fragment;
 
 import android.app.Activity;
 import android.app.DialogFragment;
-import android.content.ContentResolver;
 import android.content.Intent;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
@@ -20,8 +18,6 @@ import com.internectics.helper.FileOperationHelper;
 import com.internectics.util.*;
 
 import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
 
 public class AddPackFragment extends DialogFragment {
 
@@ -130,39 +126,19 @@ public class AddPackFragment extends DialogFragment {
 		if (requestCode == CODE_REQUEST_IMAGE_FROM_IMAGE_LIBRARY) {
 			if (resultCode == Activity.RESULT_OK) {
 				Uri selectedImageURI = data.getData();
-				Log.d(Global.debugTag, selectedImageURI.toString()); // format like
-															// "content://media/external/images/media/25
-				ContentResolver cResolver = getActivity().getContentResolver();
-				try {
-					//1. scale image
-					Bitmap bitmap = BitmapFactory.decodeStream(cResolver
-							.openInputStream(selectedImageURI));
-					ImageView coverImageView = (ImageView) mContentView
-							.findViewById(R.id.fragment_add_pack_coverImage);
-					Bitmap resizeBitmap = FileOperationHelper.resizeBitmap(
-							bitmap, 400, 400);
-					//2. set UI
-					coverImageView.setImageBitmap(resizeBitmap);
-					//3. save image
-					File toSaveFile = FileOperationHelper.generateUniqueImageFilePath();
-					FileOutputStream fOutputStream = new FileOutputStream(toSaveFile);
-					try {
-						resizeBitmap.compress(Bitmap.CompressFormat.JPEG, 90, fOutputStream);
-						fOutputStream.flush();
-						fOutputStream.close();
-					} catch (Exception oException) {
-						oException.printStackTrace();
-					}
-					//4. update data (but not do persistence)
-					pack.coverImageUriStr = FileOperationHelper.covertToUriFormatString(toSaveFile);
-					Log.d(Global.debugTag, pack.coverImageUriStr);
-					
-					
-					 
-				} catch (FileNotFoundException e) {
-					Log.e("Exception", e.getMessage(), e);
-				}
 
+                Bitmap resultBitmap = UIHelper.resizeImageTo400(getActivity(), selectedImageURI);
+                if (resultBitmap == null) {
+                    Log.d(Global.debugTag, "resultBitmap is null");
+                }else {
+                    File toSaveFile = UIHelper.saveImageToCaches(resultBitmap);
+                    ImageView coverImageView = (ImageView) mContentView
+                            .findViewById(R.id.fragment_add_pack_coverImage);
+                    coverImageView.setImageBitmap(resultBitmap);
+
+                    pack.coverImageUriStr = FileOperationHelper.covertToUriFormatString(toSaveFile);
+                    Log.d(Global.debugTag, pack.coverImageUriStr);
+                }
 			}
 		}
 	}

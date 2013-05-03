@@ -19,7 +19,7 @@
         android:id="@+id/dialog_title"
         style="@style/dialog_head_title"
 		android:layout_gravity="center"
-		android:text="Add a new pack"/>
+		android:text=""/>
 
     
     <Button
