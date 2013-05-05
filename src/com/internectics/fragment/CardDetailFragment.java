@@ -10,6 +10,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.EditText;
 import com.internectics.android_flashcardcreator.R;
 import com.internectics.data.Card;
 import com.internectics.data.Pack;
@@ -50,6 +51,9 @@ public class CardDetailFragment extends Fragment {
 			Bundle savedInstanceState) {
 		View rootView = inflater.inflate(R.layout.fragment_card_detail,
 				container, false);
+        EditText sidebarEditText = (EditText)rootView.findViewById(R.id.sidebar_title);
+        sidebarEditText.setText(String.format("%d",mCurrentCard.cardSN));
+
 
 		return rootView;
 	}

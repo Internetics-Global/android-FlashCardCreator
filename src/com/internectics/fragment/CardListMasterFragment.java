@@ -78,7 +78,6 @@ public class CardListMasterFragment extends ListFragment {
 						R.id.card_list_item_cover_image });
 		listAdapter.setViewBinder(new CardListBinder());
 		setListAdapter(listAdapter);
-
         //Finally, send back currenPack to activity
         ((MainActivity) getActivity()).mCurrentPack = mCurrentPack;
 
@@ -181,6 +180,10 @@ public class CardListMasterFragment extends ListFragment {
 
                 //Finally, send back currenPack to activity
                 ((MainActivity) getActivity()).mCurrentPack = mCurrentPack;
+
+
+                getListView().setChoiceMode(ListView.CHOICE_MODE_SINGLE);
+                getListView().setItemChecked(1,true);
 
             }
 

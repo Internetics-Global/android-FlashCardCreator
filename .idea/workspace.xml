@@ -42,17 +42,20 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="4cdd1996-4a83-4768-87ba-370a47134935" name="Default" comment="">
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/res/drawable/card_list_item_background_selector.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/com/internectics/fragment/CardDetailFragment.java" afterPath="$PROJECT_DIR$/src/com/internectics/fragment/CardDetailFragment.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/com/internectics/fragment/CardListMasterFragment.java" afterPath="$PROJECT_DIR$/src/com/internectics/fragment/CardListMasterFragment.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/res/layout/card_list_item.xml" afterPath="$PROJECT_DIR$/res/layout/card_list_item.xml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
     </list>
     <ignored path="android-FlashCardCreator.iws" />
     <ignored path=".idea/workspace.xml" />
-    <file path="/Dummy.txt" changelist="4cdd1996-4a83-4768-87ba-370a47134935" time="1367585596542" ignored="false" />
+    <file path="/Dummy.txt" changelist="4cdd1996-4a83-4768-87ba-370a47134935" time="1367789466149" ignored="false" />
     <file path="/a.java" changelist="4cdd1996-4a83-4768-87ba-370a47134935" time="1367281120160" ignored="false" />
     <file path="/MainActivity.java" changelist="4cdd1996-4a83-4768-87ba-370a47134935" time="1367499525470" ignored="false" />
     <file path="/activity_card_list.xml" changelist="4cdd1996-4a83-4768-87ba-370a47134935" time="1367218508443" ignored="false" />
     <file path="/Answer.java" changelist="4cdd1996-4a83-4768-87ba-370a47134935" time="1367550653977" ignored="false" />
-    <file path="/fragment.java" changelist="4cdd1996-4a83-4768-87ba-370a47134935" time="1367472303093" ignored="false" />
+    <file path="/fragment.java" changelist="4cdd1996-4a83-4768-87ba-370a47134935" time="1367717184899" ignored="false" />
     <file path="/a.xml" changelist="4cdd1996-4a83-4768-87ba-370a47134935" time="1367280798599" ignored="false" />
     <file path="/a.dummy" changelist="4cdd1996-4a83-4768-87ba-370a47134935" time="1367546132613" ignored="false" />
     <file path="/activity_card_twopane.xml" changelist="4cdd1996-4a83-4768-87ba-370a47134935" time="1367289587218" ignored="false" />
@@ -60,7 +63,7 @@
     <file path="/a.js" changelist="4cdd1996-4a83-4768-87ba-370a47134935" time="1367277817816" ignored="false" />
     <file path="/MasterFragment.java" changelist="4cdd1996-4a83-4768-87ba-370a47134935" time="1367378893400" ignored="false" />
     <file path="/actionbar_add_card.xml" changelist="4cdd1996-4a83-4768-87ba-370a47134935" time="1367284535123" ignored="false" />
-    <file path="/CardDetailFragment.java" changelist="4cdd1996-4a83-4768-87ba-370a47134935" time="1367365928721" ignored="false" />
+    <file path="/CardDetailFragment.java" changelist="4cdd1996-4a83-4768-87ba-370a47134935" time="1367746179387" ignored="false" />
     <file path="/Global.java" changelist="4cdd1996-4a83-4768-87ba-370a47134935" time="1367376333378" ignored="false" />
     <file path="/CardListModel.java" changelist="4cdd1996-4a83-4768-87ba-370a47134935" time="1367380163651" ignored="false" />
     <file path="/Card.java" changelist="4cdd1996-4a83-4768-87ba-370a47134935" time="1367550616853" ignored="false" />
@@ -85,8 +88,19 @@
     <file path="/pack_list.xml" changelist="4cdd1996-4a83-4768-87ba-370a47134935" time="1367477671027" ignored="false" />
     <file path="/blackbutton.xml" changelist="4cdd1996-4a83-4768-87ba-370a47134935" time="1367554754183" ignored="false" />
     <file path="/popupwindow_background.xml" changelist="4cdd1996-4a83-4768-87ba-370a47134935" time="1367481187412" ignored="false" />
-    <file path="/CardListMasterFragment.java" changelist="4cdd1996-4a83-4768-87ba-370a47134935" time="1367585723964" ignored="false" />
+    <file path="/CardListMasterFragment.java" changelist="4cdd1996-4a83-4768-87ba-370a47134935" time="1367789605387" ignored="false" />
     <file path="/UIHelper.java" changelist="4cdd1996-4a83-4768-87ba-370a47134935" time="1367559897587" ignored="false" />
+    <file path="$USER_HOME$/Desktop/GestureTest/src/com/gesturetest/TestActivity.java" changelist="4cdd1996-4a83-4768-87ba-370a47134935" time="1367716055313" ignored="false" />
+    <file path="$USER_HOME$/Desktop/GestureTest/src/com/gesturetest/GestureTestActivity.java" changelist="4cdd1996-4a83-4768-87ba-370a47134935" time="1367716067248" ignored="false" />
+    <file path="$USER_HOME$/Desktop/GestureTest/src/com/gesturetest/Gesture.java" changelist="4cdd1996-4a83-4768-87ba-370a47134935" time="1367716077762" ignored="false" />
+    <file path="$USER_HOME$/Desktop/GestureTest/src/com/gesturetest/MyBaseAdapter.java" changelist="4cdd1996-4a83-4768-87ba-370a47134935" time="1367716089500" ignored="false" />
+    <file path="$USER_HOME$/Desktop/GestureTest/src/com/gesturetest/BaseActivity.java" changelist="4cdd1996-4a83-4768-87ba-370a47134935" time="1367716106147" ignored="false" />
+    <file path="$USER_HOME$/Desktop/GestureTest/src/com/gesturetest/GestureList.java" changelist="4cdd1996-4a83-4768-87ba-370a47134935" time="1367716120335" ignored="false" />
+    <file path="$PROJECT_DIR$/../Ref/android-swipelistview-sample/src/main/java/com/fortysevendeg/android/swipelistview/sample/activities/SwipeListViewExampleActivity.java" changelist="4cdd1996-4a83-4768-87ba-370a47134935" time="1367717233110" ignored="false" />
+    <file path="/SwipeListViewExampleActivity.java" changelist="4cdd1996-4a83-4768-87ba-370a47134935" time="1367717228832" ignored="false" />
+    <file path="$PROJECT_DIR$/../Ref/android-swipelistview-sample/src/main/java/com/fortysevendeg/android/swipelistview/sample/dialogs/AboutDialog.java" changelist="4cdd1996-4a83-4768-87ba-370a47134935" time="1367717342693" ignored="false" />
+    <file path="/card_list_item.xml" changelist="4cdd1996-4a83-4768-87ba-370a47134935" time="1367789004380" ignored="false" />
+    <file path="/card_list_item_background_selector.xml" changelist="4cdd1996-4a83-4768-87ba-370a47134935" time="1367788767048" ignored="false" />
     <option name="TRACKING_ENABLED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -111,7 +125,7 @@
     <sortChildren value="false" />
   </component>
   <component name="DebuggerManager">
-    <ui_properties default_suspend_policy="SuspendAll" default_condition_enabled="true" />
+    <line_breakpoints default_suspend_policy="SuspendAll" default_condition_enabled="true" />
     <breakpoint_any default_suspend_policy="SuspendAll" default_condition_enabled="true">
       <breakpoint>
         <option name="NOTIFY_CAUGHT" value="true" />
@@ -148,7 +162,7 @@
         <option name="LOG_MESSAGE" value="&#13;&#13;JAVA" />
       </breakpoint>
     </breakpoint_any>
-    <line_breakpoints default_suspend_policy="SuspendAll" default_condition_enabled="true" />
+    <ui_properties default_suspend_policy="SuspendAll" default_condition_enabled="true" />
     <breakpoint_rules />
     <ui_properties />
   </component>
@@ -158,43 +172,51 @@
   </component>
   <component name="FileEditorManager">
     <leaf>
-      <file leaf-file-name="AddPackFragment.java" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/com/internectics/fragment/AddPackFragment.java">
+      <file leaf-file-name="CardListMasterFragment.java" pinned="false" current="true" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/src/com/internectics/fragment/CardListMasterFragment.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="131" column="58" selection-start="4222" selection-end="4233" vertical-scroll-proportion="0.0">
+            <state line="185" column="51" selection-start="5984" selection-end="5988" vertical-scroll-proportion="0.69471157">
+              <folding>
+                <element signature="imports" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="AbsListView.java" pinned="false" current="false" current-in-tab="false">
+        <entry file="file:///Applications/Android/sdk/sources/android-14/android/widget/AbsListView.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state line="944" column="16" selection-start="28853" selection-end="28853" vertical-scroll-proportion="0.0">
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="PackListFragment.java" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/com/internectics/fragment/PackListFragment.java">
+      <file leaf-file-name="Thread.java" pinned="false" current="false" current-in-tab="false">
+        <entry file="file:///Applications/Android/sdk/sources/android-14/java/lang/Thread.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="192" column="43" selection-start="7387" selection-end="7387" vertical-scroll-proportion="0.0">
-              <folding>
-                <element signature="imports" expanded="true" />
-                <element signature="e#6810#7284#0" expanded="true" />
-                <element signature="e#7269#7270#0" expanded="true" />
-              </folding>
+            <state line="1011" column="23" selection-start="33547" selection-end="33547" vertical-scroll-proportion="0.0">
+              <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="CardListMasterFragment.java" pinned="false" current="true" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/src/com/internectics/fragment/CardListMasterFragment.java">
+      <file leaf-file-name="card_list_item.xml" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/res/layout/card_list_item.xml">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="76" column="43" selection-start="2287" selection-end="2287" vertical-scroll-proportion="2.6697893">
-              <folding>
-                <element signature="imports" expanded="true" />
-              </folding>
+            <state line="4" column="34" selection-start="224" selection-end="224" vertical-scroll-proportion="0.0">
+              <folding />
             </state>
+          </provider>
+          <provider editor-type-id="android-designer">
+            <state />
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="UIHelper.java" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/com/internectics/util/UIHelper.java">
+      <file leaf-file-name="card_list_item_background_selector.xml" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/res/drawable/card_list_item_background_selector.xml">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="39" column="13" selection-start="1167" selection-end="1167" vertical-scroll-proportion="0.0">
+            <state line="5" column="71" selection-start="123" selection-end="123" vertical-scroll-proportion="0.0">
               <folding />
             </state>
           </provider>
@@ -225,9 +247,6 @@
   <component name="IdeDocumentHistory">
     <option name="changedFiles">
       <list>
-        <option value="$PROJECT_DIR$/res/values/styles.xml" />
-        <option value="$PROJECT_DIR$/res/layout/layout_test.xml" />
-        <option value="$PROJECT_DIR$/src/com/internectics/android_flashcardcreator/MainActivity.java" />
         <option value="$PROJECT_DIR$/res/drawable/popupwindow_background.xml" />
         <option value="$PROJECT_DIR$/res/layout/fragment_add_pack.xml" />
         <option value="$PROJECT_DIR$/res/layout/fragment_pack_list.xml" />
@@ -240,6 +259,9 @@
         <option value="$PROJECT_DIR$/src/com/internectics/util/UIHelper.java" />
         <option value="$PROJECT_DIR$/src/com/internectics/fragment/AddPackFragment.java" />
         <option value="$PROJECT_DIR$/src/com/internectics/fragment/PackListFragment.java" />
+        <option value="$PROJECT_DIR$/src/com/internectics/fragment/CardDetailFragment.java" />
+        <option value="$PROJECT_DIR$/res/drawable/card_list_item_background_selector.xml" />
+        <option value="$PROJECT_DIR$/res/layout/card_list_item.xml" />
         <option value="$PROJECT_DIR$/src/com/internectics/fragment/CardListMasterFragment.java" />
       </list>
     </option>
@@ -480,104 +502,14 @@
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
             <PATH_ELEMENT>
-              <option name="myItemId" value="values" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="android-FlashCardCreator" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="android-FlashCardCreator" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="res" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="menu" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="android-FlashCardCreator" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="android-FlashCardCreator" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="res" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="layout" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="android-FlashCardCreator" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="android-FlashCardCreator" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="res" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="drawable-hdpi" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="android-FlashCardCreator" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="android-FlashCardCreator" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="res" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
               <option name="myItemId" value="drawable" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="android-FlashCardCreator" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="android-FlashCardCreator" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="res" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="anim" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
           </PATH>
         </subPane>
       </pane>
-      <pane id="PackagesPane" />
       <pane id="Scope" />
+      <pane id="PackagesPane" />
     </panes>
   </component>
   <component name="PropertiesComponent">
@@ -817,14 +749,14 @@
     </todo-panel>
   </component>
   <component name="ToolWindowManager">
-    <frame x="0" y="22" width="1280" height="690" extended-state="6" />
+    <frame x="0" y="22" width="1280" height="690" extended-state="0" />
     <editor active="true" />
     <layout>
       <window_info id="Changes" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32809773" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="JetGradle" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.23019803" sideWeight="0.5508772" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="Palette" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.24917492" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
-      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.39092496" sideWeight="0.5648298" order="3" side_tool="false" content_ui="tabs" />
+      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.4649123" sideWeight="0.5648298" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.69982547" sideWeight="0.43517017" order="13" side_tool="true" content_ui="tabs" />
       <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.24958813" sideWeight="0.21754386" order="3" side_tool="true" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32982457" sideWeight="0.5" order="8" side_tool="false" content_ui="tabs" />
@@ -834,20 +766,20 @@
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.24554294" sideWeight="0.32763532" order="1" side_tool="true" content_ui="tabs" />
       <window_info id="Maven Projects" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32920793" sideWeight="0.5" order="9" side_tool="false" content_ui="tabs" />
       <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="SLIDING" type="SLIDING" visible="false" weight="0.4" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.26661265" sideWeight="0.7982456" order="0" side_tool="true" content_ui="combo" x="291" y="93" width="322" height="850" />
-      <window_info id="Run" active="true" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.20175439" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.2439222" sideWeight="0.77894735" order="0" side_tool="true" content_ui="combo" x="291" y="93" width="322" height="850" />
+      <window_info id="Run" active="true" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.22105263" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Palette&#9;" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.2139808" sideWeight="0.79298246" order="10" side_tool="false" content_ui="tabs" />
       <window_info id="Documentation" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="FLOATING" visible="false" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" x="100" y="122" width="1080" height="493" />
       <window_info id="Database" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32920793" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
       <window_info id="IDEtalk Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="9" side_tool="false" content_ui="tabs" />
       <window_info id="IDEtalk" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32920793" sideWeight="0.5" order="8" side_tool="false" content_ui="tabs" />
       <window_info id="Application Servers" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="11" side_tool="false" content_ui="tabs" />
-      <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.27552673" sideWeight="0.75218153" order="3" side_tool="false" content_ui="combo" />
+      <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.27552673" sideWeight="0.8" order="3" side_tool="false" content_ui="combo" />
       <window_info id="Thumbnails" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32867134" sideWeight="0.5" order="14" side_tool="false" content_ui="tabs" />
       <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="Designer" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.1755603" sideWeight="0.17894737" order="2" side_tool="false" content_ui="tabs" />
-      <window_info id="Message" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Preview" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33443162" sideWeight="0.67017543" order="7" side_tool="false" content_ui="tabs" />
+      <window_info id="Message" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.10471204" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Inspection" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.4" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
     </layout>
@@ -921,106 +853,12 @@
     <option name="FILTER_TARGETS" value="false" />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file:///Applications/Android/sdk/sources/android-14/java/lang/Object.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="315" column="29" selection-start="13719" selection-end="13719" vertical-scroll-proportion="0.0">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file:///Applications/Android/sdk/sources/android-14/android/widget/BaseAdapter.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="57" column="16" selection-start="2054" selection-end="2054" vertical-scroll-proportion="0.0" />
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/res/drawable/dialog_head_bg.png">
-      <provider selected="true" editor-type-id="images">
-        <state />
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/res/layout/play.xml">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="0.0">
-          <folding />
-        </state>
-      </provider>
-      <provider editor-type-id="android-designer">
-        <state />
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/res/layout/pack_list.xml">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="0.0">
-          <folding />
-        </state>
-      </provider>
-      <provider editor-type-id="android-designer">
-        <state />
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/res/layout/layout_test.xml">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="0.0">
-          <folding />
-        </state>
-      </provider>
-      <provider editor-type-id="android-designer">
-        <state />
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/res/layout/dialog_header.xml">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="18" column="43" selection-start="672" selection-end="672" vertical-scroll-proportion="0.71428573">
-          <folding />
-        </state>
-      </provider>
-      <provider editor-type-id="android-designer">
-        <state />
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/com/internectics/helper/SQLiteHelper.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="19" column="32" selection-start="534" selection-end="548" vertical-scroll-proportion="0.31542057">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/com/internectics/util/AppContext.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="60" column="17" selection-start="1311" selection-end="1311" vertical-scroll-proportion="0.78971964">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/res/drawable/blackbutton.xml">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="7" column="6" selection-start="258" selection-end="258" vertical-scroll-proportion="0.2453271">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/res/values/styles.xml">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="32" column="0" selection-start="1216" selection-end="1882" vertical-scroll-proportion="0.7359813">
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/res/layout/fragment_pack_list.xml">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="0.0">
-          <folding />
-        </state>
-      </provider>
       <provider editor-type-id="android-designer">
         <state />
       </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/com/internectics/util/UIHelper.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="39" column="13" selection-start="1167" selection-end="1167" vertical-scroll-proportion="0.0">
-          <folding />
-        </state>
+        <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="0.0" />
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/com/internectics/fragment/AddPackFragment.java">
@@ -1033,17 +871,100 @@
     <entry file="file://$PROJECT_DIR$/src/com/internectics/fragment/PackListFragment.java">
       <provider selected="true" editor-type-id="text-editor">
         <state line="192" column="43" selection-start="7387" selection-end="7387" vertical-scroll-proportion="0.0">
-          <folding>
-            <element signature="imports" expanded="true" />
-            <element signature="e#6810#7284#0" expanded="true" />
-            <element signature="e#7269#7270#0" expanded="true" />
-          </folding>
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/com/internectics/util/UIHelper.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="39" column="13" selection-start="1167" selection-end="1167" vertical-scroll-proportion="0.0">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/com/internectics/fragment/CardListBinder.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="15" column="13" selection-start="434" selection-end="434" vertical-scroll-proportion="0.0">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/res/layout/fragment_card_detail.xml">
+      <provider editor-type-id="android-designer">
+        <state />
+      </provider>
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="12" column="28" selection-start="465" selection-end="469" vertical-scroll-proportion="-5.0" />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/res/layout/card.xml">
+      <provider editor-type-id="android-designer">
+        <state />
+      </provider>
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="19" column="42" selection-start="698" selection-end="711" vertical-scroll-proportion="-6.111111" />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/com/internectics/android_flashcardcreator/MainActivity.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="220" column="51" selection-start="8289" selection-end="8310" vertical-scroll-proportion="-8.48">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/com/internectics/data/Card.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="19" column="20" selection-start="530" selection-end="530" vertical-scroll-proportion="0.0" />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/com/internectics/fragment/CardDetailFragment.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="54" column="38" selection-start="1586" selection-end="1592" vertical-scroll-proportion="0.0">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file:///Applications/Android/sdk/sources/android-14/android/widget/SimpleAdapter.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="87" column="63" selection-start="3741" selection-end="3809" vertical-scroll-proportion="-9.481482">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/res/drawable/card_list_item_background_selector.xml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="5" column="71" selection-start="123" selection-end="123" vertical-scroll-proportion="0.0">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/res/layout/card_list_item.xml">
+      <provider editor-type-id="android-designer">
+        <state />
+      </provider>
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="4" column="34" selection-start="224" selection-end="224" vertical-scroll-proportion="0.0">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file:///Applications/Android/sdk/sources/android-14/java/lang/Thread.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="1011" column="23" selection-start="33547" selection-end="33547" vertical-scroll-proportion="0.0">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file:///Applications/Android/sdk/sources/android-14/android/widget/AbsListView.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="944" column="16" selection-start="28853" selection-end="28853" vertical-scroll-proportion="0.0">
+          <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/com/internectics/fragment/CardListMasterFragment.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="76" column="43" selection-start="2287" selection-end="2287" vertical-scroll-proportion="2.6697893">
+        <state line="185" column="51" selection-start="5984" selection-end="5988" vertical-scroll-proportion="0.69471157">
           <folding>
             <element signature="imports" expanded="true" />
           </folding>
