@@ -13,6 +13,7 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 import com.internectics.android_flashcardcreator.R;
+import com.internectics.data.Card;
 import com.internectics.data.Pack;
 import com.internectics.helper.FileOperationHelper;
 import com.internectics.util.*;
@@ -109,6 +110,11 @@ public class AddPackFragment extends DialogFragment {
 		pack.userID = Global.USER_ID;
 		pack.packID = (int)(System.currentTimeMillis()/1000L);
 		pack.save(AppContext.getAppContext());
+
+        Card defaultCard = new Card();
+        defaultCard.cardSN=1;
+        defaultCard.packID = pack.packID;
+        defaultCard.save(AppContext.getAppContext());
 		
 		AppConfig.getInstance(getActivity()).set(Global.packID_Property, String.format("%d", pack.packID));
 		AppConfig.getInstance(getActivity()).set(Global.latestPackCreatedDate_Property, StringUtils.getCurrentTimeDate());

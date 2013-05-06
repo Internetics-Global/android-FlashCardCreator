@@ -178,12 +178,12 @@ public class CardListMasterFragment extends ListFragment {
                 }
                 ((SimpleAdapter)getListAdapter()).notifyDataSetChanged();
 
-                //Finally, send back currenPack to activity
+                //Send back currenPack to activity
                 ((MainActivity) getActivity()).mCurrentPack = mCurrentPack;
 
-
                 getListView().setChoiceMode(ListView.CHOICE_MODE_SINGLE);
-                getListView().setItemChecked(1,true);
+                mCallbacks.onItemSelected(0);
+                getListView().setItemChecked(0,true);
 
             }
 
