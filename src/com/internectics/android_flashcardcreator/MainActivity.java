@@ -194,6 +194,10 @@ public class MainActivity extends FragmentActivity implements
                 saveNewCreatedCard();
                 break;
 
+            case R.id.actionbar_help:
+                startActivity(new Intent(MainActivity.this,InstructionActivity.class));
+                break;
+
             default:
                 break;
         }

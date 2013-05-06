@@ -3,6 +3,7 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/android-FlashCardCreator.iml" filepath="$PROJECT_DIR$/android-FlashCardCreator.iml" />
+      <module fileurl="file://$PROJECT_DIR$/libs/viewflow/viewflow.iml" filepath="$PROJECT_DIR$/libs/viewflow/viewflow.iml" />
     </modules>
   </component>
 </project>
