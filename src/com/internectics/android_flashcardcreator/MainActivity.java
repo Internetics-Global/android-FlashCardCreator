@@ -10,6 +10,8 @@ import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.util.Log;
 import android.view.*;
+import android.view.animation.AlphaAnimation;
+import android.view.animation.Animation;
 import android.widget.*;
 import com.dropbox.client2.DropboxAPI;
 import com.dropbox.client2.android.AndroidAuthSession;
@@ -22,10 +24,16 @@ import com.internectics.fragment.AddPackFragment;
 import com.internectics.fragment.CardDetailFragment;
 import com.internectics.fragment.CardListMasterFragment;
 import com.internectics.fragment.HelpFragment;
+import com.internectics.helper.FileOperationHelper;
+import com.internectics.helper.PackTransferHelper;
 import com.internectics.helper.SQLiteHelper;
 import com.internectics.util.AppContext;
 import com.internectics.util.Global;
 import com.internectics.util.OpenUDID_manager;
+import org.json.JSONException;
+import org.json.simple.parser.ParseException;
+
+import java.io.IOException;
 
 /**
  * MainActivity is the entry for whole app
@@ -130,6 +138,41 @@ public class MainActivity extends FragmentActivity implements
                 break;
             }
             case R.id.actionbar_edit:
+                try {
+                    PackTransferHelper.buildCardJsonFile(new Card(),FileOperationHelper.getTestFile().toString());
+                } catch (JSONException e) {
+                    e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+                } catch (IOException e) {
+                    e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+                }
+
+                try {
+                    PackTransferHelper.buildPackJsonFile(new Pack(),FileOperationHelper.getTestFile2().toString());
+                } catch (JSONException e) {
+                    e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+                } catch (IOException e) {
+                    e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+                }
+
+                try {
+                    PackTransferHelper.parsePackJsonFile(FileOperationHelper.getTestFile2().toString());
+                } catch (JSONException e) {
+                    e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+                } catch (IOException e) {
+                    e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+                } catch (ParseException e) {
+                    e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+                }
+
+                try {
+                    PackTransferHelper.parseCardJsonFile(FileOperationHelper.getTestFile().toString());
+                } catch (JSONException e) {
+                    e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+                } catch (IOException e) {
+                    e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+                } catch (ParseException e) {
+                    e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+                }
 
                 break;
             case R.id.actionbar_packs:
@@ -268,6 +311,9 @@ public class MainActivity extends FragmentActivity implements
 
         Button masterMaskButton = (Button) findViewById(R.id.master_view_mask);
         masterMaskButton.setVisibility(View.VISIBLE);
+        final Animation animAlphaUp = new AlphaAnimation(0.0f, 1.0f);
+        animAlphaUp.setDuration(500);
+        masterMaskButton.startAnimation(animAlphaUp);
         masterMaskButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -277,7 +323,9 @@ public class MainActivity extends FragmentActivity implements
 
         CardDetailFragment fragment = new CardDetailFragment(mCurrentPack,null);
         getSupportFragmentManager().beginTransaction()
-                .replace(R.id.add_card_frame_layout, fragment).commit();
+                .setCustomAnimations(R.anim.in_from_right, R.anim.out_to_right)
+                .replace(R.id.add_card_frame_layout, fragment)
+                .commit();
 
         mIsCreatingCard = true;
         invalidateOptionsMenu();
@@ -306,6 +354,9 @@ public class MainActivity extends FragmentActivity implements
 
         Button masterMaskButton = (Button) findViewById(R.id.master_view_mask);
         masterMaskButton.setVisibility(View.INVISIBLE);
+        final Animation animAlphaUp = new AlphaAnimation(1.0f, 0.0f);
+        animAlphaUp.setDuration(500);
+        masterMaskButton.startAnimation(animAlphaUp);
 
         mIsCreatingCard = false;
         invalidateOptionsMenu();

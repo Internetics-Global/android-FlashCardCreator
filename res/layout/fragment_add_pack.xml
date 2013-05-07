@@ -2,6 +2,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_height="fill_parent"
     android:layout_width="fill_parent"
+    android:background="#252525"
     android:orientation="vertical" >
     
     <include layout="@layout/dialog_header" />
@@ -35,14 +36,15 @@
 
         <ImageView
             android:id="@+id/fragment_add_pack_coverImage"
-            android:layout_width="fill_parent"
-            android:layout_height="fill_parent"
+            android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:layout_marginLeft="50dp"
-            android:layout_marginRight="50dp"
+            android:layout_width="250dp"
+            android:layout_marginLeft="100dp"
+            android:layout_marginRight="100dp"
             android:layout_marginTop="30dp"
             android:layout_marginBottom="30dp"
-            android:scaleType="centerInside"
+            android:scaleType="fitCenter"
+            android:background="@drawable/shape_round_corner"
             android:src="@drawable/pack_cover_default_image" />
     </LinearLayout>
 

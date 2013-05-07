@@ -18,7 +18,7 @@ public class Card {
 	public String   coverImageURL;
 	public String   templateBackground;
 	public int      cardSN;
-	
+
 	public Answer   answer;
 	public Question question;
 	
@@ -99,7 +99,7 @@ public class Card {
 	}
 	
 	private void update(Context context) {
-		String query = String.format("UPDATE Cards_Tables SET pack_id=%d, cover_image=\"%s\", template_background=\"%s\", card_sn=%d WHERE card_id=%d", packID, coverImageURL, templateBackground,cardSN, cardID);
+		String query = String.format("UPDATE Cards_Tables SET pack_id=%d, cover_image=\"%s\", template_background=\"%s\", card_sn=%d WHERE card_id=%d", packID, coverImageURL, templateBackground, cardSN, cardID);
         SQLiteHelper.defaultDatabase(context).execSQL(query);
 	}
 	
@@ -107,7 +107,7 @@ public class Card {
 		if (cardID == -1) {
 			cardID = (int)(System.currentTimeMillis()/1000L);
 		}
-		String query = String.format("INSERT INTO Cards_Tables(card_id, pack_id, cover_image, template_background, card_sn) VALUES (%d, %d, \"%s\", \"%s\", %d)",cardID, packID, coverImageURL, templateBackground, cardSN);
+       String query = String.format("INSERT INTO Cards_Tables(card_id, pack_id, cover_image, template_background, card_sn) VALUES (%d, %d, \"%s\", \"%s\", %d)",cardID, packID, coverImageURL, templateBackground, cardSN);
         SQLiteHelper.defaultDatabase(context).execSQL(query);
        
 	}

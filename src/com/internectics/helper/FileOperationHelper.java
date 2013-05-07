@@ -4,6 +4,7 @@ import android.graphics.Bitmap;
 import com.internectics.util.AppContext;
 
 import java.io.File;
+import java.io.IOException;
 import java.util.UUID;
 
 public class FileOperationHelper {
@@ -22,6 +23,30 @@ public class FileOperationHelper {
 		}
 		return tempFile;
 	}
+
+    /**
+     * All the downloaded zip will be input here
+     *
+     */
+    public static File downloadedPackDirectory() {
+        File tempFile = new File(cacheDirectory(), "Downloaded Pack");
+        if (!tempFile.exists()) {
+            tempFile.mkdir();
+        }
+        return tempFile;
+    }
+
+    /**
+     * All the uploaded zip will be input here
+     *
+     */
+    public static File uploadPackDirectory() {
+        File tempFile = new File(cacheDirectory(), "Upload Pack");
+        if (!tempFile.exists()) {
+            tempFile.mkdir();
+        }
+        return tempFile;
+    }
 
 	/**
 	 * All the image resouces in pack/card will be JPG format Everytime you call
@@ -69,5 +94,41 @@ public class FileOperationHelper {
 
 		return bitmap;
 	}
+
+
+    /**
+     * Test purpose
+     *
+     */
+    public static File getTestFile() {
+        File tempFile = new File(cacheDirectory(), "test.json");
+        if (!tempFile.exists()) {
+            try {
+                tempFile.createNewFile();
+            } catch (IOException e) {
+                e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+            }
+        }
+        return tempFile;
+    }
+
+    /**
+     * Test purpose
+     *
+     */
+    public static File getTestFile2() {
+        File tempFile = new File(cacheDirectory(), "test2.json");
+        if (!tempFile.exists()) {
+            try {
+                tempFile.createNewFile();
+            } catch (IOException e) {
+                e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+            }
+        }
+        return tempFile;
+    }
+
+
+
 
 }

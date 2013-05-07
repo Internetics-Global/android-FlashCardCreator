@@ -1,6 +1,7 @@
 package com.internectics.fragment;
 
 import android.app.Activity;
+import android.app.DownloadManager;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
@@ -12,6 +13,7 @@ import android.widget.*;
 import com.internectics.android_flashcardcreator.MainActivity;
 import com.internectics.android_flashcardcreator.R;
 import com.internectics.data.Pack;
+import com.internectics.helper.PackTransferHelper;
 import com.internectics.model.CardListModel;
 import com.internectics.util.Global;
 
@@ -162,6 +164,7 @@ public class CardListMasterFragment extends ListFragment {
         public void onReceive(Context context, Intent intent) {
             if (intent.getAction().equals(Global.BROADCAST_ACTION_UPDATE_MASTER_VIEW)) {
 
+                //step1: setmCurrentPack;
                 String extraStr = intent.getExtras().getString(Global.KEY_FROM);
 
                 if (extraStr.equals(Global.BROADCAST_INTENT_EXTRA_FROM_NEW_CARD) ||
@@ -172,23 +175,35 @@ public class CardListMasterFragment extends ListFragment {
                     mCurrentPack =  CardListModel.getAllPacks().get(index);
                 }
 
-                if (mCurrentPack != null) {
-                    mCardArrayList.clear();
-                    mCardArrayList.addAll(CardListModel.getCardList(mCurrentPack));
-                }
-                ((SimpleAdapter)getListAdapter()).notifyDataSetChanged();
+                //step2: update listview
+                updateListView();
 
-                //Send back currenPack to activity
-                ((MainActivity) getActivity()).mCurrentPack = mCurrentPack;
 
-                getListView().setChoiceMode(ListView.CHOICE_MODE_SINGLE);
-                mCallbacks.onItemSelected(0);
-                getListView().setItemChecked(0,true);
+            } else if (intent.getAction().equals(DownloadManager.ACTION_DOWNLOAD_COMPLETE)) {
+                //step1: set mCurrentPack
+                //PackTransferHelper.assembleCards();
 
+                //step2: update listview
+                updateListView();
             }
 
 
 
+        }
+
+        private void updateListView() {
+            if (mCurrentPack != null) {
+                mCardArrayList.clear();
+                mCardArrayList.addAll(CardListModel.getCardList(mCurrentPack));
+            }
+            ((SimpleAdapter)getListAdapter()).notifyDataSetChanged();
+
+            //Send back currenPack to activity
+            ((MainActivity) getActivity()).mCurrentPack = mCurrentPack;
+
+            getListView().setChoiceMode(ListView.CHOICE_MODE_SINGLE);
+            mCallbacks.onItemSelected(0);
+            getListView().setItemChecked(0,true);
         }
     }
 }

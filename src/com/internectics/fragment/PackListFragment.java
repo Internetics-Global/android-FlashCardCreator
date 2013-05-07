@@ -139,13 +139,14 @@ public class PackListFragment extends Fragment {
             if (convertView == null) {
                 convertView = new ImageView(mContext);
                 imageView = (ImageView) convertView;
-                imageView.setScaleType(ImageView.ScaleType.CENTER_CROP);
+                imageView.setScaleType(ImageView.ScaleType.FIT_CENTER);
                 imageView.setLayoutParams(new Gallery.LayoutParams(
                         UIHelper.getPixels(180),UIHelper.getPixels(150)));
 
             } else {
                 imageView = (ImageView) convertView;
             }
+
 
             ContentResolver cResolver = AppContext.getAppContext().getContentResolver();
             String str = currentPack.coverImageUriStr;
@@ -161,6 +162,7 @@ public class PackListFragment extends Fragment {
                     e.printStackTrace();
                 }
             }
+            imageView.setBackgroundResource(R.drawable.shape_round_corner);
 
 
             baseView.addView(imageView);

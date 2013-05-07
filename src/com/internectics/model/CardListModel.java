@@ -58,6 +58,12 @@ public class CardListModel {
         return  User.defaultUser(AppContext.getAppContext()).packs;
     }
 
+    public static Pack getLastPack() {
+        int size = getAllPacks().size();
+        Pack pack = getAllPacks().get(size -1);
+        return pack;
+    }
+
     /**
      * if no existing pack, return null
      */

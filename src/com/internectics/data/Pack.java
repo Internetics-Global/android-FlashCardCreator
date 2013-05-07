@@ -30,9 +30,12 @@ public class Pack {
 	
 	public Pack() {
 		super();
+        packName = "";
+        sidebarTitle = "";
 		packID = -1;
 		userID = -1;
 		creatorID = "";
+        creatorNickName = "";
 		cards = new ArrayList<Card>();
 		questionTitle = "Question";
 		answerTitle = "Answer";
