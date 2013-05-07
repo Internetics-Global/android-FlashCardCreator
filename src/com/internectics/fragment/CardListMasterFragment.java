@@ -13,7 +13,6 @@ import android.widget.*;
 import com.internectics.android_flashcardcreator.MainActivity;
 import com.internectics.android_flashcardcreator.R;
 import com.internectics.data.Pack;
-import com.internectics.helper.PackTransferHelper;
 import com.internectics.model.CardListModel;
 import com.internectics.util.Global;
 

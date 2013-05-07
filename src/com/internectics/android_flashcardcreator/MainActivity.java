@@ -17,10 +17,7 @@ import com.dropbox.client2.android.AndroidAuthSession;
 import com.dropbox.client2.session.TokenPair;
 import com.internectics.data.Card;
 import com.internectics.data.Pack;
-import com.internectics.fragment.AddPackFragment;
-import com.internectics.fragment.CardDetailFragment;
-import com.internectics.fragment.CardListMasterFragment;
-import com.internectics.fragment.HelpFragment;
+import com.internectics.fragment.*;
 import com.internectics.helper.FileOperationHelper;
 import com.internectics.helper.PackTransferHelper;
 import com.internectics.helper.SQLiteHelper;
@@ -174,32 +171,35 @@ public class MainActivity extends FragmentActivity implements
                         .show();
                 break;
             case R.id.actionbar_more:
-                new AlertDialog.Builder(this)
-                        .setTitle("More")
-                        .setItems(new String[]{"Dropbox", "Random play", "Register", "Submit new listing", "Help", "About"}, new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialog, int which) {
-                                switch (which) {
-                                    case 0:
-                                        break;
-                                    case 1:
-                                        break;
-                                    case 2:
-                                        break;
-                                    case 3:
-                                        break;
-                                    case 4:
-                                        HelpFragment helpFragment = HelpFragment.getInstance();
-                                        helpFragment.show(getFragmentManager(),"help_dialog");
-                                        break;
-                                    case 5:
-                                        break;
-                                    default:
-                                        break;
-                                }
-                            }
-                        })
-                        .show();
+                MoreFragment moreFragment = MoreFragment.getInstance();
+                moreFragment.show(getFragmentManager(), "more_fragment");
+
+//                new AlertDialog.Builder(this)
+//                        .setTitle("More")
+//                        .setItems(new String[]{"Dropbox", "Random play", "Register", "Submit new listing", "Help", "About"}, new DialogInterface.OnClickListener() {
+//                            @Override
+//                            public void onClick(DialogInterface dialog, int which) {
+//                                switch (which) {
+//                                    case 0:
+//                                        break;
+//                                    case 1:
+//                                        break;
+//                                    case 2:
+//                                        break;
+//                                    case 3:
+//                                        break;
+//                                    case 4:
+//                                        HelpFragment helpFragment = HelpFragment.getInstance();
+//                                        helpFragment.show(getFragmentManager(),"help_dialog");
+//                                        break;
+//                                    case 5:
+//                                        break;
+//                                    default:
+//                                        break;
+//                                }
+//                            }
+//                        })
+//                        .show();
                 break;
 
             case R.id.actionbar_play:

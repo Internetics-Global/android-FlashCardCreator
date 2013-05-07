@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:orientation="vertical"
+              android:background="#252525"
+              android:layout_width="match_parent"
+              android:layout_height="500dp">
+
+    <include layout="@layout/dialog_header" />
+
+    <RelativeLayout
+            android:layout_width="fill_parent"
+            android:layout_height="40dp" android:layout_gravity="left|top|center">
+        <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="fill_parent"
+                android:text="Dropbox"
+                android:gravity="center_vertical"
+                android:textSize="20sp"
+                android:id="@+id/dropbox_textView"
+                android:layout_alignParentLeft="true"/>
+        <ToggleButton
+                android:layout_width="wrap_content"
+                android:layout_height="fill_parent"
+                android:text="Random Play"
+                android:layout_alignParentRight="true"
+                android:id="@+id/dropbox_toggleButton" android:checked="false"/>
+    </RelativeLayout>
+
+    <RelativeLayout
+            android:layout_width="fill_parent"
+            android:layout_height="40dp" android:layout_gravity="left|top|center">
+        <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="fill_parent"
+                android:text="Random Play"
+                android:gravity="center_vertical"
+                android:textSize="20sp"
+                android:id="@+id/random_textView"
+                android:layout_alignParentLeft="true"/>
+        <ToggleButton
+                android:layout_width="wrap_content"
+                android:layout_height="fill_parent"
+                android:text="About"
+                android:layout_alignParentRight="true"
+                android:id="@+id/random_toggleButton" android:checked="false"/>
+    </RelativeLayout>
+
+    <RelativeLayout
+            android:layout_width="fill_parent"
+            android:layout_height="40dp">
+        <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="fill_parent"
+                android:text="Help"
+                android:gravity="center_vertical"
+                android:textSize="20sp"
+                android:id="@+id/help_textView"
+                android:layout_alignParentLeft="true"/>
+    </RelativeLayout>
+
+    <RelativeLayout
+            android:layout_width="fill_parent"
+            android:layout_height="40dp" android:layout_gravity="left|top|center">
+        <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="fill_parent"
+                android:text="About"
+                android:gravity="center_vertical"
+                android:textSize="20sp"
+                android:id="@+id/about_textView"
+                android:layout_alignParentLeft="true"/>
+    </RelativeLayout>
+
+
+</LinearLayout>

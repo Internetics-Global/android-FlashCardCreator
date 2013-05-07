@@ -14,8 +14,8 @@
   <component name="AndroidDesignerProfile">
     <option name="fullProfile">
       <profile>
-        <option name="device" value="Nexus 7" />
-        <option name="deviceConfiguration" value="Landscape" />
+        <option name="device" value="2.7in QVGA slider" />
+        <option name="deviceConfiguration" value="Portrait" />
         <option name="targetHashString" value="android-14" />
         <option name="theme" value="AppTheme" />
       </profile>
@@ -42,20 +42,23 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="4cdd1996-4a83-4768-87ba-370a47134935" name="Default" comment="">
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/com/internectics/helper/DropboxHelper.java" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/com/internectics/fragment/MoreFragment.java" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/res/layout/fragment_more.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/com/internectics/fragment/CardListMasterFragment.java" afterPath="$PROJECT_DIR$/src/com/internectics/fragment/CardListMasterFragment.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/com/internectics/helper/DropboxHelper.java" afterPath="$PROJECT_DIR$/src/com/internectics/helper/DropboxHelper.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/com/internectics/android_flashcardcreator/MainActivity.java" afterPath="$PROJECT_DIR$/src/com/internectics/android_flashcardcreator/MainActivity.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
     </list>
     <ignored path="android-FlashCardCreator.iws" />
     <ignored path=".idea/workspace.xml" />
-    <file path="/Dummy.txt" changelist="4cdd1996-4a83-4768-87ba-370a47134935" time="1367882405333" ignored="false" />
+    <file path="/Dummy.txt" changelist="4cdd1996-4a83-4768-87ba-370a47134935" time="1367922899441" ignored="false" />
     <file path="/a.java" changelist="4cdd1996-4a83-4768-87ba-370a47134935" time="1367281120160" ignored="false" />
-    <file path="/MainActivity.java" changelist="4cdd1996-4a83-4768-87ba-370a47134935" time="1367909600463" ignored="false" />
+    <file path="/MainActivity.java" changelist="4cdd1996-4a83-4768-87ba-370a47134935" time="1367926925172" ignored="false" />
     <file path="/activity_card_list.xml" changelist="4cdd1996-4a83-4768-87ba-370a47134935" time="1367218508443" ignored="false" />
     <file path="/Answer.java" changelist="4cdd1996-4a83-4768-87ba-370a47134935" time="1367550653977" ignored="false" />
-    <file path="/fragment.java" changelist="4cdd1996-4a83-4768-87ba-370a47134935" time="1367912879245" ignored="false" />
+    <file path="/fragment.java" changelist="4cdd1996-4a83-4768-87ba-370a47134935" time="1367926788304" ignored="false" />
     <file path="/a.xml" changelist="4cdd1996-4a83-4768-87ba-370a47134935" time="1367280798599" ignored="false" />
-    <file path="/a.dummy" changelist="4cdd1996-4a83-4768-87ba-370a47134935" time="1367902553937" ignored="false" />
+    <file path="/a.dummy" changelist="4cdd1996-4a83-4768-87ba-370a47134935" time="1367926884221" ignored="false" />
     <file path="/activity_card_twopane.xml" changelist="4cdd1996-4a83-4768-87ba-370a47134935" time="1367903918912" ignored="false" />
     <file path="/*.regexp" changelist="4cdd1996-4a83-4768-87ba-370a47134935" time="1367232220527" ignored="false" />
     <file path="/a.js" changelist="4cdd1996-4a83-4768-87ba-370a47134935" time="1367277817816" ignored="false" />
@@ -79,7 +82,7 @@
     <file path="/colors.xml" changelist="4cdd1996-4a83-4768-87ba-370a47134935" time="1367461662032" ignored="false" />
     <file path="/styles.xml" changelist="4cdd1996-4a83-4768-87ba-370a47134935" time="1367480174191" ignored="false" />
     <file path="/dialog_header.xml" changelist="4cdd1996-4a83-4768-87ba-370a47134935" time="1367479692869" ignored="false" />
-    <file path="/fragment_add_pack.xml" changelist="4cdd1996-4a83-4768-87ba-370a47134935" time="1367812408597" ignored="false" />
+    <file path="/fragment_add_pack.xml" changelist="4cdd1996-4a83-4768-87ba-370a47134935" time="1367927157501" ignored="false" />
     <file path="/fragment_help.xml" changelist="4cdd1996-4a83-4768-87ba-370a47134935" time="1367472550326" ignored="false" />
     <file path="/HelpFragment.java" changelist="4cdd1996-4a83-4768-87ba-370a47134935" time="1367479803690" ignored="false" />
     <file path="/fragment_pack_list.xml" changelist="4cdd1996-4a83-4768-87ba-370a47134935" time="1367540442313" ignored="false" />
@@ -114,7 +117,11 @@
     <file path="/in_from_right.xml" changelist="4cdd1996-4a83-4768-87ba-370a47134935" time="1367902461856" ignored="false" />
     <file path="/out_to_right.xml" changelist="4cdd1996-4a83-4768-87ba-370a47134935" time="1367903218233" ignored="false" />
     <file path="/fade_in.xml" changelist="4cdd1996-4a83-4768-87ba-370a47134935" time="1367903517147" ignored="false" />
-    <file path="/DropboxHelper.java" changelist="4cdd1996-4a83-4768-87ba-370a47134935" time="1367908415867" ignored="false" />
+    <file path="/DropboxHelper.java" changelist="4cdd1996-4a83-4768-87ba-370a47134935" time="1367927841178" ignored="false" />
+    <file path="/MoreDialogFragment.java" changelist="4cdd1996-4a83-4768-87ba-370a47134935" time="1367922634913" ignored="false" />
+    <file path="/more.xml" changelist="4cdd1996-4a83-4768-87ba-370a47134935" time="1367926306547" ignored="false" />
+    <file path="/MoreFragment.java" changelist="4cdd1996-4a83-4768-87ba-370a47134935" time="1367927853512" ignored="false" />
+    <file path="/fragment_more.xml" changelist="4cdd1996-4a83-4768-87ba-370a47134935" time="1367927187916" ignored="false" />
     <option name="TRACKING_ENABLED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -217,14 +224,78 @@
   </component>
   <component name="FileEditorManager">
     <leaf>
-      <file leaf-file-name="MainActivity.java" pinned="false" current="true" current-in-tab="true">
+      <file leaf-file-name="fragment_more.xml" pinned="false" current="true" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/res/layout/fragment_more.xml">
+          <provider editor-type-id="android-designer">
+            <state />
+          </provider>
+          <provider selected="true" editor-type-id="text-editor">
+            <state line="6" column="42" selection-start="293" selection-end="293" vertical-scroll-proportion="-1.1335013">
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="fragment_add_pack.xml" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/res/layout/fragment_add_pack.xml">
+          <provider editor-type-id="android-designer">
+            <state />
+          </provider>
+          <provider selected="true" editor-type-id="text-editor">
+            <state line="2" column="38" selection-start="139" selection-end="150" vertical-scroll-proportion="-1.1111112">
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="AddPackFragment.java" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/com/internectics/fragment/AddPackFragment.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state line="141" column="47" selection-start="4757" selection-end="4757" vertical-scroll-proportion="0.0">
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="MainActivity.java" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/com/internectics/android_flashcardcreator/MainActivity.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="266" column="16" selection-start="11090" selection-end="11090" vertical-scroll-proportion="0.72938687">
+            <state line="173" column="56" selection-start="7086" selection-end="7098" vertical-scroll-proportion="0.0">
               <folding>
-                <element signature="e#12809#12968#0" expanded="true" />
-                <element signature="e#12957#12958#0" expanded="true" />
+                <element signature="imports" expanded="true" />
               </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="MoreFragment.java" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/com/internectics/fragment/MoreFragment.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state line="53" column="32" selection-start="1866" selection-end="1866" vertical-scroll-proportion="0.0">
+              <folding>
+                <element signature="e#1516#1876#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="DropboxHelper.java" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/com/internectics/helper/DropboxHelper.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state line="90" column="38" selection-start="3053" selection-end="3053" vertical-scroll-proportion="-7.92">
+              <folding>
+                <element signature="imports" expanded="true" />
+                <element signature="e#1327#1347#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="AndroidAuthSession.class" pinned="false" current="false" current-in-tab="false">
+        <entry file="jar://$PROJECT_DIR$/libs/dropbox-android-sdk-1.5.4.jar!/com/dropbox/client2/android/AndroidAuthSession.class">
+          <provider selected="true" editor-type-id="text-editor">
+            <state line="17" column="16" selection-start="918" selection-end="918" vertical-scroll-proportion="-9.6">
+              <folding />
             </state>
           </provider>
         </entry>
@@ -254,12 +325,6 @@
   <component name="IdeDocumentHistory">
     <option name="changedFiles">
       <list>
-        <option value="$PROJECT_DIR$/src/com/internectics/model/CardListModel.java" />
-        <option value="$PROJECT_DIR$/src/com/internectics/helper/SQLiteHelper.java" />
-        <option value="$PROJECT_DIR$/src/com/internectics/helper/FileOperationHelper.java" />
-        <option value="$PROJECT_DIR$/src/com/internectics/fragment/CardListMasterFragment.java" />
-        <option value="$PROJECT_DIR$/src/com/internectics/data/Pack.java" />
-        <option value="$PROJECT_DIR$/src/com/internectics/data/Question.java" />
         <option value="$PROJECT_DIR$/src/com/internectics/data/Card.java" />
         <option value="$PROJECT_DIR$/src/com/internectics/helper/PackTransferHelper.java" />
         <option value="$PROJECT_DIR$/res/anim/in_from_right.xml" />
@@ -268,8 +333,14 @@
         <option value="$PROJECT_DIR$/res/anim/fade_out.xml" />
         <option value="$PROJECT_DIR$/res/layout/activity_card_twopane.xml" />
         <option value="$PROJECT_DIR$/src/com/internectics/util/DropboxHelper.java" />
-        <option value="$PROJECT_DIR$/src/com/internectics/helper/DropboxHelper.java" />
+        <option value="$PROJECT_DIR$/src/com/internectics/fragment/CardListMasterFragment.java" />
+        <option value="$PROJECT_DIR$/src/com/internectics/fragment/MoreDialogFragment.java" />
+        <option value="$PROJECT_DIR$/res/layout/more.xml" />
         <option value="$PROJECT_DIR$/src/com/internectics/android_flashcardcreator/MainActivity.java" />
+        <option value="$PROJECT_DIR$/res/layout/fragment_add_pack.xml" />
+        <option value="$PROJECT_DIR$/res/layout/fragment_more.xml" />
+        <option value="$PROJECT_DIR$/src/com/internectics/helper/DropboxHelper.java" />
+        <option value="$PROJECT_DIR$/src/com/internectics/fragment/MoreFragment.java" />
       </list>
     </option>
   </component>
@@ -433,6 +504,28 @@
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
             <PATH_ELEMENT>
+              <option name="myItemId" value="fragment" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="android-FlashCardCreator" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="android-FlashCardCreator" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="src" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="internectics" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
               <option name="myItemId" value="android_flashcardcreator" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
@@ -448,6 +541,24 @@
             </PATH_ELEMENT>
             <PATH_ELEMENT>
               <option name="myItemId" value="res" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="android-FlashCardCreator" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="android-FlashCardCreator" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="res" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="layout" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
           </PATH>
@@ -482,6 +593,9 @@
     <property name="options.splitter.details.proportions" value="0.2" />
   </component>
   <component name="RecentsManager">
+    <key name="CopyClassDialog.RECENTS_KEY">
+      <recent name="com.internectics.fragment" />
+    </key>
     <key name="CopyFile.RECENT_KEYS">
       <recent name="$PROJECT_DIR$/res/anim" />
       <recent name="$PROJECT_DIR$/res/drawable" />
@@ -700,25 +814,26 @@
     <frame x="0" y="22" width="1280" height="704" extended-state="6" />
     <editor active="true" />
     <layout>
+      <window_info id="Palette&#9;" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.21312805" sideWeight="0.81335616" order="10" side_tool="false" content_ui="tabs" />
+      <window_info id="Designer" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.24473257" sideWeight="0.13184932" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Changes" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32809773" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="JetGradle" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.23019803" sideWeight="0.5508772" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="Preview" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33443162" sideWeight="0.67017543" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Palette" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
-      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.38527396" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
+      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.43835616" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.24917492" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.1969178" sideWeight="0.5648298" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.69982547" sideWeight="0.43517017" order="13" side_tool="true" content_ui="tabs" />
       <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.24958813" sideWeight="0.21754386" order="3" side_tool="true" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32982457" sideWeight="0.5" order="8" side_tool="false" content_ui="tabs" />
-      <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.15239726" sideWeight="0.5" order="10" side_tool="false" content_ui="tabs" />
+      <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.1780822" sideWeight="0.5" order="10" side_tool="false" content_ui="tabs" />
       <window_info id="Android" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.35078534" sideWeight="0.5" order="12" side_tool="false" content_ui="tabs" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32905984" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.24554294" sideWeight="0.32763532" order="1" side_tool="true" content_ui="tabs" />
       <window_info id="Maven Projects" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32920793" sideWeight="0.5" order="9" side_tool="false" content_ui="tabs" />
       <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="SLIDING" type="SLIDING" visible="false" weight="0.4" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.27876824" sideWeight="0.88013697" order="0" side_tool="true" content_ui="combo" x="291" y="93" width="322" height="850" />
-      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.11986301" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
-      <window_info id="Palette&#9;" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.21347608" sideWeight="0.6734207" order="10" side_tool="false" content_ui="tabs" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.24473257" sideWeight="0.81335616" order="0" side_tool="true" content_ui="combo" x="291" y="93" width="322" height="850" />
+      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.18664384" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Documentation" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="FLOATING" visible="false" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" x="100" y="122" width="1080" height="493" />
       <window_info id="Database" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32920793" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
       <window_info id="IDEtalk Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="9" side_tool="false" content_ui="tabs" />
@@ -727,7 +842,6 @@
       <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.27552673" sideWeight="0.8" order="3" side_tool="false" content_ui="combo" />
       <window_info id="Thumbnails" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32867134" sideWeight="0.5" order="14" side_tool="false" content_ui="tabs" />
       <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
-      <window_info id="Designer" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.17506297" sideWeight="0.1215733" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Message" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Inspection" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.4" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
     </layout>
@@ -801,107 +915,10 @@
     <option name="FILTER_TARGETS" value="false" />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/res/anim/in_from_bottom.xml">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="0.0">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/res/anim/out_to_above.xml">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="0.0">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/res/anim/in_from_right.xml">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="6" column="68" selection-start="285" selection-end="285" vertical-scroll-proportion="0.0">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/res/anim/out_to_right.xml">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="4" column="14" selection-start="185" selection-end="185" vertical-scroll-proportion="0.0">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="jar://$PROJECT_DIR$/libs/android-support-v4.jar!/android/support/v4/app/FragmentTransaction.class">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="39" column="63" selection-start="1953" selection-end="1953" vertical-scroll-proportion="-6.0">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file:///Applications/Android/sdk/sources/android-14/android/app/Activity.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="3521" column="16" selection-start="149245" selection-end="149245" vertical-scroll-proportion="0.0">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/res/layout/activity_card_twopane.xml">
-      <provider editor-type-id="android-designer">
-        <state />
-      </provider>
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="61" column="42" selection-start="2286" selection-end="2286" vertical-scroll-proportion="-7.5925927">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/android-FlashCardCreator.iml">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="0.0">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file:///Applications/Android/sdk/sources/android-14/android/content/Intent.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="830" column="25" selection-start="39307" selection-end="39307" vertical-scroll-proportion="0.0">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/com/internectics/util/Global.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="2" column="13" selection-start="45" selection-end="45" vertical-scroll-proportion="0.0">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file:///Applications/Android/sdk/sources/android-14/android/content/Context.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="430" column="38" selection-start="18269" selection-end="18269" vertical-scroll-proportion="0.0">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file:///Applications/Android/sdk/sources/android-14/android/content/SharedPreferences.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="247" column="11" selection-start="10104" selection-end="10104" vertical-scroll-proportion="0.0">
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="jar://$PROJECT_DIR$/libs/dropbox-android-sdk-1.5.4.jar!/com/dropbox/client2/session/AccessTokenPair.class">
       <provider selected="true" editor-type-id="text-editor">
         <state line="9" column="11" selection-start="350" selection-end="350" vertical-scroll-proportion="-4.8">
           <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/com/internectics/helper/DropboxHelper.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="92" column="32" selection-start="3087" selection-end="3087" vertical-scroll-proportion="0.0">
-          <folding>
-            <element signature="imports" expanded="true" />
-            <element signature="e#1327#1347#0" expanded="true" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -914,13 +931,115 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/src/com/internectics/fragment/HelpFragment.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="24" column="13" selection-start="669" selection-end="669" vertical-scroll-proportion="0.0">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/res/layout/fragment_pack_list.xml">
+      <provider editor-type-id="android-designer">
+        <state />
+      </provider>
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="0.0">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/com/internectics/fragment/CardListBinder.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="15" column="13" selection-start="434" selection-end="434" vertical-scroll-proportion="0.18126889">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/com/internectics/fragment/CardListMasterFragment.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="26" column="56" selection-start="801" selection-end="813" vertical-scroll-proportion="-5.5256796">
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/com/internectics/fragment/PackListFragment.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="58" column="38" selection-start="1993" selection-end="2000" vertical-scroll-proportion="0.54960316">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/res/layout/pack_list.xml">
+      <provider selected="true" editor-type-id="android-designer">
+        <state />
+      </provider>
+      <provider editor-type-id="text-editor">
+        <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="0.0">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/com/internectics/fragment/AddPackFragment.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="141" column="47" selection-start="4757" selection-end="4757" vertical-scroll-proportion="0.0">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/res/layout/fragment_add_pack.xml">
+      <provider editor-type-id="android-designer">
+        <state />
+      </provider>
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="2" column="38" selection-start="139" selection-end="150" vertical-scroll-proportion="-1.1111112">
+          <folding />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/src/com/internectics/android_flashcardcreator/MainActivity.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="266" column="16" selection-start="11090" selection-end="11090" vertical-scroll-proportion="0.72938687">
+        <state line="173" column="56" selection-start="7086" selection-end="7098" vertical-scroll-proportion="0.0">
           <folding>
-            <element signature="e#12809#12968#0" expanded="true" />
-            <element signature="e#12957#12958#0" expanded="true" />
+            <element signature="imports" expanded="true" />
           </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="jar://$PROJECT_DIR$/libs/dropbox-android-sdk-1.5.4.jar!/com/dropbox/client2/android/AndroidAuthSession.class">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="17" column="16" selection-start="918" selection-end="918" vertical-scroll-proportion="-9.6">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/com/internectics/helper/DropboxHelper.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="90" column="38" selection-start="3053" selection-end="3053" vertical-scroll-proportion="-7.92">
+          <folding>
+            <element signature="imports" expanded="true" />
+            <element signature="e#1327#1347#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/com/internectics/fragment/MoreFragment.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="53" column="32" selection-start="1866" selection-end="1866" vertical-scroll-proportion="0.0">
+          <folding>
+            <element signature="e#1516#1876#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/res/layout/fragment_more.xml">
+      <provider editor-type-id="android-designer">
+        <state />
+      </provider>
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="6" column="42" selection-start="293" selection-end="293" vertical-scroll-proportion="-1.1335013">
+          <folding />
         </state>
       </provider>
     </entry>

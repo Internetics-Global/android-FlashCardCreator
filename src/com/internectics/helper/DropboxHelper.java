@@ -90,7 +90,7 @@ public class DropboxHelper {
     }
 
 
-    private static void logOut(Context context) {
+    public static void logOut(Context context) {
         // Remove credentials from the session
         DropboxHelper.getDropboxAPI(context).getSession().unlink();
         // Clear our stored keys
