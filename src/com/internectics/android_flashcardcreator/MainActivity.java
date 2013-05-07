@@ -5,7 +5,6 @@ import android.app.DialogFragment;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.util.Log;
@@ -15,9 +14,7 @@ import android.view.animation.Animation;
 import android.widget.*;
 import com.dropbox.client2.DropboxAPI;
 import com.dropbox.client2.android.AndroidAuthSession;
-import com.dropbox.client2.session.AccessTokenPair;
-import com.dropbox.client2.session.AppKeyPair;
-import com.dropbox.client2.session.Session.AccessType;
+import com.dropbox.client2.session.TokenPair;
 import com.internectics.data.Card;
 import com.internectics.data.Pack;
 import com.internectics.fragment.AddPackFragment;
@@ -28,6 +25,7 @@ import com.internectics.helper.FileOperationHelper;
 import com.internectics.helper.PackTransferHelper;
 import com.internectics.helper.SQLiteHelper;
 import com.internectics.util.AppContext;
+import com.internectics.helper.DropboxHelper;
 import com.internectics.util.Global;
 import com.internectics.util.OpenUDID_manager;
 import org.json.JSONException;
@@ -42,22 +40,6 @@ import java.io.IOException;
  */
 public class MainActivity extends FragmentActivity implements
         CardListMasterFragment.Callbacks {
-
-    /**
-     * Dropbox key and secret
-     */
-    final static private String APP_KEY = "rl7510fe1641dyl";
-    final static private String APP_SECRET = "3twb9tcccje56kg";
-    final static private AccessType ACCESS_TYPE = AccessType.APP_FOLDER;
-
-    /**
-     * You don't need to change these, leave them alone.
-     */
-    final static private String ACCOUNT_PREFS_NAME = "prefs";
-    final static private String ACCESS_KEY_NAME = "ACCESS_KEY";
-    final static private String ACCESS_SECRET_NAME = "ACCESS_SECRET";
-
-    private DropboxAPI<AndroidAuthSession> mApi;
 
     //Used to diff between card view and card creating
     private boolean mIsCreatingCard = false;
@@ -75,8 +57,6 @@ public class MainActivity extends FragmentActivity implements
 
 
         //Step1:We create a new AuthSession so that we can use the Dropbox API.
-        AndroidAuthSession session = buildSession();
-        mApi = new DropboxAPI<AndroidAuthSession>(session);
 
 
         //Step2: check table and default user
@@ -227,6 +207,20 @@ public class MainActivity extends FragmentActivity implements
                 overridePendingTransition(R.anim.in_from_bottom, R.anim.out_to_above);
                 break;
 
+            case R.id.actionbar_share:
+
+                DropboxAPI<AndroidAuthSession> mDBApi = DropboxHelper.getDropboxAPI(this);
+                if (!mDBApi.getSession().isLinked()) {
+                    mDBApi.getSession().startAuthentication(MainActivity.this);
+                }
+
+                //Intent intent = new Intent(Intent.ACTION_SEND);
+                //intent.setType("text/plain");
+                //intent.putExtra(Intent.EXTRA_TEXT, "htt://www.microsoft.com");
+                //intent.putExtra(Intent.EXTRA_SUBJECT, "Something to say:");
+                //startActivity(Intent.createChooser(intent, "Share current pack to"));
+                break;
+
             case R.id.actionbar_add_card_cancel:
                 Log.d(Global.debugTag, "cancel button is clicked during adding card operation");
                 dismissCardCreateWindow();
@@ -250,6 +244,40 @@ public class MainActivity extends FragmentActivity implements
     }
 
     @Override
+    protected void onResume() {
+        super.onResume();
+
+        //Step1: deal with dropbox
+        AndroidAuthSession session = DropboxHelper.getDropboxAPI(this).getSession();
+
+        // The next part must be inserted in the onResume() method of the
+        // activity from which session.startAuthentication() was called, so
+        // that Dropbox authentication completes properly.
+        if (session.authenticationSuccessful()) {
+            try {
+                // Mandatory call to complete the auth
+                session.finishAuthentication();
+
+                // Store it locally in our app for later use
+                TokenPair tokens = session.getAccessTokenPair();
+                DropboxHelper.storeKeys(this,tokens.key, tokens.secret);
+                Toast.makeText(this, "Build session successfully", Toast.LENGTH_SHORT)
+                        .show();
+
+
+
+
+
+            } catch (IllegalStateException e) {
+                Toast.makeText(this, "Couldn't authenticate with Dropbox:" + e.getLocalizedMessage(), Toast.LENGTH_SHORT)
+                .show();
+                Log.d(Global.debugTag, "Error authenticating", e);
+            }
+        }
+
+    }
+
+    @Override
     protected void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
     }
@@ -266,35 +294,6 @@ public class MainActivity extends FragmentActivity implements
         CardDetailFragment fragment = new CardDetailFragment(mCurrentPack,mCurrentCard);
         getSupportFragmentManager().beginTransaction()
                 .replace(R.id.card_detail_container, fragment).commit();
-    }
-
-    private AndroidAuthSession buildSession() {
-        AppKeyPair appKeyPair = new AppKeyPair(APP_KEY, APP_SECRET);
-        AndroidAuthSession session;
-
-        String[] stored = getKeys();
-        if (stored != null) {
-            AccessTokenPair accessToken = new AccessTokenPair(stored[0], stored[1]);
-            session = new AndroidAuthSession(appKeyPair, ACCESS_TYPE, accessToken);
-        } else {
-            session = new AndroidAuthSession(appKeyPair, ACCESS_TYPE);
-        }
-
-        return session;
-    }
-
-    private String[] getKeys() {
-        SharedPreferences prefs = getSharedPreferences(ACCOUNT_PREFS_NAME, 0);
-        String key = prefs.getString(ACCESS_KEY_NAME, null);
-        String secret = prefs.getString(ACCESS_SECRET_NAME, null);
-        if (key != null && secret != null) {
-            String[] ret = new String[2];
-            ret[0] = key;
-            ret[1] = secret;
-            return ret;
-        } else {
-            return null;
-        }
     }
 
 
