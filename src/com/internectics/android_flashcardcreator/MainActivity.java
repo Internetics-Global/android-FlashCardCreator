@@ -1,11 +1,14 @@
 package com.internectics.android_flashcardcreator;
 
 import android.app.AlertDialog;
+import android.app.Dialog;
 import android.app.DialogFragment;
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.DropBoxManager;
 import android.support.v4.app.FragmentActivity;
 import android.util.Log;
 import android.view.*;
@@ -13,21 +16,26 @@ import android.view.animation.AlphaAnimation;
 import android.view.animation.Animation;
 import android.widget.*;
 import com.dropbox.client2.DropboxAPI;
+import com.dropbox.client2.ProgressListener;
 import com.dropbox.client2.android.AndroidAuthSession;
+import com.dropbox.client2.exception.DropboxException;
+import com.dropbox.client2.exception.DropboxFileSizeException;
+import com.dropbox.client2.exception.DropboxServerException;
+import com.dropbox.client2.exception.DropboxUnlinkedException;
 import com.dropbox.client2.session.TokenPair;
 import com.internectics.data.Card;
 import com.internectics.data.Pack;
 import com.internectics.fragment.*;
-import com.internectics.helper.FileOperationHelper;
-import com.internectics.helper.PackTransferHelper;
-import com.internectics.helper.SQLiteHelper;
+import com.internectics.helper.*;
 import com.internectics.util.AppContext;
-import com.internectics.helper.DropboxHelper;
 import com.internectics.util.Global;
 import com.internectics.util.OpenUDID_manager;
 import org.json.JSONException;
 import org.json.simple.parser.ParseException;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 
 /**
@@ -46,6 +54,12 @@ public class MainActivity extends FragmentActivity implements
     public Card mCurrentCard = new Card();
 
     public PopupWindow mPopupWindow;
+
+    //Progress dialog related
+    private static final int DIALOG_UPLOADING_PACK = 0;
+    ProgressDialog mDialog;
+
+    boolean mIsUploadingPackAfterLinked = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -210,7 +224,10 @@ public class MainActivity extends FragmentActivity implements
             case R.id.actionbar_share:
 
                 DropboxAPI<AndroidAuthSession> mDBApi = DropboxHelper.getDropboxAPI(this);
-                if (!mDBApi.getSession().isLinked()) {
+                if (mDBApi.getSession().isLinked()) {
+                    uploadingPackAfterLinked();
+                } else {
+                    mIsUploadingPackAfterLinked = true;
                     mDBApi.getSession().startAuthentication(MainActivity.this);
                 }
 
@@ -243,38 +260,21 @@ public class MainActivity extends FragmentActivity implements
         return super.onOptionsItemSelected(item);
     }
 
+
     @Override
     protected void onResume() {
         super.onResume();
-
-        //Step1: deal with dropbox
-        AndroidAuthSession session = DropboxHelper.getDropboxAPI(this).getSession();
-
-        // The next part must be inserted in the onResume() method of the
-        // activity from which session.startAuthentication() was called, so
-        // that Dropbox authentication completes properly.
-        if (session.authenticationSuccessful()) {
-            try {
-                // Mandatory call to complete the auth
-                session.finishAuthentication();
-
+        if (true == mIsUploadingPackAfterLinked) {
+            AndroidAuthSession session = DropboxHelper.getDropboxAPI(this).getSession();
+            if (session.authenticationSuccessful()) {
+                session.finishAuthentication(); // Mandatory call to complete the auth
                 // Store it locally in our app for later use
                 TokenPair tokens = session.getAccessTokenPair();
                 DropboxHelper.storeKeys(this,tokens.key, tokens.secret);
-                Toast.makeText(this, "Build session successfully", Toast.LENGTH_SHORT)
-                        .show();
-
-
-
-
-
-            } catch (IllegalStateException e) {
-                Toast.makeText(this, "Couldn't authenticate with Dropbox:" + e.getLocalizedMessage(), Toast.LENGTH_SHORT)
-                .show();
-                Log.d(Global.debugTag, "Error authenticating", e);
+                mIsUploadingPackAfterLinked = false;
+                uploadingPackAfterLinked();
             }
         }
-
     }
 
     @Override
@@ -380,4 +380,36 @@ public class MainActivity extends FragmentActivity implements
 
        return  true;
     }
+
+    @Override
+    protected Dialog onCreateDialog(int id) {
+        super.onCreateDialog(id);
+        switch (id) {
+            case DIALOG_UPLOADING_PACK: {
+                mDialog = new ProgressDialog(this);
+                mDialog.setMessage("Please wait while loading...");
+                mDialog.setIndeterminate(false);
+                mDialog.setMax(100);
+                mDialog.setCancelable(false);
+                return mDialog;
+            }
+        }
+        return null;
+    }
+
+    private void uploadingPackAfterLinked() {
+        //Step1: deal with dropbox
+        AndroidAuthSession session = DropboxHelper.getDropboxAPI(this).getSession();
+
+        // The next part must be inserted in the onResume() method of the
+        // activity from which session.startAuthentication() was called, so
+        // that Dropbox authentication completes properly.
+        if (session.isLinked()) {
+            File file = new File(FileOperationHelper.getTestFile().toString());
+            UploadPackHelper upload = new UploadPackHelper(this, DropboxHelper.getDropboxAPI(this), "/FlashCardCreator/", file);
+            upload.execute();
+        }
+
+    }
+
 }

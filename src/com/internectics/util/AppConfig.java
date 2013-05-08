@@ -20,7 +20,9 @@ public class AppConfig {
 	public final static String CONF_LAST_CREATED_PACK_NAME = "LAST_CREATED_PACK_NAME";
 	public final static String CONF_LAST_CREATED_PACK_DATE = "LAST_CREATED_PACK_DATE";
 	public final static String CONF_IS_SAMPLE_PACK_DOWNLOADED = "IS_SAMPLE_PACK_DOWNLOADED";
-	
+
+    public final static String CONF_IS_RANDOM_PLAY = "IS_RANDOM_PLAY";
+
 	public final static String CONF_APP_UDID = "APP_UDID";
 	
 	/**
@@ -51,10 +53,7 @@ public class AppConfig {
 		return getSharedPreferences(context)
 				.getBoolean(CONF_IS_SAMPLE_PACK_DOWNLOADED, true);
 	}
-	
-	public void setSamplePackDownloadedFlag(bool val){
-		set(CONF_IS_SAMPLE_PACK_DOWNLOADED, String.valueOf(val));
-	}
+
 	
 	/**
 	 * return null if not exist
@@ -64,13 +63,25 @@ public class AppConfig {
 		return getSharedPreferences(context)
 				.getString(CONF_LAST_CREATED_PACK_NAME, null);
 	}
-	
-	public void setLastCreatedPackName(String str){
-		set(CONF_LAST_CREATED_PACK_NAME, str);
-	}
-	
-	
-	
+
+
+
+    public static boolean isRandomPlay(Context context) {
+        return getSharedPreferences(context).getBoolean(CONF_IS_RANDOM_PLAY,false);
+    }
+
+
+    public static void setRandomPlayYes(Context context) {
+        SharedPreferences.Editor edit = getSharedPreferences(context).edit();
+        edit.putBoolean(CONF_IS_RANDOM_PLAY,true);
+    }
+
+    public static void setRandomPlayNo(Context context) {
+        SharedPreferences.Editor edit = getSharedPreferences(context).edit();
+        edit.putBoolean(CONF_IS_RANDOM_PLAY,false);
+    }
+
+
 	/**
 	 * return null if not exist
 	 */

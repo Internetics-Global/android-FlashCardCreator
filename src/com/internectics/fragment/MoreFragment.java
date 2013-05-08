@@ -41,6 +41,22 @@ public class MoreFragment extends DialogFragment {
 		getDialog().getWindow().setSoftInputMode(
 				WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN);
 
+        TextView titleTextView = (TextView) mContentView
+                .findViewById(R.id.dialog_title);
+        titleTextView.setText("More");
+        Button closeButton = (Button) mContentView
+                .findViewById(R.id.dialog_head_close_btn);
+        Button saveButton = (Button) mContentView
+                .findViewById(R.id.dialog_head_save_btn);
+        saveButton.setVisibility(View.INVISIBLE);
+        closeButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dismiss();
+
+            }
+        });
+
         ToggleButton dropboxToggleButton = (ToggleButton)mContentView.findViewById(R.id.dropbox_toggleButton);
         final boolean isLinked =DropboxHelper.getDropboxAPI(getActivity()).getSession().isLinked();
         dropboxToggleButton.setOnClickListener(new View.OnClickListener() {

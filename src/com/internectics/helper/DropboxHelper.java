@@ -23,7 +23,7 @@ public class DropboxHelper {
      */
     final static private String APP_KEY = "rl7510fe1641dyl";
     final static private String APP_SECRET = "3twb9tcccje56kg";
-    final static private Session.AccessType ACCESS_TYPE = Session.AccessType.APP_FOLDER;
+    final static private Session.AccessType ACCESS_TYPE = Session.AccessType.DROPBOX;
 
     /**
      * You don't need to change these, leave them alone.
