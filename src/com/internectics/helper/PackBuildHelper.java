@@ -8,13 +8,61 @@ import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 
+import java.io.File;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.util.ArrayList;
 
 public class PackBuildHelper {
 
-    public static void buildPackJsonFile(Pack pack, String savedFileName){
+    public static File createPackZipFile(Pack currentPack) {
+        ArrayList<String> cardFiles = new ArrayList<String>();
+        ArrayList <String> packFiles = new ArrayList<String>();
+
+        int numberOfCards = currentPack.cards.size();
+        int i = 0;
+
+        //step1
+        for (Card card: currentPack.cards) {
+            //step1: zip all the files in current card and come into a new zip file
+            String singleFile = PackBuildHelper.buildCardJsonFile(card).toString();
+            cardFiles.add(singleFile);
+            cardFiles.add(card.coverImageURL);
+            cardFiles.add(card.question.imageURL);
+            cardFiles.add(card.answer.imageURL);
+            File cardZipFile = new File(FileOperationHelper.uploadPackDirectory(),String.format("%d.zip",i));
+            try {
+                ZipFileHelper.zipFiles(cardZipFile.toString(),cardFiles);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+
+            //step2: add this new zip file to packFiles
+            packFiles.add(cardZipFile.toString());
+
+            //step3: reset
+            cardFiles.clear();
+        }
+
+        //step2:
+        packFiles.add(currentPack.coverImageUriStr);
+        packFiles.add(currentPack.logoImageUriStr);
+        String singleFile = PackBuildHelper.buildPackJsonFile(currentPack).toString();
+        packFiles.add(singleFile);
+        File packZipFile = new File(FileOperationHelper.uploadPackDirectory(),null);
+        try {
+            ZipFileHelper.zipFiles(packZipFile.toString(),packFiles);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return packZipFile;
+    }
+
+    /*
+    * Result saved file path is: FileOperationHelper.getUploadPackJsonFile()
+    */
+    public static File buildPackJsonFile(Pack pack){
         JSONObject summary = new JSONObject();
         summary.put("pack_name", pack.packName);
         summary.put("sidebar_title", pack.sidebarTitle);
@@ -27,8 +75,9 @@ public class PackBuildHelper {
         summary.put("answer_title", pack.answerTitle);
 
         FileWriter file;
+        File savedPath =  FileOperationHelper.getUploadPackJsonFile();
         try {
-            file = new FileWriter(savedFileName);
+            file = new FileWriter(savedPath,true);
             file.write(summary.toJSONString());
             System.out.println("Successfully Copied JSON Object to File...");
             System.out.println("\nJSON Object: " + summary);
@@ -38,10 +87,13 @@ public class PackBuildHelper {
             e.printStackTrace();
 
         }
+        return savedPath;
     }
 
-
-    public static void buildCardJsonFile(Card card, String savedFileName){
+    /*
+     Result saved file path is: FileOperationHelper.getUploadCardJsonFile()
+    */
+    public static File buildCardJsonFile(Card card){
 
         JSONArray obj = new JSONArray();
         JSONObject summary = new JSONObject();
@@ -85,16 +137,19 @@ public class PackBuildHelper {
         answer.put("sub_color", card.answer.css.subColor);
         answer.put("sub_size", card.answer.css.subSize);
 
-        FileWriter file = null;
+        File savedPath = FileOperationHelper.getUploadCardJsonFile();
+        FileWriter file;
         try {
-            file = new FileWriter(savedFileName);
+            file = new FileWriter(savedPath,true);
             file.write(obj.toJSONString());
             System.out.println("Successfully Copied JSON Object to File...");
             System.out.println("\nJSON Object: " + obj);
             file.flush();
             file.close();
         } catch (IOException e) {
-            e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+            e.printStackTrace();
         }
+
+        return savedPath;
     }
 }

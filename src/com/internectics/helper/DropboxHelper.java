@@ -9,11 +9,7 @@ import com.dropbox.client2.session.AppKeyPair;
 import com.dropbox.client2.session.Session;
 
 /**
- * Created with IntelliJ IDEA.
- * User: BourneWang
- * Date: 7/05/13
- * Time: 4:10 下午
- * To change this template use File | Settings | File Templates.
+ * All Dropbox AndroidAuthSession and DropboxAPI related
  */
 public class DropboxHelper {
 
@@ -32,15 +28,26 @@ public class DropboxHelper {
     final static private String ACCESS_KEY_NAME = "ACCESS_KEY";
     final static private String ACCESS_SECRET_NAME = "ACCESS_SECRET";
 
+    /*
+     * Return  DrpboxAPI, which is the main handle in Dropbox operation
+     */
     public static DropboxAPI<AndroidAuthSession> getDropboxAPI(Context context) {
         mContext = context;
         AndroidAuthSession session = buildSession();
         DropboxAPI<AndroidAuthSession> mDBApi = new DropboxAPI<AndroidAuthSession>(session);
 
-
         return mDBApi;
     }
 
+    /*
+     * Unlink Dropbox account
+     */
+    public static void logOut(Context context) {
+        // Remove credentials from the session
+        DropboxHelper.getDropboxAPI(context).getSession().unlink();
+        // Clear our stored keys
+        clearKeys(context);
+    }
 
     private static AndroidAuthSession buildSession() {
         AppKeyPair appKeyPair = new AppKeyPair(APP_KEY, APP_SECRET);
@@ -71,7 +78,6 @@ public class DropboxHelper {
         }
     }
 
-
     public static void storeKeys(Context context, String key, String secret) {
         // Save the access key for later
         SharedPreferences prefs = context.getSharedPreferences(ACCOUNT_PREFS_NAME, 0);
@@ -87,14 +93,4 @@ public class DropboxHelper {
         edit.clear();
         edit.commit();
     }
-
-
-    public static void logOut(Context context) {
-        // Remove credentials from the session
-        DropboxHelper.getDropboxAPI(context).getSession().unlink();
-        // Clear our stored keys
-        clearKeys(context);
-    }
-
-
 }

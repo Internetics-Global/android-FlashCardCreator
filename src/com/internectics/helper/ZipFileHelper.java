@@ -3,6 +3,7 @@ package com.internectics.helper;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
+import java.util.ArrayList;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
 import java.util.zip.ZipOutputStream;
@@ -20,10 +21,17 @@ public class ZipFileHelper {
     * @param zipFileName new created zip file name (full path)
     * @param fs file array to create zip file
      */
-    public static void zipPack(String zipFileName, File fs[]) throws Exception {
+    public static void zipFiles(String zipFileName, ArrayList<String> fs) throws Exception {
         ZipOutputStream out = new ZipOutputStream(new FileOutputStream(
                 zipFileName));
-        zip(out, fs, "");
+        for (int i = 0; i < fs.size(); i++) {
+            out.putNextEntry(new ZipEntry(""));
+            FileInputStream in = new FileInputStream(fs.get(i));
+            int b;
+            while ((b = in.read()) != -1)
+                out.write(b);
+            in.close();
+        }
         out.close();
     }
 
@@ -32,29 +40,8 @@ public class ZipFileHelper {
       will be unzipped to folder: /cache/Downloaded Pack/
       @param zipFileName the zip file used to be unzipped
      */
-    public static void unzipPack(String zipFileName) throws Exception {
+    public static void unzip(String zipFileName) throws Exception {
         File outputDirectory = FileOperationHelper.downloadedPackDirectory();
-        unzip(zipFileName, outputDirectory.toString());
-    }
-
-    /*
-    ** not take care folder in zip
-     */
-    private static void zip(ZipOutputStream out, File fs[], String base) throws Exception {
-        for (File f : fs) {
-            out.putNextEntry(new ZipEntry(base));
-            FileInputStream in = new FileInputStream(f);
-            int b;
-            while ((b = in.read()) != -1)
-                out.write(b);
-            in.close();
-        }
-    }
-
-    /*
-    ** take care folder in zip
-     */
-    private static void unzip(String zipFileName, String outputDirectory) throws Exception {
 
         ZipInputStream in = new ZipInputStream(new FileInputStream(zipFileName));
         ZipEntry z;
@@ -79,6 +66,6 @@ public class ZipFileHelper {
             }
         }
         in.close();
-
     }
+
 }

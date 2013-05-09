@@ -9,6 +9,9 @@ import java.io.*;
 import java.net.URL;
 import java.net.URLConnection;
 
+/*
+ * Download Pack
+ */
 public class PackDownloadHelper extends AsyncTask<Void, Long, Boolean> {
 
     private Context mContext;

@@ -6,6 +6,7 @@ import android.app.DialogFragment;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.util.Log;
@@ -29,14 +30,17 @@ import com.internectics.fragment.CardDetailFragment;
 import com.internectics.fragment.CardListMasterFragment;
 import com.internectics.fragment.MoreFragment;
 import com.internectics.helper.*;
+import com.internectics.util.AppConfig;
 import com.internectics.util.AppContext;
 import com.internectics.util.Global;
 import com.internectics.util.OpenUDID_manager;
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.simple.parser.ParseException;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
 
 /**
  * MainActivity is the entry for whole app
@@ -119,9 +123,9 @@ public class MainActivity extends FragmentActivity implements
                 break;
             }
             case R.id.actionbar_edit:
-                PackBuildHelper.buildCardJsonFile(new Card(), FileOperationHelper.getTestFile().toString());
+                PackBuildHelper.buildCardJsonFile(new Card());
 
-                PackBuildHelper.buildPackJsonFile(new Pack(), FileOperationHelper.getTestFile2().toString());
+                PackBuildHelper.buildPackJsonFile(new Pack());
 
                 PackParserHelper.parsePackJsonFile(FileOperationHelper.getTestFile2().toString());
 
@@ -157,16 +161,7 @@ public class MainActivity extends FragmentActivity implements
                 break;
 
             case R.id.actionbar_share:
-
-                DropboxAPI<AndroidAuthSession> mDBApi = DropboxHelper.getDropboxAPI(this);
-                if (mDBApi.getSession().isLinked()) {
-                    uploadingPackAfterLinked();
-                } else {
-                    mIsUploadingPackAfterLinked = true;
-                    mDBApi.getSession().startAuthentication(MainActivity.this);
-                }
-
-
+                onActionbarShareSelected();
                 break;
 
             case R.id.actionbar_add_card_cancel:
@@ -201,15 +196,22 @@ public class MainActivity extends FragmentActivity implements
     @Override
     protected void onResume() {
         super.onResume();
-        if (true == mIsUploadingPackAfterLinked) {
-            AndroidAuthSession session = DropboxHelper.getDropboxAPI(this).getSession();
-            if (session.authenticationSuccessful()) {
-                session.finishAuthentication(); // Mandatory call to complete the auth
-                // Store it locally in our app for later use
-                TokenPair tokens = session.getAccessTokenPair();
-                DropboxHelper.storeKeys(this, tokens.key, tokens.secret);
-                mIsUploadingPackAfterLinked = false;
-                uploadingPackAfterLinked();
+
+        Uri data = getIntent().getData();
+        if ((data != null) && (data.getScheme().equalsIgnoreCase("fcc"))) {
+            //called from outside app like browser
+            //TODO
+        } else {
+            if (true == mIsUploadingPackAfterLinked) {
+                AndroidAuthSession session = DropboxHelper.getDropboxAPI(this).getSession();
+                if (session.authenticationSuccessful()) {
+                    session.finishAuthentication(); // Mandatory call to complete the auth
+                    // Store it locally in our app for later use
+                    TokenPair tokens = session.getAccessTokenPair();
+                    DropboxHelper.storeKeys(this, tokens.key, tokens.secret);
+                    mIsUploadingPackAfterLinked = false;
+                    uploadingPackAfterLinked();
+                }
             }
         }
     }
@@ -335,16 +337,34 @@ public class MainActivity extends FragmentActivity implements
     }
 
     private void uploadingPackAfterLinked() {
-        //Step1: deal with dropbox
-        AndroidAuthSession session = DropboxHelper.getDropboxAPI(this).getSession();
-
-        //Step2: uploading pack
-        if (session.isLinked()) {
-            File file = new File(FileOperationHelper.getTestFile().toString());
-            PackUploadHelper upload = new PackUploadHelper(this, DropboxHelper.getDropboxAPI(this), "/FlashCardCreator/", file);
-            upload.execute();
+        if (checkUploadPackNecessary()) {
+            AndroidAuthSession session = DropboxHelper.getDropboxAPI(this).getSession();
+            if (session.isLinked()) {
+                File file = PackBuildHelper.createPackZipFile(mCurrentPack);
+                //File file = new File(FileOperationHelper.getTestFile().toString()); test purpose
+                PackUploadHelper upload = new PackUploadHelper(this, "/FlashCardCreator/", file);
+                upload.execute();
+            }
+        } else {
+            String shareLink = AppConfig.getInstance(this).getCurrentPackShareLink(mCurrentPack);
+            ShareLinkHelper shareLinkHelper = new ShareLinkHelper(this,shareLink);
+            shareLinkHelper.execShareAction();
         }
+    }
 
+    private void onActionbarShareSelected() {
+        DropboxAPI<AndroidAuthSession> mDBApi = DropboxHelper.getDropboxAPI(this);
+        if (mDBApi.getSession().isLinked()) {
+            uploadingPackAfterLinked();
+        } else {
+            mIsUploadingPackAfterLinked = true;
+            mDBApi.getSession().startAuthentication(MainActivity.this);
+        }
+    }
+
+    private boolean checkUploadPackNecessary() {
+        boolean result = true;
+        return result;
     }
 
 }

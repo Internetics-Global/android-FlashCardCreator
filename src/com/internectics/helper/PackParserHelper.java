@@ -1,7 +1,6 @@
 package com.internectics.helper;
 import com.internectics.data.Card;
 import com.internectics.data.Pack;
-import org.json.JSONException;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
@@ -14,6 +13,9 @@ import java.io.IOException;
 
 public class PackParserHelper {
 
+    /*
+     * parse downloaded pack JSON file into Pack
+     */
     public static Pack parsePackJsonFile(String packJsonFile){
 
         Pack pack = new Pack();
@@ -42,10 +44,11 @@ public class PackParserHelper {
         }
 
         return pack;
-
     }
 
-
+    /*
+     * parse downloaded card JSON file into Card
+     */
     public static Card parseCardJsonFile(String cardJsonFile){
         Card card = new Card();
         JSONParser parser = new JSONParser();
@@ -97,7 +100,6 @@ public class PackParserHelper {
         } catch (IOException e) {
             e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
         }
-
 
         return card;
     }

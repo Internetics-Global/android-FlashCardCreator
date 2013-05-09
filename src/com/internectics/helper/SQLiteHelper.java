@@ -12,6 +12,9 @@ import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
 import com.internectics.util.Global;
 
+/*
+ * Sqlite operation
+ */
 public class SQLiteHelper {
 
     private static DBOpenHelper dbOpenHelper = null;

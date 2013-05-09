@@ -7,6 +7,9 @@ import java.io.File;
 import java.io.IOException;
 import java.util.UUID;
 
+/*
+ * Common file operations
+ */
 public class FileOperationHelper {
     public static File cacheDirectory() {
         return AppContext.getAppContext().getCacheDir();
@@ -90,6 +93,22 @@ public class FileOperationHelper {
         }
 
         return bitmap;
+    }
+
+    /*
+     * this file(path) is fixed
+     */
+    public static File getUploadPackJsonFile() {
+        File packJsonFile = new File(FileOperationHelper.uploadPackDirectory(),"packInformation.json");
+        return packJsonFile;
+    }
+
+    /*
+     * this file(path) is fixed
+     */
+    public static File getUploadCardJsonFile() {
+        File cardJsonFile = new File(FileOperationHelper.uploadPackDirectory(),"cardTextContent.json");
+        return cardJsonFile;
     }
 
 

@@ -1,8 +1,7 @@
 package com.internectics.util;
 
 import android.content.Context;
-import android.content.SharedPreferences;
-import android.preference.PreferenceManager;
+import com.internectics.data.Pack;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -10,149 +9,93 @@ import java.io.FileOutputStream;
 import java.util.Properties;
 
 public class AppConfig {
-	private final static String APP_CONFIG = "config";
-	private static AppConfig appConfig;
-	private Context mContext;
-	
-	public final static String CONF_LAST_CREATED_PACK_NAME = "LAST_CREATED_PACK_NAME";
-	public final static String CONF_LAST_CREATED_PACK_DATE = "LAST_CREATED_PACK_DATE";
-	public final static String CONF_IS_SAMPLE_PACK_DOWNLOADED = "IS_SAMPLE_PACK_DOWNLOADED";
+    private final static String APP_CONFIG = "config";
+    private static AppConfig appConfig;
+    private Context mContext;
+
+    public final static String CONF_LAST_CREATED_PACK_NAME = "LAST_CREATED_PACK_NAME";
+    public final static String CONF_LAST_CREATED_PACK_DATE = "LAST_CREATED_PACK_DATE";
+    public final static String CONF_IS_SAMPLE_PACK_DOWNLOADED = "IS_SAMPLE_PACK_DOWNLOADED";
 
     public final static String CONF_IS_RANDOM_PLAY = "IS_RANDOM_PLAY";
 
-	public final static String CONF_APP_UDID = "APP_UDID";
-	
-	/**
-	 * get AppConfig instance
-	 */
-	public static AppConfig getInstance(Context context)
-	{
-		if(appConfig == null){
-			appConfig = new AppConfig();
-			appConfig.mContext = context;
-		}
-		return appConfig;
-	}
-	
-	/**
-	 * get Preference setting
-	 */
-	public static SharedPreferences getSharedPreferences(Context context)
-	{
-		return PreferenceManager.getDefaultSharedPreferences(context);
-	}
-	
-	/**
-	 * check whether sample pack has been downloaded
-	 */
-	public static boolean isSamplePackDownloaded(Context context)
-	{
-		return getSharedPreferences(context)
-				.getBoolean(CONF_IS_SAMPLE_PACK_DOWNLOADED, true);
-	}
+    public final static String CONF_APP_UDID = "APP_UDID";
 
-	
-	/**
-	 * return null if not exist
-	 */
-	public static String getLastCreatedPackName(Context context)
-	{
-		return getSharedPreferences(context)
-				.getString(CONF_LAST_CREATED_PACK_NAME, null);
-	}
-
-
-
-    public static boolean isRandomPlay(Context context) {
-        return getSharedPreferences(context).getBoolean(CONF_IS_RANDOM_PLAY,false);
+    /**
+     * get AppConfig instance
+     */
+    public static AppConfig getInstance(Context context) {
+        if (appConfig == null) {
+            appConfig = new AppConfig();
+            appConfig.mContext = context;
+        }
+        return appConfig;
     }
 
+    /**
+     * Private method
+     */
+    private Properties getProps() {
+        FileInputStream fis = null;
+        Properties props = new Properties();
+        try {
+            File dirConf = mContext.getDir(APP_CONFIG, Context.MODE_PRIVATE);
+            fis = new FileInputStream(dirConf.getPath() + File.separator + APP_CONFIG);
 
-    public static void setRandomPlayYes(Context context) {
-        SharedPreferences.Editor edit = getSharedPreferences(context).edit();
-        edit.putBoolean(CONF_IS_RANDOM_PLAY,true);
+            props.load(fis);
+        } catch (Exception e) {
+        } finally {
+            try {
+                fis.close();
+            } catch (Exception e) {
+            }
+        }
+        return props;
     }
 
-    public static void setRandomPlayNo(Context context) {
-        SharedPreferences.Editor edit = getSharedPreferences(context).edit();
-        edit.putBoolean(CONF_IS_RANDOM_PLAY,false);
+    /**
+     * Private method
+     */
+    private void setProps(Properties p) {
+        FileOutputStream fos = null;
+        try {
+            File dirConf = mContext.getDir(APP_CONFIG, Context.MODE_PRIVATE);
+            File conf = new File(dirConf, APP_CONFIG);
+            fos = new FileOutputStream(conf);
+
+            p.store(fos, null);
+            fos.flush();
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                fos.close();
+            } catch (Exception e) {
+            }
+        }
     }
 
+    public void set(String key, String value) {
+        Properties props = getProps();
+        props.setProperty(key, value);
+        setProps(props);
+    }
 
-	/**
-	 * return null if not exist
-	 */
-	public static String getLastCreatedPackDate(Context context)
-	{
-		return getSharedPreferences(context)
-				.getString(CONF_LAST_CREATED_PACK_DATE, null);
-	}
-	
-	public void setLastCreatedPackDate(String dateStr){
-		set(CONF_LAST_CREATED_PACK_DATE, dateStr);
-	}
-	
-	
-	/**
-	 * Private method
-	 */
-	private Properties getProps() {
-		FileInputStream fis = null;
-		Properties props = new Properties();
-		try{
-			File dirConf = mContext.getDir(APP_CONFIG, Context.MODE_PRIVATE);
-			fis = new FileInputStream(dirConf.getPath() + File.separator + APP_CONFIG);
-			
-			props.load(fis);
-		}catch(Exception e){
-		}finally{
-			try {
-				fis.close();
-			} catch (Exception e) {}
-		}
-		return props;
-	}
-	
-	/**
-	 * Private method
-	 */
-	private void setProps(Properties p) {
-		FileOutputStream fos = null;
-		try{
-			File dirConf = mContext.getDir(APP_CONFIG, Context.MODE_PRIVATE);
-			File conf = new File(dirConf, APP_CONFIG);
-			fos = new FileOutputStream(conf);
-			
-			p.store(fos, null);
-			fos.flush();
-		}catch(Exception e){	
-			e.printStackTrace();
-		}finally{
-			try {
-				fos.close();
-			} catch (Exception e) {}
-		}
-	}
-	
-	public void set(String key,String value)
-	{
-		Properties props = getProps();
-		props.setProperty(key, value);
-		setProps(props);
-	}
-	
-	public String get(String key)
-	{
-		Properties props = getProps();
-		return (props!=null)?props.getProperty(key):null;
-	}
-	
-	public void remove(String...key)
-	{
-		Properties props = getProps();
-		for(String k : key)
-			props.remove(k);
-		setProps(props);
-	}
+    public String get(String key) {
+        Properties props = getProps();
+        return (props != null) ? props.getProperty(key) : null;
+    }
+
+    public void remove(String... key) {
+        Properties props = getProps();
+        for (String k : key)
+            props.remove(k);
+        setProps(props);
+    }
+
+    public String getCurrentPackShareLink(Pack currentPack) {
+        //TODO
+        return "http://dl.dropbox.com/s/t5wxndkc8s4glmv/card1360210703.422296599274701.zip";
+    }
 
 }

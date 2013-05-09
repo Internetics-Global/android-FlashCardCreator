@@ -17,10 +17,8 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 
-/**
- * Here we show uploading a file in a background thread, trying to show
- * typical exception handling and flow of control for an app that uploads a
- * file from Dropbox.
+/*
+ * Upload pack
  */
 public class PackUploadHelper extends AsyncTask<Void, Long, Boolean> {
 
@@ -36,14 +34,14 @@ public class PackUploadHelper extends AsyncTask<Void, Long, Boolean> {
     private String mErrorMsg;
 
 
-    public PackUploadHelper(Context context, DropboxAPI<?> api, String dropboxPath,
+    public PackUploadHelper(Context context, String dropboxPath,
                             File file) {
 
         // We set the context this way so we don't accidentally leak activities
         mContext = context;
 
         mFileLen = file.length();
-        mApi = api;
+        mApi = DropboxHelper.getDropboxAPI(context);
         mPath = dropboxPath;
         mFile = file;
 
@@ -142,7 +140,7 @@ public class PackUploadHelper extends AsyncTask<Void, Long, Boolean> {
         mDialog.dismiss();
         if (result) {
             Toast.makeText(mContext, "Pack successfully uploaded", Toast.LENGTH_SHORT).show();
-            ShareLinkHelper createShareLink = new ShareLinkHelper(mContext);
+            ShareLinkHelper createShareLink = new ShareLinkHelper(mContext,null);
             createShareLink.execute();
 
 
