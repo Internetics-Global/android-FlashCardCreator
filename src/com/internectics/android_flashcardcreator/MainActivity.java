@@ -119,41 +119,13 @@ public class MainActivity extends FragmentActivity implements
                 break;
             }
             case R.id.actionbar_edit:
-                try {
-                    PackTransferHelper.buildCardJsonFile(new Card(), FileOperationHelper.getTestFile().toString());
-                } catch (JSONException e) {
-                    e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
-                } catch (IOException e) {
-                    e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
-                }
+                PackBuildHelper.buildCardJsonFile(new Card(), FileOperationHelper.getTestFile().toString());
 
-                try {
-                    PackTransferHelper.buildPackJsonFile(new Pack(), FileOperationHelper.getTestFile2().toString());
-                } catch (JSONException e) {
-                    e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
-                } catch (IOException e) {
-                    e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
-                }
+                PackBuildHelper.buildPackJsonFile(new Pack(), FileOperationHelper.getTestFile2().toString());
 
-                try {
-                    PackTransferHelper.parsePackJsonFile(FileOperationHelper.getTestFile2().toString());
-                } catch (JSONException e) {
-                    e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
-                } catch (IOException e) {
-                    e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
-                } catch (ParseException e) {
-                    e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
-                }
+                PackParserHelper.parsePackJsonFile(FileOperationHelper.getTestFile2().toString());
 
-                try {
-                    PackTransferHelper.parseCardJsonFile(FileOperationHelper.getTestFile().toString());
-                } catch (JSONException e) {
-                    e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
-                } catch (IOException e) {
-                    e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
-                } catch (ParseException e) {
-                    e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
-                }
+                PackParserHelper.parseCardJsonFile(FileOperationHelper.getTestFile().toString());
 
                 break;
             case R.id.actionbar_packs:

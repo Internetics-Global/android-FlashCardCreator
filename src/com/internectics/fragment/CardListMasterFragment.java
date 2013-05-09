@@ -181,7 +181,7 @@ public class CardListMasterFragment extends ListFragment {
 
             } else if (intent.getAction().equals(DownloadManager.ACTION_DOWNLOAD_COMPLETE)) {
                 //step1: set mCurrentPack
-                //PackTransferHelper.assembleCards();
+                //PackParserHelper.assembleCards();
 
                 //step2: update listview
                 updateListView();
