@@ -1,22 +1,13 @@
 package com.internectics.fragment;
 
-import android.app.Activity;
 import android.app.DialogFragment;
-import android.content.Intent;
-import android.graphics.Bitmap;
-import android.net.Uri;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.*;
-import android.widget.*;
+import android.widget.Button;
+import android.widget.TextView;
+import android.widget.ToggleButton;
 import com.internectics.android_flashcardcreator.R;
-import com.internectics.data.Card;
-import com.internectics.data.Pack;
 import com.internectics.helper.DropboxHelper;
-import com.internectics.helper.FileOperationHelper;
-import com.internectics.util.*;
-
-import java.io.File;
 
 public class MoreFragment extends DialogFragment {
 

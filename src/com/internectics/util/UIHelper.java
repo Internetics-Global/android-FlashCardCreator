@@ -8,8 +8,6 @@ import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.util.Log;
 import android.util.TypedValue;
-import android.widget.ImageView;
-import com.internectics.android_flashcardcreator.R;
 import com.internectics.helper.FileOperationHelper;
 
 import java.io.File;

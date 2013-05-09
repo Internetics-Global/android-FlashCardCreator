@@ -2,9 +2,7 @@ package com.internectics.data;
 
 import android.content.Context;
 import android.database.Cursor;
-import android.util.Log;
 import com.internectics.helper.SQLiteHelper;
-import com.internectics.util.Global;
 
 import java.util.HashMap;
 

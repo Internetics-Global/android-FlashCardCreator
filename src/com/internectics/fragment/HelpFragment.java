@@ -1,7 +1,6 @@
 package com.internectics.fragment;
 
 import android.app.DialogFragment;
-import android.app.Fragment;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -10,10 +9,8 @@ import android.view.Window;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.Button;
-import android.widget.ImageView;
 import android.widget.TextView;
 import com.internectics.android_flashcardcreator.R;
-import com.internectics.data.Pack;
 
 /**
  * Created with IntelliJ IDEA.

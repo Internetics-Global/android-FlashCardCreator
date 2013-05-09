@@ -1,9 +1,8 @@
 package com.internectics.helper;
 
-import android.util.Log;
-import com.internectics.util.Global;
-
-import java.io.*;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
 import java.util.zip.ZipOutputStream;
@@ -35,14 +34,14 @@ public class ZipFileHelper {
      */
     public static void unzipPack(String zipFileName) throws Exception {
         File outputDirectory = FileOperationHelper.downloadedPackDirectory();
-        unzip(zipFileName,outputDirectory.toString());
+        unzip(zipFileName, outputDirectory.toString());
     }
 
     /*
     ** not take care folder in zip
      */
     private static void zip(ZipOutputStream out, File fs[], String base) throws Exception {
-        for (File f:fs) {
+        for (File f : fs) {
             out.putNextEntry(new ZipEntry(base));
             FileInputStream in = new FileInputStream(f);
             int b;

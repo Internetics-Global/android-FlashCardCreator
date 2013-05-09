@@ -8,25 +8,14 @@ import android.widget.Button;
 public class PlayActivity extends Activity {
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
-
 		setContentView(R.layout.play);
 		getActionBar().hide();
 		
-		((Button) findViewById(R.id.play_close_button)).setOnClickListener(new View.OnClickListener() {
-			
+		(findViewById(R.id.play_close_button)).setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
 				finish();
-				
 			}
 		});
-		
-		
-		
-		super.onCreate(savedInstanceState);
-		
 	}
-	
-	
-
 }

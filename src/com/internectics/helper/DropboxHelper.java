@@ -36,11 +36,10 @@ public class DropboxHelper {
         mContext = context;
         AndroidAuthSession session = buildSession();
         DropboxAPI<AndroidAuthSession> mDBApi = new DropboxAPI<AndroidAuthSession>(session);
+
+
         return mDBApi;
     }
-
-
-
 
 
     private static AndroidAuthSession buildSession() {
@@ -96,4 +95,6 @@ public class DropboxHelper {
         // Clear our stored keys
         clearKeys(context);
     }
+
+
 }

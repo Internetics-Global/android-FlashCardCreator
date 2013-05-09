@@ -22,7 +22,7 @@ import java.io.FileNotFoundException;
  * typical exception handling and flow of control for an app that uploads a
  * file from Dropbox.
  */
-public class UploadPackHelper extends AsyncTask<Void, Long, Boolean> {
+public class PackUploadHelper extends AsyncTask<Void, Long, Boolean> {
 
     private DropboxAPI<?> mApi;
     private String mPath;
@@ -36,10 +36,11 @@ public class UploadPackHelper extends AsyncTask<Void, Long, Boolean> {
     private String mErrorMsg;
 
 
-    public UploadPackHelper(Context context, DropboxAPI<?> api, String dropboxPath,
+    public PackUploadHelper(Context context, DropboxAPI<?> api, String dropboxPath,
                             File file) {
+
         // We set the context this way so we don't accidentally leak activities
-        mContext = context.getApplicationContext();
+        mContext = context;
 
         mFileLen = file.length();
         mApi = api;
@@ -140,14 +141,13 @@ public class UploadPackHelper extends AsyncTask<Void, Long, Boolean> {
     protected void onPostExecute(Boolean result) {
         mDialog.dismiss();
         if (result) {
-            showToast("Image successfully uploaded");
-        } else {
-            showToast(mErrorMsg);
-        }
-    }
+            Toast.makeText(mContext, "Pack successfully uploaded", Toast.LENGTH_SHORT).show();
+            ShareLinkHelper createShareLink = new ShareLinkHelper(mContext);
+            createShareLink.execute();
 
-    private void showToast(String msg) {
-        Toast error = Toast.makeText(mContext, msg, Toast.LENGTH_LONG);
-        error.show();
+
+        } else {
+            Toast.makeText(mContext, mErrorMsg, Toast.LENGTH_SHORT).show();
+        }
     }
 }

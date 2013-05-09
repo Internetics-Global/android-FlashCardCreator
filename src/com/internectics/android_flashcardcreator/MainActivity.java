@@ -5,27 +5,29 @@ import android.app.Dialog;
 import android.app.DialogFragment;
 import android.app.ProgressDialog;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
-import android.os.DropBoxManager;
 import android.support.v4.app.FragmentActivity;
 import android.util.Log;
-import android.view.*;
+import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuItem;
+import android.view.View;
 import android.view.animation.AlphaAnimation;
 import android.view.animation.Animation;
-import android.widget.*;
+import android.widget.Button;
+import android.widget.FrameLayout;
+import android.widget.PopupWindow;
+import android.widget.Toast;
 import com.dropbox.client2.DropboxAPI;
-import com.dropbox.client2.ProgressListener;
 import com.dropbox.client2.android.AndroidAuthSession;
-import com.dropbox.client2.exception.DropboxException;
-import com.dropbox.client2.exception.DropboxFileSizeException;
-import com.dropbox.client2.exception.DropboxServerException;
-import com.dropbox.client2.exception.DropboxUnlinkedException;
 import com.dropbox.client2.session.TokenPair;
 import com.internectics.data.Card;
 import com.internectics.data.Pack;
-import com.internectics.fragment.*;
+import com.internectics.fragment.AddPackFragment;
+import com.internectics.fragment.CardDetailFragment;
+import com.internectics.fragment.CardListMasterFragment;
+import com.internectics.fragment.MoreFragment;
 import com.internectics.helper.*;
 import com.internectics.util.AppContext;
 import com.internectics.util.Global;
@@ -34,8 +36,6 @@ import org.json.JSONException;
 import org.json.simple.parser.ParseException;
 
 import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 
 /**
@@ -46,11 +46,11 @@ import java.io.IOException;
 public class MainActivity extends FragmentActivity implements
         CardListMasterFragment.Callbacks {
 
-    //Used to diff between card view and card creating
+    //Used to diff whether is on card view and card creating
     private boolean mIsCreatingCard = false;
 
     public Pack mCurrentPack = new Pack();//mCurrentPack will be automatically refreshed after creating a new card, add a new pack and new pack selected
-    public int  mCurrentIndex = 0;
+    public int mCurrentIndex = 0;
     public Card mCurrentCard = new Card();
 
     public PopupWindow mPopupWindow;
@@ -65,15 +65,10 @@ public class MainActivity extends FragmentActivity implements
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-
-
-        //Step1:We create a new AuthSession so that we can use the Dropbox API.
-
-
-        //Step2: check table and default user
+        //Step1: check table and default user
         SQLiteHelper.defaultDatabase(AppContext.getAppContext());
 
-        //Step3: OpenUDID
+        //Step2: OpenUDID
         OpenUDID_manager.sync(this);
         if (!OpenUDID_manager.isInitialized()) {
             Log.d(Global.debugTag, "OpenUDID_manager is not initialized");
@@ -86,15 +81,10 @@ public class MainActivity extends FragmentActivity implements
             @Override
             public void onClick(View view) {
                 Log.d(Global.debugTag, "the add card button is clicked");
-
                 startCreateCard();
 
             }
         });
-
-
-
-
     }
 
     @Override
@@ -130,7 +120,7 @@ public class MainActivity extends FragmentActivity implements
             }
             case R.id.actionbar_edit:
                 try {
-                    PackTransferHelper.buildCardJsonFile(new Card(),FileOperationHelper.getTestFile().toString());
+                    PackTransferHelper.buildCardJsonFile(new Card(), FileOperationHelper.getTestFile().toString());
                 } catch (JSONException e) {
                     e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
                 } catch (IOException e) {
@@ -138,7 +128,7 @@ public class MainActivity extends FragmentActivity implements
                 }
 
                 try {
-                    PackTransferHelper.buildPackJsonFile(new Pack(),FileOperationHelper.getTestFile2().toString());
+                    PackTransferHelper.buildPackJsonFile(new Pack(), FileOperationHelper.getTestFile2().toString());
                 } catch (JSONException e) {
                     e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
                 } catch (IOException e) {
@@ -187,33 +177,6 @@ public class MainActivity extends FragmentActivity implements
             case R.id.actionbar_more:
                 MoreFragment moreFragment = MoreFragment.getInstance();
                 moreFragment.show(getFragmentManager(), "more_fragment");
-
-//                new AlertDialog.Builder(this)
-//                        .setTitle("More")
-//                        .setItems(new String[]{"Dropbox", "Random play", "Register", "Submit new listing", "Help", "About"}, new DialogInterface.OnClickListener() {
-//                            @Override
-//                            public void onClick(DialogInterface dialog, int which) {
-//                                switch (which) {
-//                                    case 0:
-//                                        break;
-//                                    case 1:
-//                                        break;
-//                                    case 2:
-//                                        break;
-//                                    case 3:
-//                                        break;
-//                                    case 4:
-//                                        HelpFragment helpFragment = HelpFragment.getInstance();
-//                                        helpFragment.show(getFragmentManager(),"help_dialog");
-//                                        break;
-//                                    case 5:
-//                                        break;
-//                                    default:
-//                                        break;
-//                                }
-//                            }
-//                        })
-//                        .show();
                 break;
 
             case R.id.actionbar_play:
@@ -231,11 +194,7 @@ public class MainActivity extends FragmentActivity implements
                     mDBApi.getSession().startAuthentication(MainActivity.this);
                 }
 
-                //Intent intent = new Intent(Intent.ACTION_SEND);
-                //intent.setType("text/plain");
-                //intent.putExtra(Intent.EXTRA_TEXT, "htt://www.microsoft.com");
-                //intent.putExtra(Intent.EXTRA_SUBJECT, "Something to say:");
-                //startActivity(Intent.createChooser(intent, "Share current pack to"));
+
                 break;
 
             case R.id.actionbar_add_card_cancel:
@@ -244,12 +203,18 @@ public class MainActivity extends FragmentActivity implements
                 break;
 
             case R.id.actionbar_add_card_save:
-                Log.d(Global.debugTag,"save button is clicked during adding card operation");
+                Log.d(Global.debugTag, "save button is clicked during adding card operation");
                 saveNewCreatedCard();
                 break;
 
             case R.id.actionbar_help:
-                startActivity(new Intent(MainActivity.this,InstructionActivity.class));
+                startActivity(new Intent(MainActivity.this, InstructionActivity.class));
+                break;
+
+            case R.id.actionbar_test:
+                String downloadURL = "http://dl.dropbox.com/s/zejhwnb3x87d0vz/card1361506195.8733811651867036.zip";
+                PackDownloadHelper packDownloadHelper = new PackDownloadHelper(MainActivity.this,downloadURL);
+                packDownloadHelper.execute();
                 break;
 
             default:
@@ -270,7 +235,7 @@ public class MainActivity extends FragmentActivity implements
                 session.finishAuthentication(); // Mandatory call to complete the auth
                 // Store it locally in our app for later use
                 TokenPair tokens = session.getAccessTokenPair();
-                DropboxHelper.storeKeys(this,tokens.key, tokens.secret);
+                DropboxHelper.storeKeys(this, tokens.key, tokens.secret);
                 mIsUploadingPackAfterLinked = false;
                 uploadingPackAfterLinked();
             }
@@ -291,7 +256,7 @@ public class MainActivity extends FragmentActivity implements
 
         mCurrentIndex = index;
         mCurrentCard = mCurrentPack.cards.get(mCurrentIndex);
-        CardDetailFragment fragment = new CardDetailFragment(mCurrentPack,mCurrentCard);
+        CardDetailFragment fragment = new CardDetailFragment(mCurrentPack, mCurrentCard);
         getSupportFragmentManager().beginTransaction()
                 .replace(R.id.card_detail_container, fragment).commit();
     }
@@ -320,7 +285,7 @@ public class MainActivity extends FragmentActivity implements
             }
         });
 
-        CardDetailFragment fragment = new CardDetailFragment(mCurrentPack,null);
+        CardDetailFragment fragment = new CardDetailFragment(mCurrentPack, null);
         getSupportFragmentManager().beginTransaction()
                 .setCustomAnimations(R.anim.in_from_right, R.anim.out_to_right)
                 .replace(R.id.add_card_frame_layout, fragment)
@@ -364,21 +329,21 @@ public class MainActivity extends FragmentActivity implements
 
     private boolean checkEntryConditionBeforeCreatingNewCard(Pack currentPack) {
 
-       //case1: check whether pack is empty or not
-       if (currentPack == null) {
-           Toast.makeText(this,"Create a pack first before creating a new card", 1).show();
-           return false;
-       }
-       //case2: check owner
-       if (!currentPack.creatorID.equals(OpenUDID_manager.getOpenUDID())) {
-           Toast.makeText(this,"You cannot create a card in pack you haven't created yourself.", 1).show();
+        //case1: check whether pack is empty or not
+        if (currentPack == null) {
+            Toast.makeText(this, "Create a pack first before creating a new card", 1).show();
+            return false;
+        }
+        //case2: check owner
+        if (!currentPack.creatorID.equals(OpenUDID_manager.getOpenUDID())) {
+            Toast.makeText(this, "You cannot create a card in pack you haven't created yourself.", 1).show();
 
 
-           return false;
+            return false;
 
-       }
+        }
 
-       return  true;
+        return true;
     }
 
     @Override
@@ -401,12 +366,10 @@ public class MainActivity extends FragmentActivity implements
         //Step1: deal with dropbox
         AndroidAuthSession session = DropboxHelper.getDropboxAPI(this).getSession();
 
-        // The next part must be inserted in the onResume() method of the
-        // activity from which session.startAuthentication() was called, so
-        // that Dropbox authentication completes properly.
+        //Step2: uploading pack
         if (session.isLinked()) {
             File file = new File(FileOperationHelper.getTestFile().toString());
-            UploadPackHelper upload = new UploadPackHelper(this, DropboxHelper.getDropboxAPI(this), "/FlashCardCreator/", file);
+            PackUploadHelper upload = new PackUploadHelper(this, DropboxHelper.getDropboxAPI(this), "/FlashCardCreator/", file);
             upload.execute();
         }
 

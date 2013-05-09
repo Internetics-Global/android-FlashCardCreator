@@ -48,4 +48,10 @@
         android:title="@string/title_play" android:showAsAction="ifRoom|withText">
     </item>
 
+    <item
+            android:id="@+id/actionbar_test"
+            android:icon="@android:drawable/btn_default"
+            android:title="test" android:showAsAction="ifRoom|withText">
+    </item>
+
 </menu>
