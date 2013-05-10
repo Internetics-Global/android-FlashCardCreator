@@ -33,7 +33,6 @@
             </intent-filter>
             <intent-filter>
                 <data
-                        android:host="twitter.com"
                         android:scheme="fcc"/>
 
                 <action android:name="android.intent.action.VIEW"/>

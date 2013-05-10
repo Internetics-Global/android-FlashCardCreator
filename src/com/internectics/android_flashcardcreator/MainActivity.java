@@ -206,6 +206,11 @@ public class MainActivity extends FragmentActivity implements
         if ((data != null) && (data.getScheme().equalsIgnoreCase("fcc"))) {
             //called from outside app like browser
             //TODO
+            String downloableShareLink = data.toString().replace("fcc","http").replace("wwww","dl");
+            PackDownloadHelper packDownloadHelper = new PackDownloadHelper(MainActivity.this,downloableShareLink);
+            packDownloadHelper.execute();
+
+
         } else {
             if (true == mIsUploadingPackAfterLinked) {
                 AndroidAuthSession session = DropboxHelper.getDropboxAPI(this).getSession();

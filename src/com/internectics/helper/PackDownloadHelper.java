@@ -49,7 +49,7 @@ public class PackDownloadHelper extends AsyncTask<Void, Long, Boolean> {
 
             // download the file
             InputStream input = new BufferedInputStream(url.openStream());
-            OutputStream output = new FileOutputStream("/sdcard/file_name.zip");
+            OutputStream output = new FileOutputStream("/sdcard/xbox360.zip");
 
             byte data[] = new byte[1024];
             long total = 0;
