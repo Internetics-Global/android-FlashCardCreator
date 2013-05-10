@@ -175,18 +175,10 @@ public class MainActivity extends FragmentActivity implements
                 break;
 
             case R.id.actionbar_test:
-                ArrayList <String> file = new ArrayList<String>();
-                file.add(FileOperationHelper.getTestFile().toString());
-                file.add(FileOperationHelper.getTestFile2().toString());
-                File xx = new File(FileOperationHelper.cacheDirectory(),"fuck.zip");
-                try {
-                    ZipFileHelper.zipFiles(xx.toString(),file);
-                } catch (Exception e) {
-                    e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
-                }
-//                String downloadURL = "http://dl.dropbox.com/s/zejhwnb3x87d0vz/card1361506195.8733811651867036.zip";
-//                PackDownloadHelper packDownloadHelper = new PackDownloadHelper(MainActivity.this,downloadURL);
-//                packDownloadHelper.execute();
+                String downloableShareLink = "http://dl.dropbox.com/s/1evrmjjypjisb0o/Pack1366592957-936257718.zip";
+                File downloadedZipFile = new File(FileOperationHelper.downloadedPackDirectory(),"downloadedPackZip.zip");
+                PackDownloadHelper packDownloadHelper = new PackDownloadHelper(MainActivity.this,downloableShareLink,downloadedZipFile.toString());
+                packDownloadHelper.execute();
                 break;
 
             default:
@@ -207,7 +199,8 @@ public class MainActivity extends FragmentActivity implements
             //called from outside app like browser
             //TODO
             String downloableShareLink = data.toString().replace("fcc","http").replace("wwww","dl");
-            PackDownloadHelper packDownloadHelper = new PackDownloadHelper(MainActivity.this,downloableShareLink);
+            File downloadedZipFile = new File(FileOperationHelper.downloadedPackDirectory(),"downloadedPackZip.zip");
+            PackDownloadHelper packDownloadHelper = new PackDownloadHelper(MainActivity.this,downloableShareLink,downloadedZipFile.toString());
             packDownloadHelper.execute();
 
 

@@ -38,32 +38,39 @@ public class ZipFileHelper {
 
 
     /*
-      will be unzipped to folder: /cache/Downloaded Pack/
+      will be fixedly unzipped to folder: /cache/Downloaded Pack/
       @param zipFileName the zip file used to be unzipped
      */
-    public static void unzip(String zipFileName) throws Exception {
-        File outputDirectory = FileOperationHelper.downloadedPackDirectory();
+    public static void unzipFile(String zipFileName,String outputDirectory) throws Exception {
 
         ZipInputStream in = new ZipInputStream(new FileInputStream(zipFileName));
         ZipEntry z;
+        int i = 0;
         while ((z = in.getNextEntry()) != null) {
-            System.out.println("unziping " + z.getName());
             if (z.isDirectory()) {
                 String name = z.getName();
                 name = name.substring(0, name.length() - 1);
                 File f = new File(outputDirectory + File.separator + name);
                 f.mkdir();
-                System.out.println("mkdir " + outputDirectory + File.separator
-                        + name);
-            } else {
+            }
+            else {
                 File f = new File(outputDirectory + File.separator
                         + z.getName());
                 f.createNewFile();
                 FileOutputStream out = new FileOutputStream(f);
+                byte[] buf = new byte[1024*16];
                 int b;
-                while ((b = in.read()) != -1)
+                while ((b = in.read(buf)) != -1)
                     out.write(b);
                 out.close();
+
+                //if the unzipped is still a zip file, we continue it
+                if (z.getName().contains(".zip")){
+                    File unzippedDirectory = new File(outputDirectory + File.separator + String.format("card%d",i));
+                    unzippedDirectory.mkdir();
+                    unzipFile(f.toString(),unzippedDirectory.toString());
+                    i++;
+                }
             }
         }
         in.close();

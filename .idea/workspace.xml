@@ -42,21 +42,21 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="4cdd1996-4a83-4768-87ba-370a47134935" name="Default" comment="">
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/AndroidManifest.xml" afterPath="$PROJECT_DIR$/AndroidManifest.xml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/com/internectics/android_flashcardcreator/MainActivity.java" afterPath="$PROJECT_DIR$/src/com/internectics/android_flashcardcreator/MainActivity.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/com/internectics/helper/PackDownloadHelper.java" afterPath="$PROJECT_DIR$/src/com/internectics/helper/PackDownloadHelper.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/com/internectics/helper/PackParserHelper.java" afterPath="$PROJECT_DIR$/src/com/internectics/helper/PackParserHelper.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/com/internectics/helper/ZipFileHelper.java" afterPath="$PROJECT_DIR$/src/com/internectics/helper/ZipFileHelper.java" />
     </list>
     <ignored path="android-FlashCardCreator.iws" />
     <ignored path=".idea/workspace.xml" />
     <file path="/Dummy.txt" changelist="4cdd1996-4a83-4768-87ba-370a47134935" time="1368180634303" ignored="false" />
-    <file path="/a.java" changelist="4cdd1996-4a83-4768-87ba-370a47134935" time="1368148386058" ignored="false" />
-    <file path="/MainActivity.java" changelist="4cdd1996-4a83-4768-87ba-370a47134935" time="1368183043173" ignored="false" />
+    <file path="/a.java" changelist="4cdd1996-4a83-4768-87ba-370a47134935" time="1368221281792" ignored="false" />
+    <file path="/MainActivity.java" changelist="4cdd1996-4a83-4768-87ba-370a47134935" time="1368221863510" ignored="false" />
     <file path="/activity_card_list.xml" changelist="4cdd1996-4a83-4768-87ba-370a47134935" time="1367218508443" ignored="false" />
     <file path="/Answer.java" changelist="4cdd1996-4a83-4768-87ba-370a47134935" time="1368170435299" ignored="false" />
-    <file path="/fragment.java" changelist="4cdd1996-4a83-4768-87ba-370a47134935" time="1368075109931" ignored="false" />
+    <file path="/fragment.java" changelist="4cdd1996-4a83-4768-87ba-370a47134935" time="1368221322006" ignored="false" />
     <file path="/a.xml" changelist="4cdd1996-4a83-4768-87ba-370a47134935" time="1367280798599" ignored="false" />
-    <file path="/a.dummy" changelist="4cdd1996-4a83-4768-87ba-370a47134935" time="1368168101382" ignored="false" />
+    <file path="/a.dummy" changelist="4cdd1996-4a83-4768-87ba-370a47134935" time="1368221579758" ignored="false" />
     <file path="/activity_card_twopane.xml" changelist="4cdd1996-4a83-4768-87ba-370a47134935" time="1367903918912" ignored="false" />
     <file path="/*.regexp" changelist="4cdd1996-4a83-4768-87ba-370a47134935" time="1367232220527" ignored="false" />
     <file path="/a.js" changelist="4cdd1996-4a83-4768-87ba-370a47134935" time="1367277817816" ignored="false" />
@@ -109,7 +109,7 @@
     <file path="$USER_HOME$/Downloads/android-viewflow-master/viewflow-example/res/layout/instruction_image_item.xml" changelist="4cdd1996-4a83-4768-87ba-370a47134935" time="1367802179559" ignored="false" />
     <file path="/instruction_image_item.xml" changelist="4cdd1996-4a83-4768-87ba-370a47134935" time="1367803478842" ignored="false" />
     <file path="/shape_round_corner.xml" changelist="4cdd1996-4a83-4768-87ba-370a47134935" time="1367811465216" ignored="false" />
-    <file path="/ZipFileHelper.java" changelist="4cdd1996-4a83-4768-87ba-370a47134935" time="1368165106217" ignored="false" />
+    <file path="/ZipFileHelper.java" changelist="4cdd1996-4a83-4768-87ba-370a47134935" time="1368224402450" ignored="false" />
     <file path="/FileOperationHelper.java" changelist="4cdd1996-4a83-4768-87ba-370a47134935" time="1368170423041" ignored="false" />
     <file path="/PackTransferHelper.java" changelist="4cdd1996-4a83-4768-87ba-370a47134935" time="1368075908659" ignored="false" />
     <file path="/in_from_right.xml" changelist="4cdd1996-4a83-4768-87ba-370a47134935" time="1367902461856" ignored="false" />
@@ -124,13 +124,13 @@
     <file path="/UploadPackHelper.java" changelist="4cdd1996-4a83-4768-87ba-370a47134935" time="1368062701303" ignored="false" />
     <file path="/CreateShareLink.java" changelist="4cdd1996-4a83-4768-87ba-370a47134935" time="1368063903884" ignored="false" />
     <file path="/ShareLinkHelper.java" changelist="4cdd1996-4a83-4768-87ba-370a47134935" time="1368159598003" ignored="false" />
-    <file path="/PackDownloadHelper.java" changelist="4cdd1996-4a83-4768-87ba-370a47134935" time="1368099566743" ignored="false" />
+    <file path="/PackDownloadHelper.java" changelist="4cdd1996-4a83-4768-87ba-370a47134935" time="1368221988627" ignored="false" />
     <file path="/actionbar.xml" changelist="4cdd1996-4a83-4768-87ba-370a47134935" time="1368071169369" ignored="false" />
     <file path="/AndroidManifest.xml" changelist="4cdd1996-4a83-4768-87ba-370a47134935" time="1368071706115" ignored="false" />
     <file path="/PackParseHelper.java" changelist="4cdd1996-4a83-4768-87ba-370a47134935" time="1368081841891" ignored="false" />
     <file path="/PackUploadHelper.java" changelist="4cdd1996-4a83-4768-87ba-370a47134935" time="1368159886638" ignored="false" />
     <file path="/PackBuildHelper.java" changelist="4cdd1996-4a83-4768-87ba-370a47134935" time="1368169670607" ignored="false" />
-    <file path="/PackParserHelper.java" changelist="4cdd1996-4a83-4768-87ba-370a47134935" time="1368087685946" ignored="false" />
+    <file path="/PackParserHelper.java" changelist="4cdd1996-4a83-4768-87ba-370a47134935" time="1368226946698" ignored="false" />
     <file path="$PROJECT_DIR$/gen/com/internectics/android_flashcardcreator/BuildConfig.java" changelist="4cdd1996-4a83-4768-87ba-370a47134935" time="1368090717890" ignored="false" />
     <file path="/SQLiteHelper.java" changelist="4cdd1996-4a83-4768-87ba-370a47134935" time="1368099616522" ignored="false" />
     <file path="/PackRecord.java" changelist="4cdd1996-4a83-4768-87ba-370a47134935" time="1368154691458" ignored="false" />
@@ -211,36 +211,6 @@
         <option name="CONDITION" value="" />
         <option name="LOG_MESSAGE" value="" />
       </breakpoint>
-      <breakpoint url="file://$PROJECT_DIR$/src/com/internectics/android_flashcardcreator/MainActivity.java" line="177" class="com.internectics.android_flashcardcreator.MainActivity" package="com.internectics.android_flashcardcreator">
-        <option name="ENABLED" value="true" />
-        <option name="LOG_ENABLED" value="false" />
-        <option name="LOG_EXPRESSION_ENABLED" value="false" />
-        <option name="REMOVE_AFTER_HIT" value="false" />
-        <option name="SUSPEND_POLICY" value="SuspendAll" />
-        <option name="SUSPEND" value="true" />
-        <option name="COUNT_FILTER_ENABLED" value="false" />
-        <option name="COUNT_FILTER" value="0" />
-        <option name="CONDITION_ENABLED" value="true" />
-        <option name="CLASS_FILTERS_ENABLED" value="false" />
-        <option name="INSTANCE_FILTERS_ENABLED" value="false" />
-        <option name="CONDITION" value="" />
-        <option name="LOG_MESSAGE" value="" />
-      </breakpoint>
-      <breakpoint url="file://$PROJECT_DIR$/src/com/internectics/android_flashcardcreator/MainActivity.java" line="184" class="com.internectics.android_flashcardcreator.MainActivity" package="com.internectics.android_flashcardcreator">
-        <option name="ENABLED" value="true" />
-        <option name="LOG_ENABLED" value="false" />
-        <option name="LOG_EXPRESSION_ENABLED" value="false" />
-        <option name="REMOVE_AFTER_HIT" value="false" />
-        <option name="SUSPEND_POLICY" value="SuspendAll" />
-        <option name="SUSPEND" value="true" />
-        <option name="COUNT_FILTER_ENABLED" value="false" />
-        <option name="COUNT_FILTER" value="0" />
-        <option name="CONDITION_ENABLED" value="true" />
-        <option name="CLASS_FILTERS_ENABLED" value="false" />
-        <option name="INSTANCE_FILTERS_ENABLED" value="false" />
-        <option name="CONDITION" value="" />
-        <option name="LOG_MESSAGE" value="" />
-      </breakpoint>
       <breakpoint url="file://$PROJECT_DIR$/src/com/internectics/helper/PackBuildHelper.java" line="52" class="com.internectics.helper.PackBuildHelper" package="com.internectics.helper">
         <option name="ENABLED" value="true" />
         <option name="LOG_ENABLED" value="false" />
@@ -271,7 +241,7 @@
         <option name="CONDITION" value="" />
         <option name="LOG_MESSAGE" value="" />
       </breakpoint>
-      <breakpoint url="file://$PROJECT_DIR$/src/com/internectics/android_flashcardcreator/MainActivity.java" line="204" class="com.internectics.android_flashcardcreator.MainActivity" package="com.internectics.android_flashcardcreator">
+      <breakpoint url="file://$PROJECT_DIR$/src/com/internectics/helper/PackDownloadHelper.java" line="91" class="com.internectics.helper.PackDownloadHelper" package="com.internectics.helper">
         <option name="ENABLED" value="true" />
         <option name="LOG_ENABLED" value="false" />
         <option name="LOG_EXPRESSION_ENABLED" value="false" />
@@ -299,79 +269,25 @@
       <file leaf-file-name="ZipFileHelper.java" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/com/internectics/helper/ZipFileHelper.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="24" column="0" selection-start="660" selection-end="660" vertical-scroll-proportion="0.0">
+            <state line="60" column="45" selection-start="2071" selection-end="2071" vertical-scroll-proportion="0.0">
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="PackBuildHelper.java" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/com/internectics/helper/PackBuildHelper.java">
+      <file leaf-file-name="PackParserHelper.java" pinned="false" current="true" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/src/com/internectics/helper/PackParserHelper.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="28" column="97" selection-start="1124" selection-end="1141" vertical-scroll-proportion="0.0">
+            <state line="100" column="34" selection-start="5455" selection-end="5455" vertical-scroll-proportion="0.6348884">
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="MainActivity.java" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/com/internectics/android_flashcardcreator/MainActivity.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="204" column="0" selection-start="7700" selection-end="7700" vertical-scroll-proportion="0.0">
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="PackDownloadHelper.java" pinned="false" current="true" current-in-tab="true">
+      <file leaf-file-name="PackDownloadHelper.java" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/com/internectics/helper/PackDownloadHelper.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="23" column="11" selection-start="543" selection-end="543" vertical-scroll-proportion="-2.4466019">
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="CardListBinder.java" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/com/internectics/fragment/CardListBinder.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="15" column="13" selection-start="434" selection-end="434" vertical-scroll-proportion="0.0">
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="AndroidManifest.xml" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/AndroidManifest.xml">
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="23" column="66" selection-start="997" selection-end="997" vertical-scroll-proportion="0.0">
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="PackUploadHelper.java" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/com/internectics/helper/PackUploadHelper.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="143" column="0" selection-start="5330" selection-end="5330" vertical-scroll-proportion="0.0">
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="Answer.java" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/com/internectics/data/Answer.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="33" column="82" selection-start="791" selection-end="825" vertical-scroll-proportion="0.0">
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="ShareLinkHelper.java" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/com/internectics/helper/ShareLinkHelper.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="54" column="4" selection-start="1677" selection-end="1677" vertical-scroll-proportion="0.0">
+            <state line="91" column="0" selection-start="2959" selection-end="2959" vertical-scroll-proportion="0.0">
               <folding />
             </state>
           </provider>
@@ -380,7 +296,7 @@
       <file leaf-file-name="FileOperationHelper.java" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/com/internectics/helper/FileOperationHelper.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="251" column="61" selection-start="7572" selection-end="7572" vertical-scroll-proportion="0.0">
+            <state line="62" column="0" selection-start="1739" selection-end="1739" vertical-scroll-proportion="0.0">
               <folding />
             </state>
           </provider>
@@ -411,12 +327,10 @@
   <component name="IdeDocumentHistory">
     <option name="changedFiles">
       <list>
-        <option value="$PROJECT_DIR$/src/com/internectics/helper/PackRecordHelper.java" />
         <option value="$PROJECT_DIR$/src/com/internectics/model/CardListModel.java" />
         <option value="$PROJECT_DIR$/src/com/internectics/util/Global.java" />
         <option value="$PROJECT_DIR$/src/com/internectics/helper/ShareLinkHelper.java" />
         <option value="$PROJECT_DIR$/src/com/internectics/helper/PackUploadHelper.java" />
-        <option value="$PROJECT_DIR$/src/com/internectics/helper/ZipFileHelper.java" />
         <option value="$PROJECT_DIR$/src/com/internectics/fragment/CardListMasterFragment.java" />
         <option value="$PROJECT_DIR$/src/com/internectics/fragment/AddPackFragment.java" />
         <option value="$PROJECT_DIR$/src/com/internectics/fragment/PackListFragment.java" />
@@ -425,8 +339,10 @@
         <option value="$PROJECT_DIR$/src/com/internectics/data/Question.java" />
         <option value="$PROJECT_DIR$/src/com/internectics/helper/FileOperationHelper.java" />
         <option value="$PROJECT_DIR$/AndroidManifest.xml" />
-        <option value="$PROJECT_DIR$/src/com/internectics/helper/PackDownloadHelper.java" />
         <option value="$PROJECT_DIR$/src/com/internectics/android_flashcardcreator/MainActivity.java" />
+        <option value="$PROJECT_DIR$/src/com/internectics/helper/PackDownloadHelper.java" />
+        <option value="$PROJECT_DIR$/src/com/internectics/helper/ZipFileHelper.java" />
+        <option value="$PROJECT_DIR$/src/com/internectics/helper/PackParserHelper.java" />
       </list>
     </option>
   </component>
@@ -461,6 +377,11 @@
             <id>XSLT</id>
           </State>
         </expanded-state>
+        <selected-state>
+          <State>
+            <id>Abstraction issues</id>
+          </State>
+        </selected-state>
       </profile-state>
     </entry>
   </component>
@@ -723,7 +644,7 @@
     <property name="project.structure.proportion" value="0.15" />
     <property name="options.splitter.main.proportions" value="0.3" />
     <property name="recentsLimit" value="5" />
-    <property name="options.lastSelected" value="preferences.sourceCode.Java" />
+    <property name="options.lastSelected" value="editing.templates" />
     <property name="MemberChooser.sorted" value="false" />
     <property name="last_opened_file_path" value="$PROJECT_DIR$/libs/viewflow" />
     <property name="AndroidLayoutSelectedEditor" value="text-editor" />
@@ -966,19 +887,20 @@
       <window_info id="Changes" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.3270548" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="JetGradle" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.23019803" sideWeight="0.5508772" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="Palette" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
+      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.15438597" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.24917492" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
-      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.36842105" sideWeight="0.5648298" order="3" side_tool="false" content_ui="tabs" />
+      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.20350876" sideWeight="0.5648298" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.69982547" sideWeight="0.43517017" order="13" side_tool="true" content_ui="tabs" />
       <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.24958813" sideWeight="0.21754386" order="3" side_tool="true" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32982457" sideWeight="0.5" order="8" side_tool="false" content_ui="tabs" />
-      <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.40350878" sideWeight="0.5" order="10" side_tool="false" content_ui="tabs" />
+      <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.13333334" sideWeight="0.5" order="10" side_tool="false" content_ui="tabs" />
       <window_info id="Android" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.34931508" sideWeight="0.5" order="12" side_tool="false" content_ui="tabs" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32534248" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.24554294" sideWeight="0.32763532" order="1" side_tool="true" content_ui="tabs" />
       <window_info id="Maven Projects" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32920793" sideWeight="0.5" order="9" side_tool="false" content_ui="tabs" />
       <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="SLIDING" type="SLIDING" visible="false" weight="0.4" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.24473257" sideWeight="0.6315789" order="0" side_tool="true" content_ui="combo" x="291" y="93" width="322" height="850" />
-      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.52807015" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.24473257" sideWeight="0.9140351" order="0" side_tool="true" content_ui="combo" x="291" y="93" width="322" height="850" />
+      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.08596491" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Palette&#9;" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.21312805" sideWeight="0.8807018" order="10" side_tool="false" content_ui="tabs" />
       <window_info id="Documentation" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="FLOATING" visible="false" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" x="100" y="122" width="1080" height="493" />
       <window_info id="Database" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32920793" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
@@ -991,7 +913,6 @@
       <window_info id="Designer" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.24473257" sideWeight="0.1368421" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Preview" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33443162" sideWeight="0.67017543" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Message" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
-      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.5491228" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Inspection" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.4" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
     </layout>
   </component>
@@ -1064,13 +985,6 @@
     <option name="FILTER_TARGETS" value="false" />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/src/com/internectics/util/UIHelper.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="36" column="79" selection-start="1068" selection-end="1068" vertical-scroll-proportion="0.3907455">
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/com/internectics/fragment/PackListFragment.java">
       <provider selected="true" editor-type-id="text-editor">
         <state line="261" column="92" selection-start="10269" selection-end="10269" vertical-scroll-proportion="0.6994681">
@@ -1106,9 +1020,9 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/com/internectics/helper/ZipFileHelper.java">
+    <entry file="file://$PROJECT_DIR$/src/com/internectics/data/Answer.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="24" column="0" selection-start="660" selection-end="660" vertical-scroll-proportion="0.0">
+        <state line="33" column="82" selection-start="791" selection-end="825" vertical-scroll-proportion="0.0">
           <folding />
         </state>
       </provider>
@@ -1120,58 +1034,65 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/com/internectics/data/Answer.java">
+    <entry file="file://$PROJECT_DIR$/src/com/internectics/fragment/CardListBinder.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="33" column="82" selection-start="791" selection-end="825" vertical-scroll-proportion="0.0">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/com/internectics/helper/FileOperationHelper.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="251" column="61" selection-start="7572" selection-end="7572" vertical-scroll-proportion="0.0">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/com/internectics/helper/PackUploadHelper.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="143" column="0" selection-start="5330" selection-end="5330" vertical-scroll-proportion="0.0">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/com/internectics/helper/ShareLinkHelper.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="54" column="4" selection-start="1677" selection-end="1677" vertical-scroll-proportion="0.0">
+        <state line="15" column="13" selection-start="434" selection-end="434" vertical-scroll-proportion="0.16666667">
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/AndroidManifest.xml">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="23" column="66" selection-start="997" selection-end="997" vertical-scroll-proportion="0.0">
+        <state line="23" column="66" selection-start="997" selection-end="997" vertical-scroll-proportion="0.75">
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/com/internectics/fragment/CardListBinder.java">
+    <entry file="file://$PROJECT_DIR$/src/com/internectics/helper/PackUploadHelper.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="15" column="13" selection-start="434" selection-end="434" vertical-scroll-proportion="0.0">
+        <state line="143" column="0" selection-start="5330" selection-end="5330" vertical-scroll-proportion="0.57222223">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/com/internectics/helper/ShareLinkHelper.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="54" column="4" selection-start="1677" selection-end="1677" vertical-scroll-proportion="0.55277777">
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/com/internectics/android_flashcardcreator/MainActivity.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="204" column="0" selection-start="7700" selection-end="7700" vertical-scroll-proportion="0.0">
+        <state line="177" column="0" selection-start="6653" selection-end="6653" vertical-scroll-proportion="-2.1136363">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/com/internectics/helper/FileOperationHelper.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="62" column="0" selection-start="1739" selection-end="1739" vertical-scroll-proportion="0.0">
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/com/internectics/helper/PackDownloadHelper.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="23" column="11" selection-start="543" selection-end="543" vertical-scroll-proportion="-2.4466019">
+        <state line="91" column="0" selection-start="2959" selection-end="2959" vertical-scroll-proportion="0.0">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/com/internectics/helper/ZipFileHelper.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="60" column="45" selection-start="2071" selection-end="2071" vertical-scroll-proportion="0.0">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/com/internectics/helper/PackParserHelper.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="100" column="34" selection-start="5455" selection-end="5455" vertical-scroll-proportion="0.6348884">
           <folding />
         </state>
       </provider>

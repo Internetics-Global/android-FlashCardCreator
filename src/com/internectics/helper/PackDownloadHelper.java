@@ -15,18 +15,20 @@ import java.net.URLConnection;
 public class PackDownloadHelper extends AsyncTask<Void, Long, Boolean> {
 
     private Context mContext;
-    private String mDownloadURL;
-    private final ProgressDialog mDialog;
-    private long mFileLen;
-    private String mErrorMsg;
+    private String  mDownloadURL;
+    private final   ProgressDialog mDialog;
+    private long    mFileLen;
+    private String  mErrorMsg;
+    private String  mSavedFilePath;
 
 
-    public PackDownloadHelper(Context context, String downloadURL) {
+    public PackDownloadHelper(Context context, String downloadURL,String downloadedZipFile) {
         mContext = context;
         mDownloadURL = downloadURL;
+        mSavedFilePath = downloadedZipFile;
         mDialog = new ProgressDialog(context);
         mDialog.setMax(100);
-        mDialog.setMessage("Uploading ");
+        mDialog.setMessage("Downloading...");
         mDialog.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
         mDialog.setProgress(0);
         mDialog.setButton("Cancel", new DialogInterface.OnClickListener() {
@@ -49,7 +51,7 @@ public class PackDownloadHelper extends AsyncTask<Void, Long, Boolean> {
 
             // download the file
             InputStream input = new BufferedInputStream(url.openStream());
-            OutputStream output = new FileOutputStream("/sdcard/xbox360.zip");
+            OutputStream output = new FileOutputStream(mSavedFilePath);
 
             byte data[] = new byte[1024];
             long total = 0;
@@ -83,6 +85,13 @@ public class PackDownloadHelper extends AsyncTask<Void, Long, Boolean> {
         mDialog.dismiss();
         if (result) {
             Toast.makeText(mContext, "Pack successfully downloaded", Toast.LENGTH_SHORT).show();
+            File outputDirectory = FileOperationHelper.downloadedPackDirectory();
+            try {
+                ZipFileHelper.unzipFile(mSavedFilePath,outputDirectory.toString());
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+
         } else {
             Toast.makeText(mContext, mErrorMsg, Toast.LENGTH_SHORT).show();
         }
