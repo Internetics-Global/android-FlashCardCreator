@@ -16,6 +16,7 @@ import com.internectics.android_flashcardcreator.R;
 import com.internectics.data.Card;
 import com.internectics.data.Pack;
 import com.internectics.helper.FileOperationHelper;
+import com.internectics.helper.PackRecordHelper;
 import com.internectics.util.*;
 
 import java.io.File;
@@ -105,7 +106,7 @@ public class AddPackFragment extends DialogFragment {
 		pack.packName = packNameEditText.getText().toString();
 		pack.sidebarTitle = sidebarTitleEditText.getText().toString();
 		pack.creatorNickName = creatorEditText.getText().toString();
-		// we set pack.coverImageUriStr in image select or by default
+		// we set pack.coverImageUriFormatStr in image select or by default
 		pack.creatorID = OpenUDID_manager.getOpenUDID();
 		pack.userID = Global.USER_ID;
 		pack.packID = (int)(System.currentTimeMillis()/1000L);
@@ -115,9 +116,11 @@ public class AddPackFragment extends DialogFragment {
         defaultCard.cardSN=1;
         defaultCard.packID = pack.packID;
         defaultCard.save(AppContext.getAppContext());
-		
-		AppConfig.getInstance(getActivity()).set(Global.packID_Property, String.format("%d", pack.packID));
-		AppConfig.getInstance(getActivity()).set(Global.latestPackCreatedDate_Property, StringUtils.getCurrentTimeDate());
+
+        PackRecordHelper.savePackUpdateRecord(AppContext.getAppContext(),pack);
+
+        AppConfig.getInstance(getActivity()).set(Global.mostRecentPackCreatedID_Property, String.format("%d", pack.packID));
+		AppConfig.getInstance(getActivity()).set(Global.mostRecentPackCreatedDate_Property, StringUtils.getCurrentTimeDate());
 
         Intent intent = new Intent();
         intent.setAction(Global.BROADCAST_ACTION_UPDATE_MASTER_VIEW);
@@ -142,8 +145,8 @@ public class AddPackFragment extends DialogFragment {
                             .findViewById(R.id.fragment_add_pack_coverImage);
                     coverImageView.setImageBitmap(resultBitmap);
 
-                    pack.coverImageUriStr = FileOperationHelper.covertToUriFormatString(toSaveFile);
-                    Log.d(Global.debugTag, pack.coverImageUriStr);
+                    pack.coverImageUriFormatStr = FileOperationHelper.covertToUriFormatFile(toSaveFile);
+                    Log.d(Global.debugTag, pack.coverImageUriFormatStr);
                 }
 			}
 		}

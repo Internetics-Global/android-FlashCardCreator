@@ -18,9 +18,14 @@ public class Global {
     public static final String BROADCAST_INTENT_EXTRA_FROM_NEW_PACK = "from_new_pack";
     public static final String BROADCAST_INTENT_EXTRA_FROM_PACK_SELECTED = "from_pack_selected";
 
-    //Property name
-    public static final String packID_Property = "packID";
-    public static final String latestPackCreatedDate_Property = "latestPackCreatedDate";
+    //Used to judge which pack is to load during start-up
+    public static final String mostRecentPackCreatedID_Property = "most_recent_pack_id";
+    public static final String mostRecentPackCreatedDate_Property = "most_recent_pack_created_date";
+
+    //Used to judge whether need to upload pack again for certain pack
+    public static final String shareDate_Property = "share_date";
+    public static final String shareLink_Property = "share_link";
+    public static final String updateDate_Property = "updated_date";
 
 
 }

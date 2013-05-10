@@ -61,10 +61,10 @@ public class PackParserHelper {
             JSONObject answerObj = (JSONObject) obj.get(2);
 
             card.cardSN = ((Long) summaryObj.get("card_sn")).intValue();
-            card.coverImageURL = (String) summaryObj.get("cover_image");
+            card.coverImageUriFormatStr = (String) summaryObj.get("cover_image");
             card.templateBackground = (String) summaryObj.get("template_background");
 
-            card.question.imageURL = (String) questionObj.get("image");
+            card.question.imageUriFormatStr = (String) questionObj.get("image");
             card.question.subheading = (String) questionObj.get("subheading");
             card.question.main = (String) questionObj.get("main");
             card.question.sub = (String) questionObj.get("sub");
@@ -79,7 +79,7 @@ public class PackParserHelper {
             card.question.css.subColor = (String) questionObj.get("sub_color");
             card.question.css.subSize = ((Long) questionObj.get("sub_size")).intValue();
 
-            card.answer.imageURL = (String) answerObj.get("image");
+            card.answer.imageUriFormatStr = (String) answerObj.get("image");
             card.answer.subheading = (String) answerObj.get("subheading");
             card.answer.main = (String) answerObj.get("main");
             card.answer.sub = (String) answerObj.get("sub");

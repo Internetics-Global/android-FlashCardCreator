@@ -6,7 +6,15 @@ import android.os.AsyncTask;
 import android.util.Log;
 import com.dropbox.client2.DropboxAPI;
 import com.dropbox.client2.exception.DropboxException;
+import com.internectics.data.Pack;
+import com.internectics.util.AppConfig;
 import com.internectics.util.Global;
+import com.internectics.util.StringUtils;
+import org.json.simple.JSONObject;
+import org.json.simple.parser.JSONParser;
+import org.json.simple.parser.ParseException;
+
+import java.util.Date;
 
 /**
  * 1. create share linkage
@@ -15,23 +23,26 @@ import com.internectics.util.Global;
 public class ShareLinkHelper extends AsyncTask<Void, Long, Boolean> {
 
     private Context mContext;
-    private String mShareLink;
+    private String  mFilePathInDropbox;
+    private Pack    mCurentPack;
 
 
     /*
       @param shareLink must enter a valid value when directly sharing; enter anything when creating share link first
      */
-    public ShareLinkHelper(Context context,String shareLink) {
+    public ShareLinkHelper(Context context,String file, Pack currentPack) {
         mContext = context;
-        mShareLink = shareLink;
+        mFilePathInDropbox = file;
+        mCurentPack = currentPack;
     }
 
     @Override
     protected Boolean doInBackground(Void... params) {
         try {
-            DropboxAPI.DropboxLink link = DropboxHelper.getDropboxAPI(mContext).share("/dd.html");
-            mShareLink = link.toString();
-            Log.d(Global.debugTag, mShareLink);
+            DropboxAPI.DropboxLink link = DropboxHelper.getDropboxAPI(mContext).share(mFilePathInDropbox);
+            String shareLink = link.url;
+            Log.d(Global.debugTag, shareLink);
+            PackRecordHelper.savePackUploadRecord(mContext,mCurentPack,shareLink);
             execShareAction();
 
         } catch (DropboxException e) {
@@ -41,14 +52,13 @@ public class ShareLinkHelper extends AsyncTask<Void, Long, Boolean> {
         return false;
     }
 
+
+
     public void execShareAction() {
-        if (mShareLink == null) {
-            Log.d(Global.debugTag, "You need to provide a share link URL firstly");
-            return;
-        }
+        String shareLink = PackRecordHelper.getCurrentPackShareLink(mContext,mCurentPack);
         Intent intent = new Intent(Intent.ACTION_SEND);
         intent.setType("text/plain");
-        intent.putExtra(Intent.EXTRA_TEXT, mShareLink);
+        intent.putExtra(Intent.EXTRA_TEXT, shareLink);
         intent.putExtra(Intent.EXTRA_SUBJECT, "Something to say:");
         mContext.startActivity(Intent.createChooser(intent, "Share current pack to"));
     }

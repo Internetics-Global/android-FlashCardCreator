@@ -12,6 +12,7 @@ import com.dropbox.client2.DropboxAPI;
 import com.dropbox.client2.DropboxAPI.UploadRequest;
 import com.dropbox.client2.ProgressListener;
 import com.dropbox.client2.exception.*;
+import com.internectics.data.Pack;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -23,28 +24,29 @@ import java.io.FileNotFoundException;
 public class PackUploadHelper extends AsyncTask<Void, Long, Boolean> {
 
     private DropboxAPI<?> mApi;
-    private String mPath;
     private File mFile;
+    private String mFilePathInDropbox;
 
     private long mFileLen;
     private UploadRequest mRequest;
     private Context mContext;
     private final ProgressDialog mDialog;
+    private Pack mCurrentPack;
 
     private String mErrorMsg;
 
 
     public PackUploadHelper(Context context, String dropboxPath,
-                            File file) {
+                            File file, Pack currentPack) {
 
         // We set the context this way so we don't accidentally leak activities
         mContext = context;
 
         mFileLen = file.length();
         mApi = DropboxHelper.getDropboxAPI(context);
-        mPath = dropboxPath;
+        mCurrentPack =currentPack;
         mFile = file;
-
+        mFilePathInDropbox = dropboxPath + file.getName();
         mDialog = new ProgressDialog(context);
         mDialog.setMax(100);
         mDialog.setMessage("Uploading " + file.getName());
@@ -65,8 +67,7 @@ public class PackUploadHelper extends AsyncTask<Void, Long, Boolean> {
             // By creating a request, we get a handle to the putFile operation,
             // so we can cancel it later if we want to
             FileInputStream fis = new FileInputStream(mFile);
-            String path = mPath + mFile.getName();
-            mRequest = mApi.putFileOverwriteRequest(path, fis, mFile.length(),
+            mRequest = mApi.putFileOverwriteRequest(mFilePathInDropbox, fis, mFile.length(),
                     new ProgressListener() {
                 @Override
                 public long progressInterval() {
@@ -140,7 +141,7 @@ public class PackUploadHelper extends AsyncTask<Void, Long, Boolean> {
         mDialog.dismiss();
         if (result) {
             Toast.makeText(mContext, "Pack successfully uploaded", Toast.LENGTH_SHORT).show();
-            ShareLinkHelper createShareLink = new ShareLinkHelper(mContext,null);
+            ShareLinkHelper createShareLink = new ShareLinkHelper(mContext,mFilePathInDropbox,mCurrentPack);
             createShareLink.execute();
 
 

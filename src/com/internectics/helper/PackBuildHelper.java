@@ -2,14 +2,10 @@ package com.internectics.helper;
 
 import com.internectics.data.Card;
 import com.internectics.data.Pack;
-import org.json.JSONException;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
-import org.json.simple.parser.JSONParser;
-import org.json.simple.parser.ParseException;
 
 import java.io.File;
-import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -28,9 +24,9 @@ public class PackBuildHelper {
             //step1: zip all the files in current card and come into a new zip file
             String singleFile = PackBuildHelper.buildCardJsonFile(card).toString();
             cardFiles.add(singleFile);
-            cardFiles.add(card.coverImageURL);
-            cardFiles.add(card.question.imageURL);
-            cardFiles.add(card.answer.imageURL);
+            cardFiles.add(FileOperationHelper.deleteUriSchemeHeader(card.coverImageUriFormatStr));
+            cardFiles.add(FileOperationHelper.deleteUriSchemeHeader(card.question.imageUriFormatStr));
+            cardFiles.add(FileOperationHelper.deleteUriSchemeHeader(card.answer.imageUriFormatStr));
             File cardZipFile = new File(FileOperationHelper.uploadPackDirectory(),String.format("%d.zip",i));
             try {
                 ZipFileHelper.zipFiles(cardZipFile.toString(),cardFiles);
@@ -46,11 +42,11 @@ public class PackBuildHelper {
         }
 
         //step2:
-        packFiles.add(currentPack.coverImageUriStr);
-        packFiles.add(currentPack.logoImageUriStr);
+        packFiles.add(FileOperationHelper.deleteUriSchemeHeader(currentPack.coverImageUriFormatStr));
+        packFiles.add(FileOperationHelper.deleteUriSchemeHeader(currentPack.logoImageUriFormatStr));
         String singleFile = PackBuildHelper.buildPackJsonFile(currentPack).toString();
         packFiles.add(singleFile);
-        File packZipFile = new File(FileOperationHelper.uploadPackDirectory(),null);
+        File packZipFile = FileOperationHelper.generateUniquePackZipFilePathForUploading();
         try {
             ZipFileHelper.zipFiles(packZipFile.toString(),packFiles);
         } catch (Exception e) {
@@ -66,10 +62,10 @@ public class PackBuildHelper {
         JSONObject summary = new JSONObject();
         summary.put("pack_name", pack.packName);
         summary.put("sidebar_title", pack.sidebarTitle);
-        summary.put("cover_image", pack.coverImageUriStr);
+        summary.put("cover_image", pack.coverImageUriFormatStr);
         summary.put("creator_id", pack.creatorID);
         summary.put("creator_nick_name", pack.creatorNickName);
-        summary.put("logo_image", pack.logoImageUriStr);
+        summary.put("logo_image", pack.logoImageUriFormatStr);
         summary.put("logo_url", pack.logoURL);
         summary.put("question_title", pack.questionTitle);
         summary.put("answer_title", pack.answerTitle);
@@ -104,10 +100,10 @@ public class PackBuildHelper {
         obj.add(answer);
 
         summary.put("card_sn", card.cardSN);
-        summary.put("cover_image", card.coverImageURL);
+        summary.put("cover_image", card.coverImageUriFormatStr);
         summary.put("template_background", card.templateBackground);
 
-        question.put("image", card.question.imageURL);
+        question.put("image", card.question.imageUriFormatStr);
         question.put("subheading", card.question.subheading);
         question.put("main", card.question.main);
         question.put("sub", card.question.sub);
@@ -122,7 +118,7 @@ public class PackBuildHelper {
         question.put("sub_color", card.question.css.subColor);
         question.put("sub_size", card.question.css.subSize);
 
-        answer.put("image", card.answer.imageURL);
+        answer.put("image", card.answer.imageUriFormatStr);
         answer.put("subheading", card.answer.subheading);
         answer.put("main", card.answer.main);
         answer.put("sub", card.answer.sub);

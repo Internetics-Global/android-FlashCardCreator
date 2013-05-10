@@ -3,7 +3,7 @@ package com.internectics.data;
 import android.content.Context;
 import android.database.Cursor;
 import android.util.Log;
-import com.internectics.android_flashcardcreator.R;
+import com.internectics.helper.FileOperationHelper;
 import com.internectics.helper.SQLiteHelper;
 import com.internectics.util.AppContext;
 import com.internectics.util.Global;
@@ -14,14 +14,14 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 public class Pack {
-	public int packID;
+	public int    packID;
 	public String packName;
 	public String sidebarTitle;
-	public int userID;
+	public int    userID;
 	public String questionTitle;
 	public String answerTitle;
-	public String coverImageUriStr;
-	public String logoImageUriStr;
+	public String coverImageUriFormatStr;
+	public String logoImageUriFormatStr;
 	public String logoURL;
 	public String creatorID;
 	public String creatorNickName;
@@ -40,8 +40,8 @@ public class Pack {
 		questionTitle = "Question";
 		answerTitle = "Answer";
 		logoURL = "http://www.";
-		logoImageUriStr = String.format("%d", R.drawable.logo_placeholder);
-		coverImageUriStr = String.format("%d", R.drawable.pack_cover_default_image);
+		logoImageUriFormatStr = FileOperationHelper.getLogoPlaceholderImagePath();
+		coverImageUriFormatStr = FileOperationHelper.getPackCoverDefaultImagePath();
 	}
 
 
@@ -52,8 +52,8 @@ public class Pack {
 		userID = (Integer) dataDict.get("user_id");
 		questionTitle = (String) dataDict.get("question_title");
 		answerTitle = (String) dataDict.get("answer_title");
-		coverImageUriStr = (String) dataDict.get("cover_image");
-		logoImageUriStr = (String) dataDict.get("logo_image");
+		coverImageUriFormatStr = (String) dataDict.get("cover_image");
+		logoImageUriFormatStr = (String) dataDict.get("logo_image");
 		logoURL = (String) dataDict.get("logo_url");
 		creatorID = (String) dataDict.get("creator_id");
 		creatorNickName = (String) dataDict.get("creator_nick_name");
@@ -106,7 +106,7 @@ public class Pack {
 	
 	
 	private void update(Context context) {
-		String query = String.format("UPDATE Packs_Tables SET pack_name=\"%s\",sidebar_title=\"%s\",user_id= %d,question_title=\"%s\",answer_title=\"%s\",cover_image=\"%s\",logo_image=\"%s\",logo_url=\"%s\",creator_id= \"%s\",creator_nick_name=\"%s\" WHERE pack_id=%d", packName, sidebarTitle, userID,questionTitle, answerTitle, coverImageUriStr, logoImageUriStr, logoURL, creatorID, creatorNickName,packID);
+		String query = String.format("UPDATE Packs_Tables SET pack_name=\"%s\",sidebar_title=\"%s\",user_id= %d,question_title=\"%s\",answer_title=\"%s\",cover_image=\"%s\",logo_image=\"%s\",logo_url=\"%s\",creator_id= \"%s\",creator_nick_name=\"%s\" WHERE pack_id=%d", packName, sidebarTitle, userID,questionTitle, answerTitle, coverImageUriFormatStr, logoImageUriFormatStr, logoURL, creatorID, creatorNickName,packID);
         SQLiteHelper.defaultDatabase(context).execSQL(query);
 	}
 	
@@ -116,7 +116,7 @@ public class Pack {
 			packID = (int)(System.currentTimeMillis()/1000L);
 		}
 		
-		String query = String.format("INSERT INTO Packs_Tables(pack_id, pack_name, sidebar_title, user_id, question_title, answer_title, cover_image,logo_image,logo_url,creator_id,creator_nick_name) VALUES (%d,\"%s\",\"%s\",%d,\"%s\",\"%s\",\"%s\",\"%s\",\"%s\",\"%s\",\"%s\")",packID,packName,sidebarTitle,userID,questionTitle,answerTitle, coverImageUriStr, logoImageUriStr,logoURL,creatorID,creatorNickName);
+		String query = String.format("INSERT INTO Packs_Tables(pack_id, pack_name, sidebar_title, user_id, question_title, answer_title, cover_image,logo_image,logo_url,creator_id,creator_nick_name) VALUES (%d,\"%s\",\"%s\",%d,\"%s\",\"%s\",\"%s\",\"%s\",\"%s\",\"%s\",\"%s\")",packID,packName,sidebarTitle,userID,questionTitle,answerTitle, coverImageUriFormatStr, logoImageUriFormatStr,logoURL,creatorID,creatorNickName);
         SQLiteHelper.defaultDatabase(context).execSQL(query);
 	}
 	
@@ -124,21 +124,21 @@ public class Pack {
 		String query = String.format("DELETE FROM Packs_Tables WHERE pack_id=%d", packID);
         SQLiteHelper.defaultDatabase(context).execSQL(query);	
         
-        if (!StringUtils.isNumeric(logoImageUriStr)) {
-        	File file = new File(this.logoImageUriStr);
+        if (!StringUtils.isNumeric(logoImageUriFormatStr)) {
+        	File file = new File(this.logoImageUriFormatStr);
         	if (file.delete()) {
-        		Log.d(Global.debugTag, "Successful to delete logoImageUriStr file");
+        		Log.d(Global.debugTag, "Successful to delete logoImageUriFormatStr file");
         	} else {
-        		Log.d(Global.debugTag, "Fail to delete logoImageUriStr file");
+        		Log.d(Global.debugTag, "Fail to delete logoImageUriFormatStr file");
         	}
         }
         
-        if (!StringUtils.isNumeric(coverImageUriStr)) {
-        	File file = new File(this.coverImageUriStr);
+        if (!StringUtils.isNumeric(coverImageUriFormatStr)) {
+        	File file = new File(this.coverImageUriFormatStr);
         	if (file.delete()) {
-        		Log.d(Global.debugTag, "Successful to delete coverImageUriStr file in Pack");
+        		Log.d(Global.debugTag, "Successful to delete coverImageUriFormatStr file in Pack");
         	} else {
-        		Log.d(Global.debugTag, "Fail to delete coverImageUriStr file in Pack");
+        		Log.d(Global.debugTag, "Fail to delete coverImageUriFormatStr file in Pack");
         	}
         }
 

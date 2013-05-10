@@ -149,7 +149,7 @@ public class PackListFragment extends Fragment {
 
 
             ContentResolver cResolver = AppContext.getAppContext().getContentResolver();
-            String str = currentPack.coverImageUriStr;
+            String str = currentPack.coverImageUriFormatStr;
             if (StringUtils.isNumeric(str)) {
                 imageView.setImageResource(Integer.parseInt(str));
             } else {
@@ -206,7 +206,7 @@ public class PackListFragment extends Fragment {
                     int count = defaultUser.packs.size();
                     if (count >0) {
                         Pack lastPack = defaultUser.packs.get(count-1);
-                        AppConfig.getInstance(getActivity()).set(Global.packID_Property, String.format("%d", lastPack.packID));
+                        AppConfig.getInstance(getActivity()).set(Global.mostRecentPackCreatedID_Property, String.format("%d", lastPack.packID));
                     }
                     ((ImageAdapter)mGallery.getAdapter()).notifyDataSetChanged();
                 }
@@ -261,8 +261,8 @@ public class PackListFragment extends Fragment {
                 }else {
                     File toSaveFile = UIHelper.saveImageToCaches(resultBitmap);
                     Pack currentPack = User.defaultUser(AppContext.getAppContext()).packs.get(mIndexOfCurrentPack);
-                    currentPack.coverImageUriStr = FileOperationHelper.covertToUriFormatString(toSaveFile);
-                    Log.d(Global.debugTag, currentPack.coverImageUriStr);
+                    currentPack.coverImageUriFormatStr = FileOperationHelper.covertToUriFormatFile(toSaveFile);
+                    Log.d(Global.debugTag, currentPack.coverImageUriFormatStr);
                     currentPack.save(AppContext.getAppContext());
                     ((ImageAdapter)mGallery.getAdapter()).notifyDataSetChanged();
                 }

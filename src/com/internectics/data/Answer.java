@@ -3,7 +3,7 @@ package com.internectics.data;
 import android.content.Context;
 import android.database.Cursor;
 import android.util.Log;
-import com.internectics.android_flashcardcreator.R;
+import com.internectics.helper.FileOperationHelper;
 import com.internectics.helper.SQLiteHelper;
 import com.internectics.util.Global;
 import com.internectics.util.StringUtils;
@@ -18,7 +18,7 @@ public class Answer {
 	public String    subheading;
 	public String    main;
 	public String    sub;
-	public String    imageURL;
+	public String    imageUriFormatStr;
 	public int       cssID;
 	public int       templateID;
 	
@@ -31,7 +31,7 @@ public class Answer {
         subheading = "";
         main = "";
         sub = "";
-        imageURL = String.format("%d", R.drawable.image_placeholder);
+        imageUriFormatStr = FileOperationHelper.getAnswerImagePlaceholderImagePath();
 		cssID = -1;
 		templateID = 0;
 		css = new CSS();
@@ -43,7 +43,7 @@ public class Answer {
 		subheading = (String) dataDict.get("subheading");
 		main = (String) dataDict.get("main");
 		sub = (String) dataDict.get("sub");
-		imageURL = (String) dataDict.get("image");
+		imageUriFormatStr = (String) dataDict.get("image");
 		cssID = (Integer) dataDict.get("css_id");
 		templateID = (Integer) dataDict.get("template_id");
 		
@@ -92,7 +92,7 @@ public class Answer {
 	}
 	
 	private void update(Context context) {
-		String query = String.format("UPDATE Answer_Tables SET answer_id=%d, subheading=\"%s\", main=\"%s\", sub=\"%s\", image=\"%s\",css_id=%d, template_id=%d WHERE card_id=%d", answerID, subheading, main,sub, imageURL, cssID, templateID, cardID);
+		String query = String.format("UPDATE Answer_Tables SET answer_id=%d, subheading=\"%s\", main=\"%s\", sub=\"%s\", image=\"%s\",css_id=%d, template_id=%d WHERE card_id=%d", answerID, subheading, main,sub, imageUriFormatStr, cssID, templateID, cardID);
         SQLiteHelper.defaultDatabase(context).execSQL(query);
 	}
 	
@@ -101,7 +101,7 @@ public class Answer {
 			//it's not the best way to generate an random but not repeated, hope future to find a better way
 			answerID = (int)(System.currentTimeMillis()/1000L);
 		}
-		String query = String.format("INSERT INTO Answer_Tables(answer_id, card_id, subheading, main, sub, image, css_id, template_id) VALUES (%d,%d, \"%s\", \"%s\", \"%s\", \"%s\", %d, %d)",answerID, cardID, subheading, main, sub, imageURL, cssID, templateID);
+		String query = String.format("INSERT INTO Answer_Tables(answer_id, card_id, subheading, main, sub, image, css_id, template_id) VALUES (%d,%d, \"%s\", \"%s\", \"%s\", \"%s\", %d, %d)",answerID, cardID, subheading, main, sub, imageUriFormatStr, cssID, templateID);
         SQLiteHelper.defaultDatabase(context).execSQL(query);
        
 	}
@@ -110,12 +110,12 @@ public class Answer {
 		String query = String.format("DELETE FROM Answer_Tables WHERE card_id=%d", cardID);
         SQLiteHelper.defaultDatabase(context).execSQL(query);	
         
-        if (!StringUtils.isNumeric(imageURL)) {
-        	File file = new File(this.imageURL);
+        if (!StringUtils.isNumeric(imageUriFormatStr)) {
+        	File file = new File(this.imageUriFormatStr);
         	if (file.delete()) {
-        		Log.d(Global.debugTag, "Successful to delete imageURL file in Answer");
+        		Log.d(Global.debugTag, "Successful to delete imageUriFormatStr file in Answer");
         	} else {
-        		Log.d(Global.debugTag, "Fail to delete coverImageUriStr file in Answer");
+        		Log.d(Global.debugTag, "Fail to delete coverImageUriFormatStr file in Answer");
         	}
         }
 	}

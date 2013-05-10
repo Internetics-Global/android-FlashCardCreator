@@ -8,7 +8,6 @@ import com.internectics.data.User;
 import com.internectics.util.AppConfig;
 import com.internectics.util.AppContext;
 import com.internectics.util.Global;
-import com.internectics.util.StringUtils;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -24,12 +23,12 @@ public class CardListModel {
 //		for (int i = 0; i < 5; i++) {
 //			Card tempCard = new Card();
 //			 tempCard.cardSN = 1;
-//			 tempCard.coverImageURL =
+//			 tempCard.coverImageUriFormatStr =
 //			 "file:///data/data/com.internectics.android_flashcardcreator/cache/Images/af9e10f9-a1e8-47e0-ba1c-e0685c29f602.jpg";
 //			 cardArrayList.add(tempCard);
 //			 Card tempCard2 = new Card();
 //			 tempCard2.cardSN = 2;
-//			 tempCard2.coverImageURL = String.format("%d",R.drawable.card_cover_image_placeholder);
+//			 tempCard2.coverImageUriFormatStr = String.format("%d",R.drawable.card_cover_image_placeholder);
 //			 cardArrayList.add(tempCard2);
 //		}
 
@@ -42,13 +41,7 @@ public class CardListModel {
             HashMap<String, Object> map = new HashMap<String, Object>();
             Card card = cardArrayList.get(i);
             map.put("cardSN", card.cardSN);
-            if (!StringUtils.isNumeric(card.coverImageURL)) {
-                // standard Uri
-                map.put("coverImageUriStr", Uri.parse(card.coverImageURL));
-            } else {
-                String localResourceUriStr = StringUtils.convertToUriStr(card.coverImageURL);
-                map.put("coverImageUriStr", Uri.parse(localResourceUriStr));
-            }
+            map.put("coverImageUriFormatStr", Uri.parse(card.coverImageUriFormatStr));
             fillMaps.add(map);
         }
         return fillMaps;
@@ -66,11 +59,12 @@ public class CardListModel {
 
     /**
      * if no existing pack, return null
+     * we set most recently created pack as current pack
      */
     public static Pack getCurrentPack() {
         Pack currentPack = null;
         String packIDString = AppConfig.getInstance(
-                AppContext.getAppContext()).get(Global.packID_Property);
+                AppContext.getAppContext()).get(Global.mostRecentPackCreatedID_Property);
 
         ArrayList<Pack> packs = User.defaultUser(AppContext.getAppContext()).packs;
 
@@ -79,11 +73,13 @@ public class CardListModel {
             return null;
 
         //case2: existing last saved pack
-        for (int i = 0; i < packs.size(); i++) {
-            if (packs.get(i).packID == Integer.parseInt(packIDString)) {
-                currentPack = packs.get(i);
-                Log.d(Global.debugTag, "latest Pack's ID is:" + packIDString);
-                return currentPack;
+        if (packIDString != null) {
+            for (int i = 0; i < packs.size(); i++) {
+                if (packs.get(i).packID == Integer.parseInt(packIDString)) {
+                    currentPack = packs.get(i);
+                    Log.d(Global.debugTag, "latest Pack's ID is:" + packIDString);
+                    return currentPack;
+                }
             }
         }
 

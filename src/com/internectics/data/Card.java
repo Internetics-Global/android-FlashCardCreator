@@ -3,7 +3,7 @@ package com.internectics.data;
 import android.content.Context;
 import android.database.Cursor;
 import android.util.Log;
-import com.internectics.android_flashcardcreator.R;
+import com.internectics.helper.FileOperationHelper;
 import com.internectics.helper.SQLiteHelper;
 import com.internectics.util.Global;
 import com.internectics.util.StringUtils;
@@ -15,7 +15,7 @@ import java.util.HashMap;
 public class Card {
 	public int      cardID;
 	public int      packID;
-	public String   coverImageURL;
+	public String coverImageUriFormatStr;
 	public String   templateBackground;
 	public int      cardSN;
 
@@ -28,8 +28,7 @@ public class Card {
 		cardSN = -1;
 		packID = -1;
 		templateBackground = "card_background_blue.png";
-		coverImageURL = String.format("%d", R.drawable.card_cover_image_placeholder);
-
+		coverImageUriFormatStr = FileOperationHelper.getCardCoverDefaultImagePath();
         question = new Question();
         answer = new Answer();
 	}
@@ -38,7 +37,7 @@ public class Card {
 	public Object initWithDictionary (HashMap<String, Object> dataDict) {
 		cardID = (Integer) dataDict.get("card_id");
 		packID = (Integer) dataDict.get("pack_id");
-		coverImageURL = (String) dataDict.get("cover_image");
+		coverImageUriFormatStr = (String) dataDict.get("cover_image");
 		templateBackground = (String) dataDict.get("template_background");
 		cardSN = (Integer) dataDict.get("card_sn");
 		
@@ -99,7 +98,7 @@ public class Card {
 	}
 	
 	private void update(Context context) {
-		String query = String.format("UPDATE Cards_Tables SET pack_id=%d, cover_image=\"%s\", template_background=\"%s\", card_sn=%d WHERE card_id=%d", packID, coverImageURL, templateBackground, cardSN, cardID);
+		String query = String.format("UPDATE Cards_Tables SET pack_id=%d, cover_image=\"%s\", template_background=\"%s\", card_sn=%d WHERE card_id=%d", packID, coverImageUriFormatStr, templateBackground, cardSN, cardID);
         SQLiteHelper.defaultDatabase(context).execSQL(query);
 	}
 	
@@ -107,7 +106,7 @@ public class Card {
 		if (cardID == -1) {
 			cardID = (int)(System.currentTimeMillis()/1000L);
 		}
-       String query = String.format("INSERT INTO Cards_Tables(card_id, pack_id, cover_image, template_background, card_sn) VALUES (%d, %d, \"%s\", \"%s\", %d)",cardID, packID, coverImageURL, templateBackground, cardSN);
+       String query = String.format("INSERT INTO Cards_Tables(card_id, pack_id, cover_image, template_background, card_sn) VALUES (%d, %d, \"%s\", \"%s\", %d)",cardID, packID, coverImageUriFormatStr, templateBackground, cardSN);
         SQLiteHelper.defaultDatabase(context).execSQL(query);
        
 	}
@@ -118,12 +117,12 @@ public class Card {
         SQLiteHelper.defaultDatabase(context).execSQL(query);	
         
         //Step2: delete image resources
-        if (!StringUtils.isNumeric(coverImageURL)) {
-        	File file = new File(this.coverImageURL);
+        if (!StringUtils.isNumeric(coverImageUriFormatStr)) {
+        	File file = new File(this.coverImageUriFormatStr);
         	if (file.delete()) {
-        		Log.d(Global.debugTag, "Successful to delete coverImageUriStr file");
+        		Log.d(Global.debugTag, "Successful to delete coverImageUriFormatStr file");
         	} else {
-        		Log.d(Global.debugTag, "Fail to delete coverImageUriStr file");
+        		Log.d(Global.debugTag, "Fail to delete coverImageUriFormatStr file");
         	}
         }
         

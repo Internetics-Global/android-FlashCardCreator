@@ -30,16 +30,9 @@ import com.internectics.fragment.CardDetailFragment;
 import com.internectics.fragment.CardListMasterFragment;
 import com.internectics.fragment.MoreFragment;
 import com.internectics.helper.*;
-import com.internectics.util.AppConfig;
-import com.internectics.util.AppContext;
-import com.internectics.util.Global;
-import com.internectics.util.OpenUDID_manager;
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.simple.parser.ParseException;
+import com.internectics.util.*;
 
 import java.io.File;
-import java.io.IOException;
 import java.util.ArrayList;
 
 /**
@@ -63,7 +56,7 @@ public class MainActivity extends FragmentActivity implements
     private static final int DIALOG_UPLOADING_PACK = 0;
     ProgressDialog mDialog;
 
-    boolean mIsUploadingPackAfterLinked = false;
+    private boolean mIsUploadingPackAfterLinked = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -71,6 +64,9 @@ public class MainActivity extends FragmentActivity implements
 
         //Step1: check table and default user
         SQLiteHelper.defaultDatabase(AppContext.getAppContext());
+
+        //step2: background of to-do-this. we hope to use Uri globally including resource files
+        FileOperationHelper.copyResourcesImagesToCache(MainActivity.this);
 
         //Step2: OpenUDID
         OpenUDID_manager.sync(this);
@@ -179,9 +175,18 @@ public class MainActivity extends FragmentActivity implements
                 break;
 
             case R.id.actionbar_test:
-                String downloadURL = "http://dl.dropbox.com/s/zejhwnb3x87d0vz/card1361506195.8733811651867036.zip";
-                PackDownloadHelper packDownloadHelper = new PackDownloadHelper(MainActivity.this,downloadURL);
-                packDownloadHelper.execute();
+                ArrayList <String> file = new ArrayList<String>();
+                file.add(FileOperationHelper.getTestFile().toString());
+                file.add(FileOperationHelper.getTestFile2().toString());
+                File xx = new File(FileOperationHelper.cacheDirectory(),"fuck.zip");
+                try {
+                    ZipFileHelper.zipFiles(xx.toString(),file);
+                } catch (Exception e) {
+                    e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+                }
+//                String downloadURL = "http://dl.dropbox.com/s/zejhwnb3x87d0vz/card1361506195.8733811651867036.zip";
+//                PackDownloadHelper packDownloadHelper = new PackDownloadHelper(MainActivity.this,downloadURL);
+//                packDownloadHelper.execute();
                 break;
 
             default:
@@ -336,23 +341,11 @@ public class MainActivity extends FragmentActivity implements
         return null;
     }
 
-    private void uploadingPackAfterLinked() {
-        if (checkUploadPackNecessary()) {
-            AndroidAuthSession session = DropboxHelper.getDropboxAPI(this).getSession();
-            if (session.isLinked()) {
-                File file = PackBuildHelper.createPackZipFile(mCurrentPack);
-                //File file = new File(FileOperationHelper.getTestFile().toString()); test purpose
-                PackUploadHelper upload = new PackUploadHelper(this, "/FlashCardCreator/", file);
-                upload.execute();
-            }
-        } else {
-            String shareLink = AppConfig.getInstance(this).getCurrentPackShareLink(mCurrentPack);
-            ShareLinkHelper shareLinkHelper = new ShareLinkHelper(this,shareLink);
-            shareLinkHelper.execShareAction();
-        }
-    }
-
     private void onActionbarShareSelected() {
+        if (mCurrentPack == null) {
+            Toast.makeText(this, "NO pack selected", Toast.LENGTH_LONG).show();
+            return;
+        }
         DropboxAPI<AndroidAuthSession> mDBApi = DropboxHelper.getDropboxAPI(this);
         if (mDBApi.getSession().isLinked()) {
             uploadingPackAfterLinked();
@@ -362,9 +355,23 @@ public class MainActivity extends FragmentActivity implements
         }
     }
 
-    private boolean checkUploadPackNecessary() {
-        boolean result = true;
-        return result;
+    private void uploadingPackAfterLinked() {
+        if (PackRecordHelper.checkUploadPackNecessary(MainActivity.this,mCurrentPack)) {
+            AndroidAuthSession session = DropboxHelper.getDropboxAPI(this).getSession();
+            if (session.isLinked()) {
+                File file = PackBuildHelper.createPackZipFile(mCurrentPack);
+                //File file = new File(FileOperationHelper.getTestFile().toString()); test purpose
+                PackUploadHelper upload = new PackUploadHelper(this, "/FlashCardCreator/", file, mCurrentPack);
+                upload.execute();
+            }
+        } else {
+            String shareLink = AppConfig.getInstance(this).getCurrentPackShareLink(mCurrentPack);
+            ShareLinkHelper shareLinkHelper = new ShareLinkHelper(this,shareLink,mCurrentPack);
+            shareLinkHelper.execShareAction();
+        }
     }
+
+
+
 
 }

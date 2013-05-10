@@ -25,7 +25,8 @@ public class ZipFileHelper {
         ZipOutputStream out = new ZipOutputStream(new FileOutputStream(
                 zipFileName));
         for (int i = 0; i < fs.size(); i++) {
-            out.putNextEntry(new ZipEntry(""));
+            ZipEntry entry = new ZipEntry(new File(fs.get(i)).getName());
+            out.putNextEntry(entry);
             FileInputStream in = new FileInputStream(fs.get(i));
             int b;
             while ((b = in.read()) != -1)
