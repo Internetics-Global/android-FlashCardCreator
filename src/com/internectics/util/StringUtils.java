@@ -1,5 +1,6 @@
 package com.internectics.util;
 
+import android.net.Uri;
 import android.util.Log;
 
 import java.sql.Timestamp;
@@ -65,6 +66,13 @@ public class StringUtils {
     public static boolean isNumeric(String str) {
         Pattern pattern = Pattern.compile("[0-9]*");
         return pattern.matcher(str).matches();
+    }
+
+
+    public static String lastComponentOfPath(Uri uri) {
+        String path = uri.getPath();
+        String last = path.substring(path.lastIndexOf("/")+1);
+        return last;
     }
 
 

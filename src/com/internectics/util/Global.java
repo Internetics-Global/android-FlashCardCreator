@@ -17,6 +17,7 @@ public class Global {
     public static final String BROADCAST_INTENT_EXTRA_FROM_NEW_CARD = "from_new_card";
     public static final String BROADCAST_INTENT_EXTRA_FROM_NEW_PACK = "from_new_pack";
     public static final String BROADCAST_INTENT_EXTRA_FROM_PACK_SELECTED = "from_pack_selected";
+    public static final String BROADCAST_INTENT_EXTRA_FROM_PACK_DOWNLOADED = "from_pack_downloaded";
 
     //Used to judge which pack is to load during start-up
     public static final String mostRecentPackCreatedID_Property = "most_recent_pack_id";

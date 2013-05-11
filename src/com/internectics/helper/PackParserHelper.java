@@ -1,7 +1,9 @@
 package com.internectics.helper;
+import android.net.Uri;
 import com.internectics.data.Card;
 import com.internectics.data.Pack;
 import com.internectics.util.AppContext;
+import com.internectics.util.StringUtils;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
@@ -15,12 +17,12 @@ import java.io.IOException;
 
 public class PackParserHelper {
 
-    /*
-     * after finshiing pack download and unzip, this methold will be called to build pack and add to current user
+    /**
+     * after finshing pack download and unzip, this methold will be called to build pack and add to current user
      */
     public static void parse() {
 
-        //step1:
+        //step1: save cards
         for (int i=0;;i++) {
             File cardDirectory = new File(FileOperationHelper.downloadedPackDirectory(),String.format("card%d",i));
             if (!cardDirectory.exists()) {
@@ -28,22 +30,48 @@ public class PackParserHelper {
             }
             File cardJsonFile = new File(cardDirectory,"cardTextContent.json");
             Card resultCard = parseCardJsonFile(cardJsonFile.toString());
-            resultCard.save(AppContext.getAppContext());
-        }
 
+            FileOperationHelper.copyImageToImagesFolder(getCardImageFullPath(resultCard.coverImageUriFormatStr,i));
+            FileOperationHelper.copyImageToImagesFolder(getCardImageFullPath(resultCard.question.imageUriFormatStr,i));
+            FileOperationHelper.copyImageToImagesFolder(getCardImageFullPath(resultCard.answer.imageUriFormatStr,i));
+
+            resultCard.save(AppContext.getAppContext());
+
+        }
 
         //step2: save pack
         File packJsonFile = new File(FileOperationHelper.downloadedPackDirectory(),"packInformation.json");
         Pack resultPack = parsePackJsonFile(packJsonFile.toString());
+
+        FileOperationHelper.copyImageToImagesFolder(getPackImageFullPath(resultPack.coverImageUriFormatStr));
+        FileOperationHelper.copyImageToImagesFolder(getPackImageFullPath(resultPack.logoImageUriFormatStr));
+
         resultPack.save(AppContext.getAppContext());
-
-
-
-
     }
 
 
-    /*
+    /**
+     * Special purpose for get card related image under unzipped downloaded pack folder
+     * Images include: cover image of card, image of question card, image of answer card
+     */
+    private static File getCardImageFullPath(String uriFormatStr, int indexOfCard) {
+        String fileName = StringUtils.lastComponentOfPath(Uri.parse(uriFormatStr));
+        File fullFilePath = new File(FileOperationHelper.downloadedPackDirectory(),String.format("card%d/%s",indexOfCard,fileName));
+        return fullFilePath;
+    }
+
+    /**
+     * Special purpose for get pack related image under unzipped downloaded pack folder
+     * Image include: cover image of pack, logo of pack
+     */
+    private static File getPackImageFullPath(String uriFormatStr)  {
+        String fileName = StringUtils.lastComponentOfPath(Uri.parse(uriFormatStr));
+        File fullFilePath = new File(FileOperationHelper.downloadedPackDirectory(),fileName);
+        return fullFilePath;
+    }
+
+
+    /**
      * parse downloaded pack JSON file into Pack
      */
     private static Pack parsePackJsonFile(String packJsonFile){
@@ -76,7 +104,7 @@ public class PackParserHelper {
         return pack;
     }
 
-    /*
+    /**
      * parse downloaded card JSON file into Card
      */
     private static Card parseCardJsonFile(String cardJsonFile){

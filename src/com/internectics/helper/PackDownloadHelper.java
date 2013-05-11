@@ -3,8 +3,11 @@ package com.internectics.helper;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.AsyncTask;
 import android.widget.Toast;
+import com.internectics.util.Global;
+
 import java.io.*;
 import java.net.URL;
 import java.net.URLConnection;
@@ -87,7 +90,17 @@ public class PackDownloadHelper extends AsyncTask<Void, Long, Boolean> {
             Toast.makeText(mContext, "Pack successfully downloaded", Toast.LENGTH_SHORT).show();
             File outputDirectory = FileOperationHelper.downloadedPackDirectory();
             try {
+                //Step1: unzip
                 ZipFileHelper.unzipFile(mSavedFilePath,outputDirectory.toString());
+
+                //Step2: parse unzipped pack
+                PackParserHelper.parse();
+
+                //Step3: notify master view to update
+                Intent intent = new Intent();
+                intent.setAction(Global.BROADCAST_ACTION_UPDATE_MASTER_VIEW);
+                intent.putExtra(Global.KEY_FROM, Global.BROADCAST_INTENT_EXTRA_FROM_PACK_DOWNLOADED);
+                mContext.sendBroadcast(intent);
 
             } catch (Exception e) {
                 e.printStackTrace();

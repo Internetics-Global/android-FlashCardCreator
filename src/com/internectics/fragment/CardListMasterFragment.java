@@ -39,7 +39,7 @@ public class CardListMasterFragment extends ListFragment {
 
 	public CardListMasterFragment() {
 		mCurrentPack = new Pack();
-		mCardArrayList = new ArrayList<HashMap<String, Object>>();;
+		mCardArrayList = new ArrayList<HashMap<String, Object>>();
 	}
 
 	/**
@@ -173,11 +173,12 @@ public class CardListMasterFragment extends ListFragment {
                 } else if (extraStr.equals(Global.BROADCAST_INTENT_EXTRA_FROM_PACK_SELECTED)) {
                     int index = intent.getExtras().getInt("indexOfPack");
                     mCurrentPack =  CardListModel.getAllPacks().get(index);
+                } else if (extraStr.equals(Global.BROADCAST_INTENT_EXTRA_FROM_PACK_DOWNLOADED)) {
+                    mCurrentPack = CardListModel.getLastPack();
                 }
 
                 //step2: update listview
                 updateListView();
-
 
             } else if (intent.getAction().equals(DownloadManager.ACTION_DOWNLOAD_COMPLETE)) {
                 //step1: set mCurrentPack
