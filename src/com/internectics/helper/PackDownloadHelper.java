@@ -88,6 +88,7 @@ public class PackDownloadHelper extends AsyncTask<Void, Long, Boolean> {
             File outputDirectory = FileOperationHelper.downloadedPackDirectory();
             try {
                 ZipFileHelper.unzipFile(mSavedFilePath,outputDirectory.toString());
+
             } catch (Exception e) {
                 e.printStackTrace();
             }

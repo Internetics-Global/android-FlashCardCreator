@@ -120,12 +120,7 @@ public class MainActivity extends FragmentActivity implements
             }
             case R.id.actionbar_edit:
                 PackBuildHelper.buildCardJsonFile(new Card());
-
                 PackBuildHelper.buildPackJsonFile(new Pack());
-
-                PackParserHelper.parsePackJsonFile(FileOperationHelper.getTestFile2().toString());
-
-                PackParserHelper.parseCardJsonFile(FileOperationHelper.getTestFile().toString());
 
                 break;
             case R.id.actionbar_packs:

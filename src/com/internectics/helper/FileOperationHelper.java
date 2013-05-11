@@ -254,4 +254,40 @@ public class FileOperationHelper {
     }
 
 
+    public static void copyImageToImagesFolder(File imageFile) {
+        File targetFile = new File(imagesDirectory(),imageFile.getName());
+        copyFile(imageFile,targetFile);
+    }
+
+
+    private static void copyFile(File orginFile, File targetFile) {
+        try {
+
+            File afile = new File("Afile.txt");
+            File bfile = new File("Bfile.txt");
+
+            FileInputStream inStream = new FileInputStream(orginFile);
+            FileOutputStream outStream = new FileOutputStream(targetFile);
+
+            byte[] buffer = new byte[1024 * 16];
+
+            int length;
+            //copy the file content in bytes
+            while ((length = inStream.read(buffer)) > 0) {
+
+                outStream.write(buffer, 0, length);
+
+            }
+
+            inStream.close();
+            outStream.close();
+
+            System.out.println("File is copied successful!");
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+
 }

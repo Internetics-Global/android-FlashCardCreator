@@ -1,12 +1,14 @@
 package com.internectics.helper;
 import com.internectics.data.Card;
 import com.internectics.data.Pack;
+import com.internectics.util.AppContext;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 
 
+import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
@@ -14,9 +16,37 @@ import java.io.IOException;
 public class PackParserHelper {
 
     /*
+     * after finshiing pack download and unzip, this methold will be called to build pack and add to current user
+     */
+    public static void parse() {
+
+        //step1:
+        for (int i=0;;i++) {
+            File cardDirectory = new File(FileOperationHelper.downloadedPackDirectory(),String.format("card%d",i));
+            if (!cardDirectory.exists()) {
+                break;
+            }
+            File cardJsonFile = new File(cardDirectory,"cardTextContent.json");
+            Card resultCard = parseCardJsonFile(cardJsonFile.toString());
+            resultCard.save(AppContext.getAppContext());
+        }
+
+
+        //step2: save pack
+        File packJsonFile = new File(FileOperationHelper.downloadedPackDirectory(),"packInformation.json");
+        Pack resultPack = parsePackJsonFile(packJsonFile.toString());
+        resultPack.save(AppContext.getAppContext());
+
+
+
+
+    }
+
+
+    /*
      * parse downloaded pack JSON file into Pack
      */
-    public static Pack parsePackJsonFile(String packJsonFile){
+    private static Pack parsePackJsonFile(String packJsonFile){
 
         Pack pack = new Pack();
 
@@ -49,7 +79,7 @@ public class PackParserHelper {
     /*
      * parse downloaded card JSON file into Card
      */
-    public static Card parseCardJsonFile(String cardJsonFile){
+    private static Card parseCardJsonFile(String cardJsonFile){
         Card card = new Card();
         JSONParser parser = new JSONParser();
         try {
