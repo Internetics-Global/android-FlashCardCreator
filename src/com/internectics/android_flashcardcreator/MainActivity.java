@@ -169,7 +169,7 @@ public class MainActivity extends FragmentActivity implements
                 startActivity(new Intent(MainActivity.this, InstructionActivity.class));
                 break;
 
-            case R.id.actionbar_test:
+            case R.id.actionbar_download_test:
                 String downloableShareLink = "http://dl.dropbox.com/s/c0zjxrntg518dcn/pack219ed6f2-0052-47e9-8b93-93af359e3cd9.zip";
                 File downloadedZipFile = new File(FileOperationHelper.downloadedPackDirectory(),"downloadedPackZip.zip");
                 PackDownloadHelper packDownloadHelper = new PackDownloadHelper(MainActivity.this,downloableShareLink,downloadedZipFile.toString());
