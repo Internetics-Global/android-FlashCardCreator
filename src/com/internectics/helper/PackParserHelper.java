@@ -3,6 +3,7 @@ import android.net.Uri;
 import com.internectics.data.Card;
 import com.internectics.data.Pack;
 import com.internectics.util.AppContext;
+import com.internectics.util.OpenUDID_manager;
 import com.internectics.util.StringUtils;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
@@ -22,7 +23,16 @@ public class PackParserHelper {
      */
     public static void parse() {
 
-        //step1: save cards
+        //step1: save pack
+        File packJsonFile = new File(FileOperationHelper.downloadedPackDirectory(),"packInformation.json");
+        Pack resultPack = parsePackJsonFile(packJsonFile.toString());
+
+        FileOperationHelper.copyImageToImagesFolder(getPackImageFullPath(resultPack.coverImageUriFormatStr));
+        FileOperationHelper.copyImageToImagesFolder(getPackImageFullPath(resultPack.logoImageUriFormatStr));
+
+        resultPack.save(AppContext.getAppContext());
+
+        //step2: save cards
         for (int i=0;;i++) {
             File cardDirectory = new File(FileOperationHelper.downloadedPackDirectory(),String.format("card%d",i));
             if (!cardDirectory.exists()) {
@@ -35,18 +45,11 @@ public class PackParserHelper {
             FileOperationHelper.copyImageToImagesFolder(getCardImageFullPath(resultCard.question.imageUriFormatStr,i));
             FileOperationHelper.copyImageToImagesFolder(getCardImageFullPath(resultCard.answer.imageUriFormatStr,i));
 
+            resultCard.packID = resultPack.packID; //this is necessary
+
             resultCard.save(AppContext.getAppContext());
 
         }
-
-        //step2: save pack
-        File packJsonFile = new File(FileOperationHelper.downloadedPackDirectory(),"packInformation.json");
-        Pack resultPack = parsePackJsonFile(packJsonFile.toString());
-
-        FileOperationHelper.copyImageToImagesFolder(getPackImageFullPath(resultPack.coverImageUriFormatStr));
-        FileOperationHelper.copyImageToImagesFolder(getPackImageFullPath(resultPack.logoImageUriFormatStr));
-
-        resultPack.save(AppContext.getAppContext());
     }
 
 
@@ -83,7 +86,7 @@ public class PackParserHelper {
         try {
             reader = new FileReader(packJsonFile);
             JSONObject obj = (JSONObject) parser.parse(reader);
-
+            pack.userID                 = ((Long) obj.get("user_id")).intValue();
             pack.packName               = (String) obj.get("pack_name");
             pack.sidebarTitle           = (String) obj.get("sidebar_title");
             pack.coverImageUriFormatStr = (String) obj.get("cover_image");

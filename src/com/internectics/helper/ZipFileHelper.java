@@ -1,8 +1,6 @@
 package com.internectics.helper;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
+import java.io.*;
 import java.util.ArrayList;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
@@ -21,7 +19,7 @@ public class ZipFileHelper {
     * @param zipFileName new created zip file name (full path)
     * @param fs file array to create zip file
      */
-    public static void zipFiles(String zipFileName, ArrayList<String> fs) throws Exception {
+    public static void zipPackFiles(String zipFileName, ArrayList<String> fs) throws Exception {
         ZipOutputStream out = new ZipOutputStream(new FileOutputStream(
                 zipFileName));
         for (int i = 0; i < fs.size(); i++) {
@@ -36,46 +34,78 @@ public class ZipFileHelper {
         out.close();
     }
 
+    public static void unzipPackFile(String zipFileName,String outputDirectory) {
+        try {
+            //Step1, unzip pack
+            ArrayList<String> zippedCardFileArray = unzip(zipFileName,outputDirectory);
+
+            //Step2, unzip cards in the pack
+            for (int i=0;i<zippedCardFileArray.size();i++) {
+                File unzippedDirectory = new File(outputDirectory + File.separator + String.format("card%d",i));
+                if (!unzippedDirectory.exists())
+                    unzippedDirectory.mkdir();
+                unzip(zippedCardFileArray.get(i),unzippedDirectory.toString());
+            }
+
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
 
     /*
-      will be fixedly unzipped to folder: /cache/Downloaded Pack/
-      @param zipFileName the zip file used to be unzipped
+     * if unzip a pack, an array will be returned which inculude all .zip card
      */
-    public static void unzipFile(String zipFileName,String outputDirectory) throws Exception {
+    private static ArrayList<String> unzip(String zipFile, String outputFolder) {
 
-        ZipInputStream in = new ZipInputStream(new FileInputStream(zipFileName));
-        ZipEntry z;
-        int i = 0;
-        while ((z = in.getNextEntry()) != null) {
-            if (z.isDirectory()) {
-                String name = z.getName();
-                name = name.substring(0, name.length() - 1);
-                File f = new File(outputDirectory + File.separator + name);
-                f.mkdir();
+        ArrayList<String> zippedCardFileArray = new ArrayList<String>();
+        byte[] buffer = new byte[1024];
+
+        try {
+            //create output directory is not exists
+            File folder = new File(outputFolder);
+            if (!folder.exists()) {
+                folder.mkdir();
             }
-            else {
-                File f = new File(outputDirectory + File.separator
-                        + z.getName());
-                f.createNewFile();
-                FileOutputStream out = new FileOutputStream(f);
-                byte[] buf = new byte[1024*16];
-                int b;
-                while ((b = in.read(buf)) != -1)
-                    out.write(b);
-                out.close();
+
+            //get the zip file content
+            ZipInputStream zis =
+                    new ZipInputStream(new FileInputStream(zipFile));
+            //get the zipped file list entry
+            ZipEntry ze = zis.getNextEntry();
+
+            while (ze != null) {
+
+                String fileName = ze.getName();
+                File newFile = new File(outputFolder + File.separator + fileName);
+
+                System.out.println("file unzip : " + newFile.getAbsoluteFile());
+
+                FileOutputStream fos = new FileOutputStream(newFile);
+
+                int len;
+                while ((len = zis.read(buffer)) > 0) {
+                    fos.write(buffer, 0, len);
+                }
+
+                fos.close();
 
                 //if the unzipped is still a zip file, we continue it
-                if (z.getName().contains(".zip")){
-                    File unzippedDirectory = new File(outputDirectory + File.separator + String.format("card%d",i));
-                    unzippedDirectory.mkdir();
-                    unzipFile(f.toString(),unzippedDirectory.toString());
-                    i++;
+                if (ze.getName().contains(".zip")){
+                    zippedCardFileArray.add(newFile.toString());
                 }
+
+                ze = zis.getNextEntry();
             }
+
+            zis.closeEntry();
+            zis.close();
+
+        } catch (IOException ex) {
+            ex.printStackTrace();
         }
-        in.close();
 
-
+        return zippedCardFileArray;
     }
 
 }

@@ -56,7 +56,7 @@ public class PackDownloadHelper extends AsyncTask<Void, Long, Boolean> {
             InputStream input = new BufferedInputStream(url.openStream());
             OutputStream output = new FileOutputStream(mSavedFilePath);
 
-            byte data[] = new byte[1024];
+            byte data[] = new byte[1024*16];
             long total = 0;
             int count;
             while ((count = input.read(data)) != -1) {
@@ -91,7 +91,7 @@ public class PackDownloadHelper extends AsyncTask<Void, Long, Boolean> {
             File outputDirectory = FileOperationHelper.downloadedPackDirectory();
             try {
                 //Step1: unzip
-                ZipFileHelper.unzipFile(mSavedFilePath,outputDirectory.toString());
+                ZipFileHelper.unzipPackFile(mSavedFilePath,outputDirectory.toString());
 
                 //Step2: parse unzipped pack
                 PackParserHelper.parse();

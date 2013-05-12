@@ -19,7 +19,10 @@ public class PackBuildHelper {
         int numberOfCards = currentPack.cards.size();
         int i = 0;
 
-        //step1
+        //step1,delete current content
+        FileOperationHelper.deleteFolder(FileOperationHelper.uploadPackDirectory());
+
+        //step2
         for (Card card: currentPack.cards) {
             //step1: zip all the files in current card and come into a new zip file
             String singleFile = PackBuildHelper.buildCardJsonFile(card).toString();
@@ -27,9 +30,10 @@ public class PackBuildHelper {
             cardFiles.add(FileOperationHelper.deleteUriSchemeHeader(card.coverImageUriFormatStr));
             cardFiles.add(FileOperationHelper.deleteUriSchemeHeader(card.question.imageUriFormatStr));
             cardFiles.add(FileOperationHelper.deleteUriSchemeHeader(card.answer.imageUriFormatStr));
-            File cardZipFile = new File(FileOperationHelper.uploadPackDirectory(),String.format("%d.zip",i));
+            File cardZipFile = new File(FileOperationHelper.uploadPackDirectory(),String.format("card%d.zip",i));
             try {
-                ZipFileHelper.zipFiles(cardZipFile.toString(),cardFiles);
+                ZipFileHelper.zipPackFiles(cardZipFile.toString(),cardFiles);
+                i++;
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -41,14 +45,14 @@ public class PackBuildHelper {
             cardFiles.clear();
         }
 
-        //step2:
+        //step3:
         packFiles.add(FileOperationHelper.deleteUriSchemeHeader(currentPack.coverImageUriFormatStr));
         packFiles.add(FileOperationHelper.deleteUriSchemeHeader(currentPack.logoImageUriFormatStr));
         String singleFile = PackBuildHelper.buildPackJsonFile(currentPack).toString();
         packFiles.add(singleFile);
         File packZipFile = FileOperationHelper.generateUniquePackZipFilePathForUploading();
         try {
-            ZipFileHelper.zipFiles(packZipFile.toString(),packFiles);
+            ZipFileHelper.zipPackFiles(packZipFile.toString(),packFiles);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -69,11 +73,12 @@ public class PackBuildHelper {
         summary.put("logo_url", pack.logoURL);
         summary.put("question_title", pack.questionTitle);
         summary.put("answer_title", pack.answerTitle);
+        summary.put("user_id",pack.userID);
 
         FileWriter file;
         File savedPath =  FileOperationHelper.getUploadPackJsonFile();
         try {
-            file = new FileWriter(savedPath,true);
+            file = new FileWriter(savedPath,false);
             file.write(summary.toJSONString());
             System.out.println("Successfully Copied JSON Object to File...");
             System.out.println("\nJSON Object: " + summary);
@@ -136,7 +141,7 @@ public class PackBuildHelper {
         File savedPath = FileOperationHelper.getUploadCardJsonFile();
         FileWriter file;
         try {
-            file = new FileWriter(savedPath,true);
+            file = new FileWriter(savedPath,false);
             file.write(obj.toJSONString());
             System.out.println("Successfully Copied JSON Object to File...");
             System.out.println("\nJSON Object: " + obj);
