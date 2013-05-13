@@ -14,22 +14,22 @@
 
 
     <string-array name="jazz_artist_names">
-        <item>Brad Mehldau</item>
-        <item>Joshua Redman</item>
-        <item>Chick Corea</item>
-        <item>Kurt Rosenwinkel</item>
-        <item>Miles Davis</item>
-        <item>Wayne Shorter</item>
-        <item>Michael Brecker</item>
-        <item>Herbie Hancock</item>
-        <item>Joe Zawinul</item>
-        <item>Brian Blade</item>
-        <item>Jeff Ballard</item>
-        <item>Larry Grenadier</item>
-        <item>Keith Jarrett</item>
-        <item>McCoy Tyner</item>
-        <item>Stephon Harris</item>
-        <item>Mark Turner</item>
+        <item>1</item>
+        <item>2</item>
+        <item>3</item>
+        <item>4</item>
+        <item>5</item>
+        <item>6</item>
+        <item>7</item>
+        <item>8</item>
+        <item>9</item>
+        <item>10</item>
+        <item>11</item>
+        <item>12</item>
+        <item>13</item>
+        <item>14</item>
+        <item>15</item>
+        <item>16</item>
     </string-array>
 
 </resources>

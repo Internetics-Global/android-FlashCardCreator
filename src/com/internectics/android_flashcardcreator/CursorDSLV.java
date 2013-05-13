@@ -1,5 +1,7 @@
 package com.internectics.android_flashcardcreator;
 
+import com.internectics.data.Pack;
+import com.internectics.model.CardListModel;
 import com.mobeta.android.dslv.DragSortListView;
 import com.mobeta.android.dslv.SimpleDragSortCursorAdapter;
 
@@ -12,6 +14,9 @@ import android.view.ViewGroup;
 import android.database.Cursor;
 import android.widget.Toast;
 
+import java.util.HashMap;
+import java.util.List;
+
 public class CursorDSLV extends FragmentActivity {
 
     private SimpleDragSortCursorAdapter adapter;
@@ -22,8 +27,8 @@ public class CursorDSLV extends FragmentActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.cursor_main);
 
-        String[] cols = {"name"};
-        int[] ids = {R.id.text};
+        String[] cols = {"card_sn","cover_image"};
+        int[] ids = {R.id.remove_card_list_item_card_sn,R.id.remove_card_list_item_cover_image};
         adapter = new MAdapter(this,
                 R.layout.list_item_click_remove, null, cols, ids, 0);
 
@@ -31,12 +36,17 @@ public class CursorDSLV extends FragmentActivity {
         dslv.setAdapter(adapter);
 
         // build a cursor from the String array
-        MatrixCursor cursor = new MatrixCursor(new String[] {"_id", "name"});
-        String[] artistNames = getResources().getStringArray(R.array.jazz_artist_names);
-        for (int i = 0; i < artistNames.length; i++) {
+        List<HashMap<String, Object>> mCardArrayList;
+        Pack mCurrentPack = CardListModel.getCurrentPack();
+        mCardArrayList = CardListModel.getCardList(mCurrentPack);
+
+        MatrixCursor cursor = new MatrixCursor(new String[] {"_id", "card_sn","cover_image"});
+        for (int i = 0; i < mCardArrayList.size(); i++) {
             cursor.newRow()
                     .add(i)
-                    .add(artistNames[i]);
+                    .add(mCardArrayList.get(i).get("cardSN"))
+                    .add(mCardArrayList.get(i).get("coverImageUriFormatStr").toString());
+
         }
         adapter.changeCursor(cursor);
     }
@@ -52,7 +62,7 @@ public class CursorDSLV extends FragmentActivity {
         @Override
         public View getView(int position, View convertView, ViewGroup parent) {
             View v = super.getView(position, convertView, parent);
-            View tv = v.findViewById(R.id.text);
+            View tv = v.findViewById(R.id.remove_card_list_item_cover_image);
             tv.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
