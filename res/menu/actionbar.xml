@@ -54,4 +54,10 @@
             android:title="download test" android:showAsAction="ifRoom|withText">
     </item>
 
+    <item
+            android:id="@+id/actionbar_test1"
+            android:icon="@android:drawable/btn_default"
+            android:title="test1" android:showAsAction="ifRoom|withText">
+    </item>
+
 </menu>
