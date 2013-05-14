@@ -1,9 +1,6 @@
 package com.internectics.android_flashcardcreator;
 
-import android.app.AlertDialog;
-import android.app.Dialog;
-import android.app.DialogFragment;
-import android.app.ProgressDialog;
+import android.app.*;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
@@ -25,15 +22,11 @@ import com.dropbox.client2.android.AndroidAuthSession;
 import com.dropbox.client2.session.TokenPair;
 import com.internectics.data.Card;
 import com.internectics.data.Pack;
-import com.internectics.fragment.AddPackFragment;
-import com.internectics.fragment.CardDetailFragment;
-import com.internectics.fragment.CardListMasterFragment;
-import com.internectics.fragment.MoreFragment;
+import com.internectics.fragment.*;
 import com.internectics.helper.*;
 import com.internectics.util.*;
 
 import java.io.File;
-import java.util.ArrayList;
 
 /**
  * MainActivity is the entry for whole app
@@ -41,7 +34,7 @@ import java.util.ArrayList;
  * Also responsbile for managing Actionbar(or Option Menu)
  */
 public class MainActivity extends FragmentActivity implements
-        CardListMasterFragment.Callbacks {
+        CardListFragment.Callbacks {
 
     //Used to diff whether is on card view and card creating
     private boolean mIsCreatingCard = false;
@@ -50,13 +43,13 @@ public class MainActivity extends FragmentActivity implements
     public int mCurrentIndex = 0;
     public Card mCurrentCard = new Card();
 
-    public PopupWindow mPopupWindow;
-
     //Progress dialog related
     private static final int DIALOG_UPLOADING_PACK = 0;
-    ProgressDialog mDialog;
+    private ProgressDialog mDialog;
 
     private boolean mIsUploadingPackAfterLinked = false;
+
+    public PopupWindow mPopupWindow;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -119,9 +112,18 @@ public class MainActivity extends FragmentActivity implements
                 break;
             }
             case R.id.actionbar_edit:
-                PackBuildHelper.buildCardJsonFile(new Card());
-                PackBuildHelper.buildPackJsonFile(new Pack());
 
+                if ((mCurrentPack != null) && (mCurrentPack.cards.size() > 0)) {
+                    CardListFragment cardListFragment = (CardListFragment)(getSupportFragmentManager().findFragmentById(R.id.fragment_card_list));
+
+                    if (item.getTitle().equals("edit")) {
+                        item.setTitle("done");
+                        cardListFragment.enterEditStyle(true);
+                    } else {
+                        item.setTitle("edit");
+                        cardListFragment.enterEditStyle(false);
+                    }
+                }
                 break;
             case R.id.actionbar_packs:
                 Log.d(Global.debugTag, "You have selected menu item of pack");
@@ -227,7 +229,7 @@ public class MainActivity extends FragmentActivity implements
     }
 
     /**
-     * Callback method from {@link com.internectics.fragment.CardListMasterFragment.Callbacks} indicating that
+     * Callback method from {@link com.internectics.fragment.CardListFragment.Callbacks} indicating that
      * the item with the given ID was selected.
      */
     @Override
@@ -284,7 +286,7 @@ public class MainActivity extends FragmentActivity implements
         //2. dismiss windows
         dismissCardCreateWindow();
 
-        //3. notify CardListMasterFragment view to update
+        //3. notify CardListFragment view to update
         intent.setAction(Global.BROADCAST_ACTION_UPDATE_MASTER_VIEW);
         intent.putExtra(Global.KEY_FROM, Global.BROADCAST_INTENT_EXTRA_FROM_NEW_CARD);
         sendBroadcast(intent);

@@ -42,21 +42,28 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="4cdd1996-4a83-4768-87ba-370a47134935" name="Default" comment="">
+      <change type="MOVED" beforePath="$PROJECT_DIR$/res/drawable/delete_x.png" afterPath="$PROJECT_DIR$/res/drawable/card_list_item_delete.png" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/res/drawable/drag.9.png" afterPath="$PROJECT_DIR$/res/drawable/card_list_item_drag.png" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/res/layout/cursor_main.xml" afterPath="$PROJECT_DIR$/res/layout/dragsortlistview.xml" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/res/layout/list_item_click_remove.xml" afterPath="$PROJECT_DIR$/res/layout/card_list_item.xml" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/src/com/internectics/fragment/CardListMasterFragment.java" afterPath="$PROJECT_DIR$/src/com/internectics/fragment/CardListFragment.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/com/internectics/android_flashcardcreator/CursorDSLV.java" afterPath="$PROJECT_DIR$/src/com/internectics/android_flashcardcreator/CursorDSLV.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/res/layout/list_item_click_remove.xml" afterPath="$PROJECT_DIR$/res/layout/list_item_click_remove.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/com/internectics/android_flashcardcreator/MainActivity.java" afterPath="$PROJECT_DIR$/src/com/internectics/android_flashcardcreator/MainActivity.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/res/layout/activity_card_twopane.xml" afterPath="$PROJECT_DIR$/res/layout/activity_card_twopane.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/res/values/ids.xml" afterPath="$PROJECT_DIR$/res/values/ids.xml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/res/values/strings.xml" afterPath="$PROJECT_DIR$/res/values/strings.xml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
     </list>
     <ignored path="android-FlashCardCreator.iws" />
     <ignored path=".idea/workspace.xml" />
     <file path="/Dummy.txt" changelist="4cdd1996-4a83-4768-87ba-370a47134935" time="1368435649976" ignored="false" />
-    <file path="/a.java" changelist="4cdd1996-4a83-4768-87ba-370a47134935" time="1368221281792" ignored="false" />
-    <file path="/MainActivity.java" changelist="4cdd1996-4a83-4768-87ba-370a47134935" time="1368419217061" ignored="false" />
+    <file path="/a.java" changelist="4cdd1996-4a83-4768-87ba-370a47134935" time="1368491195248" ignored="false" />
+    <file path="/MainActivity.java" changelist="4cdd1996-4a83-4768-87ba-370a47134935" time="1368494974742" ignored="false" />
     <file path="/activity_card_list.xml" changelist="4cdd1996-4a83-4768-87ba-370a47134935" time="1367218508443" ignored="false" />
     <file path="/Answer.java" changelist="4cdd1996-4a83-4768-87ba-370a47134935" time="1368170435299" ignored="false" />
-    <file path="/fragment.java" changelist="4cdd1996-4a83-4768-87ba-370a47134935" time="1368436136155" ignored="false" />
+    <file path="/fragment.java" changelist="4cdd1996-4a83-4768-87ba-370a47134935" time="1368481595892" ignored="false" />
     <file path="/a.xml" changelist="4cdd1996-4a83-4768-87ba-370a47134935" time="1367280798599" ignored="false" />
-    <file path="/a.dummy" changelist="4cdd1996-4a83-4768-87ba-370a47134935" time="1368438149883" ignored="false" />
+    <file path="/a.dummy" changelist="4cdd1996-4a83-4768-87ba-370a47134935" time="1368492036895" ignored="false" />
     <file path="/activity_card_twopane.xml" changelist="4cdd1996-4a83-4768-87ba-370a47134935" time="1367903918912" ignored="false" />
     <file path="/*.regexp" changelist="4cdd1996-4a83-4768-87ba-370a47134935" time="1367232220527" ignored="false" />
     <file path="/a.js" changelist="4cdd1996-4a83-4768-87ba-370a47134935" time="1367277817816" ignored="false" />
@@ -133,10 +140,11 @@
     <file path="/PackParserHelper.java" changelist="4cdd1996-4a83-4768-87ba-370a47134935" time="1368394301661" ignored="false" />
     <file path="/SQLiteHelper.java" changelist="4cdd1996-4a83-4768-87ba-370a47134935" time="1368099616522" ignored="false" />
     <file path="/PackRecord.java" changelist="4cdd1996-4a83-4768-87ba-370a47134935" time="1368154691458" ignored="false" />
-    <file path="/list_item_click_remove.xml" changelist="4cdd1996-4a83-4768-87ba-370a47134935" time="1368443570898" ignored="false" />
+    <file path="/list_item_click_remove.xml" changelist="4cdd1996-4a83-4768-87ba-370a47134935" time="1368485282987" ignored="false" />
     <file path="/cursor_main.xml" changelist="4cdd1996-4a83-4768-87ba-370a47134935" time="1368420494544" ignored="false" />
     <file path="/CursorDSLV.java" changelist="4cdd1996-4a83-4768-87ba-370a47134935" time="1368444238295" ignored="false" />
-    <file path="$PROJECT_DIR$/src/com/internectics/fragment/CardListFragment.java" changelist="4cdd1996-4a83-4768-87ba-370a47134935" time="1368444135900" ignored="false" />
+    <file path="/CardListFragment.java" changelist="4cdd1996-4a83-4768-87ba-370a47134935" time="1368495320299" ignored="false" />
+    <file path="/sample.java" changelist="4cdd1996-4a83-4768-87ba-370a47134935" time="1368491200439" ignored="false" />
     <option name="TRACKING_ENABLED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -334,7 +342,7 @@
         <option name="CONDITION" value="" />
         <option name="LOG_MESSAGE" value="" />
       </breakpoint>
-      <breakpoint url="file://$PROJECT_DIR$/libs/drag-sort-listview/src/com/mobeta/android/dslv/SimpleDragSortCursorAdapter.java" line="215" class="com.mobeta.android.dslv.SimpleDragSortCursorAdapter" package="com.mobeta.android.dslv">
+      <breakpoint url="file://$PROJECT_DIR$/src/com/internectics/android_flashcardcreator/MainActivity.java" line="115" class="com.internectics.android_flashcardcreator.MainActivity" package="com.internectics.android_flashcardcreator">
         <option name="ENABLED" value="true" />
         <option name="LOG_ENABLED" value="false" />
         <option name="LOG_EXPRESSION_ENABLED" value="false" />
@@ -349,37 +357,7 @@
         <option name="CONDITION" value="" />
         <option name="LOG_MESSAGE" value="" />
       </breakpoint>
-      <breakpoint url="file://$PROJECT_DIR$/libs/drag-sort-listview/src/com/mobeta/android/dslv/SimpleDragSortCursorAdapter.java" line="159" class="com.mobeta.android.dslv.SimpleDragSortCursorAdapter" package="com.mobeta.android.dslv">
-        <option name="ENABLED" value="true" />
-        <option name="LOG_ENABLED" value="false" />
-        <option name="LOG_EXPRESSION_ENABLED" value="false" />
-        <option name="REMOVE_AFTER_HIT" value="false" />
-        <option name="SUSPEND_POLICY" value="SuspendAll" />
-        <option name="SUSPEND" value="true" />
-        <option name="COUNT_FILTER_ENABLED" value="false" />
-        <option name="COUNT_FILTER" value="0" />
-        <option name="CONDITION_ENABLED" value="true" />
-        <option name="CLASS_FILTERS_ENABLED" value="false" />
-        <option name="INSTANCE_FILTERS_ENABLED" value="false" />
-        <option name="CONDITION" value="" />
-        <option name="LOG_MESSAGE" value="" />
-      </breakpoint>
-      <breakpoint url="file://$PROJECT_DIR$/libs/drag-sort-listview/src/com/mobeta/android/dslv/SimpleDragSortCursorAdapter.java" line="161" class="com.mobeta.android.dslv.SimpleDragSortCursorAdapter" package="com.mobeta.android.dslv">
-        <option name="ENABLED" value="true" />
-        <option name="LOG_ENABLED" value="false" />
-        <option name="LOG_EXPRESSION_ENABLED" value="false" />
-        <option name="REMOVE_AFTER_HIT" value="false" />
-        <option name="SUSPEND_POLICY" value="SuspendAll" />
-        <option name="SUSPEND" value="true" />
-        <option name="COUNT_FILTER_ENABLED" value="false" />
-        <option name="COUNT_FILTER" value="0" />
-        <option name="CONDITION_ENABLED" value="true" />
-        <option name="CLASS_FILTERS_ENABLED" value="false" />
-        <option name="INSTANCE_FILTERS_ENABLED" value="false" />
-        <option name="CONDITION" value="" />
-        <option name="LOG_MESSAGE" value="" />
-      </breakpoint>
-      <breakpoint url="file://$PROJECT_DIR$/libs/drag-sort-listview/src/com/mobeta/android/dslv/SimpleDragSortCursorAdapter.java" line="153" class="com.mobeta.android.dslv.SimpleDragSortCursorAdapter" package="com.mobeta.android.dslv">
+      <breakpoint url="file://$PROJECT_DIR$/src/com/internectics/fragment/CardListFragment.java" line="154" class="com.internectics.fragment.CardListFragment" package="com.internectics.fragment">
         <option name="ENABLED" value="true" />
         <option name="LOG_ENABLED" value="false" />
         <option name="LOG_EXPRESSION_ENABLED" value="false" />
@@ -404,22 +382,19 @@
   </component>
   <component name="FileEditorManager">
     <leaf>
-      <file leaf-file-name="CursorDSLV.java" pinned="false" current="true" current-in-tab="true">
+      <file leaf-file-name="CursorDSLV.java" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/com/internectics/android_flashcardcreator/CursorDSLV.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="42" column="20" selection-start="1482" selection-end="1494" vertical-scroll-proportion="0.27450982">
-              <folding>
-                <element signature="e#2465#2686#0" expanded="true" />
-                <element signature="e#2671#2672#0" expanded="true" />
-              </folding>
+            <state line="19" column="13" selection-start="568" selection-end="568" vertical-scroll-proportion="0.0">
+              <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="MatrixCursor.java" pinned="false" current="false" current-in-tab="false">
-        <entry file="file:///Applications/Android/sdk/sources/android-14/android/database/MatrixCursor.java">
+      <file leaf-file-name="CardListFragment.java" pinned="false" current="true" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/src/com/internectics/fragment/CardListFragment.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="56" column="11" selection-start="1793" selection-end="1793" vertical-scroll-proportion="0.0">
+            <state line="59" column="64" selection-start="1807" selection-end="1807" vertical-scroll-proportion="0.40041068">
               <folding />
             </state>
           </provider>
@@ -434,37 +409,10 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="SimpleDragSortCursorAdapter.java" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/libs/drag-sort-listview/src/com/mobeta/android/dslv/SimpleDragSortCursorAdapter.java">
+      <file leaf-file-name="dragsortlistview.xml" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/res/layout/dragsortlistview.xml">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="153" column="0" selection-start="6676" selection-end="6676" vertical-scroll-proportion="0.0">
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="CursorAdapter.class" pinned="false" current="false" current-in-tab="false">
-        <entry file="jar://$PROJECT_DIR$/libs/drag-sort-listview/libs/android-support-v4.jar!/android/support/v4/widget/CursorAdapter.class">
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="53" column="29" selection-start="2201" selection-end="2201" vertical-scroll-proportion="-2.84">
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="DragSortCursorAdapter.java" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/libs/drag-sort-listview/src/com/mobeta/android/dslv/DragSortCursorAdapter.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="103" column="0" selection-start="3131" selection-end="3131" vertical-scroll-proportion="0.0">
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="list_item_click_remove.xml" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/res/layout/list_item_click_remove.xml">
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="14" column="40" selection-start="464" selection-end="464" vertical-scroll-proportion="-4.4814816">
+            <state line="1" column="41" selection-start="64" selection-end="80" vertical-scroll-proportion="-0.5555556">
               <folding />
             </state>
           </provider>
@@ -473,10 +421,63 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="DragSortListView.java" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/libs/drag-sort-listview/src/com/mobeta/android/dslv/DragSortListView.java">
+      <file leaf-file-name="card_list_item.xml" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/res/layout/card_list_item.xml">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="58" column="13" selection-start="1727" selection-end="1727" vertical-scroll-proportion="0.0">
+            <state line="39" column="24" selection-start="1315" selection-end="1315" vertical-scroll-proportion="-13.444445">
+              <folding />
+            </state>
+          </provider>
+          <provider editor-type-id="android-designer">
+            <state />
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="MainActivity.java" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/com/internectics/android_flashcardcreator/MainActivity.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state line="115" column="0" selection-start="3803" selection-end="3803" vertical-scroll-proportion="-5.08">
+              <folding>
+                <element signature="imports" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="FragmentManager.class" pinned="false" current="false" current-in-tab="false">
+        <entry file="jar://$PROJECT_DIR$/libs/drag-sort-listview/libs/android-support-v4.jar!/android/support/v4/app/FragmentManager.class">
+          <provider selected="true" editor-type-id="text-editor">
+            <state line="21" column="52" selection-start="658" selection-end="658" vertical-scroll-proportion="-6.64">
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="activity_card_twopane.xml" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/res/layout/activity_card_twopane.xml">
+          <provider selected="true" editor-type-id="text-editor">
+            <state line="29" column="28" selection-start="1085" selection-end="1085" vertical-scroll-proportion="-9.444445">
+              <folding />
+            </state>
+          </provider>
+          <provider editor-type-id="android-designer">
+            <state />
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="actionbar.xml" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/res/menu/actionbar.xml">
+          <provider selected="true" editor-type-id="text-editor">
+            <state line="12" column="41" selection-start="451" selection-end="461" vertical-scroll-proportion="0.0">
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="ids.xml" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/res/values/ids.xml">
+          <provider selected="true" editor-type-id="text-editor">
+            <state line="2" column="26" selection-start="77" selection-end="77" vertical-scroll-proportion="0.0">
               <folding />
             </state>
           </provider>
@@ -507,22 +508,22 @@
   <component name="IdeDocumentHistory">
     <option name="changedFiles">
       <list>
-        <option value="$PROJECT_DIR$/src/com/internectics/util/StringUtils.java" />
-        <option value="$PROJECT_DIR$/src/com/internectics/util/Global.java" />
-        <option value="$PROJECT_DIR$/src/com/internectics/helper/PackDownloadHelper.java" />
         <option value="$PROJECT_DIR$/src/com/internectics/helper/ZipFileHelper.java" />
         <option value="$PROJECT_DIR$/src/com/internectics/helper/FileOperationHelper.java" />
         <option value="$PROJECT_DIR$/src/com/internectics/helper/PackBuildHelper.java" />
         <option value="$PROJECT_DIR$/src/com/internectics/helper/PackParserHelper.java" />
         <option value="$PROJECT_DIR$/src/com/internectics/fragment/CardListMasterFragment.java" />
         <option value="$PROJECT_DIR$/res/menu/actionbar.xml" />
-        <option value="$PROJECT_DIR$/src/com/internectics/android_flashcardcreator/MainActivity.java" />
         <option value="$PROJECT_DIR$/AndroidManifest.xml" />
         <option value="$PROJECT_DIR$/res/layout/cursor_main.xml" />
-        <option value="$PROJECT_DIR$/src/com/internectics/fragment/CardListFragment.java" />
-        <option value="$PROJECT_DIR$/res/values/strings.xml" />
-        <option value="$PROJECT_DIR$/res/layout/list_item_click_remove.xml" />
         <option value="$PROJECT_DIR$/src/com/internectics/android_flashcardcreator/CursorDSLV.java" />
+        <option value="$PROJECT_DIR$/res/layout/activity_card_twopane.xml" />
+        <option value="$PROJECT_DIR$/res/layout/list_item_click_remove.xml" />
+        <option value="$PROJECT_DIR$/res/layout/list_item.xml" />
+        <option value="$PROJECT_DIR$/res/layout/card_list_item.xml" />
+        <option value="$PROJECT_DIR$/res/values/strings.xml" />
+        <option value="$PROJECT_DIR$/src/com/internectics/android_flashcardcreator/MainActivity.java" />
+        <option value="$PROJECT_DIR$/src/com/internectics/fragment/CardListFragment.java" />
       </list>
     </option>
   </component>
@@ -853,6 +854,42 @@
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
             <PATH_ELEMENT>
+              <option name="myItemId" value="values" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="android-FlashCardCreator" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="android-FlashCardCreator" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="res" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="menu" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="android-FlashCardCreator" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="android-FlashCardCreator" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="res" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
               <option name="myItemId" value="layout" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
@@ -870,7 +907,7 @@
     <property name="project.structure.proportion" value="0.15" />
     <property name="options.splitter.main.proportions" value="0.3" />
     <property name="recentsLimit" value="5" />
-    <property name="options.lastSelected" value="editor" />
+    <property name="options.lastSelected" value="preferences.sourceCode.Java" />
     <property name="MemberChooser.sorted" value="false" />
     <property name="last_opened_file_path" value="$PROJECT_DIR$/libs/drag-sort-listview" />
     <property name="AndroidLayoutSelectedEditor" value="text-editor" />
@@ -1117,20 +1154,20 @@
       <window_info id="JetGradle" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.23019803" sideWeight="0.5508772" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="Preview" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33443162" sideWeight="0.67017543" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Palette" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
-      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.0754386" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
+      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.15438597" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.24917492" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
-      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.4350877" sideWeight="0.5648298" order="3" side_tool="false" content_ui="tabs" />
+      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.17368421" sideWeight="0.5648298" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.69982547" sideWeight="0.43517017" order="13" side_tool="true" content_ui="tabs" />
       <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.24958813" sideWeight="0.21754386" order="3" side_tool="true" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32982457" sideWeight="0.5" order="8" side_tool="false" content_ui="tabs" />
-      <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.2877193" sideWeight="0.5" order="10" side_tool="false" content_ui="tabs" />
+      <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.12807018" sideWeight="0.5" order="10" side_tool="false" content_ui="tabs" />
       <window_info id="Android" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.34931508" sideWeight="0.5" order="12" side_tool="false" content_ui="tabs" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32534248" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.24554294" sideWeight="0.32763532" order="1" side_tool="true" content_ui="tabs" />
       <window_info id="Maven Projects" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32920793" sideWeight="0.5" order="9" side_tool="false" content_ui="tabs" />
       <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="SLIDING" type="SLIDING" visible="false" weight="0.4" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.24473257" sideWeight="0.8491228" order="0" side_tool="true" content_ui="combo" x="291" y="93" width="322" height="850" />
-      <window_info id="Run" active="true" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.1508772" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.24473257" sideWeight="0.9877193" order="0" side_tool="true" content_ui="combo" x="291" y="93" width="322" height="850" />
+      <window_info id="Run" active="true" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.012280702" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Documentation" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="FLOATING" visible="false" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" x="100" y="122" width="1080" height="493" />
       <window_info id="Database" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32920793" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
       <window_info id="IDEtalk Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="9" side_tool="false" content_ui="tabs" />
@@ -1212,72 +1249,35 @@
     <option name="FILTER_TARGETS" value="false" />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/src/com/internectics/fragment/CardListMasterFragment.java">
+    <entry file="file://$PROJECT_DIR$/res/drawable/card_list_item_drag.png">
+      <provider selected="true" editor-type-id="images">
+        <state />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/res/values/styles.xml">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="77" column="57" selection-start="2290" selection-end="2312" vertical-scroll-proportion="-8.4">
+        <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="0.0">
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file:///Applications/Android/sdk/sources/android-14/android/widget/ImageView.java">
+    <entry file="file://$PROJECT_DIR$/res/values/dimens.xml">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="332" column="16" selection-start="11754" selection-end="11754" vertical-scroll-proportion="0.0">
+        <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="0.0">
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="jar:///Applications/Android/sdk/platforms/android-14/android.jar!/android/R.class">
+    <entry file="file://$PROJECT_DIR$/res/values/colors.xml">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="613" column="32" selection-start="42613" selection-end="42613" vertical-scroll-proportion="0.0">
+        <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="0.0">
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/libs/drag-sort-listview/src/com/mobeta/android/dslv/DragSortItemView.java">
+    <entry file="file://$PROJECT_DIR$/res/layout/instruction.xml">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="29" column="11" selection-start="922" selection-end="922" vertical-scroll-proportion="0.0">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file:///Applications/Android/sdk/sources/android-14/android/view/View.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="14007" column="0" selection-start="525361" selection-end="525361" vertical-scroll-proportion="0.0">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file:///Applications/Android/sdk/sources/android-14/android/widget/LinearLayout.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="1520" column="0" selection-start="61194" selection-end="61194" vertical-scroll-proportion="0.0">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file:///Applications/Android/sdk/sources/android-14/android/view/ViewGroup.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="4372" column="0" selection-start="164620" selection-end="164620" vertical-scroll-proportion="0.0">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file:///Applications/Android/sdk/sources/android-14/android/widget/ListView.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="1637" column="0" selection-start="62450" selection-end="62450" vertical-scroll-proportion="0.0">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/libs/drag-sort-listview/src/com/mobeta/android/dslv/DragSortListView.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="58" column="13" selection-start="1727" selection-end="1727" vertical-scroll-proportion="0.0">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/res/layout/list_item_click_remove.xml">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="14" column="40" selection-start="464" selection-end="464" vertical-scroll-proportion="-4.4814816">
+        <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="0.0">
           <folding />
         </state>
       </provider>
@@ -1285,17 +1285,77 @@
         <state />
       </provider>
     </entry>
-    <entry file="jar://$PROJECT_DIR$/libs/drag-sort-listview/libs/android-support-v4.jar!/android/support/v4/widget/CursorAdapter.class">
+    <entry file="file://$PROJECT_DIR$/res/values/strings.xml">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="53" column="29" selection-start="2201" selection-end="2201" vertical-scroll-proportion="-2.84">
+        <state line="6" column="18" selection-start="236" selection-end="236" vertical-scroll-proportion="0.0">
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/libs/drag-sort-listview/src/com/mobeta/android/dslv/DragSortCursorAdapter.java">
+    <entry file="file://$PROJECT_DIR$/res/menu/actionbar.xml">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="103" column="0" selection-start="3131" selection-end="3131" vertical-scroll-proportion="0.0">
+        <state line="12" column="41" selection-start="451" selection-end="461" vertical-scroll-proportion="0.0">
           <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="jar://$PROJECT_DIR$/libs/drag-sort-listview/libs/android-support-v4.jar!/android/support/v4/app/FragmentManager.class">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="21" column="52" selection-start="658" selection-end="658" vertical-scroll-proportion="-6.64">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/res/layout/activity_card_twopane.xml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="29" column="28" selection-start="1085" selection-end="1085" vertical-scroll-proportion="-9.444445">
+          <folding />
+        </state>
+      </provider>
+      <provider editor-type-id="android-designer">
+        <state />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/res/layout/dragsortlistview.xml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="1" column="41" selection-start="64" selection-end="80" vertical-scroll-proportion="-0.5555556">
+          <folding />
+        </state>
+      </provider>
+      <provider editor-type-id="android-designer">
+        <state />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/res/values/ids.xml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="2" column="26" selection-start="77" selection-end="77" vertical-scroll-proportion="0.0">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/res/layout/card_list_item.xml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="39" column="24" selection-start="1315" selection-end="1315" vertical-scroll-proportion="-13.444445">
+          <folding />
+        </state>
+      </provider>
+      <provider editor-type-id="android-designer">
+        <state />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/com/internectics/android_flashcardcreator/CursorDSLV.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="19" column="13" selection-start="568" selection-end="568" vertical-scroll-proportion="0.0">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/com/internectics/android_flashcardcreator/MainActivity.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="115" column="0" selection-start="3803" selection-end="3803" vertical-scroll-proportion="-5.08">
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>
@@ -1306,27 +1366,10 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/libs/drag-sort-listview/src/com/mobeta/android/dslv/SimpleDragSortCursorAdapter.java">
+    <entry file="file://$PROJECT_DIR$/src/com/internectics/fragment/CardListFragment.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="153" column="0" selection-start="6676" selection-end="6676" vertical-scroll-proportion="0.0">
+        <state line="59" column="64" selection-start="1807" selection-end="1807" vertical-scroll-proportion="0.40041068">
           <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file:///Applications/Android/sdk/sources/android-14/android/database/MatrixCursor.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="56" column="11" selection-start="1793" selection-end="1793" vertical-scroll-proportion="0.0">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/com/internectics/android_flashcardcreator/CursorDSLV.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="42" column="20" selection-start="1482" selection-end="1494" vertical-scroll-proportion="0.27450982">
-          <folding>
-            <element signature="e#2465#2686#0" expanded="true" />
-            <element signature="e#2671#2672#0" expanded="true" />
-          </folding>
         </state>
       </provider>
     </entry>

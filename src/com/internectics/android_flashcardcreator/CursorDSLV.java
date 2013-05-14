@@ -25,12 +25,12 @@ public class CursorDSLV extends FragmentActivity {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.cursor_main);
+        setContentView(R.layout.dragsortlistview);
 
         String[] cols = {"card_sn","cover_image"};
-        int[] ids = {R.id.remove_card_list_item_card_sn,R.id.remove_card_list_item_cover_image};
+        int[] ids = {R.id.card_list_item_card_sn,R.id.card_list_item_cover_image};
         adapter = new MAdapter(this,
-                R.layout.list_item_click_remove, null, cols, ids, 0);
+                R.layout.card_list_item, null, cols, ids, 0);
 
         DragSortListView dslv = (DragSortListView) findViewById(android.R.id.list);
         dslv.setAdapter(adapter);
@@ -62,7 +62,7 @@ public class CursorDSLV extends FragmentActivity {
         @Override
         public View getView(int position, View convertView, ViewGroup parent) {
             View v = super.getView(position, convertView, parent);
-            View tv = v.findViewById(R.id.remove_card_list_item_cover_image);
+            View tv = v.findViewById(R.id.card_list_item_cover_image);
             tv.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {

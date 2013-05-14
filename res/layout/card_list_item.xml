@@ -1,31 +1,58 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/RelativeLayout01"
-    android:layout_width="fill_parent"
-    android:layout_height="130dip"
-    android:background="@drawable/card_list_item_selector"
-    android:orientation="horizontal"
-    android:paddingBottom="4dip" >
-
-    <TextView
-        android:id="@+id/card_list_item_card_sn"
-        android:layout_width="20dip"
+<LinearLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:layout_marginLeft="16dp"
-        android:background="@drawable/card_list_item_background"
-        android:gravity="center"
-        android:text="1"
-        android:textColor="@android:color/white"
-        android:textSize="16sp" />
+        android:orientation="horizontal">
+
+
+    <FrameLayout
+            android:layout_width="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:layout_marginLeft="0dp"
+            android:layout_height="67dp">
+
+        <TextView
+                android:id="@+id/card_list_item_card_sn"
+                android:layout_width="20dip"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+
+                android:background="@drawable/card_list_item_background"
+                android:gravity="center"
+                android:text="1"
+                android:textColor="@android:color/white"
+                android:textSize="16sp"/>
+
+        <ImageView
+                android:id="@id/card_list_item_drag_handle"
+                android:background="@drawable/card_list_item_drag"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:layout_gravity="center"
+                android:layout_weight="0"/>
+
+
+    </FrameLayout>
+
 
     <ImageView
-        android:id="@+id/card_list_item_cover_image"
-        android:layout_width="160dip"
-        android:layout_height="104dip"
-        android:layout_gravity="center_vertical"
-        android:layout_marginLeft="17dp"
-        android:background="@drawable/shape_card_list_item"
-        android:scaleType="fitCenter"/>
+            android:id="@+id/card_list_item_cover_image"
+            android:layout_marginTop="10dp"
+            android:layout_marginBottom="10dp"
+            android:layout_width="160dip"
+            android:layout_height="104dip"
+            android:layout_gravity="center_vertical"
+            android:layout_marginLeft="0dp"
+            android:background="@drawable/shape_card_list_item"
+            android:scaleType="fitCenter"/>
 
+    <ImageView
+            android:id="@id/card_list_item_click_remove"
+            android:background="@drawable/card_list_item_delete"
+            android:layout_width="40dp"
+            android:layout_gravity="center_vertical"
+            android:layout_marginLeft="0dp"
+            android:layout_height="40dp"
+            android:layout_weight="0"/>
 </LinearLayout>

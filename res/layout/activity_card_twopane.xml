@@ -28,7 +28,7 @@
         
         <fragment
                 android:id="@+id/fragment_card_list"
-                android:name="com.internectics.fragment.CardListMasterFragment"
+                android:name="com.internectics.fragment.CardListFragment"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 tools:layout="@android:layout/list_content" />
