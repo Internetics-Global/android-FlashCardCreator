@@ -9,7 +9,6 @@ public class Global {
     public static final String defaultUserStr = "Default_User";
 
     //Broadcast action name
-    public static final String BROADCAST_ACTION_SAVE_NEW_CARD = "com.internectics.save_new_card";
     public static final String BROADCAST_ACTION_UPDATE_MASTER_VIEW = "com.internectics.update_master_view";
 
     //Broadcast intent extra

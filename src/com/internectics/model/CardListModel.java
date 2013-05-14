@@ -17,22 +17,7 @@ public class CardListModel {
 
     public static List<HashMap<String, Object>> getCardList(Pack curentPack) {
 
-        ArrayList<Card> cardArrayList = new ArrayList<Card>();
-
-        // Use simulator data only for test purpose
-//		for (int i = 0; i < 5; i++) {
-//			Card tempCard = new Card();
-//			 tempCard.cardSN = 1;
-//			 tempCard.coverImageUriFormatStr =
-//			 "file:///data/data/com.internectics.android_flashcardcreator/cache/Images/af9e10f9-a1e8-47e0-ba1c-e0685c29f602.jpg";
-//			 cardArrayList.add(tempCard);
-//			 Card tempCard2 = new Card();
-//			 tempCard2.cardSN = 2;
-//			 tempCard2.coverImageUriFormatStr = String.format("%d",R.drawable.card_cover_image_placeholder);
-//			 cardArrayList.add(tempCard2);
-//		}
-
-        cardArrayList = curentPack.cards;
+        ArrayList<Card> cardArrayList = curentPack.cards;
 
         // Build data for adapter
         List<HashMap<String, Object>> fillMaps = new ArrayList<HashMap<String, Object>>();

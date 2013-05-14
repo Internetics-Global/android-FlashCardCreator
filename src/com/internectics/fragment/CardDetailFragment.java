@@ -4,6 +4,7 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.util.Log;
@@ -14,15 +15,19 @@ import android.widget.EditText;
 import com.internectics.android_flashcardcreator.R;
 import com.internectics.data.Card;
 import com.internectics.data.Pack;
+import com.internectics.helper.FileOperationHelper;
 import com.internectics.util.AppContext;
 import com.internectics.util.Global;
+import com.internectics.util.UIHelper;
+
+import java.io.File;
 
 public class CardDetailFragment extends Fragment {
 
-    CardDetailReceiver mReceiver;
-
     private Card mCurrentCard;
     private Pack mCurrentPack;
+
+    private View mContentView;
 
     public static final String ARG_ITEM_ID = "item_id";
 
@@ -49,13 +54,13 @@ public class CardDetailFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View rootView = inflater.inflate(R.layout.fragment_card_detail,
+        mContentView = inflater.inflate(R.layout.fragment_card_detail,
                 container, false);
-        EditText sidebarEditText = (EditText) rootView.findViewById(R.id.sidebar_title);
+        EditText sidebarEditText = (EditText) mContentView.findViewById(R.id.sidebar_title);
         sidebarEditText.setText(String.format("%d", mCurrentCard.cardSN));
 
 
-        return rootView;
+        return mContentView;
     }
 
 
@@ -68,35 +73,15 @@ public class CardDetailFragment extends Fragment {
         mCurrentCard.cardSN = mCurrentPack.cards.size() + 1;
     }
 
+    public void saveNewCreatedCard() {
 
-    @Override
-    public void onResume() {
-        super.onResume();
-        mReceiver = new CardDetailReceiver();
-        IntentFilter filter = new IntentFilter();
-        filter.addAction(Global.BROADCAST_ACTION_SAVE_NEW_CARD);
-        getActivity().registerReceiver(mReceiver, filter);
-    }
+        //Step1: take card screenshot
+        View cardView = mContentView.findViewById(R.id.card);
+        Bitmap bitmap = UIHelper.loadBitmapFromView(cardView);
+        File savedFile = UIHelper.saveImageToCaches(bitmap);
+        mCurrentCard.coverImageUriFormatStr = FileOperationHelper.covertToUriFormatFile(savedFile);
 
-    @Override
-    public void onPause() {
-        super.onPause();
-        getActivity().unregisterReceiver(mReceiver);
-    }
-
-    private class CardDetailReceiver extends BroadcastReceiver {
-
-        @Override
-        public void onReceive(Context context, Intent intent) {
-            System.out.println("intent = " + intent);
-            if (intent.getAction().equals(Global.BROADCAST_ACTION_SAVE_NEW_CARD)) {
-                saveNewCreatedCard();
-            }
-
-        }
-    }
-
-    private void saveNewCreatedCard() {
+        //Step2: save
         mCurrentCard.save(AppContext.getAppContext());
         Log.d(Global.debugTag, "finish execution of saveNewCreatedCard");
     }

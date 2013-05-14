@@ -63,11 +63,6 @@
         <activity android:name=".InstructionActivity"/>
 
 
-        <activity
-                android:name="com.internectics.android_flashcardcreator.CursorDSLV"
-                android:screenOrientation="landscape">
-        </activity>
-
         <service android:name="org.openudid.OpenUDID_service">
             <intent-filter>
                 <action android:name="org.openudid.GETUDID"/>

@@ -60,6 +60,8 @@ public class MainActivity extends FragmentActivity implements
 
     public PopupWindow mPopupWindow;
 
+    private CardDetailFragment mCardDetailFragment;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -188,8 +190,6 @@ public class MainActivity extends FragmentActivity implements
                 break;
 
             case R.id.actionbar_test1:
-                Intent intent = new Intent(MainActivity.this, CursorDSLV.class);
-                startActivity(intent);
 
 
                 break;
@@ -256,9 +256,9 @@ public class MainActivity extends FragmentActivity implements
 
         mCurrentIndex = index;
         mCurrentCard = mCurrentPack.cards.get(mCurrentIndex);
-        CardDetailFragment fragment = new CardDetailFragment(mCurrentPack, mCurrentCard);
+        mCardDetailFragment = new CardDetailFragment(mCurrentPack, mCurrentCard);
         getSupportFragmentManager().beginTransaction()
-                .replace(R.id.card_detail_container, fragment).commit();
+                .replace(R.id.card_detail_container, mCardDetailFragment).commit();
     }
 
 
@@ -285,10 +285,10 @@ public class MainActivity extends FragmentActivity implements
             }
         });
 
-        CardDetailFragment fragment = new CardDetailFragment(mCurrentPack, null);
+        mCardDetailFragment = new CardDetailFragment(mCurrentPack, null);
         getSupportFragmentManager().beginTransaction()
                 .setCustomAnimations(R.anim.in_from_right, R.anim.out_to_right)
-                .replace(R.id.add_card_frame_layout, fragment)
+                .replace(R.id.add_card_frame_layout, mCardDetailFragment)
                 .commit();
 
         mIsCreatingCard = true;
@@ -297,15 +297,17 @@ public class MainActivity extends FragmentActivity implements
     }
 
     private void saveNewCreatedCard() {
+
         //1. do save action
-        Intent intent = new Intent();
-        intent.setAction(Global.BROADCAST_ACTION_SAVE_NEW_CARD);
-        sendBroadcast(intent);
+        if (mCardDetailFragment != null) {
+            mCardDetailFragment.saveNewCreatedCard();
+        }
 
         //2. dismiss windows
         dismissCardCreateWindow();
 
         //3. notify CardListFragment view to update
+        Intent intent = new Intent();
         intent.setAction(Global.BROADCAST_ACTION_UPDATE_MASTER_VIEW);
         intent.putExtra(Global.KEY_FROM, Global.BROADCAST_INTENT_EXTRA_FROM_NEW_CARD);
         sendBroadcast(intent);
