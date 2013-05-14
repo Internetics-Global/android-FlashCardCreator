@@ -18,8 +18,10 @@ import android.widget.ListView;
 import android.widget.TextView;
 import com.internectics.android_flashcardcreator.MainActivity;
 import com.internectics.android_flashcardcreator.R;
+import com.internectics.data.Card;
 import com.internectics.data.Pack;
 import com.internectics.model.CardListModel;
+import com.internectics.util.AppContext;
 import com.internectics.util.Global;
 import com.mobeta.android.dslv.DragSortListView;
 import com.mobeta.android.dslv.SimpleDragSortCursorAdapter;
@@ -57,7 +59,11 @@ public class CardListFragment extends Fragment {
 
     public CardListFragment() {
         mCurrentPack = CardListModel.getCurrentPack();
-        mCardArrayList = CardListModel.getCardList(mCurrentPack);
+        if (mCurrentPack != null) {
+            mCardArrayList = CardListModel.getCardList(mCurrentPack);
+        } else {
+            mCardArrayList = new ArrayList<HashMap<String, Object>>();
+        }
     }
 
 
@@ -82,6 +88,22 @@ public class CardListFragment extends Fragment {
 
         mDSLVListView = (DragSortListView) mContentView.findViewById(android.R.id.list);
         mDSLVListView.setAdapter(adapter);
+
+        mDSLVListView.setRemoveListener(new DragSortListView.RemoveListener() {
+            @Override
+            public void remove(int which) {
+                Log.d(Global.debugTag, "Card list item is removed" + which);
+                removeListItem(which);
+            }
+        });
+
+        mDSLVListView.setDragListener(new DragSortListView.DragListener() {
+            @Override
+            public void drag(int from, int to) {
+                Log.d(Global.debugTag, String.format("Move card list item from %d to %d",from, to));
+                dragListItem(from,to);
+            }
+        });
 
         return mContentView;
     }
@@ -140,6 +162,10 @@ public class CardListFragment extends Fragment {
     private MatrixCursor rebuildCursor() {
 
         MatrixCursor cursor = new MatrixCursor(new String[]{"_id", "card_sn", "cover_image"});
+
+        if (mCurrentPack == null)
+            return cursor;
+
         for (int i = 0; i < mCardArrayList.size(); i++) {
             cursor.newRow()
                     .add(i)
@@ -223,6 +249,52 @@ public class CardListFragment extends Fragment {
                 updateListView();
             }
         }
+
+    }
+
+
+    private void dragListItem(int from, int to) {
+
+        if (from == to) {
+            return;
+        } else if (from < to) {
+
+            for (int i = from +1; i<= to; i++) {
+                Card card = mCurrentPack.cards.get(i);
+                card.cardSN = i;
+                card.save(AppContext.getAppContext());
+            }
+
+        } else {
+
+            for (int i = to; i< from; i++) {
+                Card card = mCurrentPack.cards.get(i);
+                card.cardSN = i+2;
+                card.save(AppContext.getAppContext());
+            }
+        }
+
+        //Step3: update list view
+        updateListView();
+    }
+
+
+    private void removeListItem(int which) {
+
+        //Step1: remove current card from mCurrentPack and database
+        Card removedCard = mCurrentPack.cards.get(which);
+        mCurrentPack.cards.remove(which);
+        removedCard.destroy(AppContext.getAppContext());
+
+        //Step2: reorder all cards' SN and save to database
+        for (int i =0; i<mCurrentPack.cards.size();i++) {
+            Card card = mCurrentPack.cards.get(i);
+            card.cardSN = i+1;
+            card.save(AppContext.getAppContext());
+        }
+
+        //Step3: update list view
+        updateListView();
 
     }
 
