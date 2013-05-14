@@ -71,7 +71,7 @@ public class StringUtils {
 
     public static String lastComponentOfPath(Uri uri) {
         String path = uri.getPath();
-        String last = path.substring(path.lastIndexOf("/")+1);
+        String last = path.substring(path.lastIndexOf("/") + 1);
         return last;
     }
 

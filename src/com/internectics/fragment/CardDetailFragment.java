@@ -24,13 +24,13 @@ public class CardDetailFragment extends Fragment {
     private Card mCurrentCard;
     private Pack mCurrentPack;
 
-	public static final String ARG_ITEM_ID = "item_id";
+    public static final String ARG_ITEM_ID = "item_id";
 
 
-    public CardDetailFragment(Pack currentPack,Card currentCard) {
+    public CardDetailFragment(Pack currentPack, Card currentCard) {
 
         if (currentCard == null) {
-            Log.d(Global.debugTag,"Creating a new card is going on");
+            Log.d(Global.debugTag, "Creating a new card is going on");
             mCurrentPack = currentPack;
             initilizeNewCard();
 
@@ -39,31 +39,31 @@ public class CardDetailFragment extends Fragment {
             mCurrentPack = currentPack;
         }
 
-	}
+    }
 
-	@Override
-	public void onCreate(Bundle savedInstanceState) {
-		super.onCreate(savedInstanceState);
-	}
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+    }
 
-	@Override
-	public View onCreateView(LayoutInflater inflater, ViewGroup container,
-			Bundle savedInstanceState) {
-		View rootView = inflater.inflate(R.layout.fragment_card_detail,
-				container, false);
-        EditText sidebarEditText = (EditText)rootView.findViewById(R.id.sidebar_title);
-        sidebarEditText.setText(String.format("%d",mCurrentCard.cardSN));
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                             Bundle savedInstanceState) {
+        View rootView = inflater.inflate(R.layout.fragment_card_detail,
+                container, false);
+        EditText sidebarEditText = (EditText) rootView.findViewById(R.id.sidebar_title);
+        sidebarEditText.setText(String.format("%d", mCurrentCard.cardSN));
 
 
-		return rootView;
-	}
+        return rootView;
+    }
 
 
     /**
      * to initialized card during creating a new card
      */
     private void initilizeNewCard() {
-        mCurrentCard =  new Card();
+        mCurrentCard = new Card();
         mCurrentCard.packID = mCurrentPack.packID;
         mCurrentCard.cardSN = mCurrentPack.cards.size() + 1;
     }
@@ -75,7 +75,7 @@ public class CardDetailFragment extends Fragment {
         mReceiver = new CardDetailReceiver();
         IntentFilter filter = new IntentFilter();
         filter.addAction(Global.BROADCAST_ACTION_SAVE_NEW_CARD);
-        getActivity().registerReceiver(mReceiver,filter);
+        getActivity().registerReceiver(mReceiver, filter);
     }
 
     @Override
@@ -98,7 +98,7 @@ public class CardDetailFragment extends Fragment {
 
     private void saveNewCreatedCard() {
         mCurrentCard.save(AppContext.getAppContext());
-        Log.d(Global.debugTag,"finish execution of saveNewCreatedCard");
+        Log.d(Global.debugTag, "finish execution of saveNewCreatedCard");
     }
 }
 

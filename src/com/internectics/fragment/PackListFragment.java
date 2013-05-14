@@ -63,7 +63,7 @@ public class PackListFragment extends Fragment {
                     editButton.setText("Edit");
                     mIsEditStatus = false;
                 }
-                ((ImageAdapter)mGallery.getAdapter()).notifyDataSetChanged();
+                ((ImageAdapter) mGallery.getAdapter()).notifyDataSetChanged();
 
             }
         });
@@ -83,11 +83,10 @@ public class PackListFragment extends Fragment {
                 intent.putExtra(Global.KEY_FROM, Global.BROADCAST_INTENT_EXTRA_FROM_PACK_SELECTED);
                 intent.putExtra("indexOfPack", position);  //id begin from 0
                 getActivity().sendBroadcast(intent);
-                ((MainActivity)getActivity()).mPopupWindow.dismiss();
+                ((MainActivity) getActivity()).mPopupWindow.dismiss();
 
             }
         });
-
 
 
         return rootView;
@@ -117,7 +116,7 @@ public class PackListFragment extends Fragment {
         public View getView(int position, View convertView, ViewGroup parent) {
 
             final int indexOfCurrentPack = position;
-            final Pack currentPack =  User.defaultUser(AppContext.getAppContext()).packs.get(position);
+            final Pack currentPack = User.defaultUser(AppContext.getAppContext()).packs.get(position);
             LinearLayout baseView = new LinearLayout(mContext);
             baseView.setOrientation(LinearLayout.VERTICAL);
 
@@ -130,7 +129,7 @@ public class PackListFragment extends Fragment {
             packNameView.setGravity(Gravity.CENTER);
             packNameView.setWidth(UIHelper.getPixels(180));
             packNameView.setHeight(UIHelper.getPixels(30));
-            lp.setMargins(0,UIHelper.getPixels(10),0,0);
+            lp.setMargins(0, UIHelper.getPixels(10), 0, 0);
             packNameView.setLayoutParams(lp);
             baseView.addView(packNameView);
 
@@ -141,7 +140,7 @@ public class PackListFragment extends Fragment {
                 imageView = (ImageView) convertView;
                 imageView.setScaleType(ImageView.ScaleType.FIT_CENTER);
                 imageView.setLayoutParams(new Gallery.LayoutParams(
-                        UIHelper.getPixels(180),UIHelper.getPixels(150)));
+                        UIHelper.getPixels(180), UIHelper.getPixels(150)));
 
             } else {
                 imageView = (ImageView) convertView;
@@ -172,7 +171,7 @@ public class PackListFragment extends Fragment {
             editLayout.setOrientation(LinearLayout.HORIZONTAL);
             lp = new LinearLayout.LayoutParams(
                     UIHelper.getPixels(180), UIHelper.getPixels(40));
-            lp.setMargins(0,20,0,20);
+            lp.setMargins(0, 20, 0, 20);
             editLayout.setLayoutParams(lp);
 
             Button changeCoverImageButton = new Button(mContext);
@@ -195,7 +194,7 @@ public class PackListFragment extends Fragment {
             deleteButton.setText("Delete");
             lp = new LinearLayout.LayoutParams(
                     UIHelper.getPixels(80), LinearLayout.LayoutParams.FILL_PARENT);
-            lp.setMargins(20,0,0,0);
+            lp.setMargins(20, 0, 0, 0);
             deleteButton.setLayoutParams(lp);
             deleteButton.setBackgroundResource(R.drawable.redbutton);
             deleteButton.setOnClickListener(new View.OnClickListener() {
@@ -204,11 +203,11 @@ public class PackListFragment extends Fragment {
                     User defaultUser = User.defaultUser(AppContext.getAppContext());
                     defaultUser.removePack(currentPack);
                     int count = defaultUser.packs.size();
-                    if (count >0) {
-                        Pack lastPack = defaultUser.packs.get(count-1);
-                        AppConfig.getInstance(getActivity()).set(Global.mostRecentPackCreatedID_Property, String.format("%d", lastPack.packID));
+                    if (count > 0) {
+                        Pack lastPack = defaultUser.packs.get(count - 1);
+                        AppConfig.sharedInstance().set(Global.mostRecentPackCreatedID_Property, String.format("%d", lastPack.packID));
                     }
-                    ((ImageAdapter)mGallery.getAdapter()).notifyDataSetChanged();
+                    ((ImageAdapter) mGallery.getAdapter()).notifyDataSetChanged();
                 }
             });
 
@@ -226,10 +225,10 @@ public class PackListFragment extends Fragment {
                     changeCoverImageButton.setVisibility(View.INVISIBLE);
                 }
 
-                if (User.defaultUser(AppContext.getAppContext()).packs.size()<=1) {
+                if (User.defaultUser(AppContext.getAppContext()).packs.size() <= 1) {
                     deleteButton.setVisibility(View.INVISIBLE);
                 } else {
-                    if (((MainActivity)getActivity()).mCurrentPack.packID == currentPack.packID) {
+                    if (((MainActivity) getActivity()).mCurrentPack.packID == currentPack.packID) {
                         deleteButton.setVisibility(View.INVISIBLE);
                     } else {
                         deleteButton.setVisibility(View.VISIBLE);
@@ -240,7 +239,6 @@ public class PackListFragment extends Fragment {
             } else {
                 editLayout.setVisibility(View.INVISIBLE);
             }
-
 
 
             return baseView;
@@ -258,13 +256,13 @@ public class PackListFragment extends Fragment {
                 Bitmap resultBitmap = UIHelper.resizeImageTo400(getActivity(), selectedImageURI);
                 if (resultBitmap == null) {
                     Log.d(Global.debugTag, "resultBitmap is null");
-                }else {
+                } else {
                     File toSaveFile = UIHelper.saveImageToCaches(resultBitmap);
                     Pack currentPack = User.defaultUser(AppContext.getAppContext()).packs.get(mIndexOfCurrentPack);
                     currentPack.coverImageUriFormatStr = FileOperationHelper.covertToUriFormatFile(toSaveFile);
                     Log.d(Global.debugTag, currentPack.coverImageUriFormatStr);
                     currentPack.save(AppContext.getAppContext());
-                    ((ImageAdapter)mGallery.getAdapter()).notifyDataSetChanged();
+                    ((ImageAdapter) mGallery.getAdapter()).notifyDataSetChanged();
                 }
             }
         }

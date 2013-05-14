@@ -11,26 +11,17 @@ import com.internectics.helper.DropboxHelper;
 
 public class MoreFragment extends DialogFragment {
 
-	private static MoreFragment mDialogFragment;
-	public View mContentView;
+    public View mContentView;
 
-	public static MoreFragment getInstance() {
-		if (mDialogFragment == null) {
-			return new MoreFragment();
-		} else {
-			return mDialogFragment;
-		}
-	}
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                             Bundle savedInstanceState) {
+        super.onCreateView(inflater, container, savedInstanceState);
 
-	@Override
-	public View onCreateView(LayoutInflater inflater, ViewGroup container,
-			Bundle savedInstanceState) {
-		super.onCreateView(inflater, container, savedInstanceState);
-
-		mContentView = inflater.inflate(R.layout.fragment_more, container);
-		getDialog().getWindow().requestFeature(Window.FEATURE_NO_TITLE);
-		getDialog().getWindow().setSoftInputMode(
-				WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN);
+        mContentView = inflater.inflate(R.layout.fragment_more, container);
+        getDialog().getWindow().requestFeature(Window.FEATURE_NO_TITLE);
+        getDialog().getWindow().setSoftInputMode(
+                WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN);
 
         TextView titleTextView = (TextView) mContentView
                 .findViewById(R.id.dialog_title);
@@ -48,8 +39,8 @@ public class MoreFragment extends DialogFragment {
             }
         });
 
-        ToggleButton dropboxToggleButton = (ToggleButton)mContentView.findViewById(R.id.dropbox_toggleButton);
-        final boolean isLinked =DropboxHelper.getDropboxAPI(getActivity()).getSession().isLinked();
+        ToggleButton dropboxToggleButton = (ToggleButton) mContentView.findViewById(R.id.dropbox_toggleButton);
+        final boolean isLinked = DropboxHelper.getDropboxAPI(getActivity()).getSession().isLinked();
         dropboxToggleButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -66,6 +57,6 @@ public class MoreFragment extends DialogFragment {
             dropboxToggleButton.setChecked(false);
         }
 
-		return mContentView;
-	}
+        return mContentView;
+    }
 }

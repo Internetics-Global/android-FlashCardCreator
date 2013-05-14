@@ -1,6 +1,9 @@
 package com.internectics.android_flashcardcreator;
 
-import android.app.*;
+import android.app.AlertDialog;
+import android.app.Dialog;
+import android.app.DialogFragment;
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
@@ -22,9 +25,15 @@ import com.dropbox.client2.android.AndroidAuthSession;
 import com.dropbox.client2.session.TokenPair;
 import com.internectics.data.Card;
 import com.internectics.data.Pack;
-import com.internectics.fragment.*;
+import com.internectics.fragment.AddPackFragment;
+import com.internectics.fragment.CardDetailFragment;
+import com.internectics.fragment.CardListFragment;
+import com.internectics.fragment.MoreFragment;
 import com.internectics.helper.*;
-import com.internectics.util.*;
+import com.internectics.util.AppConfig;
+import com.internectics.util.AppContext;
+import com.internectics.util.Global;
+import com.internectics.util.OpenUDID_manager;
 
 import java.io.File;
 
@@ -47,7 +56,7 @@ public class MainActivity extends FragmentActivity implements
     private static final int DIALOG_UPLOADING_PACK = 0;
     private ProgressDialog mDialog;
 
-    private boolean mIsUploadingPackAfterLinked = false;
+    private boolean mIsGoingAuthorizationBeforeUpload = false;
 
     public PopupWindow mPopupWindow;
 
@@ -107,14 +116,14 @@ public class MainActivity extends FragmentActivity implements
 
         switch (item.getItemId()) {
             case R.id.actionbar_add_pack: {
-                DialogFragment dialogFragment = AddPackFragment.getInstance();
+                DialogFragment dialogFragment = new AddPackFragment();
                 dialogFragment.show(getFragmentManager(), "add_pack_fragment");
                 break;
             }
             case R.id.actionbar_edit:
 
                 if ((mCurrentPack != null) && (mCurrentPack.cards.size() > 0)) {
-                    CardListFragment cardListFragment = (CardListFragment)(getSupportFragmentManager().findFragmentById(R.id.fragment_card_list));
+                    CardListFragment cardListFragment = (CardListFragment) (getSupportFragmentManager().findFragmentById(R.id.fragment_card_list));
 
                     if (item.getTitle().equals("edit")) {
                         item.setTitle("done");
@@ -144,7 +153,7 @@ public class MainActivity extends FragmentActivity implements
                         .show();
                 break;
             case R.id.actionbar_more:
-                MoreFragment moreFragment = MoreFragment.getInstance();
+                MoreFragment moreFragment = new MoreFragment();
                 moreFragment.show(getFragmentManager(), "more_fragment");
                 break;
 
@@ -171,15 +180,15 @@ public class MainActivity extends FragmentActivity implements
                 startActivity(new Intent(MainActivity.this, InstructionActivity.class));
                 break;
 
-            case R.id.actionbar_download_test:
+            case R.id.actionbar_test2:
                 String downloableShareLink = "http://dl.dropbox.com/s/c0zjxrntg518dcn/pack219ed6f2-0052-47e9-8b93-93af359e3cd9.zip";
-                File downloadedZipFile = new File(FileOperationHelper.downloadedPackDirectory(),"downloadedPackZip.zip");
-                PackDownloadHelper packDownloadHelper = new PackDownloadHelper(MainActivity.this,downloableShareLink,downloadedZipFile.toString());
+                File downloadedZipFile = new File(FileOperationHelper.downloadedPackDirectory(), "downloadedPackZip.zip");
+                PackDownloadHelper packDownloadHelper = new PackDownloadHelper(MainActivity.this, downloableShareLink, downloadedZipFile.toString());
                 packDownloadHelper.execute();
                 break;
 
             case R.id.actionbar_test1:
-                Intent intent = new Intent(MainActivity.this,CursorDSLV.class);
+                Intent intent = new Intent(MainActivity.this, CursorDSLV.class);
                 startActivity(intent);
 
 
@@ -198,25 +207,35 @@ public class MainActivity extends FragmentActivity implements
     protected void onResume() {
         super.onResume();
 
+        //Step1: download sample pack first
+        boolean isDownloaded = AppConfig.sharedInstance().isExamplePackDownloadedBefore();
+        if (!isDownloaded) {
+            String downloableShareLink = "http://dl.dropbox.com/s/c0zjxrntg518dcn/pack219ed6f2-0052-47e9-8b93-93af359e3cd9.zip";
+            File downloadedZipFile = new File(FileOperationHelper.downloadedPackDirectory(), "downloadedPackZip.zip");
+            PackDownloadHelper packDownloadHelper = new PackDownloadHelper(MainActivity.this, downloableShareLink, downloadedZipFile.toString());
+            packDownloadHelper.isFromExamplePackDownload = true;
+            packDownloadHelper.execute();
+            return;
+        }
+
+        //Step2: call from other app or back from Dropbox authorization
         Uri data = getIntent().getData();
         if ((data != null) && (data.getScheme().equalsIgnoreCase("fcc"))) {
             //called from outside app like browser
             //TODO
-            String downloableShareLink = data.toString().replace("fcc","http").replace("wwww","dl");
-            File downloadedZipFile = new File(FileOperationHelper.downloadedPackDirectory(),"downloadedPackZip.zip");
-            PackDownloadHelper packDownloadHelper = new PackDownloadHelper(MainActivity.this,downloableShareLink,downloadedZipFile.toString());
+            String downloableShareLink = data.toString().replace("fcc", "http").replace("wwww", "dl");
+            File downloadedZipFile = new File(FileOperationHelper.downloadedPackDirectory(), "downloadedPackZip.zip");
+            PackDownloadHelper packDownloadHelper = new PackDownloadHelper(MainActivity.this, downloableShareLink, downloadedZipFile.toString());
             packDownloadHelper.execute();
-
-
         } else {
-            if (true == mIsUploadingPackAfterLinked) {
+            if (true == mIsGoingAuthorizationBeforeUpload) {
                 AndroidAuthSession session = DropboxHelper.getDropboxAPI(this).getSession();
                 if (session.authenticationSuccessful()) {
                     session.finishAuthentication(); // Mandatory call to complete the auth
                     // Store it locally in our app for later use
                     TokenPair tokens = session.getAccessTokenPair();
                     DropboxHelper.storeKeys(this, tokens.key, tokens.secret);
-                    mIsUploadingPackAfterLinked = false;
+                    mIsGoingAuthorizationBeforeUpload = false;
                     uploadingPackAfterLinked();
                 }
             }
@@ -352,13 +371,13 @@ public class MainActivity extends FragmentActivity implements
         if (mDBApi.getSession().isLinked()) {
             uploadingPackAfterLinked();
         } else {
-            mIsUploadingPackAfterLinked = true;
+            mIsGoingAuthorizationBeforeUpload = true;
             mDBApi.getSession().startAuthentication(MainActivity.this);
         }
     }
 
     private void uploadingPackAfterLinked() {
-        if (PackRecordHelper.checkUploadPackNecessary(MainActivity.this,mCurrentPack)) {
+        if (PackRecordHelper.checkUploadPackNecessary(MainActivity.this, mCurrentPack)) {
             AndroidAuthSession session = DropboxHelper.getDropboxAPI(this).getSession();
             if (session.isLinked()) {
                 File file = PackBuildHelper.createPackZipFile(mCurrentPack);
@@ -367,13 +386,11 @@ public class MainActivity extends FragmentActivity implements
                 upload.execute();
             }
         } else {
-            String shareLink = AppConfig.getInstance(this).getCurrentPackShareLink(mCurrentPack);
-            ShareLinkHelper shareLinkHelper = new ShareLinkHelper(this,shareLink,mCurrentPack);
+            String shareLink = AppConfig.sharedInstance().getCurrentPackShareLink(mCurrentPack);
+            ShareLinkHelper shareLinkHelper = new ShareLinkHelper(this, shareLink, mCurrentPack);
             shareLinkHelper.execShareAction();
         }
     }
-
-
 
 
 }

@@ -2,14 +2,10 @@ package com.internectics.util;
 
 import android.content.Context;
 import com.internectics.data.Pack;
-import org.json.simple.JSONObject;
-import org.json.simple.parser.JSONParser;
-import org.json.simple.parser.ParseException;
 
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
-import java.util.Date;
 import java.util.Properties;
 
 public class AppConfig {
@@ -17,21 +13,15 @@ public class AppConfig {
     private static AppConfig appConfig;
     private Context mContext;
 
-    public final static String CONF_LAST_CREATED_PACK_NAME = "LAST_CREATED_PACK_NAME";
-    public final static String CONF_LAST_CREATED_PACK_DATE = "LAST_CREATED_PACK_DATE";
-    public final static String CONF_IS_SAMPLE_PACK_DOWNLOADED = "IS_SAMPLE_PACK_DOWNLOADED";
-
-    public final static String CONF_IS_RANDOM_PLAY = "IS_RANDOM_PLAY";
-
     public final static String CONF_APP_UDID = "APP_UDID";
 
     /**
      * get AppConfig instance
      */
-    public static AppConfig getInstance(Context context) {
+    public static AppConfig sharedInstance() {
         if (appConfig == null) {
             appConfig = new AppConfig();
-            appConfig.mContext = context;
+            appConfig.mContext = AppContext.getAppContext();
         }
         return appConfig;
     }
@@ -100,6 +90,18 @@ public class AppConfig {
     public String getCurrentPackShareLink(Pack currentPack) {
         //TODO
         return "http://dl.dropbox.com/s/t5wxndkc8s4glmv/card1360210703.422296599274701.zip";
+    }
+
+    public boolean isExamplePackDownloadedBefore() {
+        String str = appConfig.get(Global.isExamplePackDownloadedSBefore_Property);
+        if ((str != null) && (str.equals("1")))
+            return true;
+        else
+            return false;
+    }
+
+    public void setExamplePackDownloadedFlag() {
+        appConfig.set(Global.isExamplePackDownloadedSBefore_Property, "1");
     }
 
 }

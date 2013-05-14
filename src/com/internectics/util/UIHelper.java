@@ -47,7 +47,7 @@ public class UIHelper {
         return resizeBitmap;
     }
 
-    public static File  saveImageToCaches(Bitmap savedBitmap) {
+    public static File saveImageToCaches(Bitmap savedBitmap) {
         File toSaveFile = FileOperationHelper.generateUniqueImageFilePath();
 
         try {

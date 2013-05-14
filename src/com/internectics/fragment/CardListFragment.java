@@ -100,8 +100,8 @@ public class CardListFragment extends Fragment {
         mDSLVListView.setDragListener(new DragSortListView.DragListener() {
             @Override
             public void drag(int from, int to) {
-                Log.d(Global.debugTag, String.format("Move card list item from %d to %d",from, to));
-                dragListItem(from,to);
+                Log.d(Global.debugTag, String.format("Move card list item from %d to %d", from, to));
+                dragListItem(from, to);
             }
         });
 
@@ -197,9 +197,9 @@ public class CardListFragment extends Fragment {
 
             View tv = v.findViewById(R.id.card_list_item_cover_image);
 
-            ImageView drageImage = (ImageView)v.findViewById(R.id.card_list_item_drag_handle);
-            ImageView removeImage = (ImageView)v.findViewById(R.id.card_list_item_click_remove);
-            TextView  cardSNText = (TextView)v.findViewById(R.id.card_list_item_card_sn);
+            ImageView drageImage = (ImageView) v.findViewById(R.id.card_list_item_drag_handle);
+            ImageView removeImage = (ImageView) v.findViewById(R.id.card_list_item_click_remove);
+            TextView cardSNText = (TextView) v.findViewById(R.id.card_list_item_card_sn);
 
             if (isListViewEditable) {
                 drageImage.setVisibility(View.VISIBLE);
@@ -259,7 +259,7 @@ public class CardListFragment extends Fragment {
             return;
         } else if (from < to) {
 
-            for (int i = from +1; i<= to; i++) {
+            for (int i = from + 1; i <= to; i++) {
                 Card card = mCurrentPack.cards.get(i);
                 card.cardSN = i;
                 card.save(AppContext.getAppContext());
@@ -267,9 +267,9 @@ public class CardListFragment extends Fragment {
 
         } else {
 
-            for (int i = to; i< from; i++) {
+            for (int i = to; i < from; i++) {
                 Card card = mCurrentPack.cards.get(i);
-                card.cardSN = i+2;
+                card.cardSN = i + 2;
                 card.save(AppContext.getAppContext());
             }
         }
@@ -287,9 +287,9 @@ public class CardListFragment extends Fragment {
         removedCard.destroy(AppContext.getAppContext());
 
         //Step2: reorder all cards' SN and save to database
-        for (int i =0; i<mCurrentPack.cards.size();i++) {
+        for (int i = 0; i < mCurrentPack.cards.size(); i++) {
             Card card = mCurrentPack.cards.get(i);
-            card.cardSN = i+1;
+            card.cardSN = i + 1;
             card.save(AppContext.getAppContext());
         }
 

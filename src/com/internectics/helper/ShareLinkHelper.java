@@ -7,14 +7,7 @@ import android.util.Log;
 import com.dropbox.client2.DropboxAPI;
 import com.dropbox.client2.exception.DropboxException;
 import com.internectics.data.Pack;
-import com.internectics.util.AppConfig;
 import com.internectics.util.Global;
-import com.internectics.util.StringUtils;
-import org.json.simple.JSONObject;
-import org.json.simple.parser.JSONParser;
-import org.json.simple.parser.ParseException;
-
-import java.util.Date;
 
 /**
  * 1. create share linkage
@@ -23,14 +16,14 @@ import java.util.Date;
 public class ShareLinkHelper extends AsyncTask<Void, Long, Boolean> {
 
     private Context mContext;
-    private String  mFilePathInDropbox;
-    private Pack    mCurentPack;
+    private String mFilePathInDropbox;
+    private Pack mCurentPack;
 
 
     /*
       @param shareLink must enter a valid value when directly sharing; enter anything when creating share link first
      */
-    public ShareLinkHelper(Context context,String file, Pack currentPack) {
+    public ShareLinkHelper(Context context, String file, Pack currentPack) {
         mContext = context;
         mFilePathInDropbox = file;
         mCurentPack = currentPack;
@@ -42,7 +35,7 @@ public class ShareLinkHelper extends AsyncTask<Void, Long, Boolean> {
             DropboxAPI.DropboxLink link = DropboxHelper.getDropboxAPI(mContext).share(mFilePathInDropbox);
             String shareLink = link.url;
             Log.d(Global.debugTag, shareLink);
-            PackRecordHelper.savePackUploadRecord(mContext,mCurentPack,shareLink);
+            PackRecordHelper.savePackUploadRecord(mContext, mCurentPack, shareLink);
             execShareAction();
 
         } catch (DropboxException e) {
@@ -53,9 +46,8 @@ public class ShareLinkHelper extends AsyncTask<Void, Long, Boolean> {
     }
 
 
-
     public void execShareAction() {
-        String shareLink = PackRecordHelper.getCurrentPackShareLink(mContext,mCurentPack);
+        String shareLink = PackRecordHelper.getCurrentPackShareLink(mContext, mCurentPack);
         Intent intent = new Intent(Intent.ACTION_SEND);
         intent.setType("text/plain");
         intent.putExtra(Intent.EXTRA_TEXT, shareLink);

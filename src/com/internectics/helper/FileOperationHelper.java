@@ -24,7 +24,7 @@ public class FileOperationHelper {
             "question_image_placeholder.jpg",
             "answer_image_placeholder.jpg",
             "pack_cover_default_image.jpg",
-            "card_cover_image_placeholder.jpg" };
+            "card_cover_image_placeholder.jpg"};
 
 
     /*
@@ -104,7 +104,7 @@ public class FileOperationHelper {
 
     public static String deleteUriSchemeHeader(String str) {
         if (str.contains("file://")) {
-            String returnStr = str.substring(7,str.length());
+            String returnStr = str.substring(7, str.length());
             return returnStr;
         }
         return str;
@@ -195,7 +195,7 @@ public class FileOperationHelper {
     public static void copyResourcesImagesToCache(Context context) {
 
         final String isFirstStartUp = "isFirstStartUp";
-        String flag = AppConfig.getInstance(context).get(isFirstStartUp);
+        String flag = AppConfig.sharedInstance().get(isFirstStartUp);
         if ((flag != null) && flag.equals("1")) {
             return;
         }
@@ -224,39 +224,39 @@ public class FileOperationHelper {
 
         }
 
-        AppConfig.getInstance(context).set(isFirstStartUp, "1");
+        AppConfig.sharedInstance().set(isFirstStartUp, "1");
     }
 
 
     public static String getLogoPlaceholderImagePath() {
-        File tempFile = new File(reservedDirectory(),output[0]);
+        File tempFile = new File(reservedDirectory(), output[0]);
         return covertToUriFormatFile(tempFile);
     }
 
     public static String getQuestionImagePlaceholderImagePath() {
-        File tempFile = new File(reservedDirectory(),output[1]);
+        File tempFile = new File(reservedDirectory(), output[1]);
         return covertToUriFormatFile(tempFile);
     }
 
     public static String getAnswerImagePlaceholderImagePath() {
-        File tempFile = new File(reservedDirectory(),output[2]);
+        File tempFile = new File(reservedDirectory(), output[2]);
         return covertToUriFormatFile(tempFile);
     }
 
     public static String getPackCoverDefaultImagePath() {
-        File tempFile = new File(reservedDirectory(),output[3]);
+        File tempFile = new File(reservedDirectory(), output[3]);
         return covertToUriFormatFile(tempFile);
     }
 
     public static String getCardCoverDefaultImagePath() {
-        File tempFile = new File(reservedDirectory(),output[4]);
+        File tempFile = new File(reservedDirectory(), output[4]);
         return covertToUriFormatFile(tempFile);
     }
 
 
     public static void copyImageToImagesFolder(File imageFile) {
-        File targetFile = new File(imagesDirectory(),imageFile.getName());
-        copyFile(imageFile,targetFile);
+        File targetFile = new File(imagesDirectory(), imageFile.getName());
+        copyFile(imageFile, targetFile);
     }
 
 

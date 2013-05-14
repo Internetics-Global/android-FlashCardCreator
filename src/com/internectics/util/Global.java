@@ -28,6 +28,9 @@ public class Global {
     public static final String shareLink_Property = "share_link";
     public static final String updateDate_Property = "updated_date";
 
+    //Used to judge whether need to download example pack again
+    public static final String isExamplePackDownloadedSBefore_Property = "is_example_pack_downloaded_before";
+
 
 }
 

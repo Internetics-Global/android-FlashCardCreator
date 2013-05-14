@@ -63,8 +63,7 @@ public class CardListModel {
      */
     public static Pack getCurrentPack() {
         Pack currentPack = null;
-        String packIDString = AppConfig.getInstance(
-                AppContext.getAppContext()).get(Global.mostRecentPackCreatedID_Property);
+        String packIDString = AppConfig.sharedInstance().get(Global.mostRecentPackCreatedID_Property);
 
         ArrayList<Pack> packs = User.defaultUser(AppContext.getAppContext()).packs;
 

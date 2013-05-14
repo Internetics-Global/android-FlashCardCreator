@@ -1,6 +1,9 @@
 package com.internectics.helper;
 
-import java.io.*;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
@@ -34,17 +37,17 @@ public class ZipFileHelper {
         out.close();
     }
 
-    public static void unzipPackFile(String zipFileName,String outputDirectory) {
+    public static void unzipPackFile(String zipFileName, String outputDirectory) {
         try {
             //Step1, unzip pack
-            ArrayList<String> zippedCardFileArray = unzip(zipFileName,outputDirectory);
+            ArrayList<String> zippedCardFileArray = unzip(zipFileName, outputDirectory);
 
             //Step2, unzip cards in the pack
-            for (int i=0;i<zippedCardFileArray.size();i++) {
-                File unzippedDirectory = new File(outputDirectory + File.separator + String.format("card%d",i));
+            for (int i = 0; i < zippedCardFileArray.size(); i++) {
+                File unzippedDirectory = new File(outputDirectory + File.separator + String.format("card%d", i));
                 if (!unzippedDirectory.exists())
                     unzippedDirectory.mkdir();
-                unzip(zippedCardFileArray.get(i),unzippedDirectory.toString());
+                unzip(zippedCardFileArray.get(i), unzippedDirectory.toString());
             }
 
 
@@ -91,7 +94,7 @@ public class ZipFileHelper {
                 fos.close();
 
                 //if the unzipped is still a zip file, we continue it
-                if (ze.getName().contains(".zip")){
+                if (ze.getName().contains(".zip")) {
                     zippedCardFileArray.add(newFile.toString());
                 }
 

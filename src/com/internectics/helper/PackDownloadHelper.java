@@ -6,6 +6,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.widget.Toast;
+import com.internectics.util.AppConfig;
 import com.internectics.util.Global;
 
 import java.io.*;
@@ -18,20 +19,26 @@ import java.net.URLConnection;
 public class PackDownloadHelper extends AsyncTask<Void, Long, Boolean> {
 
     private Context mContext;
-    private String  mDownloadURL;
-    private final   ProgressDialog mDialog;
-    private long    mFileLen;
-    private String  mErrorMsg;
-    private String  mSavedFilePath;
+    private String mDownloadURL;
+    private final ProgressDialog mDialog;
+    private long mFileLen;
+    private String mErrorMsg;
+    private String mSavedFilePath;
+
+    public boolean isFromExamplePackDownload = false;
 
 
-    public PackDownloadHelper(Context context, String downloadURL,String downloadedZipFile) {
+    public PackDownloadHelper(Context context, String downloadURL, String downloadedZipFile) {
         mContext = context;
         mDownloadURL = downloadURL;
         mSavedFilePath = downloadedZipFile;
         mDialog = new ProgressDialog(context);
         mDialog.setMax(100);
-        mDialog.setMessage("Downloading...");
+        if (isFromExamplePackDownload) {
+            mDialog.setMessage("Download sample pack now");
+        } else {
+            mDialog.setMessage("Downloading...");
+        }
         mDialog.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
         mDialog.setProgress(0);
         mDialog.setButton("Cancel", new DialogInterface.OnClickListener() {
@@ -56,7 +63,7 @@ public class PackDownloadHelper extends AsyncTask<Void, Long, Boolean> {
             InputStream input = new BufferedInputStream(url.openStream());
             OutputStream output = new FileOutputStream(mSavedFilePath);
 
-            byte data[] = new byte[1024*16];
+            byte data[] = new byte[1024 * 16];
             long total = 0;
             int count;
             while ((count = input.read(data)) != -1) {
@@ -79,7 +86,7 @@ public class PackDownloadHelper extends AsyncTask<Void, Long, Boolean> {
 
     @Override
     protected void onProgressUpdate(Long... progress) {
-        int percent = (int)(100.0*(double)progress[0]/mFileLen + 0.5);
+        int percent = (int) (100.0 * (double) progress[0] / mFileLen + 0.5);
         mDialog.setProgress(percent);
     }
 
@@ -91,12 +98,17 @@ public class PackDownloadHelper extends AsyncTask<Void, Long, Boolean> {
             File outputDirectory = FileOperationHelper.downloadedPackDirectory();
             try {
                 //Step1: unzip
-                ZipFileHelper.unzipPackFile(mSavedFilePath,outputDirectory.toString());
+                ZipFileHelper.unzipPackFile(mSavedFilePath, outputDirectory.toString());
 
                 //Step2: parse unzipped pack
                 PackParserHelper.parse();
 
-                //Step3: notify master view to update
+                //Step3: write flag if it's from example pack download
+                if (isFromExamplePackDownload) {
+                    AppConfig.sharedInstance().setExamplePackDownloadedFlag();
+                }
+
+                //Step4: notify master view to update
                 Intent intent = new Intent();
                 intent.setAction(Global.BROADCAST_ACTION_UPDATE_MASTER_VIEW);
                 intent.putExtra(Global.KEY_FROM, Global.BROADCAST_INTENT_EXTRA_FROM_PACK_DOWNLOADED);

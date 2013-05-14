@@ -44,7 +44,7 @@ public class PackUploadHelper extends AsyncTask<Void, Long, Boolean> {
 
         mFileLen = file.length();
         mApi = DropboxHelper.getDropboxAPI(context);
-        mCurrentPack =currentPack;
+        mCurrentPack = currentPack;
         mFile = file;
         mFilePathInDropbox = dropboxPath + file.getName();
         mDialog = new ProgressDialog(context);
@@ -69,17 +69,17 @@ public class PackUploadHelper extends AsyncTask<Void, Long, Boolean> {
             FileInputStream fis = new FileInputStream(mFile);
             mRequest = mApi.putFileOverwriteRequest(mFilePathInDropbox, fis, mFile.length(),
                     new ProgressListener() {
-                @Override
-                public long progressInterval() {
-                    // Update the progress bar every half-second or so
-                    return 500;
-                }
+                        @Override
+                        public long progressInterval() {
+                            // Update the progress bar every half-second or so
+                            return 500;
+                        }
 
-                @Override
-                public void onProgress(long bytes, long total) {
-                    publishProgress(bytes);
-                }
-            });
+                        @Override
+                        public void onProgress(long bytes, long total) {
+                            publishProgress(bytes);
+                        }
+                    });
 
             if (mRequest != null) {
                 mRequest.upload();
@@ -132,7 +132,7 @@ public class PackUploadHelper extends AsyncTask<Void, Long, Boolean> {
 
     @Override
     protected void onProgressUpdate(Long... progress) {
-        int percent = (int)(100.0*(double)progress[0]/mFileLen + 0.5);
+        int percent = (int) (100.0 * (double) progress[0] / mFileLen + 0.5);
         mDialog.setProgress(percent);
     }
 
@@ -141,7 +141,7 @@ public class PackUploadHelper extends AsyncTask<Void, Long, Boolean> {
         mDialog.dismiss();
         if (result) {
             Toast.makeText(mContext, "Pack successfully uploaded", Toast.LENGTH_SHORT).show();
-            ShareLinkHelper createShareLink = new ShareLinkHelper(mContext,mFilePathInDropbox,mCurrentPack);
+            ShareLinkHelper createShareLink = new ShareLinkHelper(mContext, mFilePathInDropbox, mCurrentPack);
             createShareLink.execute();
 
 

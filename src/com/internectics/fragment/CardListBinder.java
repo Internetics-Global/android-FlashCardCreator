@@ -13,29 +13,29 @@ import com.internectics.util.Global;
 
 import java.io.FileNotFoundException;
 
-public class CardListBinder implements ViewBinder {  
-	  
-    @Override  
-    public boolean setViewValue(View view, Object data,  
-            String textRepresentation) {
-        if((view instanceof ImageView) && (data instanceof Uri)) {  
-            ImageView imageView = (ImageView) view;  
-            
-            Uri dataUri = (Uri)data;
+public class CardListBinder implements ViewBinder {
+
+    @Override
+    public boolean setViewValue(View view, Object data,
+                                String textRepresentation) {
+        if ((view instanceof ImageView) && (data instanceof Uri)) {
+            ImageView imageView = (ImageView) view;
+
+            Uri dataUri = (Uri) data;
             Log.d(Global.debugTag, "ViewBinder" + dataUri.toString());
             ContentResolver cResolver = AppContext.getAppContext().getContentResolver();
             Bitmap bitmap;
-			try {
-				bitmap = BitmapFactory.decodeStream(cResolver
-						.openInputStream(dataUri));
-				imageView.setImageBitmap(bitmap); 
-			} catch (FileNotFoundException e) {
-				e.printStackTrace();
-			} 
-             
-            return true;  
-        }  
-        return false;  
-    }  
-      
+            try {
+                bitmap = BitmapFactory.decodeStream(cResolver
+                        .openInputStream(dataUri));
+                imageView.setImageBitmap(bitmap);
+            } catch (FileNotFoundException e) {
+                e.printStackTrace();
+            }
+
+            return true;
+        }
+        return false;
+    }
+
 }

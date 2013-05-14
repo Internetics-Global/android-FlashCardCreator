@@ -22,7 +22,7 @@ public class PackRecordHelper {
 
     public static String getCurrentPackShareLink(Context context, Pack currentPack) {
 
-        String str = AppConfig.getInstance(context).get(String.format("%d", currentPack.packID));
+        String str = AppConfig.sharedInstance().get(String.format("%d", currentPack.packID));
         JSONParser parser = new JSONParser();
         JSONObject object = null;
         try {
@@ -40,22 +40,22 @@ public class PackRecordHelper {
 
         JSONObject object = new JSONObject();
         object.put(Global.updateDate_Property, StringUtils.getCurrentTimeDate());
-        object.put(Global.shareLink_Property,shareLink);
-        AppConfig.getInstance(context).set(String.format("%d",currentPack.packID),object.toJSONString());
+        object.put(Global.shareLink_Property, shareLink);
+        AppConfig.sharedInstance().set(String.format("%d", currentPack.packID), object.toJSONString());
     }
 
     public static void savePackUpdateRecord(Context context, Pack currentPack) {
 
         JSONObject object = new JSONObject();
         object.put(Global.updateDate_Property, StringUtils.getCurrentTimeDate());
-        AppConfig.getInstance(context).set(String.format("%d",currentPack.packID),object.toJSONString());
+        AppConfig.sharedInstance().set(String.format("%d", currentPack.packID), object.toJSONString());
     }
 
     public static boolean checkUploadPackNecessary(Context context, Pack currentPack) {
 
         boolean result = true;
 
-        String str = AppConfig.getInstance(context).get(String.format("%d", currentPack.packID));
+        String str = AppConfig.sharedInstance().get(String.format("%d", currentPack.packID));
         JSONParser parser = new JSONParser();
         try {
             JSONObject object = (JSONObject) parser.parse(str);

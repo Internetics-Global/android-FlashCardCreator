@@ -14,7 +14,7 @@ public class PackBuildHelper {
 
     public static File createPackZipFile(Pack currentPack) {
         ArrayList<String> cardFiles = new ArrayList<String>();
-        ArrayList <String> packFiles = new ArrayList<String>();
+        ArrayList<String> packFiles = new ArrayList<String>();
 
         int numberOfCards = currentPack.cards.size();
         int i = 0;
@@ -23,16 +23,16 @@ public class PackBuildHelper {
         FileOperationHelper.deleteFolder(FileOperationHelper.uploadPackDirectory());
 
         //step2
-        for (Card card: currentPack.cards) {
+        for (Card card : currentPack.cards) {
             //step1: zip all the files in current card and come into a new zip file
             String singleFile = PackBuildHelper.buildCardJsonFile(card).toString();
             cardFiles.add(singleFile);
             cardFiles.add(FileOperationHelper.deleteUriSchemeHeader(card.coverImageUriFormatStr));
             cardFiles.add(FileOperationHelper.deleteUriSchemeHeader(card.question.imageUriFormatStr));
             cardFiles.add(FileOperationHelper.deleteUriSchemeHeader(card.answer.imageUriFormatStr));
-            File cardZipFile = new File(FileOperationHelper.uploadPackDirectory(),String.format("card%d.zip",i));
+            File cardZipFile = new File(FileOperationHelper.uploadPackDirectory(), String.format("card%d.zip", i));
             try {
-                ZipFileHelper.zipPackFiles(cardZipFile.toString(),cardFiles);
+                ZipFileHelper.zipPackFiles(cardZipFile.toString(), cardFiles);
                 i++;
             } catch (Exception e) {
                 e.printStackTrace();
@@ -52,7 +52,7 @@ public class PackBuildHelper {
         packFiles.add(singleFile);
         File packZipFile = FileOperationHelper.generateUniquePackZipFilePathForUploading();
         try {
-            ZipFileHelper.zipPackFiles(packZipFile.toString(),packFiles);
+            ZipFileHelper.zipPackFiles(packZipFile.toString(), packFiles);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -62,7 +62,7 @@ public class PackBuildHelper {
     /*
     * Result saved file path is: FileOperationHelper.getUploadPackJsonFile()
     */
-    public static File buildPackJsonFile(Pack pack){
+    public static File buildPackJsonFile(Pack pack) {
         JSONObject summary = new JSONObject();
         summary.put("pack_name", pack.packName);
         summary.put("sidebar_title", pack.sidebarTitle);
@@ -73,12 +73,12 @@ public class PackBuildHelper {
         summary.put("logo_url", pack.logoURL);
         summary.put("question_title", pack.questionTitle);
         summary.put("answer_title", pack.answerTitle);
-        summary.put("user_id",pack.userID);
+        summary.put("user_id", pack.userID);
 
         FileWriter file;
-        File savedPath =  FileOperationHelper.getUploadPackJsonFile();
+        File savedPath = FileOperationHelper.getUploadPackJsonFile();
         try {
-            file = new FileWriter(savedPath,false);
+            file = new FileWriter(savedPath, false);
             file.write(summary.toJSONString());
             System.out.println("Successfully Copied JSON Object to File...");
             System.out.println("\nJSON Object: " + summary);
@@ -94,7 +94,7 @@ public class PackBuildHelper {
     /*
      Result saved file path is: FileOperationHelper.getUploadCardJsonFile()
     */
-    public static File buildCardJsonFile(Card card){
+    public static File buildCardJsonFile(Card card) {
 
         JSONArray obj = new JSONArray();
         JSONObject summary = new JSONObject();
@@ -141,7 +141,7 @@ public class PackBuildHelper {
         File savedPath = FileOperationHelper.getUploadCardJsonFile();
         FileWriter file;
         try {
-            file = new FileWriter(savedPath,false);
+            file = new FileWriter(savedPath, false);
             file.write(obj.toJSONString());
             System.out.println("Successfully Copied JSON Object to File...");
             System.out.println("\nJSON Object: " + obj);
