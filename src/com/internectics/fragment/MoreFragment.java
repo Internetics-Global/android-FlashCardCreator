@@ -8,6 +8,8 @@ import android.widget.TextView;
 import android.widget.ToggleButton;
 import com.internectics.android_flashcardcreator.R;
 import com.internectics.helper.DropboxHelper;
+import com.internectics.util.AppConfig;
+import com.internectics.util.AppContext;
 
 public class MoreFragment extends DialogFragment {
 
@@ -39,6 +41,7 @@ public class MoreFragment extends DialogFragment {
             }
         });
 
+        //Dropbox toggle
         ToggleButton dropboxToggleButton = (ToggleButton) mContentView.findViewById(R.id.dropbox_toggleButton);
         final boolean isLinked = DropboxHelper.getDropboxAPI(getActivity()).getSession().isLinked();
         dropboxToggleButton.setOnClickListener(new View.OnClickListener() {
@@ -55,6 +58,26 @@ public class MoreFragment extends DialogFragment {
             dropboxToggleButton.setChecked(true);
         } else {
             dropboxToggleButton.setChecked(false);
+        }
+
+        //Random Play toggle
+        final ToggleButton randomPlayButton = (ToggleButton) mContentView.findViewById(R.id.random_toggleButton);
+        final boolean isRandomPlay = AppConfig.sharedInstance().isRandomPlay();
+        randomPlayButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (isRandomPlay) {
+                    AppConfig.sharedInstance().setRandomPlay(false);
+                } else {
+                    AppConfig.sharedInstance().setRandomPlay(true);
+                }
+            }
+        });
+
+        if (isRandomPlay) {
+            randomPlayButton.setChecked(true);
+        } else {
+            randomPlayButton.setChecked(false);
         }
 
         return mContentView;

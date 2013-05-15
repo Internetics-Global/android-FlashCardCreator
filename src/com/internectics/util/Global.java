@@ -38,6 +38,9 @@ public class Global {
     //Used to judge whether need to copy local resource to files to "Reserved folder"
     public static final String isFirstStartUp = "is_first_startup";
 
+    //Used to judge whether to play random
+    public static final String isRandomPlay = "is_random_play";
+
 
     /**
      * detect network

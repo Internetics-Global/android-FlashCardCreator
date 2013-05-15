@@ -89,14 +89,36 @@ public class AppConfig {
 
     public boolean isExamplePackDownloadedBefore() {
         String str = appConfig.get(Global.isExamplePackDownloadedSBefore_Property);
-        if ((str != null) && (str.equals("1")))
+        if ((str != null) && (str.equals("true")))
             return true;
         else
             return false;
     }
 
     public void setExamplePackDownloadedFlag() {
-        appConfig.set(Global.isExamplePackDownloadedSBefore_Property, "1");
+        appConfig.set(Global.isExamplePackDownloadedSBefore_Property, "true");
     }
+
+
+
+    public boolean isRandomPlay() {
+        String str = appConfig.get(Global.isRandomPlay);
+        if ((str != null) && (str.equals("true")))
+            return true;
+        else
+            return false;
+    }
+
+    public void setRandomPlay(boolean b) {
+        if (b) {
+            appConfig.set(Global.isRandomPlay, "true");
+        } else {
+            appConfig.set(Global.isRandomPlay, "false");
+        }
+
+    }
+
+
+
 
 }
