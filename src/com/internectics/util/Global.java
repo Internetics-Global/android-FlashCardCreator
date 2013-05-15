@@ -1,5 +1,10 @@
 package com.internectics.util;
 
+import android.app.AlertDialog;
+import android.content.Context;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
+
 public class Global {
     public static final String debugTag = "ccaa";
     public static final String DATABASE_NAME = "FlashCardCreator-Local.db";
@@ -32,6 +37,35 @@ public class Global {
 
     //Used to judge whether need to copy local resource to files to "Reserved folder"
     public static final String isFirstStartUp = "is_first_startup";
+
+
+    /**
+     * detect network
+     *
+     * @return
+     */
+    public static boolean apiReachable(Context context) {
+        ConnectivityManager cm = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo ni = cm.getActiveNetworkInfo();
+        return ni != null && ni.isConnected();
+    }
+
+    /**
+     * detect network with Dialog
+     *
+     * @return
+     */
+    public static boolean apiReachableWithAlert(Context context) {
+        boolean result = apiReachable(context);
+        if (!result) {
+            new AlertDialog.Builder(context)
+                    .setTitle("NO Internet")
+                    .setMessage("Please check your network")
+                    .setPositiveButton("OK", null)
+                    .show();
+        }
+        return result;
+    }
 
 }
 

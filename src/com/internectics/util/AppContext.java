@@ -23,17 +23,6 @@ public class AppContext extends Application {
     }
 
     /**
-     * detect network
-     *
-     * @return
-     */
-    public boolean isNetworkConnected() {
-        ConnectivityManager cm = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
-        NetworkInfo ni = cm.getActiveNetworkInfo();
-        return ni != null && ni.isConnectedOrConnecting();
-    }
-
-    /**
      * get UDID
      *
      * @return

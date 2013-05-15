@@ -165,7 +165,9 @@ public class MainActivity extends FragmentActivity implements
                 break;
 
             case R.id.actionbar_share:
-                onActionbarShareSelected();
+                if (Global.apiReachableWithAlert(MainActivity.this)){
+                    onActionbarShareSelected();
+                }
                 break;
 
             case R.id.actionbar_add_card_cancel:
@@ -209,7 +211,10 @@ public class MainActivity extends FragmentActivity implements
 
         //Step1: download sample pack first
         boolean isDownloaded = AppConfig.sharedInstance().isExamplePackDownloadedBefore();
-        if (!isDownloaded) {
+
+        boolean isReachable = Global.apiReachable(MainActivity.this);
+
+        if ((!isDownloaded) && (isReachable)) {
             String downloableShareLink = "http://dl.dropbox.com/s/bxm1sm8ti9y2vev/pack92b79d0d-349b-4632-b735-3ad67c57d412.zip";
             File downloadedZipFile = new File(FileOperationHelper.downloadedPackDirectory(), "downloadedPackZip.zip");
             PackDownloadHelper packDownloadHelper = new PackDownloadHelper(MainActivity.this, downloableShareLink, downloadedZipFile.toString());
@@ -221,12 +226,13 @@ public class MainActivity extends FragmentActivity implements
         //Step2: call from other app or back from Dropbox authorization
         Uri data = getIntent().getData();
         if ((data != null) && (data.getScheme().equalsIgnoreCase("fcc"))) {
-            //called from outside app like browser
-            //TODO
-            String downloableShareLink = data.toString().replace("fcc", "http").replace("wwww", "dl");
-            File downloadedZipFile = new File(FileOperationHelper.downloadedPackDirectory(), "downloadedPackZip.zip");
-            PackDownloadHelper packDownloadHelper = new PackDownloadHelper(MainActivity.this, downloableShareLink, downloadedZipFile.toString());
-            packDownloadHelper.execute();
+
+            if (Global.apiReachableWithAlert(MainActivity.this)) {
+                String downloableShareLink = data.toString().replace("fcc", "http").replace("wwww", "dl");
+                File downloadedZipFile = new File(FileOperationHelper.downloadedPackDirectory(), "downloadedPackZip.zip");
+                PackDownloadHelper packDownloadHelper = new PackDownloadHelper(MainActivity.this, downloableShareLink, downloadedZipFile.toString());
+                packDownloadHelper.execute();
+            }
         } else {
             if (true == mIsGoingAuthorizationBeforeUpload) {
                 AndroidAuthSession session = DropboxHelper.getDropboxAPI(this).getSession();
@@ -248,7 +254,7 @@ public class MainActivity extends FragmentActivity implements
     }
 
     /**
-     * @param index   (index<0) is used to clear master and detail view
+     * @param index   (index<0) is used to clear master and detail views
      */
     @Override
     public void onItemSelected(int index) {
