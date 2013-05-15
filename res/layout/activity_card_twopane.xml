@@ -1,12 +1,12 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:baselineAligned="false"
-    android:divider="?android:attr/dividerHorizontal"
-    android:orientation="horizontal"
-    android:showDividers="middle"
-    tools:context=".MainActivity" >
+              xmlns:tools="http://schemas.android.com/tools"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              android:baselineAligned="false"
+              android:divider="?android:attr/dividerHorizontal"
+              android:orientation="horizontal"
+              android:showDividers="middle"
+              tools:context=".MainActivity">
 
     <!--
     This layout is a two-pane layout for the Cards
@@ -20,57 +20,57 @@
     -->
 
     <FrameLayout
-        android:id="@+id/card_list"
-        android:layout_width="0dp"
-        android:layout_height="match_parent"
-        android:layout_weight="1"
-        android:background="@android:color/black" >
-        
+            android:id="@+id/card_list"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:background="@android:color/black">
+
         <fragment
                 android:id="@+id/fragment_card_list"
                 android:name="com.internectics.fragment.CardListFragment"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                tools:layout="@android:layout/list_content" />
+                tools:layout="@android:layout/list_content"/>
 
         <FrameLayout
-            android:layout_width="match_parent"
-            android:layout_height="80dp"
-            android:layout_gravity="bottom" >
+                android:layout_width="match_parent"
+                android:layout_height="60dp"
+                android:layout_gravity="bottom">
 
             <Button
-                android:enabled="false"
-                android:layout_height="match_parent"
-                android:layout_width="match_parent"
-                android:background="@drawable/add_card_button_background">
+                    android:enabled="false"
+                    android:layout_height="match_parent"
+                    android:layout_width="match_parent"
+                    android:background="@drawable/image_add_card_button_bg">
 
             </Button>
 
             <Button
-                android:id="@+id/add_card_button"
-                android:layout_width="40dp"
-                android:layout_height="40dp"
-                android:layout_gravity="center"
-                android:background="@drawable/add_card_button" />
-    
+                    android:id="@+id/add_card_button"
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:layout_gravity="center"
+                    android:background="@drawable/button_add_card"/>
+
         </FrameLayout>
 
         <Button
-            android:id= "@+id/master_view_mask"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent" 
-            android:background="#E0000000"
-            android:visibility="invisible">
+                android:id="@+id/master_view_mask"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="#E0000000"
+                android:visibility="invisible">
         </Button>
 
     </FrameLayout>
 
     <FrameLayout
 
-        android:layout_width="0dp"
-        android:layout_height="match_parent"
-        android:layout_weight="3"
-        android:background="@color/card_detail_background" >
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="3"
+            android:background="@color/card_detail_background">
 
         <FrameLayout
                 android:id="@+id/card_detail_container"

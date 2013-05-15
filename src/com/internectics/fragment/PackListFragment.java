@@ -177,7 +177,7 @@ public class PackListFragment extends Fragment {
             Button changeCoverImageButton = new Button(mContext);
             changeCoverImageButton.setText("Change");
             changeCoverImageButton.setWidth(UIHelper.getPixels(80));
-            changeCoverImageButton.setBackgroundResource(R.drawable.graybutton);
+            changeCoverImageButton.setBackgroundResource(R.drawable.button_gray);
             changeCoverImageButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -196,7 +196,7 @@ public class PackListFragment extends Fragment {
                     UIHelper.getPixels(80), LinearLayout.LayoutParams.FILL_PARENT);
             lp.setMargins(20, 0, 0, 0);
             deleteButton.setLayoutParams(lp);
-            deleteButton.setBackgroundResource(R.drawable.redbutton);
+            deleteButton.setBackgroundResource(R.drawable.button_red);
             deleteButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {

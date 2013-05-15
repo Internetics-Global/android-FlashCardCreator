@@ -1,9 +1,11 @@
 package com.internectics.helper;
 
 import android.net.Uri;
+import android.util.Log;
 import com.internectics.data.Card;
 import com.internectics.data.Pack;
 import com.internectics.util.AppContext;
+import com.internectics.util.Global;
 import com.internectics.util.StringUtils;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
@@ -47,6 +49,13 @@ public class PackParserHelper {
             resultCard.packID = resultPack.packID; //this is necessary
 
             resultCard.save(AppContext.getAppContext());
+
+            try {
+                Thread.sleep(1000);
+                //TODO it's a temporary solution,
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
 
         }
     }

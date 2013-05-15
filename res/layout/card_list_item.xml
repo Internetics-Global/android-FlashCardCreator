@@ -18,7 +18,7 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
 
-                android:background="@drawable/card_list_item_background"
+                android:background="@drawable/shape_card_list_item_background"
                 android:gravity="center"
                 android:text="1"
                 android:textColor="@android:color/white"
@@ -26,7 +26,7 @@
 
         <ImageView
                 android:id="@id/card_list_item_click_remove"
-                android:background="@drawable/card_list_item_delete"
+                android:background="@drawable/image_card_list_item_delete"
                 android:layout_width="40dp"
                 android:layout_height="40dp"
                 android:layout_gravity="center"
@@ -49,7 +49,7 @@
 
     <ImageView
             android:id="@id/card_list_item_drag_handle"
-            android:background="@drawable/card_list_item_drag"
+            android:background="@drawable/image_card_list_item_drag"
             android:layout_width="40dp"
             android:layout_gravity="center_vertical"
             android:layout_marginLeft="0dp"

@@ -141,7 +141,7 @@ public class MainActivity extends FragmentActivity implements
                 View popupLayout = inflater.inflate(R.layout.pack_list, null, false);
                 mPopupWindow = new PopupWindow(640, 360);
                 mPopupWindow.setOutsideTouchable(true);
-                mPopupWindow.setBackgroundDrawable(getResources().getDrawable(R.drawable.popupwindow_background));
+                mPopupWindow.setBackgroundDrawable(getResources().getDrawable(R.drawable.shape_popupwindow_background));
                 mPopupWindow.setContentView(popupLayout);
                 mPopupWindow.showAsDropDown(findViewById(R.id.actionbar_packs));
                 break;
@@ -210,10 +210,10 @@ public class MainActivity extends FragmentActivity implements
         //Step1: download sample pack first
         boolean isDownloaded = AppConfig.sharedInstance().isExamplePackDownloadedBefore();
         if (!isDownloaded) {
-            String downloableShareLink = "http://dl.dropbox.com/s/c0zjxrntg518dcn/pack219ed6f2-0052-47e9-8b93-93af359e3cd9.zip";
+            String downloableShareLink = "http://dl.dropbox.com/s/bxm1sm8ti9y2vev/pack92b79d0d-349b-4632-b735-3ad67c57d412.zip";
             File downloadedZipFile = new File(FileOperationHelper.downloadedPackDirectory(), "downloadedPackZip.zip");
             PackDownloadHelper packDownloadHelper = new PackDownloadHelper(MainActivity.this, downloableShareLink, downloadedZipFile.toString());
-            packDownloadHelper.isFromExamplePackDownload = true;
+            packDownloadHelper.mIsFromExamplePackDownload = true;
             packDownloadHelper.execute();
             return;
         }
@@ -248,17 +248,25 @@ public class MainActivity extends FragmentActivity implements
     }
 
     /**
-     * Callback method from {@link com.internectics.fragment.CardListFragment.Callbacks} indicating that
-     * the item with the given ID was selected.
+     * @param index   (index<0) is used to clear master and detail view
      */
     @Override
     public void onItemSelected(int index) {
 
-        mCurrentIndex = index;
-        mCurrentCard = mCurrentPack.cards.get(mCurrentIndex);
-        mCardDetailFragment = new CardDetailFragment(mCurrentPack, mCurrentCard);
-        getSupportFragmentManager().beginTransaction()
-                .replace(R.id.card_detail_container, mCardDetailFragment).commit();
+        if (index >= 0) {
+            mCurrentIndex = index;
+            mCurrentCard = mCurrentPack.cards.get(mCurrentIndex);
+            mCardDetailFragment = new CardDetailFragment(mCurrentPack, mCurrentCard);
+            getSupportFragmentManager().beginTransaction()
+                    .replace(R.id.card_detail_container, mCardDetailFragment).commit();
+        } else {
+            mCurrentIndex = -1;
+            mCurrentCard = null;
+            if (mCardDetailFragment != null) {
+                getSupportFragmentManager().beginTransaction()
+                        .remove(mCardDetailFragment).commit();
+            }
+        }
     }
 
 
@@ -299,9 +307,7 @@ public class MainActivity extends FragmentActivity implements
     private void saveNewCreatedCard() {
 
         //1. do save action
-        if (mCardDetailFragment != null) {
-            mCardDetailFragment.saveNewCreatedCard();
-        }
+        mCardDetailFragment.saveNewCreatedCard();
 
         //2. dismiss windows
         dismissCardCreateWindow();
@@ -388,7 +394,7 @@ public class MainActivity extends FragmentActivity implements
                 upload.execute();
             }
         } else {
-            String shareLink = AppConfig.sharedInstance().getCurrentPackShareLink(mCurrentPack);
+            String shareLink = PackRecordHelper.getCurrentPackShareLink(mCurrentPack);
             ShareLinkHelper shareLinkHelper = new ShareLinkHelper(this, shareLink, mCurrentPack);
             shareLinkHelper.execShareAction();
         }

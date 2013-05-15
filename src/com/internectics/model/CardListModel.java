@@ -15,12 +15,20 @@ import java.util.List;
 
 public class CardListModel {
 
+    /**
+     * Return card list for current pack
+     * @param curentPack
+     * @return non-null return value
+     */
     public static List<HashMap<String, Object>> getCardList(Pack curentPack) {
 
-        ArrayList<Card> cardArrayList = curentPack.cards;
-
-        // Build data for adapter
         List<HashMap<String, Object>> fillMaps = new ArrayList<HashMap<String, Object>>();
+
+        if (curentPack == null) {
+            return fillMaps;
+        }
+
+        ArrayList<Card> cardArrayList = curentPack.cards;
 
         for (int i = 0; i < cardArrayList.size(); i++) {
             HashMap<String, Object> map = new HashMap<String, Object>();
@@ -37,9 +45,15 @@ public class CardListModel {
     }
 
     public static Pack getLastPack() {
+
+        Pack pack;
         int size = getAllPacks().size();
-        Pack pack = getAllPacks().get(size - 1);
-        return pack;
+        if (size >0) {
+            pack = getAllPacks().get(size - 1);
+            return pack;
+        } else {
+            return null;
+        }
     }
 
     /**
@@ -47,7 +61,7 @@ public class CardListModel {
      * we set most recently created pack as current pack
      */
     public static Pack getCurrentPack() {
-        Pack currentPack = null;
+        Pack currentPack;
         String packIDString = AppConfig.sharedInstance().get(Global.mostRecentPackCreatedID_Property);
 
         ArrayList<Pack> packs = User.defaultUser(AppContext.getAppContext()).packs;

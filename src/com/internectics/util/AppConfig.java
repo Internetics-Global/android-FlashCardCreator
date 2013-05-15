@@ -87,11 +87,6 @@ public class AppConfig {
         setProps(props);
     }
 
-    public String getCurrentPackShareLink(Pack currentPack) {
-        //TODO
-        return "http://dl.dropbox.com/s/t5wxndkc8s4glmv/card1360210703.422296599274701.zip";
-    }
-
     public boolean isExamplePackDownloadedBefore() {
         String str = appConfig.get(Global.isExamplePackDownloadedSBefore_Property);
         if ((str != null) && (str.equals("1")))

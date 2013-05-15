@@ -108,7 +108,6 @@ public class Card {
         }
         String query = String.format("INSERT INTO Cards_Tables(card_id, pack_id, cover_image, template_background, card_sn) VALUES (%d, %d, \"%s\", \"%s\", %d)", cardID, packID, coverImageUriFormatStr, templateBackground, cardSN);
         SQLiteHelper.defaultDatabase(context).execSQL(query);
-
     }
 
     public void destroy(Context context) {

@@ -25,7 +25,7 @@ public class PackDownloadHelper extends AsyncTask<Void, Long, Boolean> {
     private String mErrorMsg;
     private String mSavedFilePath;
 
-    public boolean isFromExamplePackDownload = false;
+    public boolean mIsFromExamplePackDownload = false;
 
 
     public PackDownloadHelper(Context context, String downloadURL, String downloadedZipFile) {
@@ -34,7 +34,7 @@ public class PackDownloadHelper extends AsyncTask<Void, Long, Boolean> {
         mSavedFilePath = downloadedZipFile;
         mDialog = new ProgressDialog(context);
         mDialog.setMax(100);
-        if (isFromExamplePackDownload) {
+        if (mIsFromExamplePackDownload) {
             mDialog.setMessage("Download sample pack now");
         } else {
             mDialog.setMessage("Downloading...");
@@ -104,7 +104,7 @@ public class PackDownloadHelper extends AsyncTask<Void, Long, Boolean> {
                 PackParserHelper.parse();
 
                 //Step3: write flag if it's from example pack download
-                if (isFromExamplePackDownload) {
+                if (mIsFromExamplePackDownload) {
                     AppConfig.sharedInstance().setExamplePackDownloadedFlag();
                 }
 

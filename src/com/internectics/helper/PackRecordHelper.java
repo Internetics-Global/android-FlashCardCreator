@@ -20,7 +20,7 @@ import java.util.Date;
  */
 public class PackRecordHelper {
 
-    public static String getCurrentPackShareLink(Context context, Pack currentPack) {
+    public static String getCurrentPackShareLink(Pack currentPack) {
 
         String str = AppConfig.sharedInstance().get(String.format("%d", currentPack.packID));
         JSONParser parser = new JSONParser();

@@ -314,7 +314,11 @@ public class CardListFragment extends Fragment {
         ((MainActivity) getActivity()).mCurrentPack = mCurrentPack;
 
         //Step4: Update detail view
-        mCallbacks.onItemSelected(0);
-        mDSLVListView.setItemChecked(0, true);
+        if (mCardArrayList.size() >0) {
+            mCallbacks.onItemSelected(0);
+            mDSLVListView.setItemChecked(0, true);
+        }  else {
+            mCallbacks.onItemSelected(-1);
+        }
     }
 }

@@ -6,7 +6,7 @@
               android:layout_width="match_parent"
               android:layout_height="500dp">
 
-    <include layout="@layout/dialog_header" />
+    <include layout="@layout/dialog_header"/>
 
     <RelativeLayout
             android:layout_width="fill_parent"

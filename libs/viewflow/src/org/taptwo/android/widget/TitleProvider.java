@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2011 Patrik Åkerfeldt
+ * Copyright (C) 2011 Patrik ÔøΩkerfeldt
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,11 +20,12 @@ package org.taptwo.android.widget;
  */
 public interface TitleProvider {
 
-	/**
-	 * Returns the title of the view at position
-	 * @param position
-	 * @return
-	 */
-	public String getTitle(int position);
-	
+    /**
+     * Returns the title of the view at position
+     *
+     * @param position
+     * @return
+     */
+    public String getTitle(int position);
+
 }

@@ -5,6 +5,7 @@ import android.graphics.Bitmap;
 import com.internectics.android_flashcardcreator.R;
 import com.internectics.util.AppConfig;
 import com.internectics.util.AppContext;
+import com.internectics.util.Global;
 
 import java.io.*;
 import java.util.UUID;
@@ -14,17 +15,17 @@ import java.util.UUID;
  */
 public class FileOperationHelper {
 
-    private static int resrouceID[] = {R.drawable.logo_placeholder,
-            R.drawable.question_image_placeholder,
-            R.drawable.answer_image_placeholder,
-            R.drawable.pack_cover_default_image,
-            R.drawable.card_cover_image_placeholder};
+    private static int resrouceID[] = {R.drawable.image_logo_placeholder,
+            R.drawable.image_question_placeholder,
+            R.drawable.image_answer_placeholder,
+            R.drawable.image_pack_cover_default,
+            R.drawable.image_card_cover_placeholder};
     private static String output[] = {
-            "logo_placeholder.jpg",
-            "question_image_placeholder.jpg",
-            "answer_image_placeholder.jpg",
-            "pack_cover_default_image.jpg",
-            "card_cover_image_placeholder.jpg"};
+            "image_logo_placeholderholder.jpg",
+            "image_question_placeholder.jpg",
+            "image_answer_placeholder.jpg",
+            "image_pack_cover_default.jpg",
+            "image_card_cover_placeholder.jpg"};
 
 
     /*
@@ -194,15 +195,14 @@ public class FileOperationHelper {
      */
     public static void copyResourcesImagesToCache(Context context) {
 
-        final String isFirstStartUp = "isFirstStartUp";
-        String flag = AppConfig.sharedInstance().get(isFirstStartUp);
-        if ((flag != null) && flag.equals("1")) {
+        String flag = AppConfig.sharedInstance().get(Global.isFirstStartUp);
+        if ((flag != null) && flag.equals("true")) {
             return;
         }
 
         for (int i = 0; i < resrouceID.length; i++) {
             InputStream in = context.getResources().openRawResource(resrouceID[i]);
-            FileOutputStream out = null;
+            FileOutputStream out;
             try {
                 out = new FileOutputStream(new File(reservedDirectory(), output[i]));
                 byte[] buff = new byte[1024];
@@ -224,7 +224,7 @@ public class FileOperationHelper {
 
         }
 
-        AppConfig.sharedInstance().set(isFirstStartUp, "1");
+        AppConfig.sharedInstance().set(Global.isFirstStartUp, "false");
     }
 
 

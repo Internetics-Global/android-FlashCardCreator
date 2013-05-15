@@ -30,6 +30,8 @@ public class Global {
     //Used to judge whether need to download example pack again
     public static final String isExamplePackDownloadedSBefore_Property = "is_example_pack_downloaded_before";
 
+    //Used to judge whether need to copy local resource to files to "Reserved folder"
+    public static final String isFirstStartUp = "is_first_startup";
 
 }
 

@@ -1,165 +1,164 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/card"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:layout_marginBottom="35dp"
-    android:layout_marginLeft="12dp"
-    android:layout_marginRight="12dp"
-    android:layout_marginTop="44dp"
-    android:baselineAligned="false"
-    android:background="@drawable/shape_card_background"
-    android:orientation="horizontal" >
+              android:id="@+id/card"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              android:layout_marginBottom="35dp"
+              android:layout_marginLeft="12dp"
+              android:layout_marginRight="12dp"
+              android:layout_marginTop="44dp"
+              android:baselineAligned="false"
+              android:background="@drawable/shape_card_bg"
+              android:orientation="horizontal">
 
     <LinearLayout
-        android:layout_height="match_parent"
-        android:layout_width="0dp"
-        android:layout_weight="62"
-        android:orientation="vertical" >
+            android:layout_height="match_parent"
+            android:layout_width="0dp"
+            android:layout_weight="62"
+            android:orientation="vertical">
 
         <EditText
-            android:id="@+id/sidebar_title"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:inputType="text"
-            android:background="@drawable/shape_card_sidebar"
-            android:text="I want to be like this" >
+                android:id="@+id/sidebar_title"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:inputType="text"
+                android:background="@drawable/shape_card_sidebar"
+                android:text="I want to be like this">
         </EditText>
     </LinearLayout>
 
     <LinearLayout
-        android:layout_height="match_parent"
-        android:layout_width="0dp"
-        android:layout_weight="740"
-        android:orientation="vertical" >
+            android:layout_height="match_parent"
+            android:layout_width="0dp"
+            android:layout_weight="740"
+            android:orientation="vertical">
 
         <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="112"
-            android:background="@drawable/shape_card_header" >
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="112"
+                android:background="@drawable/shape_card_header">
 
             <EditText
-                android:id="@+id/title"
-                android:layout_height="match_parent"
-                android:layout_width="0dp"
-                android:layout_weight="440"
-                android:text="Question"
-                android:textStyle="bold"
-                android:shadowColor="@android:color/holo_orange_dark"
-                android:shadowRadius="16"
-                android:inputType="text"
-                android:textColor="@android:color/holo_blue_dark"
-                android:textSize="28sp" />
+                    android:id="@+id/title"
+                    android:layout_height="match_parent"
+                    android:layout_width="0dp"
+                    android:layout_weight="440"
+                    android:text="Question"
+                    android:textStyle="bold"
+                    android:shadowColor="@android:color/holo_orange_dark"
+                    android:shadowRadius="16"
+                    android:inputType="text"
+                    android:textColor="@android:color/holo_blue_dark"
+                    android:textSize="28sp"/>
 
             <EditText
-                android:id="@+id/creator"
-                android:layout_height="match_parent"
-                android:layout_width="0dp"
-                android:layout_weight="120"
-                android:gravity="bottom"
-                android:text="Create by"
-                android:inputType="text"
-                android:textColor="@android:color/holo_blue_dark"
-                android:textSize="14sp" />
+                    android:id="@+id/creator"
+                    android:layout_height="match_parent"
+                    android:layout_width="0dp"
+                    android:layout_weight="120"
+                    android:gravity="bottom"
+                    android:text="Create by"
+                    android:inputType="text"
+                    android:textColor="@android:color/holo_blue_dark"
+                    android:textSize="14sp"/>
 
             <ImageView
-                android:id="@+id/logo_url_btn"
-                android:layout_width="30dp"
-                android:layout_height="30dp"
-                android:layout_gravity="bottom"
-                android:src="@drawable/edit_link_button" />
+                    android:id="@+id/logo_url_btn"
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:layout_gravity="bottom"
+                    android:src="@drawable/button_edit_link"/>
 
             <ImageView
-                android:id="@+id/logo_image"
-                android:layout_height="wrap_content"
-                android:layout_width="0dp"
-                android:layout_weight="120"
-                android:layout_marginRight="15dp"
-                android:src="@drawable/logo_placeholder" />
+                    android:id="@+id/logo_image"
+                    android:layout_height="wrap_content"
+                    android:layout_width="0dp"
+                    android:layout_weight="120"
+                    android:layout_marginRight="15dp"
+                    android:src="@drawable/image_logo_placeholder"/>
         </LinearLayout>
 
         <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="440"
-            android:background="@drawable/shape_card_body"
-            android:baselineAligned="false"
-            android:orientation="horizontal" >
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="440"
+                android:background="@drawable/shape_card_body"
+                android:baselineAligned="false"
+                android:orientation="horizontal">
 
             <LinearLayout
-                android:layout_height="match_parent"
-                android:layout_width="0dp"
-                android:layout_weight="360"
-                android:layout_marginLeft="10dp"
-                android:layout_marginTop="10dp"
-                android:background="@android:color/holo_green_light"
-                android:orientation="vertical" >
+                    android:layout_height="match_parent"
+                    android:layout_width="0dp"
+                    android:layout_weight="360"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginTop="10dp"
+                    android:background="@android:color/holo_green_light"
+                    android:orientation="vertical">
 
                 <EditText
-                    android:id="@+id/subheading"
-                    android:layout_width="match_parent"
-                    android:layout_height="0dp"
-                    android:layout_weight="60"
-                    android:hint="this is subheading"
-                    android:inputType="text"
-                    android:background="@android:color/holo_red_light"
-                    android:ems="10" >
+                        android:id="@+id/subheading"
+                        android:layout_width="match_parent"
+                        android:layout_height="0dp"
+                        android:layout_weight="60"
+                        android:hint="this is subheading"
+                        android:inputType="text"
+                        android:background="@android:color/holo_red_light"
+                        android:ems="10">
 
-                    <requestFocus />
+                    <requestFocus/>
                 </EditText>
 
                 <EditText
-                    android:id="@+id/main"
-                    android:layout_width="match_parent"
-                    android:layout_height="0dp"
-                    android:layout_weight="290"
-                    android:hint="this is main"
-                    android:inputType="text"
-                    android:background="@android:color/holo_purple"
-                    android:ems="10" />
+                        android:id="@+id/main"
+                        android:layout_width="match_parent"
+                        android:layout_height="0dp"
+                        android:layout_weight="290"
+                        android:hint="this is main"
+                        android:inputType="text"
+                        android:background="@android:color/holo_purple"
+                        android:ems="10"/>
 
                 <EditText
-                    android:id="@+id/sub"
-                    android:layout_width="match_parent"
-                    android:layout_height="0dp"
-                    android:layout_weight="50"
-                    android:hint="this is sub"
-                    android:inputType="text"
-                    android:background="@android:color/holo_blue_light"
-                    android:ems="10" />
+                        android:id="@+id/sub"
+                        android:layout_width="match_parent"
+                        android:layout_height="0dp"
+                        android:layout_weight="50"
+                        android:hint="this is sub"
+                        android:inputType="text"
+                        android:background="@android:color/holo_blue_light"
+                        android:ems="10"/>
 
             </LinearLayout>
-            
+
             <FrameLayout
-                android:layout_height="match_parent"
-                android:layout_width="0dp"
-                android:layout_weight="350"
-                android:layout_marginLeft="10dp"
-                android:layout_marginTop="10dp">
-                
+                    android:layout_height="match_parent"
+                    android:layout_width="0dp"
+                    android:layout_weight="350"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginTop="10dp">
+
                 <ImageView
-                android:id="@+id/image"
-                android:layout_height="match_parent"
-                android:layout_width="match_parent"
-                android:layout_marginRight="15dp"
-                android:layout_marginBottom="15dp"
-                android:src="@drawable/logo_placeholder" />
-                
+                        android:id="@+id/image"
+                        android:layout_height="match_parent"
+                        android:layout_width="match_parent"
+                        android:layout_marginRight="15dp"
+                        android:layout_marginBottom="15dp"
+                        android:src="@drawable/image_logo_placeholder"/>
+
                 <ImageView
-                android:id="@+id/change_template_button"
-                android:layout_gravity="right|bottom"
-                android:layout_marginBottom="15dp"
-                android:layout_marginRight="15dp"
-                android:layout_height="40dp"
-                android:layout_width="40dp"
-                android:src="@drawable/change_template_button" />
-                
-                
+                        android:id="@+id/change_template_button"
+                        android:layout_gravity="right|bottom"
+                        android:layout_marginBottom="15dp"
+                        android:layout_marginRight="15dp"
+                        android:layout_height="40dp"
+                        android:layout_width="40dp"
+                        android:src="@drawable/button_change_template"/>
+
+
             </FrameLayout>
 
-            
-            
+
         </LinearLayout>
     </LinearLayout>
 

@@ -47,7 +47,7 @@ public class ShareLinkHelper extends AsyncTask<Void, Long, Boolean> {
 
 
     public void execShareAction() {
-        String shareLink = PackRecordHelper.getCurrentPackShareLink(mContext, mCurentPack);
+        String shareLink = PackRecordHelper.getCurrentPackShareLink(mCurentPack);
         Intent intent = new Intent(Intent.ACTION_SEND);
         intent.setType("text/plain");
         intent.putExtra(Intent.EXTRA_TEXT, shareLink);

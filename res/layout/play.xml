@@ -1,18 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:background="@android:color/black"
-    android:layout_height="match_parent" >
+                android:layout_width="match_parent"
+                android:background="@android:color/black"
+                android:layout_height="match_parent">
 
     <Button
-        android:id="@+id/play_close_button"
-        android:layout_width="40dp"
-        android:layout_height="40dp"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentTop="true"
-        android:background="@drawable/play_close_button"
-        android:text="" />
-
+            android:id="@+id/play_close_button"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentTop="true"
+            android:background="@drawable/button_play_close"
+            android:text=""/>
 
 
 </RelativeLayout>
