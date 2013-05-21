@@ -9,9 +9,7 @@ import android.view.Window;
 import android.webkit.WebChromeClient;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
-import android.widget.Button;
-import android.widget.TextView;
-import com.internectics.android_flashcardcreator.R;
+import android.widget.Toast;
 
 /**
  * Created with IntelliJ IDEA.
@@ -26,18 +24,23 @@ public class HelpActivity extends Activity {
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);    //To change body of overridden methods use File | Settings | File Templates.
-        mWebview = new WebView(this);
-        setContentView(mWebview);
+        super.onCreate(savedInstanceState);
         requestWindowFeature(Window.FEATURE_PROGRESS);
 
+        mWebview = new WebView(this);
+        setContentView(mWebview);
         mWebview.getSettings().setJavaScriptEnabled(true);
-
         mWebview.setWebChromeClient(new WebChromeClient() {
             @Override
             public void onProgressChanged(WebView view, int newProgress) {
                 super.onProgressChanged(view, newProgress);
                 setProgress(newProgress *1000);
+            }
+        });
+
+        mWebview.setWebViewClient(new WebViewClient() {
+            public void onReceivedError(WebView view, int errorCode, String description, String failingUrl) {
+                Toast.makeText(HelpActivity.this, "Error! " + "Fail to load webpage", Toast.LENGTH_SHORT).show();
             }
         });
 

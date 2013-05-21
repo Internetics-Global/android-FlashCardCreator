@@ -7,6 +7,7 @@ import com.dropbox.client2.android.AndroidAuthSession;
 import com.dropbox.client2.session.AccessTokenPair;
 import com.dropbox.client2.session.AppKeyPair;
 import com.dropbox.client2.session.Session;
+import com.internectics.util.AppContext;
 
 /**
  * All Dropbox AndroidAuthSession and DropboxAPI related
@@ -31,8 +32,10 @@ public class DropboxHelper {
     /*
      * Return  DrpboxAPI, which is the main handle in Dropbox operation
      */
-    public static DropboxAPI<AndroidAuthSession> getDropboxAPI(Context context) {
-        mContext = context;
+    public static DropboxAPI<AndroidAuthSession> getDropboxAPI() {
+        if (mContext == null) {
+            mContext = AppContext.getAppContext();
+        }
         AndroidAuthSession session = buildSession();
         DropboxAPI<AndroidAuthSession> mDBApi = new DropboxAPI<AndroidAuthSession>(session);
 
@@ -44,7 +47,7 @@ public class DropboxHelper {
      */
     public static void logOut(Context context) {
         // Remove credentials from the session
-        DropboxHelper.getDropboxAPI(context).getSession().unlink();
+        DropboxHelper.getDropboxAPI().getSession().unlink();
         // Clear our stored keys
         clearKeys(context);
     }

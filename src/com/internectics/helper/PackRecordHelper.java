@@ -56,6 +56,11 @@ public class PackRecordHelper {
         boolean result = true;
 
         String str = AppConfig.sharedInstance().get(String.format("%d", currentPack.packID));
+
+        if (str == null) {
+            return result;
+        }
+
         JSONParser parser = new JSONParser();
         try {
             JSONObject object = (JSONObject) parser.parse(str);

@@ -43,7 +43,7 @@ public class PackUploadHelper extends AsyncTask<Void, Long, Boolean> {
         mContext = context;
 
         mFileLen = file.length();
-        mApi = DropboxHelper.getDropboxAPI(context);
+        mApi = DropboxHelper.getDropboxAPI();
         mCurrentPack = currentPack;
         mFile = file;
         mFilePathInDropbox = dropboxPath + file.getName();

@@ -32,7 +32,7 @@ public class ShareLinkHelper extends AsyncTask<Void, Long, Boolean> {
     @Override
     protected Boolean doInBackground(Void... params) {
         try {
-            DropboxAPI.DropboxLink link = DropboxHelper.getDropboxAPI(mContext).share(mFilePathInDropbox);
+            DropboxAPI.DropboxLink link = DropboxHelper.getDropboxAPI().share(mFilePathInDropbox);
             String shareLink = link.url;
             Log.d(Global.debugTag, shareLink);
             PackRecordHelper.savePackUploadRecord(mContext, mCurentPack, shareLink);

@@ -28,7 +28,6 @@ import com.internectics.data.Pack;
 import com.internectics.fragment.AddPackFragment;
 import com.internectics.fragment.CardDetailFragment;
 import com.internectics.fragment.CardListFragment;
-import com.internectics.fragment.MoreFragment;
 import com.internectics.helper.*;
 import com.internectics.util.AppConfig;
 import com.internectics.util.AppContext;
@@ -155,12 +154,12 @@ public class MainActivity extends FragmentActivity implements
                         .show();
                 break;
             case R.id.actionbar_more:
-                MoreFragment moreFragment = new MoreFragment();
-                moreFragment.show(getFragmentManager(), "more_fragment");
+                startActivity(new Intent(MainActivity.this, MoreActivity.class));
                 break;
 
             case R.id.actionbar_play:
-                startActivity(new Intent(MainActivity.this, PlayActivity.class));
+                Intent intent = new Intent(MainActivity.this,PlayActivity.class);
+                startActivity(intent);
                 overridePendingTransition(R.anim.in_from_bottom, R.anim.out_to_above);
                 break;
 
@@ -192,7 +191,7 @@ public class MainActivity extends FragmentActivity implements
                 break;
 
             case R.id.actionbar_test1:
-
+                startActivity(new Intent(MainActivity.this,MoreActivity.class));
 
                 break;
 
@@ -235,7 +234,7 @@ public class MainActivity extends FragmentActivity implements
             }
         } else {
             if (true == mIsGoingAuthorizationBeforeUpload) {
-                AndroidAuthSession session = DropboxHelper.getDropboxAPI(this).getSession();
+                AndroidAuthSession session = DropboxHelper.getDropboxAPI().getSession();
                 if (session.authenticationSuccessful()) {
                     session.finishAuthentication(); // Mandatory call to complete the auth
                     // Store it locally in our app for later use
@@ -381,7 +380,7 @@ public class MainActivity extends FragmentActivity implements
             Toast.makeText(this, "NO pack selected", Toast.LENGTH_LONG).show();
             return;
         }
-        DropboxAPI<AndroidAuthSession> mDBApi = DropboxHelper.getDropboxAPI(this);
+        DropboxAPI<AndroidAuthSession> mDBApi = DropboxHelper.getDropboxAPI();
         if (mDBApi.getSession().isLinked()) {
             uploadingPackAfterLinked();
         } else {
@@ -392,7 +391,7 @@ public class MainActivity extends FragmentActivity implements
 
     private void uploadingPackAfterLinked() {
         if (PackRecordHelper.checkUploadPackNecessary(MainActivity.this, mCurrentPack)) {
-            AndroidAuthSession session = DropboxHelper.getDropboxAPI(this).getSession();
+            AndroidAuthSession session = DropboxHelper.getDropboxAPI().getSession();
             if (session.isLinked()) {
                 File file = PackBuildHelper.createPackZipFile(mCurrentPack);
                 //File file = new File(FileOperationHelper.getTestFile().toString()); test purpose
