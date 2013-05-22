@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <resources>
 
-    <dimen name="segment_margin">150dip</dimen>
+    <dimen name="segment_margin">120dip</dimen>
 
 
 

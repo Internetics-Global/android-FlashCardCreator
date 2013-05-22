@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.graphics.Bitmap;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.util.Log;
@@ -12,6 +13,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
 import com.internectics.android_flashcardcreator.R;
 import com.internectics.data.Card;
 import com.internectics.data.Pack;
@@ -31,6 +34,7 @@ public class CardDetailFragment extends Fragment {
 
     public static final String ARG_ITEM_ID = "item_id";
 
+    private boolean mIsQuestionShowing = true;
 
     public CardDetailFragment(Pack currentPack, Card currentCard) {
 
@@ -59,9 +63,33 @@ public class CardDetailFragment extends Fragment {
         EditText sidebarEditText = (EditText) mContentView.findViewById(R.id.sidebar_title);
         sidebarEditText.setText(String.format("%d", mCurrentCard.cardSN));
 
+        final RadioButton questionRadioButton = (RadioButton) mContentView.findViewById(R.id.radio_segment_question);
+        final RadioButton answerRadioButton = (RadioButton) mContentView.findViewById(R.id.radio_segment_answer);
+
+        RadioGroup radioGroup = (RadioGroup) mContentView.findViewById(R.id.radio_segment);
+        radioGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(RadioGroup group, int checkedId) {
+                if (checkedId == questionRadioButton.getId()) {
+                    questionRadioButton.setBackgroundResource(R.drawable.button_segment_selected);
+                    questionRadioButton.setTextColor(Color.WHITE);
+                    answerRadioButton.setBackgroundResource(R.drawable.button_segment_unselected);
+                    answerRadioButton.setTextColor(Color.BLACK);
+                    mIsQuestionShowing = true;
+                }else {
+                    questionRadioButton.setBackgroundResource(R.drawable.button_segment_unselected);
+                    questionRadioButton.setTextColor(Color.BLACK);
+                    answerRadioButton.setBackgroundResource(R.drawable.button_segment_selected);
+                    answerRadioButton.setTextColor(Color.WHITE);
+                    mIsQuestionShowing = false;
+                }
+            }
+        });
+
 
         return mContentView;
     }
+
 
 
     /**
