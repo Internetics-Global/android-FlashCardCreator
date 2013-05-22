@@ -23,12 +23,20 @@
             android:layout_gravity="center"
             android:orientation="horizontal">
 
+        <Button
+                android:layout_width="0dp"
+                android:layout_weight="30"
+                android:layout_height="wrap_content"
+                android:enabled="false"
+                android:visibility="invisible">
+
+        </Button>
+
         <RadioGroup
                 android:id="@+id/radio_segment"
                 android:orientation="horizontal"
-                android:layout_width="wrap_content"
-                android:layout_marginLeft="@dimen/segment_margin"
-                android:layout_marginRight="@dimen/segment_margin"
+                android:layout_width="0dp"
+                android:layout_weight="40"
                 android:weightSum="500"
                 android:layout_height="wrap_content">
             <RadioButton
@@ -53,6 +61,15 @@
                     android:gravity="center"
                     android:background="@drawable/button_segment_unselected"/>
         </RadioGroup>
+
+        <Button
+                android:layout_width="0dp"
+                android:layout_weight="30"
+                android:layout_height="wrap_content"
+                android:enabled="false"
+                android:visibility="invisible">
+
+        </Button>
 
     </LinearLayout>
 

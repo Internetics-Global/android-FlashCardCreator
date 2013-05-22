@@ -3,15 +3,10 @@
               android:id="@+id/card"
               android:layout_width="match_parent"
               android:layout_height="match_parent"
-              android:layout_marginBottom="35dp"
-              android:layout_marginLeft="12dp"
-              android:layout_marginRight="12dp"
-              android:layout_marginTop="44dp"
-              android:baselineAligned="false"
               android:background="@drawable/shape_card_bg"
               android:orientation="horizontal">
 
-    <LinearLayout
+    <FrameLayout
             android:layout_height="match_parent"
             android:layout_width="0dp"
             android:layout_weight="62"
@@ -22,10 +17,11 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:inputType="text"
-                android:background="@drawable/shape_card_sidebar"
-                android:text="I want to be like this">
+                android:background="@drawable/card_bg_blue"
+                android:text="1"
+                android:gravity="center">
         </EditText>
-    </LinearLayout>
+    </FrameLayout>
 
     <LinearLayout
             android:layout_height="match_parent"
