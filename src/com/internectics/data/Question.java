@@ -9,6 +9,8 @@ import com.internectics.util.Global;
 import com.internectics.util.StringUtils;
 
 import java.io.File;
+import java.io.UnsupportedEncodingException;
+import java.net.URLDecoder;
 import java.util.HashMap;
 
 public class Question {
@@ -90,16 +92,26 @@ public class Question {
     }
 
     private void update(Context context) {
-        String query = String.format("UPDATE Question_Tables SET question_id=%d, subheading=\"%s\", main=\"%s\", sub=\"%s\", image=\"%s\",css_id=%d, template_id=%d WHERE card_id=%d", questionID, subheading, main, sub, imageUriFormatStr, cssID, templateID, cardID);
-        SQLiteHelper.defaultDatabase(context).execSQL(query);
+
+        String decodedSubheading = StringUtils.stringDecodeForSQlite(subheading);
+        String decodedMain = StringUtils.stringDecodeForSQlite(main);
+        String decodedSub = StringUtils.stringDecodeForSQlite(sub);
+
+        String query = String.format("UPDATE Question_Tables SET question_id=%d, subheading=?, main=?, sub=?, image=\"%s\",css_id=%d, template_id=%d WHERE card_id=%d", questionID, imageUriFormatStr, cssID, templateID, cardID);
+        SQLiteHelper.defaultDatabase(context).execSQL(query,new Object[] {decodedSubheading,decodedMain,decodedSub});
     }
 
     private void insert(Context context) {
         if (questionID == -1) {
-            questionID = (int) (System.currentTimeMillis() / 1000L);
+            questionID = (int) (System.currentTimeMillis() & 0x7FFFFFFF);
         }
-        String query = String.format("INSERT INTO Question_Tables(question_id, card_id, subheading, main, sub, image, css_id, template_id) VALUES (%d,%d, \"%s\", \"%s\", \"%s\", \"%s\", %d, %d)", questionID, cardID, subheading, main, sub, imageUriFormatStr, cssID, templateID);
-        SQLiteHelper.defaultDatabase(context).execSQL(query);
+
+        String decodedSubheading = StringUtils.stringDecodeForSQlite(subheading);
+        String decodedMain = StringUtils.stringDecodeForSQlite(main);
+        String decodedSub = StringUtils.stringDecodeForSQlite(sub);
+
+        String query = String.format("INSERT INTO Question_Tables(question_id, card_id, subheading, main, sub, image, css_id, template_id) VALUES (%d,%d, ?, ?, ?, \"%s\", %d, %d)", questionID, cardID, imageUriFormatStr, cssID, templateID);
+        SQLiteHelper.defaultDatabase(context).execSQL(query,new Object[] {decodedSubheading,decodedMain,decodedSub});
     }
 
     public void destroy(Context context) {

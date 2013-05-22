@@ -39,7 +39,7 @@ public class ShareLinkHelper extends AsyncTask<Void, Long, Boolean> {
             execShareAction();
 
         } catch (DropboxException e) {
-            e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+            e.printStackTrace();
         }
 
         return false;

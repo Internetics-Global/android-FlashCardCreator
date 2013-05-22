@@ -169,7 +169,7 @@ public class FileOperationHelper {
             try {
                 tempFile.createNewFile();
             } catch (IOException e) {
-                e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+                e.printStackTrace();
             }
         }
         return tempFile;
@@ -184,7 +184,7 @@ public class FileOperationHelper {
             try {
                 tempFile.createNewFile();
             } catch (IOException e) {
-                e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+                e.printStackTrace();
             }
         }
         return tempFile;
@@ -254,9 +254,10 @@ public class FileOperationHelper {
     }
 
 
-    public static void copyImageToImagesFolder(File imageFile) {
+    public static File copyImageToImagesFolder(File imageFile) {
         File targetFile = new File(imagesDirectory(), imageFile.getName());
         copyFile(imageFile, targetFile);
+        return targetFile;
     }
 
 

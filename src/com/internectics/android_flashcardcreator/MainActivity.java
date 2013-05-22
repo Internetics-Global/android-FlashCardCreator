@@ -214,7 +214,7 @@ public class MainActivity extends FragmentActivity implements
         boolean isReachable = Global.apiReachable(MainActivity.this);
 
         if ((!isDownloaded) && (isReachable)) {
-            String downloableShareLink = "http://dl.dropbox.com/s/bxm1sm8ti9y2vev/pack92b79d0d-349b-4632-b735-3ad67c57d412.zip";
+            String downloableShareLink = "http://dl.dropbox.com/s/1evrmjjypjisb0o/Pack1366592957-936257718.zip";
             File downloadedZipFile = new File(FileOperationHelper.downloadedPackDirectory(), "downloadedPackZip.zip");
             PackDownloadHelper packDownloadHelper = new PackDownloadHelper(MainActivity.this, downloableShareLink, downloadedZipFile.toString());
             packDownloadHelper.mIsFromExamplePackDownload = true;

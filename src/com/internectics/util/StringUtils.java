@@ -3,6 +3,8 @@ package com.internectics.util;
 import android.net.Uri;
 import android.util.Log;
 
+import java.io.UnsupportedEncodingException;
+import java.net.URLDecoder;
 import java.sql.Timestamp;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -73,6 +75,21 @@ public class StringUtils {
         String path = uri.getPath();
         String last = path.substring(path.lastIndexOf("/") + 1);
         return last;
+    }
+
+
+    public static String stringDecodeForSQlite(String str) {
+        String returnStr = str;
+        String tempStr;
+
+        try {
+            tempStr = (URLDecoder.decode(str.replaceAll("%", "<percentage>"), "UTF-8"));
+            returnStr = tempStr.replaceAll("<percentage>","%");
+        } catch (UnsupportedEncodingException e) {
+            e.printStackTrace();
+        }
+
+        return returnStr;
     }
 
 

@@ -29,7 +29,7 @@ public class PackRecordHelper {
             object = (JSONObject) parser.parse(str);
 
         } catch (ParseException e) {
-            e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+            e.printStackTrace();
         }
         String shareLinkage = (String) object.get(Global.shareLink_Property);
 
@@ -79,7 +79,7 @@ public class PackRecordHelper {
             }
 
         } catch (ParseException e) {
-            e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+            e.printStackTrace();
         }
         return result;
     }

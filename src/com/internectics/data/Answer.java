@@ -9,6 +9,8 @@ import com.internectics.util.Global;
 import com.internectics.util.StringUtils;
 
 import java.io.File;
+import java.io.UnsupportedEncodingException;
+import java.net.URLDecoder;
 import java.util.HashMap;
 
 public class Answer {
@@ -92,17 +94,26 @@ public class Answer {
     }
 
     private void update(Context context) {
-        String query = String.format("UPDATE Answer_Tables SET answer_id=%d, subheading=\"%s\", main=\"%s\", sub=\"%s\", image=\"%s\",css_id=%d, template_id=%d WHERE card_id=%d", answerID, subheading, main, sub, imageUriFormatStr, cssID, templateID, cardID);
-        SQLiteHelper.defaultDatabase(context).execSQL(query);
+        String decodedSubheading = StringUtils.stringDecodeForSQlite(subheading);
+        String decodedMain = StringUtils.stringDecodeForSQlite(main);
+        String decodedSub = StringUtils.stringDecodeForSQlite(sub);
+
+        String query = String.format("UPDATE Answer_Tables SET answer_id=%d, subheading=?, main=?, sub=?, image=\"%s\",css_id=%d, template_id=%d WHERE card_id=%d", answerID, imageUriFormatStr, cssID, templateID, cardID);
+        SQLiteHelper.defaultDatabase(context).execSQL(query,new Object[] {decodedSubheading,decodedMain,decodedSub});
     }
 
     private void insert(Context context) {
         if (answerID == -1) {
             //it's not the best way to generate an random but not repeated, hope future to find a better way
-            answerID = (int) (System.currentTimeMillis() / 1000L);
+            answerID = (int) (System.currentTimeMillis() & 0x7FFFFFFF);
         }
-        String query = String.format("INSERT INTO Answer_Tables(answer_id, card_id, subheading, main, sub, image, css_id, template_id) VALUES (%d,%d, \"%s\", \"%s\", \"%s\", \"%s\", %d, %d)", answerID, cardID, subheading, main, sub, imageUriFormatStr, cssID, templateID);
-        SQLiteHelper.defaultDatabase(context).execSQL(query);
+
+        String decodedSubheading = StringUtils.stringDecodeForSQlite(subheading);
+        String decodedMain = StringUtils.stringDecodeForSQlite(main);
+        String decodedSub = StringUtils.stringDecodeForSQlite(sub);
+
+        String query = String.format("INSERT INTO Answer_Tables(answer_id, card_id, subheading, main, sub, image, css_id, template_id) VALUES (%d,%d, ?, ?, ?, \"%s\", %d, %d)", answerID, cardID, imageUriFormatStr, cssID, templateID);
+        SQLiteHelper.defaultDatabase(context).execSQL(query,new Object[] {decodedSubheading,decodedMain,decodedSub});
 
     }
 
