@@ -5,6 +5,7 @@ import android.app.Dialog;
 import android.app.DialogFragment;
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
@@ -149,7 +150,14 @@ public class MainActivity extends FragmentActivity implements
                 new AlertDialog.Builder(this)
                         .setTitle("Select a template background")
                         .setSingleChoiceItems(new String[]{"Blue", "Coffee", "Gray", "Purple", "Red"}, 0, null)
-                        .setPositiveButton("OK", null)
+                        .setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                if (mCardDetailFragment != null) {
+                                    mCardDetailFragment.cardColorTemplateSelectedPostAction(which);
+                                }
+                            }
+                        })
                         .setNegativeButton("Cancel", null)
                         .show();
                 break;
@@ -158,13 +166,13 @@ public class MainActivity extends FragmentActivity implements
                 break;
 
             case R.id.actionbar_play:
-                Intent intent = new Intent(MainActivity.this,PlayActivity.class);
+                Intent intent = new Intent(MainActivity.this, PlayActivity.class);
                 startActivity(intent);
                 overridePendingTransition(R.anim.in_from_bottom, R.anim.out_to_above);
                 break;
 
             case R.id.actionbar_share:
-                if (Global.apiReachableWithAlert(MainActivity.this)){
+                if (Global.apiReachableWithAlert(MainActivity.this)) {
                     onActionbarShareSelected();
                 }
                 break;
@@ -191,7 +199,7 @@ public class MainActivity extends FragmentActivity implements
                 break;
 
             case R.id.actionbar_test1:
-                startActivity(new Intent(MainActivity.this,MoreActivity.class));
+                startActivity(new Intent(MainActivity.this, MoreActivity.class));
 
                 break;
 
@@ -253,7 +261,7 @@ public class MainActivity extends FragmentActivity implements
     }
 
     /**
-     * @param index   (index<0) is used to clear master and detail views
+     * @param index (index<0) is used to clear master and detail views
      */
     @Override
     public void onItemSelected(int index) {

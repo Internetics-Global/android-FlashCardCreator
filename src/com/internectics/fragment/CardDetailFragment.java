@@ -30,6 +30,7 @@ import java.io.File;
 
 public class CardDetailFragment extends Fragment {
 
+
     private Card mCurrentCard;
     private Pack mCurrentPack;
 
@@ -77,7 +78,7 @@ public class CardDetailFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        mIMM = (InputMethodManager)(getActivity().getSystemService(Context.INPUT_METHOD_SERVICE));
+        mIMM = (InputMethodManager) (getActivity().getSystemService(Context.INPUT_METHOD_SERVICE));
     }
 
     @Override
@@ -396,13 +397,17 @@ public class CardDetailFragment extends Fragment {
                 } else if (requestCode == CODE_REQUEST_IMAGE_SOURCE_IS_IMAGE) {
                     mImage.setImageBitmap(resultBitmap);
                     if (mQuestionRadioButton.isChecked()) {
-                        mCurrentCard.question.imageUriFormatStr =  FileOperationHelper.convertToUriFormatFile(toSaveFile);
+                        mCurrentCard.question.imageUriFormatStr = FileOperationHelper.convertToUriFormatFile(toSaveFile);
                     } else {
                         mCurrentCard.answer.imageUriFormatStr = FileOperationHelper.convertToUriFormatFile(toSaveFile);
                     }
                 }
             }
         }
+    }
+
+    public void cardColorTemplateSelectedPostAction(int cardColorTemplateID) {
+        //mCurrentCard.templateBackground
     }
 }
 
