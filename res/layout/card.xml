@@ -12,14 +12,22 @@
             android:layout_weight="62"
             android:orientation="vertical">
 
+        <Button
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@drawable/card_bg_blue"
+                android:enabled="false"
+                android:gravity="center">
+        </Button>
+
         <EditText
                 android:id="@+id/sidebar_title"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:inputType="text"
                 android:singleLine="true"
-                android:background="@drawable/card_bg_blue"
                 android:text="1"
+                android:rotation="-90"
                 android:gravity="center">
         </EditText>
     </FrameLayout>
