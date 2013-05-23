@@ -1,9 +1,7 @@
 package com.internectics.fragment;
 
-import android.content.BroadcastReceiver;
-import android.content.Context;
-import android.content.Intent;
-import android.content.IntentFilter;
+import android.app.AlertDialog;
+import android.content.*;
 import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.net.Uri;
@@ -25,6 +23,8 @@ import com.internectics.util.AppContext;
 import com.internectics.util.Global;
 import com.internectics.util.OpenUDID_manager;
 import com.internectics.util.UIHelper;
+import net.londatiga.android.ActionItem;
+import net.londatiga.android.QuickAction;
 
 import java.io.File;
 
@@ -52,7 +52,7 @@ public class CardDetailFragment extends Fragment {
 
     private RadioButton mQuestionRadioButton;
     private RadioButton mAnswerRadioButton;
-    private RadioGroup  mRadioGroup;
+    private RadioGroup mRadioGroup;
 
     public CardDetailFragment(Pack currentPack, Card currentCard) {
 
@@ -81,28 +81,8 @@ public class CardDetailFragment extends Fragment {
 
         getAllViews();
 
-        mRadioGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(RadioGroup group, int checkedId) {
-                if (checkedId == mQuestionRadioButton.getId()) {
-                    mQuestionRadioButton.setBackgroundResource(R.drawable.button_segment_selected);
-                    mQuestionRadioButton.setTextColor(Color.WHITE);
-                    mAnswerRadioButton.setBackgroundResource(R.drawable.button_segment_unselected);
-                    mAnswerRadioButton.setTextColor(Color.BLACK);
-                    mIsQuestionShowing = true;
-                    switchToQuestionView();
-                }else {
-                    mQuestionRadioButton.setBackgroundResource(R.drawable.button_segment_unselected);
-                    mQuestionRadioButton.setTextColor(Color.BLACK);
-                    mAnswerRadioButton.setBackgroundResource(R.drawable.button_segment_selected);
-                    mAnswerRadioButton.setTextColor(Color.WHITE);
-                    mIsQuestionShowing = false;
-                    switchToAnswerView();
-                }
-            }
-        });
-
-
+        configureSegmentView();
+        configureChangeTemplateView();
 
         return mContentView;
     }
@@ -114,13 +94,125 @@ public class CardDetailFragment extends Fragment {
         //checkCardEditable();
         updateCommonContent();
         switchToQuestionView();
+        configureLogoURLView();
+
+    }
+
+    private void configureSegmentView() {
+        mRadioGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(RadioGroup group, int checkedId) {
+                if (checkedId == mQuestionRadioButton.getId()) {
+                    mQuestionRadioButton.setBackgroundResource(R.drawable.button_segment_selected);
+                    mQuestionRadioButton.setTextColor(Color.WHITE);
+                    mAnswerRadioButton.setBackgroundResource(R.drawable.button_segment_unselected);
+                    mAnswerRadioButton.setTextColor(Color.BLACK);
+                    mIsQuestionShowing = true;
+                    switchToQuestionView();
+                } else {
+                    mQuestionRadioButton.setBackgroundResource(R.drawable.button_segment_unselected);
+                    mQuestionRadioButton.setTextColor(Color.BLACK);
+                    mAnswerRadioButton.setBackgroundResource(R.drawable.button_segment_selected);
+                    mAnswerRadioButton.setTextColor(Color.WHITE);
+                    mIsQuestionShowing = false;
+                    switchToAnswerView();
+                }
+            }
+        });
+    }
+
+    private void configureChangeTemplateView() {
+        ActionItem questionActionItem0 = new ActionItem(0, null, getResources().getDrawable(R.drawable.question_templatescreenshot0));
+        ActionItem questionActionItem1 = new ActionItem(1, null, getResources().getDrawable(R.drawable.question_templatescreenshot1));
+        ActionItem questionActionItem2 = new ActionItem(2, null, getResources().getDrawable(R.drawable.question_templatescreenshot2));
+        ActionItem questionActionItem3 = new ActionItem(3, null, getResources().getDrawable(R.drawable.question_templatescreenshot3));
+        ActionItem questionActionItem4 = new ActionItem(4, null, getResources().getDrawable(R.drawable.question_templatescreenshot4));
+
+        ActionItem answerActionItem0 = new ActionItem(0, null, getResources().getDrawable(R.drawable.answer_templatescreenshot0));
+        ActionItem answerActionItem1 = new ActionItem(1, null, getResources().getDrawable(R.drawable.answer_templatescreenshot1));
+        ActionItem answerActionItem2 = new ActionItem(2, null, getResources().getDrawable(R.drawable.answer_templatescreenshot2));
+        ActionItem answerActionItem3 = new ActionItem(3, null, getResources().getDrawable(R.drawable.answer_templatescreenshot3));
+        ActionItem answerActionItem4 = new ActionItem(4, null, getResources().getDrawable(R.drawable.answer_templatescreenshot4));
+        ActionItem answerActionItem5 = new ActionItem(5, null, getResources().getDrawable(R.drawable.answer_templatescreenshot5));
+
+        final QuickAction questionQuickAction = new QuickAction(getActivity(), QuickAction.VERTICAL);
+        final QuickAction answerQuickAction = new QuickAction(getActivity(), QuickAction.VERTICAL);
+
+        questionQuickAction.addActionItem(questionActionItem0);
+        questionQuickAction.addActionItem(questionActionItem1);
+        questionQuickAction.addActionItem(questionActionItem2);
+        questionQuickAction.addActionItem(questionActionItem3);
+        questionQuickAction.addActionItem(questionActionItem4);
+        questionQuickAction.setOnActionItemClickListener(new QuickAction.OnActionItemClickListener() {
+            @Override
+            public void onItemClick(QuickAction source, int pos, int actionId) {
+                changeTemplateAction(pos);
+            }
+        });
+
+        answerQuickAction.addActionItem(answerActionItem0);
+        answerQuickAction.addActionItem(answerActionItem1);
+        answerQuickAction.addActionItem(answerActionItem2);
+        answerQuickAction.addActionItem(answerActionItem3);
+        answerQuickAction.addActionItem(answerActionItem4);
+        answerQuickAction.addActionItem(answerActionItem5);
+        answerQuickAction.setOnActionItemClickListener(new QuickAction.OnActionItemClickListener() {
+            @Override
+            public void onItemClick(QuickAction source, int pos, int actionId) {
+                changeTemplateAction(pos);
+            }
+        });
+
+
+        mChangeTemplateImage.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (mQuestionRadioButton.isChecked()) {
+                    questionQuickAction.show(mChangeTemplateImage);
+                } else {
+                    answerQuickAction.show(mChangeTemplateImage);
+                }
+
+            }
+        });
+
+    }
+
+    private void configureLogoURLView() {
+        mLogoURLImage.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                final EditText inputEditText = new EditText(getActivity());
+                new AlertDialog.Builder(getActivity())
+                        .setTitle("Set URL")
+                        .setMessage("Please input a valid URL")
+                        .setView(inputEditText)
+                        .setPositiveButton("Done", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                mCurrentPack.logoURL = inputEditText.getText().toString();
+                            }
+                        })
+                        .setNegativeButton("Cancel", null)
+                        .show();
+            }
+        });
+
+    }
+
+    private void changeTemplateAction(int index) {
+        if (mQuestionRadioButton.isChecked()) {
+            mCurrentCard.question.templateID = index;
+        } else {
+            mCurrentCard.answer.templateID = index;
+        }
 
     }
 
 
     private void switchToQuestionView() {
-       updateQuestionContent();
-       updateQuestionLayout();
+        updateQuestionContent();
+        updateQuestionLayout();
     }
 
 
@@ -131,22 +223,22 @@ public class CardDetailFragment extends Fragment {
 
 
     private void getAllViews() {
-       mSidebarTitle = (EditText) mContentView.findViewById(R.id.sidebar_title);
-       mTitle        = (EditText) mContentView.findViewById(R.id.title);
-       mCreator      = (EditText) mContentView.findViewById(R.id.creator);
+        mSidebarTitle = (EditText) mContentView.findViewById(R.id.sidebar_title);
+        mTitle = (EditText) mContentView.findViewById(R.id.title);
+        mCreator = (EditText) mContentView.findViewById(R.id.creator);
 
-       mSubheading   = (EditText) mContentView.findViewById(R.id.subheading);
-       mMain         = (EditText) mContentView.findViewById(R.id.main);
-       mSub          = (EditText) mContentView.findViewById(R.id.sub);
+        mSubheading = (EditText) mContentView.findViewById(R.id.subheading);
+        mMain = (EditText) mContentView.findViewById(R.id.main);
+        mSub = (EditText) mContentView.findViewById(R.id.sub);
 
-       mChangeTemplateImage = (ImageView) mContentView.findViewById(R.id.change_template_button);
-       mLogoImage           = (ImageView) mContentView.findViewById(R.id.logo_image);
-       mLogoURLImage        = (ImageView) mContentView.findViewById(R.id.logo_url_btn);
-       mImage               = (ImageView) mContentView.findViewById(R.id.image);
+        mChangeTemplateImage = (ImageView) mContentView.findViewById(R.id.change_template_button);
+        mLogoImage = (ImageView) mContentView.findViewById(R.id.logo_image);
+        mLogoURLImage = (ImageView) mContentView.findViewById(R.id.logo_url_btn);
+        mImage = (ImageView) mContentView.findViewById(R.id.image);
 
-       mQuestionRadioButton = (RadioButton) mContentView.findViewById(R.id.radio_segment_question);
-       mAnswerRadioButton   = (RadioButton) mContentView.findViewById(R.id.radio_segment_answer);
-       mRadioGroup = (RadioGroup) mContentView.findViewById(R.id.radio_segment);
+        mQuestionRadioButton = (RadioButton) mContentView.findViewById(R.id.radio_segment_question);
+        mAnswerRadioButton = (RadioButton) mContentView.findViewById(R.id.radio_segment_answer);
+        mRadioGroup = (RadioGroup) mContentView.findViewById(R.id.radio_segment);
 
     }
 
@@ -221,7 +313,6 @@ public class CardDetailFragment extends Fragment {
         }
         return result;
     }
-
 
 
     /**
