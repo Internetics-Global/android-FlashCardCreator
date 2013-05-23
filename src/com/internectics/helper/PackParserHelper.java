@@ -29,12 +29,6 @@ public class PackParserHelper {
         File packJsonFile = new File(FileOperationHelper.downloadedPackDirectory(), "packInformation.json");
         Pack resultPack = parsePackJsonFile(packJsonFile.toString());
 
-        newFile = FileOperationHelper.copyImageToImagesFolder(getPackImageFullPath(resultPack.coverImageUriFormatStr));
-        resultPack.coverImageUriFormatStr = newFile.toString();
-        newFile = FileOperationHelper.copyImageToImagesFolder(getPackImageFullPath(resultPack.logoImageUriFormatStr));
-        resultPack.logoImageUriFormatStr = newFile.toString();
-        resultPack.save(AppContext.getAppContext());
-
         //step2: save cards
         for (int i = 0; ; i++) {
             File cardDirectory = new File(FileOperationHelper.downloadedPackDirectory(), String.format("card%d", i));
@@ -45,17 +39,24 @@ public class PackParserHelper {
 
 
             newFile = FileOperationHelper.copyImageToImagesFolder(getCardImageFullPath(resultCard.coverImageUriFormatStr, i));
-            resultCard.coverImageUriFormatStr = newFile.toString();
+            resultCard.coverImageUriFormatStr = FileOperationHelper.covertToUriFormatFile(newFile);
+
             newFile = FileOperationHelper.copyImageToImagesFolder(getCardImageFullPath(resultCard.question.imageUriFormatStr, i));
-            resultCard.question.imageUriFormatStr = newFile.toString();
+            resultCard.question.imageUriFormatStr = FileOperationHelper.covertToUriFormatFile(newFile);
             newFile = FileOperationHelper.copyImageToImagesFolder(getCardImageFullPath(resultCard.answer.imageUriFormatStr, i));
-            resultCard.answer.imageUriFormatStr = newFile.toString();
+            resultCard.answer.imageUriFormatStr = FileOperationHelper.covertToUriFormatFile(newFile);
 
             resultCard.packID = resultPack.packID; //this is necessary
 
             resultCard.save(AppContext.getAppContext());
 
         }
+
+        newFile = FileOperationHelper.copyImageToImagesFolder(getPackImageFullPath(resultPack.coverImageUriFormatStr));
+        resultPack.coverImageUriFormatStr = FileOperationHelper.covertToUriFormatFile(newFile);
+        newFile = FileOperationHelper.copyImageToImagesFolder(getLogoImageFullPath(resultPack.logoImageUriFormatStr));
+        resultPack.logoImageUriFormatStr = FileOperationHelper.covertToUriFormatFile(newFile);
+        resultPack.save(AppContext.getAppContext());
     }
 
 
@@ -81,6 +82,15 @@ public class PackParserHelper {
 
 
     /**
+     * Because of history reason, the card logo image belong to card, rather than to pack.
+     * All the log images are same under same package, so we only need to take one
+     */
+    private static File getLogoImageFullPath(String uriFormatStr) {
+        return getCardImageFullPath(uriFormatStr,0);
+    }
+
+
+    /**
      * parse downloaded pack JSON file into Pack
      */
     private static Pack parsePackJsonFile(String packJsonFile) {
@@ -98,6 +108,7 @@ public class PackParserHelper {
             pack.creatorID = (String) obj.get("creator");
             pack.creatorNickName = (String) obj.get("creator_nick_name");
             pack.userID = Global.USER_ID; // there's no this information in json file, so we have to add manually
+            pack.packID = (int) (System.currentTimeMillis() & 0x7FFFFFFF);
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         } catch (ParseException e) {
@@ -124,6 +135,8 @@ public class PackParserHelper {
             FileReader fileReader = new FileReader(questionJsonFile);
             JSONObject questionObj = (JSONObject) parser.parse(fileReader);
 
+            //this is a history issue(to compatibible with iOS version), i have to get logoImageUriFormatStr from question
+            //Better way is to put them in pack
             currentPack.logoImageUriFormatStr = (String) questionObj.get("logo");
             currentPack.logoURL = (String) questionObj.get("logo_url");
             currentPack.questionTitle = (String) questionObj.get("title");

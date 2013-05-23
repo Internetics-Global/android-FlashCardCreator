@@ -15,17 +15,17 @@ import java.util.UUID;
  */
 public class FileOperationHelper {
 
-    private static int resrouceID[] = {R.drawable.image_logo_placeholder,
-            R.drawable.image_question_placeholder,
-            R.drawable.image_answer_placeholder,
-            R.drawable.image_pack_cover_default,
-            R.drawable.image_card_cover_placeholder};
+    private static int resrouceID[] = {R.drawable.question_placeholder_logo,
+            R.drawable.question_placeholder_content,
+            R.drawable.answer_placeholder_content,
+            R.drawable.default_pack_cover_image,
+            R.drawable.card_cover_image_placeholder};
     private static String output[] = {
-            "image_logo_placeholderholder.jpg",
-            "image_question_placeholder.jpg",
-            "image_answer_placeholder.jpg",
-            "image_pack_cover_default.jpg",
-            "image_card_cover_placeholder.jpg"};
+            "question_placeholder_logo.jpg",
+            "question_placeholder_contentnt.jpg",
+            "answer_placeholder_content.jpgpg",
+            "default_pack_cover_image.jpg",
+            "card_cover_image_placeholder.jpg"};
 
 
     /*
@@ -33,17 +33,6 @@ public class FileOperationHelper {
      */
     public static File cacheDirectory() {
         return AppContext.getAppContext().getCacheDir();
-    }
-
-    /**
-     * All reserved images will be input here, which is copied from R.drawable during start-up
-     */
-    private static File reservedDirectory() {
-        File tempFile = new File(cacheDirectory(), "Reserved");
-        if (!tempFile.exists()) {
-            tempFile.mkdir();
-        }
-        return tempFile;
     }
 
     /**
@@ -204,7 +193,7 @@ public class FileOperationHelper {
             InputStream in = context.getResources().openRawResource(resrouceID[i]);
             FileOutputStream out;
             try {
-                out = new FileOutputStream(new File(reservedDirectory(), output[i]));
+                out = new FileOutputStream(new File(imagesDirectory(), output[i]));
                 byte[] buff = new byte[1024];
                 int read = 0;
 
@@ -229,27 +218,27 @@ public class FileOperationHelper {
 
 
     public static String getLogoPlaceholderImagePath() {
-        File tempFile = new File(reservedDirectory(), output[0]);
+        File tempFile = new File(imagesDirectory(), output[0]);
         return covertToUriFormatFile(tempFile);
     }
 
     public static String getQuestionImagePlaceholderImagePath() {
-        File tempFile = new File(reservedDirectory(), output[1]);
+        File tempFile = new File(imagesDirectory(), output[1]);
         return covertToUriFormatFile(tempFile);
     }
 
     public static String getAnswerImagePlaceholderImagePath() {
-        File tempFile = new File(reservedDirectory(), output[2]);
+        File tempFile = new File(imagesDirectory(), output[2]);
         return covertToUriFormatFile(tempFile);
     }
 
     public static String getPackCoverDefaultImagePath() {
-        File tempFile = new File(reservedDirectory(), output[3]);
+        File tempFile = new File(imagesDirectory(), output[3]);
         return covertToUriFormatFile(tempFile);
     }
 
     public static String getCardCoverDefaultImagePath() {
-        File tempFile = new File(reservedDirectory(), output[4]);
+        File tempFile = new File(imagesDirectory(), output[4]);
         return covertToUriFormatFile(tempFile);
     }
 

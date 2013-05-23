@@ -45,7 +45,7 @@
                 android:layout_marginBottom="30dp"
                 android:scaleType="fitCenter"
                 android:background="@drawable/shape_round_corner"
-                android:src="@drawable/image_pack_cover_default"/>
+                android:src="@drawable/default_pack_cover_image"/>
     </LinearLayout>
 
 </LinearLayout>

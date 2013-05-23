@@ -45,11 +45,11 @@
                     android:layout_weight="250"
                     android:layout_height="wrap_content"
                     android:button="@null"
+                    android:checked="true"
                     android:text="Question"
                     android:textColor="@android:color/white"
                     android:gravity="center"
-                    android:background="@drawable/button_segment_selected"
-                    android:checked="false"/>
+                    android:background="@drawable/button_segment_selected"/>
             <RadioButton
                     android:id="@+id/radio_segment_answer"
                     android:layout_width="0dp"
@@ -59,6 +59,7 @@
                     android:text="Answer"
                     android:textColor="@android:color/black"
                     android:gravity="center"
+                    android:checked="false"
                     android:background="@drawable/button_segment_unselected"/>
         </RadioGroup>
 

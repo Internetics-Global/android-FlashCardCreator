@@ -71,8 +71,9 @@
                     android:layout_height="wrap_content"
                     android:layout_width="0dp"
                     android:layout_weight="120"
-                    android:layout_marginRight="15dp"
-                    android:src="@drawable/image_logo_placeholder"/>
+                    android:layout_marginRight="10dp"
+                    android:layout_marginTop="10dp"
+                    android:src="@drawable/question_placeholder_logo"/>
         </LinearLayout>
 
         <LinearLayout
@@ -97,7 +98,6 @@
                         android:layout_width="match_parent"
                         android:layout_height="0dp"
                         android:layout_weight="60"
-                        android:hint="this is subheading"
                         android:inputType="text"
                         android:background="@android:color/holo_red_light"
                         android:ems="10">
@@ -110,7 +110,6 @@
                         android:layout_width="match_parent"
                         android:layout_height="0dp"
                         android:layout_weight="290"
-                        android:hint="this is main"
                         android:inputType="text"
                         android:background="@android:color/holo_purple"
                         android:ems="10"/>
@@ -120,7 +119,6 @@
                         android:layout_width="match_parent"
                         android:layout_height="0dp"
                         android:layout_weight="50"
-                        android:hint="this is sub"
                         android:inputType="text"
                         android:background="@android:color/holo_blue_light"
                         android:ems="10"/>
@@ -140,7 +138,7 @@
                         android:layout_width="match_parent"
                         android:layout_marginRight="15dp"
                         android:layout_marginBottom="15dp"
-                        android:src="@drawable/image_logo_placeholder"/>
+                        android:src="@drawable/question_placeholder_logo"/>
 
                 <ImageView
                         android:id="@+id/change_template_button"
