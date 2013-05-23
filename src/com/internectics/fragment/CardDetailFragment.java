@@ -1,5 +1,6 @@
 package com.internectics.fragment;
 
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.*;
 import android.graphics.Bitmap;
@@ -11,10 +12,9 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.EditText;
-import android.widget.ImageView;
-import android.widget.RadioButton;
-import android.widget.RadioGroup;
+import android.view.inputmethod.EditorInfo;
+import android.view.inputmethod.InputMethodManager;
+import android.widget.*;
 import com.internectics.android_flashcardcreator.R;
 import com.internectics.data.Card;
 import com.internectics.data.Pack;
@@ -54,6 +54,11 @@ public class CardDetailFragment extends Fragment {
     private RadioButton mAnswerRadioButton;
     private RadioGroup mRadioGroup;
 
+    private InputMethodManager mIMM;
+
+    private int CODE_REQUEST_IMAGE_SOURCE_IS_LOGO = 1001; //when user click on the logo img
+    private int CODE_REQUEST_IMAGE_SOURCE_IS_IMAGE = 1002;//when user click on the image img
+
     public CardDetailFragment(Pack currentPack, Card currentCard) {
 
         if (currentCard == null) {
@@ -71,6 +76,8 @@ public class CardDetailFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        mIMM = (InputMethodManager)(getActivity().getSystemService(Context.INPUT_METHOD_SERVICE));
     }
 
     @Override
@@ -83,6 +90,32 @@ public class CardDetailFragment extends Fragment {
 
         configureSegmentView();
         configureChangeTemplateView();
+
+        mLogoImage.setOnClickListener(new View.OnClickListener() {
+
+            @Override
+            public void onClick(View v) {
+                startActivityForResult(
+                        new Intent(
+                                Intent.ACTION_PICK,
+                                android.provider.MediaStore.Images.Media.INTERNAL_CONTENT_URI),
+                        CODE_REQUEST_IMAGE_SOURCE_IS_LOGO);
+
+            }
+        });
+
+        mImage.setOnClickListener(new View.OnClickListener() {
+
+            @Override
+            public void onClick(View v) {
+                startActivityForResult(
+                        new Intent(
+                                Intent.ACTION_PICK,
+                                android.provider.MediaStore.Images.Media.INTERNAL_CONTENT_URI),
+                        CODE_REQUEST_IMAGE_SOURCE_IS_IMAGE);
+
+            }
+        });
 
         return mContentView;
     }
@@ -183,6 +216,8 @@ public class CardDetailFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 final EditText inputEditText = new EditText(getActivity());
+                inputEditText.setSingleLine(true);
+                inputEditText.setImeOptions(EditorInfo.IME_ACTION_DONE);
                 new AlertDialog.Builder(getActivity())
                         .setTitle("Set URL")
                         .setMessage("Please input a valid URL")
@@ -191,6 +226,10 @@ public class CardDetailFragment extends Fragment {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
                                 mCurrentPack.logoURL = inputEditText.getText().toString();
+                                if (mIMM.isActive()) {
+                                    mIMM.toggleSoftInput(InputMethodManager.SHOW_FORCED, InputMethodManager.HIDE_NOT_ALWAYS);
+                                }
+
                             }
                         })
                         .setNegativeButton("Cancel", null)
@@ -330,11 +369,40 @@ public class CardDetailFragment extends Fragment {
         View cardView = mContentView.findViewById(R.id.card);
         Bitmap bitmap = UIHelper.loadBitmapFromView(cardView);
         File savedFile = UIHelper.saveImageToCaches(bitmap);
-        mCurrentCard.coverImageUriFormatStr = FileOperationHelper.covertToUriFormatFile(savedFile);
+        mCurrentCard.coverImageUriFormatStr = FileOperationHelper.convertToUriFormatFile(savedFile);
 
         //Step2: save
         mCurrentCard.save(AppContext.getAppContext());
         Log.d(Global.debugTag, "finish execution of saveNewCreatedCard");
+    }
+
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (resultCode == Activity.RESULT_OK) {
+            Uri selectedImageURI = data.getData();
+
+            Bitmap resultBitmap = UIHelper.resizeImageTo400(getActivity(), selectedImageURI);
+            if (resultBitmap == null) {
+                Log.d(Global.debugTag, "resultBitmap is null");
+            } else {
+                File toSaveFile = UIHelper.saveImageToCaches(resultBitmap);
+
+                if (requestCode == CODE_REQUEST_IMAGE_SOURCE_IS_LOGO) {
+                    mLogoImage.setImageBitmap(resultBitmap);
+                    mCurrentPack.logoImageUriFormatStr = FileOperationHelper.convertToUriFormatFile(toSaveFile);
+
+                } else if (requestCode == CODE_REQUEST_IMAGE_SOURCE_IS_IMAGE) {
+                    mImage.setImageBitmap(resultBitmap);
+                    if (mQuestionRadioButton.isChecked()) {
+                        mCurrentCard.question.imageUriFormatStr =  FileOperationHelper.convertToUriFormatFile(toSaveFile);
+                    } else {
+                        mCurrentCard.answer.imageUriFormatStr = FileOperationHelper.convertToUriFormatFile(toSaveFile);
+                    }
+                }
+            }
+        }
     }
 }
 

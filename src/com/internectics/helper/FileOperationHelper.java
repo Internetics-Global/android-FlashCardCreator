@@ -87,7 +87,7 @@ public class FileOperationHelper {
         return tempFile;
     }
 
-    public static String covertToUriFormatFile(File file) {
+    public static String convertToUriFormatFile(File file) {
         String string = String.format("file://%s", file.toString());
         return string;
     }
@@ -219,27 +219,27 @@ public class FileOperationHelper {
 
     public static String getLogoPlaceholderImagePath() {
         File tempFile = new File(imagesDirectory(), output[0]);
-        return covertToUriFormatFile(tempFile);
+        return convertToUriFormatFile(tempFile);
     }
 
     public static String getQuestionImagePlaceholderImagePath() {
         File tempFile = new File(imagesDirectory(), output[1]);
-        return covertToUriFormatFile(tempFile);
+        return convertToUriFormatFile(tempFile);
     }
 
     public static String getAnswerImagePlaceholderImagePath() {
         File tempFile = new File(imagesDirectory(), output[2]);
-        return covertToUriFormatFile(tempFile);
+        return convertToUriFormatFile(tempFile);
     }
 
     public static String getPackCoverDefaultImagePath() {
         File tempFile = new File(imagesDirectory(), output[3]);
-        return covertToUriFormatFile(tempFile);
+        return convertToUriFormatFile(tempFile);
     }
 
     public static String getCardCoverDefaultImagePath() {
         File tempFile = new File(imagesDirectory(), output[4]);
-        return covertToUriFormatFile(tempFile);
+        return convertToUriFormatFile(tempFile);
     }
 
 

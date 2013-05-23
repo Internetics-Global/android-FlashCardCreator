@@ -6,7 +6,6 @@ import com.internectics.data.Pack;
 import com.internectics.util.AppContext;
 import com.internectics.util.Global;
 import com.internectics.util.StringUtils;
-import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
@@ -39,12 +38,12 @@ public class PackParserHelper {
 
 
             newFile = FileOperationHelper.copyImageToImagesFolder(getCardImageFullPath(resultCard.coverImageUriFormatStr, i));
-            resultCard.coverImageUriFormatStr = FileOperationHelper.covertToUriFormatFile(newFile);
+            resultCard.coverImageUriFormatStr = FileOperationHelper.convertToUriFormatFile(newFile);
 
             newFile = FileOperationHelper.copyImageToImagesFolder(getCardImageFullPath(resultCard.question.imageUriFormatStr, i));
-            resultCard.question.imageUriFormatStr = FileOperationHelper.covertToUriFormatFile(newFile);
+            resultCard.question.imageUriFormatStr = FileOperationHelper.convertToUriFormatFile(newFile);
             newFile = FileOperationHelper.copyImageToImagesFolder(getCardImageFullPath(resultCard.answer.imageUriFormatStr, i));
-            resultCard.answer.imageUriFormatStr = FileOperationHelper.covertToUriFormatFile(newFile);
+            resultCard.answer.imageUriFormatStr = FileOperationHelper.convertToUriFormatFile(newFile);
 
             resultCard.packID = resultPack.packID; //this is necessary
 
@@ -53,9 +52,9 @@ public class PackParserHelper {
         }
 
         newFile = FileOperationHelper.copyImageToImagesFolder(getPackImageFullPath(resultPack.coverImageUriFormatStr));
-        resultPack.coverImageUriFormatStr = FileOperationHelper.covertToUriFormatFile(newFile);
+        resultPack.coverImageUriFormatStr = FileOperationHelper.convertToUriFormatFile(newFile);
         newFile = FileOperationHelper.copyImageToImagesFolder(getLogoImageFullPath(resultPack.logoImageUriFormatStr));
-        resultPack.logoImageUriFormatStr = FileOperationHelper.covertToUriFormatFile(newFile);
+        resultPack.logoImageUriFormatStr = FileOperationHelper.convertToUriFormatFile(newFile);
         resultPack.save(AppContext.getAppContext());
     }
 

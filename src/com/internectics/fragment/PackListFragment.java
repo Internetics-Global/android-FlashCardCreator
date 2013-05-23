@@ -161,7 +161,7 @@ public class PackListFragment extends Fragment {
                     e.printStackTrace();
                 }
             }
-            imageView.setBackgroundResource(R.drawable.shape_round_corner);
+            imageView.setBackgroundResource(R.drawable.shape_image_round_corner);
 
 
             baseView.addView(imageView);
@@ -259,7 +259,7 @@ public class PackListFragment extends Fragment {
                 } else {
                     File toSaveFile = UIHelper.saveImageToCaches(resultBitmap);
                     Pack currentPack = User.defaultUser(AppContext.getAppContext()).packs.get(mIndexOfCurrentPack);
-                    currentPack.coverImageUriFormatStr = FileOperationHelper.covertToUriFormatFile(toSaveFile);
+                    currentPack.coverImageUriFormatStr = FileOperationHelper.convertToUriFormatFile(toSaveFile);
                     Log.d(Global.debugTag, currentPack.coverImageUriFormatStr);
                     currentPack.save(AppContext.getAppContext());
                     ((ImageAdapter) mGallery.getAdapter()).notifyDataSetChanged();

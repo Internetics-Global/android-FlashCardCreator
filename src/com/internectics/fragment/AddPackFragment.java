@@ -136,7 +136,7 @@ public class AddPackFragment extends DialogFragment {
                             .findViewById(R.id.fragment_add_pack_coverImage);
                     coverImageView.setImageBitmap(resultBitmap);
 
-                    pack.coverImageUriFormatStr = FileOperationHelper.covertToUriFormatFile(toSaveFile);
+                    pack.coverImageUriFormatStr = FileOperationHelper.convertToUriFormatFile(toSaveFile);
                     Log.d(Global.debugTag, pack.coverImageUriFormatStr);
                 }
             }
