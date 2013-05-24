@@ -62,7 +62,7 @@
         </activity>
         <activity android:name=".InstructionActivity"/>
         <activity android:name=".MoreActivity"/>
-        <activity android:name=".HelpActivity"/>
+        <activity android:name=".WebViewActivity"/>
 
 
         <service android:name="org.openudid.OpenUDID_service">

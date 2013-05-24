@@ -1,10 +1,6 @@
 package com.internectics.android_flashcardcreator;
 import android.app.Activity;
-import android.app.Fragment;
 import android.os.Bundle;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
 import android.view.Window;
 import android.webkit.WebChromeClient;
 import android.webkit.WebView;
@@ -18,9 +14,11 @@ import android.widget.Toast;
  * Time: 2:48 PM
  * To change this template use File | Settings | File Templates.
  */
-public class HelpActivity extends Activity {
+public class WebViewActivity extends Activity {
 
     private WebView mWebview;
+
+    private String mURL;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -40,11 +38,15 @@ public class HelpActivity extends Activity {
 
         mWebview.setWebViewClient(new WebViewClient() {
             public void onReceivedError(WebView view, int errorCode, String description, String failingUrl) {
-                Toast.makeText(HelpActivity.this, "Error! " + "Fail to load webpage", Toast.LENGTH_SHORT).show();
+                Toast.makeText(WebViewActivity.this, "Error! " + "Fail to load webpage", Toast.LENGTH_SHORT).show();
             }
         });
 
-        mWebview.loadUrl("http://www.flipflashcards.com.au");
+        mURL = getIntent().getExtras().getString("url");
+        if (mURL == null) {
+            mURL = "http://www.flipflashcards.com.au";
+        }
+        mWebview.loadUrl(mURL);
     }
 
 }

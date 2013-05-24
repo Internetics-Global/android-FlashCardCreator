@@ -6,14 +6,12 @@ import android.preference.CheckBoxPreference;
 import android.preference.Preference;
 import android.preference.PreferenceActivity;
 import android.preference.PreferenceScreen;
-import android.service.textservice.SpellCheckerService;
 import android.util.Log;
 import com.dropbox.client2.DropboxAPI;
 import com.dropbox.client2.android.AndroidAuthSession;
 import com.dropbox.client2.session.TokenPair;
 import com.internectics.helper.DropboxHelper;
 import com.internectics.util.AppConfig;
-import com.internectics.util.AppContext;
 
 /**
  * Created with IntelliJ IDEA.
@@ -86,7 +84,9 @@ public class MoreActivity extends PreferenceActivity {
         helpPreference.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
             @Override
             public boolean onPreferenceClick(Preference preference) {
-                startActivity(new Intent(MoreActivity.this, HelpActivity.class));
+                Intent intent = new Intent(MoreActivity.this, WebViewActivity.class);
+                intent.putExtra("url","http://www.flipflashcards.com.au");
+                startActivity(intent);
                 return false;
             }
         });

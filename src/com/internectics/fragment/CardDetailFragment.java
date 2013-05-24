@@ -16,6 +16,7 @@ import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.*;
 import com.internectics.android_flashcardcreator.R;
+import com.internectics.android_flashcardcreator.WebViewActivity;
 import com.internectics.data.Card;
 import com.internectics.data.Pack;
 import com.internectics.helper.FileOperationHelper;
@@ -98,11 +99,17 @@ public class CardDetailFragment extends Fragment {
 
             @Override
             public void onClick(View v) {
-                startActivityForResult(
-                        new Intent(
-                                Intent.ACTION_PICK,
-                                android.provider.MediaStore.Images.Media.INTERNAL_CONTENT_URI),
-                        CODE_REQUEST_IMAGE_SOURCE_IS_LOGO);
+                if (isEditableMode()) {
+                    startActivityForResult(
+                            new Intent(
+                                    Intent.ACTION_PICK,
+                                    android.provider.MediaStore.Images.Media.INTERNAL_CONTENT_URI),
+                            CODE_REQUEST_IMAGE_SOURCE_IS_LOGO);
+                } else {
+                    Intent intent = new Intent(getActivity(), WebViewActivity.class);
+                    intent.putExtra("url",mCurrentPack.logoURL);
+                    startActivity(intent);
+                }
 
             }
         });
@@ -126,7 +133,7 @@ public class CardDetailFragment extends Fragment {
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        //checkCardEditable();
+        //configureCardStatus();
         updateCommonContent();
         switchToQuestionView();
         configureLogoURLView();
@@ -360,10 +367,13 @@ public class CardDetailFragment extends Fragment {
     }
 
 
-    private boolean checkCardEditable() {
-        boolean result = false;
+    /**
+     * Apply according to card editable or not
+     * @return
+     */
+    private void configureCardStatus() {
 
-        if ((mCurrentPack.creatorID).equals(OpenUDID_manager.getOpenUDID())) {
+        if (isEditableMode()) {
             mLogoURLImage.setVisibility(View.VISIBLE);
             mChangeTemplateImage.setVisibility(View.VISIBLE);
 
@@ -374,8 +384,6 @@ public class CardDetailFragment extends Fragment {
             mSub.setEnabled(true);
             mCreator.setEnabled(true);
             mImage.setEnabled(true);
-
-            result = true;
         } else {
             mLogoURLImage.setVisibility(View.INVISIBLE);
             mChangeTemplateImage.setVisibility(View.INVISIBLE);
@@ -387,10 +395,7 @@ public class CardDetailFragment extends Fragment {
             mSub.setEnabled(false);
             mCreator.setEnabled(false);
             mImage.setEnabled(false);
-
-            result = false;
         }
-        return result;
     }
 
 
@@ -440,6 +445,14 @@ public class CardDetailFragment extends Fragment {
                 break;
             default:
                 Log.i(Global.debugTag, "Out of range");
+        }
+    }
+
+    private boolean isEditableMode() {
+        if ((mCurrentPack.creatorID).equals(OpenUDID_manager.getOpenUDID())) {
+            return true;
+        } else {
+            return false;
         }
     }
 }
