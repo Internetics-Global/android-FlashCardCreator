@@ -30,10 +30,7 @@ import com.internectics.fragment.AddPackFragment;
 import com.internectics.fragment.CardDetailFragment;
 import com.internectics.fragment.CardListFragment;
 import com.internectics.helper.*;
-import com.internectics.util.AppConfig;
-import com.internectics.util.AppContext;
-import com.internectics.util.Global;
-import com.internectics.util.OpenUDID_manager;
+import com.internectics.util.*;
 
 import java.io.File;
 
@@ -150,7 +147,7 @@ public class MainActivity extends FragmentActivity implements
                 if (mCurrentPack.cards.size() >= 0) {
                     new AlertDialog.Builder(this)
                             .setTitle("Select a template background")
-                            .setSingleChoiceItems(new String[]{"Blue", "Coffee", "Gray", "Purple", "Red"}, mCurrentCard.colorTemplateID, new DialogInterface.OnClickListener() {
+                            .setSingleChoiceItems(new String[]{"Blue", "Coffee", "Gray", "Purple", "Red"}, StringUtils.convertTemplateBackgroundToIndex(mCurrentCard.templateBackground), new DialogInterface.OnClickListener() {
                                 @Override
                                 public void onClick(DialogInterface dialog, int which) {
                                     if (mCardDetailFragment != null) {

@@ -92,5 +92,28 @@ public class StringUtils {
         return returnStr;
     }
 
+    /**
+     * In order to be compatibile with iOS version
+     */
+    public static int convertTemplateBackgroundToIndex(String templateBackground) {
+        int index = 0;
+
+        if (templateBackground.equals("card_background_blue.png"))
+            index = 0;
+        else if  (templateBackground.equals("card_background_coffee.png")) {
+            index = 1;
+        } else if (templateBackground.equals("card_background_gray.png")) {
+            index = 2;
+        } else if (templateBackground.equals("card_background_purple.png")) {
+            index = 3;
+        } else if (templateBackground.equals("card_background_red.png")) {
+            index = 4;
+        } else {
+            index = 0;
+        }
+
+        return index;
+    }
+
 
 }
