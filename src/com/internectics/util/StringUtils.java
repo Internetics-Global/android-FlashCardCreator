@@ -77,6 +77,12 @@ public class StringUtils {
         return last;
     }
 
+    public static String lastComponentOfPath(String stringUri) {
+        String path = Uri.parse(stringUri).getPath();
+        String last = path.substring(path.lastIndexOf("/") + 1);
+        return last;
+    }
+
 
     public static String stringDecodeForSQlite(String str) {
         String returnStr = str;
@@ -114,6 +120,7 @@ public class StringUtils {
 
         return index;
     }
+
 
 
 }

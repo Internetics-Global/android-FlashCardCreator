@@ -25,13 +25,14 @@ public class ZipFileHelper {
     public static void zipPackFiles(String zipFileName, ArrayList<String> fs) throws Exception {
         ZipOutputStream out = new ZipOutputStream(new FileOutputStream(
                 zipFileName));
+        byte[] buffer = new byte[16 * 1024];
         for (int i = 0; i < fs.size(); i++) {
             ZipEntry entry = new ZipEntry(new File(fs.get(i)).getName());
             out.putNextEntry(entry);
             FileInputStream in = new FileInputStream(fs.get(i));
             int b;
-            while ((b = in.read()) != -1)
-                out.write(b);
+            while ((b = in.read(buffer)) != -1)
+                out.write(buffer,0,b);
             in.close();
         }
         out.close();

@@ -143,8 +143,16 @@ public class FileOperationHelper {
     /*
      * this file(path) is fixed
      */
-    public static File getUploadCardJsonFile() {
-        File cardJsonFile = new File(FileOperationHelper.uploadPackDirectory(), "cardTextContent.json");
+    public static File getUploadCardQuestionJsonFile() {
+        File cardJsonFile = new File(FileOperationHelper.uploadPackDirectory(), "questionTextContent.json");
+        return cardJsonFile;
+    }
+
+    /*
+     * this file(path) is fixed
+     */
+    public static File getUploadCardAnswerJsonFile() {
+        File cardJsonFile = new File(FileOperationHelper.uploadPackDirectory(), "answerTextContent.json");
         return cardJsonFile;
     }
 
