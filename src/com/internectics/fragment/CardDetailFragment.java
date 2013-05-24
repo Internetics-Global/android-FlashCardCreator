@@ -30,15 +30,10 @@ import java.io.File;
 
 public class CardDetailFragment extends Fragment {
 
-
     private Card mCurrentCard;
     private Pack mCurrentPack;
 
     private View mContentView;
-
-    public static final String ARG_ITEM_ID = "item_id";
-
-    private boolean mIsQuestionShowing = true;
 
     private EditText mSidebarTitle;
     private FrameLayout mSidebarBackground;
@@ -62,6 +57,11 @@ public class CardDetailFragment extends Fragment {
     private int CODE_REQUEST_IMAGE_SOURCE_IS_LOGO = 1001; //when user click on the logo img
     private int CODE_REQUEST_IMAGE_SOURCE_IS_IMAGE = 1002;//when user click on the image img
 
+    /**
+     * Constructor
+     * @param currentPack
+     * @param currentCard
+     */
     public CardDetailFragment(Pack currentPack, Card currentCard) {
 
         if (currentCard == null) {
@@ -124,14 +124,51 @@ public class CardDetailFragment extends Fragment {
     }
 
     @Override
-    public void onResume() {
-        super.onResume();
-
+    public void onViewCreated(View view, Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
         //checkCardEditable();
         updateCommonContent();
         switchToQuestionView();
         configureLogoURLView();
+    }
 
+    @Override
+    public void onResume() {
+        super.onResume();
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        Log.d(Global.debugTag,"onDestroyView in CardDetailFragment.java");
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (resultCode == Activity.RESULT_OK) {
+            Uri selectedImageURI = data.getData();
+
+            Bitmap resultBitmap = UIHelper.resizeImageTo400(getActivity(), selectedImageURI);
+            if (resultBitmap == null) {
+                Log.d(Global.debugTag, "resultBitmap is null");
+            } else {
+                File toSaveFile = UIHelper.saveImageToCaches(resultBitmap);
+
+                if (requestCode == CODE_REQUEST_IMAGE_SOURCE_IS_LOGO) {
+                    mLogoImage.setImageBitmap(resultBitmap);
+                    mCurrentPack.logoImageUriFormatStr = FileOperationHelper.convertToUriFormatFile(toSaveFile);
+
+                } else if (requestCode == CODE_REQUEST_IMAGE_SOURCE_IS_IMAGE) {
+                    mImage.setImageBitmap(resultBitmap);
+                    if (mQuestionRadioButton.isChecked()) {
+                        mCurrentCard.question.imageUriFormatStr = FileOperationHelper.convertToUriFormatFile(toSaveFile);
+                    } else {
+                        mCurrentCard.answer.imageUriFormatStr = FileOperationHelper.convertToUriFormatFile(toSaveFile);
+                    }
+                }
+            }
+        }
     }
 
     private void configureSegmentView() {
@@ -143,14 +180,12 @@ public class CardDetailFragment extends Fragment {
                     mQuestionRadioButton.setTextColor(Color.WHITE);
                     mAnswerRadioButton.setBackgroundResource(R.drawable.button_segment_unselected);
                     mAnswerRadioButton.setTextColor(Color.BLACK);
-                    mIsQuestionShowing = true;
                     switchToQuestionView();
                 } else {
                     mQuestionRadioButton.setBackgroundResource(R.drawable.button_segment_unselected);
                     mQuestionRadioButton.setTextColor(Color.BLACK);
                     mAnswerRadioButton.setBackgroundResource(R.drawable.button_segment_selected);
                     mAnswerRadioButton.setTextColor(Color.WHITE);
-                    mIsQuestionShowing = false;
                     switchToAnswerView();
                 }
             }
@@ -381,35 +416,6 @@ public class CardDetailFragment extends Fragment {
         Log.d(Global.debugTag, "finish execution of saveNewCreatedCard");
     }
 
-
-    @Override
-    public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        if (resultCode == Activity.RESULT_OK) {
-            Uri selectedImageURI = data.getData();
-
-            Bitmap resultBitmap = UIHelper.resizeImageTo400(getActivity(), selectedImageURI);
-            if (resultBitmap == null) {
-                Log.d(Global.debugTag, "resultBitmap is null");
-            } else {
-                File toSaveFile = UIHelper.saveImageToCaches(resultBitmap);
-
-                if (requestCode == CODE_REQUEST_IMAGE_SOURCE_IS_LOGO) {
-                    mLogoImage.setImageBitmap(resultBitmap);
-                    mCurrentPack.logoImageUriFormatStr = FileOperationHelper.convertToUriFormatFile(toSaveFile);
-
-                } else if (requestCode == CODE_REQUEST_IMAGE_SOURCE_IS_IMAGE) {
-                    mImage.setImageBitmap(resultBitmap);
-                    if (mQuestionRadioButton.isChecked()) {
-                        mCurrentCard.question.imageUriFormatStr = FileOperationHelper.convertToUriFormatFile(toSaveFile);
-                    } else {
-                        mCurrentCard.answer.imageUriFormatStr = FileOperationHelper.convertToUriFormatFile(toSaveFile);
-                    }
-                }
-            }
-        }
-    }
-
     public void cardColorTemplateSelectedPostAction(int cardColorTemplateID) {
         switch (cardColorTemplateID) {
             case 0:
@@ -433,7 +439,7 @@ public class CardDetailFragment extends Fragment {
                 mTitleBackground.setBackgroundResource(R.drawable.card_title_bg_red);
                 break;
             default:
-                Log.i(Global.debugTag,"Out of range");
+                Log.i(Global.debugTag, "Out of range");
         }
     }
 }
