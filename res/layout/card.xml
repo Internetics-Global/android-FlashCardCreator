@@ -7,18 +7,13 @@
               android:orientation="horizontal">
 
     <FrameLayout
+            android:id="@+id/sidebar_background_linearlayout"
             android:layout_height="match_parent"
             android:layout_width="0dp"
             android:layout_weight="62"
+            android:background="@drawable/card_sidebar_bg_blue"
             android:orientation="vertical">
 
-        <Button
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:background="@drawable/card_bg_blue"
-                android:enabled="false"
-                android:gravity="center">
-        </Button>
 
         <EditText
                 android:id="@+id/sidebar_title"
@@ -39,10 +34,12 @@
             android:orientation="vertical">
 
         <LinearLayout
+                android:id="@+id/title_background_linearlayout"
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
                 android:layout_weight="112"
-                android:background="@drawable/shape_card_header">
+                android:orientation="horizontal"
+                android:background="@drawable/card_title_bg_blue">
 
             <EditText
                     android:id="@+id/title"
@@ -55,6 +52,8 @@
                     android:shadowRadius="16"
                     android:inputType="text"
                     android:singleLine="true"
+                    android:layout_gravity="left"
+                    android:gravity="left|center_vertical"
                     android:textColor="@android:color/holo_blue_dark"
                     android:textSize="28sp"/>
 
@@ -72,7 +71,8 @@
 
             <ImageView
                     android:id="@+id/logo_url_btn"
-                    android:layout_width="30dp"
+                    android:layout_width="0dp"
+                    android:layout_weight="80"
                     android:layout_height="30dp"
                     android:layout_gravity="bottom"
                     android:src="@drawable/button_edit_link"/>

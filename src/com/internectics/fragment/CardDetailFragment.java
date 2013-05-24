@@ -41,7 +41,9 @@ public class CardDetailFragment extends Fragment {
     private boolean mIsQuestionShowing = true;
 
     private EditText mSidebarTitle;
+    private FrameLayout mSidebarBackground;
     private EditText mTitle;
+    private LinearLayout mTitleBackground;
     private EditText mCreator;
     private EditText mSubheading;
     private EditText mMain;
@@ -264,7 +266,9 @@ public class CardDetailFragment extends Fragment {
 
     private void getAllViews() {
         mSidebarTitle = (EditText) mContentView.findViewById(R.id.sidebar_title);
+        mSidebarBackground = (FrameLayout) mContentView.findViewById(R.id.sidebar_background_linearlayout);
         mTitle = (EditText) mContentView.findViewById(R.id.title);
+        mTitleBackground = (LinearLayout) mContentView.findViewById(R.id.title_background_linearlayout);
         mCreator = (EditText) mContentView.findViewById(R.id.creator);
 
         mSubheading = (EditText) mContentView.findViewById(R.id.subheading);
@@ -407,7 +411,30 @@ public class CardDetailFragment extends Fragment {
     }
 
     public void cardColorTemplateSelectedPostAction(int cardColorTemplateID) {
-        //mCurrentCard.templateBackground
+        switch (cardColorTemplateID) {
+            case 0:
+                mSidebarBackground.setBackgroundResource(R.drawable.card_sidebar_bg_blue);
+                mTitleBackground.setBackgroundResource(R.drawable.card_title_bg_blue);
+                break;
+            case 1:
+                mSidebarBackground.setBackgroundResource(R.drawable.card_sidebar_bg_coffee);
+                mTitleBackground.setBackgroundResource(R.drawable.card_title_bg_coffee);
+                break;
+            case 2:
+                mSidebarBackground.setBackgroundResource(R.drawable.card_sidebar_bg_gray);
+                mTitleBackground.setBackgroundResource(R.drawable.card_title_bg_gray);
+                break;
+            case 3:
+                mSidebarBackground.setBackgroundResource(R.drawable.card_sidebar_bg_purple);
+                mTitleBackground.setBackgroundResource(R.drawable.card_title_bg_purple);
+                break;
+            case 4:
+                mSidebarBackground.setBackgroundResource(R.drawable.card_sidebar_bg_red);
+                mTitleBackground.setBackgroundResource(R.drawable.card_title_bg_red);
+                break;
+            default:
+                Log.i(Global.debugTag,"Out of range");
+        }
     }
 }
 

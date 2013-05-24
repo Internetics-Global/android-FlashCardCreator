@@ -147,19 +147,21 @@ public class MainActivity extends FragmentActivity implements
                 break;
 
             case R.id.actionbar_change_template_color:
-                new AlertDialog.Builder(this)
-                        .setTitle("Select a template background")
-                        .setSingleChoiceItems(new String[]{"Blue", "Coffee", "Gray", "Purple", "Red"}, 0, null)
-                        .setPositiveButton("OK", new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialog, int which) {
-                                if (mCardDetailFragment != null) {
-                                    mCardDetailFragment.cardColorTemplateSelectedPostAction(which);
+                if (mCurrentPack.cards.size() >= 0) {
+                    new AlertDialog.Builder(this)
+                            .setTitle("Select a template background")
+                            .setSingleChoiceItems(new String[]{"Blue", "Coffee", "Gray", "Purple", "Red"}, mCurrentCard.colorTemplateID, new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+                                    if (mCardDetailFragment != null) {
+                                        dialog.dismiss();
+                                        mCardDetailFragment.cardColorTemplateSelectedPostAction(which);
+                                    }
                                 }
-                            }
-                        })
-                        .setNegativeButton("Cancel", null)
-                        .show();
+                            })
+
+                            .show();
+                }
                 break;
             case R.id.actionbar_more:
                 startActivity(new Intent(MainActivity.this, MoreActivity.class));
