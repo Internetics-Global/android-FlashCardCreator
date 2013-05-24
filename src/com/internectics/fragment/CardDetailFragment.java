@@ -36,6 +36,7 @@ public class CardDetailFragment extends Fragment {
 
     private View mContentView;
 
+    private LinearLayout mContentBodyLeft;
     private EditText mSidebarTitle;
     private FrameLayout mSidebarBackground;
     private EditText mTitle;
@@ -94,6 +95,7 @@ public class CardDetailFragment extends Fragment {
 
         configureSegmentView();
         configureChangeTemplateView();
+        configureLogoURLView();
 
         mLogoImage.setOnClickListener(new View.OnClickListener() {
 
@@ -136,7 +138,7 @@ public class CardDetailFragment extends Fragment {
         //configureCardStatus();
         updateCommonContent();
         switchToQuestionView();
-        configureLogoURLView();
+
     }
 
     @Override
@@ -224,7 +226,7 @@ public class CardDetailFragment extends Fragment {
         questionQuickAction.setOnActionItemClickListener(new QuickAction.OnActionItemClickListener() {
             @Override
             public void onItemClick(QuickAction source, int pos, int actionId) {
-                changeTemplateAction(pos);
+                changeTemplateNotification(pos);
             }
         });
 
@@ -237,7 +239,7 @@ public class CardDetailFragment extends Fragment {
         answerQuickAction.setOnActionItemClickListener(new QuickAction.OnActionItemClickListener() {
             @Override
             public void onItemClick(QuickAction source, int pos, int actionId) {
-                changeTemplateAction(pos);
+                changeTemplateNotification(pos);
             }
         });
 
@@ -284,25 +286,31 @@ public class CardDetailFragment extends Fragment {
 
     }
 
-    private void changeTemplateAction(int index) {
+    private void changeTemplateNotification(int index) {
         if (mQuestionRadioButton.isChecked()) {
             mCurrentCard.question.templateID = index;
+            updateQuestionViewTemplate();
         } else {
             mCurrentCard.answer.templateID = index;
+            updateAnswerViewTemplate();
         }
+
+
 
     }
 
 
     private void switchToQuestionView() {
         updateQuestionContent();
-        updateQuestionLayout();
+        updateQuestionViewTemplate();
+        updateQuestionCSS();
     }
 
 
     private void switchToAnswerView() {
         updateAnswerContent();
-        updateAnswerLayout();
+        updateAnswerViewTemplate();
+        updateAnswerCSS();
     }
 
 
@@ -312,6 +320,8 @@ public class CardDetailFragment extends Fragment {
         mTitle = (EditText) mContentView.findViewById(R.id.title);
         mTitleBackground = (LinearLayout) mContentView.findViewById(R.id.title_background_linearlayout);
         mCreator = (EditText) mContentView.findViewById(R.id.creator);
+
+        mContentBodyLeft = (LinearLayout) mContentView.findViewById(R.id.content_body_left);
 
         mSubheading = (EditText) mContentView.findViewById(R.id.subheading);
         mMain = (EditText) mContentView.findViewById(R.id.main);
@@ -356,14 +366,6 @@ public class CardDetailFragment extends Fragment {
         mSub.setText(mCurrentCard.answer.sub);
         mImage.setImageURI(Uri.parse(mCurrentCard.answer.imageUriFormatStr));
 
-    }
-
-    private void updateQuestionLayout() {
-        mImage.setVisibility(View.INVISIBLE);
-    }
-
-    private void updateAnswerLayout() {
-        mImage.setVisibility(View.VISIBLE);
     }
 
 
@@ -448,12 +450,287 @@ public class CardDetailFragment extends Fragment {
         }
     }
 
+    /**
+     * determine whether the card is editable or not
+     * @return
+     */
     private boolean isEditableMode() {
         if ((mCurrentPack.creatorID).equals(OpenUDID_manager.getOpenUDID())) {
             return true;
         } else {
             return false;
         }
+    }
+
+    private void updateQuestionViewTemplate() {
+
+        int templateID = mCurrentCard.question.templateID;
+
+        LinearLayout.LayoutParams params = (LinearLayout.LayoutParams) mImage.getLayoutParams();
+        params.weight = 0f;
+        mImage.setLayoutParams(params);
+
+        params = (LinearLayout.LayoutParams) mContentBodyLeft.getLayoutParams();
+        params.weight = 710f;
+        mContentBodyLeft.setLayoutParams(params);
+
+        switch (templateID) {
+            case 0:
+                params = (LinearLayout.LayoutParams) mSubheading.getLayoutParams();
+                params.width = LinearLayout.LayoutParams.FILL_PARENT;
+                params.weight = 50;
+                mSubheading.setLayoutParams(params);
+
+                params = (LinearLayout.LayoutParams) mMain.getLayoutParams();
+                params.width = LinearLayout.LayoutParams.FILL_PARENT;
+                params.weight =  350;
+                mMain.setLayoutParams(params);
+
+                params = (LinearLayout.LayoutParams) mSub.getLayoutParams();
+                params.width = LinearLayout.LayoutParams.FILL_PARENT;
+                params.weight = 0;
+                mSub.setLayoutParams(params);
+
+                break;
+            case 1:
+                params = (LinearLayout.LayoutParams) mSubheading.getLayoutParams();
+                params.width = LinearLayout.LayoutParams.FILL_PARENT;
+                params.weight = 50;
+                mSubheading.setLayoutParams(params);
+
+                params = (LinearLayout.LayoutParams) mMain.getLayoutParams();
+                params.width = LinearLayout.LayoutParams.FILL_PARENT;
+                params.weight =  180;
+                mMain.setLayoutParams(params);
+
+                params = (LinearLayout.LayoutParams) mSub.getLayoutParams();
+                params.width = LinearLayout.LayoutParams.FILL_PARENT;
+                params.weight = 160;
+                mSub.setLayoutParams(params);
+                break;
+            case 2:
+                params = (LinearLayout.LayoutParams) mSubheading.getLayoutParams();
+                params.width = LinearLayout.LayoutParams.FILL_PARENT;
+                params.weight = 0;
+                mSubheading.setLayoutParams(params);
+
+                params = (LinearLayout.LayoutParams) mMain.getLayoutParams();
+                params.width = LinearLayout.LayoutParams.FILL_PARENT;
+                params.weight =  280;
+                mMain.setLayoutParams(params);
+
+                params = (LinearLayout.LayoutParams) mSub.getLayoutParams();
+                params.width = LinearLayout.LayoutParams.FILL_PARENT;
+                params.weight = 100;
+                mSub.setLayoutParams(params);
+                break;
+            case 3:
+                params = (LinearLayout.LayoutParams) mSubheading.getLayoutParams();
+                params.width = LinearLayout.LayoutParams.FILL_PARENT;
+                params.weight = 0;
+                mSubheading.setLayoutParams(params);
+
+                params = (LinearLayout.LayoutParams) mMain.getLayoutParams();
+                params.width = LinearLayout.LayoutParams.FILL_PARENT;
+                params.weight =  200;
+                mMain.setLayoutParams(params);
+
+                params = (LinearLayout.LayoutParams) mSub.getLayoutParams();
+                params.width = LinearLayout.LayoutParams.FILL_PARENT;
+                params.weight = 190;
+                mSub.setLayoutParams(params);
+                break;
+            case 4:
+                params = (LinearLayout.LayoutParams) mSubheading.getLayoutParams();
+                params.width = LinearLayout.LayoutParams.FILL_PARENT;
+                params.weight = 0;
+                mSubheading.setLayoutParams(params);
+
+                params = (LinearLayout.LayoutParams) mMain.getLayoutParams();
+                params.width = LinearLayout.LayoutParams.FILL_PARENT;
+                params.weight =  380;
+                mMain.setLayoutParams(params);
+
+                params = (LinearLayout.LayoutParams) mSub.getLayoutParams();
+                params.width = LinearLayout.LayoutParams.FILL_PARENT;
+                params.weight = 0;
+                mSub.setLayoutParams(params);
+                break;
+            default:
+                Log.i(Global.debugTag,"mCurrentCard.question.templateID is out of scope");
+        }
+
+    }
+
+    private void updateAnswerViewTemplate() {
+
+        int templateID = mCurrentCard.answer.templateID;
+        LinearLayout.LayoutParams params;
+
+        switch (templateID) {
+            case 0:
+                //part1: image
+                params = (LinearLayout.LayoutParams) mContentBodyLeft.getLayoutParams();
+                params.weight = 360f;
+                mContentBodyLeft.setLayoutParams(params);
+                params = (LinearLayout.LayoutParams) mImage.getLayoutParams();
+                params.weight = 350f;
+                mImage.setLayoutParams(params);
+
+                //part2:text
+                params = (LinearLayout.LayoutParams) mSubheading.getLayoutParams();
+                params.width = LinearLayout.LayoutParams.FILL_PARENT;
+                params.weight = 80;
+                mSubheading.setLayoutParams(params);
+
+                params = (LinearLayout.LayoutParams) mMain.getLayoutParams();
+                params.width = LinearLayout.LayoutParams.FILL_PARENT;
+                params.weight =  320;
+                mMain.setLayoutParams(params);
+
+                params = (LinearLayout.LayoutParams) mSub.getLayoutParams();
+                params.width = LinearLayout.LayoutParams.FILL_PARENT;
+                params.weight = 0;
+                mSub.setLayoutParams(params);
+
+                break;
+            case 1:
+                //part1: image
+                params = (LinearLayout.LayoutParams) mContentBodyLeft.getLayoutParams();
+                params.weight = 500f;
+                mContentBodyLeft.setLayoutParams(params);
+                params = (LinearLayout.LayoutParams) mImage.getLayoutParams();
+                params.weight = 210f;
+                mImage.setLayoutParams(params);
+
+                //part2:text
+                params = (LinearLayout.LayoutParams) mSubheading.getLayoutParams();
+                params.width = LinearLayout.LayoutParams.FILL_PARENT;
+                params.weight = 60;
+                mSubheading.setLayoutParams(params);
+
+                params = (LinearLayout.LayoutParams) mMain.getLayoutParams();
+                params.width = LinearLayout.LayoutParams.FILL_PARENT;
+                params.weight =  290;
+                mMain.setLayoutParams(params);
+
+                params = (LinearLayout.LayoutParams) mSub.getLayoutParams();
+                params.width = LinearLayout.LayoutParams.FILL_PARENT;
+                params.weight = 60;
+                mSub.setLayoutParams(params);
+
+                break;
+            case 2:
+                //part1: image
+                params = (LinearLayout.LayoutParams) mContentBodyLeft.getLayoutParams();
+                params.weight = 360f;
+                mContentBodyLeft.setLayoutParams(params);
+                params = (LinearLayout.LayoutParams) mImage.getLayoutParams();
+                params.weight = 350f;
+                mImage.setLayoutParams(params);
+
+                //part2:text
+                params = (LinearLayout.LayoutParams) mSubheading.getLayoutParams();
+                params.width = LinearLayout.LayoutParams.FILL_PARENT;
+                params.weight = 60;
+                mSubheading.setLayoutParams(params);
+
+                params = (LinearLayout.LayoutParams) mMain.getLayoutParams();
+                params.width = LinearLayout.LayoutParams.FILL_PARENT;
+                params.weight =  350;
+                mMain.setLayoutParams(params);
+
+                params = (LinearLayout.LayoutParams) mSub.getLayoutParams();
+                params.width = LinearLayout.LayoutParams.FILL_PARENT;
+                params.weight = 0;
+                mSub.setLayoutParams(params);
+                break;
+            case 3:
+                //part1: image
+                params = (LinearLayout.LayoutParams) mContentBodyLeft.getLayoutParams();
+                params.weight = 710f;
+                mContentBodyLeft.setLayoutParams(params);
+                params = (LinearLayout.LayoutParams) mImage.getLayoutParams();
+                params.weight = 0f;
+                mImage.setLayoutParams(params);
+
+                //part2:text
+                params = (LinearLayout.LayoutParams) mSubheading.getLayoutParams();
+                params.width = LinearLayout.LayoutParams.FILL_PARENT;
+                params.weight = 0;
+                mSubheading.setLayoutParams(params);
+
+                params = (LinearLayout.LayoutParams) mMain.getLayoutParams();
+                params.width = LinearLayout.LayoutParams.FILL_PARENT;
+                params.weight =  420;
+                mMain.setLayoutParams(params);
+
+                params = (LinearLayout.LayoutParams) mSub.getLayoutParams();
+                params.width = LinearLayout.LayoutParams.FILL_PARENT;
+                params.weight = 0;
+                mSub.setLayoutParams(params);
+                break;
+            case 4:
+                //part1: image
+                params = (LinearLayout.LayoutParams) mContentBodyLeft.getLayoutParams();
+                params.weight = 360f;
+                mContentBodyLeft.setLayoutParams(params);
+                params = (LinearLayout.LayoutParams) mImage.getLayoutParams();
+                params.weight = 350f;
+                mImage.setLayoutParams(params);
+
+                //part2:text
+                params = (LinearLayout.LayoutParams) mSubheading.getLayoutParams();
+                params.width = LinearLayout.LayoutParams.FILL_PARENT;
+                params.weight = 0;
+                mSubheading.setLayoutParams(params);
+
+                params = (LinearLayout.LayoutParams) mMain.getLayoutParams();
+                params.width = LinearLayout.LayoutParams.FILL_PARENT;
+                params.weight =  420;
+                mMain.setLayoutParams(params);
+
+                params = (LinearLayout.LayoutParams) mSub.getLayoutParams();
+                params.width = LinearLayout.LayoutParams.FILL_PARENT;
+                params.weight = 0;
+                mSub.setLayoutParams(params);
+                break;
+            case 5:
+                //part1: image
+                params = (LinearLayout.LayoutParams) mContentBodyLeft.getLayoutParams();
+                params.weight = 0f;
+                mContentBodyLeft.setLayoutParams(params);
+                params = (LinearLayout.LayoutParams) mImage.getLayoutParams();
+                params.weight = 710f;
+                mImage.setLayoutParams(params);
+
+                //part2:text
+                params = (LinearLayout.LayoutParams) mSubheading.getLayoutParams();
+                params.width = LinearLayout.LayoutParams.FILL_PARENT;
+                params.weight = 0;
+                mSubheading.setLayoutParams(params);
+
+                params = (LinearLayout.LayoutParams) mMain.getLayoutParams();
+                params.width = LinearLayout.LayoutParams.FILL_PARENT;
+                params.weight =  0;
+                mMain.setLayoutParams(params);
+
+                params = (LinearLayout.LayoutParams) mSub.getLayoutParams();
+                params.width = LinearLayout.LayoutParams.FILL_PARENT;
+                params.weight = 0;
+                mSub.setLayoutParams(params);
+                break;
+            default:
+                Log.i(Global.debugTag,"mCurrentCard.answer.templateID is out of scope");
+        }
+    }
+
+    private void updateQuestionCSS() {
+
+    }
+
+    private void updateAnswerCSS() {
+
     }
 }
 

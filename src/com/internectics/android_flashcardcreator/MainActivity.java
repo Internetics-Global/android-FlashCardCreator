@@ -190,15 +190,8 @@ public class MainActivity extends FragmentActivity implements
                 startActivity(new Intent(MainActivity.this, InstructionActivity.class));
                 break;
 
-            case R.id.actionbar_test2:
-                String downloableShareLink = "http://dl.dropbox.com/s/c0zjxrntg518dcn/pack219ed6f2-0052-47e9-8b93-93af359e3cd9.zip";
-                File downloadedZipFile = new File(FileOperationHelper.downloadedPackDirectory(), "downloadedPackZip.zip");
-                PackDownloadHelper packDownloadHelper = new PackDownloadHelper(MainActivity.this, downloableShareLink, downloadedZipFile.toString());
-                packDownloadHelper.execute();
-                break;
-
             case R.id.actionbar_test1:
-                startActivity(new Intent(MainActivity.this, MoreActivity.class));
+
 
                 break;
 

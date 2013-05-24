@@ -27,145 +27,149 @@
         </EditText>
     </FrameLayout>
 
-    <LinearLayout
+    <FrameLayout
             android:layout_height="match_parent"
             android:layout_width="0dp"
-            android:layout_weight="740"
-            android:orientation="vertical">
+            android:layout_weight="740">
 
         <LinearLayout
-                android:id="@+id/title_background_linearlayout"
-                android:layout_width="match_parent"
-                android:layout_height="0dp"
-                android:layout_weight="112"
-                android:orientation="horizontal"
-                android:background="@drawable/card_title_bg_blue">
-
-            <EditText
-                    android:id="@+id/title"
-                    android:layout_height="match_parent"
-                    android:layout_width="0dp"
-                    android:layout_weight="400"
-                    android:text="Question"
-                    android:textStyle="bold"
-                    android:shadowColor="@android:color/holo_orange_dark"
-                    android:shadowRadius="16"
-                    android:inputType="text"
-                    android:singleLine="true"
-                    android:layout_gravity="left"
-                    android:gravity="left|center_vertical"
-                    android:textColor="@android:color/holo_blue_dark"
-                    android:textSize="28sp"/>
-
-            <EditText
-                    android:id="@+id/creator"
-                    android:layout_height="match_parent"
-                    android:layout_width="0dp"
-                    android:layout_weight="160"
-                    android:gravity="bottom"
-                    android:text="Create by"
-                    android:inputType="text"
-                    android:singleLine="true"
-                    android:textColor="@android:color/holo_blue_dark"
-                    android:textSize="14sp"/>
-
-            <ImageView
-                    android:id="@+id/logo_url_btn"
-                    android:layout_width="0dp"
-                    android:layout_weight="80"
-                    android:layout_height="30dp"
-                    android:layout_gravity="bottom"
-                    android:src="@drawable/button_edit_link"/>
-
-            <ImageView
-                    android:id="@+id/logo_image"
-                    android:layout_height="wrap_content"
-                    android:layout_width="0dp"
-                    android:layout_weight="120"
-                    android:layout_marginRight="10dp"
-                    android:layout_marginTop="10dp"
-                    android:background="@drawable/shape_image_round_corner"
-                    android:src="@drawable/question_placeholder_logo"/>
-        </LinearLayout>
-
-        <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="0dp"
-                android:layout_weight="440"
-                android:background="@drawable/shape_card_body"
-                android:baselineAligned="false"
-                android:orientation="horizontal">
+                android:layout_height="match_parent"
+                android:layout_width="fill_parent"
+                android:orientation="vertical">
 
             <LinearLayout
-                    android:layout_height="match_parent"
-                    android:layout_width="0dp"
-                    android:layout_weight="360"
-                    android:layout_marginLeft="10dp"
-                    android:layout_marginTop="10dp"
-                    android:background="@android:color/holo_green_light"
-                    android:orientation="vertical">
+                    android:id="@+id/title_background_linearlayout"
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:layout_weight="112"
+                    android:orientation="horizontal"
+                    android:background="@drawable/card_title_bg_blue">
 
                 <EditText
-                        android:id="@+id/subheading"
-                        android:layout_width="match_parent"
-                        android:layout_height="0dp"
-                        android:layout_weight="60"
-                        android:inputType="textMultiLine"
-                        android:background="@android:color/holo_red_light"
-                        android:ems="10">
-
-                    <requestFocus/>
-                </EditText>
-
-                <EditText
-                        android:id="@+id/main"
-                        android:layout_width="match_parent"
-                        android:layout_height="0dp"
-                        android:layout_weight="290"
-                        android:inputType="textMultiLine"
-                        android:background="@android:color/holo_purple"
-                        android:ems="10"/>
+                        android:id="@+id/title"
+                        android:layout_height="match_parent"
+                        android:layout_width="0dp"
+                        android:layout_weight="400"
+                        android:text="Question"
+                        android:textStyle="bold"
+                        android:shadowColor="@android:color/holo_orange_dark"
+                        android:shadowRadius="16"
+                        android:inputType="text"
+                        android:singleLine="true"
+                        android:layout_gravity="left"
+                        android:gravity="left|center_vertical"
+                        android:textColor="@android:color/holo_blue_dark"
+                        android:textSize="28sp"/>
 
                 <EditText
-                        android:id="@+id/sub"
-                        android:layout_width="match_parent"
-                        android:layout_height="0dp"
-                        android:layout_weight="50"
-                        android:inputType="textMultiLine"
-                        android:background="@android:color/holo_blue_light"
-                        android:ems="10"/>
+                        android:id="@+id/creator"
+                        android:layout_height="match_parent"
+                        android:layout_width="0dp"
+                        android:layout_weight="160"
+                        android:gravity="bottom"
+                        android:text="Create by"
+                        android:inputType="text"
+                        android:singleLine="true"
+                        android:textColor="@android:color/holo_blue_dark"
+                        android:textSize="14sp"/>
 
+                <ImageView
+                        android:id="@+id/logo_url_btn"
+                        android:layout_width="0dp"
+                        android:layout_weight="80"
+                        android:layout_height="30dp"
+                        android:layout_gravity="bottom"
+                        android:src="@drawable/button_edit_link"/>
+
+                <ImageView
+                        android:id="@+id/logo_image"
+                        android:layout_height="wrap_content"
+                        android:layout_width="0dp"
+                        android:layout_weight="120"
+                        android:layout_marginRight="10dp"
+                        android:layout_marginTop="10dp"
+                        android:background="@drawable/shape_image_round_corner"
+                        android:src="@drawable/question_placeholder_logo"/>
             </LinearLayout>
 
-            <FrameLayout
-                    android:layout_height="match_parent"
-                    android:layout_width="0dp"
-                    android:layout_weight="350"
-                    android:layout_marginLeft="10dp"
-                    android:layout_marginTop="10dp">
+            <LinearLayout
+                    android:id="@+id/content_body"
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:layout_weight="440"
+                    android:baselineAligned="false"
+                    android:orientation="horizontal">
+
+                <LinearLayout
+                        android:id="@+id/content_body_left"
+                        android:layout_height="match_parent"
+                        android:layout_width="0dp"
+                        android:layout_weight="360"
+                        android:layout_marginLeft="5dp"
+                        android:layout_marginTop="5dp"
+                        android:layout_marginBottom="5dp"
+                        android:background="@android:color/holo_green_light"
+                        android:orientation="vertical">
+
+                    <EditText
+                            android:id="@+id/subheading"
+                            android:layout_width="match_parent"
+                            android:layout_height="0dp"
+                            android:layout_weight="60"
+                            android:layout_marginTop="5dp"
+                            android:inputType="textMultiLine"
+                            android:background="#EBEBEB"
+                            android:ems="10">
+                    </EditText>
+
+                    <EditText
+                            android:id="@+id/main"
+                            android:layout_width="match_parent"
+                            android:layout_height="0dp"
+                            android:layout_weight="290"
+                            android:layout_marginTop="5dp"
+                            android:inputType="textMultiLine"
+                            android:background="#D0D0D0"
+                            android:ems="10"/>
+
+                    <EditText
+                            android:id="@+id/sub"
+                            android:layout_width="match_parent"
+                            android:layout_height="0dp"
+                            android:layout_weight="50"
+                            android:layout_marginTop="5dp"
+                            android:inputType="textMultiLine"
+                            android:background="#B1B1B1"
+                            android:ems="10"/>
+
+                </LinearLayout>
 
                 <ImageView
                         android:id="@+id/image"
                         android:layout_height="match_parent"
-                        android:layout_width="match_parent"
-                        android:layout_marginRight="15dp"
-                        android:layout_marginBottom="15dp"
-                        android:src="@drawable/question_placeholder_logo"/>
-
-                <ImageView
-                        android:id="@+id/change_template_button"
-                        android:layout_gravity="right|bottom"
-                        android:layout_marginBottom="15dp"
-                        android:layout_marginRight="15dp"
-                        android:layout_height="40dp"
-                        android:layout_width="40dp"
-                        android:src="@drawable/button_change_template"/>
+                        android:layout_width="0dp"
+                        android:layout_weight="350"
+                        android:layout_marginLeft="5dp"
+                        android:layout_marginTop="5dp"
+                        android:layout_marginRight="10dp"
+                        android:layout_marginBottom="10dp"
+                        android:src="@drawable/question_placeholder_content"/>
 
 
-            </FrameLayout>
-
-
+            </LinearLayout>
         </LinearLayout>
-    </LinearLayout>
+
+        <ImageView
+                android:id="@+id/change_template_button"
+                android:layout_gravity="right|bottom"
+                android:layout_marginBottom="15dp"
+                android:layout_marginRight="15dp"
+                android:layout_height="40dp"
+                android:layout_width="40dp"
+                android:src="@drawable/button_change_template"/>
+
+    </FrameLayout>
+
+
 
 </LinearLayout>
