@@ -9,12 +9,14 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.*;
+import com.internectics.UI.FCCEditText;
 import com.internectics.android_flashcardcreator.R;
 import com.internectics.android_flashcardcreator.WebViewActivity;
 import com.internectics.data.Card;
@@ -29,22 +31,24 @@ import net.londatiga.android.QuickAction;
 
 import java.io.File;
 
-public class CardDetailFragment extends Fragment {
+public class CardDetailFragment extends Fragment implements TextView.OnEditorActionListener, FCCEditText.OnKeyboardCloseListener {
 
     private Card mCurrentCard;
     private Pack mCurrentPack;
 
+    public boolean mIsCreatingCard = false;
+
     private View mContentView;
 
     private LinearLayout mContentBodyLeft;
-    private EditText mSidebarTitle;
+    private FCCEditText mSidebarTitle;
     private FrameLayout mSidebarBackground;
-    private EditText mTitle;
+    private FCCEditText mTitle;
     private LinearLayout mTitleBackground;
-    private EditText mCreator;
-    private EditText mSubheading;
-    private EditText mMain;
-    private EditText mSub;
+    private FCCEditText mCreator;
+    private FCCEditText mSubheading;
+    private FCCEditText mMain;
+    private FCCEditText mSub;
     private ImageView mImage;
     private ImageView mLogoImage;
     private ImageView mChangeTemplateImage;
@@ -61,11 +65,13 @@ public class CardDetailFragment extends Fragment {
 
     /**
      * Constructor
+     *
      * @param currentPack
      * @param currentCard
      */
-    public CardDetailFragment(Pack currentPack, Card currentCard) {
+    public CardDetailFragment(Pack currentPack, Card currentCard, boolean isCreatingCard) {
 
+        mIsCreatingCard = isCreatingCard;
         if (currentCard == null) {
             Log.d(Global.debugTag, "Creating a new card is going on");
             mCurrentPack = currentPack;
@@ -109,7 +115,7 @@ public class CardDetailFragment extends Fragment {
                             CODE_REQUEST_IMAGE_SOURCE_IS_LOGO);
                 } else {
                     Intent intent = new Intent(getActivity(), WebViewActivity.class);
-                    intent.putExtra("url",mCurrentPack.logoURL);
+                    intent.putExtra("url", mCurrentPack.logoURL);
                     startActivity(intent);
                 }
 
@@ -149,7 +155,7 @@ public class CardDetailFragment extends Fragment {
     @Override
     public void onDestroyView() {
         super.onDestroyView();
-        Log.d(Global.debugTag,"onDestroyView in CardDetailFragment.java");
+        Log.d(Global.debugTag, "onDestroyView in CardDetailFragment.java");
     }
 
     @Override
@@ -296,7 +302,6 @@ public class CardDetailFragment extends Fragment {
         }
 
 
-
     }
 
 
@@ -315,17 +320,17 @@ public class CardDetailFragment extends Fragment {
 
 
     private void getAllViews() {
-        mSidebarTitle = (EditText) mContentView.findViewById(R.id.sidebar_title);
+        mSidebarTitle = (FCCEditText) mContentView.findViewById(R.id.sidebar_title);
         mSidebarBackground = (FrameLayout) mContentView.findViewById(R.id.sidebar_background_linearlayout);
-        mTitle = (EditText) mContentView.findViewById(R.id.title);
+        mTitle = (FCCEditText) mContentView.findViewById(R.id.title);
         mTitleBackground = (LinearLayout) mContentView.findViewById(R.id.title_background_linearlayout);
-        mCreator = (EditText) mContentView.findViewById(R.id.creator);
+        mCreator = (FCCEditText) mContentView.findViewById(R.id.creator);
 
         mContentBodyLeft = (LinearLayout) mContentView.findViewById(R.id.content_body_left);
 
-        mSubheading = (EditText) mContentView.findViewById(R.id.subheading);
-        mMain = (EditText) mContentView.findViewById(R.id.main);
-        mSub = (EditText) mContentView.findViewById(R.id.sub);
+        mSubheading = (FCCEditText) mContentView.findViewById(R.id.subheading);
+        mMain = (FCCEditText) mContentView.findViewById(R.id.main);
+        mSub = (FCCEditText) mContentView.findViewById(R.id.sub);
 
         mChangeTemplateImage = (ImageView) mContentView.findViewById(R.id.change_template_button);
         mLogoImage = (ImageView) mContentView.findViewById(R.id.logo_image);
@@ -335,6 +340,19 @@ public class CardDetailFragment extends Fragment {
         mQuestionRadioButton = (RadioButton) mContentView.findViewById(R.id.radio_segment_question);
         mAnswerRadioButton = (RadioButton) mContentView.findViewById(R.id.radio_segment_answer);
         mRadioGroup = (RadioGroup) mContentView.findViewById(R.id.radio_segment);
+
+        mTitle.setOnEditorActionListener(this);
+        mSidebarTitle.setOnEditorActionListener(this);
+        mSubheading.setOnEditorActionListener(this);
+        mMain.setOnEditorActionListener(this);
+        mSub.setOnEditorActionListener(this);
+
+        mTitle.mCallbacks = this;
+        mSidebarTitle.mCallbacks = this;
+        mSubheading.mCallbacks = this;
+        mMain.mCallbacks = this;
+        mSub.mCallbacks = this;
+
 
     }
 
@@ -371,6 +389,7 @@ public class CardDetailFragment extends Fragment {
 
     /**
      * Apply according to card editable or not
+     *
      * @return
      */
     private void configureCardStatus() {
@@ -418,10 +437,12 @@ public class CardDetailFragment extends Fragment {
         File savedFile = UIHelper.saveImageToCaches(bitmap);
         mCurrentCard.coverImageUriFormatStr = FileOperationHelper.convertToUriFormatFile(savedFile);
 
-        //Step2: save
+
+        //Step4: save
         mCurrentCard.save(AppContext.getAppContext());
         Log.d(Global.debugTag, "finish execution of saveNewCreatedCard");
     }
+
 
     public void cardColorTemplateSelectedPostAction(int cardColorTemplateID) {
         switch (cardColorTemplateID) {
@@ -452,6 +473,7 @@ public class CardDetailFragment extends Fragment {
 
     /**
      * determine whether the card is editable or not
+     *
      * @return
      */
     private boolean isEditableMode() {
@@ -483,7 +505,7 @@ public class CardDetailFragment extends Fragment {
 
                 params = (LinearLayout.LayoutParams) mMain.getLayoutParams();
                 params.width = LinearLayout.LayoutParams.FILL_PARENT;
-                params.weight =  350;
+                params.weight = 350;
                 mMain.setLayoutParams(params);
 
                 params = (LinearLayout.LayoutParams) mSub.getLayoutParams();
@@ -500,7 +522,7 @@ public class CardDetailFragment extends Fragment {
 
                 params = (LinearLayout.LayoutParams) mMain.getLayoutParams();
                 params.width = LinearLayout.LayoutParams.FILL_PARENT;
-                params.weight =  180;
+                params.weight = 180;
                 mMain.setLayoutParams(params);
 
                 params = (LinearLayout.LayoutParams) mSub.getLayoutParams();
@@ -516,7 +538,7 @@ public class CardDetailFragment extends Fragment {
 
                 params = (LinearLayout.LayoutParams) mMain.getLayoutParams();
                 params.width = LinearLayout.LayoutParams.FILL_PARENT;
-                params.weight =  280;
+                params.weight = 280;
                 mMain.setLayoutParams(params);
 
                 params = (LinearLayout.LayoutParams) mSub.getLayoutParams();
@@ -532,7 +554,7 @@ public class CardDetailFragment extends Fragment {
 
                 params = (LinearLayout.LayoutParams) mMain.getLayoutParams();
                 params.width = LinearLayout.LayoutParams.FILL_PARENT;
-                params.weight =  200;
+                params.weight = 200;
                 mMain.setLayoutParams(params);
 
                 params = (LinearLayout.LayoutParams) mSub.getLayoutParams();
@@ -548,7 +570,7 @@ public class CardDetailFragment extends Fragment {
 
                 params = (LinearLayout.LayoutParams) mMain.getLayoutParams();
                 params.width = LinearLayout.LayoutParams.FILL_PARENT;
-                params.weight =  380;
+                params.weight = 380;
                 mMain.setLayoutParams(params);
 
                 params = (LinearLayout.LayoutParams) mSub.getLayoutParams();
@@ -557,7 +579,7 @@ public class CardDetailFragment extends Fragment {
                 mSub.setLayoutParams(params);
                 break;
             default:
-                Log.i(Global.debugTag,"mCurrentCard.question.templateID is out of scope");
+                Log.i(Global.debugTag, "mCurrentCard.question.templateID is out of scope");
         }
 
     }
@@ -585,7 +607,7 @@ public class CardDetailFragment extends Fragment {
 
                 params = (LinearLayout.LayoutParams) mMain.getLayoutParams();
                 params.width = LinearLayout.LayoutParams.FILL_PARENT;
-                params.weight =  320;
+                params.weight = 320;
                 mMain.setLayoutParams(params);
 
                 params = (LinearLayout.LayoutParams) mSub.getLayoutParams();
@@ -611,7 +633,7 @@ public class CardDetailFragment extends Fragment {
 
                 params = (LinearLayout.LayoutParams) mMain.getLayoutParams();
                 params.width = LinearLayout.LayoutParams.FILL_PARENT;
-                params.weight =  290;
+                params.weight = 290;
                 mMain.setLayoutParams(params);
 
                 params = (LinearLayout.LayoutParams) mSub.getLayoutParams();
@@ -637,7 +659,7 @@ public class CardDetailFragment extends Fragment {
 
                 params = (LinearLayout.LayoutParams) mMain.getLayoutParams();
                 params.width = LinearLayout.LayoutParams.FILL_PARENT;
-                params.weight =  350;
+                params.weight = 350;
                 mMain.setLayoutParams(params);
 
                 params = (LinearLayout.LayoutParams) mSub.getLayoutParams();
@@ -662,7 +684,7 @@ public class CardDetailFragment extends Fragment {
 
                 params = (LinearLayout.LayoutParams) mMain.getLayoutParams();
                 params.width = LinearLayout.LayoutParams.FILL_PARENT;
-                params.weight =  420;
+                params.weight = 420;
                 mMain.setLayoutParams(params);
 
                 params = (LinearLayout.LayoutParams) mSub.getLayoutParams();
@@ -687,7 +709,7 @@ public class CardDetailFragment extends Fragment {
 
                 params = (LinearLayout.LayoutParams) mMain.getLayoutParams();
                 params.width = LinearLayout.LayoutParams.FILL_PARENT;
-                params.weight =  420;
+                params.weight = 420;
                 mMain.setLayoutParams(params);
 
                 params = (LinearLayout.LayoutParams) mSub.getLayoutParams();
@@ -712,7 +734,7 @@ public class CardDetailFragment extends Fragment {
 
                 params = (LinearLayout.LayoutParams) mMain.getLayoutParams();
                 params.width = LinearLayout.LayoutParams.FILL_PARENT;
-                params.weight =  0;
+                params.weight = 0;
                 mMain.setLayoutParams(params);
 
                 params = (LinearLayout.LayoutParams) mSub.getLayoutParams();
@@ -721,7 +743,7 @@ public class CardDetailFragment extends Fragment {
                 mSub.setLayoutParams(params);
                 break;
             default:
-                Log.i(Global.debugTag,"mCurrentCard.answer.templateID is out of scope");
+                Log.i(Global.debugTag, "mCurrentCard.answer.templateID is out of scope");
         }
     }
 
@@ -730,6 +752,81 @@ public class CardDetailFragment extends Fragment {
     }
 
     private void updateAnswerCSS() {
+
+    }
+
+
+    /**
+     * Deal with keyboard action
+     */
+    @Override
+    public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+        switch (actionId) {
+            case EditorInfo.IME_NULL:
+                Log.i(Global.debugTag, "You have touched Null on keyboard");
+                break;
+            case EditorInfo.IME_ACTION_SEND:
+                Log.i(Global.debugTag, "You have touched Send on keyboard");
+                break;
+            case EditorInfo.IME_ACTION_DONE:
+                Log.i(Global.debugTag, "You have touched Done on keyboard");
+                mIMM.hideSoftInputFromWindow(v.getWindowToken(), 0);
+                break;
+        }
+        return false;
+    }
+
+    @Override
+    public void onKeyboardClose(EditText editText) {
+        Log.d(Global.debugTag, "Keyboard is closed");
+        int id = editText.getId();
+        switch (id) {
+            case R.id.sidebar_title:
+                mCurrentPack.sidebarTitle = editText.getText().toString();
+                break;
+            case R.id.title:
+                if (mQuestionRadioButton.isChecked()) {
+                    mCurrentPack.questionTitle = editText.getText().toString();
+                } else {
+                    mCurrentPack.answerTitle = editText.getText().toString();
+                }
+                break;
+            case R.id.creator:
+                mCurrentPack.creatorNickName = editText.getText().toString();
+                break;
+            case R.id.subheading:
+                if (mQuestionRadioButton.isChecked()) {
+                    mCurrentCard.question.subheading = editText.getText().toString();
+                } else {
+                    mCurrentCard.answer.subheading = editText.getText().toString();
+                }
+                break;
+            case R.id.main:
+                if (mQuestionRadioButton.isChecked()) {
+                    mCurrentCard.question.main = editText.getText().toString();
+                } else {
+                    mCurrentCard.answer.main = editText.getText().toString();
+                }
+                break;
+            case R.id.sub:
+                if (mQuestionRadioButton.isChecked()) {
+                    mCurrentCard.question.sub = editText.getText().toString();
+                } else {
+                    mCurrentCard.answer.sub = editText.getText().toString();
+                }
+
+                break;
+            default:
+                Log.i(Global.debugTag, "Out of our scope");
+        }
+
+        if (mIsCreatingCard) {
+            //we will do that when we click the save button
+        } else {
+            //We do here
+            mCurrentPack.save(AppContext.getAppContext());
+            mCurrentCard.save(AppContext.getAppContext());
+        }
 
     }
 }

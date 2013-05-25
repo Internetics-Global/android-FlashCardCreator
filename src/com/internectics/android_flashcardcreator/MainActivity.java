@@ -261,7 +261,7 @@ public class MainActivity extends FragmentActivity implements
         if (index >= 0) {
             mCurrentIndex = index;
             mCurrentCard = mCurrentPack.cards.get(mCurrentIndex);
-            mCardDetailFragment = new CardDetailFragment(mCurrentPack, mCurrentCard);
+            mCardDetailFragment = new CardDetailFragment(mCurrentPack, mCurrentCard, false);
             getSupportFragmentManager().beginTransaction()
                     .replace(R.id.card_detail_container, mCardDetailFragment).commit();
         } else {
@@ -298,7 +298,7 @@ public class MainActivity extends FragmentActivity implements
             }
         });
 
-        mCardDetailFragment = new CardDetailFragment(mCurrentPack, null);
+        mCardDetailFragment = new CardDetailFragment(mCurrentPack, null,true);
         getSupportFragmentManager().beginTransaction()
                 .setCustomAnimations(R.anim.in_from_right, R.anim.out_to_right)
                 .replace(R.id.add_card_frame_layout, mCardDetailFragment)

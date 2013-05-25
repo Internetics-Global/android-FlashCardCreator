@@ -15,7 +15,7 @@
             android:orientation="vertical">
 
 
-        <EditText
+        <com.internectics.UI.FCCEditText
                 android:id="@+id/sidebar_title"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
@@ -23,8 +23,7 @@
                 android:singleLine="true"
                 android:text="1"
                 android:rotation="-90"
-                android:gravity="center">
-        </EditText>
+                android:gravity="center" />
     </FrameLayout>
 
     <FrameLayout
@@ -45,7 +44,7 @@
                     android:orientation="horizontal"
                     android:background="@drawable/card_title_bg_blue">
 
-                <EditText
+                <com.internectics.UI.FCCEditText
                         android:id="@+id/title"
                         android:layout_height="match_parent"
                         android:layout_width="0dp"
@@ -61,7 +60,7 @@
                         android:textColor="@android:color/holo_blue_dark"
                         android:textSize="28sp"/>
 
-                <EditText
+                <com.internectics.UI.FCCEditText
                         android:id="@+id/creator"
                         android:layout_height="match_parent"
                         android:layout_width="0dp"
@@ -111,7 +110,7 @@
                         android:background="@android:color/holo_green_light"
                         android:orientation="vertical">
 
-                    <EditText
+                    <com.internectics.UI.FCCEditText
                             android:id="@+id/subheading"
                             android:layout_width="match_parent"
                             android:layout_height="0dp"
@@ -119,10 +118,9 @@
                             android:layout_marginTop="5dp"
                             android:inputType="textMultiLine"
                             android:background="#EBEBEB"
-                            android:ems="10">
-                    </EditText>
+                            android:ems="10" />
 
-                    <EditText
+                    <com.internectics.UI.FCCEditText
                             android:id="@+id/main"
                             android:layout_width="match_parent"
                             android:layout_height="0dp"
@@ -132,7 +130,7 @@
                             android:background="#D0D0D0"
                             android:ems="10"/>
 
-                    <EditText
+                    <com.internectics.UI.FCCEditText
                             android:id="@+id/sub"
                             android:layout_width="match_parent"
                             android:layout_height="0dp"
