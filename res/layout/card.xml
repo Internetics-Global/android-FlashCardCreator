@@ -117,6 +117,8 @@
                             android:layout_weight="60"
                             android:layout_marginTop="5dp"
                             android:inputType="textMultiLine"
+                            android:textColor="@android:color/black"
+                            android:textStyle="bold"
                             android:background="#EBEBEB"
                             android:ems="10" />
 
@@ -127,6 +129,8 @@
                             android:layout_weight="290"
                             android:layout_marginTop="5dp"
                             android:inputType="textMultiLine"
+                            android:textColor="@android:color/black"
+                            android:textStyle="bold"
                             android:background="#D0D0D0"
                             android:ems="10"/>
 
@@ -137,6 +141,8 @@
                             android:layout_weight="50"
                             android:layout_marginTop="5dp"
                             android:inputType="textMultiLine"
+                            android:textColor="@android:color/black"
+                            android:textStyle="bold"
                             android:background="#B1B1B1"
                             android:ems="10"/>
 

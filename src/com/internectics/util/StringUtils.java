@@ -1,7 +1,9 @@
 package com.internectics.util;
 
+import android.graphics.Color;
 import android.net.Uri;
 import android.util.Log;
+import android.view.Gravity;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
@@ -119,6 +121,41 @@ public class StringUtils {
         }
 
         return index;
+    }
+
+
+    /**
+     * Used to convert iOS style("Left", "Center","Right" to android style(Gravity.Center...)
+     */
+    public static int convertGravityStringToInt(String gravity) {
+        if (gravity.equals("Left")) {
+            return Gravity.LEFT;
+        } else if (gravity.equals("Center")) {
+            return Gravity.CENTER;
+        } else if (gravity.equals("Right")) {
+            return Gravity.RIGHT;
+        } else {
+            return Gravity.LEFT;
+        }
+    }
+
+    /**
+     * Used to convert iOS style("Red",etc) to android style(Color.RED)
+     */
+    public static int convertColorStringToInt(String color) {
+        if (color.equals("Red")) {
+            return Color.RED;
+        } else if (color.equals("Blue")) {
+            return Color.BLUE;
+        } else if (color.equals("Black")) {
+            return Color.BLACK;
+        } else if (color.equals("Yellow")) {
+            return Color.YELLOW;
+        } else if (color.equals("Green")) {
+            return Color.GREEN;
+        } else {
+            return Color.BLACK;
+        }
     }
 
 

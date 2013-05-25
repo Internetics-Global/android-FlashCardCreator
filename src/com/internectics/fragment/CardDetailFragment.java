@@ -9,10 +9,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.util.Log;
-import android.view.KeyEvent;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
+import android.view.*;
 import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.*;
@@ -22,10 +19,7 @@ import com.internectics.android_flashcardcreator.WebViewActivity;
 import com.internectics.data.Card;
 import com.internectics.data.Pack;
 import com.internectics.helper.FileOperationHelper;
-import com.internectics.util.AppContext;
-import com.internectics.util.Global;
-import com.internectics.util.OpenUDID_manager;
-import com.internectics.util.UIHelper;
+import com.internectics.util.*;
 import net.londatiga.android.ActionItem;
 import net.londatiga.android.QuickAction;
 
@@ -748,11 +742,37 @@ public class CardDetailFragment extends Fragment implements TextView.OnEditorAct
     }
 
     private void updateQuestionCSS() {
+        //step1: alignment
+        mSubheading.setGravity(StringUtils.convertGravityStringToInt(mCurrentCard.question.css.subheadingAlign));
+        mMain.setGravity(StringUtils.convertGravityStringToInt(mCurrentCard.question.css.mainAlign));
+        mSub.setGravity(StringUtils.convertGravityStringToInt(mCurrentCard.question.css.subAlign));
 
+        //step2: size
+        mSubheading.setTextSize(mCurrentCard.question.css.subheadingSize);
+        mMain.setTextSize(mCurrentCard.question.css.mainSize);
+        mSub.setTextSize(mCurrentCard.question.css.subSize);
+
+        //step3: color
+        mSubheading.setTextColor(StringUtils.convertColorStringToInt(mCurrentCard.question.css.subheadingColor));
+        mMain.setTextColor(StringUtils.convertColorStringToInt(mCurrentCard.question.css.mainColor));
+        mSub.setTextColor(StringUtils.convertColorStringToInt(mCurrentCard.question.css.subColor));
     }
 
     private void updateAnswerCSS() {
+        //step1: alignment
+        mSubheading.setGravity(StringUtils.convertGravityStringToInt(mCurrentCard.answer.css.subheadingAlign));
+        mMain.setGravity(StringUtils.convertGravityStringToInt(mCurrentCard.answer.css.mainAlign));
+        mSub.setGravity(StringUtils.convertGravityStringToInt(mCurrentCard.answer.css.subAlign));
 
+        //step2: size
+        mSubheading.setTextSize(mCurrentCard.answer.css.subheadingSize);
+        mMain.setTextSize(mCurrentCard.answer.css.mainSize);
+        mSub.setTextSize(mCurrentCard.answer.css.subSize);
+
+        //step3: color
+        mSubheading.setTextColor(StringUtils.convertColorStringToInt(mCurrentCard.answer.css.subheadingColor));
+        mMain.setTextColor(StringUtils.convertColorStringToInt(mCurrentCard.answer.css.mainColor));
+        mSub.setTextColor(StringUtils.convertColorStringToInt(mCurrentCard.answer.css.subColor));
     }
 
 
