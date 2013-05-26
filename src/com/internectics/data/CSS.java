@@ -28,6 +28,10 @@ public class CSS {
         mainColor = "Black";
         subAlign = "Center";
         subColor = "Black";
+
+        subheadingSize = 34;
+        mainSize = 34;
+        subSize = 34;
     }
 
     public CSS initWithDictionary(HashMap<String, Object> dataDict) {
