@@ -8,18 +8,17 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.*;
-import android.widget.Button;
-import android.widget.EditText;
-import android.widget.ImageView;
-import android.widget.TextView;
+import android.widget.*;
 import com.internectics.android_flashcardcreator.R;
 import com.internectics.data.Card;
 import com.internectics.data.Pack;
+import com.internectics.data.User;
 import com.internectics.helper.FileOperationHelper;
 import com.internectics.helper.PackRecordHelper;
 import com.internectics.util.*;
 
 import java.io.File;
+import java.util.ArrayList;
 
 public class AddPackFragment extends DialogFragment {
 
@@ -63,7 +62,6 @@ public class AddPackFragment extends DialogFragment {
             @Override
             public void onClick(View v) {
                 save();
-                dismiss();
 
             }
         });
@@ -87,12 +85,18 @@ public class AddPackFragment extends DialogFragment {
     }
 
     private void save() {
+
         EditText packNameEditText = (EditText) mContentView
                 .findViewById(R.id.fragment_add_pack_pack_name);
         EditText sidebarTitleEditText = (EditText) mContentView
                 .findViewById(R.id.fragment_add_pack_sidebar_title);
         EditText creatorEditText = (EditText) mContentView
                 .findViewById(R.id.fragment_add_pack_creator);
+
+        if (checkExistingPackName(packNameEditText.getText().toString())) {
+            Toast.makeText(getActivity(), "Existing pack name, please rename it", Toast.LENGTH_SHORT).show();
+            return;
+        }
 
         pack.packName = packNameEditText.getText().toString();
         pack.sidebarTitle = sidebarTitleEditText.getText().toString();
@@ -118,6 +122,8 @@ public class AddPackFragment extends DialogFragment {
         intent.putExtra(Global.KEY_FROM, Global.BROADCAST_INTENT_EXTRA_FROM_NEW_PACK);
         getActivity().sendBroadcast(intent);
 
+        dismiss();
+
     }
 
     @Override
@@ -141,5 +147,20 @@ public class AddPackFragment extends DialogFragment {
                 }
             }
         }
+    }
+
+
+    private boolean checkExistingPackName(String packName) {
+        ArrayList<Pack> packs = User.defaultUser(AppContext.getAppContext()).packs;
+        if (packs.size() ==0){
+            return false;
+        }
+        for (Pack pack:packs) {
+            if (pack.packName.equals(packName)) {
+                return true;
+            }
+        }
+
+        return false;
     }
 }
