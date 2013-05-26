@@ -25,7 +25,7 @@ import net.londatiga.android.QuickAction;
 
 import java.io.File;
 
-public class CardDetailFragment extends Fragment implements TextView.OnEditorActionListener, FCCEditText.OnKeyboardCloseListener {
+public class CardDetailFragment extends Fragment implements FCCEditText.OnKeyboardCloseListener,FCCEditText.OnTouchListener {
 
     private Card mCurrentCard;
     private Pack mCurrentPack;
@@ -336,19 +336,15 @@ public class CardDetailFragment extends Fragment implements TextView.OnEditorAct
         mAnswerRadioButton = (RadioButton) mContentView.findViewById(R.id.radio_segment_answer);
         mRadioGroup = (RadioGroup) mContentView.findViewById(R.id.radio_segment);
 
-        mTitle.setOnEditorActionListener(this);
-        mSidebarTitle.setOnEditorActionListener(this);
-        mSubheading.setOnEditorActionListener(this);
-        mMain.setOnEditorActionListener(this);
-        mSub.setOnEditorActionListener(this);
-
         mTitle.mCallbacks = this;
         mSidebarTitle.mCallbacks = this;
         mSubheading.mCallbacks = this;
         mMain.mCallbacks = this;
         mSub.mCallbacks = this;
 
-
+        mSubheading.setOnTouchListener(this);
+        mMain.setOnTouchListener(this);
+        mSub.setOnTouchListener(this);
     }
 
 
@@ -800,27 +796,6 @@ public class CardDetailFragment extends Fragment implements TextView.OnEditorAct
         mSub.setTextColor(StringUtils.convertColorStringToInt(mCurrentCard.answer.css.subColor));
     }
 
-
-    /**
-     * Deal with keyboard action
-     */
-    @Override
-    public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
-        switch (actionId) {
-            case EditorInfo.IME_NULL:
-                Log.i(Global.debugTag, "You have touched Null on keyboard");
-                break;
-            case EditorInfo.IME_ACTION_SEND:
-                Log.i(Global.debugTag, "You have touched Send on keyboard");
-                break;
-            case EditorInfo.IME_ACTION_DONE:
-                Log.i(Global.debugTag, "You have touched Done on keyboard");
-                mIMM.hideSoftInputFromWindow(v.getWindowToken(), 0);
-                break;
-        }
-        return false;
-    }
-
     @Override
     public void onKeyboardClose(EditText editText) {
         Log.d(Global.debugTag, "Keyboard is closed");
@@ -873,6 +848,17 @@ public class CardDetailFragment extends Fragment implements TextView.OnEditorAct
             mCurrentCard.save(AppContext.getAppContext());
         }
 
+        getActivity().getActionBar().show();
+
+    }
+
+
+    @Override
+    public boolean onTouch(View v, MotionEvent event) {
+        Log.d(Global.debugTag,"onTouch happened");
+        getActivity().getActionBar().hide();
+
+        return false;
     }
 }
 
