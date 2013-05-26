@@ -4,6 +4,7 @@ import android.graphics.Color;
 import android.net.Uri;
 import android.util.Log;
 import android.view.Gravity;
+import com.internectics.android_flashcardcreator.R;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
@@ -103,24 +104,61 @@ public class StringUtils {
     /**
      * In order to be compatibile with iOS version
      */
-    public static int convertTemplateBackgroundToIndex(String templateBackground) {
-        int index = 0;
+    public static int[] convertTemplateBackgroundStringToResourceID(String templateBackground) {
+        int[] resourceID = {0,0,0};
 
-        if (templateBackground.equals("card_background_blue.png"))
-            index = 0;
+        if (templateBackground.equals("card_background_blue.png")) {
+            resourceID[0] = 0;
+            resourceID[1] = R.drawable.card_sidebar_bg_blue;
+            resourceID[2] = R.drawable.card_title_bg_blue;
+        }
         else if  (templateBackground.equals("card_background_coffee.png")) {
-            index = 1;
-        } else if (templateBackground.equals("card_background_gray.png")) {
-            index = 2;
-        } else if (templateBackground.equals("card_background_purple.png")) {
-            index = 3;
-        } else if (templateBackground.equals("card_background_red.png")) {
-            index = 4;
+            resourceID[0] = 1;
+            resourceID[1] = R.drawable.card_sidebar_bg_coffee;
+            resourceID[2] = R.drawable.card_title_bg_coffee;
+        }
+        else if (templateBackground.equals("card_background_gray.png")) {
+            resourceID[0] = 2;
+            resourceID[1] = R.drawable.card_sidebar_bg_gray;
+            resourceID[2] = R.drawable.card_title_bg_gray;
+        }
+        else if (templateBackground.equals("card_background_purple.png")) {
+            resourceID[0] = 3;
+            resourceID[1] = R.drawable.card_sidebar_bg_purple;
+            resourceID[2] = R.drawable.card_title_bg_purple;
+        }
+        else if (templateBackground.equals("card_background_red.png")) {
+            resourceID[0] = 4;
+            resourceID[1] = R.drawable.card_sidebar_bg_red;
+            resourceID[2] = R.drawable.card_title_bg_red;
         } else {
-            index = 0;
+            resourceID[0] = 0;
+            resourceID[1] = R.drawable.card_sidebar_bg_blue;
+            resourceID[2] = R.drawable.card_title_bg_blue;
         }
 
-        return index;
+        return resourceID;
+    }
+
+
+    public static String convertTemplateBackgroundIndexToString(int index) {
+        String result;
+
+        if (index == 0)
+            result = "card_background_blue.png";
+        else if  (index == 1) {
+            result = "card_background_coffee.png";
+        } else if (index == 2) {
+            result = "card_background_gray.png";
+        } else if (index == 3) {
+            result = "card_background_purple.png";
+        } else if (index == 4) {
+            result = "card_background_red.png";
+        } else {
+            result = "card_background_blue.png";
+        }
+
+        return result;
     }
 
 
@@ -140,6 +178,21 @@ public class StringUtils {
     }
 
     /**
+     * opposite operation compared with convertGravityStringToInt
+     */
+    public static String convertGravityIntToString(int gravity) {
+        if (gravity == Gravity.LEFT) {
+            return "Left";
+        } else if (gravity == Gravity.CENTER) {
+            return "Center";
+        } else if (gravity == Gravity.RIGHT) {
+            return "Right";
+        } else {
+            return "Left";
+        }
+    }
+
+    /**
      * Used to convert iOS style("Red",etc) to android style(Color.RED)
      */
     public static int convertColorStringToInt(String color) {
@@ -155,6 +208,26 @@ public class StringUtils {
             return Color.GREEN;
         } else {
             return Color.BLACK;
+        }
+    }
+
+
+    /**
+     * opposite operation compared with convertColorStringToInt
+     */
+    public static String convertColorIntToString(int color) {
+        if (color == Color.RED) {
+            return "Red";
+        } else if (color == Color.BLUE) {
+            return "Blue";
+        } else if (color == Color.BLACK) {
+            return "Black";
+        } else if (color == Color.YELLOW) {
+            return "Yellow";
+        } else if (color == Color.GREEN) {
+            return "Green";
+        } else {
+            return "Black";
         }
     }
 

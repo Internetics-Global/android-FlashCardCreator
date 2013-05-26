@@ -7,7 +7,6 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.database.Cursor;
 import android.database.MatrixCursor;
-import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.util.Log;
@@ -59,7 +58,7 @@ public class CardListFragment extends Fragment {
     MasterFragmentReceiver mReceiver;
 
     public CardListFragment() {
-        mCurrentPack = CardListModel.getCurrentPack();
+        mCurrentPack = CardListModel.getLatestCreatedPack();
         if (mCurrentPack != null) {
             mCardArrayList = CardListModel.getCardList(mCurrentPack);
         } else {
@@ -238,9 +237,12 @@ public class CardListFragment extends Fragment {
                 //step1: setmCurrentPack;
                 String extraStr = intent.getExtras().getString(Global.KEY_FROM);
 
-                if (extraStr.equals(Global.BROADCAST_INTENT_EXTRA_FROM_NEW_CARD) ||
-                        extraStr.equals(Global.BROADCAST_INTENT_EXTRA_FROM_NEW_PACK)) {
-                    mCurrentPack = CardListModel.getCurrentPack();
+                if (extraStr.equals(Global.BROADCAST_INTENT_EXTRA_FROM_NEW_PACK)) {
+                    mCurrentPack = CardListModel.getLatestCreatedPack();
+                } else if (extraStr.equals(Global.BROADCAST_INTENT_EXTRA_FROM_NEW_CARD)) {
+                    mCurrentPack = CardListModel.updateCurrentPack(mCurrentPack);
+                } else if (extraStr.equals(Global.BROADCAST_INTENT_EXTRA_FROM_CURRENT_PACK_UPDATE)) {
+                    mCurrentPack = CardListModel.updateCurrentPack(mCurrentPack);
                 } else if (extraStr.equals(Global.BROADCAST_INTENT_EXTRA_FROM_PACK_SELECTED)) {
                     int index = intent.getExtras().getInt("indexOfPack");
                     mCurrentPack = CardListModel.getAllPacks().get(index);

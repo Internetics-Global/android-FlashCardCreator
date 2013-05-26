@@ -144,10 +144,11 @@ public class MainActivity extends FragmentActivity implements
                 break;
 
             case R.id.actionbar_change_template_color:
+                int defaultIndex = (StringUtils.convertTemplateBackgroundStringToResourceID(mCurrentCard.templateBackground))[0];
                 if (mCurrentPack.cards.size() >= 0) {
                     new AlertDialog.Builder(this)
                             .setTitle("Select a template background")
-                            .setSingleChoiceItems(new String[]{"Blue", "Coffee", "Gray", "Purple", "Red"}, StringUtils.convertTemplateBackgroundToIndex(mCurrentCard.templateBackground), new DialogInterface.OnClickListener() {
+                            .setSingleChoiceItems(new String[]{"Blue", "Coffee", "Gray", "Purple", "Red"},defaultIndex , new DialogInterface.OnClickListener() {
                                 @Override
                                 public void onClick(DialogInterface dialog, int which) {
                                     if (mCardDetailFragment != null) {
@@ -277,7 +278,7 @@ public class MainActivity extends FragmentActivity implements
 
     private void startCreateCard() {
 
-        //mCurrentPack = CardListModel.getCurrentPack();//don't need to do here
+        //mCurrentPack = CardListModel.getLatestCreatedPack();//don't need to do here
         boolean result = checkEntryConditionBeforeCreatingNewCard(mCurrentPack);
         if (result == false) {
             return;

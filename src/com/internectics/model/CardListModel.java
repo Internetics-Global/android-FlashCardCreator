@@ -60,8 +60,8 @@ public class CardListModel {
      * if no existing pack, return null
      * we set most recently created pack as current pack
      */
-    public static Pack getCurrentPack() {
-        Pack currentPack;
+    public static Pack getLatestCreatedPack() {
+        Pack latestPack;
         String packIDString = AppConfig.sharedInstance().get(Global.mostRecentPackCreatedID_Property);
 
         ArrayList<Pack> packs = User.defaultUser(AppContext.getAppContext()).packs;
@@ -74,17 +74,31 @@ public class CardListModel {
         if (packIDString != null) {
             for (int i = 0; i < packs.size(); i++) {
                 if (packs.get(i).packID == Integer.parseInt(packIDString)) {
-                    currentPack = packs.get(i);
+                    latestPack = packs.get(i);
                     Log.d(Global.debugTag, "latest Pack's ID is:" + packIDString);
-                    return currentPack;
+                    return latestPack;
                 }
             }
         }
 
         //case3: return first pack
-        currentPack = packs.get(0);
+        latestPack = packs.get(0);
 
-        return currentPack;
+        return latestPack;
+    }
+
+    public static Pack updateCurrentPack(Pack currentPack) {
+        Pack returnPack = null;
+        ArrayList<Pack> packs = User.defaultUser(AppContext.getAppContext()).packs;
+
+        for (int i=0;i<packs.size();i++) {
+            if (packs.get(i).packID == currentPack.packID) {
+                returnPack = packs.get(i);
+                return returnPack;
+            }
+        }
+
+        return returnPack;
     }
 
 }

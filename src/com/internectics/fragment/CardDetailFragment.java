@@ -135,6 +135,7 @@ public class CardDetailFragment extends Fragment implements TextView.OnEditorAct
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        Log.d(Global.debugTag,"onViewCreated in CardDetailFragment is called");
         //configureCardStatus();
         updateCommonContent();
         switchToQuestionView();
@@ -352,7 +353,7 @@ public class CardDetailFragment extends Fragment implements TextView.OnEditorAct
 
 
     private void updateCommonContent() {
-        mSidebarTitle.setText(mCurrentPack.sidebarTitle);
+        mSidebarTitle.setText(mCurrentPack.sidebarTitle+"("+mCurrentCard.cardSN+")");
         if (mQuestionRadioButton.isChecked()) {
             mTitle.setText(mCurrentPack.questionTitle);
         } else {
@@ -360,10 +361,17 @@ public class CardDetailFragment extends Fragment implements TextView.OnEditorAct
         }
         mLogoImage.setImageURI(Uri.parse(mCurrentPack.logoImageUriFormatStr));
         mCreator.setText(mCurrentPack.creatorNickName);
+
+        int sidebarBGResourceID = (StringUtils.convertTemplateBackgroundStringToResourceID(mCurrentCard.templateBackground))[1];
+        mSidebarBackground.setBackgroundResource(sidebarBGResourceID);
+        int titleBGResourceID = (StringUtils.convertTemplateBackgroundStringToResourceID(mCurrentCard.templateBackground))[2];
+        mTitleBackground.setBackgroundResource(titleBGResourceID);
+
     }
 
 
     private void updateQuestionContent() {
+        mTitle.setText(mCurrentPack.questionTitle);
         mSubheading.setText(mCurrentCard.question.subheading);
         mMain.setText(mCurrentCard.question.main);
         mSub.setText(mCurrentCard.question.sub);
@@ -372,7 +380,7 @@ public class CardDetailFragment extends Fragment implements TextView.OnEditorAct
     }
 
     private void updateAnswerContent() {
-
+        mTitle.setText(mCurrentPack.answerTitle);
         mSubheading.setText(mCurrentCard.answer.subheading);
         mMain.setText(mCurrentCard.answer.main);
         mSub.setText(mCurrentCard.answer.sub);
@@ -438,8 +446,8 @@ public class CardDetailFragment extends Fragment implements TextView.OnEditorAct
     }
 
 
-    public void cardColorTemplateSelectedPostAction(int cardColorTemplateID) {
-        switch (cardColorTemplateID) {
+    public void cardColorTemplateSelectedPostAction(int cardColorTemplateIndex) {
+        switch (cardColorTemplateIndex) {
             case 0:
                 mSidebarBackground.setBackgroundResource(R.drawable.card_sidebar_bg_blue);
                 mTitleBackground.setBackgroundResource(R.drawable.card_title_bg_blue);
@@ -463,6 +471,23 @@ public class CardDetailFragment extends Fragment implements TextView.OnEditorAct
             default:
                 Log.i(Global.debugTag, "Out of range");
         }
+
+        String templateBackground = StringUtils.convertTemplateBackgroundIndexToString(cardColorTemplateIndex);
+        mCurrentCard.templateBackground = templateBackground;
+
+        if (!mIsCreatingCard) {
+
+            for (Card card: mCurrentPack.cards) {
+                card.templateBackground = templateBackground;
+                //TODO, screenshot all cards
+                card.save(AppContext.getAppContext());
+            }
+
+        }
+
+        Intent intent = new Intent();
+        intent.setAction(Global.BROADCAST_INTENT_EXTRA_FROM_CURRENT_PACK_UPDATE);
+        getActivity().sendBroadcast(intent);
     }
 
     /**
