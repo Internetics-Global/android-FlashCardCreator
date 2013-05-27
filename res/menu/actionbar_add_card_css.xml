@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <!-- Copy from:actionbar_css.xml (since android don't upport include method for menu -->
+    <item
+            android:icon="@android:drawable/btn_default"
+            android:title="Align"
+            android:showAsAction="ifRoom|withText">
+        <menu>
+            <item
+                    android:id="@+id/actionbar_css_align_left"
+                    android:icon="@android:drawable/btn_default"
+                    android:title="Left"/>
+            <item
+                    android:id="@+id/actionbar_css_align_center"
+                    android:icon="@android:drawable/btn_default"
+                    android:title="Center"/>
+            <item
+                    android:id="@+id/actionbar_css_align_right"
+                    android:icon="@android:drawable/btn_default"
+                    android:title="Right"/>
+        </menu>
+    </item>
+    <item
+            android:icon="@android:drawable/btn_default"
+            android:title="Size"
+            android:showAsAction="ifRoom|withText">
+        <menu>
+            <item
+                    android:id="@+id/actionbar_css_size_24"
+                    android:icon="@android:drawable/btn_default"
+                    android:title="Left"/>
+            <item
+                    android:id="@+id/actionbar_css_size_28"
+                    android:icon="@android:drawable/btn_default"
+                    android:title="Center"/>
+            <item
+                    android:id="@+id/actionbar_css_size_32"
+                    android:icon="@android:drawable/btn_default"
+                    android:title="Right"/>
+            <item
+                    android:id="@+id/actionbar_css_size_36"
+                    android:icon="@android:drawable/btn_default"
+                    android:title="Right"/>
+            <item
+                    android:id="@+id/actionbar_css_size_40"
+                    android:icon="@android:drawable/btn_default"
+                    android:title="Right"/>
+        </menu>
+    </item>
+    <item
+            android:title="Color"
+            android:icon="@android:drawable/btn_default"
+            android:showAsAction="ifRoom|withText">
+        <menu>
+            <item
+                    android:id="@+id/actionbar_css_color_red"
+                    android:icon="@drawable/shape_red"
+                    android:title="Red"/>
+            <item
+                    android:id="@+id/actionbar_css_color_blue"
+                    android:icon="@drawable/shape_blue"
+                    android:title="Blue"/>
+            <item
+                    android:id="@+id/actionbar_css_color_black"
+                    android:icon="@drawable/shape_black"
+                    android:title="Black"/>
+            <item
+                    android:id="@+id/actionbar_css_color_yellow"
+                    android:icon="@drawable/shape_yellow"
+                    android:title="Yellow"/>
+            <item
+                    android:id="@+id/actionbar_css_color_green"
+                    android:icon="@drawable/shape_green"
+                    android:title="Green"/>
+        </menu>
+    </item>
+
+
+    <!-- just placehoder -->
+    <item
+            android:id="@+id/actionbar_placeholder"
+            android:showAsAction="always"
+            android:title="">
+    </item>
+
+
+    <!-- Copy from:actionbar_add_card.xml (since android don't upport include method for menu -->
+    <item
+            android:id="@+id/actionbar_add_card_cancel"
+            android:icon="@android:drawable/btn_default"
+            android:showAsAction="ifRoom|withText"
+            android:title="cancel">
+    </item>
+    <item
+            android:id="@+id/actionbar_add_card_save"
+            android:icon="@android:drawable/btn_default"
+            android:title="save"
+            android:showAsAction="ifRoom|withText">
+    </item>
+
+</menu>

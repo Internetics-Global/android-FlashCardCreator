@@ -44,6 +44,7 @@ public class MainActivity extends FragmentActivity implements
 
     //Used to diff whether is on card view and card creating
     private boolean mIsCreatingCard = false;
+    public  boolean mIsEdittingCard = false;
 
     public Pack mCurrentPack = new Pack();//mCurrentPack will be automatically refreshed after creating a new card, add a new pack and new pack selected
     public int mCurrentIndex = 0;
@@ -97,14 +98,22 @@ public class MainActivity extends FragmentActivity implements
     @Override
     public boolean onPrepareOptionsMenu(Menu menu) {
         super.onPrepareOptionsMenu(menu);
-        if (mIsCreatingCard == true) {
-            menu.clear();
-            getMenuInflater().inflate(R.menu.actionbar_add_card, menu);
-            mIsCreatingCard = false;
+        int menuID;
+        if (mIsCreatingCard) {
+            if (mIsEdittingCard) {
+                menuID = R.menu.actionbar_add_card_css;
+            } else {
+                menuID = R.menu.actionbar_add_card;
+            }
         } else {
-            menu.clear();
-            getMenuInflater().inflate(R.menu.actionbar, menu);
+            if (mIsEdittingCard) {
+                menuID = R.menu.actionbar_css;
+            } else {
+                menuID = R.menu.actionbar;
+            }
         }
+        menu.clear();
+        getMenuInflater().inflate(menuID,menu);
         return true;
     }
 
@@ -189,6 +198,58 @@ public class MainActivity extends FragmentActivity implements
 
             case R.id.actionbar_help:
                 startActivity(new Intent(MainActivity.this, InstructionActivity.class));
+                break;
+
+            case R.id.actionbar_css_align_left:
+                mCardDetailFragment.updateCSS(0,0);
+                break;
+
+            case R.id.actionbar_css_align_center:
+                mCardDetailFragment.updateCSS(0,1);
+                break;
+
+            case R.id.actionbar_css_align_right:
+                mCardDetailFragment.updateCSS(0,2);
+                break;
+
+            case R.id.actionbar_css_size_24:
+                mCardDetailFragment.updateCSS(1,0);
+                break;
+
+            case R.id.actionbar_css_size_28:
+                mCardDetailFragment.updateCSS(1,1);
+                break;
+
+            case R.id.actionbar_css_size_32:
+                mCardDetailFragment.updateCSS(1,2);
+                break;
+
+            case R.id.actionbar_css_size_36:
+                mCardDetailFragment.updateCSS(1,3);
+                break;
+
+            case R.id.actionbar_css_size_40:
+                mCardDetailFragment.updateCSS(1,4);
+                break;
+
+            case R.id.actionbar_css_color_red:
+                mCardDetailFragment.updateCSS(2,0);
+                break;
+
+            case R.id.actionbar_css_color_blue:
+                mCardDetailFragment.updateCSS(2,1);
+                break;
+
+            case R.id.actionbar_css_color_black:
+                mCardDetailFragment.updateCSS(2,2);
+                break;
+
+            case R.id.actionbar_css_color_yellow:
+                mCardDetailFragment.updateCSS(2,3);
+                break;
+
+            case R.id.actionbar_css_color_green:
+                mCardDetailFragment.updateCSS(2,4);
                 break;
 
             case R.id.actionbar_test1:

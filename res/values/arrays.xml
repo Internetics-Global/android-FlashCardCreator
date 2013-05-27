@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <!-- css style for card rich text -->
+    <string-array
+            name="css_align">
+        <item>Left</item>
+        <item>Center</item>
+        <item>Right</item>
+    </string-array>
+
+    <string-array
+            name="css_color">
+        <item>Red</item>
+        <item>Blue</item>
+        <item>Black</item>
+        <item>Yellow</item>
+        <item>Green</item>
+    </string-array>
+
+    <integer-array
+            name="css_size">
+        <item>24</item>
+        <item>28</item>
+        <item>32</item>
+        <item>36</item>
+        <item>40</item>
+    </integer-array>
+
+</resources>

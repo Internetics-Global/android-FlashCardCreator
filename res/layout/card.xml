@@ -123,7 +123,8 @@
                             android:inputType="textMultiLine|textNoSuggestions"
                             android:textColor="@android:color/black"
                             android:textStyle="bold"
-                            android:background="#EBEBEB"
+                            android:tag="1001"
+                            android:background="@android:color/holo_green_light"
                             android:ems="10" />
 
                     <com.internectics.UI.FCCEditText
@@ -135,7 +136,8 @@
                             android:inputType="textMultiLine|textNoSuggestions"
                             android:textColor="@android:color/black"
                             android:textStyle="bold"
-                            android:background="#D0D0D0"
+                            android:tag="1002"
+                            android:background="@android:color/holo_orange_light"
                             android:ems="10"/>
 
                     <com.internectics.UI.FCCEditText
@@ -147,7 +149,8 @@
                             android:inputType="textMultiLine|textNoSuggestions"
                             android:textColor="@android:color/black"
                             android:textStyle="bold"
-                            android:background="#B1B1B1"
+                            android:tag="1003"
+                            android:background="@android:color/holo_blue_light"
                             android:ems="10"/>
 
                 </LinearLayout>

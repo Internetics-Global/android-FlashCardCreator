@@ -14,8 +14,10 @@ import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.*;
 import com.internectics.UI.FCCEditText;
+import com.internectics.android_flashcardcreator.MainActivity;
 import com.internectics.android_flashcardcreator.R;
 import com.internectics.android_flashcardcreator.WebViewActivity;
+import com.internectics.data.CSS;
 import com.internectics.data.Card;
 import com.internectics.data.Pack;
 import com.internectics.helper.FileOperationHelper;
@@ -25,7 +27,7 @@ import net.londatiga.android.QuickAction;
 
 import java.io.File;
 
-public class CardDetailFragment extends Fragment implements FCCEditText.OnKeyboardCloseListener,FCCEditText.OnTouchListener {
+public class CardDetailFragment extends Fragment implements FCCEditText.OnKeyboardCloseListener, FCCEditText.OnTouchListener {
 
     private Card mCurrentCard;
     private Pack mCurrentPack;
@@ -56,6 +58,8 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnKeyboa
 
     private int CODE_REQUEST_IMAGE_SOURCE_IS_LOGO = 1001; //when user click on the logo img
     private int CODE_REQUEST_IMAGE_SOURCE_IS_IMAGE = 1002;//when user click on the image img
+
+    private EditText mFocusedEditText;
 
     /**
      * Constructor
@@ -135,7 +139,7 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnKeyboa
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        Log.d(Global.debugTag,"onViewCreated in CardDetailFragment is called");
+        Log.d(Global.debugTag, "onViewCreated in CardDetailFragment is called");
         //configureCardStatus();
         updateCommonContent();
         switchToQuestionView();
@@ -349,7 +353,7 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnKeyboa
 
 
     private void updateCommonContent() {
-        mSidebarTitle.setText(mCurrentPack.sidebarTitle+"("+mCurrentCard.cardSN+")");
+        mSidebarTitle.setText(mCurrentPack.sidebarTitle + "(" + mCurrentCard.cardSN + ")");
         if (mQuestionRadioButton.isChecked()) {
             mTitle.setText(mCurrentPack.questionTitle);
         } else {
@@ -473,7 +477,7 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnKeyboa
 
         if (!mIsCreatingCard) {
 
-            for (Card card: mCurrentPack.cards) {
+            for (Card card : mCurrentPack.cards) {
                 card.templateBackground = templateBackground;
                 //TODO, screenshot all cards
                 card.save(AppContext.getAppContext());
@@ -840,6 +844,7 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnKeyboa
                 Log.i(Global.debugTag, "Out of our scope");
         }
 
+        //Save logic if not creating a new card
         if (mIsCreatingCard) {
             //we will do that when we click the save button
         } else {
@@ -848,18 +853,145 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnKeyboa
             mCurrentCard.save(AppContext.getAppContext());
         }
 
+        //Update actionbar
         getActivity().getActionBar().show();
+        ((MainActivity) getActivity()).mIsEdittingCard = false;
+        getActivity().invalidateOptionsMenu();
 
     }
 
 
     @Override
     public boolean onTouch(View v, MotionEvent event) {
-        Log.d(Global.debugTag,"onTouch happened");
-        getActivity().getActionBar().hide();
+        Log.d(Global.debugTag, "onTouch happened");
+        getActivity().getActionBar().show();
+        ((MainActivity) getActivity()).mIsEdittingCard = true;
+        getActivity().invalidateOptionsMenu();
+
+        mFocusedEditText = (EditText) v;
 
         return false;
     }
+
+    public void updateCSS(int menuID, int subMenuID) {
+        CSS currentCSS;
+
+        //Step1: question or answer view now
+        boolean isQuestionShowing = mQuestionRadioButton.isChecked();
+
+        //Step2: determine operaton target
+        int editTextTag = Integer.parseInt((String) mFocusedEditText.getTag());
+        if (isQuestionShowing) {
+            currentCSS = mCurrentCard.question.css;
+        } else {
+            currentCSS = mCurrentCard.answer.css;
+        }
+
+        //Step3: fill values
+        int[] sizeArray = getResources().getIntArray(R.array.css_size);
+        String[] alignArray = getResources().getStringArray(R.array.css_align);
+        String[] colorArray = getResources().getStringArray(R.array.css_color);
+        switch (menuID) {
+            case 0:   //stand for align
+
+                if (editTextTag == 1001) {
+                    currentCSS.subheadingAlign = alignArray[subMenuID];
+                } else if (editTextTag == 1002) {
+                    currentCSS.mainAlign = alignArray[subMenuID];
+                } else if (editTextTag == 1003) {
+                    currentCSS.subAlign = alignArray[subMenuID];
+                }
+
+                switch (subMenuID) {
+                    case 0:
+                        mFocusedEditText.setGravity(Gravity.LEFT);
+                        break;
+                    case 1:
+                        mFocusedEditText.setGravity(Gravity.CENTER);
+                        break;
+                    case 2:
+                        mFocusedEditText.setGravity(Gravity.RIGHT);
+                        break;
+                    default:
+                        Log.d(Global.debugTag, "Out of range of subMenuID");
+                }
+                break;
+
+            case 1:   //stand for size
+
+                //you can find the tag definition(1001,1002,1003) in card.xml
+                if (editTextTag == 1001) {
+                    currentCSS.subheadingSize = sizeArray[subMenuID];
+                } else if (editTextTag == 1002) {
+                    currentCSS.mainSize = sizeArray[subMenuID];
+                } else if (editTextTag == 1003) {
+                    currentCSS.subSize = sizeArray[subMenuID];
+                }
+
+                switch (subMenuID) {
+                    case 0:
+                        mFocusedEditText.setTextSize(sizeArray[0]);
+                        break;
+                    case 1:
+                        mFocusedEditText.setTextSize(sizeArray[1]);
+                        break;
+                    case 2:
+                        mFocusedEditText.setTextSize(sizeArray[2]);
+                        break;
+                    case 3:
+                        mFocusedEditText.setTextSize(sizeArray[3]);
+                        break;
+                    case 4:
+                        mFocusedEditText.setTextSize(sizeArray[4]);
+                        break;
+                    default:
+                        Log.d(Global.debugTag, "Out of range of subMenuID");
+                }
+                break;
+            case 2:   //stand for color
+
+                if (editTextTag == 1001) {
+                    currentCSS.subheadingColor = colorArray[subMenuID];
+                } else if (editTextTag == 1002) {
+                    currentCSS.mainColor = colorArray[subMenuID];
+                } else if (editTextTag == 1003) {
+                    currentCSS.subColor = colorArray[subMenuID];
+                }
+
+                switch (subMenuID) {
+                    case 0:
+                        mFocusedEditText.setTextColor(Color.RED);
+                        break;
+                    case 1:
+                        mFocusedEditText.setTextColor(Color.BLUE);
+                        break;
+                    case 2:
+                        mFocusedEditText.setTextColor(Color.BLACK);
+                        break;
+                    case 3:
+                        mFocusedEditText.setTextColor(Color.YELLOW);
+                        break;
+                    case 4:
+                        mFocusedEditText.setTextColor(Color.GREEN);
+                        break;
+                    default:
+                        Log.d(Global.debugTag, "Out of range of subMenuID");
+                }
+                break;
+            default:
+                Log.d(Global.debugTag, "Out of range of menuID");
+        }
+
+
+        if (!mIsCreatingCard) {
+            if (isQuestionShowing) {
+                mCurrentCard.question.css.save(AppContext.getAppContext());
+            } else {
+                mCurrentCard.answer.css.save(AppContext.getAppContext());
+            }
+        }
+    }
+
 }
 
 
