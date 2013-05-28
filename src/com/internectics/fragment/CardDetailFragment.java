@@ -140,7 +140,7 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnKeyboa
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         Log.d(Global.debugTag, "onViewCreated in CardDetailFragment is called");
-        //configureCardStatus();
+        configureCardStatus();
         updateCommonContent();
         switchToQuestionView();
 
