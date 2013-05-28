@@ -8,8 +8,8 @@
     <android.support.v4.view.ViewPager
             android:id="@+id/viewpager"
             android:layout_width="fill_parent"
-            android:paddingLeft="35dp"
-            android:paddingRight="35dp"
+            android:paddingLeft="45dp"
+            android:paddingRight="45dp"
             android:paddingTop="25dp"
             android:paddingBottom="25dp"
             android:layout_height="fill_parent" />

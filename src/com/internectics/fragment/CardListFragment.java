@@ -206,10 +206,10 @@ public class CardListFragment extends Fragment {
             if (isListViewEditable) {
                 drageImage.setVisibility(View.VISIBLE);
                 removeImage.setVisibility(View.VISIBLE);
-                cardSNText.setVisibility(View.INVISIBLE);
+                cardSNText.setVisibility(View.GONE);
             } else {
-                drageImage.setVisibility(View.INVISIBLE);
-                removeImage.setVisibility(View.INVISIBLE);
+                drageImage.setVisibility(View.GONE);
+                removeImage.setVisibility(View.GONE);
                 cardSNText.setVisibility(View.VISIBLE);
             }
 

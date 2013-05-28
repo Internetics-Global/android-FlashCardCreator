@@ -157,7 +157,7 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnKeyboa
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        Log.d(Global.debugTag, "onViewCreated in CardDetailFragment is called");
+        Log.d(Global.debugTag, "onViewCreated in CardDetailFragment");
 
         updateCommonContent();
         switchToQuestionView();
@@ -173,12 +173,13 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnKeyboa
     @Override
     public void onResume() {
         super.onResume();
+        Log.d(Global.debugTag, "onResume in CardDetailFragment");
     }
 
     @Override
     public void onDestroyView() {
         super.onDestroyView();
-        Log.d(Global.debugTag, "onDestroyView in CardDetailFragment.java");
+        Log.d(Global.debugTag, "onDestroyView in CardDetailFragment");
     }
 
     @Override
@@ -433,8 +434,6 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnKeyboa
 
     /**
      * Apply according to card editable or not
-     *
-     * @return
      */
     private void configureCardStatus() {
 

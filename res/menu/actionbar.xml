@@ -20,6 +20,12 @@
     </item>
 
     <item
+            android:id="@+id/actionbar_play"
+            android:icon="@drawable/actionbar_play_button"
+            android:title="@string/title_play" android:showAsAction="ifRoom">
+    </item>
+
+    <item
             android:id="@+id/actionbar_change_template_color"
             android:icon="@drawable/actionbar_change_template_button"
             android:title="@string/title_change_template_color" android:showAsAction="ifRoom">
@@ -41,12 +47,6 @@
             android:id="@+id/actionbar_share"
             android:icon="@drawable/actionbar_share_button"
             android:title="@string/title_share" android:showAsAction="ifRoom">
-    </item>
-
-    <item
-            android:id="@+id/actionbar_play"
-            android:icon="@drawable/actionbar_play_button"
-            android:title="@string/title_play" android:showAsAction="ifRoom">
     </item>
 
     <item
