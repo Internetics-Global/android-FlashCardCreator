@@ -82,7 +82,7 @@ public class MainActivity extends FragmentActivity implements
         addCardButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Log.d(Global.debugTag, "the add card button is clicked");
+                Log.d(Global.debugTag, "Button of add card  is clicked");
                 startCreateCard();
 
             }
@@ -143,7 +143,6 @@ public class MainActivity extends FragmentActivity implements
                 }
                 break;
             case R.id.actionbar_packs:
-                Log.d(Global.debugTag, "You have selected menu item of pack");
                 View popupLayout = inflater.inflate(R.layout.pack_list, null, false);
                 mPopupWindow = new PopupWindow(640, 360);
                 mPopupWindow.setOutsideTouchable(true);
@@ -188,12 +187,12 @@ public class MainActivity extends FragmentActivity implements
                 break;
 
             case R.id.actionbar_add_card_cancel:
-                Log.d(Global.debugTag, "cancel button is clicked during adding card operation");
+                Log.d(Global.debugTag, "Cancel button is clicked");
                 dismissCardCreateWindow();
                 break;
 
             case R.id.actionbar_add_card_save:
-                Log.d(Global.debugTag, "save button is clicked during adding card operation");
+                Log.d(Global.debugTag, "Save button is clicked");
                 saveNewCreatedCard();
                 break;
 

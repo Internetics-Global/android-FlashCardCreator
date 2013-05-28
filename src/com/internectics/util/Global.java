@@ -1,11 +1,9 @@
 package com.internectics.util;
 
-import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
-import android.view.Display;
 
 public class Global {
     public static final String debugTag = "ccaa";

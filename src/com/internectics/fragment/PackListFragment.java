@@ -23,7 +23,6 @@ import com.internectics.data.Pack;
 import com.internectics.data.User;
 import com.internectics.helper.FileOperationHelper;
 import com.internectics.util.*;
-
 import java.io.File;
 import java.io.FileNotFoundException;
 

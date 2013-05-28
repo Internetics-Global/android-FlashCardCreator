@@ -1,8 +1,6 @@
 package com.internectics.util;
 
 import android.content.Context;
-import com.internectics.data.Pack;
-
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;

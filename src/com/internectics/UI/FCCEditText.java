@@ -7,13 +7,6 @@ import android.view.KeyEvent;
 import android.widget.EditText;
 import com.internectics.util.Global;
 
-/**
- * Created with IntelliJ IDEA.
- * User: BourneWang
- * Date: 25/05/13
- * Time: 10:25 下午
- * To change this template use File | Settings | File Templates.
- */
 public class FCCEditText extends EditText {
 
     public OnKeyboardCloseListener mCallbacks;

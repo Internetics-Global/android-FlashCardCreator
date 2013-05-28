@@ -12,21 +12,12 @@ import android.net.Uri;
 import android.util.Log;
 import android.util.TypedValue;
 import android.view.View;
-import android.view.ViewGroup;
-import android.widget.LinearLayout;
 import com.internectics.helper.FileOperationHelper;
 
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 
-/**
- * Created with IntelliJ IDEA.
- * User: BourneWang
- * Date: 1/05/13
- * Time: 4:40 PM
- * To change this template use File | Settings | File Templates.
- */
 public class UIHelper {
 
     public static int getPixels(int dipValue) {

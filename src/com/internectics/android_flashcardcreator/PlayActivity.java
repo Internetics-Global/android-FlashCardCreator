@@ -11,7 +11,6 @@ import com.internectics.data.Pack;
 import com.internectics.fragment.CardDetailFragment;
 import com.internectics.model.CardListModel;
 import com.internectics.util.Global;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -51,10 +50,9 @@ public class PlayActivity extends FragmentActivity implements SensorEventListene
             @Override
             public void onPageScrollStateChanged(int i) {
                 mPosition = i;
-                Log.d(Global.debugTag, "onPageScrollStateChanged:" + mPosition);
+                Log.d(Global.debugTag, "onPageScrollStateChanged, mPosition=" + mPosition);
             }
         });
-
 
         initSensor();
     }
@@ -89,27 +87,21 @@ public class PlayActivity extends FragmentActivity implements SensorEventListene
     private List<Fragment> getFragments() {
         List<Fragment> fList = new ArrayList<Fragment>();
 
-
         if (mCurrentPack == null) {
             Log.d(Global.debugTag, "mCurrentPack could not be null in PlayActictiy");
             return fList;
         }
 
         ArrayList<Card> cardsArray = mCurrentPack.cards;
-
         for (int i = 0; i < cardsArray.size(); i++) {
             fList.add(new CardDetailFragment(mCurrentPack, cardsArray.get(i), 2));
-
-            Log.d(Global.debugTag, "index:" + i);
         }
 
         return fList;
-
     }
 
 
     private void initSensor() {
-
         SensorManager sensorManager = (SensorManager) getSystemService(Context.SENSOR_SERVICE);
         Sensor accelerometer = sensorManager.getDefaultSensor(Sensor.TYPE_ORIENTATION);
         sensorManager.registerListener(this, accelerometer, SensorManager.SENSOR_DELAY_NORMAL);
@@ -118,25 +110,21 @@ public class PlayActivity extends FragmentActivity implements SensorEventListene
 
     @Override
     public void onSensorChanged(SensorEvent event) {
-        //This value is positive when the positive z axis rotates toward the positive x axis, and it is negative when the positive z axis rotates toward the negative x axis. The range of values is 90 degrees to -90 degrees.
+        //range of values is 90 degrees to -90 degrees.
         float roll = event.values[2];
 
-        if ((roll > 10) && (enableSwitch)) {
+        if ((Math.abs(roll) > 10) && (enableSwitch)) {
             ((CardDetailFragment) (mFragments.get(mPosition))).switchQuestionAnswerView();
             enableSwitch = false;
-            Log.d(Global.debugTag, "roll angle is:" + roll + "switchQuestionAnswerView");
-        } else if ((roll < -10) && (!enableSwitch)) {
-            ((CardDetailFragment) (mFragments.get(mPosition))).switchQuestionAnswerView();
+        } else if ((Math.abs(roll) < 3) && (!enableSwitch)) {
             enableSwitch = true;
-            Log.d(Global.debugTag, "roll angle is:" + roll + "switchQuestionAnswerView");
         }
-
     }
+
 
     @Override
     public void onAccuracyChanged(Sensor sensor, int accuracy) {
-        //we will skip here
+        //do nothing
     }
-
 
 }

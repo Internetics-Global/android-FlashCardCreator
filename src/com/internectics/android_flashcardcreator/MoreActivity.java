@@ -13,13 +13,6 @@ import com.dropbox.client2.session.TokenPair;
 import com.internectics.helper.DropboxHelper;
 import com.internectics.util.AppConfig;
 
-/**
- * Created with IntelliJ IDEA.
- * User: BourneWang
- * Date: 21/05/13
- * Time: 9:35 上午
- * To change this template use File | Settings | File Templates.
- */
 public class MoreActivity extends PreferenceActivity {
 
     private boolean mIsGoingAuthorization = false;
