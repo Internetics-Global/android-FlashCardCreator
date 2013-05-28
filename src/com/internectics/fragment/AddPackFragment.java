@@ -81,7 +81,24 @@ public class AddPackFragment extends DialogFragment {
             }
         });
 
+
         return mContentView;
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+
+        EditText packNameEditText = (EditText) mContentView
+                .findViewById(R.id.fragment_add_pack_pack_name);
+        packNameEditText.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View v, boolean hasFocus) {
+                if (hasFocus) {
+                    getActivity().getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_VISIBLE);
+                }
+            }
+        });
     }
 
     private void save() {

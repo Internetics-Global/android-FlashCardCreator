@@ -16,21 +16,29 @@
                 android:id="@+id/fragment_add_pack_pack_name"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:imeOptions="actionNone"
+                android:singleLine="true"
                 android:hint="Pack Name"
                 android:ems="10">
+            <requestFocus/>
         </EditText>
 
         <EditText
                 android:id="@+id/fragment_add_pack_sidebar_title"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:imeOptions="actionNone"
+                android:singleLine="true"
                 android:hint="Sidebar Title"
                 android:ems="10"/>
+
 
         <EditText
                 android:id="@+id/fragment_add_pack_creator"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:imeOptions="actionNone"
+                android:singleLine="true"
                 android:hint="Creator Name"
                 android:ems="10"/>
 
