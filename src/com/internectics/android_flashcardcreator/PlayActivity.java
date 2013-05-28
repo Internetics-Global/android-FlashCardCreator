@@ -36,11 +36,16 @@ public class PlayActivity extends FragmentActivity implements SensorEventListene
         mFragments = getFragments();
         mPageAdapter = new FCCPageAdapter(getSupportFragmentManager(), mFragments);
         ViewPager pager = (ViewPager) findViewById(R.id.viewpager);
-        pager.setOffscreenPageLimit(0);
+        pager.setOffscreenPageLimit(2);
         pager.setAdapter(mPageAdapter);
         pager.setOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             @Override
             public void onPageScrolled(int i, float v, int i2) {
+                if ((mPosition!=i)&&(i2==0)) {
+                    Log.d(Global.debugTag, "onPageScrolled, page index=" + i);
+                    mPosition = i;
+
+                }
             }
 
             @Override
@@ -49,9 +54,9 @@ public class PlayActivity extends FragmentActivity implements SensorEventListene
 
             @Override
             public void onPageScrollStateChanged(int i) {
-                mPosition = i;
-                Log.d(Global.debugTag, "onPageScrollStateChanged, mPosition=" + mPosition);
+
             }
+
         });
 
         initSensor();
