@@ -13,6 +13,8 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -203,14 +205,21 @@ public class CardListFragment extends Fragment {
             ImageView removeImage = (ImageView) v.findViewById(R.id.card_list_item_click_remove);
             TextView cardSNText = (TextView) v.findViewById(R.id.card_list_item_card_sn);
 
+            Animation alphaOut = AnimationUtils.loadAnimation(getActivity(),R.anim.fade_in);
+            Animation alphaIn = AnimationUtils.loadAnimation(getActivity(),R.anim.fade_in);
             if (isListViewEditable) {
                 drageImage.setVisibility(View.VISIBLE);
                 removeImage.setVisibility(View.VISIBLE);
                 cardSNText.setVisibility(View.GONE);
+
+                drageImage.startAnimation(alphaIn);
+                removeImage.startAnimation(alphaIn);
             } else {
                 drageImage.setVisibility(View.GONE);
                 removeImage.setVisibility(View.GONE);
                 cardSNText.setVisibility(View.VISIBLE);
+
+                cardSNText.startAnimation(alphaIn);
             }
 
             tv.setOnClickListener(new View.OnClickListener() {

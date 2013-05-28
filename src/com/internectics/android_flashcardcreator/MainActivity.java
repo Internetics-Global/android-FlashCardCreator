@@ -350,9 +350,7 @@ public class MainActivity extends FragmentActivity implements
 
         Button masterMaskButton = (Button) findViewById(R.id.master_view_mask);
         masterMaskButton.setVisibility(View.VISIBLE);
-        final Animation animAlphaUp = new AlphaAnimation(0.0f, 1.0f);
-        animAlphaUp.setDuration(500);
-        masterMaskButton.startAnimation(animAlphaUp);
+
         masterMaskButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

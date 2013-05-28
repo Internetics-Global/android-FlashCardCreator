@@ -48,10 +48,10 @@
 
             <Button
                     android:id="@+id/add_card_button"
-                    android:layout_width="30dp"
-                    android:layout_height="30dp"
+                    android:layout_width="60dp"
+                    android:layout_height="60dp"
                     android:layout_gravity="center"
-                    android:background="@drawable/button_add_card"/>
+                    android:background="@drawable/selector_add_card"/>
 
         </FrameLayout>
 
