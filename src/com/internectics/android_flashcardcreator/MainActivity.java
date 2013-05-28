@@ -47,7 +47,7 @@ public class MainActivity extends FragmentActivity implements
     public  boolean mIsEdittingCard = false;
 
     public Pack mCurrentPack = new Pack();//mCurrentPack will be automatically refreshed after creating a new card, add a new pack and new pack selected
-    public int mCurrentIndex = 0;
+    public int mCurrentCardIndex = 0;
     public Card mCurrentCard = new Card();
 
     //Progress dialog related
@@ -176,6 +176,7 @@ public class MainActivity extends FragmentActivity implements
 
             case R.id.actionbar_play:
                 Intent intent = new Intent(MainActivity.this, PlayActivity.class);
+                intent.putExtra("packID",mCurrentPack.packID);
                 startActivity(intent);
                 overridePendingTransition(R.anim.in_from_bottom, R.anim.out_to_above);
                 break;
@@ -321,13 +322,13 @@ public class MainActivity extends FragmentActivity implements
     public void onItemSelected(int index) {
 
         if (index >= 0) {
-            mCurrentIndex = index;
-            mCurrentCard = mCurrentPack.cards.get(mCurrentIndex);
-            mCardDetailFragment = new CardDetailFragment(mCurrentPack, mCurrentCard, false);
+            mCurrentCardIndex = index;
+            mCurrentCard = mCurrentPack.cards.get(mCurrentCardIndex);
+            mCardDetailFragment = new CardDetailFragment(mCurrentPack, mCurrentCard, 0);
             getSupportFragmentManager().beginTransaction()
                     .replace(R.id.card_detail_container, mCardDetailFragment).commit();
         } else {
-            mCurrentIndex = -1;
+            mCurrentCardIndex = -1;
             mCurrentCard = null;
             if (mCardDetailFragment != null) {
                 getSupportFragmentManager().beginTransaction()
@@ -360,7 +361,7 @@ public class MainActivity extends FragmentActivity implements
             }
         });
 
-        mCardDetailFragment = new CardDetailFragment(mCurrentPack, null,true);
+        mCardDetailFragment = new CardDetailFragment(mCurrentPack, null,1);
         getSupportFragmentManager().beginTransaction()
                 .setCustomAnimations(R.anim.in_from_right, R.anim.out_to_right)
                 .replace(R.id.add_card_frame_layout, mCardDetailFragment)

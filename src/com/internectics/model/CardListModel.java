@@ -101,4 +101,17 @@ public class CardListModel {
         return returnPack;
     }
 
+    public static Pack getPack(int packID) {
+        Pack returnPack = null;
+        ArrayList<Pack> packs = User.defaultUser(AppContext.getAppContext()).packs;
+
+        for (int i = 0; i < packs.size(); i++) {
+            if (packs.get(i).packID == packID) {
+                returnPack = packs.get(i);
+                return returnPack;
+            }
+        }
+        return returnPack;
+    }
+
 }

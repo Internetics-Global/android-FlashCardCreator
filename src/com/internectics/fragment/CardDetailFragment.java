@@ -33,6 +33,8 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnKeyboa
     private Pack mCurrentPack;
 
     public boolean mIsCreatingCard = false;
+    private boolean mIsPlayingCard = false;
+    private boolean mIsQuestionShowing = false; //this is only used in play mode
 
     private View mContentView;
 
@@ -66,10 +68,20 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnKeyboa
      *
      * @param currentPack
      * @param currentCard
+     * @param source,     0 ordinary; 1 creating new card; 2. play mode
      */
-    public CardDetailFragment(Pack currentPack, Card currentCard, boolean isCreatingCard) {
+    public CardDetailFragment(Pack currentPack, Card currentCard, int source) {
 
-        mIsCreatingCard = isCreatingCard;
+        if (source == 1) {
+            mIsCreatingCard = true;
+        } else if (source == 2) {
+            mIsPlayingCard = true;
+            mIsCreatingCard = false;
+        } else {
+            mIsPlayingCard = false;
+            mIsCreatingCard = false;
+        }
+
         if (currentCard == null) {
             Log.d(Global.debugTag, "Creating a new card is going on");
             mCurrentPack = currentPack;
@@ -92,12 +104,18 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnKeyboa
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        mContentView = inflater.inflate(R.layout.fragment_card_detail,
-                container, false);
+        if (mIsPlayingCard) {
+            //need to hide queston/answer segment raido group
+            mContentView = inflater.inflate(R.layout.card, container, false);
+        } else {
+            mContentView = inflater.inflate(R.layout.fragment_card_detail, container, false);
+        }
 
         getAllViews();
 
-        configureSegmentView();
+        if (!mIsPlayingCard) {
+            configureSegmentView();
+        }
         configureChangeTemplateView();
         configureLogoURLView();
 
@@ -140,9 +158,15 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnKeyboa
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         Log.d(Global.debugTag, "onViewCreated in CardDetailFragment is called");
-        configureCardStatus();
+
         updateCommonContent();
         switchToQuestionView();
+
+        if (mIsPlayingCard) {
+            disableCardEditable();
+        } else {
+            configureCardStatus();
+        }
 
     }
 
@@ -303,8 +327,19 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnKeyboa
 
     }
 
+    public void switchQuestionAnswerView() {
+        if (mIsQuestionShowing) {
+            switchToAnswerView();
+            mIsQuestionShowing = false;
+        } else {
+            switchToQuestionView();
+            mIsQuestionShowing = true;
+        }
+    }
+
 
     private void switchToQuestionView() {
+        mIsQuestionShowing = true;
         updateQuestionContent();
         updateQuestionViewTemplate();
         updateQuestionCSS();
@@ -312,6 +347,7 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnKeyboa
 
 
     private void switchToAnswerView() {
+        mIsQuestionShowing = false;
         updateAnswerContent();
         updateAnswerViewTemplate();
         updateAnswerCSS();
@@ -336,9 +372,11 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnKeyboa
         mLogoURLImage = (ImageView) mContentView.findViewById(R.id.logo_url_btn);
         mImage = (ImageView) mContentView.findViewById(R.id.image);
 
-        mQuestionRadioButton = (RadioButton) mContentView.findViewById(R.id.radio_segment_question);
-        mAnswerRadioButton = (RadioButton) mContentView.findViewById(R.id.radio_segment_answer);
-        mRadioGroup = (RadioGroup) mContentView.findViewById(R.id.radio_segment);
+        if (!mIsPlayingCard) {
+            mQuestionRadioButton = (RadioButton) mContentView.findViewById(R.id.radio_segment_question);
+            mAnswerRadioButton = (RadioButton) mContentView.findViewById(R.id.radio_segment_answer);
+            mRadioGroup = (RadioGroup) mContentView.findViewById(R.id.radio_segment);
+        }
 
         mTitle.mCallbacks = this;
         mSidebarTitle.mCallbacks = this;
@@ -354,11 +392,7 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnKeyboa
 
     private void updateCommonContent() {
         mSidebarTitle.setText(mCurrentPack.sidebarTitle + "(" + mCurrentCard.cardSN + ")");
-        if (mQuestionRadioButton.isChecked()) {
-            mTitle.setText(mCurrentPack.questionTitle);
-        } else {
-            mTitle.setText(mCurrentPack.answerTitle);
-        }
+
         mLogoImage.setImageURI(Uri.parse(mCurrentPack.logoImageUriFormatStr));
         mCreator.setText(mCurrentPack.creatorNickName);
 
@@ -366,6 +400,14 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnKeyboa
         mSidebarBackground.setBackgroundResource(sidebarBGResourceID);
         int titleBGResourceID = (StringUtils.convertTemplateBackgroundStringToResourceID(mCurrentCard.templateBackground))[2];
         mTitleBackground.setBackgroundResource(titleBGResourceID);
+
+        if (!mIsPlayingCard) {
+            if (mQuestionRadioButton.isChecked()) {
+                mTitle.setText(mCurrentPack.questionTitle);
+            } else {
+                mTitle.setText(mCurrentPack.answerTitle);
+            }
+        }
 
     }
 
@@ -397,28 +439,36 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnKeyboa
     private void configureCardStatus() {
 
         if (isEditableMode()) {
-            mLogoURLImage.setVisibility(View.VISIBLE);
-            mChangeTemplateImage.setVisibility(View.VISIBLE);
-
-            mTitle.setEnabled(true);
-            mSidebarTitle.setEnabled(true);
-            mSubheading.setEnabled(true);
-            mMain.setEnabled(true);
-            mSub.setEnabled(true);
-            mCreator.setEnabled(true);
-            mImage.setEnabled(true);
+            enableCardEditable();
         } else {
-            mLogoURLImage.setVisibility(View.INVISIBLE);
-            mChangeTemplateImage.setVisibility(View.INVISIBLE);
-
-            mTitle.setEnabled(false);
-            mSidebarTitle.setEnabled(false);
-            mSubheading.setEnabled(false);
-            mMain.setEnabled(false);
-            mSub.setEnabled(false);
-            mCreator.setEnabled(false);
-            mImage.setEnabled(false);
+            disableCardEditable();
         }
+    }
+
+    private void enableCardEditable() {
+        mLogoURLImage.setVisibility(View.VISIBLE);
+        mChangeTemplateImage.setVisibility(View.VISIBLE);
+
+        mTitle.setEnabled(true);
+        mSidebarTitle.setEnabled(true);
+        mSubheading.setEnabled(true);
+        mMain.setEnabled(true);
+        mSub.setEnabled(true);
+        mCreator.setEnabled(true);
+        mImage.setEnabled(true);
+    }
+
+    private void disableCardEditable() {
+        mLogoURLImage.setVisibility(View.INVISIBLE);
+        mChangeTemplateImage.setVisibility(View.INVISIBLE);
+
+        mTitle.setEnabled(false);
+        mSidebarTitle.setEnabled(false);
+        mSubheading.setEnabled(false);
+        mMain.setEnabled(false);
+        mSub.setEnabled(false);
+        mCreator.setEnabled(false);
+        mImage.setEnabled(false);
     }
 
 
@@ -800,8 +850,15 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnKeyboa
         mSub.setTextColor(StringUtils.convertColorStringToInt(mCurrentCard.answer.css.subColor));
     }
 
+
     @Override
     public void onKeyboardClose(EditText editText) {
+
+        if ((mIMM.isActive() == false) || (mIsPlayingCard)) {
+            //It will be called when press the back button, even no keyboard is shown on now.That's the reason why we need to check
+            return;
+        }
+
         Log.d(Global.debugTag, "Keyboard is closed");
         int id = editText.getId();
         switch (id) {
@@ -863,6 +920,7 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnKeyboa
 
     @Override
     public boolean onTouch(View v, MotionEvent event) {
+
         Log.d(Global.debugTag, "onTouch happened");
         getActivity().getActionBar().show();
         ((MainActivity) getActivity()).mIsEdittingCard = true;
