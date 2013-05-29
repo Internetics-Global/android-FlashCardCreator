@@ -11,6 +11,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.util.Log;
+import android.util.TypedValue;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -55,6 +56,7 @@ public class PackListFragment extends Fragment {
         editButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
                 if (editButton.getText().equals("Edit")) {
                     editButton.setText("Done");
                     mIsEditStatus = true;
@@ -169,12 +171,14 @@ public class PackListFragment extends Fragment {
             LinearLayout editLayout = new LinearLayout(mContext);
             editLayout.setOrientation(LinearLayout.HORIZONTAL);
             lp = new LinearLayout.LayoutParams(
-                    UIHelper.getPixels(180), UIHelper.getPixels(40));
+                    UIHelper.getPixels(180), UIHelper.getPixels(36));
             lp.setMargins(0, 20, 0, 20);
             editLayout.setLayoutParams(lp);
 
             Button changeCoverImageButton = new Button(mContext);
             changeCoverImageButton.setText("Change");
+            changeCoverImageButton.setTextColor(Color.BLACK);
+            changeCoverImageButton.setTextSize(TypedValue.COMPLEX_UNIT_SP,16);
             changeCoverImageButton.setWidth(UIHelper.getPixels(80));
             changeCoverImageButton.setBackgroundResource(R.drawable.button_gray);
             changeCoverImageButton.setOnClickListener(new View.OnClickListener() {
@@ -196,6 +200,7 @@ public class PackListFragment extends Fragment {
             lp.setMargins(20, 0, 0, 0);
             deleteButton.setLayoutParams(lp);
             deleteButton.setBackgroundResource(R.drawable.button_red);
+            deleteButton.setTextSize(TypedValue.COMPLEX_UNIT_SP,16);
             deleteButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
