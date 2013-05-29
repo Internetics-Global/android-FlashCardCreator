@@ -244,24 +244,29 @@ public class CardListFragment extends Fragment {
             if (intent.getAction().equals(Global.BROADCAST_ACTION_UPDATE_MASTER_VIEW)) {
 
                 //step1: setmCurrentPack;
-                String extraStr = intent.getExtras().getString(Global.KEY_FROM);
-                int    extraInt = intent.getExtras().getInt("cardIndex");
+                String extraFrom = intent.getExtras().getString(Global.KEY_FROM);
+                int    extraCardIndex = 0;
 
-                if (extraStr.equals(Global.BROADCAST_INTENT_EXTRA_FROM_NEW_PACK)) {
+                if (extraFrom.equals(Global.BROADCAST_EXTRA_FROM_NEW_PACK)) {
+                    extraCardIndex = 0;
                     mCurrentPack = CardListModel.getLatestCreatedPack();
-                } else if (extraStr.equals(Global.BROADCAST_INTENT_EXTRA_FROM_NEW_CARD)) {
+                } else if (extraFrom.equals(Global.BROADCAST_EXTRA_FROM_NEW_CARD)) {
+                    extraCardIndex = intent.getExtras().getInt(Global.KEY_CARD_INDEX);
                     mCurrentPack = CardListModel.updateCurrentPack(mCurrentPack);
-                } else if (extraStr.equals(Global.BROADCAST_INTENT_EXTRA_FROM_CURRENT_PACK_UPDATE)) {
+                } else if (extraFrom.equals(Global.BROADCAST_EXTRA_FROM_CURRENT_PACK_UPDATE)) {
+                    extraCardIndex = -1;
                     mCurrentPack = CardListModel.updateCurrentPack(mCurrentPack);
-                } else if (extraStr.equals(Global.BROADCAST_INTENT_EXTRA_FROM_PACK_SELECTED)) {
-                    int index = intent.getExtras().getInt("indexOfPack");
-                    mCurrentPack = CardListModel.getAllPacks().get(index);
-                } else if (extraStr.equals(Global.BROADCAST_INTENT_EXTRA_FROM_PACK_DOWNLOADED)) {
+                } else if (extraFrom.equals(Global.BROADCAST_EXTRA_FROM_PACK_SELECTED)) {
+                    extraCardIndex = 0;
+                    int packIndex = intent.getExtras().getInt("indexOfPack");
+                    mCurrentPack = CardListModel.getAllPacks().get(packIndex);
+                } else if (extraFrom.equals(Global.BROADCAST_EXTRA_FROM_PACK_DOWNLOADED)) {
+                    extraCardIndex = 0;
                     mCurrentPack = CardListModel.getLastPack();
                 }
 
                 //step2: update listview
-                updateListView(extraInt);
+                updateListView(extraCardIndex);
             }
         }
 

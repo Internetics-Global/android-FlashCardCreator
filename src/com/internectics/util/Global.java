@@ -18,11 +18,12 @@ public class Global {
 
     //Broadcast intent extra
     public static final String KEY_FROM = "from";
-    public static final String BROADCAST_INTENT_EXTRA_FROM_NEW_CARD = "from_new_card";
-    public static final String BROADCAST_INTENT_EXTRA_FROM_NEW_PACK = "from_new_pack";
-    public static final String BROADCAST_INTENT_EXTRA_FROM_CURRENT_PACK_UPDATE = "from_current_pack_update";
-    public static final String BROADCAST_INTENT_EXTRA_FROM_PACK_SELECTED = "from_pack_selected";
-    public static final String BROADCAST_INTENT_EXTRA_FROM_PACK_DOWNLOADED = "from_pack_downloaded";
+    public static final String KEY_CARD_INDEX = "card_index";
+    public static final String BROADCAST_EXTRA_FROM_NEW_CARD = "from_new_card";
+    public static final String BROADCAST_EXTRA_FROM_NEW_PACK = "from_new_pack";
+    public static final String BROADCAST_EXTRA_FROM_CURRENT_PACK_UPDATE = "from_current_pack_update";
+    public static final String BROADCAST_EXTRA_FROM_PACK_SELECTED = "from_pack_selected";
+    public static final String BROADCAST_EXTRA_FROM_PACK_DOWNLOADED = "from_pack_downloaded";
 
     //Used to judge which pack is to load during start-up
     public static final String mostRecentPackCreatedID_Property = "most_recent_pack_id";

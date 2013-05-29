@@ -26,6 +26,7 @@ import net.londatiga.android.ActionItem;
 import net.londatiga.android.QuickAction;
 
 import java.io.File;
+import java.util.ArrayList;
 
 public class CardDetailFragment extends Fragment implements FCCEditText.OnKeyboardCloseListener, FCCEditText.OnTouchListener {
 
@@ -294,6 +295,8 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnKeyboa
             public void onClick(View v) {
                 final EditText inputEditText = new EditText(getActivity());
                 inputEditText.setSingleLine(true);
+                inputEditText.setText(mCurrentPack.logoURL);
+                inputEditText.setSelection(inputEditText.getText().length());
                 inputEditText.setImeOptions(EditorInfo.IME_ACTION_DONE);
                 new AlertDialog.Builder(getActivity())
                         .setTitle("Set URL")
@@ -320,6 +323,7 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnKeyboa
         if (mQuestionRadioButton.isChecked()) {
             mCurrentCard.question.templateID = index;
             updateQuestionViewTemplate();
+
         } else {
             mCurrentCard.answer.templateID = index;
             updateAnswerViewTemplate();
@@ -486,15 +490,18 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnKeyboa
     public void saveNewCreatedCard() {
 
         //Step1: take card screenshot
-        View cardView = mContentView.findViewById(R.id.card);
-        Bitmap bitmap = UIHelper.loadBitmapFromView(cardView);
-        File savedFile = UIHelper.saveImageToCaches(bitmap);
-        mCurrentCard.coverImageUriFormatStr = FileOperationHelper.convertToUriFormatFile(savedFile);
-
+        takeSnapshot();
 
         //Step4: save
         mCurrentCard.save(AppContext.getAppContext());
         Log.d(Global.debugTag, "finish execution of saveNewCreatedCard");
+    }
+
+    private void takeSnapshot() {
+        View cardView = mContentView.findViewById(R.id.card);
+        Bitmap bitmap = UIHelper.loadBitmapFromView(cardView);
+        File savedFile = UIHelper.saveImageToCaches(bitmap);
+        mCurrentCard.coverImageUriFormatStr = FileOperationHelper.convertToUriFormatFile(savedFile);
     }
 
 
@@ -538,7 +545,8 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnKeyboa
         }
 
         Intent intent = new Intent();
-        intent.setAction(Global.BROADCAST_INTENT_EXTRA_FROM_CURRENT_PACK_UPDATE);
+        intent.setAction(Global.BROADCAST_ACTION_UPDATE_MASTER_VIEW);
+        intent.putExtra(Global.KEY_FROM, Global.BROADCAST_EXTRA_FROM_CURRENT_PACK_UPDATE);
         getActivity().sendBroadcast(intent);
     }
 
@@ -866,20 +874,24 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnKeyboa
         switch (id) {
             case R.id.sidebar_title:
                 mCurrentPack.sidebarTitle = editText.getText().toString();
+                takeSnapshotAll();
                 break;
             case R.id.title:
                 if (mQuestionRadioButton.isChecked()) {
                     mCurrentPack.questionTitle = editText.getText().toString();
+                    takeSnapshotAll();
                 } else {
                     mCurrentPack.answerTitle = editText.getText().toString();
                 }
                 break;
             case R.id.creator:
                 mCurrentPack.creatorNickName = editText.getText().toString();
+                takeSnapshotAll();
                 break;
             case R.id.subheading:
                 if (mQuestionRadioButton.isChecked()) {
                     mCurrentCard.question.subheading = editText.getText().toString();
+                    takeSnapshot();
                 } else {
                     mCurrentCard.answer.subheading = editText.getText().toString();
                 }
@@ -887,6 +899,7 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnKeyboa
             case R.id.main:
                 if (mQuestionRadioButton.isChecked()) {
                     mCurrentCard.question.main = editText.getText().toString();
+                    takeSnapshot();
                 } else {
                     mCurrentCard.answer.main = editText.getText().toString();
                 }
@@ -894,6 +907,7 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnKeyboa
             case R.id.sub:
                 if (mQuestionRadioButton.isChecked()) {
                     mCurrentCard.question.sub = editText.getText().toString();
+                    takeSnapshot();
                 } else {
                     mCurrentCard.answer.sub = editText.getText().toString();
                 }
@@ -902,6 +916,7 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnKeyboa
             default:
                 Log.i(Global.debugTag, "Out of our scope");
         }
+
 
         //Save logic if not creating a new card
         if (mIsCreatingCard) {
@@ -917,6 +932,30 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnKeyboa
         ((MainActivity) getActivity()).mIsEdittingCard = false;
         getActivity().invalidateOptionsMenu();
 
+        //Update master view (cover image)
+        Intent intent = new Intent();
+        intent.setAction(Global.BROADCAST_ACTION_UPDATE_MASTER_VIEW);
+        intent.putExtra(Global.KEY_FROM, Global.BROADCAST_EXTRA_FROM_CURRENT_PACK_UPDATE);
+        getActivity().sendBroadcast(intent);
+
+    }
+
+    public void takeSnapshotAll() {
+
+        //take snapshot on current card
+        takeSnapshot();
+
+        ArrayList <Card> cards = mCurrentPack.cards;
+        for (Card card:cards) {
+            if (card.cardID!=mCurrentCard.cardID) {
+                CardDetailFragment cardDetailFragment = new CardDetailFragment(mCurrentPack, card, 2);
+
+                View cardView = mContentView.findViewById(R.id.card);
+                Bitmap bitmap = UIHelper.loadBitmapFromView(cardView);
+                File savedFile = UIHelper.saveImageToCaches(bitmap);
+                mCurrentCard.coverImageUriFormatStr = FileOperationHelper.convertToUriFormatFile(savedFile);
+            }
+        }
     }
 
 

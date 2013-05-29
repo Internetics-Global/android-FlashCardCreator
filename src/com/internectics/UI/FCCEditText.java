@@ -4,6 +4,7 @@ import android.content.Context;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.KeyEvent;
+import android.view.View;
 import android.widget.EditText;
 import com.internectics.util.Global;
 
@@ -33,7 +34,6 @@ public class FCCEditText extends EditText {
         }
         return super.onKeyPreIme(keyCode, event);
     }
-
 
     public interface OnKeyboardCloseListener {
         public void onKeyboardClose(EditText editText);

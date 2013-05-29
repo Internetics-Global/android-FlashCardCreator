@@ -380,8 +380,8 @@ public class MainActivity extends FragmentActivity implements
         //3. notify CardListFragment view to update
         Intent intent = new Intent();
         intent.setAction(Global.BROADCAST_ACTION_UPDATE_MASTER_VIEW);
-        intent.putExtra(Global.KEY_FROM, Global.BROADCAST_INTENT_EXTRA_FROM_NEW_CARD);
-        intent.putExtra("cardIndex",mCurrentPack.cards.size());
+        intent.putExtra(Global.KEY_FROM, Global.BROADCAST_EXTRA_FROM_NEW_CARD);
+        intent.putExtra(Global.KEY_CARD_INDEX,mCurrentPack.cards.size());
         sendBroadcast(intent);
 
     }

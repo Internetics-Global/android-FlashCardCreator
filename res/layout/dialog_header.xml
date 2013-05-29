@@ -2,13 +2,14 @@
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
              android:id="@+id/main_relativelayout_header"
              android:layout_width="fill_parent"
-             android:layout_height="40dip"
+             android:layout_height="48dip"
              android:background="@drawable/image_dialog_head_bg">
 
     <Button
             android:id="@+id/dialog_head_close_btn"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="55dp"
+            android:layout_height="30dp"
+            android:textSize="14sp"
             android:layout_gravity="left|center_vertical"
             android:layout_marginLeft="10.0dip"
             android:background="@drawable/selector_black_button"
@@ -24,8 +25,9 @@
 
     <Button
             android:id="@+id/dialog_head_save_btn"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="55dp"
+            android:layout_height="30dp"
+            android:textSize="14sp"
             android:layout_gravity="right|center_vertical"
             android:layout_marginRight="10.0dip"
             android:background="@drawable/selector_black_button"

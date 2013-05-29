@@ -81,7 +81,7 @@ public class PackListFragment extends Fragment {
                 Log.d(Global.debugTag, "Index of pack in pack list is:" + position);
                 Intent intent = new Intent();
                 intent.setAction(Global.BROADCAST_ACTION_UPDATE_MASTER_VIEW);
-                intent.putExtra(Global.KEY_FROM, Global.BROADCAST_INTENT_EXTRA_FROM_PACK_SELECTED);
+                intent.putExtra(Global.KEY_FROM, Global.BROADCAST_EXTRA_FROM_PACK_SELECTED);
                 intent.putExtra("indexOfPack", position);  //id begin from 0
                 getActivity().sendBroadcast(intent);
                 ((MainActivity) getActivity()).mPopupWindow.dismiss();
@@ -171,15 +171,16 @@ public class PackListFragment extends Fragment {
             LinearLayout editLayout = new LinearLayout(mContext);
             editLayout.setOrientation(LinearLayout.HORIZONTAL);
             lp = new LinearLayout.LayoutParams(
-                    UIHelper.getPixels(180), UIHelper.getPixels(36));
+                    UIHelper.getPixels(180), UIHelper.getPixels(35));
             lp.setMargins(0, 20, 0, 20);
             editLayout.setLayoutParams(lp);
 
             Button changeCoverImageButton = new Button(mContext);
             changeCoverImageButton.setText("Change");
             changeCoverImageButton.setTextColor(Color.BLACK);
-            changeCoverImageButton.setTextSize(TypedValue.COMPLEX_UNIT_SP,16);
+            changeCoverImageButton.setTextSize(TypedValue.COMPLEX_UNIT_SP,14);
             changeCoverImageButton.setWidth(UIHelper.getPixels(80));
+
             changeCoverImageButton.setBackgroundResource(R.drawable.button_gray);
             changeCoverImageButton.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -196,11 +197,11 @@ public class PackListFragment extends Fragment {
             Button deleteButton = new Button(mContext);
             deleteButton.setText("Delete");
             lp = new LinearLayout.LayoutParams(
-                    UIHelper.getPixels(80), LinearLayout.LayoutParams.FILL_PARENT);
+                    UIHelper.getPixels(80), UIHelper.getPixels(35));
             lp.setMargins(20, 0, 0, 0);
             deleteButton.setLayoutParams(lp);
             deleteButton.setBackgroundResource(R.drawable.button_red);
-            deleteButton.setTextSize(TypedValue.COMPLEX_UNIT_SP,16);
+            deleteButton.setTextSize(TypedValue.COMPLEX_UNIT_SP,14);
             deleteButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {

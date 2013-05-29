@@ -117,7 +117,7 @@ public class PackDownloadHelper extends AsyncTask<Void, Long, Boolean> {
                 //Step4: notify master view to update
                 Intent intent = new Intent();
                 intent.setAction(Global.BROADCAST_ACTION_UPDATE_MASTER_VIEW);
-                intent.putExtra(Global.KEY_FROM, Global.BROADCAST_INTENT_EXTRA_FROM_PACK_DOWNLOADED);
+                intent.putExtra(Global.KEY_FROM, Global.BROADCAST_EXTRA_FROM_PACK_DOWNLOADED);
                 mContext.sendBroadcast(intent);
 
             } catch (Exception e) {
