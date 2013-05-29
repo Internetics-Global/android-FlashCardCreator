@@ -55,7 +55,7 @@ public class CardListFragment extends Fragment {
     private static final String STATE_ACTIVATED_POSITION = "activated_position";
     private int mActivatedPosition = ListView.INVALID_POSITION;
 
-    public boolean isListViewEditable = false;
+    public boolean mIsListViewEditable = false;
 
     MasterFragmentReceiver mReceiver;
 
@@ -183,9 +183,9 @@ public class CardListFragment extends Fragment {
 
     public void enterEditStyle(boolean isEditingStyle) {
 
-        isListViewEditable = isEditingStyle;
+        mIsListViewEditable = isEditingStyle;
 
-        updateListView(0);
+        updateListView(-1);
     }
 
     private class FCCdapter extends SimpleDragSortCursorAdapter {
@@ -207,7 +207,7 @@ public class CardListFragment extends Fragment {
 
             Animation alphaOut = AnimationUtils.loadAnimation(getActivity(),R.anim.fade_in);
             Animation alphaIn = AnimationUtils.loadAnimation(getActivity(),R.anim.fade_in);
-            if (isListViewEditable) {
+            if (mIsListViewEditable) {
                 drageImage.setVisibility(View.VISIBLE);
                 removeImage.setVisibility(View.VISIBLE);
                 cardSNText.setVisibility(View.GONE);
@@ -313,6 +313,9 @@ public class CardListFragment extends Fragment {
 
     }
 
+    /**
+     * @param selectedItemIndex, dont' update detail view when -1
+     */
     private void updateListView(int selectedItemIndex) {
 
         //Step1: update mCardArrayList
@@ -329,11 +332,14 @@ public class CardListFragment extends Fragment {
         ((MainActivity) getActivity()).mCurrentPack = mCurrentPack;
 
         //Step4: Update detail view
-        if (mCardArrayList.size() >0) {
+        if ((mCardArrayList.size() > 0) && (selectedItemIndex >= 0)) {
             mCallbacks.onItemSelected(selectedItemIndex);
             mDSLVListView.setItemChecked(selectedItemIndex, true);
             mDSLVListView.smoothScrollToPosition(selectedItemIndex);
-        }  else {
+        } else if (selectedItemIndex == -1) {
+            //do nothing
+        } else {
+            //Clear detail view
             mCallbacks.onItemSelected(-1);
         }
     }

@@ -64,17 +64,23 @@ public class Card {
 
         String queryString = String.format("SELECT * FROM Cards_Tables WHERE pack_id=%d", packID);
         Cursor cur = SQLiteHelper.defaultDatabase(context).rawQuery(queryString, null);
-        int lastCardSN = 1;//begin from 1
+        int lastCardSN = 0;
         while (cur.moveToNext()) {
             HashMap<String, Object> cardDict = new HashMap<String, Object>();
             cardDict.put("card_id", cur.getInt(0));
             cardDict.put("pack_id", cur.getInt(1));
             cardDict.put("cover_image", cur.getString(2));
             cardDict.put("template_background", cur.getString(3));
-            if ((lastCardSN+1)!=cur.getInt(4)){
-                lastCardSN++; //this is an self-repairment in case the cardSN is not in right order
+
+            //this is an self-repairment in case the cardSN is not in right order
+            if ((lastCardSN + 1) != cur.getInt(4)) {
+                cardDict.put("card_sn", lastCardSN);
+                Log.w(Global.debugTag,"Warning: there's no continous cardSN");
+            } else {
+                cardDict.put("card_sn", cur.getInt(4));
             }
-            cardDict.put("card_sn", lastCardSN);
+            lastCardSN++;
+
             cardDict.put("question", Question.questionForCardID(context, cur.getInt(0)));
             cardDict.put("answer", Answer.answerForCardID(context, cur.getInt(0)));
             returnArray.add(cardDict);
