@@ -4,6 +4,8 @@
           android:versionCode="1"
           android:versionName="1.0">
 
+    <uses-feature android:name="android.hardware.screen.portrait"/>
+
     <uses-permission android:name="android.permission.INTERNET">
     </uses-permission>
     <uses-permission android:name="com.google.android.gallery3d.permission.GALLERY_PROVIDER">
@@ -26,7 +28,8 @@
                 android:name="com.internectics.android_flashcardcreator.MainActivity"
                 android:label="@string/app_name"
                 android:windowSoftInputMode="adjustPan"
-                android:screenOrientation="landscape">
+                android:configChanges="orientation"
+                android:screenOrientation="sensorLandscape">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
 
@@ -60,9 +63,10 @@
         <activity
                 android:name="com.internectics.android_flashcardcreator.PlayActivity"
                 android:windowSoftInputMode="stateAlwaysHidden"
-                android:screenOrientation="landscape">
+                android:screenOrientation="sensorLandscape">
         </activity>
-        <activity android:name=".InstructionActivity"/>
+        <activity android:name=".InstructionActivity"
+                  android:screenOrientation="sensorLandscape"/>
         <activity android:name=".MoreActivity"/>
         <activity android:name=".WebViewActivity"/>
 
