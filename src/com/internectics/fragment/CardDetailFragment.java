@@ -339,7 +339,10 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnKeyboa
     }
 
 
-    private void switchToQuestionView() {
+    /**
+     * Set public since play modes need it
+     */
+    public void switchToQuestionView() {
         mIsQuestionShowing = true;
         updateQuestionContent();
         updateQuestionViewTemplate();

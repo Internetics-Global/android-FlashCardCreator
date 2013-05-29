@@ -1,5 +1,6 @@
 package com.internectics.util;
 
+import android.app.Activity;
 import android.content.ContentResolver;
 import android.content.Context;
 import android.content.res.Resources;
@@ -11,6 +12,7 @@ import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.util.Log;
 import android.util.TypedValue;
+import android.view.Display;
 import android.view.View;
 import com.internectics.helper.FileOperationHelper;
 
@@ -76,4 +78,12 @@ public class UIHelper {
         v.draw(canvas);
         return returnedBitmap;
     }
+
+    public static int getScreenWidth(Activity activity) {
+        Display display = activity.getWindowManager().getDefaultDisplay();
+        int width = display.getWidth();
+
+        return width;
+    }
+
 }

@@ -7,16 +7,17 @@
             android:layout_marginLeft="10dp"
             android:layout_marginRight="10dp"
             android:layout_marginTop="10dp"
+            android:layout_marginBottom="10dp"
             android:layout_width="fill_parent"
             android:layout_height="0dp"
             android:layout_weight="550"
+
             layout="@layout/card"/>
 
     <LinearLayout
             android:layout_width="wrap_content"
             android:layout_marginLeft="100dp"
             android:layout_marginRight="100dp"
-            android:layout_marginTop="10dp"
             android:layout_marginBottom="10dp"
             android:layout_height="0dp"
             android:layout_weight="45"

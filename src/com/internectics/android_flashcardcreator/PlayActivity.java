@@ -6,11 +6,14 @@ import android.os.Bundle;
 import android.support.v4.app.*;
 import android.support.v4.view.ViewPager;
 import android.util.Log;
+import android.view.ViewGroup;
 import com.internectics.data.Card;
 import com.internectics.data.Pack;
 import com.internectics.fragment.CardDetailFragment;
 import com.internectics.model.CardListModel;
 import com.internectics.util.Global;
+import com.internectics.util.UIHelper;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -36,6 +39,14 @@ public class PlayActivity extends FragmentActivity implements SensorEventListene
         mFragments = getFragments();
         mPageAdapter = new FCCPageAdapter(getSupportFragmentManager(), mFragments);
         ViewPager pager = (ViewPager) findViewById(R.id.viewpager);
+
+        //Keep same size with non-playmode
+        ViewGroup.MarginLayoutParams marginLayoutParams = (ViewGroup.MarginLayoutParams) pager.getLayoutParams();
+        int margin = (UIHelper.getScreenWidth(this))/6/2;
+        marginLayoutParams.leftMargin = margin;
+        marginLayoutParams.rightMargin = margin;
+        pager.setLayoutParams(marginLayoutParams);
+
         pager.setOffscreenPageLimit(2);
         pager.setAdapter(mPageAdapter);
         pager.setOnPageChangeListener(new ViewPager.OnPageChangeListener() {
@@ -44,6 +55,10 @@ public class PlayActivity extends FragmentActivity implements SensorEventListene
                 if ((mPosition!=i)&&(i2==0)) {
                     Log.d(Global.debugTag, "onPageScrolled, page index=" + i);
                     mPosition = i;
+
+                    //Reset
+                    ((CardDetailFragment) (mFragments.get(mPosition))).switchToQuestionView();
+                    enableSwitch = true;
 
                 }
             }
@@ -120,6 +135,7 @@ public class PlayActivity extends FragmentActivity implements SensorEventListene
 
         if ((Math.abs(roll) > 10) && (enableSwitch)) {
             ((CardDetailFragment) (mFragments.get(mPosition))).switchQuestionAnswerView();
+            Log.d(Global.debugTag,"roll angle is:" + roll);
             enableSwitch = false;
         } else if ((Math.abs(roll) < 3) && (!enableSwitch)) {
             enableSwitch = true;
