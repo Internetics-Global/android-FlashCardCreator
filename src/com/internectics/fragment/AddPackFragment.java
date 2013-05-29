@@ -2,12 +2,16 @@ package com.internectics.fragment;
 
 import android.app.Activity;
 import android.app.DialogFragment;
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.SystemClock;
 import android.util.Log;
 import android.view.*;
+import android.view.inputmethod.EditorInfo;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.*;
 import com.internectics.android_flashcardcreator.R;
 import com.internectics.data.Card;
@@ -19,12 +23,20 @@ import com.internectics.util.*;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.Timer;
+import java.util.TimerTask;
 
-public class AddPackFragment extends DialogFragment {
+public class AddPackFragment extends DialogFragment implements TextView.OnEditorActionListener {
 
     public View mContentView;
     public Pack pack;
     private int CODE_REQUEST_IMAGE_FROM_IMAGE_LIBRARY = 1001;
+
+    private EditText mPackNameEditText;
+    private EditText mSidebarTitleEditText;
+    private EditText mCreatorEditText;
+
+    private InputMethodManager mIMM;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -81,6 +93,19 @@ public class AddPackFragment extends DialogFragment {
             }
         });
 
+        mIMM = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
+
+
+        mPackNameEditText = (EditText) mContentView
+                .findViewById(R.id.fragment_add_pack_pack_name);
+        mSidebarTitleEditText = (EditText) mContentView
+                .findViewById(R.id.fragment_add_pack_sidebar_title);
+        mCreatorEditText = (EditText) mContentView
+                .findViewById(R.id.fragment_add_pack_creator);
+
+        mPackNameEditText.setOnEditorActionListener(this);
+        mSidebarTitleEditText.setOnEditorActionListener(this);
+        mCreatorEditText.setOnEditorActionListener(this);
 
         return mContentView;
     }
@@ -89,35 +114,28 @@ public class AddPackFragment extends DialogFragment {
     public void onResume() {
         super.onResume();
 
-        EditText packNameEditText = (EditText) mContentView
-                .findViewById(R.id.fragment_add_pack_pack_name);
-        packNameEditText.setOnFocusChangeListener(new View.OnFocusChangeListener() {
-            @Override
-            public void onFocusChange(View v, boolean hasFocus) {
-                if (hasFocus) {
-                    getActivity().getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_VISIBLE);
-                }
+        Timer timer = new Timer();
+        timer.schedule(new TimerTask() {
+
+            public void run() {
+                mIMM.showSoftInput(mPackNameEditText, 0);
             }
-        });
+
+        }, 500);
+
     }
 
     private void save() {
 
-        EditText packNameEditText = (EditText) mContentView
-                .findViewById(R.id.fragment_add_pack_pack_name);
-        EditText sidebarTitleEditText = (EditText) mContentView
-                .findViewById(R.id.fragment_add_pack_sidebar_title);
-        EditText creatorEditText = (EditText) mContentView
-                .findViewById(R.id.fragment_add_pack_creator);
 
-        if (checkExistingPackName(packNameEditText.getText().toString())) {
+        if (checkExistingPackName(mPackNameEditText.getText().toString())) {
             Toast.makeText(getActivity(), "Existing pack name, please rename it", Toast.LENGTH_SHORT).show();
             return;
         }
 
-        pack.packName = packNameEditText.getText().toString();
-        pack.sidebarTitle = sidebarTitleEditText.getText().toString();
-        pack.creatorNickName = creatorEditText.getText().toString();
+        pack.packName = mPackNameEditText.getText().toString();
+        pack.sidebarTitle = mSidebarTitleEditText.getText().toString();
+        pack.creatorNickName = mCreatorEditText.getText().toString();
         // we set pack.coverImageUriFormatStr in image select or by default
         pack.creatorID = OpenUDID_manager.getOpenUDID();
         pack.userID = Global.USER_ID;
@@ -178,6 +196,16 @@ public class AddPackFragment extends DialogFragment {
             }
         }
 
+        return false;
+    }
+
+    @Override
+    public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+        switch (actionId) {
+            case EditorInfo.IME_ACTION_DONE:
+                mIMM.hideSoftInputFromInputMethod(v.getWindowToken(),0);
+                break;
+        }
         return false;
     }
 }

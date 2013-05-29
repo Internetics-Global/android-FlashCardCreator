@@ -16,8 +16,9 @@
                 android:id="@+id/fragment_add_pack_pack_name"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:imeOptions="actionNone"
+                android:imeOptions="actionDone"
                 android:singleLine="true"
+                android:textColor="#FFFFFF"
                 android:hint="Pack Name"
                 android:ems="10">
             <requestFocus/>
@@ -27,8 +28,9 @@
                 android:id="@+id/fragment_add_pack_sidebar_title"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:imeOptions="actionNone"
+                android:imeOptions="actionDone"
                 android:singleLine="true"
+                android:textColor="#FFFFFF"
                 android:hint="Sidebar Title"
                 android:ems="10"/>
 
@@ -37,8 +39,9 @@
                 android:id="@+id/fragment_add_pack_creator"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:imeOptions="actionNone"
+                android:imeOptions="actionDone"
                 android:singleLine="true"
+                android:textColor="#FFFFFF"
                 android:hint="Creator Name"
                 android:ems="10"/>
 
