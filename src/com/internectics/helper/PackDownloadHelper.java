@@ -25,6 +25,8 @@ public class PackDownloadHelper extends AsyncTask<Void, Long, Boolean> {
     private String mErrorMsg;
     private String mSavedFilePath;
 
+    private boolean mIsAllowPostExecute = true;
+
     public boolean mIsFromExamplePackDownload = false;
 
 
@@ -43,7 +45,7 @@ public class PackDownloadHelper extends AsyncTask<Void, Long, Boolean> {
         mDialog.setProgress(0);
         mDialog.setButton("Cancel", new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int which) {
-                // This will cancel the putFile operation
+                mIsAllowPostExecute = false;
             }
         });
         mDialog.show();
@@ -68,9 +70,13 @@ public class PackDownloadHelper extends AsyncTask<Void, Long, Boolean> {
             int count;
             while ((count = input.read(data)) != -1) {
                 total += count;
-                // publishing the progress....
                 publishProgress(total);
                 output.write(data, 0, count);
+
+                if (!mIsAllowPostExecute) {
+                    mErrorMsg = "Download cancelled";
+                    return false;
+                }
             }
 
             output.flush();

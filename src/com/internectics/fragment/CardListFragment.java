@@ -185,7 +185,7 @@ public class CardListFragment extends Fragment {
 
         isListViewEditable = isEditingStyle;
 
-        updateListView();
+        updateListView(0);
     }
 
     private class FCCdapter extends SimpleDragSortCursorAdapter {
@@ -245,6 +245,7 @@ public class CardListFragment extends Fragment {
 
                 //step1: setmCurrentPack;
                 String extraStr = intent.getExtras().getString(Global.KEY_FROM);
+                int    extraInt = intent.getExtras().getInt("cardIndex");
 
                 if (extraStr.equals(Global.BROADCAST_INTENT_EXTRA_FROM_NEW_PACK)) {
                     mCurrentPack = CardListModel.getLatestCreatedPack();
@@ -260,7 +261,7 @@ public class CardListFragment extends Fragment {
                 }
 
                 //step2: update listview
-                updateListView();
+                updateListView(extraInt);
             }
         }
 
@@ -289,7 +290,7 @@ public class CardListFragment extends Fragment {
         }
 
         //Step3: update list view
-        updateListView();
+        updateListView(0);
     }
 
 
@@ -308,11 +309,11 @@ public class CardListFragment extends Fragment {
         }
 
         //Step3: update list view
-        updateListView();
+        updateListView(0);
 
     }
 
-    private void updateListView() {
+    private void updateListView(int selectedItemIndex) {
 
         //Step1: update mCardArrayList
         if (mCurrentPack != null) {
@@ -329,8 +330,9 @@ public class CardListFragment extends Fragment {
 
         //Step4: Update detail view
         if (mCardArrayList.size() >0) {
-            mCallbacks.onItemSelected(0);
-            mDSLVListView.setItemChecked(0, true);
+            mCallbacks.onItemSelected(selectedItemIndex);
+            mDSLVListView.setItemChecked(selectedItemIndex, true);
+            mDSLVListView.smoothScrollToPosition(selectedItemIndex);
         }  else {
             mCallbacks.onItemSelected(-1);
         }
