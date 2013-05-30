@@ -7,6 +7,7 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.database.Cursor;
 import android.database.MatrixCursor;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.util.Log;
@@ -108,10 +109,8 @@ public class CardListFragment extends Fragment {
         });
 
 
-
         return mContentView;
     }
-
 
     @Override
     public void onResume() {
@@ -190,6 +189,8 @@ public class CardListFragment extends Fragment {
 
     private class FCCdapter extends SimpleDragSortCursorAdapter {
 
+        private int selectedPosition = -1;
+
         public FCCdapter(Context ctxt, int rmid, Cursor c, String[] cols, int[] ids, int something) {
             super(ctxt, rmid, c, cols, ids, something);
             mContext = ctxt;
@@ -201,12 +202,14 @@ public class CardListFragment extends Fragment {
 
             View tv = v.findViewById(R.id.card_list_item_cover_image);
 
+            View background = v.findViewById(R.id.card_list_item_background);
+
             ImageView drageImage = (ImageView) v.findViewById(R.id.card_list_item_drag_handle);
             ImageView removeImage = (ImageView) v.findViewById(R.id.card_list_item_click_remove);
             TextView cardSNText = (TextView) v.findViewById(R.id.card_list_item_card_sn);
 
-            Animation alphaOut = AnimationUtils.loadAnimation(getActivity(),R.anim.fade_in);
-            Animation alphaIn = AnimationUtils.loadAnimation(getActivity(),R.anim.fade_in);
+            Animation alphaOut = AnimationUtils.loadAnimation(getActivity(), R.anim.fade_in);
+            Animation alphaIn = AnimationUtils.loadAnimation(getActivity(), R.anim.fade_in);
             if (mIsListViewEditable) {
                 drageImage.setVisibility(View.VISIBLE);
                 removeImage.setVisibility(View.VISIBLE);
@@ -227,9 +230,25 @@ public class CardListFragment extends Fragment {
                 public void onClick(View v) {
                     Log.d(Global.debugTag, "card item is clicked:" + position);
                     mCallbacks.onItemSelected(position);
+                    ((FCCdapter) adapter).setSelectedPosition(position);
+                    adapter.notifyDataSetChanged();
                 }
             });
+
+
+            //highlight clor
+            if (selectedPosition == position) {
+                background.setBackgroundColor(Color.rgb(47, 102, 167));
+            } else {
+                background.setBackgroundColor(Color.TRANSPARENT);
+
+            }
+
             return v;
+        }
+
+        public void setSelectedPosition(int position) {
+            selectedPosition = position;
         }
     }
 
@@ -245,7 +264,7 @@ public class CardListFragment extends Fragment {
 
                 //step1: setmCurrentPack;
                 String extraFrom = intent.getExtras().getString(Global.KEY_FROM);
-                int    extraCardIndex = 0;
+                int extraCardIndex = 0;
 
                 if (extraFrom.equals(Global.BROADCAST_EXTRA_FROM_NEW_PACK)) {
                     extraCardIndex = 0;
@@ -338,8 +357,11 @@ public class CardListFragment extends Fragment {
 
         //Step4: Update detail view
         if ((mCardArrayList.size() > 0) && (selectedItemIndex >= 0)) {
+
+
             mCallbacks.onItemSelected(selectedItemIndex);
-            mDSLVListView.setItemChecked(selectedItemIndex, true);
+            ((FCCdapter) adapter).setSelectedPosition(selectedItemIndex);
+            adapter.notifyDataSetChanged();
             mDSLVListView.smoothScrollToPosition(selectedItemIndex);
         } else if (selectedItemIndex == -1) {
             //do nothing
