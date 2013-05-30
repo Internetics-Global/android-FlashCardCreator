@@ -215,14 +215,14 @@ public class CardListFragment extends Fragment {
                 removeImage.setVisibility(View.VISIBLE);
                 cardSNText.setVisibility(View.GONE);
 
-                drageImage.startAnimation(alphaIn);
-                removeImage.startAnimation(alphaIn);
+                //drageImage.startAnimation(alphaIn);
+                //removeImage.startAnimation(alphaIn);
             } else {
                 drageImage.setVisibility(View.GONE);
                 removeImage.setVisibility(View.GONE);
                 cardSNText.setVisibility(View.VISIBLE);
 
-                cardSNText.startAnimation(alphaIn);
+                //cardSNText.startAnimation(alphaIn);
             }
 
             tv.setOnClickListener(new View.OnClickListener() {
