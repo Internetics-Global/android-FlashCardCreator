@@ -408,12 +408,14 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnKeyboa
         mMain.mCallbacks = this;
         mSub.mCallbacks = this;
 
-        mSubheading.setOnTouchListener(this);
-        mMain.setOnTouchListener(this);
-        mSub.setOnTouchListener(this);
-        mCreator.setOnTouchListener(this);
-        mSidebarTitle.setOnTouchListener(this);
-        mTitle.setOnTouchListener(this);
+        if (!mIsPlayingCard) {
+            mSubheading.setOnTouchListener(this);
+            mMain.setOnTouchListener(this);
+            mSub.setOnTouchListener(this);
+            mCreator.setOnTouchListener(this);
+            mSidebarTitle.setOnTouchListener(this);
+            mTitle.setOnTouchListener(this);
+        }
 
         mSidebarTitle.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override
