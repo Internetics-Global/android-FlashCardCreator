@@ -4,7 +4,6 @@ import android.content.Context;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.KeyEvent;
-import android.view.View;
 import android.widget.EditText;
 import com.internectics.util.Global;
 
@@ -28,6 +27,7 @@ public class FCCEditText extends EditText {
     public boolean onKeyPreIme(int keyCode, KeyEvent event) {
         if ((keyCode == KeyEvent.KEYCODE_BACK)&&(event.getAction() == KeyEvent.ACTION_DOWN)) {
             if (mCallbacks !=null)
+
                mCallbacks.onKeyboardClose(this);
             else
                 Log.d(Global.debugTag,"mCallbacks for FCCEditText is null");

@@ -33,11 +33,6 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnKeyboa
     private Card mCurrentCard;
     private Pack mCurrentPack;
 
-    public boolean  mIsCreatingCard = false;
-    private boolean mIsPlayingCard = false;
-    private boolean mIsQuestionShowing = false; //this is only used in play mode
-    private boolean mIsSnapShotNotCurrent = false;//as to snapshot,we have different stragegy on current showing card and other cards
-
     public View mContentView;
 
     private LinearLayout mContentBodyLeft;
@@ -53,17 +48,24 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnKeyboa
     private ImageView    mLogoImage;
     private ImageView    mChangeTemplateImage;
     private ImageView    mLogoURLImage;
-
     private RadioButton  mQuestionRadioButton;
     private RadioButton  mAnswerRadioButton;
     private RadioGroup   mRadioGroup;
 
     private InputMethodManager mIMM;
+    private EditText mCurrentFocusedEditText;
 
     private int CODE_REQUEST_IMAGE_SOURCE_IS_LOGO = 1001; //when user click on the logo img
     private int CODE_REQUEST_IMAGE_SOURCE_IS_IMAGE = 1002;//when user click on the image img
 
-    private EditText mCurrentFocusedEditText;
+    public  boolean    mIsCreatingCard = false;
+    private boolean    mIsPlayingCard = false;
+
+    private boolean    mIsSnapShotNotCurrent = false;//as to snapshot,we have different stragegy on current showing card and other cards
+
+    private boolean    mIsQuestionShowing = false; //this is only used in play mode
+
+    private boolean    mIsTakeSnapshotAllNeeded = false; //when fields that belong to current pack(like title) changes, it will be set true
 
     private static int mSemaphore = 0; //used to indicate all snapshots are done
 
@@ -540,12 +542,18 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnKeyboa
      */
     public void saveNewCreatedCard() {
 
-        //Step1: take card screenshot
-        takeSnapshotAll();
+        if (mIsTakeSnapshotAllNeeded) {
+            takeSnapshotAll();
+            mCurrentPack.save(AppContext.getAppContext());
+        } else {
+            takeSnapshotCurrentCard();
+        }
 
-        //Step4: save
         mCurrentCard.save(AppContext.getAppContext());
         Log.d(Global.debugTag, "finish execution of saveNewCreatedCard");
+
+        mIsTakeSnapshotAllNeeded = false;
+
     }
 
 
@@ -1072,14 +1080,22 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnKeyboa
     @Override
     public boolean onTouch(View v, MotionEvent event) {
 
-        Log.d(Global.debugTag, "onTouch happened");
+        Log.d(Global.debugTag, "onTouch happened" );
         getActivity().getActionBar().show();
-        ((MainActivity) getActivity()).mIsEdittingCard = true;
-        getActivity().invalidateOptionsMenu();
+
+        if (v.getTag() != null) {
+            int tag = Integer.parseInt((String) v.getTag());
+
+            if ((tag == 1001) || (tag == 1002) || (tag == 1003)) {
+                //check card.xml for tag
+                ((MainActivity) getActivity()).mIsEdittingCard = true;
+                getActivity().invalidateOptionsMenu();
+            }
+        }
 
         mCurrentFocusedEditText = (EditText) v;
 
-        return false;
+        return false; //don't set to false;
     }
 
     /**
@@ -1088,8 +1104,6 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnKeyboa
      */
     @Override
     public void onKeyboardClose(EditText editText) {
-
-        boolean isTakeSnapshotAll = false;
 
         if ((mIMM.isActive() == false) || (mIsPlayingCard)) {
             //It will be called when press the back button, even no keyboard is shown on now.That's the reason why we need to check
@@ -1101,17 +1115,17 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnKeyboa
         switch (id) {
             case R.id.sidebar_title:
                 mCurrentPack.sidebarTitle = editText.getText().toString();
+                mIsTakeSnapshotAllNeeded = true;
                 if (!mIsCreatingCard) {
-                    isTakeSnapshotAll = true;
                     takeSnapshotAll();
                 }
 
                 break;
             case R.id.title:
                 if (mQuestionRadioButton.isChecked()) {
+                    mIsTakeSnapshotAllNeeded = true;
                     mCurrentPack.questionTitle = editText.getText().toString();
                     if (!mIsCreatingCard) {
-                        isTakeSnapshotAll = true;
                         takeSnapshotAll();
                     }
                 } else {
@@ -1119,9 +1133,9 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnKeyboa
                 }
                 break;
             case R.id.creator:
+                mIsTakeSnapshotAllNeeded = true;
                 mCurrentPack.creatorNickName = editText.getText().toString();
                 if (!mIsCreatingCard) {
-                    isTakeSnapshotAll = true;
                     takeSnapshotAll();
                 }
                 break;
@@ -1162,6 +1176,8 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnKeyboa
             //We do here
             mCurrentPack.save(AppContext.getAppContext());
             mCurrentCard.save(AppContext.getAppContext());
+
+            mIsTakeSnapshotAllNeeded = false; //after snapshot, we need to set to default value
         }
 
         //Update actionbar
@@ -1170,7 +1186,7 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnKeyboa
         getActivity().invalidateOptionsMenu();
 
         //Update master view (cover image)
-        if (isTakeSnapshotAll == false) {
+        if ((mIsTakeSnapshotAllNeeded == false)&&(mIsCreatingCard == false)) {
             Intent intent = new Intent();
             intent.setAction(Global.BROADCAST_ACTION_UPDATE_MASTER_VIEW);
             intent.putExtra(Global.KEY_FROM, Global.BROADCAST_EXTRA_FROM_CURRENT_PACK_UPDATE);
