@@ -138,7 +138,7 @@ public class AddPackFragment extends DialogFragment implements TextView.OnEditor
         // we set pack.coverImageUriFormatStr in image select or by default
         pack.creatorID = OpenUDID_manager.getOpenUDID();
         pack.userID = Global.USER_ID;
-        pack.packID = (int) (System.currentTimeMillis() / 1000L);
+        pack.packID = Global.generateNoRepeatInt();
         pack.save(AppContext.getAppContext());
 
         Card defaultCard = new Card();

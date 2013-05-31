@@ -33,6 +33,7 @@ import com.internectics.helper.*;
 import com.internectics.util.*;
 
 import java.io.File;
+import java.util.ArrayList;
 
 /**
  * MainActivity is the entry for whole app
@@ -44,10 +45,10 @@ public class MainActivity extends FragmentActivity implements
 
     //Used to diff whether is on card view and card creating
     private boolean mIsCreatingCard = false;
-    public  boolean mIsEdittingCard = false;
+    public boolean  mIsEdittingCard = false;
 
     public Pack mCurrentPack = new Pack();//mCurrentPack will be automatically refreshed after creating a new card, add a new pack and new pack selected
-    public int mCurrentCardIndex = 0;
+    public int  mCurrentCardIndex = 0;
     public Card mCurrentCard = new Card();
 
     //Progress dialog related
@@ -59,6 +60,10 @@ public class MainActivity extends FragmentActivity implements
     public PopupWindow mPopupWindow;
 
     private CardDetailFragment mCardDetailFragment;
+
+    private CardDetailFragment mSnapshotCardDetailFragment;
+
+    private ArrayList<CardDetailFragment> mArrayCardDetailFragments;   //speical for snapshot(not include current card)
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -113,7 +118,7 @@ public class MainActivity extends FragmentActivity implements
             }
         }
         menu.clear();
-        getMenuInflater().inflate(menuID,menu);
+        getMenuInflater().inflate(menuID, menu);
         return true;
     }
 
@@ -156,7 +161,7 @@ public class MainActivity extends FragmentActivity implements
                 if (mCurrentPack.cards.size() >= 0) {
                     new AlertDialog.Builder(this)
                             .setTitle("Select a template background")
-                            .setSingleChoiceItems(new String[]{"Blue", "Coffee", "Gray", "Purple", "Red"},defaultIndex , new DialogInterface.OnClickListener() {
+                            .setSingleChoiceItems(new String[]{"Blue", "Coffee", "Gray", "Purple", "Red"}, defaultIndex, new DialogInterface.OnClickListener() {
                                 @Override
                                 public void onClick(DialogInterface dialog, int which) {
                                     if (mCardDetailFragment != null) {
@@ -175,7 +180,7 @@ public class MainActivity extends FragmentActivity implements
 
             case R.id.actionbar_play:
                 Intent intent = new Intent(MainActivity.this, PlayActivity.class);
-                intent.putExtra("packID",mCurrentPack.packID);
+                intent.putExtra("packID", mCurrentPack.packID);
                 startActivity(intent);
                 overridePendingTransition(R.anim.in_from_bottom, R.anim.out_to_above);
                 break;
@@ -201,59 +206,58 @@ public class MainActivity extends FragmentActivity implements
                 break;
 
             case R.id.actionbar_css_align_left:
-                mCardDetailFragment.updateCSS(0,0);
+                mCardDetailFragment.updateCSS(0, 0);
                 break;
 
             case R.id.actionbar_css_align_center:
-                mCardDetailFragment.updateCSS(0,1);
+                mCardDetailFragment.updateCSS(0, 1);
                 break;
 
             case R.id.actionbar_css_align_right:
-                mCardDetailFragment.updateCSS(0,2);
+                mCardDetailFragment.updateCSS(0, 2);
                 break;
 
             case R.id.actionbar_css_size_24:
-                mCardDetailFragment.updateCSS(1,0);
+                mCardDetailFragment.updateCSS(1, 0);
                 break;
 
             case R.id.actionbar_css_size_28:
-                mCardDetailFragment.updateCSS(1,1);
+                mCardDetailFragment.updateCSS(1, 1);
                 break;
 
             case R.id.actionbar_css_size_32:
-                mCardDetailFragment.updateCSS(1,2);
+                mCardDetailFragment.updateCSS(1, 2);
                 break;
 
             case R.id.actionbar_css_size_36:
-                mCardDetailFragment.updateCSS(1,3);
+                mCardDetailFragment.updateCSS(1, 3);
                 break;
 
             case R.id.actionbar_css_size_40:
-                mCardDetailFragment.updateCSS(1,4);
+                mCardDetailFragment.updateCSS(1, 4);
                 break;
 
             case R.id.actionbar_css_color_red:
-                mCardDetailFragment.updateCSS(2,0);
+                mCardDetailFragment.updateCSS(2, 0);
                 break;
 
             case R.id.actionbar_css_color_blue:
-                mCardDetailFragment.updateCSS(2,1);
+                mCardDetailFragment.updateCSS(2, 1);
                 break;
 
             case R.id.actionbar_css_color_black:
-                mCardDetailFragment.updateCSS(2,2);
+                mCardDetailFragment.updateCSS(2, 2);
                 break;
 
             case R.id.actionbar_css_color_yellow:
-                mCardDetailFragment.updateCSS(2,3);
+                mCardDetailFragment.updateCSS(2, 3);
                 break;
 
             case R.id.actionbar_css_color_green:
-                mCardDetailFragment.updateCSS(2,4);
+                mCardDetailFragment.updateCSS(2, 4);
                 break;
 
             case R.id.actionbar_test1:
-
 
                 break;
 
@@ -337,6 +341,53 @@ public class MainActivity extends FragmentActivity implements
     }
 
 
+    /**
+     * @param pack, not 100% equal with mCurrentPack in MainActivity.java
+     * @param card
+     */
+    private void prepareSnapShotSelectedCard(Pack pack,Card card) {
+        mSnapshotCardDetailFragment = new CardDetailFragment(pack, card, 3);
+        getSupportFragmentManager().beginTransaction()
+                .add(R.id.detail, mSnapshotCardDetailFragment).commit();
+
+        if (mArrayCardDetailFragments == null) {
+            mArrayCardDetailFragments = new ArrayList<CardDetailFragment>();
+        }
+
+        mArrayCardDetailFragments.add(mSnapshotCardDetailFragment);
+    }
+
+
+    /**This is called by CardDetailFragment which represent current showing card in detail
+     * @param pack,       snapshot all the cards in this pack
+     * @param exceptCard, except this
+     */
+    public void prepareSnapShotAllExceptOne(Pack pack, Card exceptCard) {
+
+        ArrayList<Card> cards = pack.cards;
+        for (Card card : cards) {
+            if (card.cardID != exceptCard.cardID) {
+                prepareSnapShotSelectedCard(pack,card);
+            }
+        }
+    }
+
+    /**
+     * This is called by CardDetailFragment which represent current showing card in detail
+     */
+    public void finishSnapShotAllExceptOne() {
+
+        if (mArrayCardDetailFragments == null)
+            return;
+
+        for (CardDetailFragment cardDetailFragment : mArrayCardDetailFragments) {
+            getSupportFragmentManager().beginTransaction().remove(cardDetailFragment).commit();
+        }
+        mArrayCardDetailFragments = null;
+
+    }
+
+
     private void startCreateCard() {
 
         //mCurrentPack = CardListModel.getLatestCreatedPack();//don't need to do here
@@ -358,7 +409,7 @@ public class MainActivity extends FragmentActivity implements
             }
         });
 
-        mCardDetailFragment = new CardDetailFragment(mCurrentPack, null,1);
+        mCardDetailFragment = new CardDetailFragment(mCurrentPack, null, 1);
         getSupportFragmentManager().beginTransaction()
                 .setCustomAnimations(R.anim.in_from_right, R.anim.out_to_right)
                 .replace(R.id.add_card_frame_layout, mCardDetailFragment)
@@ -381,7 +432,7 @@ public class MainActivity extends FragmentActivity implements
         Intent intent = new Intent();
         intent.setAction(Global.BROADCAST_ACTION_UPDATE_MASTER_VIEW);
         intent.putExtra(Global.KEY_FROM, Global.BROADCAST_EXTRA_FROM_NEW_CARD);
-        intent.putExtra(Global.KEY_CARD_INDEX,mCurrentPack.cards.size());
+        intent.putExtra(Global.KEY_CARD_INDEX, mCurrentPack.cards.size());
         sendBroadcast(intent);
 
     }

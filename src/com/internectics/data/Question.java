@@ -103,7 +103,7 @@ public class Question {
 
     private void insert(Context context) {
         if (questionID == -1) {
-            questionID = (int) (System.currentTimeMillis() & 0x7FFFFFFF);
+            questionID = Global.generateNoRepeatInt();
         }
 
         String decodedSubheading = StringUtils.stringDecodeForSQlite(subheading);

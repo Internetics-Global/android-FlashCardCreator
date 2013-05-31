@@ -114,7 +114,7 @@ public class Card {
 
     private void insert(Context context) {
         if (cardID == -1) {
-            cardID = (int) (System.currentTimeMillis() & 0x7FFFFFFF);   //0xFFFFFFF is the max number of int
+            cardID = Global.generateNoRepeatInt();
             Log.d(Global.debugTag,"Generated cardID is:" + cardID);
         }
         String query = String.format("INSERT INTO Cards_Tables(card_id, pack_id, cover_image, template_background, card_sn) VALUES (%d, %d, \"%s\", \"%s\", %d)", cardID, packID, coverImageUriFormatStr, templateBackground, cardSN);

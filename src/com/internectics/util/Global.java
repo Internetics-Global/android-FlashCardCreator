@@ -72,6 +72,16 @@ public class Global {
         return result;
     }
 
+
+    /**
+     * Strictly, it could be repeated
+     * @return
+     */
+    public static int generateNoRepeatInt() {
+        int result = (int) (System.currentTimeMillis() & 0x7FFFFFFF);   //0xFFFFFFF is the max number of int;
+        return result;
+    }
+
 }
 
 

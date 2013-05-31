@@ -107,7 +107,7 @@ public class PackParserHelper {
             pack.creatorID = (String) obj.get("creator");
             pack.creatorNickName = (String) obj.get("creator_nick_name");
             pack.userID = Global.USER_ID; // there's no this information in json file, so we have to add manually
-            pack.packID = (int) (System.currentTimeMillis() & 0x7FFFFFFF);
+            pack.packID = Global.generateNoRepeatInt();
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         } catch (ParseException e) {

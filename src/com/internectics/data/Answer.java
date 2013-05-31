@@ -105,7 +105,7 @@ public class Answer {
     private void insert(Context context) {
         if (answerID == -1) {
             //it's not the best way to generate an random but not repeated, hope future to find a better way
-            answerID = (int) (System.currentTimeMillis() & 0x7FFFFFFF);
+            answerID = Global.generateNoRepeatInt();
         }
 
         String decodedSubheading = StringUtils.stringDecodeForSQlite(subheading);
