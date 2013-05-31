@@ -6,6 +6,7 @@ import android.content.*;
 import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.net.Uri;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.util.Log;
@@ -26,51 +27,47 @@ import net.londatiga.android.ActionItem;
 import net.londatiga.android.QuickAction;
 
 import java.io.File;
-import java.util.ArrayList;
 
 public class CardDetailFragment extends Fragment implements FCCEditText.OnKeyboardCloseListener, FCCEditText.OnTouchListener {
 
     private Card mCurrentCard;
     private Pack mCurrentPack;
 
-    public boolean mIsCreatingCard = false;
+    public boolean  mIsCreatingCard = false;
     private boolean mIsPlayingCard = false;
     private boolean mIsQuestionShowing = false; //this is only used in play mode
+    private boolean mIsSnapShotNotCurrent = false;//as to snapshot,we have different stragegy on current showing card and other cards
 
-    private View mContentView;
+    public View mContentView;
 
     private LinearLayout mContentBodyLeft;
-    private FCCEditText mSidebarTitle;
-    private FrameLayout mSidebarBackground;
-    private FCCEditText mTitle;
+    private FCCEditText  mSidebarTitle;
+    private FrameLayout  mSidebarBackground;
+    private FCCEditText  mTitle;
     private LinearLayout mTitleBackground;
-    private FCCEditText mCreator;
-    private FCCEditText mSubheading;
-    private FCCEditText mMain;
-    private FCCEditText mSub;
-    private ImageView mImage;
-    private ImageView mLogoImage;
-    private ImageView mChangeTemplateImage;
-    private ImageView mLogoURLImage;
+    private FCCEditText  mCreator;
+    private FCCEditText  mSubheading;
+    private FCCEditText  mMain;
+    private FCCEditText  mSub;
+    private ImageView    mImage;
+    private ImageView    mLogoImage;
+    private ImageView    mChangeTemplateImage;
+    private ImageView    mLogoURLImage;
 
-    private RadioButton mQuestionRadioButton;
-    private RadioButton mAnswerRadioButton;
-    private RadioGroup mRadioGroup;
+    private RadioButton  mQuestionRadioButton;
+    private RadioButton  mAnswerRadioButton;
+    private RadioGroup   mRadioGroup;
 
     private InputMethodManager mIMM;
 
     private int CODE_REQUEST_IMAGE_SOURCE_IS_LOGO = 1001; //when user click on the logo img
     private int CODE_REQUEST_IMAGE_SOURCE_IS_IMAGE = 1002;//when user click on the image img
 
-    private EditText mFocusedEditText;
+    private EditText mCurrentFocusedEditText;
 
-    /**
-     * Constructor
-     *
-     * @param currentPack
-     * @param currentCard
-     * @param source,     0 ordinary; 1 creating new card; 2. play mode
-     */
+    private static int mSemaphore = 0; //used to indicate all snapshots are done
+
+
     public CardDetailFragment(Pack currentPack, Card currentCard, int source) {
 
         if (source == 1) {
@@ -78,9 +75,12 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnKeyboa
         } else if (source == 2) {
             mIsPlayingCard = true;
             mIsCreatingCard = false;
+        } else if (source == 3) {
+            mIsSnapShotNotCurrent = true;
         } else {
             mIsPlayingCard = false;
             mIsCreatingCard = false;
+            mIsSnapShotNotCurrent = false;
         }
 
         if (currentCard == null) {
@@ -96,15 +96,11 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnKeyboa
     }
 
     @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-
-        mIMM = (InputMethodManager) (getActivity().getSystemService(Context.INPUT_METHOD_SERVICE));
-    }
-
-    @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+
+        mIMM = (InputMethodManager) (getActivity().getSystemService(Context.INPUT_METHOD_SERVICE));
+
         if (mIsPlayingCard) {
             //need to hide queston/answer segment raido group
             mContentView = inflater.inflate(R.layout.card, container, false);
@@ -152,6 +148,15 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnKeyboa
             }
         });
 
+
+        if (mIsSnapShotNotCurrent == true) {
+            mContentView.setVisibility(View.INVISIBLE);
+
+            ViewDidAppearTask dTask = new ViewDidAppearTask();
+            dTask.execute(100);
+            Log.d(Global.debugTag, "cardID and coverImageUriFormatStr:" + mCurrentCard.cardID + mCurrentCard.coverImageUriFormatStr);
+        }
+
         return mContentView;
     }
 
@@ -169,6 +174,9 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnKeyboa
             configureCardStatus();
         }
 
+        //test purpose TODO
+        enableCardEditable();
+
     }
 
     @Override
@@ -181,6 +189,12 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnKeyboa
     public void onDestroyView() {
         super.onDestroyView();
         Log.d(Global.debugTag, "onDestroyView in CardDetailFragment");
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        Log.d(Global.debugTag, "onDestroy in CardDetailFragment");
     }
 
     @Override
@@ -395,6 +409,38 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnKeyboa
         mSubheading.setOnTouchListener(this);
         mMain.setOnTouchListener(this);
         mSub.setOnTouchListener(this);
+        mCreator.setOnTouchListener(this);
+        mSidebarTitle.setOnTouchListener(this);
+        mTitle.setOnTouchListener(this);
+
+        mSidebarTitle.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+            @Override
+            public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+                if (actionId == EditorInfo.IME_ACTION_DONE) {
+                    onKeyboardClose((EditText)v);
+                }
+                return false;
+            }
+        });
+        mCreator.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+            @Override
+            public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+                if (actionId == EditorInfo.IME_ACTION_DONE) {
+                    onKeyboardClose((EditText)v);
+                }
+                return false;
+            }
+        });
+
+        mTitle.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+            @Override
+            public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+                if (actionId == EditorInfo.IME_ACTION_DONE) {
+                    onKeyboardClose((EditText)v);
+                }
+                return false;
+            }
+        });
     }
 
 
@@ -485,25 +531,55 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnKeyboa
         mCurrentCard = new Card();
         mCurrentCard.packID = mCurrentPack.packID;
         mCurrentCard.cardSN = mCurrentPack.cards.size() + 1;
+        mCurrentCard.cardID = Global.generateNoRepeatInt();
     }
 
+    /**
+     * put save here when creating a new card
+     * put save in onKeyboardClose when editting a current card
+     */
     public void saveNewCreatedCard() {
 
         //Step1: take card screenshot
-        takeSnapshot();
+        takeSnapshotAll();
 
         //Step4: save
         mCurrentCard.save(AppContext.getAppContext());
         Log.d(Global.debugTag, "finish execution of saveNewCreatedCard");
     }
 
-    private void takeSnapshot() {
+
+    /**
+     * do save when editting curent card
+     * do NOT save when creating a new card
+     */
+    private void takeSnapshotCurrentCard() {
         View cardView = mContentView.findViewById(R.id.card);
         Bitmap bitmap = UIHelper.loadBitmapFromView(cardView);
         File savedFile = UIHelper.saveImageToCaches(bitmap);
         mCurrentCard.coverImageUriFormatStr = FileOperationHelper.convertToUriFormatFile(savedFile);
-    }
 
+        if (mIsSnapShotNotCurrent == true) {
+            mCurrentCard.save(AppContext.getAppContext());
+        }
+
+        Log.w(Global.debugTag,"takeSnapshotCurrentCard on mCurrentCard.coverImageUriFormatStr" + mCurrentCard.coverImageUriFormatStr);
+
+        mSemaphore++;
+        if (mSemaphore == mCurrentPack.cards.size()) {
+            Intent intent = new Intent();
+            intent.setAction(Global.BROADCAST_ACTION_UPDATE_MASTER_VIEW);
+            intent.putExtra(Global.KEY_FROM, Global.BROADCAST_EXTRA_FROM_CURRENT_PACK_UPDATE);
+            getActivity().sendBroadcast(intent);
+            mSemaphore = 0;
+
+            //free resources
+            ((MainActivity) getActivity()).finishSnapShotAllExceptOne();
+
+            Log.w(Global.debugTag,"Get done all cards' snapshot");
+        }
+
+    }
 
     public void cardColorTemplateSelectedPostAction(int cardColorTemplateIndex) {
         switch (cardColorTemplateIndex) {
@@ -860,9 +936,160 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnKeyboa
         mSub.setTextColor(StringUtils.convertColorStringToInt(mCurrentCard.answer.css.subColor));
     }
 
+    /**
+     * Snap all the cards under current pack
+     */
+    public void takeSnapshotAll() {
+
+        mSemaphore = 0;
+
+        //step1: take snapshot on current card
+        takeSnapshotCurrentCard();
+
+        //step2: take snapshot on others card under current pack
+        ((MainActivity) getActivity()).prepareSnapShotAllExceptOne(mCurrentPack, mCurrentCard);
+    }
+
+    public void updateCSS(int menuID, int subMenuID) {
+        CSS currentCSS;
+
+        //Step1: question or answer view now
+        boolean isQuestionShowing = mQuestionRadioButton.isChecked();
+
+        //Step2: determine operaton target
+        int editTextTag = Integer.parseInt((String) mCurrentFocusedEditText.getTag());
+        if (isQuestionShowing) {
+            currentCSS = mCurrentCard.question.css;
+        } else {
+            currentCSS = mCurrentCard.answer.css;
+        }
+
+        //Step3: fill values
+        int[] sizeArray = getResources().getIntArray(R.array.css_size);
+        String[] alignArray = getResources().getStringArray(R.array.css_align);
+        String[] colorArray = getResources().getStringArray(R.array.css_color);
+        switch (menuID) {
+            case 0:   //stand for align
+
+                if (editTextTag == 1001) {
+                    currentCSS.subheadingAlign = alignArray[subMenuID];
+                } else if (editTextTag == 1002) {
+                    currentCSS.mainAlign = alignArray[subMenuID];
+                } else if (editTextTag == 1003) {
+                    currentCSS.subAlign = alignArray[subMenuID];
+                }
+
+                switch (subMenuID) {
+                    case 0:
+                        mCurrentFocusedEditText.setGravity(Gravity.LEFT);
+                        break;
+                    case 1:
+                        mCurrentFocusedEditText.setGravity(Gravity.CENTER);
+                        break;
+                    case 2:
+                        mCurrentFocusedEditText.setGravity(Gravity.RIGHT);
+                        break;
+                    default:
+                        Log.d(Global.debugTag, "Out of range of subMenuID");
+                }
+                break;
+
+            case 1:   //stand for size
+
+                //you can find the tag definition(1001,1002,1003) in card.xml
+                if (editTextTag == 1001) {
+                    currentCSS.subheadingSize = sizeArray[subMenuID];
+                } else if (editTextTag == 1002) {
+                    currentCSS.mainSize = sizeArray[subMenuID];
+                } else if (editTextTag == 1003) {
+                    currentCSS.subSize = sizeArray[subMenuID];
+                }
+
+                switch (subMenuID) {
+                    case 0:
+                        mCurrentFocusedEditText.setTextSize(sizeArray[0]);
+                        break;
+                    case 1:
+                        mCurrentFocusedEditText.setTextSize(sizeArray[1]);
+                        break;
+                    case 2:
+                        mCurrentFocusedEditText.setTextSize(sizeArray[2]);
+                        break;
+                    case 3:
+                        mCurrentFocusedEditText.setTextSize(sizeArray[3]);
+                        break;
+                    case 4:
+                        mCurrentFocusedEditText.setTextSize(sizeArray[4]);
+                        break;
+                    default:
+                        Log.d(Global.debugTag, "Out of range of subMenuID");
+                }
+                break;
+            case 2:   //stand for color
+
+                if (editTextTag == 1001) {
+                    currentCSS.subheadingColor = colorArray[subMenuID];
+                } else if (editTextTag == 1002) {
+                    currentCSS.mainColor = colorArray[subMenuID];
+                } else if (editTextTag == 1003) {
+                    currentCSS.subColor = colorArray[subMenuID];
+                }
+
+                switch (subMenuID) {
+                    case 0:
+                        mCurrentFocusedEditText.setTextColor(Color.RED);
+                        break;
+                    case 1:
+                        mCurrentFocusedEditText.setTextColor(Color.BLUE);
+                        break;
+                    case 2:
+                        mCurrentFocusedEditText.setTextColor(Color.BLACK);
+                        break;
+                    case 3:
+                        mCurrentFocusedEditText.setTextColor(Color.YELLOW);
+                        break;
+                    case 4:
+                        mCurrentFocusedEditText.setTextColor(Color.GREEN);
+                        break;
+                    default:
+                        Log.d(Global.debugTag, "Out of range of subMenuID");
+                }
+                break;
+            default:
+                Log.d(Global.debugTag, "Out of range of menuID");
+        }
+
+
+        if (!mIsCreatingCard) {
+            if (isQuestionShowing) {
+                mCurrentCard.question.css.save(AppContext.getAppContext());
+            } else {
+                mCurrentCard.answer.css.save(AppContext.getAppContext());
+            }
+        }
+    }
 
     @Override
+    public boolean onTouch(View v, MotionEvent event) {
+
+        Log.d(Global.debugTag, "onTouch happened");
+        getActivity().getActionBar().show();
+        ((MainActivity) getActivity()).mIsEdittingCard = true;
+        getActivity().invalidateOptionsMenu();
+
+        mCurrentFocusedEditText = (EditText) v;
+
+        return false;
+    }
+
+    /**
+     * put save here when editting a current card
+     * put save in saveNewCreatedCard when creating a new card
+     */
+    @Override
     public void onKeyboardClose(EditText editText) {
+
+        boolean isTakeSnapshotAll = false;
 
         if ((mIMM.isActive() == false) || (mIsPlayingCard)) {
             //It will be called when press the back button, even no keyboard is shown on now.That's the reason why we need to check
@@ -874,24 +1101,34 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnKeyboa
         switch (id) {
             case R.id.sidebar_title:
                 mCurrentPack.sidebarTitle = editText.getText().toString();
-                takeSnapshotAll();
+                if (!mIsCreatingCard) {
+                    isTakeSnapshotAll = true;
+                    takeSnapshotAll();
+                }
+
                 break;
             case R.id.title:
                 if (mQuestionRadioButton.isChecked()) {
                     mCurrentPack.questionTitle = editText.getText().toString();
-                    takeSnapshotAll();
+                    if (!mIsCreatingCard) {
+                        isTakeSnapshotAll = true;
+                        takeSnapshotAll();
+                    }
                 } else {
                     mCurrentPack.answerTitle = editText.getText().toString();
                 }
                 break;
             case R.id.creator:
                 mCurrentPack.creatorNickName = editText.getText().toString();
-                takeSnapshotAll();
+                if (!mIsCreatingCard) {
+                    isTakeSnapshotAll = true;
+                    takeSnapshotAll();
+                }
                 break;
             case R.id.subheading:
                 if (mQuestionRadioButton.isChecked()) {
                     mCurrentCard.question.subheading = editText.getText().toString();
-                    takeSnapshot();
+                    takeSnapshotCurrentCard();
                 } else {
                     mCurrentCard.answer.subheading = editText.getText().toString();
                 }
@@ -899,7 +1136,7 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnKeyboa
             case R.id.main:
                 if (mQuestionRadioButton.isChecked()) {
                     mCurrentCard.question.main = editText.getText().toString();
-                    takeSnapshot();
+                    takeSnapshotCurrentCard();
                 } else {
                     mCurrentCard.answer.main = editText.getText().toString();
                 }
@@ -907,7 +1144,7 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnKeyboa
             case R.id.sub:
                 if (mQuestionRadioButton.isChecked()) {
                     mCurrentCard.question.sub = editText.getText().toString();
-                    takeSnapshot();
+                    takeSnapshotCurrentCard();
                 } else {
                     mCurrentCard.answer.sub = editText.getText().toString();
                 }
@@ -933,162 +1170,57 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnKeyboa
         getActivity().invalidateOptionsMenu();
 
         //Update master view (cover image)
-        Intent intent = new Intent();
-        intent.setAction(Global.BROADCAST_ACTION_UPDATE_MASTER_VIEW);
-        intent.putExtra(Global.KEY_FROM, Global.BROADCAST_EXTRA_FROM_CURRENT_PACK_UPDATE);
-        getActivity().sendBroadcast(intent);
+        if (isTakeSnapshotAll == false) {
+            Intent intent = new Intent();
+            intent.setAction(Global.BROADCAST_ACTION_UPDATE_MASTER_VIEW);
+            intent.putExtra(Global.KEY_FROM, Global.BROADCAST_EXTRA_FROM_CURRENT_PACK_UPDATE);
+            getActivity().sendBroadcast(intent);
+        }
+
 
     }
 
-    public void takeSnapshotAll() {
 
-        //take snapshot on current card
-        takeSnapshot();
+    /**
+     * Check whether the view has appeared
+     * Since there's no iOS like ViewDidAppear method, we have to do here
+     */
+    class ViewDidAppearTask extends AsyncTask<Integer, Integer, String> {
 
-        ArrayList <Card> cards = mCurrentPack.cards;
-        for (Card card:cards) {
-            if (card.cardID!=mCurrentCard.cardID) {
-                CardDetailFragment cardDetailFragment = new CardDetailFragment(mCurrentPack, card, 2);
+        final View cardView = mContentView.findViewById(R.id.card);
 
-                View cardView = mContentView.findViewById(R.id.card);
-                Bitmap bitmap = UIHelper.loadBitmapFromView(cardView);
-                File savedFile = UIHelper.saveImageToCaches(bitmap);
-                mCurrentCard.coverImageUriFormatStr = FileOperationHelper.convertToUriFormatFile(savedFile);
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+        }
+
+        @Override
+        protected String doInBackground(Integer... params) {
+
+            while (cardView.getHeight() == 0 || cardView.getWidth() == 0) {
+                try {
+                    Thread.sleep(1);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
             }
-        }
-    }
 
-
-    @Override
-    public boolean onTouch(View v, MotionEvent event) {
-
-        Log.d(Global.debugTag, "onTouch happened");
-        getActivity().getActionBar().show();
-        ((MainActivity) getActivity()).mIsEdittingCard = true;
-        getActivity().invalidateOptionsMenu();
-
-        mFocusedEditText = (EditText) v;
-
-        return false;
-    }
-
-    public void updateCSS(int menuID, int subMenuID) {
-        CSS currentCSS;
-
-        //Step1: question or answer view now
-        boolean isQuestionShowing = mQuestionRadioButton.isChecked();
-
-        //Step2: determine operaton target
-        int editTextTag = Integer.parseInt((String) mFocusedEditText.getTag());
-        if (isQuestionShowing) {
-            currentCSS = mCurrentCard.question.css;
-        } else {
-            currentCSS = mCurrentCard.answer.css;
+            return "Done";
         }
 
-        //Step3: fill values
-        int[] sizeArray = getResources().getIntArray(R.array.css_size);
-        String[] alignArray = getResources().getStringArray(R.array.css_align);
-        String[] colorArray = getResources().getStringArray(R.array.css_color);
-        switch (menuID) {
-            case 0:   //stand for align
-
-                if (editTextTag == 1001) {
-                    currentCSS.subheadingAlign = alignArray[subMenuID];
-                } else if (editTextTag == 1002) {
-                    currentCSS.mainAlign = alignArray[subMenuID];
-                } else if (editTextTag == 1003) {
-                    currentCSS.subAlign = alignArray[subMenuID];
-                }
-
-                switch (subMenuID) {
-                    case 0:
-                        mFocusedEditText.setGravity(Gravity.LEFT);
-                        break;
-                    case 1:
-                        mFocusedEditText.setGravity(Gravity.CENTER);
-                        break;
-                    case 2:
-                        mFocusedEditText.setGravity(Gravity.RIGHT);
-                        break;
-                    default:
-                        Log.d(Global.debugTag, "Out of range of subMenuID");
-                }
-                break;
-
-            case 1:   //stand for size
-
-                //you can find the tag definition(1001,1002,1003) in card.xml
-                if (editTextTag == 1001) {
-                    currentCSS.subheadingSize = sizeArray[subMenuID];
-                } else if (editTextTag == 1002) {
-                    currentCSS.mainSize = sizeArray[subMenuID];
-                } else if (editTextTag == 1003) {
-                    currentCSS.subSize = sizeArray[subMenuID];
-                }
-
-                switch (subMenuID) {
-                    case 0:
-                        mFocusedEditText.setTextSize(sizeArray[0]);
-                        break;
-                    case 1:
-                        mFocusedEditText.setTextSize(sizeArray[1]);
-                        break;
-                    case 2:
-                        mFocusedEditText.setTextSize(sizeArray[2]);
-                        break;
-                    case 3:
-                        mFocusedEditText.setTextSize(sizeArray[3]);
-                        break;
-                    case 4:
-                        mFocusedEditText.setTextSize(sizeArray[4]);
-                        break;
-                    default:
-                        Log.d(Global.debugTag, "Out of range of subMenuID");
-                }
-                break;
-            case 2:   //stand for color
-
-                if (editTextTag == 1001) {
-                    currentCSS.subheadingColor = colorArray[subMenuID];
-                } else if (editTextTag == 1002) {
-                    currentCSS.mainColor = colorArray[subMenuID];
-                } else if (editTextTag == 1003) {
-                    currentCSS.subColor = colorArray[subMenuID];
-                }
-
-                switch (subMenuID) {
-                    case 0:
-                        mFocusedEditText.setTextColor(Color.RED);
-                        break;
-                    case 1:
-                        mFocusedEditText.setTextColor(Color.BLUE);
-                        break;
-                    case 2:
-                        mFocusedEditText.setTextColor(Color.BLACK);
-                        break;
-                    case 3:
-                        mFocusedEditText.setTextColor(Color.YELLOW);
-                        break;
-                    case 4:
-                        mFocusedEditText.setTextColor(Color.GREEN);
-                        break;
-                    default:
-                        Log.d(Global.debugTag, "Out of range of subMenuID");
-                }
-                break;
-            default:
-                Log.d(Global.debugTag, "Out of range of menuID");
+        @Override
+        protected void onProgressUpdate(Integer... progress) {
+            super.onProgressUpdate(progress);
         }
 
+        @Override
+        protected void onPostExecute(String result) {
+            super.onPostExecute(result);
+            takeSnapshotCurrentCard();
+            mIsSnapShotNotCurrent = false;
 
-        if (!mIsCreatingCard) {
-            if (isQuestionShowing) {
-                mCurrentCard.question.css.save(AppContext.getAppContext());
-            } else {
-                mCurrentCard.answer.css.save(AppContext.getAppContext());
-            }
         }
+
     }
 
 }
