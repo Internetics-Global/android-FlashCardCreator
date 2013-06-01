@@ -4,6 +4,7 @@
     <!-- css style for card rich text -->
     <string-array
             name="css_align">
+        <item>Align</item>
         <item>Left</item>
         <item>Center</item>
         <item>Right</item>
@@ -11,6 +12,7 @@
 
     <string-array
             name="css_color">
+        <item>Color</item>
         <item>Red</item>
         <item>Blue</item>
         <item>Black</item>
@@ -18,13 +20,15 @@
         <item>Green</item>
     </string-array>
 
-    <integer-array
+
+    <string-array
             name="css_size">
+        <item>Size</item>
         <item>24</item>
         <item>28</item>
         <item>32</item>
         <item>36</item>
         <item>40</item>
-    </integer-array>
+    </string-array>
 
 </resources>

@@ -7,20 +7,16 @@ import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.PixelFormat;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.util.Log;
-import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuItem;
-import android.view.View;
+import android.util.TypedValue;
+import android.view.*;
 import android.view.animation.AlphaAnimation;
 import android.view.animation.Animation;
-import android.widget.Button;
-import android.widget.FrameLayout;
-import android.widget.PopupWindow;
-import android.widget.Toast;
+import android.widget.*;
 import com.dropbox.client2.DropboxAPI;
 import com.dropbox.client2.android.AndroidAuthSession;
 import com.dropbox.client2.session.TokenPair;
@@ -65,6 +61,8 @@ public class MainActivity extends FragmentActivity implements
 
     private ArrayList<CardDetailFragment> mArrayCardDetailFragments;   //speical for snapshot(not include current card)
 
+    private View mCSSToolbar;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -105,17 +103,9 @@ public class MainActivity extends FragmentActivity implements
         super.onPrepareOptionsMenu(menu);
         int menuID;
         if (mIsCreatingCard) {
-            if (mIsEdittingCard) {
-                menuID = R.menu.actionbar_add_card_css;
-            } else {
-                menuID = R.menu.actionbar_add_card;
-            }
+            menuID = R.menu.actionbar_add_card;
         } else {
-            if (mIsEdittingCard) {
-                menuID = R.menu.actionbar_css;
-            } else {
-                menuID = R.menu.actionbar;
-            }
+            menuID = R.menu.actionbar;
         }
         menu.clear();
         getMenuInflater().inflate(menuID, menu);
@@ -205,58 +195,6 @@ public class MainActivity extends FragmentActivity implements
                 startActivity(new Intent(MainActivity.this, InstructionActivity.class));
                 break;
 
-            case R.id.actionbar_css_align_left:
-                mCardDetailFragment.updateCSS(0, 0);
-                break;
-
-            case R.id.actionbar_css_align_center:
-                mCardDetailFragment.updateCSS(0, 1);
-                break;
-
-            case R.id.actionbar_css_align_right:
-                mCardDetailFragment.updateCSS(0, 2);
-                break;
-
-            case R.id.actionbar_css_size_24:
-                mCardDetailFragment.updateCSS(1, 0);
-                break;
-
-            case R.id.actionbar_css_size_28:
-                mCardDetailFragment.updateCSS(1, 1);
-                break;
-
-            case R.id.actionbar_css_size_32:
-                mCardDetailFragment.updateCSS(1, 2);
-                break;
-
-            case R.id.actionbar_css_size_36:
-                mCardDetailFragment.updateCSS(1, 3);
-                break;
-
-            case R.id.actionbar_css_size_40:
-                mCardDetailFragment.updateCSS(1, 4);
-                break;
-
-            case R.id.actionbar_css_color_red:
-                mCardDetailFragment.updateCSS(2, 0);
-                break;
-
-            case R.id.actionbar_css_color_blue:
-                mCardDetailFragment.updateCSS(2, 1);
-                break;
-
-            case R.id.actionbar_css_color_black:
-                mCardDetailFragment.updateCSS(2, 2);
-                break;
-
-            case R.id.actionbar_css_color_yellow:
-                mCardDetailFragment.updateCSS(2, 3);
-                break;
-
-            case R.id.actionbar_css_color_green:
-                mCardDetailFragment.updateCSS(2, 4);
-                break;
-
             case R.id.actionbar_test1:
 
                 break;
@@ -311,6 +249,9 @@ public class MainActivity extends FragmentActivity implements
                 }
             }
         }
+
+
+        initializeCSSToolbar();
     }
 
     @Override
@@ -514,6 +455,112 @@ public class MainActivity extends FragmentActivity implements
             String shareLink = PackRecordHelper.getCurrentPackShareLink(mCurrentPack);
             ShareLinkHelper shareLinkHelper = new ShareLinkHelper(this, shareLink, mCurrentPack);
             shareLinkHelper.execShareAction();
+        }
+    }
+
+    private void initializeCSSToolbar() {
+
+        if (mCSSToolbar!=null) {
+            return;
+        }
+
+        //get actionbar height ( we can not directly use getActionbar.getHeight)
+        TypedValue tv = new TypedValue();
+        int actionbarHeight = 0;
+        if (getTheme().resolveAttribute(android.R.attr.actionBarSize,tv,true)) {
+            actionbarHeight = TypedValue.complexToDimensionPixelSize(tv.data,getResources().getDisplayMetrics());
+            Log.d(Global.debugTag,"actionbar height is:" + actionbarHeight);
+        }
+
+        WindowManager.LayoutParams params = new WindowManager.LayoutParams(
+                WindowManager.LayoutParams.MATCH_PARENT, actionbarHeight,
+                WindowManager.LayoutParams.TYPE_SYSTEM_ALERT,
+                WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE|WindowManager.LayoutParams.FLAG_NOT_TOUCH_MODAL|WindowManager.LayoutParams.FLAG_WATCH_OUTSIDE_TOUCH,
+                PixelFormat.TRANSLUCENT);
+        params.gravity = Gravity.LEFT|Gravity.TOP;
+        WindowManager wm = (WindowManager) getSystemService(WINDOW_SERVICE);
+        LayoutInflater inflater = (LayoutInflater) getSystemService(LAYOUT_INFLATER_SERVICE);
+        mCSSToolbar = inflater.inflate(R.layout.css_toolbar, null);
+        mCSSToolbar.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                Log.d(Global.debugTag, "touch me");
+                return false;
+            }
+        });
+        wm.addView(mCSSToolbar, params);
+        mCSSToolbar.setVisibility(View.INVISIBLE);
+
+        Spinner spinnerAlign = (Spinner) mCSSToolbar.findViewById(R.id.spinner_align);
+        Spinner spinnerColor = (Spinner) mCSSToolbar.findViewById(R.id.spinner_color);
+        Spinner spinnerSize = (Spinner) mCSSToolbar.findViewById(R.id.spinner_size);
+        spinnerAlign.setSelected(false);
+        spinnerColor.setSelected(false);
+        spinnerSize.setSelected(false);
+
+
+        spinnerAlign.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                if (position > 0) {
+                    mCardDetailFragment.updateCSS(0, position -1);
+                }
+
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+            }
+        });
+
+        spinnerSize.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                if (position > 0) {
+                    mCardDetailFragment.updateCSS(1, position -1);
+                }
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+            }
+        });
+
+        spinnerColor.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                if (position > 0) {
+                    mCardDetailFragment.updateCSS(2, position -1);
+                }
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+            }
+        });
+    }
+
+    public void prepareCSSToolbar() {
+        if (mCSSToolbar == null) {
+            initializeCSSToolbar();
+        } else {
+            mCSSToolbar.setVisibility(View.VISIBLE);
+
+            Spinner spinnerAlign = (Spinner) mCSSToolbar.findViewById(R.id.spinner_align);
+            Spinner spinnerColor = (Spinner) mCSSToolbar.findViewById(R.id.spinner_color);
+            Spinner spinnerSize = (Spinner) mCSSToolbar.findViewById(R.id.spinner_size);
+
+            spinnerAlign.setSelection(0);
+            spinnerColor.setSelection(0);
+            spinnerSize.setSelection(0);
+        }
+    }
+
+    public void removeCSSToolbar() {
+        if (mCSSToolbar == null) {
+            return;
+        } else {
+            mCSSToolbar.setVisibility(View.INVISIBLE);
         }
     }
 

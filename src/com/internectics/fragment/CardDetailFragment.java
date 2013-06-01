@@ -975,7 +975,7 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnKeyboa
         }
 
         //Step3: fill values
-        int[] sizeArray = getResources().getIntArray(R.array.css_size);
+        String[] sizeArray = getResources().getStringArray(R.array.css_size);
         String[] alignArray = getResources().getStringArray(R.array.css_align);
         String[] colorArray = getResources().getStringArray(R.array.css_color);
         switch (menuID) {
@@ -1006,30 +1006,32 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnKeyboa
 
             case 1:   //stand for size
 
+                int size = Integer.parseInt(sizeArray[subMenuID]);
+
                 //you can find the tag definition(1001,1002,1003) in card.xml
                 if (editTextTag == 1001) {
-                    currentCSS.subheadingSize = sizeArray[subMenuID];
+                    currentCSS.subheadingSize = size;
                 } else if (editTextTag == 1002) {
-                    currentCSS.mainSize = sizeArray[subMenuID];
+                    currentCSS.mainSize = size;
                 } else if (editTextTag == 1003) {
-                    currentCSS.subSize = sizeArray[subMenuID];
+                    currentCSS.subSize = size;
                 }
 
                 switch (subMenuID) {
                     case 0:
-                        mCurrentFocusedEditText.setTextSize(sizeArray[0]);
+                        mCurrentFocusedEditText.setTextSize(size);
                         break;
                     case 1:
-                        mCurrentFocusedEditText.setTextSize(sizeArray[1]);
+                        mCurrentFocusedEditText.setTextSize(size);
                         break;
                     case 2:
-                        mCurrentFocusedEditText.setTextSize(sizeArray[2]);
+                        mCurrentFocusedEditText.setTextSize(size);
                         break;
                     case 3:
-                        mCurrentFocusedEditText.setTextSize(sizeArray[3]);
+                        mCurrentFocusedEditText.setTextSize(size);
                         break;
                     case 4:
-                        mCurrentFocusedEditText.setTextSize(sizeArray[4]);
+                        mCurrentFocusedEditText.setTextSize(size);
                         break;
                     default:
                         Log.d(Global.debugTag, "Out of range of subMenuID");
@@ -1091,7 +1093,8 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnKeyboa
             if ((tag == 1001) || (tag == 1002) || (tag == 1003)) {
                 //check card.xml for tag
                 ((MainActivity) getActivity()).mIsEdittingCard = true;
-                getActivity().invalidateOptionsMenu();
+
+                ((MainActivity) getActivity()).prepareCSSToolbar();
             }
         }
 
@@ -1194,6 +1197,8 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnKeyboa
             intent.putExtra(Global.KEY_FROM, Global.BROADCAST_EXTRA_FROM_CURRENT_PACK_UPDATE);
             getActivity().sendBroadcast(intent);
         }
+
+        ((MainActivity) getActivity()).removeCSSToolbar();
 
 
     }
