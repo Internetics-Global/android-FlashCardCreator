@@ -561,6 +561,8 @@ public class MainActivity extends FragmentActivity implements
             return;
         } else {
             mCSSToolbar.setVisibility(View.INVISIBLE);
+            WindowManager wm = (WindowManager) getSystemService(WINDOW_SERVICE);
+            wm.removeView(mCSSToolbar);
         }
     }
 
