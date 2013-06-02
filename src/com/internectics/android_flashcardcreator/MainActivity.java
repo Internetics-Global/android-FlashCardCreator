@@ -541,7 +541,7 @@ public class MainActivity extends FragmentActivity implements
     }
 
     public void prepareCSSToolbar() {
-        if (mCSSToolbar == null) {
+        if ((mCSSToolbar == null) || (mCSSToolbar.getParent() == null)) {
             initializeCSSToolbar();
         } else {
             mCSSToolbar.setVisibility(View.VISIBLE);
@@ -560,10 +560,10 @@ public class MainActivity extends FragmentActivity implements
         if (mCSSToolbar == null) {
             return;
         } else {
-            mCSSToolbar.setVisibility(View.INVISIBLE);
             WindowManager wm = (WindowManager) getSystemService(WINDOW_SERVICE);
             if (mCSSToolbar.getParent()!=null) {
                 wm.removeView(mCSSToolbar);
+                mCSSToolbar = null;
             }
 
         }
