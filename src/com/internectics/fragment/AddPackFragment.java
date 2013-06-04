@@ -56,7 +56,7 @@ public class AddPackFragment extends DialogFragment implements TextView.OnEditor
         TextView titleTextView = (TextView) mContentView
                 .findViewById(R.id.dialog_title);
         titleTextView.setText("Help");
-        Button closeButton = (Button) mContentView
+        final Button closeButton = (Button) mContentView
                 .findViewById(R.id.dialog_head_close_btn);
         Button saveButton = (Button) mContentView
                 .findViewById(R.id.dialog_head_save_btn);
@@ -64,6 +64,9 @@ public class AddPackFragment extends DialogFragment implements TextView.OnEditor
 
             @Override
             public void onClick(View v) {
+                if (mIMM.isActive()) {
+                    mIMM.hideSoftInputFromInputMethod(closeButton.getWindowToken(),0);
+                }
                 dismiss();
 
             }
