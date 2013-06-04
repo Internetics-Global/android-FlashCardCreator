@@ -70,6 +70,11 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnKeyboa
     private static int mSemaphore = 0; //used to indicate all snapshots are done
 
 
+    /**
+     * @param currentPack
+     * @param currentCard
+     * @param source: 1, create new card; 2, playing card; 3.
+     */
     public CardDetailFragment(Pack currentPack, Card currentCard, int source) {
 
         if (source == 1) {
@@ -569,12 +574,13 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnKeyboa
         File savedFile = UIHelper.saveImageToCaches(bitmap);
         mCurrentCard.coverImageUriFormatStr = FileOperationHelper.convertToUriFormatFile(savedFile);
 
-        if (mIsSnapShotNotCurrent == true) {
+        if (mIsCreatingCard == false) {
             mCurrentCard.save(AppContext.getAppContext());
         }
 
         Log.w(Global.debugTag,"takeSnapshotCurrentCard on mCurrentCard.coverImageUriFormatStr" + mCurrentCard.coverImageUriFormatStr);
 
+        //Notify master list view to update
         mSemaphore++;
         if (mSemaphore == mCurrentPack.cards.size()) {
             Intent intent = new Intent();
@@ -620,20 +626,16 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnKeyboa
         String templateBackground = StringUtils.convertTemplateBackgroundIndexToString(cardColorTemplateIndex);
         mCurrentCard.templateBackground = templateBackground;
 
+
         if (!mIsCreatingCard) {
+
+
 
             for (Card card : mCurrentPack.cards) {
                 card.templateBackground = templateBackground;
-                //TODO, screenshot all cards
-                card.save(AppContext.getAppContext());
             }
-
+            takeSnapshotAll();
         }
-
-        Intent intent = new Intent();
-        intent.setAction(Global.BROADCAST_ACTION_UPDATE_MASTER_VIEW);
-        intent.putExtra(Global.KEY_FROM, Global.BROADCAST_EXTRA_FROM_CURRENT_PACK_UPDATE);
-        getActivity().sendBroadcast(intent);
     }
 
     /**
@@ -948,6 +950,7 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnKeyboa
 
     /**
      * Snap all the cards under current pack
+     * take care of notification updating master list view
      */
     public void takeSnapshotAll() {
 
@@ -1084,10 +1087,11 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnKeyboa
     @Override
     public boolean onTouch(View v, MotionEvent event) {
 
-        Log.d(Global.debugTag, "onTouch happened" );
-        getActivity().getActionBar().show();
+        Log.d(Global.debugTag, "onTouch happened, event.getAction=" + event.getAction() );
 
-        if (v.getTag() != null) {
+
+
+        if ((v.getTag() != null)&&(event.getAction() == MotionEvent.ACTION_DOWN)) {
             int tag = Integer.parseInt((String) v.getTag());
 
             if ((tag == 1001) || (tag == 1002) || (tag == 1003)) {
@@ -1095,6 +1099,7 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnKeyboa
                 ((MainActivity) getActivity()).mIsEdittingCard = true;
 
                 ((MainActivity) getActivity()).prepareCSSToolbar();
+                ((MainActivity) getActivity()).showCSSToolbar();
             }
         }
 

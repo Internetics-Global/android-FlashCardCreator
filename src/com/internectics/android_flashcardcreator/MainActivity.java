@@ -147,6 +147,12 @@ public class MainActivity extends FragmentActivity implements
                 break;
 
             case R.id.actionbar_change_template_color:
+
+                if (mCardDetailFragment == null) {
+                    Toast.makeText(this, "You need to select a card beforehand", Toast.LENGTH_SHORT).show();
+                    break;
+                }
+
                 int defaultIndex = (StringUtils.convertTemplateBackgroundStringToResourceID(mCurrentCard.templateBackground))[0];
                 if (mCurrentPack.cards.size() >= 0) {
                     new AlertDialog.Builder(this)
@@ -154,10 +160,8 @@ public class MainActivity extends FragmentActivity implements
                             .setSingleChoiceItems(new String[]{"Blue", "Coffee", "Gray", "Purple", "Red"}, defaultIndex, new DialogInterface.OnClickListener() {
                                 @Override
                                 public void onClick(DialogInterface dialog, int which) {
-                                    if (mCardDetailFragment != null) {
-                                        dialog.dismiss();
-                                        mCardDetailFragment.cardColorTemplateSelectedPostAction(which);
-                                    }
+                                    dialog.dismiss();
+                                    mCardDetailFragment.cardColorTemplateSelectedPostAction(which);
                                 }
                             })
 
@@ -250,8 +254,6 @@ public class MainActivity extends FragmentActivity implements
             }
         }
 
-
-        initializeCSSToolbar();
     }
 
     @Override
@@ -489,14 +491,14 @@ public class MainActivity extends FragmentActivity implements
             }
         });
         wm.addView(mCSSToolbar, params);
-        mCSSToolbar.setVisibility(View.INVISIBLE);
+        mCSSToolbar.setVisibility(View.GONE);
 
         Spinner spinnerAlign = (Spinner) mCSSToolbar.findViewById(R.id.spinner_align);
         Spinner spinnerColor = (Spinner) mCSSToolbar.findViewById(R.id.spinner_color);
         Spinner spinnerSize = (Spinner) mCSSToolbar.findViewById(R.id.spinner_size);
-        spinnerAlign.setSelected(false);
-        spinnerColor.setSelected(false);
-        spinnerSize.setSelected(false);
+        spinnerAlign.setSelection(0);
+        spinnerColor.setSelection(0);
+        spinnerSize.setSelection(0);
 
 
         spinnerAlign.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
@@ -543,9 +545,16 @@ public class MainActivity extends FragmentActivity implements
     public void prepareCSSToolbar() {
         if ((mCSSToolbar == null) || (mCSSToolbar.getParent() == null)) {
             initializeCSSToolbar();
-        } else {
+            Log.d(Global.debugTag,"prepareCSSToolbar   initializeCSSToolbar");
+        }
+    }
+
+
+    public void showCSSToolbar() {
+        if ((mCSSToolbar != null)&&(mCSSToolbar.getParent()!=null)) {
             mCSSToolbar.setVisibility(View.VISIBLE);
 
+            //Rest spinner title when touch another textfield
             Spinner spinnerAlign = (Spinner) mCSSToolbar.findViewById(R.id.spinner_align);
             Spinner spinnerColor = (Spinner) mCSSToolbar.findViewById(R.id.spinner_color);
             Spinner spinnerSize = (Spinner) mCSSToolbar.findViewById(R.id.spinner_size);
@@ -553,17 +562,22 @@ public class MainActivity extends FragmentActivity implements
             spinnerAlign.setSelection(0);
             spinnerColor.setSelection(0);
             spinnerSize.setSelection(0);
+
+            Log.d(Global.debugTag,"prepareCSSToolbar   setSelection");
         }
     }
 
     public void removeCSSToolbar() {
         if (mCSSToolbar == null) {
+            Log.d(Global.debugTag,"removeCSSToolbar   null");
             return;
         } else {
             WindowManager wm = (WindowManager) getSystemService(WINDOW_SERVICE);
             if (mCSSToolbar.getParent()!=null) {
+                mCSSToolbar.setVisibility(View.GONE);
                 wm.removeView(mCSSToolbar);
                 mCSSToolbar = null;
+                Log.d(Global.debugTag,"removeCSSToolbar   removeView");
             }
 
         }
