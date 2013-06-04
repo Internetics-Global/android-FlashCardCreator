@@ -110,6 +110,8 @@ public class CardListFragment extends Fragment {
             }
         });
 
+        mDSLVListView.setOverScrollMode(ListView.OVER_SCROLL_ALWAYS);
+
 
         return mContentView;
     }
@@ -376,4 +378,5 @@ public class CardListFragment extends Fragment {
 
         ((MainActivity)getActivity()).clearMaskButtonForContentUpdating();
     }
+
 }

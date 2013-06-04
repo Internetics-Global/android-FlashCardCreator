@@ -120,6 +120,8 @@ public class MainActivity extends FragmentActivity implements
         return true;
     }
 
+
+
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
 
@@ -284,13 +286,13 @@ public class MainActivity extends FragmentActivity implements
             mCurrentCard = mCurrentPack.cards.get(mCurrentCardIndex);
             mCardDetailFragment = new CardDetailFragment(mCurrentPack, mCurrentCard, 0);
             getSupportFragmentManager().beginTransaction()
-                    .replace(R.id.card_detail_container, mCardDetailFragment).commit();
+                    .replace(R.id.card_detail_container, mCardDetailFragment).commitAllowingStateLoss();
         } else {
             mCurrentCardIndex = -1;
             mCurrentCard = null;
             if (mCardDetailFragment != null) {
                 getSupportFragmentManager().beginTransaction()
-                        .remove(mCardDetailFragment).commit();
+                        .remove(mCardDetailFragment).commitAllowingStateLoss();
             }
         }
     }
@@ -303,7 +305,7 @@ public class MainActivity extends FragmentActivity implements
     private void prepareSnapShotSelectedCard(Pack pack,Card card) {
         mSnapshotCardDetailFragment = new CardDetailFragment(pack, card, 3);
         getSupportFragmentManager().beginTransaction()
-                .add(R.id.detail, mSnapshotCardDetailFragment).commit();
+                .add(R.id.detail, mSnapshotCardDetailFragment).commitAllowingStateLoss();
 
         if (mArrayCardDetailFragments == null) {
             mArrayCardDetailFragments = new ArrayList<CardDetailFragment>();
@@ -336,7 +338,7 @@ public class MainActivity extends FragmentActivity implements
             return;
 
         for (CardDetailFragment cardDetailFragment : mArrayCardDetailFragments) {
-            getSupportFragmentManager().beginTransaction().remove(cardDetailFragment).commit();
+            getSupportFragmentManager().beginTransaction().remove(cardDetailFragment).commitAllowingStateLoss();
         }
         mArrayCardDetailFragments = null;
 
@@ -367,7 +369,7 @@ public class MainActivity extends FragmentActivity implements
         getSupportFragmentManager().beginTransaction()
                 .setCustomAnimations(R.anim.in_from_right, R.anim.out_to_right)
                 .replace(R.id.add_card_frame_layout, mCardDetailFragment)
-                .commit();
+                .commitAllowingStateLoss();
 
         mIsCreatingCard = true;
         invalidateOptionsMenu();

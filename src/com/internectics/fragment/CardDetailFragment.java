@@ -183,9 +183,6 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnKeyboa
             configureCardStatus();
         }
 
-        //test purpose TODO
-        enableCardEditable();
-
     }
 
     @Override
@@ -206,6 +203,7 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnKeyboa
         Log.d(Global.debugTag, "onDestroy in CardDetailFragment");
     }
 
+
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
@@ -222,12 +220,28 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnKeyboa
                     mLogoImage.setImageBitmap(resultBitmap);
                     mCurrentPack.logoImageUriFormatStr = FileOperationHelper.convertToUriFormatFile(toSaveFile);
 
+                    if (mIsCreatingCard == false) {
+                        mCurrentPack.save(AppContext.getAppContext());
+                        ((MainActivity)getActivity()).setMaskButtonForContentUpdating();
+                        takeSnapshotAll();
+                    }
+
                 } else if (requestCode == CODE_REQUEST_IMAGE_SOURCE_IS_IMAGE) {
                     mImage.setImageBitmap(resultBitmap);
                     if (mQuestionRadioButton.isChecked()) {
                         mCurrentCard.question.imageUriFormatStr = FileOperationHelper.convertToUriFormatFile(toSaveFile);
                     } else {
                         mCurrentCard.answer.imageUriFormatStr = FileOperationHelper.convertToUriFormatFile(toSaveFile);
+                    }
+
+                    if (mIsCreatingCard == false) {
+                        mCurrentCard.save(AppContext.getAppContext());
+                        if (mQuestionRadioButton.isChecked()) {
+                            Intent intent = new Intent();
+                            intent.setAction(Global.BROADCAST_ACTION_UPDATE_MASTER_VIEW);
+                            intent.putExtra(Global.KEY_FROM, Global.BROADCAST_EXTRA_FROM_CURRENT_PACK_UPDATE);
+                            getActivity().sendBroadcast(intent);
+                        }
                     }
                 }
             }
@@ -1277,7 +1291,7 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnKeyboa
         @Override
         public void handleMessage(Message msg) {
 
-            if (checkSnapshotAllNeeded(mCurrentFocusedEditText)) {
+            if (checkSnapshotAllNeeded(mCurrentFocusedEditText)&&(mIsCreatingCard == false)) {
                 ((MainActivity)getActivity()).setMaskButtonForContentUpdating();
             }
 
