@@ -9,6 +9,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.PixelFormat;
 import android.net.Uri;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.util.Log;
@@ -30,6 +31,7 @@ import com.internectics.util.*;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.logging.Handler;
 
 /**
  * MainActivity is the entry for whole app
@@ -47,10 +49,6 @@ public class MainActivity extends FragmentActivity implements
     public int  mCurrentCardIndex = 0;
     public Card mCurrentCard = new Card();
 
-    //Progress dialog related
-    private static final int DIALOG_UPLOADING_PACK = 0;
-    private ProgressDialog mDialog;
-
     private boolean mIsGoingAuthorizationBeforeUpload = false;
 
     public PopupWindow mPopupWindow;
@@ -62,6 +60,11 @@ public class MainActivity extends FragmentActivity implements
     private ArrayList<CardDetailFragment> mArrayCardDetailFragments;   //speical for snapshot(not include current card)
 
     private View mCSSToolbar;
+
+    private ProgressDialog mProgressDialog;
+
+    private Button mMasterMaskButton;
+    private Button mMasterMaskButtonForContentUpdating;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -81,6 +84,7 @@ public class MainActivity extends FragmentActivity implements
 
         setContentView(R.layout.activity_card_twopane);
 
+
         Button addCardButton = (Button) this.findViewById(R.id.add_card_button);
         addCardButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -90,6 +94,10 @@ public class MainActivity extends FragmentActivity implements
 
             }
         });
+
+
+        mMasterMaskButton = (Button) findViewById(R.id.master_view_mask);
+        mMasterMaskButtonForContentUpdating = (Button) findViewById(R.id.master_view_updating);
     }
 
     @Override
@@ -161,6 +169,7 @@ public class MainActivity extends FragmentActivity implements
                                 @Override
                                 public void onClick(DialogInterface dialog, int which) {
                                     dialog.dismiss();
+                                    setMaskButtonForContentUpdating();
                                     mCardDetailFragment.cardColorTemplateSelectedPostAction(which);
                                 }
                             })
@@ -254,6 +263,9 @@ public class MainActivity extends FragmentActivity implements
             }
         }
 
+
+
+
     }
 
     @Override
@@ -342,10 +354,9 @@ public class MainActivity extends FragmentActivity implements
         FrameLayout addCardLayout = (FrameLayout) findViewById(R.id.add_card_frame_layout);
         addCardLayout.setVisibility(View.VISIBLE);
 
-        Button masterMaskButton = (Button) findViewById(R.id.master_view_mask);
-        masterMaskButton.setVisibility(View.VISIBLE);
+        mMasterMaskButton.setVisibility(View.VISIBLE);
 
-        masterMaskButton.setOnClickListener(new View.OnClickListener() {
+        mMasterMaskButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 dismissCardCreateWindow();
@@ -414,21 +425,23 @@ public class MainActivity extends FragmentActivity implements
         return true;
     }
 
+
     @Override
-    protected Dialog onCreateDialog(int id) {
+ protected Dialog onCreateDialog(int id) {
         super.onCreateDialog(id);
         switch (id) {
-            case DIALOG_UPLOADING_PACK: {
-                mDialog = new ProgressDialog(this);
-                mDialog.setMessage("Please wait while loading...");
-                mDialog.setIndeterminate(false);
-                mDialog.setMax(100);
-                mDialog.setCancelable(false);
-                return mDialog;
-            }
+            case 0:
+                if (mProgressDialog == null) {
+                    mProgressDialog = new ProgressDialog(MainActivity.this);
+                    mProgressDialog.setMessage("Applying to all cards");
+                    mProgressDialog.setIndeterminate(true);
+                    mProgressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+                }
+            default:
+                //nothing
         }
-        return null;
-    }
+        return mProgressDialog;
+     }
 
     private void onActionbarShareSelected() {
         if (mCurrentPack == null) {
@@ -581,6 +594,14 @@ public class MainActivity extends FragmentActivity implements
             }
 
         }
+    }
+
+    public void setMaskButtonForContentUpdating() {
+        mMasterMaskButtonForContentUpdating.setVisibility(View.VISIBLE);
+    }
+
+    public void clearMaskButtonForContentUpdating() {
+        mMasterMaskButtonForContentUpdating.setVisibility(View.INVISIBLE);
     }
 
 

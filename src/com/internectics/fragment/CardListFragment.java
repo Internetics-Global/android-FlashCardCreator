@@ -58,6 +58,8 @@ public class CardListFragment extends Fragment {
 
     public boolean mIsListViewEditable = false;
 
+    public boolean mIsListViewUpdating = false;
+
     MasterFragmentReceiver mReceiver;
 
     public CardListFragment() {
@@ -244,6 +246,8 @@ public class CardListFragment extends Fragment {
 
             }
 
+
+
             return v;
         }
 
@@ -369,5 +373,7 @@ public class CardListFragment extends Fragment {
             //Clear detail view
             mCallbacks.onItemSelected(-1);
         }
+
+        ((MainActivity)getActivity()).clearMaskButtonForContentUpdating();
     }
 }

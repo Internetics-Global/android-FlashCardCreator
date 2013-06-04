@@ -63,6 +63,23 @@
                 android:visibility="invisible">
         </Button>
 
+        <Button
+                android:id="@+id/master_view_updating"
+                android:layout_width="114dp"
+                android:layout_height="60dp"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+                android:gravity="center"
+                android:layout_gravity="center"
+                android:enabled="false"
+                android:text="Appling all cards..."
+                android:textStyle="bold"
+                android:textColor="#FFFFFF"
+                android:textSize="16sp"
+                android:background="@drawable/button_updating_background"
+                android:visibility="invisible">
+        </Button>
+
     </FrameLayout>
 
     <FrameLayout

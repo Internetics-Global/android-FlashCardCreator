@@ -6,8 +6,7 @@ import android.content.*;
 import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.net.Uri;
-import android.os.AsyncTask;
-import android.os.Bundle;
+import android.os.*;
 import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.*;
@@ -36,21 +35,21 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnKeyboa
     public View mContentView;
 
     private LinearLayout mContentBodyLeft;
-    private FCCEditText  mSidebarTitle;
-    private FrameLayout  mSidebarBackground;
-    private FCCEditText  mTitle;
+    private FCCEditText mSidebarTitle;
+    private FrameLayout mSidebarBackground;
+    private FCCEditText mTitle;
     private LinearLayout mTitleBackground;
-    private FCCEditText  mCreator;
-    private FCCEditText  mSubheading;
-    private FCCEditText  mMain;
-    private FCCEditText  mSub;
-    private ImageView    mImage;
-    private ImageView    mLogoImage;
-    private ImageView    mChangeTemplateImage;
-    private ImageView    mLogoURLImage;
-    private RadioButton  mQuestionRadioButton;
-    private RadioButton  mAnswerRadioButton;
-    private RadioGroup   mRadioGroup;
+    private FCCEditText mCreator;
+    private FCCEditText mSubheading;
+    private FCCEditText mMain;
+    private FCCEditText mSub;
+    private ImageView mImage;
+    private ImageView mLogoImage;
+    private ImageView mChangeTemplateImage;
+    private ImageView mLogoURLImage;
+    private RadioButton mQuestionRadioButton;
+    private RadioButton mAnswerRadioButton;
+    private RadioGroup mRadioGroup;
 
     private InputMethodManager mIMM;
     private EditText mCurrentFocusedEditText;
@@ -58,22 +57,25 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnKeyboa
     private int CODE_REQUEST_IMAGE_SOURCE_IS_LOGO = 1001; //when user click on the logo img
     private int CODE_REQUEST_IMAGE_SOURCE_IS_IMAGE = 1002;//when user click on the image img
 
-    public  boolean    mIsCreatingCard = false;
-    private boolean    mIsPlayingCard = false;
+    public boolean mIsCreatingCard = false;
+    private boolean mIsPlayingCard = false;
 
-    private boolean    mIsSnapShotNotCurrent = false;//as to snapshot,we have different stragegy on current showing card and other cards
+    private boolean mIsSnapShotNotCurrent = false;//as to snapshot,we have different stragegy on current showing card and other cards
 
-    private boolean    mIsQuestionShowing = false; //this is only used in play mode
+    private boolean mIsQuestionShowing = false; //this is only used in play mode
 
-    private boolean    mIsTakeSnapshotAllNeeded = false; //when fields that belong to current pack(like title) changes, it will be set true
+    private boolean mIsTakeSnapshotAllNeeded = false; //when fields that belong to current pack(like title) changes, it will be set true
 
     private static int mSemaphore = 0; //used to indicate all snapshots are done
+
+
+    private Handler myHandler;
 
 
     /**
      * @param currentPack
      * @param currentCard
-     * @param source: 1, create new card; 2, playing card; 3.
+     * @param source:     1, create new card; 2, playing card; 3.
      */
     public CardDetailFragment(Pack currentPack, Card currentCard, int source) {
 
@@ -426,7 +428,7 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnKeyboa
             @Override
             public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
                 if (actionId == EditorInfo.IME_ACTION_DONE) {
-                    onKeyboardClose((EditText)v);
+                    onKeyboardClose((EditText) v);
                 }
                 return false;
             }
@@ -435,7 +437,7 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnKeyboa
             @Override
             public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
                 if (actionId == EditorInfo.IME_ACTION_DONE) {
-                    onKeyboardClose((EditText)v);
+                    onKeyboardClose((EditText) v);
                 }
                 return false;
             }
@@ -445,7 +447,7 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnKeyboa
             @Override
             public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
                 if (actionId == EditorInfo.IME_ACTION_DONE) {
-                    onKeyboardClose((EditText)v);
+                    onKeyboardClose((EditText) v);
                 }
                 return false;
             }
@@ -578,7 +580,7 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnKeyboa
             mCurrentCard.save(AppContext.getAppContext());
         }
 
-        Log.w(Global.debugTag,"takeSnapshotCurrentCard on mCurrentCard.coverImageUriFormatStr" + mCurrentCard.coverImageUriFormatStr);
+        Log.w(Global.debugTag, "takeSnapshotCurrentCard on mCurrentCard.coverImageUriFormatStr" + mCurrentCard.coverImageUriFormatStr);
 
         //Notify master list view to update
         mSemaphore++;
@@ -592,7 +594,7 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnKeyboa
             //free resources
             ((MainActivity) getActivity()).finishSnapShotAllExceptOne();
 
-            Log.w(Global.debugTag,"Get done all cards' snapshot");
+            Log.w(Global.debugTag, "Get done all cards' snapshot");
         }
 
     }
@@ -628,7 +630,6 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnKeyboa
 
 
         if (!mIsCreatingCard) {
-
 
 
             for (Card card : mCurrentPack.cards) {
@@ -1087,11 +1088,10 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnKeyboa
     @Override
     public boolean onTouch(View v, MotionEvent event) {
 
-        Log.d(Global.debugTag, "onTouch happened, event.getAction=" + event.getAction() );
+        Log.d(Global.debugTag, "onTouch happened, event.getAction=" + event.getAction());
 
 
-
-        if ((v.getTag() != null)&&(event.getAction() == MotionEvent.ACTION_DOWN)) {
+        if ((v.getTag() != null) && (event.getAction() == MotionEvent.ACTION_DOWN)) {
             int tag = Integer.parseInt((String) v.getTag());
 
             if ((tag == 1001) || (tag == 1002) || (tag == 1003)) {
@@ -1118,14 +1118,25 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnKeyboa
         if ((mIMM.isActive() == false) || (mIsPlayingCard)) {
             //It will be called when press the back button, even no keyboard is shown on now.That's the reason why we need to check
             return;
+        } else {
+            mIMM.hideSoftInputFromInputMethod(editText.getWindowToken(), 0);
         }
 
-        Log.d(Global.debugTag, "Keyboard is closed");
+        mCurrentFocusedEditText = editText;
+
+        //The reason why I design this logic is: http://stackoverflow.com/questions/16881815/how-to-make-a-notification-listener-when-the-keyboard-disappear-on-android-platf
+        myHandler = new KeyboardDisappearHandler();
+        KeyboardDisappearThread m = new KeyboardDisappearThread();
+        new Thread(m).start();
+
+
+    }
+
+    private void onKeyboardDisappear(EditText editText) {
         int id = editText.getId();
         switch (id) {
             case R.id.sidebar_title:
                 mCurrentPack.sidebarTitle = editText.getText().toString();
-                mIsTakeSnapshotAllNeeded = true;
                 if (!mIsCreatingCard) {
                     takeSnapshotAll();
                 }
@@ -1133,7 +1144,6 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnKeyboa
                 break;
             case R.id.title:
                 if (mQuestionRadioButton.isChecked()) {
-                    mIsTakeSnapshotAllNeeded = true;
                     mCurrentPack.questionTitle = editText.getText().toString();
                     if (!mIsCreatingCard) {
                         takeSnapshotAll();
@@ -1143,7 +1153,6 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnKeyboa
                 }
                 break;
             case R.id.creator:
-                mIsTakeSnapshotAllNeeded = true;
                 mCurrentPack.creatorNickName = editText.getText().toString();
                 if (!mIsCreatingCard) {
                     takeSnapshotAll();
@@ -1196,7 +1205,7 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnKeyboa
         getActivity().invalidateOptionsMenu();
 
         //Update master view (cover image)
-        if ((mIsTakeSnapshotAllNeeded == false)&&(mIsCreatingCard == false)) {
+        if ((mIsTakeSnapshotAllNeeded == false) && (mIsCreatingCard == false)) {
             Intent intent = new Intent();
             intent.setAction(Global.BROADCAST_ACTION_UPDATE_MASTER_VIEW);
             intent.putExtra(Global.KEY_FROM, Global.BROADCAST_EXTRA_FROM_CURRENT_PACK_UPDATE);
@@ -1204,8 +1213,6 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnKeyboa
         }
 
         ((MainActivity) getActivity()).removeCSSToolbar();
-
-
     }
 
 
@@ -1251,6 +1258,47 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnKeyboa
 
     }
 
+    class KeyboardDisappearThread implements Runnable {
+
+        public void run() {
+            mIMM.hideSoftInputFromInputMethod(mCurrentFocusedEditText.getWindowToken(), 0);
+            try {
+                Thread.sleep(100);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+            Message msg = new Message();
+            myHandler.sendMessage(msg);
+        }
+    }
+
+
+    class KeyboardDisappearHandler extends Handler {
+        @Override
+        public void handleMessage(Message msg) {
+
+            if (checkSnapshotAllNeeded(mCurrentFocusedEditText)) {
+                ((MainActivity)getActivity()).setMaskButtonForContentUpdating();
+            }
+
+            onKeyboardDisappear(mCurrentFocusedEditText);
+        }
+    }
+
+
+    private boolean checkSnapshotAllNeeded(EditText currentFocusedEditText) {
+
+        int id = currentFocusedEditText.getId();
+
+        if ((id == R.id.sidebar_title)||(id == R.id.title)||(id == R.id.creator)) {
+            mIsTakeSnapshotAllNeeded = true;
+        } else {
+            mIsTakeSnapshotAllNeeded = false;
+        }
+
+        return mIsTakeSnapshotAllNeeded;
+
+    }
 }
 
 
