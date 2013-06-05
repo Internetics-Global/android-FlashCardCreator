@@ -1,4 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
+
+<!--nexus 4, similar-->
+
 <resources>
     <!--sp unit-->
     <integer-array
@@ -10,6 +13,17 @@
         <item>24</item>
         <item>24</item>
     </integer-array>
+
+
+    <string-array
+            name="css_size">
+        <item>Size</item>
+        <item>14</item>
+        <item>26</item>
+        <item>18</item>
+        <item>24</item>
+        <item>28</item>
+    </string-array>
 
 
 </resources>

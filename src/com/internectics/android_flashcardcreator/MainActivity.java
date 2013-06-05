@@ -12,6 +12,7 @@ import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
+import android.util.DisplayMetrics;
 import android.util.Log;
 import android.util.TypedValue;
 import android.view.*;
@@ -211,7 +212,7 @@ public class MainActivity extends FragmentActivity implements
                 break;
 
             case R.id.actionbar_test1:
-
+                test1();
                 break;
 
             default:
@@ -604,6 +605,25 @@ public class MainActivity extends FragmentActivity implements
 
     public void clearMaskButtonForContentUpdating() {
         mMasterMaskButtonForContentUpdating.setVisibility(View.INVISIBLE);
+    }
+
+
+
+    private void test1() {
+
+        DisplayMetrics metric = new DisplayMetrics();
+        getWindowManager().getDefaultDisplay().getMetrics(metric);
+        int width = metric.widthPixels;  // 屏幕宽度（像素）
+        int height = metric.heightPixels;  // 屏幕高度（像素）
+        float density = metric.density;  // 屏幕密度（0.75 / 1.0 / 1.5）
+        int densityDpi = metric.densityDpi;  // 屏幕密度DPI（120 / 160 / 240）
+
+        Log.d(Global.debugTag, "Width = " + width);
+        Log.d(Global.debugTag, "Height = " + height);
+
+        Log.d(Global.debugTag, "density = " + density);
+        Log.d(Global.debugTag, "densityDpi = " + densityDpi);
+
     }
 
 

@@ -10,6 +10,7 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
+import android.util.DisplayMetrics;
 import android.util.Log;
 import android.util.TypedValue;
 import android.view.Display;
@@ -84,6 +85,17 @@ public class UIHelper {
         int width = display.getWidth();
 
         return width;
+    }
+
+    public static String getCurrentPlatform(Activity activity) {
+
+        DisplayMetrics metric = new DisplayMetrics();
+        activity.getWindowManager().getDefaultDisplay().getMetrics(metric);
+        int width = metric.widthPixels;
+        int height = metric.heightPixels;
+        int densityDpi = metric.densityDpi;
+        String returnStr = String.format("%d-%d-%d",width,height,densityDpi);
+        return returnStr;
     }
 
 }

@@ -44,7 +44,7 @@
                     android:layout_height="0dp"
                     android:layout_weight="112"
                     android:orientation="horizontal"
-                    android:background="@drawable/card_title_bg_blue">
+                    android:background="@null">
 
                 <com.internectics.UI.FCCEditText
                         android:id="@+id/title"
@@ -65,7 +65,8 @@
 
                 <com.internectics.UI.FCCEditText
                         android:id="@+id/creator"
-                        android:layout_height="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="bottom"
                         android:layout_width="0dp"
                         android:layout_weight="160"
                         android:gravity="bottom"
@@ -73,6 +74,7 @@
                         android:inputType="textNoSuggestions"
                         android:singleLine="true"
                         android:imeOptions="actionDone"
+                        android:background="@drawable/shape_edittext_editable"
                         android:textColor="@android:color/holo_blue_dark"
                         android:textSize="14sp"/>
 
@@ -111,7 +113,7 @@
                         android:layout_marginLeft="5dp"
                         android:layout_marginTop="5dp"
                         android:layout_marginBottom="5dp"
-                        android:background="@android:color/holo_green_light"
+                        android:background="@null"
                         android:orientation="vertical">
 
                     <com.internectics.UI.FCCEditText
@@ -124,7 +126,8 @@
                             android:textColor="@android:color/black"
                             android:textStyle="bold"
                             android:tag="1001"
-                            android:background="@android:color/holo_green_light"
+                            android:cursorVisible="true"
+                            android:background="@drawable/shape_edittext_editable"
                             android:ems="10" />
 
                     <com.internectics.UI.FCCEditText
@@ -137,7 +140,8 @@
                             android:textColor="@android:color/black"
                             android:textStyle="bold"
                             android:tag="1002"
-                            android:background="@android:color/holo_orange_light"
+                            android:cursorVisible="true"
+                            android:background="@drawable/shape_edittext_editable"
                             android:ems="10"/>
 
                     <com.internectics.UI.FCCEditText
@@ -150,7 +154,8 @@
                             android:textColor="@android:color/black"
                             android:textStyle="bold"
                             android:tag="1003"
-                            android:background="@android:color/holo_blue_light"
+                            android:cursorVisible="true"
+                            android:background="@drawable/shape_edittext_editable"
                             android:ems="10"/>
 
                 </LinearLayout>

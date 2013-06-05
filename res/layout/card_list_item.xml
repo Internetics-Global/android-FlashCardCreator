@@ -26,7 +26,7 @@
                 android:gravity="center"
                 android:text="1"
                 android:textColor="@android:color/white"
-                android:textSize="16sp"/>
+                android:textSize="@dimen/cardsn_text_size"/>
 
         <ImageView
                 android:id="@id/card_list_item_click_remove"

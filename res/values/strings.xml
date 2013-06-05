@@ -16,4 +16,13 @@
     <string name="css_align">Align</string>
     <string name="css_color">Color</string>
 
+
+    <!--unit is sp-->
+    <string name="question_subheading_size">10</string>
+    <string name="question_main_size">10</string>
+    <string name="question_sub_size">10</string>
+    <string name="answer_subheading_size">10</string>
+    <string name="answer_main_size">10</string>
+    <string name="answer_sub_size">10</string>
+
 </resources>

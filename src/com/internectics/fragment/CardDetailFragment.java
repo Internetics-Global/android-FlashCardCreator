@@ -533,6 +533,7 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnKeyboa
         mSub.setEnabled(true);
         mCreator.setEnabled(true);
         mImage.setEnabled(true);
+
     }
 
     private void disableCardEditable() {
@@ -546,6 +547,12 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnKeyboa
         mSub.setEnabled(false);
         mCreator.setEnabled(false);
         mImage.setEnabled(false);
+
+        mCreator.setBackgroundResource(R.drawable.shape_edittext_no_editable);
+        mSubheading.setBackgroundResource(R.drawable.shape_edittext_no_editable);
+        mMain.setBackgroundResource(R.drawable.shape_edittext_no_editable);
+        mSub.setBackgroundResource(R.drawable.shape_edittext_no_editable);
+
     }
 
 

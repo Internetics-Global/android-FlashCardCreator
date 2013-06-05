@@ -1,6 +1,8 @@
 package com.internectics.helper;
 
+import android.content.res.Resources;
 import android.net.Uri;
+import com.internectics.android_flashcardcreator.R;
 import com.internectics.data.Card;
 import com.internectics.data.Pack;
 import com.internectics.util.AppContext;
@@ -149,15 +151,24 @@ public class PackParserHelper {
             card.question.subheading = (String) questionObj.get("subheading");
             card.question.main = (String) questionObj.get("main");
             card.question.sub = (String) questionObj.get("sub");
+
             card.question.css.subheadingAlign = (String) questionObj.get("subheading_align");
             card.question.css.subheadingColor = (String) questionObj.get("subheading_color");
-            card.question.css.subheadingSize = Integer.parseInt((String) questionObj.get("subheading_size"));
             card.question.css.mainAlign = (String) questionObj.get("main_align");
             card.question.css.mainColor = (String) questionObj.get("main_color");
-            card.question.css.mainSize = Integer.parseInt((String) questionObj.get("main_size"));
             card.question.css.subAlign = (String) questionObj.get("sub_align");
             card.question.css.subColor = (String) questionObj.get("sub_color");
-            card.question.css.subSize = Integer.parseInt((String) questionObj.get("sub_size"));
+            if (true) {
+                //size interchangeable with iOS, and other android devices
+                int[] cssArrary = AppContext.getAppContext().getResources().getIntArray(R.array.css_size_int);
+                card.question.css.subheadingSize = cssArrary[0];
+                card.question.css.mainSize = cssArrary[1];
+                card.question.css.subSize = cssArrary[2];
+            } else {
+                card.question.css.subheadingSize = Integer.parseInt((String) questionObj.get("subheading_size"));
+                card.question.css.mainSize = Integer.parseInt((String) questionObj.get("main_size"));
+                card.question.css.subSize = Integer.parseInt((String) questionObj.get("sub_size"));
+            }
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         } catch (ParseException e) {
@@ -178,15 +189,26 @@ public class PackParserHelper {
             card.answer.subheading = (String) answerObj.get("subheading");
             card.answer.main = (String) answerObj.get("main");
             card.answer.sub = (String) answerObj.get("sub");
+
             card.answer.css.subheadingAlign = (String) answerObj.get("subheading_align");
             card.answer.css.subheadingColor = (String) answerObj.get("subheading_color");
-            card.answer.css.subheadingSize = Integer.parseInt((String) answerObj.get("subheading_size"));
             card.answer.css.mainAlign = (String) answerObj.get("main_align");
             card.answer.css.mainColor = (String) answerObj.get("main_color");
-            card.answer.css.mainSize = Integer.parseInt((String) answerObj.get("main_size"));
             card.answer.css.subAlign = (String) answerObj.get("sub_align");
             card.answer.css.subColor = (String) answerObj.get("sub_color");
-            card.answer.css.subSize = Integer.parseInt((String) answerObj.get("sub_size"));
+            if (true) {
+                //size interchangeable with iOS, and other android devices
+                int[] cssArrary = AppContext.getAppContext().getResources().getIntArray(R.array.css_size_int);
+                card.answer.css.subheadingSize = cssArrary[3];
+                card.answer.css.mainSize = cssArrary[4];
+                card.answer.css.subSize = cssArrary[5];
+            } else {
+                card.answer.css.subheadingSize = Integer.parseInt((String) answerObj.get("subheading_size"));
+                card.answer.css.mainSize = Integer.parseInt((String) answerObj.get("main_size"));
+                card.answer.css.subSize = Integer.parseInt((String) answerObj.get("sub_size"));
+            }
+
+
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         } catch (ParseException e) {
