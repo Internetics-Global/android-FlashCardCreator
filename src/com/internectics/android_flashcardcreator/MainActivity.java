@@ -150,7 +150,7 @@ public class MainActivity extends FragmentActivity implements
                 break;
             case R.id.actionbar_packs:
                 View popupLayout = inflater.inflate(R.layout.pack_list, null, false);
-                mPopupWindow = new PopupWindow(600, 390);
+                mPopupWindow = new PopupWindow(UIHelper.getPixels(480), UIHelper.getPixels(300));
                 mPopupWindow.setOutsideTouchable(true);
                 mPopupWindow.setBackgroundDrawable(getResources().getDrawable(R.drawable.shape_popupwindow_background));
                 mPopupWindow.setContentView(popupLayout);
