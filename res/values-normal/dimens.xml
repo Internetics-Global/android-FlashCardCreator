@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<!--nexus 4 (640 dp), for example-->
+
+<resources>
+
+    <dimen name="cardsn_size">10sp</dimen>
+
+</resources>
