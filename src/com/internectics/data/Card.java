@@ -75,7 +75,7 @@ public class Card {
             //this is an self-repairment in case the cardSN is not in right order
             if ((lastCardSN + 1) != cur.getInt(4)) {
                 cardDict.put("card_sn", lastCardSN);
-                Log.w(Global.debugTag,"Warning: there's no continous cardSN");
+                Log.w(Global.debugTag,"no successive cardSN");
             } else {
                 cardDict.put("card_sn", cur.getInt(4));
             }
@@ -115,7 +115,7 @@ public class Card {
     private void insert(Context context) {
         if (cardID == -1) {
             cardID = Global.generateNoRepeatInt();
-            Log.d(Global.debugTag,"Generated cardID is:" + cardID);
+            Log.d(Global.debugTag,"Generated random but no-repeat cardID is:" + cardID);
         }
         String query = String.format("INSERT INTO Cards_Tables(card_id, pack_id, cover_image, template_background, card_sn) VALUES (%d, %d, \"%s\", \"%s\", %d)", cardID, packID, coverImageUriFormatStr, templateBackground, cardSN);
         SQLiteHelper.defaultDatabase(context).execSQL(query);
@@ -132,7 +132,7 @@ public class Card {
             if (file.delete()) {
                 Log.d(Global.debugTag, "Successful to delete coverImageUriFormatStr file");
             } else {
-                Log.d(Global.debugTag, "Fail to delete coverImageUriFormatStr file");
+                Log.w(Global.debugTag, "Fail to delete coverImageUriFormatStr file");
             }
         }
 

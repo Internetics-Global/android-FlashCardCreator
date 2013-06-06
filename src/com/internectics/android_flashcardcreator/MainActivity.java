@@ -80,7 +80,7 @@ public class MainActivity extends FragmentActivity implements
         //Step2: OpenUDID
         OpenUDID_manager.sync(this);
         if (!OpenUDID_manager.isInitialized()) {
-            Log.d(Global.debugTag, "OpenUDID_manager is not initialized");
+            Log.w(Global.debugTag, "OpenUDID_manager is not initialized");
         }
 
         setContentView(R.layout.activity_card_twopane);
@@ -90,7 +90,7 @@ public class MainActivity extends FragmentActivity implements
         addCardButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Log.d(Global.debugTag, "Button of add card  is clicked");
+                Log.d(Global.debugTag, "add card button  is clicked");
                 startCreateCard();
 
             }
@@ -502,7 +502,7 @@ public class MainActivity extends FragmentActivity implements
         mCSSToolbar.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View v, MotionEvent event) {
-                Log.d(Global.debugTag, "touch me");
+                Log.d(Global.debugTag, "touching mCSSToolbar");
                 return false;
             }
         });
@@ -561,7 +561,7 @@ public class MainActivity extends FragmentActivity implements
     public void prepareCSSToolbar() {
         if ((mCSSToolbar == null) || (mCSSToolbar.getParent() == null)) {
             initializeCSSToolbar();
-            Log.d(Global.debugTag,"prepareCSSToolbar   initializeCSSToolbar");
+            Log.d(Global.debugTag,"initializeCSSToolbar is called");
         }
     }
 
@@ -579,13 +579,13 @@ public class MainActivity extends FragmentActivity implements
             spinnerColor.setSelection(0);
             spinnerSize.setSelection(0);
 
-            Log.d(Global.debugTag,"prepareCSSToolbar   setSelection");
+            Log.d(Global.debugTag,"prepareCSSToolbar is called");
         }
     }
 
     public void removeCSSToolbar() {
         if (mCSSToolbar == null) {
-            Log.d(Global.debugTag,"removeCSSToolbar   null");
+            Log.w(Global.debugTag,"rmCSSToolbar is null when executing removeCSSToolbar");
             return;
         } else {
             WindowManager wm = (WindowManager) getSystemService(WINDOW_SERVICE);
@@ -593,7 +593,7 @@ public class MainActivity extends FragmentActivity implements
                 mCSSToolbar.setVisibility(View.GONE);
                 wm.removeView(mCSSToolbar);
                 mCSSToolbar = null;
-                Log.d(Global.debugTag,"removeCSSToolbar   removeView");
+                Log.d(Global.debugTag,"removeCSSToolbar is called");
             }
 
         }

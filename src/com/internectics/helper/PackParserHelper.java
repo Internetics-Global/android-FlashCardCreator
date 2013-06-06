@@ -162,7 +162,6 @@ public class PackParserHelper {
             card.question.css.mainColor = (String) questionObj.get("main_color");
             card.question.css.subAlign = (String) questionObj.get("sub_align");
             card.question.css.subColor = (String) questionObj.get("sub_color");
-            Log.d(Global.debugTag,currentPack.platform + UIHelper.getCurrentPlatform());
             if (currentPack.platform.equals(UIHelper.getCurrentPlatform())== false) {
 
                 //size interchangeable with iOS, and other android devices

@@ -126,7 +126,7 @@ public class Answer {
             if (file.delete()) {
                 Log.d(Global.debugTag, "Successful to delete imageUriFormatStr file in Answer");
             } else {
-                Log.d(Global.debugTag, "Fail to delete coverImageUriFormatStr file in Answer");
+                Log.w(Global.debugTag, "Fail to delete coverImageUriFormatStr file in Answer");
             }
         }
     }

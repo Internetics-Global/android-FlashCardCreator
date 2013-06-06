@@ -215,12 +215,12 @@ public class PackListFragment extends Fragment {
 
                 Bitmap resultBitmap = UIHelper.resizeImageTo400(getActivity(), selectedImageURI);
                 if (resultBitmap == null) {
-                    Log.d(Global.debugTag, "resultBitmap is null");
+                    Log.w(Global.debugTag, "resultBitmap is null");
                 } else {
                     File toSaveFile = UIHelper.saveImageToCaches(resultBitmap);
                     Pack currentPack = User.defaultUser(AppContext.getAppContext()).packs.get(mIndexOfCurrentPack);
                     currentPack.coverImageUriFormatStr = FileOperationHelper.convertToUriFormatFile(toSaveFile);
-                    Log.d(Global.debugTag, currentPack.coverImageUriFormatStr);
+                    Log.d(Global.debugTag, "currentPack.coverImageUriFormatStr is " + currentPack.coverImageUriFormatStr);
                     currentPack.save(AppContext.getAppContext());
                     ((ImageAdapter) mGallery.getAdapter()).notifyDataSetChanged();
                 }

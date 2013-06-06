@@ -117,7 +117,7 @@ public class SQLiteHelper {
                     "SELECT * FROM Users_Tables WHERE user_id=%d", Global.USER_ID);
             Cursor cursor = db.rawQuery(queryString, null);
             if (cursor.moveToNext()) {
-                Log.d(Global.debugTag, "default user has existed");
+                Log.w(Global.debugTag, "default user has existed");
             } else {
                 queryString = String
                         .format("INSERT INTO Users_Tables(user_id, nick_name) VALUES (%d,\"%s\")",

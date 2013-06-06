@@ -30,7 +30,7 @@ public class FCCEditText extends EditText {
 
                mCallbacks.onKeyboardClose(this);
             else
-                Log.d(Global.debugTag,"mCallbacks for FCCEditText is null");
+                Log.w(Global.debugTag,"mCallbacks for FCCEditText is null");
         }
         return super.onKeyPreIme(keyCode, event);
 

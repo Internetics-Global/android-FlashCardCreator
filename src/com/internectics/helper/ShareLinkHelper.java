@@ -34,7 +34,7 @@ public class ShareLinkHelper extends AsyncTask<Void, Long, Boolean> {
         try {
             DropboxAPI.DropboxLink link = DropboxHelper.getDropboxAPI().share(mFilePathInDropbox);
             String shareLink = link.url;
-            Log.d(Global.debugTag, shareLink);
+            Log.d(Global.debugTag, "the shareLink is: " + shareLink);
             PackRecordHelper.savePackUploadRecord(mContext, mCurentPack, shareLink);
             execShareAction();
 

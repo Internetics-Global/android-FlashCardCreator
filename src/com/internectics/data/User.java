@@ -60,7 +60,7 @@ public class User {
         for (int i = 0; i < packs.size(); i++) {
             if (packs.get(i).packID == pack.packID) {
                 isExist = true;
-                Log.d(Global.debugTag, "addPack failure because already existence");
+                Log.w(Global.debugTag, "addPack failure because already existence");
                 break;
             }
         }

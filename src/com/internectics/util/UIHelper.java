@@ -95,7 +95,7 @@ public class UIHelper {
         int height = metric.heightPixels;
         int densityDpi = metric.densityDpi;
         String returnStr = String.format("android-%d-%d-%d",width,height,densityDpi);
-        Log.d(Global.debugTag,returnStr);
+        Log.d(Global.debugTag,"current platform is: " +returnStr);
         return returnStr;
     }
 

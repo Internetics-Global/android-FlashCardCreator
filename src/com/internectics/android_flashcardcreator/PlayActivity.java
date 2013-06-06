@@ -53,7 +53,7 @@ public class PlayActivity extends FragmentActivity implements SensorEventListene
             @Override
             public void onPageScrolled(int i, float v, int i2) {
                 if ((mPosition!=i)&&(i2==0)) {
-                    Log.d(Global.debugTag, "onPageScrolled, page index=" + i);
+                    Log.i(Global.debugTag, "onPageScrolled, page index=" + i);
                     mPosition = i;
 
                     //Reset
@@ -108,7 +108,7 @@ public class PlayActivity extends FragmentActivity implements SensorEventListene
         List<Fragment> fList = new ArrayList<Fragment>();
 
         if (mCurrentPack == null) {
-            Log.d(Global.debugTag, "mCurrentPack could not be null in PlayActictiy");
+            Log.w(Global.debugTag, "mCurrentPack could not be null in PlayActictiy");
             return fList;
         }
 
@@ -135,7 +135,7 @@ public class PlayActivity extends FragmentActivity implements SensorEventListene
 
         if ((Math.abs(roll) > 10) && (enableSwitch)) {
             ((CardDetailFragment) (mFragments.get(mPosition))).switchQuestionAnswerView();
-            Log.d(Global.debugTag,"roll angle is:" + roll);
+            Log.i(Global.debugTag,"roll angle is:" + roll);
             enableSwitch = false;
         } else if ((Math.abs(roll) < 3) && (!enableSwitch)) {
             enableSwitch = true;

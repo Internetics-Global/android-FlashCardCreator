@@ -123,7 +123,7 @@ public class Question {
             if (file.delete()) {
                 Log.d(Global.debugTag, "Successful to delete imageUriFormatStr file in Question");
             } else {
-                Log.d(Global.debugTag, "Fail to delete coverImageUriFormatStr file in Question");
+                Log.w(Global.debugTag, "Fail to delete coverImageUriFormatStr file in Question");
             }
         }
     }

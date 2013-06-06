@@ -133,7 +133,7 @@ public class Pack {
             if (file.delete()) {
                 Log.d(Global.debugTag, "Successful to delete logoImageUriFormatStr file");
             } else {
-                Log.d(Global.debugTag, "Fail to delete logoImageUriFormatStr file");
+                Log.w(Global.debugTag, "Fail to delete logoImageUriFormatStr file");
             }
         }
 
@@ -142,7 +142,7 @@ public class Pack {
             if (file.delete()) {
                 Log.d(Global.debugTag, "Successful to delete coverImageUriFormatStr file in Pack");
             } else {
-                Log.d(Global.debugTag, "Fail to delete coverImageUriFormatStr file in Pack");
+                Log.w(Global.debugTag, "Fail to delete coverImageUriFormatStr file in Pack");
             }
         }
 

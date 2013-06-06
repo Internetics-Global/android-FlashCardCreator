@@ -178,7 +178,7 @@ public class AddPackFragment extends DialogFragment implements TextView.OnEditor
 
                 Bitmap resultBitmap = UIHelper.resizeImageTo400(getActivity(), selectedImageURI);
                 if (resultBitmap == null) {
-                    Log.d(Global.debugTag, "resultBitmap is null");
+                    Log.w(Global.debugTag, "resultBitmap is null");
                 } else {
                     File toSaveFile = UIHelper.saveImageToCaches(resultBitmap);
                     ImageView coverImageView = (ImageView) mContentView
@@ -186,7 +186,7 @@ public class AddPackFragment extends DialogFragment implements TextView.OnEditor
                     coverImageView.setImageBitmap(resultBitmap);
 
                     pack.coverImageUriFormatStr = FileOperationHelper.convertToUriFormatFile(toSaveFile);
-                    Log.d(Global.debugTag, pack.coverImageUriFormatStr);
+                    Log.d(Global.debugTag, "pack.coverImageUriFormatStr = " + pack.coverImageUriFormatStr);
                 }
             }
         }

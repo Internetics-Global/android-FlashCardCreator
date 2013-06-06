@@ -93,7 +93,7 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnKeyboa
         }
 
         if (currentCard == null) {
-            Log.d(Global.debugTag, "Creating a new card is going on");
+            Log.i(Global.debugTag, "Creating a new card is going on");
             mCurrentPack = currentPack;
             initilizeNewCard();
 
@@ -163,7 +163,6 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnKeyboa
 
             ViewDidAppearTask dTask = new ViewDidAppearTask();
             dTask.execute(100);
-            Log.d(Global.debugTag, "cardID and coverImageUriFormatStr:" + mCurrentCard.cardID + mCurrentCard.coverImageUriFormatStr);
         }
 
         return mContentView;
@@ -172,7 +171,7 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnKeyboa
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        Log.d(Global.debugTag, "onViewCreated in CardDetailFragment");
+        Log.d(Global.debugTag, "onViewCreated in CardDetailFragment is called");
 
         updateCommonContent();
         switchToQuestionView();
@@ -212,7 +211,7 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnKeyboa
 
             Bitmap resultBitmap = UIHelper.resizeImageTo400(getActivity(), selectedImageURI);
             if (resultBitmap == null) {
-                Log.d(Global.debugTag, "resultBitmap is null");
+                Log.w(Global.debugTag, "resultBitmap is null");
             } else {
                 File toSaveFile = UIHelper.saveImageToCaches(resultBitmap);
 
@@ -610,8 +609,6 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnKeyboa
             mCurrentCard.save(AppContext.getAppContext());
         }
 
-        Log.w(Global.debugTag, "takeSnapshotCurrentCard on mCurrentCard.coverImageUriFormatStr" + mCurrentCard.coverImageUriFormatStr);
-
         //Notify master list view to update
         mSemaphore++;
         if (mSemaphore == mCurrentPack.cards.size()) {
@@ -624,7 +621,7 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnKeyboa
             //free resources
             ((MainActivity) getActivity()).finishSnapShotAllExceptOne();
 
-            Log.w(Global.debugTag, "Get done all cards' snapshot");
+            Log.w(Global.debugTag, "Get done all cards' snapshot after reach mSemaphore");
         }
 
     }
@@ -652,7 +649,7 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnKeyboa
                 mTitleBackground.setBackgroundResource(R.drawable.card_title_bg_red);
                 break;
             default:
-                Log.i(Global.debugTag, "Out of range");
+                Log.w(Global.debugTag, "Out of range");
         }
 
         String templateBackground = StringUtils.convertTemplateBackgroundIndexToString(cardColorTemplateIndex);
@@ -777,7 +774,7 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnKeyboa
                 mSub.setLayoutParams(params);
                 break;
             default:
-                Log.i(Global.debugTag, "mCurrentCard.question.templateID is out of scope");
+                Log.w(Global.debugTag, "mCurrentCard.question.templateID is out of scope");
         }
 
     }
@@ -941,7 +938,7 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnKeyboa
                 mSub.setLayoutParams(params);
                 break;
             default:
-                Log.i(Global.debugTag, "mCurrentCard.answer.templateID is out of scope");
+                Log.w(Global.debugTag, "mCurrentCard.answer.templateID is out of scope");
         }
     }
 
@@ -1034,7 +1031,7 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnKeyboa
                         mCurrentFocusedEditText.setGravity(Gravity.RIGHT);
                         break;
                     default:
-                        Log.d(Global.debugTag, "Out of range of subMenuID");
+                        Log.w(Global.debugTag, "Out of range of subMenuID");
                 }
                 break;
 
@@ -1068,7 +1065,7 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnKeyboa
                         mCurrentFocusedEditText.setTextSize(size);
                         break;
                     default:
-                        Log.d(Global.debugTag, "Out of range of subMenuID");
+                        Log.w(Global.debugTag, "Out of range of subMenuID");
                 }
                 break;
             case 2:   //stand for color
@@ -1098,11 +1095,11 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnKeyboa
                         mCurrentFocusedEditText.setTextColor(Color.GREEN);
                         break;
                     default:
-                        Log.d(Global.debugTag, "Out of range of subMenuID");
+                        Log.w(Global.debugTag, "Out of range of subMenuID");
                 }
                 break;
             default:
-                Log.d(Global.debugTag, "Out of range of menuID");
+                Log.w(Global.debugTag, "Out of range of menuID");
         }
 
 
@@ -1214,7 +1211,7 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnKeyboa
 
                 break;
             default:
-                Log.i(Global.debugTag, "Out of our scope");
+                Log.w(Global.debugTag, "Out of our scope");
         }
 
 
