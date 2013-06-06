@@ -9,7 +9,6 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.PixelFormat;
 import android.net.Uri;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.util.DisplayMetrics;
@@ -32,7 +31,6 @@ import com.internectics.util.*;
 
 import java.io.File;
 import java.util.ArrayList;
-import java.util.logging.Handler;
 
 /**
  * MainActivity is the entry for whole app

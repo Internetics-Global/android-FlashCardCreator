@@ -1,8 +1,6 @@
 package com.internectics.helper;
 
-import android.content.res.Resources;
 import android.net.Uri;
-import android.util.Log;
 import com.internectics.android_flashcardcreator.R;
 import com.internectics.data.Card;
 import com.internectics.data.Pack;
@@ -208,7 +206,7 @@ public class PackParserHelper {
             card.answer.css.mainColor = (String) answerObj.get("main_color");
             card.answer.css.subAlign = (String) answerObj.get("sub_align");
             card.answer.css.subColor = (String) answerObj.get("sub_color");
-            if (true) {
+            if (currentPack.platform.equals(UIHelper.getCurrentPlatform())== false) {
                 //size interchangeable with iOS, and other android devices
                 int index1 =  Integer.parseInt((String) answerObj.get("subheading_size"));
                 int index2 =  Integer.parseInt((String) answerObj.get("main_size"));

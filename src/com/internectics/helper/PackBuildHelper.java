@@ -3,7 +3,6 @@ package com.internectics.helper;
 import com.internectics.data.Card;
 import com.internectics.data.Pack;
 import com.internectics.util.StringUtils;
-import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 
 import java.io.File;
@@ -18,7 +17,6 @@ public class PackBuildHelper {
         ArrayList<String> cardFiles = new ArrayList<String>();
         ArrayList<String> packFiles = new ArrayList<String>();
 
-        int numberOfCards = currentPack.cards.size();
         int i = 0;
 
         //step1,delete current content

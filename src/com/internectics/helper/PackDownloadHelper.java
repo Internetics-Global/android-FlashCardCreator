@@ -75,6 +75,8 @@ public class PackDownloadHelper extends AsyncTask<Void, Long, Boolean> {
 
                 if (!mIsAllowPostExecute) {
                     mErrorMsg = "Download cancelled";
+                    output.close();
+                    input.close();
                     return false;
                 }
             }

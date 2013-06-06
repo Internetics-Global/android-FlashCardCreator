@@ -9,8 +9,6 @@ import com.internectics.util.Global;
 import com.internectics.util.StringUtils;
 
 import java.io.File;
-import java.io.UnsupportedEncodingException;
-import java.net.URLDecoder;
 import java.util.HashMap;
 
 public class Question {

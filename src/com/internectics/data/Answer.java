@@ -1,5 +1,4 @@
 package com.internectics.data;
-
 import android.content.Context;
 import android.database.Cursor;
 import android.util.Log;
@@ -7,10 +6,7 @@ import com.internectics.helper.FileOperationHelper;
 import com.internectics.helper.SQLiteHelper;
 import com.internectics.util.Global;
 import com.internectics.util.StringUtils;
-
 import java.io.File;
-import java.io.UnsupportedEncodingException;
-import java.net.URLDecoder;
 import java.util.HashMap;
 
 public class Answer {
