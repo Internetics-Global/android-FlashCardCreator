@@ -47,12 +47,12 @@
 
         <ImageView
                 android:id="@+id/fragment_add_pack_coverImage"
-                android:layout_height="wrap_content"
+                android:layout_height="160dp"
                 android:layout_gravity="center"
-                android:layout_width="fill_parent"
+                android:layout_width="200dp"
                 android:layout_marginLeft="100dp"
                 android:layout_marginRight="100dp"
-                android:layout_marginTop="30dp"
+                android:layout_marginTop="10dp"
                 android:layout_marginBottom="30dp"
                 android:scaleType="fitCenter"
                 android:background="@drawable/shape_image_round_corner"

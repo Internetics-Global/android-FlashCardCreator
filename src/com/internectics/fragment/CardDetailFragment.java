@@ -592,10 +592,19 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnKeyboa
      * do NOT save when creating a new card
      */
     private void takeSnapshotCurrentCard() {
+
+        if (isEditableMode()) {
+            disableCardEditable();
+        }
+
         View cardView = mContentView.findViewById(R.id.card);
         Bitmap bitmap = UIHelper.loadBitmapFromView(cardView);
         File savedFile = UIHelper.saveImageToCaches(bitmap);
         mCurrentCard.coverImageUriFormatStr = FileOperationHelper.convertToUriFormatFile(savedFile);
+
+        if (isEditableMode()) {
+            enableCardEditable();
+        }
 
         if (mIsCreatingCard == false) {
             mCurrentCard.save(AppContext.getAppContext());

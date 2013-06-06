@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:orientation="vertical"
+              android:layout_width="@dimen/pack_list_item_width"
+              android:layout_height="@dimen/pack_list_height">
+
+    <TextView
+            android:id="@+id/pack_name_text"
+            android:layout_width="@dimen/pack_list_item_width"
+            android:layout_height="0dp"
+            android:layout_weight="30"
+            android:text="default"
+            android:textSize="@dimen/pack_list_text_size"
+            android:textColor="#FFFFFF"
+            android:gravity="center"
+            android:layout_marginTop="10dp">
+
+    </TextView>
+
+    <ImageView
+            android:id="@+id/pack_cover_image"
+            android:layout_width="fill_parent"
+            android:layout_marginTop="10dp"
+            android:layout_gravity="center"
+            android:layout_height="0dp"
+            android:layout_weight="100"
+            android:src="@drawable/default_pack_cover_image"
+            android:background="@drawable/shape_image_round_corner"
+            android:scaleType="fitXY">
+
+    </ImageView>
+
+
+    <LinearLayout
+            android:id="@+id/pack_list_edit_layout"
+            android:layout_width="fill_parent"
+            android:layout_height="0dp"
+            android:layout_weight="25"
+            android:layout_marginTop="10dp"
+            android:layout_marginBottom="10dp"
+            android:orientation="horizontal"
+            >
+
+        <Button
+                android:id="@+id/button_delete_pack"
+                android:layout_marginRight="10dp"
+                android:gravity="center"
+                android:layout_width="0dp"
+                android:layout_height="fill_parent"
+                android:background="@drawable/button_red"
+                android:text="Delete"
+                android:textSize="@dimen/pack_list_text_size"
+                android:layout_weight="50">
+
+        </Button>
+
+        <Button
+                android:id="@+id/button_change_cover_image"
+                android:gravity="center"
+                android:layout_width="0dp"
+                android:layout_height="fill_parent"
+                android:background="@drawable/button_gray"
+                android:text="Change"
+                android:textColor="#000000"
+                android:textSize="@dimen/pack_list_text_size"
+                android:layout_weight="50">
+
+        </Button>
+
+    </LinearLayout>
+
+</LinearLayout>

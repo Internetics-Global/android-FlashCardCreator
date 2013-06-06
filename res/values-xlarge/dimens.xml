@@ -1,11 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<!--nexus 4 (640 dp), for example-->
+<!--xlarge screen is at least 960dp*720dp nexus 10, for example-->
 
 <resources>
 
+    <!--card related-->
     <dimen name="cardsn_text_size">18sp</dimen>
 
+    <!--segment related-->
     <dimen name="segment_text_size">20sp</dimen>
+
+    <!--pack list related-->
+    <dimen name="pack_list_width">624dp</dimen>
+    <dimen name="pack_list_window_height">348dp</dimen><!--title bar height is 48dp-->
+    <dimen name="pack_list_height">300dp</dimen>
+    <dimen name="pack_list_item_width">195dp</dimen>
+    <dimen name="pack_list_text_size">16sp</dimen>
 
 </resources>

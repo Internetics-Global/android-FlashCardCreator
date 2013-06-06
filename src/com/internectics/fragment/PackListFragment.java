@@ -118,35 +118,15 @@ public class PackListFragment extends Fragment {
 
             final int indexOfCurrentPack = position;
             final Pack currentPack = User.defaultUser(AppContext.getAppContext()).packs.get(position);
-            LinearLayout baseView = new LinearLayout(mContext);
-            baseView.setOrientation(LinearLayout.VERTICAL);
 
-            //part1
-            TextView packNameView = new TextView(mContext);
-            packNameView.setTextColor(Color.WHITE);
-            packNameView.setText(currentPack.packName);
-            LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(
-                    LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.FILL_PARENT);
-            packNameView.setGravity(Gravity.CENTER);
-            packNameView.setWidth(UIHelper.getPixels(180));
-            packNameView.setHeight(UIHelper.getPixels(30));
-            lp.setMargins(0, UIHelper.getPixels(10), 0, 0);
-            packNameView.setLayoutParams(lp);
-            baseView.addView(packNameView);
+            LayoutInflater inflater = (LayoutInflater) getActivity().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+            View contentView = inflater.inflate(R.layout.pack_list_item,parent,false);
 
-            //part2
-            ImageView imageView;
-            if (convertView == null) {
-                convertView = new ImageView(mContext);
-                imageView = (ImageView) convertView;
-                imageView.setScaleType(ImageView.ScaleType.FIT_CENTER);
-                imageView.setLayoutParams(new Gallery.LayoutParams(
-                        UIHelper.getPixels(180), UIHelper.getPixels(150)));
-
-            } else {
-                imageView = (ImageView) convertView;
-            }
-
+            TextView packNameView = (TextView) contentView.findViewById(R.id.pack_name_text);
+            ImageView imageView = (ImageView) contentView.findViewById(R.id.pack_cover_image);
+            Button changeCoverImageButton = (Button) contentView.findViewById(R.id.button_change_cover_image);
+            Button deleteButton = (Button) contentView.findViewById(R.id.button_delete_pack);
+            LinearLayout editLayout = (LinearLayout) contentView.findViewById(R.id.pack_list_edit_layout);
 
             ContentResolver cResolver = AppContext.getAppContext().getContentResolver();
             String str = currentPack.coverImageUriFormatStr;
@@ -162,26 +142,9 @@ public class PackListFragment extends Fragment {
                     e.printStackTrace();
                 }
             }
-            imageView.setBackgroundResource(R.drawable.shape_image_round_corner);
 
 
-            baseView.addView(imageView);
 
-            //part3
-            LinearLayout editLayout = new LinearLayout(mContext);
-            editLayout.setOrientation(LinearLayout.HORIZONTAL);
-            lp = new LinearLayout.LayoutParams(
-                    UIHelper.getPixels(180), UIHelper.getPixels(35));
-            lp.setMargins(0, 20, 0, 20);
-            editLayout.setLayoutParams(lp);
-
-            Button changeCoverImageButton = new Button(mContext);
-            changeCoverImageButton.setText("Change");
-            changeCoverImageButton.setTextColor(Color.BLACK);
-            changeCoverImageButton.setTextSize(TypedValue.COMPLEX_UNIT_SP,14);
-            changeCoverImageButton.setWidth(UIHelper.getPixels(80));
-
-            changeCoverImageButton.setBackgroundResource(R.drawable.button_gray);
             changeCoverImageButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -194,14 +157,7 @@ public class PackListFragment extends Fragment {
                 }
             });
 
-            Button deleteButton = new Button(mContext);
-            deleteButton.setText("Delete");
-            lp = new LinearLayout.LayoutParams(
-                    UIHelper.getPixels(80), UIHelper.getPixels(35));
-            lp.setMargins(20, 0, 0, 0);
-            deleteButton.setLayoutParams(lp);
-            deleteButton.setBackgroundResource(R.drawable.button_red);
-            deleteButton.setTextSize(TypedValue.COMPLEX_UNIT_SP,14);
+
             deleteButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -216,10 +172,6 @@ public class PackListFragment extends Fragment {
                 }
             });
 
-
-            editLayout.addView(changeCoverImageButton);
-            editLayout.addView(deleteButton);
-            baseView.addView(editLayout);
 
             if (mIsEditStatus) {
                 editLayout.setVisibility(View.VISIBLE);
@@ -246,7 +198,10 @@ public class PackListFragment extends Fragment {
             }
 
 
-            return baseView;
+            packNameView.setText(currentPack.packName);
+
+
+            return contentView;
         }
     }
 
