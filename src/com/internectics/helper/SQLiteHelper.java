@@ -76,6 +76,7 @@ public class SQLiteHelper {
                     + "question_title" + " TEXT," + "answer_title" + " TEXT,"
                     + "cover_image" + " TEXT," + "logo_image" + " TEXT,"
                     + "logo_url" + " TEXT," + "creator_id" + " TEXT,"
+                    + "platform" + " TEXT,"
                     + "creator_nick_name" + " TEXT)");
 
             // compared with iOS version, we made changes:

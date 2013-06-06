@@ -25,6 +25,7 @@ public class Pack {
     public String logoURL;
     public String creatorID;
     public String creatorNickName;
+    public String platform;
 
     public ArrayList<Card> cards;
 
@@ -36,6 +37,7 @@ public class Pack {
         userID = -1;
         creatorID = "";
         creatorNickName = "";
+        platform = "";
         cards = new ArrayList<Card>();
         questionTitle = "Question";
         answerTitle = "Answer";
@@ -57,6 +59,7 @@ public class Pack {
         logoURL = (String) dataDict.get("logo_url");
         creatorID = (String) dataDict.get("creator_id");
         creatorNickName = (String) dataDict.get("creator_nick_name");
+        platform = (String) dataDict.get("platform");
 
         ArrayList<HashMap<String, Object>> cardArray = (ArrayList<HashMap<String, Object>>) dataDict.get("cards");
         for (int i = 0; i < cardArray.size(); i++) {
@@ -85,7 +88,8 @@ public class Pack {
             cardDict.put("logo_image", cur.getString(7));
             cardDict.put("logo_url", cur.getString(8));
             cardDict.put("creator_id", cur.getString(9));
-            cardDict.put("creator_nick_name", cur.getString(10));
+            cardDict.put("platform", cur.getString(10));
+            cardDict.put("creator_nick_name", cur.getString(11));
             cardDict.put("cards", Card.cardsForPackID(context, cur.getInt(0)));
             returnArray.add(cardDict);
         }
@@ -106,7 +110,7 @@ public class Pack {
 
 
     private void update(Context context) {
-        String query = String.format("UPDATE Packs_Tables SET pack_name=\"%s\",sidebar_title=\"%s\",user_id= %d,question_title=\"%s\",answer_title=\"%s\",cover_image=\"%s\",logo_image=\"%s\",logo_url=\"%s\",creator_id= \"%s\",creator_nick_name=\"%s\" WHERE pack_id=%d", packName, sidebarTitle, userID, questionTitle, answerTitle, coverImageUriFormatStr, logoImageUriFormatStr, logoURL, creatorID, creatorNickName, packID);
+        String query = String.format("UPDATE Packs_Tables SET pack_name=\"%s\",sidebar_title=\"%s\",user_id= %d,question_title=\"%s\",answer_title=\"%s\",cover_image=\"%s\",logo_image=\"%s\",logo_url=\"%s\",creator_id= \"%s\",creator_nick_name=\"%s\",platform=\"%s\" WHERE pack_id=%d", packName, sidebarTitle, userID, questionTitle, answerTitle, coverImageUriFormatStr, logoImageUriFormatStr, logoURL, creatorID, creatorNickName, platform, packID);
         SQLiteHelper.defaultDatabase(context).execSQL(query);
     }
 
@@ -116,7 +120,7 @@ public class Pack {
             packID = Global.generateNoRepeatInt();
         }
 
-        String query = String.format("INSERT INTO Packs_Tables(pack_id, pack_name, sidebar_title, user_id, question_title, answer_title, cover_image,logo_image,logo_url,creator_id,creator_nick_name) VALUES (%d,\"%s\",\"%s\",%d,\"%s\",\"%s\",\"%s\",\"%s\",\"%s\",\"%s\",\"%s\")", packID, packName, sidebarTitle, userID, questionTitle, answerTitle, coverImageUriFormatStr, logoImageUriFormatStr, logoURL, creatorID, creatorNickName);
+        String query = String.format("INSERT INTO Packs_Tables(pack_id, pack_name, sidebar_title, user_id, question_title, answer_title, cover_image,logo_image,logo_url,creator_id,creator_nick_name,platform) VALUES (%d,\"%s\",\"%s\",%d,\"%s\",\"%s\",\"%s\",\"%s\",\"%s\",\"%s\",\"%s\",\"%s\")", packID, packName, sidebarTitle, userID, questionTitle, answerTitle, coverImageUriFormatStr, logoImageUriFormatStr, logoURL, creatorID, creatorNickName,platform);
         SQLiteHelper.defaultDatabase(context).execSQL(query);
     }
 

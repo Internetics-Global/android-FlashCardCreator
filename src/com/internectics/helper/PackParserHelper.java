@@ -2,12 +2,14 @@ package com.internectics.helper;
 
 import android.content.res.Resources;
 import android.net.Uri;
+import android.util.Log;
 import com.internectics.android_flashcardcreator.R;
 import com.internectics.data.Card;
 import com.internectics.data.Pack;
 import com.internectics.util.AppContext;
 import com.internectics.util.Global;
 import com.internectics.util.StringUtils;
+import com.internectics.util.UIHelper;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
@@ -108,8 +110,10 @@ public class PackParserHelper {
             pack.coverImageUriFormatStr = (String) obj.get("cover_image");
             pack.creatorID = (String) obj.get("creator");
             pack.creatorNickName = (String) obj.get("creator_nick_name");
+            pack.platform = (String) obj.get("platform");
             pack.userID = Global.USER_ID; // there's no this information in json file, so we have to add manually
             pack.packID = Global.generateNoRepeatInt();
+
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         } catch (ParseException e) {
@@ -158,12 +162,21 @@ public class PackParserHelper {
             card.question.css.mainColor = (String) questionObj.get("main_color");
             card.question.css.subAlign = (String) questionObj.get("sub_align");
             card.question.css.subColor = (String) questionObj.get("sub_color");
-            if (true) {
+            Log.d(Global.debugTag,currentPack.platform + UIHelper.getCurrentPlatform());
+            if (currentPack.platform.equals(UIHelper.getCurrentPlatform())== false) {
+
                 //size interchangeable with iOS, and other android devices
-                int[] cssArrary = AppContext.getAppContext().getResources().getIntArray(R.array.css_size_int);
-                card.question.css.subheadingSize = cssArrary[0];
-                card.question.css.mainSize = cssArrary[1];
-                card.question.css.subSize = cssArrary[2];
+                int index1 =  Integer.parseInt((String) questionObj.get("subheading_size"));
+                int index2 =  Integer.parseInt((String) questionObj.get("main_size"));
+                int index3 = card.question.css.subSize = Integer.parseInt((String) questionObj.get("sub_size"));
+                float average = (index1 + index2 + index3) / 3;
+
+                int[] standardCSSArrary = AppContext.getAppContext().getResources().getIntArray(R.array.css_size_int);
+                float factor = (standardCSSArrary[0]+standardCSSArrary[1]+standardCSSArrary[2])/3/average;
+
+                card.question.css.subheadingSize = (int)(factor*index1);
+                card.question.css.mainSize = (int)(factor*index2);
+                card.question.css.subSize = (int)(factor*index3);
             } else {
                 card.question.css.subheadingSize = Integer.parseInt((String) questionObj.get("subheading_size"));
                 card.question.css.mainSize = Integer.parseInt((String) questionObj.get("main_size"));
@@ -198,16 +211,22 @@ public class PackParserHelper {
             card.answer.css.subColor = (String) answerObj.get("sub_color");
             if (true) {
                 //size interchangeable with iOS, and other android devices
-                int[] cssArrary = AppContext.getAppContext().getResources().getIntArray(R.array.css_size_int);
-                card.answer.css.subheadingSize = cssArrary[3];
-                card.answer.css.mainSize = cssArrary[4];
-                card.answer.css.subSize = cssArrary[5];
+                int index1 =  Integer.parseInt((String) answerObj.get("subheading_size"));
+                int index2 =  Integer.parseInt((String) answerObj.get("main_size"));
+                int index3 = card.answer.css.subSize = Integer.parseInt((String) answerObj.get("sub_size"));
+                float average = (index1 + index2 + index3) / 3;
+
+                int[] standardCSSArrary = AppContext.getAppContext().getResources().getIntArray(R.array.css_size_int);
+                float factor = (standardCSSArrary[3]+standardCSSArrary[4]+standardCSSArrary[5])/3/average;
+
+                card.answer.css.subheadingSize = (int)(factor*index1);
+                card.answer.css.mainSize = (int)(factor*index2);
+                card.answer.css.subSize = (int)(factor*index3);
             } else {
                 card.answer.css.subheadingSize = Integer.parseInt((String) answerObj.get("subheading_size"));
                 card.answer.css.mainSize = Integer.parseInt((String) answerObj.get("main_size"));
                 card.answer.css.subSize = Integer.parseInt((String) answerObj.get("sub_size"));
             }
-
 
         } catch (FileNotFoundException e) {
             e.printStackTrace();

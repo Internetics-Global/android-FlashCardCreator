@@ -48,6 +48,7 @@
                     android:button="@null"
                     android:checked="true"
                     android:text="Question"
+                    android:textSize="@dimen/segment_text_size"
                     android:textColor="@android:color/white"
                     android:gravity="center"
                     android:background="@drawable/button_segment_selected"/>
@@ -59,6 +60,7 @@
                     android:button="@null"
                     android:text="Answer"
                     android:textColor="@android:color/black"
+                    android:textSize="@dimen/segment_text_size"
                     android:gravity="center"
                     android:checked="false"
                     android:background="@drawable/button_segment_unselected"/>

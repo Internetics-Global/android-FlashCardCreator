@@ -87,14 +87,15 @@ public class UIHelper {
         return width;
     }
 
-    public static String getCurrentPlatform(Activity activity) {
+    public static String getCurrentPlatform() {
 
-        DisplayMetrics metric = new DisplayMetrics();
-        activity.getWindowManager().getDefaultDisplay().getMetrics(metric);
+        DisplayMetrics metric = AppContext.getAppContext().getResources().getDisplayMetrics();
+
         int width = metric.widthPixels;
         int height = metric.heightPixels;
         int densityDpi = metric.densityDpi;
-        String returnStr = String.format("%d-%d-%d",width,height,densityDpi);
+        String returnStr = String.format("android-%d-%d-%d",width,height,densityDpi);
+        Log.d(Global.debugTag,returnStr);
         return returnStr;
     }
 

@@ -17,4 +17,17 @@
     <dimen name="pack_list_item_width">195dp</dimen>
     <dimen name="pack_list_text_size">16sp</dimen>
 
+    <!--add pack related-->
+    <dimen name="add_pack_edit_text_size">20sp</dimen>
+    <dimen name="add_pack_window_width">550dp</dimen>
+
+    <!--creator related-->
+    <dimen name="creator_text_size">20sp</dimen>
+
+    <!--title related-->
+    <dimen name="title_text_size">36sp</dimen>
+
+    <!--sidebar title related-->
+    <dimen name="sidebar_text_size">20sp</dimen>
+
 </resources>

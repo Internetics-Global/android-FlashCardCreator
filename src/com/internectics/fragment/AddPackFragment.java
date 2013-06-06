@@ -55,7 +55,7 @@ public class AddPackFragment extends DialogFragment implements TextView.OnEditor
 
         TextView titleTextView = (TextView) mContentView
                 .findViewById(R.id.dialog_title);
-        titleTextView.setText("Help");
+        titleTextView.setText("Add Pack");
         final Button closeButton = (Button) mContentView
                 .findViewById(R.id.dialog_head_close_btn);
         Button saveButton = (Button) mContentView
@@ -116,6 +116,10 @@ public class AddPackFragment extends DialogFragment implements TextView.OnEditor
     public void onResume() {
         super.onResume();
 
+        ViewGroup.LayoutParams params = mContentView.getLayoutParams();
+        params.width = getResources().getDimensionPixelSize(R.dimen.add_pack_window_width);
+        mContentView.setLayoutParams(params);
+
         Timer timer = new Timer();
         timer.schedule(new TimerTask() {
 
@@ -138,8 +142,10 @@ public class AddPackFragment extends DialogFragment implements TextView.OnEditor
         pack.packName = mPackNameEditText.getText().toString();
         pack.sidebarTitle = mSidebarTitleEditText.getText().toString();
         pack.creatorNickName = mCreatorEditText.getText().toString();
+        pack.platform = UIHelper.getCurrentPlatform();
         // we set pack.coverImageUriFormatStr in image select or by default
         pack.creatorID = OpenUDID_manager.getOpenUDID();
+        pack.platform = UIHelper.getCurrentPlatform();
         pack.userID = Global.USER_ID;
         pack.packID = Global.generateNoRepeatInt();
         pack.save(AppContext.getAppContext());

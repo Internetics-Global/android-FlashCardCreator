@@ -20,6 +20,7 @@
                 android:singleLine="true"
                 android:textColor="#FFFFFF"
                 android:hint="Pack Name"
+                android:textSize="@dimen/add_pack_edit_text_size"
                 android:ems="10">
             <requestFocus/>
         </EditText>
@@ -31,6 +32,7 @@
                 android:imeOptions="actionDone"
                 android:singleLine="true"
                 android:textColor="#FFFFFF"
+                android:textSize="@dimen/add_pack_edit_text_size"
                 android:hint="Sidebar Title"
                 android:ems="10"/>
 
@@ -42,6 +44,7 @@
                 android:imeOptions="actionDone"
                 android:singleLine="true"
                 android:textColor="#FFFFFF"
+                android:textSize="@dimen/add_pack_edit_text_size"
                 android:hint="Creator Name"
                 android:ems="10"/>
 

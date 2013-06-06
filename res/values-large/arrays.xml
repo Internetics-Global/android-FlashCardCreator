@@ -6,7 +6,7 @@
     <!--sp unit-->
     <integer-array
             name="css_size_int">
-        <item>28</item>
+        <item>30</item>
         <item>32</item>
         <item>32</item>
         <item>28</item>
