@@ -13,14 +13,14 @@
 
     <!--pack list related-->
     <dimen name="pack_list_width">480dp</dimen>
-    <dimen name="pack_list_window_height">300dp</dimen>      <!--title bar height is 48dp-->
-    <dimen name="pack_list_height">252dp</dimen>
+    <dimen name="pack_list_window_height">290dp</dimen>      <!--title bar height is 48dp-->
+    <dimen name="pack_list_height">250dp</dimen>
     <dimen name="pack_list_item_width">180dp</dimen>
-    <dimen name="pack_list_text_size">12sp</dimen>
+    <dimen name="pack_list_text_size">14sp</dimen>
 
     <!--add pack related-->
     <dimen name="add_pack_edit_text_size">16sp</dimen>
-    <dimen name="add_pack_window_width">550dp</dimen>
+    <dimen name="add_pack_window_width">580dp</dimen>
 
     <!--creator related-->
     <dimen name="creator_text_size">12sp</dimen>

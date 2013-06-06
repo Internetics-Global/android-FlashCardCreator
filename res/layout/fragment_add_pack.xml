@@ -55,7 +55,7 @@
                 android:layout_width="200dp"
                 android:layout_marginLeft="100dp"
                 android:layout_marginRight="100dp"
-                android:layout_marginTop="10dp"
+                android:layout_marginTop="20dp"
                 android:layout_marginBottom="30dp"
                 android:scaleType="fitCenter"
                 android:background="@drawable/shape_image_round_corner"
