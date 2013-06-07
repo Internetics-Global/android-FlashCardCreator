@@ -335,10 +335,10 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnKeyboa
                 inputEditText.setSelection(inputEditText.getText().length());
                 inputEditText.setImeOptions(EditorInfo.IME_ACTION_DONE);
                 new AlertDialog.Builder(getActivity())
-                        .setTitle("Set URL")
-                        .setMessage("Please input a valid URL")
+                        .setTitle(R.string.logourl_title)
+                        .setMessage(R.string.logourl_message)
                         .setView(inputEditText)
-                        .setPositiveButton("Done", new DialogInterface.OnClickListener() {
+                        .setPositiveButton(R.string.button_done, new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
                                 mCurrentPack.logoURL = inputEditText.getText().toString();
@@ -348,7 +348,7 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnKeyboa
 
                             }
                         })
-                        .setNegativeButton("Cancel", null)
+                        .setNegativeButton(R.string.button_cancel, null)
                         .show();
             }
         });
@@ -469,7 +469,7 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnKeyboa
 
 
     private void updateCommonContent() {
-        mSidebarTitle.setText(mCurrentPack.sidebarTitle + "(" + mCurrentCard.cardSN + ")");
+        mSidebarTitle.setText(mCurrentPack.sidebarTitle);
 
         mLogoImage.setImageURI(Uri.parse(mCurrentPack.logoImageUriFormatStr));
         mCreator.setText(mCurrentPack.creatorNickName);

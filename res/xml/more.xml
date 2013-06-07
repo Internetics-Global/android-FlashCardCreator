@@ -2,37 +2,37 @@
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
 
     <PreferenceCategory
-            android:title="Dropbox Preference">
+            android:title="@string/more_dropbox_preference">
         <CheckBoxPreference
                 android:key="dropbox_preference"
-                android:title="Dropbox"/>
+                android:title="@string/more_dropbox"/>
     </PreferenceCategory>
 
     <PreferenceCategory
-            android:title="Play Preference">
+            android:title="@string/more_play_preference">
         <CheckBoxPreference
                 android:key="play_preference"
-                android:title="Random Play"/>
+                android:title="@string/more_random_play"/>
     </PreferenceCategory>
 
     <PreferenceCategory
-            android:title="Register">
+            android:title="@string/more_register">
         <PreferenceScreen
                 android:key="register_preference"
-                android:title="Register"/>
+                android:title="@string/more_register"/>
         <PreferenceScreen
                 android:key="submit_preference"
-                android:title="Submit new listing"/>
+                android:title="@string/more_submit"/>
     </PreferenceCategory>
 
     <PreferenceCategory
-            android:title="Others">
+            android:title="@string/more_others">
         <PreferenceScreen
                 android:key="help_preference"
-                android:title="Help"/>
+                android:title="@string/more_help"/>
         <PreferenceScreen
                 android:key="about_preference"
-                android:title="About"/>
+                android:title="@string/more_about"/>
     </PreferenceCategory>
 
 </PreferenceScreen>

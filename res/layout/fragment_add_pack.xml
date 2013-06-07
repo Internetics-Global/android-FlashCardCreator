@@ -19,7 +19,7 @@
                 android:imeOptions="actionDone"
                 android:singleLine="true"
                 android:textColor="#FFFFFF"
-                android:hint="Pack Name"
+                android:hint="@string/addpack_packname"
                 android:textSize="@dimen/add_pack_edit_text_size"
                 android:ems="10">
             <requestFocus/>
@@ -33,7 +33,7 @@
                 android:singleLine="true"
                 android:textColor="#FFFFFF"
                 android:textSize="@dimen/add_pack_edit_text_size"
-                android:hint="Sidebar Title"
+                android:hint="@string/addpack_sidebar"
                 android:ems="10"/>
 
 
@@ -45,7 +45,7 @@
                 android:singleLine="true"
                 android:textColor="#FFFFFF"
                 android:textSize="@dimen/add_pack_edit_text_size"
-                android:hint="Creator Name"
+                android:hint="@string/addpack_Creator"
                 android:ems="10"/>
 
         <ImageView

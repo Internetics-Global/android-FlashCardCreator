@@ -55,7 +55,7 @@ public class AddPackFragment extends DialogFragment implements TextView.OnEditor
 
         TextView titleTextView = (TextView) mContentView
                 .findViewById(R.id.dialog_title);
-        titleTextView.setText("Add Pack");
+        titleTextView.setText(R.string.addpack_title);
         final Button closeButton = (Button) mContentView
                 .findViewById(R.id.dialog_head_close_btn);
         Button saveButton = (Button) mContentView

@@ -5,48 +5,48 @@
             android:id="@+id/actionbar_packs"
             android:icon="@null"
             android:showAsAction="ifRoom|withText"
-            android:title="@string/title_packs">
+            android:title="@string/actionbar_item_packs">
     </item>
     <item
             android:id="@+id/actionbar_edit"
             android:icon="@null"
-            android:title="@string/title_edit"
+            android:title="@string/actionbar_item_edit"
             android:showAsAction="ifRoom">
     </item>
     <item
             android:id="@+id/actionbar_add_pack"
             android:icon="@drawable/actionbar_add_pack_button"
-            android:title="@string/title_add_pack" android:showAsAction="ifRoom|withText">
+            android:title="@string/actionbar_item_add" android:showAsAction="ifRoom|withText">
     </item>
 
     <item
             android:id="@+id/actionbar_play"
             android:icon="@drawable/actionbar_play_button"
-            android:title="@string/title_play" android:showAsAction="ifRoom">
+            android:title="@string/actionbar_item_play" android:showAsAction="ifRoom">
     </item>
 
     <item
             android:id="@+id/actionbar_change_template_color"
             android:icon="@drawable/actionbar_change_template_button"
-            android:title="@string/title_change_template_color" android:showAsAction="ifRoom">
+            android:title="@string/actionbar_item_change" android:showAsAction="ifRoom">
     </item>
 
     <item
             android:id="@+id/actionbar_help"
             android:icon="@drawable/actionbar_helping_button"
-            android:title="@string/title_help" android:showAsAction="ifRoom">
+            android:title="@string/actionbar_item_help" android:showAsAction="ifRoom">
     </item>
 
     <item
             android:id="@+id/actionbar_more"
             android:icon="@drawable/actionbar_more_button"
-            android:title="@string/title_more" android:showAsAction="ifRoom">
+            android:title="@string/actionbar_item_more" android:showAsAction="ifRoom">
     </item>
 
     <item
             android:id="@+id/actionbar_share"
             android:icon="@drawable/actionbar_share_button"
-            android:title="@string/title_share" android:showAsAction="ifRoom">
+            android:title="@string/actionbar_item_share" android:showAsAction="ifRoom">
     </item>
 
     <item

@@ -49,7 +49,7 @@
                 android:layout_width="0dp"
                 android:layout_height="fill_parent"
                 android:background="@drawable/button_red"
-                android:text="Delete"
+                android:text="@string/packlist_delete"
                 android:textSize="@dimen/pack_list_text_size"
                 android:layout_weight="50">
 
@@ -61,7 +61,7 @@
                 android:layout_width="0dp"
                 android:layout_height="fill_parent"
                 android:background="@drawable/button_gray"
-                android:text="Change"
+                android:text="@string/packlist_change"
                 android:textColor="#000000"
                 android:textSize="@dimen/pack_list_text_size"
                 android:layout_weight="50">

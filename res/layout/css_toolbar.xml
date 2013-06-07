@@ -14,7 +14,6 @@
             android:layout_alignParentRight="true"
             android:entries="@array/css_align"
             android:background="@drawable/selector_black_spinner"
-            android:prompt="@string/css_align"
             android:layout_margin="10dp"/>
 
 
@@ -26,7 +25,6 @@
             android:entries="@array/css_color"
             android:background="@drawable/selector_black_spinner"
             android:layout_margin="10dp"
-            android:prompt="@string/css_color"
             android:layout_toLeftOf="@id/spinner_align"
             />
 
@@ -38,7 +36,6 @@
             android:entries="@array/css_size"
             android:background="@drawable/selector_black_spinner"
             android:layout_margin="10dp"
-            android:prompt="@string/css_size"
             android:layout_toLeftOf="@id/spinner_color"
             />
 

@@ -44,7 +44,7 @@ public class PackListFragment extends Fragment {
 
 
         TextView titileTextView = (TextView) rootView.findViewById(R.id.dialog_title);
-        titileTextView.setText("Pack List");
+        titileTextView.setText(R.string.packlist_title);
 
         final Button editButton = (Button) rootView.findViewById(R.id.dialog_head_save_btn);
         editButton.setText("Edit");

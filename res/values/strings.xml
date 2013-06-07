@@ -2,27 +2,71 @@
 <resources>
 
     <string name="app_name">Android-FlashCardCreator</string>
-    <string name="title_card_detail">Card Detail</string>
-    <string name="title_packs">packs</string>
-    <string name="title_edit">edit</string>
-    <string name="title_add_pack">add</string>
-    <string name="title_change_template_color">change</string>
-    <string name="title_help">help</string>
-    <string name="title_more">more</string>
-    <string name="title_share">share</string>
-    <string name="title_play">play</string>
-
-    <string name="css_size">Size</string>
-    <string name="css_align">Align</string>
-    <string name="css_color">Color</string>
 
 
-    <!--unit is sp-->
-    <string name="question_subheading_size">10</string>
-    <string name="question_main_size">10</string>
-    <string name="question_sub_size">10</string>
-    <string name="answer_subheading_size">10</string>
-    <string name="answer_main_size">10</string>
-    <string name="answer_sub_size">10</string>
+    <string name="actionbar_item_packs">Packs</string>
+    <string name="actionbar_item_edit">Edit</string>
+    <string name="actionbar_item_add">Add</string>
+    <string name="actionbar_item_play">Play</string>
+    <string name="actionbar_item_change">Change</string>
+    <string name="actionbar_item_help">Help</string>
+    <string name="actionbar_item_more">More</string>
+    <string name="actionbar_item_share">Share</string>
+
+    <string name="packlist_title">Pack List</string>
+    <string name="packlist_edit">Edit</string>
+    <string name="packlist_done">Done</string>
+    <string name="packlist_change">Change</string>
+    <string name="packlist_delete">Delete</string>
+
+    <string name="addpack_close">Close</string>
+    <string name="addpack_title">Add Pack</string>
+    <string name="addpack_save">Save</string>
+    <string name="addpack_packname">Pack Name</string>
+    <string name="addpack_sidebar">Sidebar Title</string>
+    <string name="addpack_Creator">Creator Name</string>
+
+    <string name="change_title">Select a template background</string>
+    <string name="change_blue">Blue</string>
+    <string name="change_coffee">Coffee</string>
+    <string name="change_gray">Gray</string>
+    <string name="change_purple">Purple</string>
+    <string name="change_red">Red</string>
+
+    <string name="help_title">Help</string>
+
+    <string name="more_title">More</string>
+    <string name="more_dropbox_preference">Dropbox Preference</string>
+    <string name="more_dropbox">Dropbox</string>
+    <string name="more_play_preference">Play Preference</string>
+    <string name="more_random_play">Random Play</string>
+    <string name="more_register">Register</string>
+    <string name="more_submit">Submit new listing</string>
+    <string name="more_others">Others</string>
+    <string name="more_help">Help</string>
+    <string name="more_about">About</string>
+
+    <string name="segment_question">Question</string>
+    <string name="segment_answer">Answer</string>
+
+    <string name="logourl_title">Set URL</string>
+    <string name="logourl_message">Please input a valid URL</string>
+
+    <string name="button_cancel">Cancel</string>
+    <string name="button_done">Done</string>
+    <string name="button_save">Save</string>
+
+    <string name="alert_applying_to_all_cards">Applying to all cards</string>
+    <string name="alert_check_network">Check your network</string>
+    <string name="alert_downlod_sample">Downloading sample pack</string>
+    <string name="alert_downlod_pack">Downloading...</string>
+    <string name="alert_can_not_change_template_bg">You can only make changes to cards you have created yourself.</string>
+    <string name="alert_existing_pack_name">Existing pack name, please input a different one</string>
+    <string name="alert_dropbox_unlinked">Your dropbox account has been unlinked</string>
+    <string name="alert_can_not_create_card">You cannot create a card in pack you have not created yourself.</string>
+    <string name="alert_create_pack_first">Create a pack first before creating a new card</string>
+    <string name="alert_fail_to_log_dropbox">Dropbox login failure. Please try again.</string>
+    <string name="alert_can_not_create_card">You cannot create a card in pack you have not created yourself.</string>
+    <string name="alert_can_not_create_card">You cannot create a card in pack you have not created yourself.</string>
 
 </resources>

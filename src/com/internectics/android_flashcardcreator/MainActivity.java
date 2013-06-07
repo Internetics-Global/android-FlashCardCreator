@@ -167,8 +167,11 @@ public class MainActivity extends FragmentActivity implements
                 int defaultIndex = (StringUtils.convertTemplateBackgroundStringToResourceID(mCurrentCard.templateBackground))[0];
                 if (mCurrentPack.cards.size() >= 0) {
                     new AlertDialog.Builder(this)
-                            .setTitle("Select a template background")
-                            .setSingleChoiceItems(new String[]{"Blue", "Coffee", "Gray", "Purple", "Red"}, defaultIndex, new DialogInterface.OnClickListener() {
+                            .setTitle(R.string.change_title)
+                            .setSingleChoiceItems(new String[]{getResources().getString(R.string.change_blue),
+                                    getResources().getString(R.string.change_coffee), getResources().getString(R.string.change_gray),
+                                    getResources().getString(R.string.change_purple),getResources().getString(R.string.change_red)}, defaultIndex,
+                                    new DialogInterface.OnClickListener() {
                                 @Override
                                 public void onClick(DialogInterface dialog, int which) {
                                     dialog.dismiss();
@@ -436,7 +439,7 @@ public class MainActivity extends FragmentActivity implements
             case 0:
                 if (mProgressDialog == null) {
                     mProgressDialog = new ProgressDialog(MainActivity.this);
-                    mProgressDialog.setMessage("Applying to all cards");
+                    mProgressDialog.setMessage(getResources().getString(R.string.alert_applying_to_all_cards));
                     mProgressDialog.setIndeterminate(true);
                     mProgressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
                 }
