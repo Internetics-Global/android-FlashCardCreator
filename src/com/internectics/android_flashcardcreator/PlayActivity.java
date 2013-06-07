@@ -7,6 +7,7 @@ import android.support.v4.app.*;
 import android.support.v4.view.ViewPager;
 import android.util.Log;
 import android.view.ViewGroup;
+import android.view.WindowManager;
 import com.internectics.data.Card;
 import com.internectics.data.Pack;
 import com.internectics.fragment.CardDetailFragment;
@@ -29,6 +30,8 @@ public class PlayActivity extends FragmentActivity implements SensorEventListene
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,WindowManager.LayoutParams.FLAG_FULLSCREEN);
 
         int packID = getIntent().getIntExtra("packID", -1);
         mCurrentPack = CardListModel.getPack(packID);

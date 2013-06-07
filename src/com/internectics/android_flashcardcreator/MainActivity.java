@@ -81,6 +81,8 @@ public class MainActivity extends FragmentActivity implements
             Log.w(Global.debugTag, "OpenUDID_manager is not initialized");
         }
 
+        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,WindowManager.LayoutParams.FLAG_FULLSCREEN);
+
         setContentView(R.layout.activity_card_twopane);
 
 
