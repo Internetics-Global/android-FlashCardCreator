@@ -52,12 +52,6 @@ public class PackUploadHelper extends AsyncTask<Void, Long, Boolean> {
         mDialog.setMessage("Uploading " + file.getName());
         mDialog.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
         mDialog.setProgress(0);
-        mDialog.setButton("Cancel", new OnClickListener() {
-            public void onClick(DialogInterface dialog, int which) {
-                // This will cancel the putFile operation
-                mRequest.abort();
-            }
-        });
         mDialog.show();
     }
 
@@ -85,6 +79,7 @@ public class PackUploadHelper extends AsyncTask<Void, Long, Boolean> {
                 mRequest.upload();
                 return true;
             }
+
 
         } catch (DropboxUnlinkedException e) {
             // This session wasn't authenticated properly or user unlinked

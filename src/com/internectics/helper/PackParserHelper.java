@@ -150,9 +150,9 @@ public class PackParserHelper {
 
             card.question.templateID = Integer.parseInt((String) questionObj.get("template_id"));
             card.question.imageUriFormatStr = (String) questionObj.get("image");
-            card.question.subheading = (String) questionObj.get("subheading");
-            card.question.main = (String) questionObj.get("main");
-            card.question.sub = (String) questionObj.get("sub");
+            card.question.subheading = ((String) questionObj.get("subheading")).replace("\\s+$", "");
+            card.question.main = ((String) questionObj.get("main")).replace("\\s+$", "");
+            card.question.sub = ((String) questionObj.get("sub")).replace("\\s+$", "");
 
             card.question.css.subheadingAlign = (String) questionObj.get("subheading_align");
             card.question.css.subheadingColor = (String) questionObj.get("subheading_color");
@@ -196,9 +196,9 @@ public class PackParserHelper {
 
             card.answer.templateID = Integer.parseInt((String) answerObj.get("template_id"));
             card.answer.imageUriFormatStr = (String) answerObj.get("image");
-            card.answer.subheading = (String) answerObj.get("subheading");
-            card.answer.main = (String) answerObj.get("main");
-            card.answer.sub = (String) answerObj.get("sub");
+            card.answer.subheading = ((String) answerObj.get("subheading")).replace("\\s+$", ""); //delete trailing space
+            card.answer.main = ((String) answerObj.get("main")).replace("\\s+$", "");
+            card.answer.sub = ((String) answerObj.get("sub")).replace("\\s+$", "");
 
             card.answer.css.subheadingAlign = (String) answerObj.get("subheading_align");
             card.answer.css.subheadingColor = (String) answerObj.get("subheading_color");

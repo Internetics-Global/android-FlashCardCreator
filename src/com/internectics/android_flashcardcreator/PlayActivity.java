@@ -1,13 +1,13 @@
 package com.internectics.android_flashcardcreator;
 
 import android.content.Context;
+import android.content.res.Configuration;
 import android.hardware.*;
 import android.os.Bundle;
 import android.support.v4.app.*;
 import android.support.v4.view.ViewPager;
 import android.util.Log;
-import android.view.ViewGroup;
-import android.view.WindowManager;
+import android.view.*;
 import com.internectics.data.Card;
 import com.internectics.data.Pack;
 import com.internectics.fragment.CardDetailFragment;
@@ -25,13 +25,16 @@ public class PlayActivity extends FragmentActivity implements SensorEventListene
     private int mPosition;
     private List<Fragment> mFragments;
     private FCCPageAdapter mPageAdapter;
+
     private static boolean enableSwitch = true;
+    private SensorManager mSensorManager;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,WindowManager.LayoutParams.FLAG_FULLSCREEN);
+        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
 
         int packID = getIntent().getIntExtra("packID", -1);
         mCurrentPack = CardListModel.getPack(packID);
@@ -45,7 +48,7 @@ public class PlayActivity extends FragmentActivity implements SensorEventListene
 
         //Keep same size with non-playmode
         ViewGroup.MarginLayoutParams marginLayoutParams = (ViewGroup.MarginLayoutParams) pager.getLayoutParams();
-        int margin = (UIHelper.getScreenWidth(this))/6/2;
+        int margin = (UIHelper.getScreenWidth(this)) / 6 / 2;
         marginLayoutParams.leftMargin = margin;
         marginLayoutParams.rightMargin = margin;
         pager.setLayoutParams(marginLayoutParams);
@@ -55,11 +58,10 @@ public class PlayActivity extends FragmentActivity implements SensorEventListene
         pager.setOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             @Override
             public void onPageScrolled(int i, float v, int i2) {
-                if ((mPosition!=i)&&(i2==0)) {
+                if ((mPosition != i) && (i2 == 0)) {
                     Log.i(Global.debugTag, "onPageScrolled, page index=" + i);
                     mPosition = i;
 
-                    //Reset
                     ((CardDetailFragment) (mFragments.get(mPosition))).switchToQuestionView();
                     enableSwitch = true;
 
@@ -77,13 +79,22 @@ public class PlayActivity extends FragmentActivity implements SensorEventListene
 
         });
 
-        initSensor();
+        mSensorManager = (SensorManager) getSystemService(Context.SENSOR_SERVICE);
+        Sensor accelerometer = mSensorManager.getDefaultSensor(Sensor.TYPE_ORIENTATION);
+        mSensorManager.registerListener(this, accelerometer, SensorManager.SENSOR_DELAY_NORMAL);
+
     }
 
     @Override
     protected void onResume() {
         super.onResume();
 
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        mSensorManager.unregisterListener(this);
     }
 
     public class FCCPageAdapter extends FragmentStatePagerAdapter {
@@ -123,32 +134,63 @@ public class PlayActivity extends FragmentActivity implements SensorEventListene
         return fList;
     }
 
-
-    private void initSensor() {
-        SensorManager sensorManager = (SensorManager) getSystemService(Context.SENSOR_SERVICE);
-        Sensor accelerometer = sensorManager.getDefaultSensor(Sensor.TYPE_ORIENTATION);
-        sensorManager.registerListener(this, accelerometer, SensorManager.SENSOR_DELAY_NORMAL);
-    }
-
-
     @Override
     public void onSensorChanged(SensorEvent event) {
         //range of values is 90 degrees to -90 degrees.
         float roll = event.values[2];
 
-        if ((Math.abs(roll) > 10) && (enableSwitch)) {
-            ((CardDetailFragment) (mFragments.get(mPosition))).switchQuestionAnswerView();
-            Log.i(Global.debugTag,"roll angle is:" + roll);
-            enableSwitch = false;
-        } else if ((Math.abs(roll) < 3) && (!enableSwitch)) {
-            enableSwitch = true;
+        Log.i(Global.debugTag, "roll angle =" + roll);
+
+        int orientation = getOrientation();
+        if (orientation == 1) {
+            if ((roll < -15.0) && (enableSwitch)) {
+                ((CardDetailFragment) (mFragments.get(mPosition))).switchQuestionAnswerView();
+                enableSwitch = false;
+            } else if ((Math.abs(roll) < 2) && (!enableSwitch)) {
+                enableSwitch = true;
+            }
+        } else if (orientation == 0) {
+            if ((roll > 15.0) && (enableSwitch)) {
+                ((CardDetailFragment) (mFragments.get(mPosition))).switchQuestionAnswerView();
+                enableSwitch = false;
+            } else if ((Math.abs(roll) < 2) && (!enableSwitch)) {
+                enableSwitch = true;
+            }
         }
+
     }
 
 
     @Override
     public void onAccuracyChanged(Sensor sensor, int accuracy) {
         //do nothing
+    }
+
+
+    /**
+     * -1, other orientation; 0, landscape; 1. reverse landscape
+     */
+    private int getOrientation() {
+        int orientation = getResources().getConfiguration().orientation;
+        int rotation = getWindowManager().getDefaultDisplay().getRotation();
+
+        if (orientation == Configuration.ORIENTATION_LANDSCAPE) {
+            if ((rotation == Surface.ROTATION_0)
+                    || (rotation == Surface.ROTATION_90)) {
+                Log.d(Global.debugTag, "current rotation is landscape");
+                return 0; //landscape (for nexus 7, camera is left side of screen)
+            }
+
+            if ((rotation == Surface.ROTATION_180)
+                    || (rotation == Surface.ROTATION_270)) {
+                Log.d(Global.debugTag, "current rotation is reverselandscape");
+                return 1; //reverse landscape   (for nexus 7, camera is right side of screen)
+            }
+
+        }
+
+        return -1; //other rotation
+
     }
 
 }

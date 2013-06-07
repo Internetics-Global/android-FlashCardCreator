@@ -188,6 +188,8 @@ public class MainActivity extends FragmentActivity implements
                 break;
 
             case R.id.actionbar_play:
+
+
                 Intent intent = new Intent(MainActivity.this, PlayActivity.class);
                 intent.putExtra("packID", mCurrentPack.packID);
                 startActivity(intent);
@@ -216,6 +218,7 @@ public class MainActivity extends FragmentActivity implements
 
             case R.id.actionbar_test1:
                 test1();
+
                 break;
 
             default:
