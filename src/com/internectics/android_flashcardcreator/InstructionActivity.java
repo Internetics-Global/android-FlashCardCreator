@@ -9,16 +9,11 @@ import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
+import android.widget.TextView;
 import org.taptwo.android.widget.CircleFlowIndicator;
 import org.taptwo.android.widget.ViewFlow;
 
-/**
- * Created with IntelliJ IDEA.
- * User: BourneWang
- * Date: 6/05/13
- * Time: 10:33 上午
- * To change this template use File | Settings | File Templates.
- */
+
 public class InstructionActivity extends Activity {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -66,6 +61,7 @@ public class InstructionActivity extends Activity {
                 convertView = mInflater.inflate(R.layout.instruction_image_item, null);
             }
             ((ImageView) convertView.findViewById(R.id.imgView)).setImageResource(ids[position]);
+            ((TextView)convertView.findViewById(R.id.txtView)).setText((getResources().getStringArray(R.array.help_instruction))[position]);
             return convertView;
         }
 
