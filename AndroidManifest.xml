@@ -75,6 +75,7 @@
                   android:screenOrientation="sensorLandscape"/>
         <activity android:name=".MoreActivity"/>
         <activity android:name=".WebViewActivity"/>
+        <activity android:name=".AboutActivity"/>
 
 
         <service android:name="org.openudid.OpenUDID_service">

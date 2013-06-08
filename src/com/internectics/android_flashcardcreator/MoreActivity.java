@@ -74,6 +74,7 @@ public class MoreActivity extends PreferenceActivity {
         aboutPreference.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
             @Override
             public boolean onPreferenceClick(Preference preference) {
+                startActivity(new Intent(MoreActivity.this, AboutActivity.class));
                 return false;
             }
         });
