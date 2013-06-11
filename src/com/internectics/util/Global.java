@@ -8,7 +8,7 @@ import android.net.NetworkInfo;
 public class Global {
     public static final String debugTag = "ccaa";
     public static final String DATABASE_NAME = "FlashCardCreator-Local.db";
-    public static final int DATABASE_VERSION = 1;
+    public static final int DATABASE_VERSION = 1;  // you need to update this when changing
 
     public static final int USER_ID = 314;
     public static final String defaultUserStr = "Default_User";
