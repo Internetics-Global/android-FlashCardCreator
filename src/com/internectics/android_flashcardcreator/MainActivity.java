@@ -567,7 +567,8 @@ public class MainActivity extends FragmentActivity implements
         spinnerAlign.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                mCardDetailFragment.updateCSS(0, position);
+                if (position > 0) //this is necessary, since default will be automatically executed
+                    mCardDetailFragment.updateCSS(0, position);
             }
 
             @Override
@@ -578,7 +579,8 @@ public class MainActivity extends FragmentActivity implements
         spinnerSize.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                mCardDetailFragment.updateCSS(1, position);
+                if (position > 0)
+                    mCardDetailFragment.updateCSS(1, position);
             }
 
             @Override
@@ -589,7 +591,8 @@ public class MainActivity extends FragmentActivity implements
         spinnerColor.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                mCardDetailFragment.updateCSS(2, position);
+                if (position > 0)
+                    mCardDetailFragment.updateCSS(2, position);
             }
 
             @Override

@@ -1148,6 +1148,12 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnKeyboa
     public void onKeyboardClose(EditText editText) {
         //mCurrentFocusedEditText = editText; we don't need to do this since it's done  in onTouch method
 
+        if (mIsPlayingCard) {
+            //this is necessary. when we touch the back key, we still receive this.
+            //It's quite strange, but it is the truth
+            return;
+        }
+
         dismissKeyboard();
         saveEdittedCard();
     }

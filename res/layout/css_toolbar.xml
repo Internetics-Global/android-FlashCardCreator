@@ -14,7 +14,7 @@
             android:layout_alignParentLeft="true"
             android:layout_margin="5dp"
             android:background="@drawable/selector_csstoolbar_button"
-            style="@style/blackbuttontext"
+            style="@style/BlackButtonText"
             android:text="@string/button_save"/>
 
     <Button
@@ -25,7 +25,7 @@
             android:layout_toRightOf="@id/csstoolbar_save_btn"
             android:layout_margin="5dp"
             android:background="@drawable/selector_csstoolbar_button"
-            style="@style/blackbuttontext"
+            style="@style/BlackButtonText"
             android:text="@string/button_cancel"/>
 
     <Spinner
