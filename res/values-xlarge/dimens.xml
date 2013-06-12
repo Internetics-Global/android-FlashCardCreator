@@ -30,4 +30,7 @@
     <!--sidebar title related-->
     <dimen name="sidebar_text_size">20sp</dimen>
 
+    <!--css toolbar related-->
+    <dimen name="csstoolbar_text_size">20sp</dimen>
+
 </resources>

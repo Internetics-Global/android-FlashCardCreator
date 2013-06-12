@@ -29,4 +29,7 @@
     <!--sidebar title related-->
     <dimen name="sidebar_text_size">12sp</dimen>
 
+    <!--css toolbar related-->
+    <dimen name="csstoolbar_text_size">12sp</dimen>
+
 </resources>

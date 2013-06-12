@@ -518,6 +518,22 @@ public class MainActivity extends FragmentActivity implements
         Spinner spinnerAlign = (Spinner) mCSSToolbar.findViewById(R.id.spinner_align);
         Spinner spinnerColor = (Spinner) mCSSToolbar.findViewById(R.id.spinner_color);
         Spinner spinnerSize = (Spinner) mCSSToolbar.findViewById(R.id.spinner_size);
+
+        ArrayAdapter<CharSequence> adapterAlign = ArrayAdapter.createFromResource(this,
+                R.array.css_align, R.layout.spinner);
+        adapterAlign.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        spinnerAlign.setAdapter(adapterAlign);
+
+        ArrayAdapter<CharSequence> adapterColor = ArrayAdapter.createFromResource(this,
+                R.array.css_color, R.layout.spinner);
+        adapterColor.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        spinnerColor.setAdapter(adapterColor);
+
+        ArrayAdapter<CharSequence> adapterSize = ArrayAdapter.createFromResource(this,
+                R.array.css_size, R.layout.spinner);
+        adapterSize.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        spinnerSize.setAdapter(adapterSize);
+
         spinnerAlign.setSelection(0);
         spinnerColor.setSelection(0);
         spinnerSize.setSelection(0);
