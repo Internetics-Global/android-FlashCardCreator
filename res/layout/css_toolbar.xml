@@ -8,7 +8,7 @@
 
     <Button
             android:id="@+id/csstoolbar_save_btn"
-            android:layout_width="60dp"
+            android:layout_width="65dp"
             android:layout_height="match_parent"
             android:textSize="@dimen/csstoolbar_text_size"
             android:layout_alignParentLeft="true"
@@ -19,7 +19,7 @@
 
     <Button
             android:id="@+id/csstoolbar_close_btn"
-            android:layout_width="60dp"
+            android:layout_width="65dp"
             android:layout_height="match_parent"
             android:textSize="@dimen/csstoolbar_text_size"
             android:layout_toRightOf="@id/csstoolbar_save_btn"

@@ -1158,7 +1158,7 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnKeyboa
             return;
         }
 
-        dismissKeyboard();
+        dismissKeyboard2();
         saveEdittedCard();
     }
 
@@ -1337,6 +1337,19 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnKeyboa
     public  void dismissKeyboard() {
         if (mCurrentFocusedEditText != null) {
             mIMM.hideSoftInputFromWindow(mCurrentFocusedEditText.getWindowToken(), 0);
+        } else {
+            Log.d(Global.debugTag,"mCurrentFocusedEditText is null");
+        }
+
+    }
+
+
+    /**
+     * simply close keyboard and do nothing
+     */
+    public  void dismissKeyboard2() {
+        if (mCurrentFocusedEditText != null) {
+            mIMM.hideSoftInputFromInputMethod(mCurrentFocusedEditText.getWindowToken(), 0);
         } else {
             Log.d(Global.debugTag,"mCurrentFocusedEditText is null");
         }
