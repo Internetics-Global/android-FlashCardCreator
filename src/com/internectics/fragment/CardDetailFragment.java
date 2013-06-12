@@ -533,6 +533,11 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnKeyboa
         mCreator.setEnabled(true);
         mImage.setEnabled(true);
 
+        mCreator.setBackgroundResource(R.drawable.shape_edittext_editable);
+        mSubheading.setBackgroundResource(R.drawable.shape_edittext_editable);
+        mMain.setBackgroundResource(R.drawable.shape_edittext_editable);
+        mSub.setBackgroundResource(R.drawable.shape_edittext_editable);
+
     }
 
     private void disableCardEditable() {
@@ -1141,22 +1146,10 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnKeyboa
      */
     @Override
     public void onKeyboardClose(EditText editText) {
+        //mCurrentFocusedEditText = editText; we don't need to do this since it's done  in onTouch method
 
-        if ((mIMM.isActive() == false) || (mIsPlayingCard)) {
-            //It will be called when press the back button, even no keyboard is shown on now.That's the reason why we need to check
-            return;
-        } else {
-            mIMM.hideSoftInputFromInputMethod(editText.getWindowToken(), 0);
-        }
-
-        mCurrentFocusedEditText = editText;
-
-        //The reason why I design this logic is: http://stackoverflow.com/questions/16881815/how-to-make-a-notification-listener-when-the-keyboard-disappear-on-android-platf
-        myHandler = new KeyboardDisappearHandler();
-        KeyboardDisappearThread m = new KeyboardDisappearThread();
-        new Thread(m).start();
-
-
+        dismissKeyboard();
+        saveEdittedCard();
     }
 
     private void onKeyboardDisappear(EditText editText) {
@@ -1325,6 +1318,26 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnKeyboa
 
         return mIsTakeSnapshotAllNeeded;
 
+    }
+
+
+    /**
+     * simply close keyboard and do nothing
+     */
+    public  void dismissKeyboard() {
+        if (mCurrentFocusedEditText != null) {
+            mIMM.hideSoftInputFromWindow(mCurrentFocusedEditText.getWindowToken(), 0);
+        } else {
+            Log.d(Global.debugTag,"mCurrentFocusedEditText is null");
+        }
+
+    }
+
+    public void saveEdittedCard() {
+        //The reason why I design this logic is: http://stackoverflow.com/questions/16881815/how-to-make-a-notification-listener-when-the-keyboard-disappear-on-android-platf
+        myHandler = new KeyboardDisappearHandler();
+        KeyboardDisappearThread m = new KeyboardDisappearThread();
+        new Thread(m).start();
     }
 }
 

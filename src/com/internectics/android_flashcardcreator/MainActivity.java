@@ -234,6 +234,10 @@ public class MainActivity extends FragmentActivity implements
     protected void onResume() {
         super.onResume();
 
+        if (mCSSToolbar == null) {
+            initializeCSSToolbar();
+        }
+
         //Step1: download sample pack first
         boolean isDownloaded = AppConfig.sharedInstance().isExamplePackDownloadedBefore();
 
@@ -271,10 +275,13 @@ public class MainActivity extends FragmentActivity implements
                 }
             }
         }
+    }
 
 
-
-
+    @Override
+    protected void onPause() {
+        super.onPause();
+        removeCSSToolbar();
     }
 
     @Override
@@ -538,14 +545,29 @@ public class MainActivity extends FragmentActivity implements
         spinnerColor.setSelection(0);
         spinnerSize.setSelection(0);
 
+        Button cssSaveButton = (Button) mCSSToolbar.findViewById(R.id.csstoolbar_save_btn);
+        cssSaveButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mCardDetailFragment.dismissKeyboard();
+                mCardDetailFragment.saveEdittedCard();
+                removeCSSToolbar();
+            }
+        });
+        Button cssCancelButton = (Button) mCSSToolbar.findViewById(R.id.csstoolbar_close_btn);
+        cssCancelButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mCardDetailFragment.dismissKeyboard();
+                removeCSSToolbar();
+            }
+        });
+
 
         spinnerAlign.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                if (position > 0) {
-                    mCardDetailFragment.updateCSS(0, position -1);
-                }
-
+                mCardDetailFragment.updateCSS(0, position);
             }
 
             @Override
@@ -556,9 +578,7 @@ public class MainActivity extends FragmentActivity implements
         spinnerSize.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                if (position > 0) {
-                    mCardDetailFragment.updateCSS(1, position -1);
-                }
+                mCardDetailFragment.updateCSS(1, position);
             }
 
             @Override
@@ -569,9 +589,7 @@ public class MainActivity extends FragmentActivity implements
         spinnerColor.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                if (position > 0) {
-                    mCardDetailFragment.updateCSS(2, position -1);
-                }
+                mCardDetailFragment.updateCSS(2, position);
             }
 
             @Override

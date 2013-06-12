@@ -6,6 +6,28 @@
                 android:layout_width="match_parent"
                 android:layout_height="48dp">
 
+    <Button
+            android:id="@+id/csstoolbar_save_btn"
+            android:layout_width="55dp"
+            android:layout_height="match_parent"
+            android:textSize="@dimen/csstoolbar_text_size"
+            android:layout_alignParentLeft="true"
+            android:layout_margin="5dp"
+            android:background="@drawable/selector_csstoolbar_button"
+            style="@style/blackbuttontext"
+            android:text="@string/button_save"/>
+
+    <Button
+            android:id="@+id/csstoolbar_close_btn"
+            android:layout_width="55dp"
+            android:layout_height="match_parent"
+            android:textSize="@dimen/csstoolbar_text_size"
+            android:layout_toRightOf="@id/csstoolbar_save_btn"
+            android:layout_margin="5dp"
+            android:background="@drawable/selector_csstoolbar_button"
+            style="@style/blackbuttontext"
+            android:text="@string/button_cancel"/>
+
     <Spinner
             android:id="@+id/spinner_align"
             android:gravity="center"
@@ -14,7 +36,7 @@
             android:layout_alignParentRight="true"
             android:entries="@array/css_align"
             android:background="@drawable/selector_black_spinner"
-            android:layout_margin="10dp"/>
+            android:layout_margin="5dp"/>
 
 
     <Spinner
@@ -24,7 +46,7 @@
             android:layout_height="match_parent"
             android:entries="@array/css_color"
             android:background="@drawable/selector_black_spinner"
-            android:layout_margin="10dp"
+            android:layout_margin="5dp"
             android:layout_toLeftOf="@id/spinner_align"
             />
 
@@ -35,7 +57,7 @@
             android:layout_height="match_parent"
             android:entries="@array/css_size"
             android:background="@drawable/selector_black_spinner"
-            android:layout_margin="10dp"
+            android:layout_margin="5dp"
             android:layout_toLeftOf="@id/spinner_color"
             />
 

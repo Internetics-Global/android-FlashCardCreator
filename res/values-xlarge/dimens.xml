@@ -31,6 +31,6 @@
     <dimen name="sidebar_text_size">20sp</dimen>
 
     <!--css toolbar related-->
-    <dimen name="csstoolbar_text_size">20sp</dimen>
+    <dimen name="csstoolbar_text_size">16sp</dimen>
 
 </resources>
