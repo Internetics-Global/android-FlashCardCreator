@@ -574,7 +574,7 @@ public class MainActivity extends FragmentActivity implements
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 if (position > 0) //this is necessary, since default will be automatically executed
-                    mCardDetailFragment.updateCSS(0, position);
+                    mCardDetailFragment.updateCSS(0, position-1);
             }
 
             @Override
@@ -586,7 +586,7 @@ public class MainActivity extends FragmentActivity implements
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 if (position > 0)
-                    mCardDetailFragment.updateCSS(1, position);
+                    mCardDetailFragment.updateCSS(1, position-1);
             }
 
             @Override
@@ -598,7 +598,7 @@ public class MainActivity extends FragmentActivity implements
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 if (position > 0)
-                    mCardDetailFragment.updateCSS(2, position);
+                    mCardDetailFragment.updateCSS(2, position-1);
             }
 
             @Override
