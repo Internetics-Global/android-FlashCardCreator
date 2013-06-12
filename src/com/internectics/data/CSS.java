@@ -2,7 +2,9 @@ package com.internectics.data;
 
 import android.content.Context;
 import android.database.Cursor;
+import com.internectics.android_flashcardcreator.R;
 import com.internectics.helper.SQLiteHelper;
+import com.internectics.util.AppContext;
 
 import java.util.HashMap;
 
@@ -19,7 +21,7 @@ public class CSS {
     public String subColor;
     public int subSize;
 
-    public CSS() {
+    public CSS(boolean isForQuestion) {
         super();
         cssID = -1;
         subheadingAlign = "Center";
@@ -29,9 +31,17 @@ public class CSS {
         subAlign = "Center";
         subColor = "Black";
 
-        subheadingSize = 34;
-        mainSize = 34;
-        subSize = 34;
+        int[] sizeArray = AppContext.getAppContext().getResources().getIntArray(R.array.css_size_int);
+
+        if (isForQuestion) {
+            subheadingSize = sizeArray[0];
+            mainSize = sizeArray[1];
+            subSize = sizeArray[2];
+        } else {
+            subheadingSize = sizeArray[3];
+            mainSize = sizeArray[4];
+            subSize = sizeArray[5];
+        }
     }
 
     public CSS initWithDictionary(HashMap<String, Object> dataDict) {

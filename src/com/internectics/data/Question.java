@@ -34,7 +34,7 @@ public class Question {
         imageUriFormatStr = FileOperationHelper.getQuestionImagePlaceholderImagePath();
         cssID = -1;
         templateID = 0;
-        css = new CSS();
+        css = new CSS(true);
     }
 
     public Question initWithDictionary(HashMap<String, Object> dataDict) {
@@ -48,7 +48,7 @@ public class Question {
         templateID = (Integer) dataDict.get("template_id");
 
         HashMap<String, Object> cssArray = (HashMap<String, Object>) dataDict.get("css");
-        this.css = (new CSS()).initWithDictionary(cssArray);
+        this.css = (new CSS(true)).initWithDictionary(cssArray);
 
         return this;
     }

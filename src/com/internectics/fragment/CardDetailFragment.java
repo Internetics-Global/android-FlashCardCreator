@@ -696,6 +696,8 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnKeyboa
         params.weight = 710f;
         mContentBodyLeft.setLayoutParams(params);
 
+        //we don't need to set font size here since it will be done in CSS constructor
+
         switch (templateID) {
             case 0:
                 params = (LinearLayout.LayoutParams) mSubheading.getLayoutParams();
@@ -788,6 +790,8 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnKeyboa
 
         int templateID = mCurrentCard.answer.templateID;
         LinearLayout.LayoutParams params;
+
+        //we don't need to set font size here since it will be done in CSS constructo
 
         switch (templateID) {
             case 0:

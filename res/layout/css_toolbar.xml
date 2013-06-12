@@ -8,7 +8,7 @@
 
     <Button
             android:id="@+id/csstoolbar_save_btn"
-            android:layout_width="55dp"
+            android:layout_width="60dp"
             android:layout_height="match_parent"
             android:textSize="@dimen/csstoolbar_text_size"
             android:layout_alignParentLeft="true"
@@ -19,7 +19,7 @@
 
     <Button
             android:id="@+id/csstoolbar_close_btn"
-            android:layout_width="55dp"
+            android:layout_width="60dp"
             android:layout_height="match_parent"
             android:textSize="@dimen/csstoolbar_text_size"
             android:layout_toRightOf="@id/csstoolbar_save_btn"
@@ -31,7 +31,7 @@
     <Spinner
             android:id="@+id/spinner_align"
             android:gravity="center"
-            android:layout_width="55dp"
+            android:layout_width="60dp"
             android:layout_height="match_parent"
             android:layout_alignParentRight="true"
             android:entries="@array/css_align"
@@ -42,7 +42,7 @@
     <Spinner
             android:id="@+id/spinner_color"
             android:gravity="center"
-            android:layout_width="55dp"
+            android:layout_width="60dp"
             android:layout_height="match_parent"
             android:entries="@array/css_color"
             android:background="@drawable/selector_black_spinner"
@@ -53,7 +53,7 @@
     <Spinner
             android:id="@+id/spinner_size"
             android:gravity="center"
-            android:layout_width="55dp"
+            android:layout_width="60dp"
             android:layout_height="match_parent"
             android:entries="@array/css_size"
             android:background="@drawable/selector_black_spinner"

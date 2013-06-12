@@ -674,15 +674,4 @@ public class MainActivity extends FragmentActivity implements
         Log.d(Global.debugTag, "densityDpi = " + densityDpi);
 
     }
-
-    @Override
-    protected void onStop() {
-        super.onStop();
-        Log.d(Global.debugTag,"exist current");
-        Intent startMain = new Intent(Intent.ACTION_MAIN);
-        startMain.addCategory(Intent.CATEGORY_HOME);
-        startMain.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-        startActivity(startMain);
-        android.os.Process.killProcess(android.os.Process.myPid());
-    }
 }
