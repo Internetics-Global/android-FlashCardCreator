@@ -65,6 +65,8 @@ public class MainActivity extends FragmentActivity implements
     private Button mMasterMaskButton;
     private Button mMasterMaskButtonForContentUpdating;
 
+    private boolean mIsNecessaryToRestoreCSSToolbar = false;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -234,8 +236,9 @@ public class MainActivity extends FragmentActivity implements
     protected void onResume() {
         super.onResume();
 
-        if (mCSSToolbar == null) {
+        if (mIsNecessaryToRestoreCSSToolbar) {
             initializeCSSToolbar();
+            mIsNecessaryToRestoreCSSToolbar = false;
         }
 
         //Step1: download sample pack first
@@ -281,7 +284,10 @@ public class MainActivity extends FragmentActivity implements
     @Override
     protected void onPause() {
         super.onPause();
-        removeCSSToolbar();
+        if ((mCSSToolbar != null) && (mCSSToolbar.getParent() != null)) {
+            removeCSSToolbar();
+            mIsNecessaryToRestoreCSSToolbar = true;
+        }
     }
 
     @Override
@@ -669,5 +675,14 @@ public class MainActivity extends FragmentActivity implements
 
     }
 
-
+    @Override
+    protected void onStop() {
+        super.onStop();
+        Log.d(Global.debugTag,"exist current");
+        Intent startMain = new Intent(Intent.ACTION_MAIN);
+        startMain.addCategory(Intent.CATEGORY_HOME);
+        startMain.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        startActivity(startMain);
+        android.os.Process.killProcess(android.os.Process.myPid());
+    }
 }
