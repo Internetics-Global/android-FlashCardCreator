@@ -51,7 +51,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
             android:src="@drawable/card_cover_image_placeholder"
-            android:background="@drawable/shape_card_list_item"
+
             android:scaleType="fitCenter"/>
 
     <ImageView
