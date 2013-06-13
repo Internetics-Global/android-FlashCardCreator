@@ -458,7 +458,7 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnKeyboa
             @Override
             public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
                 if (actionId == EditorInfo.IME_ACTION_DONE) {
-                    onKeyboardClose((EditText) v);
+                    saveEdittedCard();
                 }
                 return false;
             }
@@ -467,7 +467,7 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnKeyboa
             @Override
             public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
                 if (actionId == EditorInfo.IME_ACTION_DONE) {
-                    onKeyboardClose((EditText) v);
+                    saveEdittedCard();
                 }
                 return false;
             }
@@ -477,7 +477,7 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnKeyboa
             @Override
             public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
                 if (actionId == EditorInfo.IME_ACTION_DONE) {
-                    onKeyboardClose((EditText) v);
+                    saveEdittedCard();
                 }
                 return false;
             }

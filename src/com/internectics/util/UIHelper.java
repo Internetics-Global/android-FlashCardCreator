@@ -4,10 +4,7 @@ import android.app.Activity;
 import android.content.ContentResolver;
 import android.content.Context;
 import android.content.res.Resources;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.graphics.Canvas;
-import android.graphics.Color;
+import android.graphics.*;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.util.DisplayMetrics;
@@ -68,16 +65,10 @@ public class UIHelper {
 
 
     public static Bitmap loadBitmapFromView(View v) {
-        //we freeze the size
-        Bitmap returnedBitmap = Bitmap.createBitmap(v.getWidth(), v.getHeight(),Bitmap.Config.ARGB_8888);
-        Canvas canvas = new Canvas(returnedBitmap);
-        Drawable bgDrawable =v.getBackground();
-        if (bgDrawable!=null)
-            bgDrawable.draw(canvas);
-        else
-            canvas.drawColor(Color.WHITE);
+        Bitmap bitmap = Bitmap.createBitmap(v.getWidth(), v.getHeight(),Bitmap.Config.ARGB_8888);
+        Canvas canvas = new Canvas(bitmap);
         v.draw(canvas);
-        return returnedBitmap;
+        return bitmap;
     }
 
     public static int getScreenWidth(Activity activity) {
