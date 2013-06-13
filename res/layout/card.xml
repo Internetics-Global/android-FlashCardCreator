@@ -129,6 +129,7 @@
                             android:textStyle="bold"
                             android:tag="1001"
                             android:cursorVisible="true"
+                            android:textCursorDrawable="@null"
                             android:background="@drawable/shape_edittext_editable"
                             android:ems="10" />
 
@@ -143,6 +144,7 @@
                             android:textStyle="bold"
                             android:tag="1002"
                             android:cursorVisible="true"
+                            android:textCursorDrawable="@null"
                             android:background="@drawable/shape_edittext_editable"
                             android:ems="10"/>
 
@@ -157,6 +159,7 @@
                             android:textStyle="bold"
                             android:tag="1003"
                             android:cursorVisible="true"
+                            android:textCursorDrawable="@null"
                             android:background="@drawable/shape_edittext_editable"
                             android:ems="10"/>
 
