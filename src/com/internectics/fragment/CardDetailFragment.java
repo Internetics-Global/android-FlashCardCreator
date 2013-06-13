@@ -190,6 +190,9 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnKeyboa
     @Override
     public void onResume() {
         super.onResume();
+
+        mIsTakeSnapshotAllNeeded = false;  //necessary
+
         Log.d(Global.debugTag, "onResume in CardDetailFragment");
     }
 
@@ -434,11 +437,10 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnKeyboa
             mRadioGroup = (RadioGroup) mContentView.findViewById(R.id.radio_segment);
         }
 
-        mTitle.mCallbacks = this;
-        mSidebarTitle.mCallbacks = this;
-        mSubheading.mCallbacks = this;
-        mMain.mCallbacks = this;
-        mSub.mCallbacks = this;
+
+//        mSubheading.mCallbacks = this;
+//        mMain.mCallbacks = this;
+//        mSub.mCallbacks = this;
 
         if (!mIsPlayingCard) {
             mSubheading.setOnTouchListener(this);
@@ -563,7 +565,7 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnKeyboa
                 if (mQuestionRadioButton.isChecked()) {
                     mCurrentCard.question.subheading = mSubheading.getText().toString();
                     if (!mIsCreatingCard) {
-                        mIsTakeSnapshotAllNeeded = true;
+                        //mIsTakeSnapshotAllNeeded = true;
                     }
                 } else {
                     mCurrentCard.answer.subheading = mSubheading.getText().toString();
@@ -587,7 +589,7 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnKeyboa
                 if (mQuestionRadioButton.isChecked()) {
                     mCurrentCard.question.main = mMain.getText().toString();
                     if (!mIsCreatingCard) {
-                        mIsTakeSnapshotAllNeeded = true;
+                        //mIsTakeSnapshotAllNeeded = true;
                     }
                 } else {
                     mCurrentCard.answer.main = mMain.getText().toString();
@@ -611,7 +613,7 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnKeyboa
                 if (mQuestionRadioButton.isChecked()) {
                     mCurrentCard.question.sub = mSub.getText().toString();
                     if (!mIsCreatingCard) {
-                        mIsTakeSnapshotAllNeeded = true;
+                        //mIsTakeSnapshotAllNeeded = true;
                     }
                 } else {
                     mCurrentCard.answer.sub = mSub.getText().toString();
@@ -1307,49 +1309,7 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnKeyboa
     public void onKeyboardClose(EditText editText) {
         //mCurrentFocusedEditText = editText; we don't need to do this since it's done  in onTouch method
 
-        if (mIsPlayingCard) {
-            //this is necessary. when we touch the back key, we still receive this.
-            //It's quite strange, but it is the truth
-            return;
-        }
-
-        dismissKeyboard2();
         saveEdittedCard();
-    }
-
-    private void onKeyboardDisappear(EditText editText) {
-
-        //mCurrentPack and mCurrentCard save have been done in addTextChangedListener
-
-        if (mIsTakeSnapshotAllNeeded) {
-            takeSnapshotAll();
-        }
-
-        //Save logic if not creating a new card
-        if (mIsCreatingCard) {
-            //we will do that when we click the save button
-        } else {
-            //We do here
-            mCurrentPack.save(AppContext.getAppContext());
-            mCurrentCard.save(AppContext.getAppContext());
-
-            mIsTakeSnapshotAllNeeded = false; //after snapshot, we need to set to default value
-        }
-
-        //Update actionbar
-        getActivity().getActionBar().show();
-        ((MainActivity) getActivity()).mIsEdittingCard = false;
-        getActivity().invalidateOptionsMenu();
-
-        //Update master view (cover image)
-        if ((mIsTakeSnapshotAllNeeded == false) && (mIsCreatingCard == false)) {
-            Intent intent = new Intent();
-            intent.setAction(Global.BROADCAST_ACTION_UPDATE_MASTER_VIEW);
-            intent.putExtra(Global.KEY_FROM, Global.BROADCAST_EXTRA_FROM_CURRENT_PACK_UPDATE);
-            getActivity().sendBroadcast(intent);
-        }
-
-        ((MainActivity) getActivity()).removeCSSToolbar();
     }
 
 
@@ -1395,48 +1355,6 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnKeyboa
 
     }
 
-    class KeyboardDisappearThread implements Runnable {
-
-        public void run() {
-            mIMM.hideSoftInputFromInputMethod(mCurrentFocusedEditText.getWindowToken(), 0);
-            try {
-                Thread.sleep(100);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
-            Message msg = new Message();
-            myHandler.sendMessage(msg);
-        }
-    }
-
-
-    class KeyboardDisappearHandler extends Handler {
-        @Override
-        public void handleMessage(Message msg) {
-
-            if (checkSnapshotAllNeeded(mCurrentFocusedEditText)&&(mIsCreatingCard == false)) {
-                ((MainActivity)getActivity()).setMaskButtonForContentUpdating();
-            }
-
-            onKeyboardDisappear(mCurrentFocusedEditText);
-        }
-    }
-
-
-    private boolean checkSnapshotAllNeeded(EditText currentFocusedEditText) {
-
-        int id = currentFocusedEditText.getId();
-
-        if ((id == R.id.sidebar_title)||(id == R.id.title)||(id == R.id.creator)) {
-            mIsTakeSnapshotAllNeeded = true;
-        } else {
-            mIsTakeSnapshotAllNeeded = false;
-        }
-
-        return mIsTakeSnapshotAllNeeded;
-
-    }
-
 
     /**
      * simply close keyboard and do nothing
@@ -1464,10 +1382,49 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnKeyboa
     }
 
     public void saveEdittedCard() {
-        //The reason why I design this logic is: http://stackoverflow.com/questions/16881815/how-to-make-a-notification-listener-when-the-keyboard-disappear-on-android-platf
-        myHandler = new KeyboardDisappearHandler();
-        KeyboardDisappearThread m = new KeyboardDisappearThread();
-        new Thread(m).start();
+
+        //step2: prepare update info in mast list view
+        if (mIsTakeSnapshotAllNeeded&&(mIsCreatingCard == false)) {
+            ((MainActivity)getActivity()).setMaskButtonForContentUpdating();
+        }
+
+        //step3:
+        //mCurrentPack and mCurrentCard save have been done in addTextChangedListener
+
+        //step4: take screenshot if necessary
+        if (mIsTakeSnapshotAllNeeded) {
+            takeSnapshotAll();
+        } else {
+            if (mQuestionRadioButton.isChecked()) {
+                takeSnapshotCurrentCard();
+            }
+        }
+
+        //step5:save logic if not creating a new card
+        if (mIsCreatingCard) {
+            //we will do that when we click the save button
+        } else {
+            //We do here
+            mCurrentPack.save(AppContext.getAppContext());
+            mCurrentCard.save(AppContext.getAppContext());
+
+            mIsTakeSnapshotAllNeeded = false; //after snapshot, we need to set to default value
+        }
+
+        //Update actionbar
+        getActivity().getActionBar().show();
+        ((MainActivity) getActivity()).mIsEdittingCard = false;
+        getActivity().invalidateOptionsMenu();
+
+        //Update master view (cover image)
+        if ((mIsTakeSnapshotAllNeeded == false) && (mIsCreatingCard == false)) {
+            Intent intent = new Intent();
+            intent.setAction(Global.BROADCAST_ACTION_UPDATE_MASTER_VIEW);
+            intent.putExtra(Global.KEY_FROM, Global.BROADCAST_EXTRA_FROM_CURRENT_PACK_UPDATE);
+            getActivity().sendBroadcast(intent);
+        }
+
+        ((MainActivity) getActivity()).removeCSSToolbar();
     }
 }
 
