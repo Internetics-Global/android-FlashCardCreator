@@ -8,6 +8,8 @@ import android.graphics.Color;
 import android.net.Uri;
 import android.os.*;
 import android.support.v4.app.Fragment;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.*;
 import android.view.inputmethod.EditorInfo;
@@ -118,6 +120,7 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnKeyboa
         }
 
         getAllViews();
+        setEditTextListener();
 
         if (!mIsPlayingCard) {
             configureSegmentView();
@@ -247,6 +250,9 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnKeyboa
         }
     }
 
+    /**
+     * Confugure segment view in onCreateView
+     */
     private void configureSegmentView() {
         mRadioGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
             @Override
@@ -268,6 +274,9 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnKeyboa
         });
     }
 
+    /**
+     * Confugure template view view in onCreateView
+     */
     private void configureChangeTemplateView() {
         ActionItem questionActionItem0 = new ActionItem(0, null, getResources().getDrawable(R.drawable.question_templatescreenshot0));
         ActionItem questionActionItem1 = new ActionItem(1, null, getResources().getDrawable(R.drawable.question_templatescreenshot1));
@@ -325,6 +334,9 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnKeyboa
 
     }
 
+    /**
+     * Confugure logo url view in onCreateView
+     */
     private void configureLogoURLView() {
         mLogoURLImage.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -436,6 +448,9 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnKeyboa
             mSidebarTitle.setOnTouchListener(this);
             mTitle.setOnTouchListener(this);
         }
+    }
+
+    private void setEditTextListener() {
 
         mSidebarTitle.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override
@@ -463,6 +478,146 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnKeyboa
                     onKeyboardClose((EditText) v);
                 }
                 return false;
+            }
+        });
+
+
+        mTitle.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                if (mQuestionRadioButton.isChecked()) {
+                    mCurrentPack.questionTitle = mTitle.getText().toString();
+                    if (!mIsCreatingCard) {
+                        mIsTakeSnapshotAllNeeded = true;
+                    }
+                } else {
+                    mCurrentPack.answerTitle = mTitle.getText().toString();
+                }
+
+                Log.d(Global.debugTag,"mTitle has changed");
+            }
+        });
+
+        mCreator.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                mCurrentPack.creatorNickName = mCreator.getText().toString();
+                if (!mIsCreatingCard) {
+                    mIsTakeSnapshotAllNeeded = true;
+                }
+
+                Log.d(Global.debugTag,"mCreator has changed");
+
+            }
+        });
+
+        mSidebarTitle.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                mCurrentPack.sidebarTitle = mSidebarTitle.getText().toString();
+                if (!mIsCreatingCard) {
+                    mIsTakeSnapshotAllNeeded = true;
+                }
+
+                Log.d(Global.debugTag,"mSidebarTitle has changed");
+
+            }
+        });
+
+
+        mSubheading.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                if (mQuestionRadioButton.isChecked()) {
+                    mCurrentCard.question.subheading = mSubheading.getText().toString();
+                    if (!mIsCreatingCard) {
+                        mIsTakeSnapshotAllNeeded = true;
+                    }
+                } else {
+                    mCurrentCard.answer.subheading = mSubheading.getText().toString();
+                }
+
+                Log.d(Global.debugTag,"mSubheading has changed");
+            }
+        });
+
+        mMain.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                if (mQuestionRadioButton.isChecked()) {
+                    mCurrentCard.question.main = mMain.getText().toString();
+                    if (!mIsCreatingCard) {
+                        mIsTakeSnapshotAllNeeded = true;
+                    }
+                } else {
+                    mCurrentCard.answer.main = mMain.getText().toString();
+                }
+
+                Log.d(Global.debugTag,"mMain has changed");
+            }
+        });
+
+        mSub.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                if (mQuestionRadioButton.isChecked()) {
+                    mCurrentCard.question.sub = mSub.getText().toString();
+                    if (!mIsCreatingCard) {
+                        mIsTakeSnapshotAllNeeded = true;
+                    }
+                } else {
+                    mCurrentCard.answer.sub = mSub.getText().toString();
+                }
+
+                Log.d(Global.debugTag,"mSub has changed");
             }
         });
     }
@@ -1163,60 +1318,12 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnKeyboa
     }
 
     private void onKeyboardDisappear(EditText editText) {
-        int id = editText.getId();
-        switch (id) {
-            case R.id.sidebar_title:
-                mCurrentPack.sidebarTitle = editText.getText().toString();
-                if (!mIsCreatingCard) {
-                    takeSnapshotAll();
-                }
 
-                break;
-            case R.id.title:
-                if (mQuestionRadioButton.isChecked()) {
-                    mCurrentPack.questionTitle = editText.getText().toString();
-                    if (!mIsCreatingCard) {
-                        takeSnapshotAll();
-                    }
-                } else {
-                    mCurrentPack.answerTitle = editText.getText().toString();
-                }
-                break;
-            case R.id.creator:
-                mCurrentPack.creatorNickName = editText.getText().toString();
-                if (!mIsCreatingCard) {
-                    takeSnapshotAll();
-                }
-                break;
-            case R.id.subheading:
-                if (mQuestionRadioButton.isChecked()) {
-                    mCurrentCard.question.subheading = editText.getText().toString();
-                    takeSnapshotCurrentCard();
-                } else {
-                    mCurrentCard.answer.subheading = editText.getText().toString();
-                }
-                break;
-            case R.id.main:
-                if (mQuestionRadioButton.isChecked()) {
-                    mCurrentCard.question.main = editText.getText().toString();
-                    takeSnapshotCurrentCard();
-                } else {
-                    mCurrentCard.answer.main = editText.getText().toString();
-                }
-                break;
-            case R.id.sub:
-                if (mQuestionRadioButton.isChecked()) {
-                    mCurrentCard.question.sub = editText.getText().toString();
-                    takeSnapshotCurrentCard();
-                } else {
-                    mCurrentCard.answer.sub = editText.getText().toString();
-                }
+        //mCurrentPack and mCurrentCard save have been done in addTextChangedListener
 
-                break;
-            default:
-                Log.w(Global.debugTag, "Out of our scope");
+        if (mIsTakeSnapshotAllNeeded) {
+            takeSnapshotAll();
         }
-
 
         //Save logic if not creating a new card
         if (mIsCreatingCard) {

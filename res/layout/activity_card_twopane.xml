@@ -75,7 +75,7 @@
                 android:text="Appling all cards..."
                 android:textStyle="bold"
                 android:textColor="#FFFFFF"
-                android:textSize="16sp"
+                android:textSize="12sp"
                 android:background="@drawable/button_updating_background"
                 android:visibility="invisible">
         </Button>
