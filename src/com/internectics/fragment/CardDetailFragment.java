@@ -438,9 +438,9 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnKeyboa
         }
 
 
-//        mSubheading.mCallbacks = this;
-//        mMain.mCallbacks = this;
-//        mSub.mCallbacks = this;
+        mSubheading.mCallbacks = this;
+        mMain.mCallbacks = this;
+        mSub.mCallbacks = this;
 
         if (!mIsPlayingCard) {
             mSubheading.setOnTouchListener(this);
@@ -1307,9 +1307,7 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnKeyboa
      */
     @Override
     public void onKeyboardClose(EditText editText) {
-        //mCurrentFocusedEditText = editText; we don't need to do this since it's done  in onTouch method
-
-        saveEdittedCard();
+        ((MainActivity) getActivity()).removeCSSToolbar();
     }
 
 
