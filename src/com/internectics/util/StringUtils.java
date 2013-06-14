@@ -35,7 +35,7 @@ public class StringUtils {
     /**
      * get current time/date string
      *
-     * @param sdate
+     * @param
      * @return
      */
     public static String getCurrentTimeDate() {
@@ -109,31 +109,31 @@ public class StringUtils {
 
         if (templateBackground.equals("card_background_blue.png")) {
             resourceID[0] = 0;
-            resourceID[1] = R.drawable.card_sidebar_bg_blue;
+            resourceID[1] = R.drawable.shape_card_blue_left_corner;
             resourceID[2] = R.drawable.card_title_bg_blue;
         }
         else if  (templateBackground.equals("card_background_coffee.png")) {
             resourceID[0] = 1;
-            resourceID[1] = R.drawable.card_sidebar_bg_coffee;
+            resourceID[1] = R.drawable.shape_card_coffee_left_corner;
             resourceID[2] = R.drawable.card_title_bg_coffee;
         }
         else if (templateBackground.equals("card_background_gray.png")) {
             resourceID[0] = 2;
-            resourceID[1] = R.drawable.card_sidebar_bg_gray;
+            resourceID[1] = R.drawable.shape_card_gray_left_corner;
             resourceID[2] = R.drawable.card_title_bg_gray;
         }
         else if (templateBackground.equals("card_background_purple.png")) {
             resourceID[0] = 3;
-            resourceID[1] = R.drawable.card_sidebar_bg_purple;
+            resourceID[1] = R.drawable.shape_card_purple_left_corner;
             resourceID[2] = R.drawable.card_title_bg_purple;
         }
         else if (templateBackground.equals("card_background_red.png")) {
             resourceID[0] = 4;
-            resourceID[1] = R.drawable.card_sidebar_bg_red;
+            resourceID[1] = R.drawable.shape_card_red_left_corner;
             resourceID[2] = R.drawable.card_title_bg_red;
         } else {
             resourceID[0] = 0;
-            resourceID[1] = R.drawable.card_sidebar_bg_blue;
+            resourceID[1] = R.drawable.shape_card_blue_left_corner;
             resourceID[2] = R.drawable.card_title_bg_blue;
         }
 

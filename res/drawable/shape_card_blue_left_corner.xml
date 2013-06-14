@@ -6,8 +6,8 @@
     </solid>
 
     <corners android:radius="1dp"
-            android:bottomLeftRadius="30dp"
-            android:topLeftRadius="30dp"
+            android:bottomLeftRadius="@dimen/card_round_corner"
+            android:topLeftRadius="@dimen/card_round_corner"
             android:bottomRightRadius="0dp"
             android:topRightRadius="0dp">
 </corners>

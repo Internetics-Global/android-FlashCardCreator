@@ -11,7 +11,7 @@
             android:layout_height="match_parent"
             android:layout_width="0dp"
             android:layout_weight="62"
-            android:background="@drawable/card_sidebar_bg_blue"
+            android:background="@drawable/shape_card_blue_left_corner"
             android:orientation="vertical">
 
 
@@ -44,6 +44,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="0dp"
                     android:layout_weight="112"
+                    android:layout_marginRight="15dp"
                     android:orientation="horizontal"
                     android:background="@null">
 
@@ -93,7 +94,6 @@
                         android:layout_height="wrap_content"
                         android:layout_width="0dp"
                         android:layout_weight="120"
-                        android:layout_marginRight="10dp"
                         android:layout_marginTop="10dp"
                         android:background="@drawable/shape_image_round_corner"
                         android:src="@drawable/question_placeholder_logo"/>

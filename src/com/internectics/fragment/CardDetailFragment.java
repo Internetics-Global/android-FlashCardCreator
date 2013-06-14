@@ -791,23 +791,23 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnKeyboa
     public void cardColorTemplateSelectedPostAction(int cardColorTemplateIndex) {
         switch (cardColorTemplateIndex) {
             case 0:
-                mSidebarBackground.setBackgroundResource(R.drawable.card_sidebar_bg_blue);
+                mSidebarBackground.setBackgroundResource(R.drawable.shape_card_blue_left_corner);
                 mTitleBackground.setBackgroundResource(R.drawable.card_title_bg_blue);
                 break;
             case 1:
-                mSidebarBackground.setBackgroundResource(R.drawable.card_sidebar_bg_coffee);
+                mSidebarBackground.setBackgroundResource(R.drawable.shape_card_coffee_left_corner);
                 mTitleBackground.setBackgroundResource(R.drawable.card_title_bg_coffee);
                 break;
             case 2:
-                mSidebarBackground.setBackgroundResource(R.drawable.card_sidebar_bg_gray);
+                mSidebarBackground.setBackgroundResource(R.drawable.shape_card_gray_left_corner);
                 mTitleBackground.setBackgroundResource(R.drawable.card_title_bg_gray);
                 break;
             case 3:
-                mSidebarBackground.setBackgroundResource(R.drawable.card_sidebar_bg_purple);
+                mSidebarBackground.setBackgroundResource(R.drawable.shape_card_purple_left_corner);
                 mTitleBackground.setBackgroundResource(R.drawable.card_title_bg_purple);
                 break;
             case 4:
-                mSidebarBackground.setBackgroundResource(R.drawable.card_sidebar_bg_red);
+                mSidebarBackground.setBackgroundResource(R.drawable.shape_card_red_left_corner);
                 mTitleBackground.setBackgroundResource(R.drawable.card_title_bg_red);
                 break;
             default:
