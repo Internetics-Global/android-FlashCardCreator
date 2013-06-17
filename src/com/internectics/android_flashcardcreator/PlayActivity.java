@@ -12,11 +12,14 @@ import com.internectics.data.Card;
 import com.internectics.data.Pack;
 import com.internectics.fragment.CardDetailFragment;
 import com.internectics.model.CardListModel;
+import com.internectics.util.AppConfig;
 import com.internectics.util.Global;
 import com.internectics.util.UIHelper;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
+import java.util.Random;
 
 
 public class PlayActivity extends FragmentActivity implements SensorEventListener {
@@ -119,6 +122,10 @@ public class PlayActivity extends FragmentActivity implements SensorEventListene
 
 
     private List<Fragment> getFragments() {
+
+        ArrayList<Card> cardsArray = mCurrentPack.cards;
+        int size = cardsArray.size();
+
         List<Fragment> fList = new ArrayList<Fragment>();
 
         if (mCurrentPack == null) {
@@ -126,9 +133,13 @@ public class PlayActivity extends FragmentActivity implements SensorEventListene
             return fList;
         }
 
-        ArrayList<Card> cardsArray = mCurrentPack.cards;
-        for (int i = 0; i < cardsArray.size(); i++) {
-            fList.add(new CardDetailFragment(mCurrentPack, cardsArray.get(i), 2));
+        for (int i = 0; i < size; i++) {
+
+            fList.add(i,new CardDetailFragment(mCurrentPack, cardsArray.get(i), 2));
+        }
+
+        if (AppConfig.sharedInstance().isRandomPlay()) {
+            Collections.shuffle(fList);
         }
 
         return fList;

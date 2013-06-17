@@ -64,7 +64,7 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnKeyboa
 
     private boolean mIsSnapShotNotCurrent = false;//as to snapshot,we have different stragegy on current showing card and other cards
 
-    private boolean mIsQuestionShowing = false; //this is only used in play mode
+    private boolean mIsQuestionShowing = true;
 
     private boolean mIsTakeSnapshotAllNeeded = false; //when fields that belong to current pack(like title) changes, it will be set true
 
@@ -233,7 +233,7 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnKeyboa
 
                 } else if (requestCode == CODE_REQUEST_IMAGE_SOURCE_IS_IMAGE) {
                     mImage.setImageBitmap(resultBitmap);
-                    if (mQuestionRadioButton.isChecked()) {
+                    if (mIsQuestionShowing) {
                         mCurrentCard.question.imageUriFormatStr = FileOperationHelper.convertToUriFormatFile(toSaveFile);
                     } else {
                         mCurrentCard.answer.imageUriFormatStr = FileOperationHelper.convertToUriFormatFile(toSaveFile);
@@ -241,7 +241,7 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnKeyboa
 
                     if (mIsCreatingCard == false) {
                         mCurrentCard.save(AppContext.getAppContext());
-                        if (mQuestionRadioButton.isChecked()) {
+                        if (mIsQuestionShowing) {
                             Intent intent = new Intent();
                             intent.setAction(Global.BROADCAST_ACTION_UPDATE_MASTER_VIEW);
                             intent.putExtra(Global.KEY_FROM, Global.BROADCAST_EXTRA_FROM_CURRENT_PACK_UPDATE);
@@ -326,7 +326,7 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnKeyboa
         mChangeTemplateImage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (mQuestionRadioButton.isChecked()) {
+                if (mIsQuestionShowing) {
                     questionQuickAction.show(mChangeTemplateImage);
                 } else {
                     answerQuickAction.show(mChangeTemplateImage);
@@ -371,7 +371,7 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnKeyboa
     }
 
     private void changeTemplateNotification(int index) {
-        if (mQuestionRadioButton.isChecked()) {
+        if (mIsQuestionShowing) {
             mCurrentCard.question.templateID = index;
             updateQuestionViewTemplate();
 
@@ -495,9 +495,9 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnKeyboa
 
             @Override
             public void afterTextChanged(Editable s) {
-                if (mQuestionRadioButton.isChecked()) {
+                if (mIsQuestionShowing) {
                     mCurrentPack.questionTitle = mTitle.getText().toString();
-                    if (!mIsCreatingCard) {
+                    if ((!mIsCreatingCard) &&(!mIsPlayingCard)) {
                         mIsTakeSnapshotAllNeeded = true;
                     }
                 } else {
@@ -520,7 +520,7 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnKeyboa
             @Override
             public void afterTextChanged(Editable s) {
                 mCurrentPack.creatorNickName = mCreator.getText().toString();
-                if (!mIsCreatingCard) {
+                if ((!mIsCreatingCard) &&(!mIsPlayingCard)) {
                     mIsTakeSnapshotAllNeeded = true;
                 }
 
@@ -541,7 +541,7 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnKeyboa
             @Override
             public void afterTextChanged(Editable s) {
                 mCurrentPack.sidebarTitle = mSidebarTitle.getText().toString();
-                if (!mIsCreatingCard) {
+                if ((!mIsCreatingCard) &&(!mIsPlayingCard)) {
                     mIsTakeSnapshotAllNeeded = true;
                 }
 
@@ -562,11 +562,8 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnKeyboa
 
             @Override
             public void afterTextChanged(Editable s) {
-                if (mQuestionRadioButton.isChecked()) {
+                if (mIsQuestionShowing) {
                     mCurrentCard.question.subheading = mSubheading.getText().toString();
-                    if (!mIsCreatingCard) {
-                        //mIsTakeSnapshotAllNeeded = true;
-                    }
                 } else {
                     mCurrentCard.answer.subheading = mSubheading.getText().toString();
                 }
@@ -586,11 +583,8 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnKeyboa
 
             @Override
             public void afterTextChanged(Editable s) {
-                if (mQuestionRadioButton.isChecked()) {
+                if (mIsQuestionShowing) {
                     mCurrentCard.question.main = mMain.getText().toString();
-                    if (!mIsCreatingCard) {
-                        //mIsTakeSnapshotAllNeeded = true;
-                    }
                 } else {
                     mCurrentCard.answer.main = mMain.getText().toString();
                 }
@@ -610,11 +604,8 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnKeyboa
 
             @Override
             public void afterTextChanged(Editable s) {
-                if (mQuestionRadioButton.isChecked()) {
+                if (mIsQuestionShowing) {
                     mCurrentCard.question.sub = mSub.getText().toString();
-                    if (!mIsCreatingCard) {
-                        //mIsTakeSnapshotAllNeeded = true;
-                    }
                 } else {
                     mCurrentCard.answer.sub = mSub.getText().toString();
                 }
@@ -637,7 +628,7 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnKeyboa
         mTitleBackground.setBackgroundResource(titleBGResourceID);
 
         if (!mIsPlayingCard) {
-            if (mQuestionRadioButton.isChecked()) {
+            if (mIsQuestionShowing) {
                 mTitle.setText(mCurrentPack.questionTitle);
             } else {
                 mTitle.setText(mCurrentPack.answerTitle);
@@ -1160,12 +1151,9 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnKeyboa
     public void updateCSS(int menuID, int subMenuID) {
         CSS currentCSS;
 
-        //Step1: question or answer view now
-        boolean isQuestionShowing = mQuestionRadioButton.isChecked();
-
         //Step2: determine operaton target
         int editTextTag = Integer.parseInt((String) mCurrentFocusedEditText.getTag());
-        if (isQuestionShowing) {
+        if (mIsQuestionShowing) {
             currentCSS = mCurrentCard.question.css;
         } else {
             currentCSS = mCurrentCard.answer.css;
@@ -1270,7 +1258,7 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnKeyboa
 
 
         if (!mIsCreatingCard) {
-            if (isQuestionShowing) {
+            if (mIsQuestionShowing) {
                 mCurrentCard.question.css.save(AppContext.getAppContext());
             } else {
                 mCurrentCard.answer.css.save(AppContext.getAppContext());
@@ -1393,7 +1381,7 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnKeyboa
         if (mIsTakeSnapshotAllNeeded) {
             takeSnapshotAll();
         } else {
-            if (mQuestionRadioButton.isChecked()) {
+            if (mIsQuestionShowing) {
                 takeSnapshotCurrentCard();
             }
         }

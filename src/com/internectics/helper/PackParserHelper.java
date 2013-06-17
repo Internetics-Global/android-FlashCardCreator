@@ -169,15 +169,15 @@ public class PackParserHelper {
 
             if (subheadingSize == 0) {
                 subheadingSize = standardCSSArrary[0];
-                Log.w(Global.debugTag,"subheadingSize = 0");
+                Log.w(Global.debugTag,"subheadingSize = 0 (from parseCardJsonFiles)");
             }
             if (mainSize == 0) {
                 mainSize = standardCSSArrary[1];
-                Log.w(Global.debugTag,"mainSize = 0");
+                Log.w(Global.debugTag,"mainSize = 0 (from parseCardJsonFiles)");
             }
             if (subSize == 0) {
                 subSize = standardCSSArrary[2];
-                Log.w(Global.debugTag,"subSize = 0");
+                Log.w(Global.debugTag,"subSize = 0 (from parseCardJsonFiles)");
             }
 
             if (currentPack.platform.equals(UIHelper.getCurrentPlatform())== false) {
@@ -193,6 +193,7 @@ public class PackParserHelper {
                 card.question.css.mainSize = mainSize;
                 card.question.css.subSize = subSize;
             }
+
 
         } catch (FileNotFoundException e) {
             e.printStackTrace();
