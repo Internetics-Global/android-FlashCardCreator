@@ -112,6 +112,12 @@ public class CardListFragment extends Fragment {
 
         mDSLVListView.setOverScrollMode(ListView.OVER_SCROLL_ALWAYS);
 
+        //Register broadcast
+        mReceiver = new MasterFragmentReceiver();
+        IntentFilter filter = new IntentFilter();
+        filter.addAction(Global.BROADCAST_ACTION_UPDATE_MASTER_VIEW);
+        getActivity().registerReceiver(mReceiver, filter);
+
 
         return mContentView;
     }
@@ -120,24 +126,16 @@ public class CardListFragment extends Fragment {
     public void onResume() {
         super.onResume();
 
-        //Step1: register broadcast
-        mReceiver = new MasterFragmentReceiver();
-        IntentFilter filter = new IntentFilter();
-        filter.addAction(Global.BROADCAST_ACTION_UPDATE_MASTER_VIEW);
-        getActivity().registerReceiver(mReceiver, filter);
-
-        //Step2: update cursor and refresh UI
+        //Step1: update cursor and refresh UI
         MatrixCursor cursor = rebuildCursor();
         adapter.changeCursor(cursor);
 
-        //Step3: Finally, send back currenPack to activity
+        //Step2: Finally, send back currenPack to activity
         ((MainActivity) getActivity()).mCurrentPack = mCurrentPack;
     }
 
-
     @Override
-    public void onPause() {
-        super.onPause();
+    public void onDestroy() {
         getActivity().unregisterReceiver(mReceiver);
     }
 

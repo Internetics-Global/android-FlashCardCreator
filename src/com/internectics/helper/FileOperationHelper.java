@@ -73,7 +73,7 @@ public class FileOperationHelper {
      * this method, the file path will be unique
      */
     public static File generateUniqueImageFilePath() {
-        String string = String.format("%s.jpg", UUID.randomUUID().toString());
+        String string = String.format("%s.png", UUID.randomUUID().toString());
         File tempFile = new File(imagesDirectory(), string);
         return tempFile;
     }
