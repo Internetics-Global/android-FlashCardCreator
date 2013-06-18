@@ -128,11 +128,11 @@ public class Card {
 
         //Step2: delete image resources
         if (!StringUtils.isNumeric(coverImageUriFormatStr)) {
-            File file = new File(this.coverImageUriFormatStr);
+            File file = new File(FileOperationHelper.deleteUriSchemeHeader(this.coverImageUriFormatStr));
             if (file.delete()) {
                 Log.d(Global.debugTag, "Successful to delete coverImageUriFormatStr file");
             } else {
-                Log.w(Global.debugTag, "Fail to delete coverImageUriFormatStr file");
+                Log.e(Global.debugTag, "Fail to delete coverImageUriFormatStr file");
             }
         }
 

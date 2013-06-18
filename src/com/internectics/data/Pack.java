@@ -129,7 +129,7 @@ public class Pack {
         SQLiteHelper.defaultDatabase(context).execSQL(query);
 
         if (!StringUtils.isNumeric(logoImageUriFormatStr)) {
-            File file = new File(this.logoImageUriFormatStr);
+            File file = new File(FileOperationHelper.deleteUriSchemeHeader(this.logoImageUriFormatStr));
             if (file.delete()) {
                 Log.d(Global.debugTag, "Successful to delete logoImageUriFormatStr file");
             } else {
@@ -138,7 +138,7 @@ public class Pack {
         }
 
         if (!StringUtils.isNumeric(coverImageUriFormatStr)) {
-            File file = new File(this.coverImageUriFormatStr);
+            File file = new File(FileOperationHelper.deleteUriSchemeHeader(this.coverImageUriFormatStr));
             if (file.delete()) {
                 Log.d(Global.debugTag, "Successful to delete coverImageUriFormatStr file in Pack");
             } else {

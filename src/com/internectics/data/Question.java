@@ -117,7 +117,7 @@ public class Question {
         SQLiteHelper.defaultDatabase(context).execSQL(query);
 
         if (!StringUtils.isNumeric(imageUriFormatStr)) {
-            File file = new File(this.imageUriFormatStr);
+            File file = new File(FileOperationHelper.deleteUriSchemeHeader(this.imageUriFormatStr));
             if (file.delete()) {
                 Log.d(Global.debugTag, "Successful to delete imageUriFormatStr file in Question");
             } else {

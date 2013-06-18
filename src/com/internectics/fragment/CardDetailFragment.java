@@ -772,7 +772,7 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnKeyboa
             mSemaphore = 0;
 
             //free resources
-            ((MainActivity) getActivity()).finishSnapShotAllExceptOne();
+            ((MainActivity) getActivity()).finishSnapShotAllExceptCurrent();
 
             Log.w(Global.debugTag, "Get done all cards' snapshot after reach mSemaphore");
         }

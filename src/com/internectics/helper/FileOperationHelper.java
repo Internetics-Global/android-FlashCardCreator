@@ -93,8 +93,10 @@ public class FileOperationHelper {
     }
 
     public static String deleteUriSchemeHeader(String str) {
-        if (str.contains("file://")) {
-            String returnStr = str.substring(7, str.length());
+
+        int index = str.indexOf("://");
+        if (index != -1) {
+            String returnStr = str.substring(index + 3);
             return returnStr;
         }
         return str;

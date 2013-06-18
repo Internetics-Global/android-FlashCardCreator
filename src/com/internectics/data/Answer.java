@@ -118,11 +118,11 @@ public class Answer {
         SQLiteHelper.defaultDatabase(context).execSQL(query);
 
         if (!StringUtils.isNumeric(imageUriFormatStr)) {
-            File file = new File(this.imageUriFormatStr);
+            File file = new File(FileOperationHelper.deleteUriSchemeHeader(this.imageUriFormatStr));
             if (file.delete()) {
                 Log.d(Global.debugTag, "Successful to delete imageUriFormatStr file in Answer");
             } else {
-                Log.w(Global.debugTag, "Fail to delete coverImageUriFormatStr file in Answer");
+                Log.e(Global.debugTag, "Fail to delete coverImageUriFormatStr file in Answer");
             }
         }
     }

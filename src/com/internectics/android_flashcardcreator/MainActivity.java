@@ -40,32 +40,25 @@ import java.util.ArrayList;
 public class MainActivity extends FragmentActivity implements
         CardListFragment.Callbacks {
 
-    //Used to diff whether is on card view and card creating
     private boolean mIsCreatingCard = false;
-    public boolean  mIsEdittingCard = false;
+    public  boolean mIsEdittingCard = false;
+    private boolean mIsGoingAuthorizationBeforeUpload = false;
+    private boolean mIsNecessaryToRestoreCSSToolbar = false;
+    private boolean mIsFromRestartApp = false;
 
     public Pack mCurrentPack = new Pack();//mCurrentPack will be automatically refreshed after creating a new card, add a new pack and new pack selected
-    public int  mCurrentCardIndex = 0;
+    public int mCurrentCardIndex = 0;
     public Card mCurrentCard = new Card();
 
-    private boolean mIsGoingAuthorizationBeforeUpload = false;
-
-    public PopupWindow mPopupWindow;
-
-    private CardDetailFragment mCardDetailFragment;
-
-    private CardDetailFragment mSnapshotCardDetailFragment;
-
-    private ArrayList<CardDetailFragment> mArrayCardDetailFragments;   //speical for snapshot(not include current card)
-
+    public  PopupWindow mPopupWindow;
     private View mCSSToolbar;
-
     private ProgressDialog mProgressDialog;
-
     private Button mMasterMaskButton;
     private Button mMasterMaskButtonForContentUpdating;
 
-    private boolean mIsNecessaryToRestoreCSSToolbar = false;
+    private ArrayList<CardDetailFragment> mArrayCardDetailFragments;   //speical for snapshot(not include current card)
+    private CardDetailFragment mCardDetailFragment;
+    private CardDetailFragment mSnapshotCardDetailFragment;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -83,7 +76,7 @@ public class MainActivity extends FragmentActivity implements
             Log.w(Global.debugTag, "OpenUDID_manager is not initialized");
         }
 
-        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,WindowManager.LayoutParams.FLAG_FULLSCREEN);
+        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
 
         setContentView(R.layout.activity_card_twopane);
 
@@ -101,6 +94,8 @@ public class MainActivity extends FragmentActivity implements
 
         mMasterMaskButton = (Button) findViewById(R.id.master_view_mask);
         mMasterMaskButtonForContentUpdating = (Button) findViewById(R.id.master_view_updating);
+
+        mIsFromRestartApp = true;
     }
 
     @Override
@@ -124,7 +119,6 @@ public class MainActivity extends FragmentActivity implements
     }
 
 
-
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
 
@@ -140,8 +134,7 @@ public class MainActivity extends FragmentActivity implements
 
                 if ((mCurrentPack != null) && (mCurrentPack.cards.size() > 0)) {
                     CardListFragment cardListFragment = (CardListFragment) (getSupportFragmentManager().findFragmentById(R.id.fragment_card_list));
-
-                    if (item.getTitle().equals("edit")) {
+                    if (item.getTitle().toString().toUpperCase().equals("EDIT")) {
                         item.setTitle("done");
                         cardListFragment.enterEditStyle(true);
                     } else {
@@ -172,15 +165,15 @@ public class MainActivity extends FragmentActivity implements
                             .setTitle(R.string.change_title)
                             .setSingleChoiceItems(new String[]{getResources().getString(R.string.change_blue),
                                     getResources().getString(R.string.change_coffee), getResources().getString(R.string.change_gray),
-                                    getResources().getString(R.string.change_purple),getResources().getString(R.string.change_red)}, defaultIndex,
+                                    getResources().getString(R.string.change_purple), getResources().getString(R.string.change_red)}, defaultIndex,
                                     new DialogInterface.OnClickListener() {
-                                @Override
-                                public void onClick(DialogInterface dialog, int which) {
-                                    dialog.dismiss();
-                                    setMaskButtonForContentUpdating();
-                                    mCardDetailFragment.cardColorTemplateSelectedPostAction(which);
-                                }
-                            })
+                                        @Override
+                                        public void onClick(DialogInterface dialog, int which) {
+                                            dialog.dismiss();
+                                            setMaskButtonForContentUpdating();
+                                            mCardDetailFragment.cardColorTemplateSelectedPostAction(which);
+                                        }
+                                    })
 
                             .show();
                 }
@@ -218,15 +211,9 @@ public class MainActivity extends FragmentActivity implements
                 startActivity(new Intent(MainActivity.this, InstructionActivity.class));
                 break;
 
-            case R.id.actionbar_test1:
-                test1();
-
-                break;
-
             default:
                 break;
         }
-
 
         return super.onOptionsItemSelected(item);
     }
@@ -246,7 +233,8 @@ public class MainActivity extends FragmentActivity implements
 
         boolean isReachable = Global.apiReachable(MainActivity.this);
 
-        if ((!isDownloaded) && (isReachable)) {
+        if ((!isDownloaded) && (isReachable) && (mIsFromRestartApp)) {
+            mIsFromRestartApp = false;
             String downloableShareLink = "http://dl.dropbox.com/s/1evrmjjypjisb0o/Pack1366592957-936257718.zip";
             File downloadedZipFile = new File(FileOperationHelper.downloadedPackDirectory(), "downloadedPackZip.zip");
             PackDownloadHelper packDownloadHelper = new PackDownloadHelper(MainActivity.this, downloableShareLink, downloadedZipFile.toString());
@@ -322,7 +310,7 @@ public class MainActivity extends FragmentActivity implements
      * @param pack, not 100% equal with mCurrentPack in MainActivity.java
      * @param card
      */
-    private void prepareSnapShotSelectedCard(Pack pack,Card card) {
+    private void prepareSnapShotSelectedCard(Pack pack, Card card) {
         mSnapshotCardDetailFragment = new CardDetailFragment(pack, card, 3);
         getSupportFragmentManager().beginTransaction()
                 .add(R.id.detail, mSnapshotCardDetailFragment).commitAllowingStateLoss();
@@ -335,7 +323,9 @@ public class MainActivity extends FragmentActivity implements
     }
 
 
-    /**This is called by CardDetailFragment which represent current showing card in detail
+    /**
+     * This is called by CardDetailFragment which represent current showing card in detail
+     *
      * @param pack,       snapshot all the cards in this pack
      * @param exceptCard, except this
      */
@@ -344,7 +334,7 @@ public class MainActivity extends FragmentActivity implements
         ArrayList<Card> cards = pack.cards;
         for (Card card : cards) {
             if (card.cardID != exceptCard.cardID) {
-                prepareSnapShotSelectedCard(pack,card);
+                prepareSnapShotSelectedCard(pack, card);
             }
         }
     }
@@ -352,7 +342,7 @@ public class MainActivity extends FragmentActivity implements
     /**
      * This is called by CardDetailFragment which represent current showing card in detail
      */
-    public void finishSnapShotAllExceptOne() {
+    public void finishSnapShotAllExceptCurrent() {
 
         if (mArrayCardDetailFragments == null)
             return;
@@ -438,8 +428,6 @@ public class MainActivity extends FragmentActivity implements
         //case2: check owner
         if (!currentPack.creatorID.equals(OpenUDID_manager.getOpenUDID())) {
             Toast.makeText(this, "You cannot create a card in pack you haven't created yourself.", 1).show();
-
-
             return false;
 
         }
@@ -449,7 +437,7 @@ public class MainActivity extends FragmentActivity implements
 
 
     @Override
- protected Dialog onCreateDialog(int id) {
+    protected Dialog onCreateDialog(int id) {
         super.onCreateDialog(id);
         switch (id) {
             case 0:
@@ -463,7 +451,7 @@ public class MainActivity extends FragmentActivity implements
                 //nothing
         }
         return mProgressDialog;
-     }
+    }
 
     private void onActionbarShareSelected() {
         if (mCurrentPack == null) {
@@ -497,24 +485,24 @@ public class MainActivity extends FragmentActivity implements
 
     private void initializeCSSToolbar() {
 
-        if (mCSSToolbar!=null) {
+        if (mCSSToolbar != null) {
             return;
         }
 
         //get actionbar height ( we can not directly use getActionbar.getHeight)
         TypedValue tv = new TypedValue();
         int actionbarHeight = 0;
-        if (getTheme().resolveAttribute(android.R.attr.actionBarSize,tv,true)) {
-            actionbarHeight = TypedValue.complexToDimensionPixelSize(tv.data,getResources().getDisplayMetrics());
-            Log.d(Global.debugTag,"actionbar height is:" + actionbarHeight);
+        if (getTheme().resolveAttribute(android.R.attr.actionBarSize, tv, true)) {
+            actionbarHeight = TypedValue.complexToDimensionPixelSize(tv.data, getResources().getDisplayMetrics());
+            Log.d(Global.debugTag, "actionbar height is:" + actionbarHeight);
         }
 
         WindowManager.LayoutParams params = new WindowManager.LayoutParams(
                 WindowManager.LayoutParams.MATCH_PARENT, actionbarHeight,
                 WindowManager.LayoutParams.TYPE_SYSTEM_ALERT,
-                WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE|WindowManager.LayoutParams.FLAG_NOT_TOUCH_MODAL|WindowManager.LayoutParams.FLAG_WATCH_OUTSIDE_TOUCH,
+                WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE | WindowManager.LayoutParams.FLAG_NOT_TOUCH_MODAL | WindowManager.LayoutParams.FLAG_WATCH_OUTSIDE_TOUCH,
                 PixelFormat.TRANSLUCENT);
-        params.gravity = Gravity.LEFT|Gravity.TOP;
+        params.gravity = Gravity.LEFT | Gravity.TOP;
         WindowManager wm = (WindowManager) getSystemService(WINDOW_SERVICE);
         LayoutInflater inflater = (LayoutInflater) getSystemService(LAYOUT_INFLATER_SERVICE);
         mCSSToolbar = inflater.inflate(R.layout.css_toolbar, null);
@@ -574,7 +562,7 @@ public class MainActivity extends FragmentActivity implements
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 if (position > 0) //this is necessary, since default will be automatically executed
-                    mCardDetailFragment.updateCSS(0, position-1);
+                    mCardDetailFragment.updateCSS(0, position - 1);
             }
 
             @Override
@@ -586,7 +574,7 @@ public class MainActivity extends FragmentActivity implements
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 if (position > 0)
-                    mCardDetailFragment.updateCSS(1, position-1);
+                    mCardDetailFragment.updateCSS(1, position - 1);
             }
 
             @Override
@@ -598,7 +586,7 @@ public class MainActivity extends FragmentActivity implements
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 if (position > 0)
-                    mCardDetailFragment.updateCSS(2, position-1);
+                    mCardDetailFragment.updateCSS(2, position - 1);
             }
 
             @Override
@@ -610,13 +598,13 @@ public class MainActivity extends FragmentActivity implements
     public void prepareCSSToolbar() {
         if ((mCSSToolbar == null) || (mCSSToolbar.getParent() == null)) {
             initializeCSSToolbar();
-            Log.d(Global.debugTag,"initializeCSSToolbar is called");
+            Log.d(Global.debugTag, "initializeCSSToolbar is called");
         }
     }
 
 
     public void showCSSToolbar() {
-        if ((mCSSToolbar != null)&&(mCSSToolbar.getParent()!=null)) {
+        if ((mCSSToolbar != null) && (mCSSToolbar.getParent() != null)) {
             mCSSToolbar.setVisibility(View.VISIBLE);
 
             //Rest spinner title when touch another textfield
@@ -628,21 +616,21 @@ public class MainActivity extends FragmentActivity implements
             spinnerColor.setSelection(0);
             spinnerSize.setSelection(0);
 
-            Log.d(Global.debugTag,"prepareCSSToolbar is called");
+            Log.d(Global.debugTag, "prepareCSSToolbar is called");
         }
     }
 
     public void removeCSSToolbar() {
         if (mCSSToolbar == null) {
-            Log.w(Global.debugTag,"rmCSSToolbar is null when executing removeCSSToolbar");
+            Log.w(Global.debugTag, "rmCSSToolbar is null when executing removeCSSToolbar");
             return;
         } else {
             WindowManager wm = (WindowManager) getSystemService(WINDOW_SERVICE);
-            if (mCSSToolbar.getParent()!=null) {
+            if (mCSSToolbar.getParent() != null) {
                 mCSSToolbar.setVisibility(View.GONE);
                 wm.removeView(mCSSToolbar);
                 mCSSToolbar = null;
-                Log.d(Global.debugTag,"removeCSSToolbar is called");
+                Log.d(Global.debugTag, "removeCSSToolbar is called");
             }
 
         }
@@ -654,24 +642,5 @@ public class MainActivity extends FragmentActivity implements
 
     public void clearMaskButtonForContentUpdating() {
         mMasterMaskButtonForContentUpdating.setVisibility(View.INVISIBLE);
-    }
-
-
-
-    private void test1() {
-
-        DisplayMetrics metric = new DisplayMetrics();
-        getWindowManager().getDefaultDisplay().getMetrics(metric);
-        int width = metric.widthPixels;  // 屏幕宽度（像素）
-        int height = metric.heightPixels;  // 屏幕高度（像素）
-        float density = metric.density;  // 屏幕密度（0.75 / 1.0 / 1.5）
-        int densityDpi = metric.densityDpi;  // 屏幕密度DPI（120 / 160 / 240）
-
-        Log.d(Global.debugTag, "Width = " + width);
-        Log.d(Global.debugTag, "Height = " + height);
-
-        Log.d(Global.debugTag, "density = " + density);
-        Log.d(Global.debugTag, "densityDpi = " + densityDpi);
-
     }
 }
