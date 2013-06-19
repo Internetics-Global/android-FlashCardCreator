@@ -27,6 +27,21 @@
                 android:text="1"
                 android:rotation="-90"
                 android:gravity="center" />
+
+        <TextView
+                android:id="@+id/card_sn"
+                android:layout_gravity="center|top"
+                android:layout_marginTop="@dimen/cardsn_top_margin"
+                android:layout_height="@dimen/cardsn_size"
+                android:layout_width="@dimen/cardsn_size"
+                android:text="1"
+                android:gravity="center"
+                android:background="@drawable/cardsn_bg"
+                android:textColor="@android:color/black"
+                android:textSize="@dimen/cardsn_text_size"
+                />
+
+
     </FrameLayout>
 
     <FrameLayout

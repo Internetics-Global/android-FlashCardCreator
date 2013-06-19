@@ -39,6 +39,7 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnKeyboa
     private LinearLayout mContentBodyLeft;
     private FCCEditText mSidebarTitle;
     private FrameLayout mSidebarBackground;
+    private TextView    mCardSN;
     private FCCEditText mTitle;
     private LinearLayout mTitleBackground;
     private FCCEditText mCreator;
@@ -416,6 +417,8 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnKeyboa
     private void getAllViews() {
         mSidebarTitle = (FCCEditText) mContentView.findViewById(R.id.sidebar_title);
         mSidebarBackground = (FrameLayout) mContentView.findViewById(R.id.sidebar_background_linearlayout);
+        mCardSN = (TextView) mContentView.findViewById(R.id.card_sn);
+
         mTitle = (FCCEditText) mContentView.findViewById(R.id.title);
         mTitleBackground = (LinearLayout) mContentView.findViewById(R.id.title_background_linearlayout);
         mCreator = (FCCEditText) mContentView.findViewById(R.id.creator);
@@ -618,6 +621,7 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnKeyboa
 
     private void updateCommonContent() {
         mSidebarTitle.setText(mCurrentPack.sidebarTitle);
+        mCardSN.setText(String.format("%d",mCurrentCard.cardSN));
 
         mLogoImage.setImageURI(Uri.parse(mCurrentPack.logoImageUriFormatStr));
         mCreator.setText(mCurrentPack.creatorNickName);
