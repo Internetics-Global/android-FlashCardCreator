@@ -404,7 +404,7 @@ public class MainActivity extends FragmentActivity implements
 
     private void dismissCardCreateWindow() {
         FrameLayout addCardLayout = (FrameLayout) findViewById(R.id.add_card_frame_layout);
-        addCardLayout.setVisibility(View.INVISIBLE);
+        addCardLayout.setVisibility(View.GONE);
 
         Button masterMaskButton = (Button) findViewById(R.id.master_view_mask);
         masterMaskButton.setVisibility(View.INVISIBLE);

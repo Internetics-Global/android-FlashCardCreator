@@ -37,11 +37,6 @@
                 android:configChanges="orientation"
                 android:screenOrientation="sensorLandscape">
             <intent-filter>
-                <action android:name="android.intent.action.MAIN"/>
-
-                <category android:name="android.intent.category.LAUNCHER"/>
-            </intent-filter>
-            <intent-filter>
                 <data
                         android:scheme="fcc"/>
 
@@ -76,6 +71,12 @@
         <activity android:name=".MoreActivity"/>
         <activity android:name=".WebViewActivity"/>
         <activity android:name=".AboutActivity"/>
+        <activity android:name=".AppStart" android:theme="@android:style/Theme.NoTitleBar.Fullscreen" android:screenOrientation="landscape">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN"/>
+                <category android:name="android.intent.category.LAUNCHER"/>
+            </intent-filter>
+        </activity>
 
 
         <service android:name="org.openudid.OpenUDID_service">
