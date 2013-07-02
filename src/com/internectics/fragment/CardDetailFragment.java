@@ -23,6 +23,7 @@ import com.internectics.data.CSS;
 import com.internectics.data.Card;
 import com.internectics.data.Pack;
 import com.internectics.helper.FileOperationHelper;
+import com.internectics.helper.SymbolHelper;
 import com.internectics.util.*;
 import net.londatiga.android.ActionItem;
 import net.londatiga.android.QuickAction;
@@ -1419,6 +1420,12 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnKeyboa
 
     public void onGridViewItemClicked(int index) {
         Log.d(Global.debugTag,"index of symobol/emotion is:" + index);
+        int start = mCurrentFocusedEditText.getSelectionStart();
+
+        String beforeString = mCurrentFocusedEditText.getText().toString().substring(0,start);
+        String afterString = mCurrentFocusedEditText.getText().toString().substring(start);
+
+        mCurrentFocusedEditText.setText(beforeString + SymbolHelper.mUnicodeArray[index] + afterString);
 
     }
 }
