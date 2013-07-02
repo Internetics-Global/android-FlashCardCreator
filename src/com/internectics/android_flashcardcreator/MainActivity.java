@@ -10,6 +10,7 @@ import android.content.Intent;
 import android.graphics.PixelFormat;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.util.Log;
 import android.util.TypedValue;
@@ -26,6 +27,7 @@ import com.internectics.data.Pack;
 import com.internectics.fragment.AddPackFragment;
 import com.internectics.fragment.CardDetailFragment;
 import com.internectics.fragment.CardListFragment;
+import com.internectics.fragment.SymbolBoxFragment;
 import com.internectics.helper.*;
 import com.internectics.util.*;
 
@@ -57,10 +59,10 @@ public class MainActivity extends FragmentActivity implements
     private Button mMasterMaskButtonForContentUpdating;
 
     private ArrayList<CardDetailFragment> mArrayCardDetailFragments;   //speical for snapshot(not include current card)
-    private CardDetailFragment mCardDetailFragment;
+    public CardDetailFragment mCardDetailFragment;
     private CardDetailFragment mSnapshotCardDetailFragment;
 
-    public LinearLayout mSymbolBox;
+    public SymbolBoxFragment mSymbolBoxFragment;
 
     private boolean mIsKeyboardVisible; //we can NOT judge by imm.isActive
 
@@ -99,7 +101,7 @@ public class MainActivity extends FragmentActivity implements
         mMasterMaskButton = (Button) findViewById(R.id.master_view_mask);
         mMasterMaskButtonForContentUpdating = (Button) findViewById(R.id.master_view_updating);
 
-        //mSymbolBox = (LinearLayout) findViewById(R.id.fragment_symbol_box);
+        mSymbolBoxFragment = (SymbolBoxFragment) getSupportFragmentManager().findFragmentById(R.id.fragment_symbol_box);
 
         mIsFromRestartApp = true;
     }
@@ -570,10 +572,10 @@ public class MainActivity extends FragmentActivity implements
                 InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
                 imm.toggleSoftInput(InputMethodManager.SHOW_IMPLICIT, InputMethodManager.HIDE_NOT_ALWAYS);
                 if (mIsKeyboardVisible) {
-                    mSymbolBox.setVisibility(View.VISIBLE);
+                    mSymbolBoxFragment.showSymbolBox();
                     mIsKeyboardVisible = false;
                 } else {
-                    mSymbolBox.setVisibility(View.INVISIBLE);
+                    mSymbolBoxFragment.hideSymbolBox();
                     mIsKeyboardVisible = true;
                 }
 

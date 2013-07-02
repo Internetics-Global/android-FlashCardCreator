@@ -41,8 +41,17 @@ public class SymbolBoxFragment extends Fragment {
         mPager = (ViewPager) mContentView.findViewById(R.id.symbol_pager);
         mPageAdapter = new SymbolPageAdapter(getFragmentManager(), getGridViewFragments());
         mPager.setAdapter(mPageAdapter);
-
+        hideSymbolBox();
         return mContentView;
+    }
+
+
+    public void hideSymbolBox() {
+        mContentView.setVisibility(View.INVISIBLE);
+    }
+
+    public void showSymbolBox() {
+        mContentView.setVisibility(View.VISIBLE);
     }
 
 
@@ -75,7 +84,7 @@ public class SymbolBoxFragment extends Fragment {
 
         @Override
         public int getCount() {
-            return this.mSymbolGridViewFragments.size();
+            return 1;
         }
     }
 

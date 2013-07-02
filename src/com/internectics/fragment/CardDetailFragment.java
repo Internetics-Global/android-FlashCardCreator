@@ -1416,6 +1416,11 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnKeyboa
 
         ((MainActivity) getActivity()).removeCSSToolbar();
     }
+
+    public void onGridViewItemClicked(int index) {
+        Log.d(Global.debugTag,"index of symobol/emotion is:" + index);
+
+    }
 }
 
 

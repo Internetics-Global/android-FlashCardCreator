@@ -3,12 +3,15 @@ package com.internectics.fragment;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.*;
+import com.internectics.android_flashcardcreator.MainActivity;
 import com.internectics.android_flashcardcreator.R;
 import com.internectics.helper.SymbolHelper;
+import com.internectics.util.Global;
 
 /**
  * Created with IntelliJ IDEA.
@@ -34,8 +37,7 @@ public class SymbolGridViewFragment extends Fragment {
 
         mGridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             public void onItemClick(AdapterView<?> parent, View v, int position, long id) {
-
-
+                ((MainActivity) getActivity()).mCardDetailFragment.onGridViewItemClicked(position);
             }
         });
 
@@ -78,4 +80,5 @@ public class SymbolGridViewFragment extends Fragment {
             return convertView;
         }
     }
+
 }
