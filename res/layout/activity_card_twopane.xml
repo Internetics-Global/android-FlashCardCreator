@@ -103,17 +103,15 @@
 
     </LinearLayout>
 
-
-    <LinearLayout
+    <fragment
             android:id="@+id/fragment_symbol_box"
+            android:name="com.internectics.fragment.SymbolBoxFragment"
             android:background="#d5d7d9"
-            android:visibility="invisible"
+            android:visibility="gone"
             android:layout_gravity="bottom"
             android:layout_marginBottom="0dp"
-            android:orientation="horizontal"
             android:layout_width="match_parent"
-            android:layout_height="216dp">
-    </LinearLayout>
+            android:layout_height="216dp"/>
 
 
 

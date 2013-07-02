@@ -99,7 +99,7 @@ public class MainActivity extends FragmentActivity implements
         mMasterMaskButton = (Button) findViewById(R.id.master_view_mask);
         mMasterMaskButtonForContentUpdating = (Button) findViewById(R.id.master_view_updating);
 
-        mSymbolBox = (LinearLayout) findViewById(R.id.fragment_symbol_box);
+        //mSymbolBox = (LinearLayout) findViewById(R.id.fragment_symbol_box);
 
         mIsFromRestartApp = true;
     }
