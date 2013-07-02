@@ -93,7 +93,7 @@ public class StringUtils {
 
         try {
             tempStr = (URLDecoder.decode(str.replaceAll("%", "<percentage>"), "UTF-8"));
-            returnStr = tempStr.replaceAll("<percentage>","%");
+            returnStr = tempStr.replaceAll("<percentage>", "%");
         } catch (UnsupportedEncodingException e) {
             e.printStackTrace();
         }
@@ -105,29 +105,25 @@ public class StringUtils {
      * In order to be compatibile with iOS version
      */
     public static int[] convertTemplateBackgroundStringToResourceID(String templateBackground) {
-        int[] resourceID = {0,0,0};
+        int[] resourceID = {0, 0, 0};
 
         if (templateBackground.equals("card_background_blue.png")) {
             resourceID[0] = 0;
             resourceID[1] = R.drawable.shape_card_blue_left_corner;
             resourceID[2] = R.drawable.card_title_bg_blue;
-        }
-        else if  (templateBackground.equals("card_background_coffee.png")) {
+        } else if (templateBackground.equals("card_background_coffee.png")) {
             resourceID[0] = 1;
             resourceID[1] = R.drawable.shape_card_coffee_left_corner;
             resourceID[2] = R.drawable.card_title_bg_coffee;
-        }
-        else if (templateBackground.equals("card_background_gray.png")) {
+        } else if (templateBackground.equals("card_background_gray.png")) {
             resourceID[0] = 2;
             resourceID[1] = R.drawable.shape_card_gray_left_corner;
             resourceID[2] = R.drawable.card_title_bg_gray;
-        }
-        else if (templateBackground.equals("card_background_purple.png")) {
+        } else if (templateBackground.equals("card_background_purple.png")) {
             resourceID[0] = 3;
             resourceID[1] = R.drawable.shape_card_purple_left_corner;
             resourceID[2] = R.drawable.card_title_bg_purple;
-        }
-        else if (templateBackground.equals("card_background_red.png")) {
+        } else if (templateBackground.equals("card_background_red.png")) {
             resourceID[0] = 4;
             resourceID[1] = R.drawable.shape_card_red_left_corner;
             resourceID[2] = R.drawable.card_title_bg_red;
@@ -146,7 +142,7 @@ public class StringUtils {
 
         if (index == 0)
             result = "card_background_blue.png";
-        else if  (index == 1) {
+        else if (index == 1) {
             result = "card_background_coffee.png";
         } else if (index == 2) {
             result = "card_background_gray.png";
@@ -230,7 +226,6 @@ public class StringUtils {
             return "Black";
         }
     }
-
 
 
 }

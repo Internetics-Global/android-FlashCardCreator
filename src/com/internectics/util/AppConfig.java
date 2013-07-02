@@ -1,6 +1,7 @@
 package com.internectics.util;
 
 import android.content.Context;
+
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
@@ -98,7 +99,6 @@ public class AppConfig {
     }
 
 
-
     public boolean isRandomPlay() {
         String str = appConfig.get(Global.isRandomPlay);
         if ((str != null) && (str.equals("true")))
@@ -115,8 +115,6 @@ public class AppConfig {
         }
 
     }
-
-
 
 
 }

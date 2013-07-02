@@ -75,6 +75,7 @@ public class Global {
 
     /**
      * Strictly, it could be repeated
+     *
      * @return
      */
     public static int generateNoRepeatInt() {

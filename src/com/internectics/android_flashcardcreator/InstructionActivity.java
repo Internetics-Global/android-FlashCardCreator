@@ -18,7 +18,7 @@ public class InstructionActivity extends Activity {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,WindowManager.LayoutParams.FLAG_FULLSCREEN);
+        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
 
         setTitle("Help");
         setContentView(R.layout.instruction);
@@ -61,7 +61,7 @@ public class InstructionActivity extends Activity {
                 convertView = mInflater.inflate(R.layout.instruction_image_item, null);
             }
             ((ImageView) convertView.findViewById(R.id.imgView)).setImageResource(ids[position]);
-            ((TextView)convertView.findViewById(R.id.txtView)).setText((getResources().getStringArray(R.array.help_instruction))[position]);
+            ((TextView) convertView.findViewById(R.id.txtView)).setText((getResources().getStringArray(R.array.help_instruction))[position]);
             return convertView;
         }
 

@@ -21,7 +21,7 @@ public class MoreActivity extends PreferenceActivity {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,WindowManager.LayoutParams.FLAG_FULLSCREEN);
+        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
 
         addPreferencesFromResource(R.xml.more);
 
@@ -83,7 +83,7 @@ public class MoreActivity extends PreferenceActivity {
             @Override
             public boolean onPreferenceClick(Preference preference) {
                 Intent intent = new Intent(MoreActivity.this, WebViewActivity.class);
-                intent.putExtra("url","http://www.flipflashcards.com.au");
+                intent.putExtra("url", "http://www.flipflashcards.com.au");
                 startActivity(intent);
                 return false;
             }

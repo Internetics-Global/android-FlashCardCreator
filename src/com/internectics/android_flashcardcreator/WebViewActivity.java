@@ -1,4 +1,5 @@
 package com.internectics.android_flashcardcreator;
+
 import android.app.Activity;
 import android.os.Bundle;
 import android.view.Window;
@@ -18,7 +19,7 @@ public class WebViewActivity extends Activity {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         requestWindowFeature(Window.FEATURE_PROGRESS);
-        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,WindowManager.LayoutParams.FLAG_FULLSCREEN);
+        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
 
         mWebview = new WebView(this);
         setContentView(mWebview);
@@ -27,7 +28,7 @@ public class WebViewActivity extends Activity {
             @Override
             public void onProgressChanged(WebView view, int newProgress) {
                 super.onProgressChanged(view, newProgress);
-                setProgress(newProgress *1000);
+                setProgress(newProgress * 1000);
             }
         });
 

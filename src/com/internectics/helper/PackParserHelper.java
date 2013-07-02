@@ -37,7 +37,7 @@ public class PackParserHelper {
             if (!cardDirectory.exists()) {
                 break;
             }
-            Card resultCard = parseCardJsonFiles(cardDirectory,resultPack);
+            Card resultCard = parseCardJsonFiles(cardDirectory, resultPack);
 
 
             newFile = FileOperationHelper.copyImageToImagesFolder(getCardImageFullPath(resultCard.coverImageUriFormatStr, i));
@@ -88,7 +88,7 @@ public class PackParserHelper {
      * All the log images are same under same package, so we only need to take one
      */
     private static File getLogoImageFullPath(String uriFormatStr) {
-        return getCardImageFullPath(uriFormatStr,0);
+        return getCardImageFullPath(uriFormatStr, 0);
     }
 
 
@@ -162,32 +162,32 @@ public class PackParserHelper {
             card.question.css.subAlign = (String) questionObj.get("sub_align");
             card.question.css.subColor = (String) questionObj.get("sub_color");
 
-            int subheadingSize =  Integer.parseInt((String) questionObj.get("subheading_size"));
-            int mainSize =  Integer.parseInt((String) questionObj.get("main_size"));
+            int subheadingSize = Integer.parseInt((String) questionObj.get("subheading_size"));
+            int mainSize = Integer.parseInt((String) questionObj.get("main_size"));
             int subSize = card.answer.css.subSize = Integer.parseInt((String) questionObj.get("sub_size"));
             int[] standardCSSArrary = AppContext.getAppContext().getResources().getIntArray(R.array.css_size_int);
 
             if (subheadingSize == 0) {
                 subheadingSize = standardCSSArrary[0];
-                Log.w(Global.debugTag,"subheadingSize = 0 (from parseCardJsonFiles)");
+                Log.w(Global.debugTag, "subheadingSize = 0 (from parseCardJsonFiles)");
             }
             if (mainSize == 0) {
                 mainSize = standardCSSArrary[1];
-                Log.w(Global.debugTag,"mainSize = 0 (from parseCardJsonFiles)");
+                Log.w(Global.debugTag, "mainSize = 0 (from parseCardJsonFiles)");
             }
             if (subSize == 0) {
                 subSize = standardCSSArrary[2];
-                Log.w(Global.debugTag,"subSize = 0 (from parseCardJsonFiles)");
+                Log.w(Global.debugTag, "subSize = 0 (from parseCardJsonFiles)");
             }
 
-            if (currentPack.platform.equals(UIHelper.getCurrentPlatform())== false) {
+            if (currentPack.platform.equals(UIHelper.getCurrentPlatform()) == false) {
 
                 float average = (subheadingSize + mainSize + subSize) / 3;
-                float factor = (standardCSSArrary[0]+standardCSSArrary[1]+standardCSSArrary[2])/3/average;
+                float factor = (standardCSSArrary[0] + standardCSSArrary[1] + standardCSSArrary[2]) / 3 / average;
 
-                card.question.css.subheadingSize = (int)(factor*subheadingSize);
-                card.question.css.mainSize = (int)(factor*mainSize);
-                card.question.css.subSize = (int)(factor*subSize);
+                card.question.css.subheadingSize = (int) (factor * subheadingSize);
+                card.question.css.mainSize = (int) (factor * mainSize);
+                card.question.css.subSize = (int) (factor * subSize);
             } else {
                 card.question.css.subheadingSize = subheadingSize;
                 card.question.css.mainSize = mainSize;
@@ -208,7 +208,7 @@ public class PackParserHelper {
             FileReader fileReader = new FileReader(answerJsonFile);
             JSONObject answerObj = (JSONObject) parser.parse(fileReader);
 
-            currentPack.answerTitle= (String) answerObj.get("title");
+            currentPack.answerTitle = (String) answerObj.get("title");
 
             card.answer.templateID = Integer.parseInt((String) answerObj.get("template_id"));
             card.answer.imageUriFormatStr = (String) answerObj.get("image");
@@ -223,33 +223,33 @@ public class PackParserHelper {
             card.answer.css.subAlign = (String) answerObj.get("sub_align");
             card.answer.css.subColor = (String) answerObj.get("sub_color");
 
-            int subheadingSize =  Integer.parseInt((String) answerObj.get("subheading_size"));
-            int mainSize =  Integer.parseInt((String) answerObj.get("main_size"));
+            int subheadingSize = Integer.parseInt((String) answerObj.get("subheading_size"));
+            int mainSize = Integer.parseInt((String) answerObj.get("main_size"));
             int subSize = card.answer.css.subSize = Integer.parseInt((String) answerObj.get("sub_size"));
             int[] standardCSSArrary = AppContext.getAppContext().getResources().getIntArray(R.array.css_size_int);
 
             if (subheadingSize == 0) {
                 subheadingSize = standardCSSArrary[3];
-                Log.w(Global.debugTag,"subheadingSize = 0");
+                Log.w(Global.debugTag, "subheadingSize = 0");
             }
             if (mainSize == 0) {
                 mainSize = standardCSSArrary[4];
-                Log.w(Global.debugTag,"mainSize = 0");
+                Log.w(Global.debugTag, "mainSize = 0");
             }
             if (subSize == 0) {
                 subSize = standardCSSArrary[5];
-                Log.w(Global.debugTag,"subSize = 0");
+                Log.w(Global.debugTag, "subSize = 0");
             }
 
-            if (currentPack.platform.equals(UIHelper.getCurrentPlatform())== false) {
+            if (currentPack.platform.equals(UIHelper.getCurrentPlatform()) == false) {
                 //size interchangeable with iOS, and other android devices
 
                 float average = (subheadingSize + mainSize + subSize) / 3;
-                float factor = (standardCSSArrary[3]+standardCSSArrary[4]+standardCSSArrary[5])/3/average;
+                float factor = (standardCSSArrary[3] + standardCSSArrary[4] + standardCSSArrary[5]) / 3 / average;
 
-                card.answer.css.subheadingSize = (int)(factor*subheadingSize);
-                card.answer.css.mainSize = (int)(factor*mainSize);
-                card.answer.css.subSize = (int)(factor*subSize);
+                card.answer.css.subheadingSize = (int) (factor * subheadingSize);
+                card.answer.css.mainSize = (int) (factor * mainSize);
+                card.answer.css.subSize = (int) (factor * subSize);
             } else {
                 card.answer.css.subheadingSize = subheadingSize;
                 card.answer.css.mainSize = mainSize;

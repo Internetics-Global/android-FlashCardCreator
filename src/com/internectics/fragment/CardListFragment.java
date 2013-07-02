@@ -247,7 +247,6 @@ public class CardListFragment extends Fragment {
             }
 
 
-
             return v;
         }
 
@@ -374,7 +373,7 @@ public class CardListFragment extends Fragment {
             mCallbacks.onItemSelected(-1);
         }
 
-        ((MainActivity)getActivity()).clearMaskButtonForContentUpdating();
+        ((MainActivity) getActivity()).clearMaskButtonForContentUpdating();
     }
 
 }

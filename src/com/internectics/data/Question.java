@@ -96,7 +96,7 @@ public class Question {
         String decodedSub = StringUtils.stringDecodeForSQlite(sub);
 
         String query = String.format("UPDATE Question_Tables SET question_id=%d, subheading=?, main=?, sub=?, image=\"%s\",css_id=%d, template_id=%d WHERE card_id=%d", questionID, imageUriFormatStr, cssID, templateID, cardID);
-        SQLiteHelper.defaultDatabase(context).execSQL(query,new Object[] {decodedSubheading,decodedMain,decodedSub});
+        SQLiteHelper.defaultDatabase(context).execSQL(query, new Object[]{decodedSubheading, decodedMain, decodedSub});
     }
 
     private void insert(Context context) {
@@ -109,7 +109,7 @@ public class Question {
         String decodedSub = StringUtils.stringDecodeForSQlite(sub);
 
         String query = String.format("INSERT INTO Question_Tables(question_id, card_id, subheading, main, sub, image, css_id, template_id) VALUES (%d,%d, ?, ?, ?, \"%s\", %d, %d)", questionID, cardID, imageUriFormatStr, cssID, templateID);
-        SQLiteHelper.defaultDatabase(context).execSQL(query,new Object[] {decodedSubheading,decodedMain,decodedSub});
+        SQLiteHelper.defaultDatabase(context).execSQL(query, new Object[]{decodedSubheading, decodedMain, decodedSub});
     }
 
     public void destroy(Context context) {

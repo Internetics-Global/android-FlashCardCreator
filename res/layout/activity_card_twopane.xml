@@ -1,111 +1,120 @@
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-              xmlns:tools="http://schemas.android.com/tools"
-              android:layout_width="match_parent"
-              android:layout_height="match_parent"
-              android:baselineAligned="false"
-              android:divider="?android:attr/dividerHorizontal"
-              android:orientation="horizontal"
-              android:showDividers="middle"
-              tools:context=".MainActivity">
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+             xmlns:tools="http://schemas.android.com/tools"
+             android:layout_width="match_parent"
+             android:layout_height="match_parent"
+        >
 
-    <!--
-    This layout is a two-pane layout for the Cards
-    master/detail flow. See res/values-large/refs.xml and
-    res/values-sw600dp/refs.xml for an example of layout aliases
-    that replace the single-pane version of the layout with
-    this two-pane version.
-
-    For more on layout aliases, see:
-    http://developer.android.com/training/multiscreen/screensizes.html#TaskUseAliasFilters
-    -->
-
-    <FrameLayout
-            android:id="@+id/card_list"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:background="@android:color/black">
-
-        <fragment
-                android:id="@+id/fragment_card_list"
-                android:name="com.internectics.fragment.CardListFragment"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                tools:layout="@android:layout/list_content"/>
+    <LinearLayout android:layout_width="match_parent"
+                  android:layout_height="match_parent"
+                  android:baselineAligned="false"
+                  android:divider="?android:attr/dividerHorizontal"
+                  android:orientation="horizontal"
+                  android:showDividers="none"
+                  tools:context=".MainActivity">
 
         <FrameLayout
-                android:layout_width="match_parent"
-                android:layout_height="60dp"
-                android:layout_gravity="bottom">
+                android:id="@+id/card_list"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:background="@android:color/black">
+
+            <fragment
+                    android:id="@+id/fragment_card_list"
+                    android:name="com.internectics.fragment.CardListFragment"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    tools:layout="@android:layout/list_content"/>
+
+            <FrameLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="60dp"
+                    android:layout_gravity="bottom">
+
+                <Button
+                        android:enabled="false"
+                        android:layout_height="match_parent"
+                        android:layout_width="match_parent"
+                        android:background="@drawable/image_add_card_button_bg">
+
+                </Button>
+
+                <Button
+                        android:id="@+id/add_card_button"
+                        android:layout_width="60dp"
+                        android:layout_height="60dp"
+                        android:layout_gravity="center"
+                        android:background="@drawable/selector_add_card"/>
+
+            </FrameLayout>
 
             <Button
-                    android:enabled="false"
-                    android:layout_height="match_parent"
+                    android:id="@+id/master_view_mask"
                     android:layout_width="match_parent"
-                    android:background="@drawable/image_add_card_button_bg">
-
+                    android:layout_height="match_parent"
+                    android:background="#E0000000"
+                    android:visibility="invisible">
             </Button>
 
             <Button
-                    android:id="@+id/add_card_button"
-                    android:layout_width="60dp"
+                    android:id="@+id/master_view_updating"
+                    android:layout_width="114dp"
                     android:layout_height="60dp"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginRight="10dp"
+                    android:gravity="center"
                     android:layout_gravity="center"
-                    android:background="@drawable/selector_add_card"/>
-
-        </FrameLayout>
-
-        <Button
-                android:id="@+id/master_view_mask"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:background="#E0000000"
-                android:visibility="invisible">
-        </Button>
-
-        <Button
-                android:id="@+id/master_view_updating"
-                android:layout_width="114dp"
-                android:layout_height="60dp"
-                android:layout_marginLeft="10dp"
-                android:layout_marginRight="10dp"
-                android:gravity="center"
-                android:layout_gravity="center"
-                android:enabled="false"
-                android:text="Appling all cards..."
-                android:textStyle="bold"
-                android:textColor="#FFFFFF"
-                android:textSize="12sp"
-                android:background="@drawable/button_updating_background"
-                android:visibility="invisible">
-        </Button>
-
-    </FrameLayout>
-
-    <FrameLayout
-
-            android:layout_width="0dp"
-            android:id="@+id/detail"
-            android:layout_height="match_parent"
-            android:layout_weight="3"
-            android:background="@color/card_detail_background">
-
-        <FrameLayout
-                android:id="@+id/card_detail_container"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent">
+                    android:enabled="false"
+                    android:text="Appling all cards..."
+                    android:textStyle="bold"
+                    android:textColor="#FFFFFF"
+                    android:textSize="12sp"
+                    android:background="@drawable/button_updating_background"
+                    android:visibility="invisible">
+            </Button>
 
         </FrameLayout>
 
         <FrameLayout
-                android:id="@+id/add_card_frame_layout"
-                android:layout_width="match_parent"
+
+                android:layout_width="0dp"
+                android:id="@+id/detail"
                 android:layout_height="match_parent"
-                android:visibility="invisible"
-                android:background="#000000">
+                android:layout_weight="3"
+                android:background="@color/card_detail_background">
+
+            <FrameLayout
+                    android:id="@+id/card_detail_container"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+
+            </FrameLayout>
+
+            <FrameLayout
+                    android:id="@+id/add_card_frame_layout"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:visibility="invisible"
+                    android:background="#000000">
+
+            </FrameLayout>
 
         </FrameLayout>
 
-    </FrameLayout>
+    </LinearLayout>
 
-</LinearLayout>
+
+    <LinearLayout
+            android:id="@+id/fragment_symbol_box"
+            android:background="#d5d7d9"
+            android:visibility="invisible"
+            android:layout_gravity="bottom"
+            android:layout_marginBottom="0dp"
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="216dp">
+    </LinearLayout>
+
+
+
+</FrameLayout>

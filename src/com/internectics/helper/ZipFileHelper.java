@@ -32,7 +32,7 @@ public class ZipFileHelper {
             FileInputStream in = new FileInputStream(fs.get(i));
             int b;
             while ((b = in.read(buffer)) != -1)
-                out.write(buffer,0,b);
+                out.write(buffer, 0, b);
             in.close();
         }
         out.close();

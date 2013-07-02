@@ -15,24 +15,27 @@ public class AppStart extends Activity {
         setContentView(view);
 
         //fade effect
-        AlphaAnimation aa = new AlphaAnimation(0.3f,1.0f);
+        AlphaAnimation aa = new AlphaAnimation(0.3f, 1.0f);
         aa.setDuration(2000);
         view.startAnimation(aa);
-        aa.setAnimationListener(new Animation.AnimationListener()
-        {
+        aa.setAnimationListener(new Animation.AnimationListener() {
             @Override
             public void onAnimationEnd(Animation arg0) {
                 redirectTo();
             }
+
             @Override
-            public void onAnimationRepeat(Animation animation) {}
+            public void onAnimationRepeat(Animation animation) {
+            }
+
             @Override
-            public void onAnimationStart(Animation animation) {}
+            public void onAnimationStart(Animation animation) {
+            }
 
         });
     }
 
-    private void redirectTo(){
+    private void redirectTo() {
         Intent intent = new Intent(this, MainActivity.class);
         startActivity(intent);
         finish();

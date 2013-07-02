@@ -65,7 +65,7 @@ public class AddPackFragment extends DialogFragment implements TextView.OnEditor
             @Override
             public void onClick(View v) {
                 if (mIMM.isActive()) {
-                    mIMM.hideSoftInputFromInputMethod(closeButton.getWindowToken(),0);
+                    mIMM.hideSoftInputFromInputMethod(closeButton.getWindowToken(), 0);
                 }
                 dismiss();
 
@@ -195,10 +195,10 @@ public class AddPackFragment extends DialogFragment implements TextView.OnEditor
 
     private boolean checkExistingPackName(String packName) {
         ArrayList<Pack> packs = User.defaultUser(AppContext.getAppContext()).packs;
-        if (packs.size() ==0){
+        if (packs.size() == 0) {
             return false;
         }
-        for (Pack pack:packs) {
+        for (Pack pack : packs) {
             if (pack.packName.equals(packName)) {
                 return true;
             }
@@ -211,7 +211,7 @@ public class AddPackFragment extends DialogFragment implements TextView.OnEditor
     public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
         switch (actionId) {
             case EditorInfo.IME_ACTION_DONE:
-                mIMM.hideSoftInputFromInputMethod(v.getWindowToken(),0);
+                mIMM.hideSoftInputFromInputMethod(v.getWindowToken(), 0);
                 break;
         }
         return false;

@@ -16,6 +16,7 @@ import android.util.TypedValue;
 import android.view.*;
 import android.view.animation.AlphaAnimation;
 import android.view.animation.Animation;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.*;
 import com.dropbox.client2.DropboxAPI;
 import com.dropbox.client2.android.AndroidAuthSession;
@@ -40,7 +41,7 @@ public class MainActivity extends FragmentActivity implements
         CardListFragment.Callbacks {
 
     private boolean mIsCreatingCard = false;
-    public  boolean mIsEdittingCard = false;
+    public boolean mIsEdittingCard = false;
     private boolean mIsGoingAuthorizationBeforeUpload = false;
     private boolean mIsNecessaryToRestoreCSSToolbar = false;
     private boolean mIsFromRestartApp = false;
@@ -49,7 +50,7 @@ public class MainActivity extends FragmentActivity implements
     public int mCurrentCardIndex = 0;
     public Card mCurrentCard = new Card();
 
-    public  PopupWindow mPopupWindow;
+    public PopupWindow mPopupWindow;
     private View mCSSToolbar;
     private ProgressDialog mProgressDialog;
     private Button mMasterMaskButton;
@@ -58,6 +59,10 @@ public class MainActivity extends FragmentActivity implements
     private ArrayList<CardDetailFragment> mArrayCardDetailFragments;   //speical for snapshot(not include current card)
     private CardDetailFragment mCardDetailFragment;
     private CardDetailFragment mSnapshotCardDetailFragment;
+
+    public LinearLayout mSymbolBox;
+
+    private boolean mIsKeyboardVisible; //we can NOT judge by imm.isActive
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -93,6 +98,8 @@ public class MainActivity extends FragmentActivity implements
 
         mMasterMaskButton = (Button) findViewById(R.id.master_view_mask);
         mMasterMaskButtonForContentUpdating = (Button) findViewById(R.id.master_view_updating);
+
+        mSymbolBox = (LinearLayout) findViewById(R.id.fragment_symbol_box);
 
         mIsFromRestartApp = true;
     }
@@ -556,6 +563,23 @@ public class MainActivity extends FragmentActivity implements
             }
         });
 
+        Button symbolButton = (Button) mCSSToolbar.findViewById(R.id.csstoolbar_symbol_btn);
+        symbolButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+                imm.toggleSoftInput(InputMethodManager.SHOW_IMPLICIT, InputMethodManager.HIDE_NOT_ALWAYS);
+                if (mIsKeyboardVisible) {
+                    mSymbolBox.setVisibility(View.VISIBLE);
+                    mIsKeyboardVisible = false;
+                } else {
+                    mSymbolBox.setVisibility(View.INVISIBLE);
+                    mIsKeyboardVisible = true;
+                }
+
+            }
+        });
+
 
         spinnerAlign.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
@@ -616,6 +640,8 @@ public class MainActivity extends FragmentActivity implements
             spinnerSize.setSelection(0);
 
             Log.d(Global.debugTag, "prepareCSSToolbar is called");
+
+            mIsKeyboardVisible = true;
         }
     }
 
@@ -631,6 +657,8 @@ public class MainActivity extends FragmentActivity implements
                 mCSSToolbar = null;
                 Log.d(Global.debugTag, "removeCSSToolbar is called");
             }
+
+            mIsKeyboardVisible = false;
 
         }
     }

@@ -25,9 +25,9 @@ public class PackBuildHelper {
         //step2
         for (Card card : currentPack.cards) {
             //step1: zip all the files in current card and come into a new zip file
-            String singleFile = PackBuildHelper.buildCardQuestionJsonFile(card,currentPack).toString();
+            String singleFile = PackBuildHelper.buildCardQuestionJsonFile(card, currentPack).toString();
             cardFiles.add(singleFile);
-            singleFile = PackBuildHelper.buildCardAnswerJsonFile(card,currentPack).toString();
+            singleFile = PackBuildHelper.buildCardAnswerJsonFile(card, currentPack).toString();
             cardFiles.add(singleFile);
             cardFiles.add(FileOperationHelper.deleteUriSchemeHeader(card.coverImageUriFormatStr));
             cardFiles.add(FileOperationHelper.deleteUriSchemeHeader(card.question.imageUriFormatStr));
@@ -97,21 +97,21 @@ public class PackBuildHelper {
     /*
      Result saved file path is: FileOperationHelper.getUploadCardQuestionJsonFile()
     */
-    public static File buildCardQuestionJsonFile(Card card,Pack pack) {
+    public static File buildCardQuestionJsonFile(Card card, Pack pack) {
 
         JSONObject obj = new JSONObject();
 
         obj.put("creator", pack.creatorID);
-        obj.put("logo_url",pack.logoURL);
+        obj.put("logo_url", pack.logoURL);
         obj.put("title", pack.questionTitle);
-        obj.put("logo",StringUtils.lastComponentOfPath(pack.logoImageUriFormatStr));
+        obj.put("logo", StringUtils.lastComponentOfPath(pack.logoImageUriFormatStr));
 
-        obj.put("title",String.format("%d",card.cardSN));
+        obj.put("title", String.format("%d", card.cardSN));
         obj.put("template_background", card.templateBackground);
         obj.put("cover_image", StringUtils.lastComponentOfPath(card.coverImageUriFormatStr));
 
         obj.put("image", StringUtils.lastComponentOfPath(card.question.imageUriFormatStr));
-        obj.put("template_id", String.format("%d",card.question.templateID));
+        obj.put("template_id", String.format("%d", card.question.templateID));
         obj.put("subheading", card.question.subheading);
         obj.put("main", card.question.main);
         obj.put("sub", card.question.sub);
@@ -144,14 +144,14 @@ public class PackBuildHelper {
     /*
      Result saved file path is: FileOperationHelper.getUploadCardAnswerJsonFile()
     */
-    public static File buildCardAnswerJsonFile(Card card,Pack pack) {
+    public static File buildCardAnswerJsonFile(Card card, Pack pack) {
 
         JSONObject obj = new JSONObject();
 
 
         obj.put("title", pack.answerTitle);
         obj.put("logo", StringUtils.lastComponentOfPath(pack.logoImageUriFormatStr));
-        obj.put("template_id", String.format("%d",card.answer.templateID));
+        obj.put("template_id", String.format("%d", card.answer.templateID));
 
         obj.put("image", StringUtils.lastComponentOfPath(card.answer.imageUriFormatStr));
         obj.put("subheading", card.answer.subheading);

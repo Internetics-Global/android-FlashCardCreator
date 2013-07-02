@@ -6,10 +6,10 @@
     </solid>
 
     <corners android:radius="1dp"
-            android:bottomLeftRadius="@dimen/card_round_corner"
-            android:topLeftRadius="@dimen/card_round_corner"
-            android:bottomRightRadius="0dp"
-            android:topRightRadius="0dp">
-</corners>
+             android:bottomLeftRadius="@dimen/card_round_corner"
+             android:topLeftRadius="@dimen/card_round_corner"
+             android:bottomRightRadius="0dp"
+             android:topRightRadius="0dp">
+    </corners>
 
 </shape>

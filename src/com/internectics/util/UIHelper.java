@@ -65,7 +65,7 @@ public class UIHelper {
 
 
     public static Bitmap loadBitmapFromView(View v) {
-        Bitmap bitmap = Bitmap.createBitmap(v.getWidth(), v.getHeight(),Bitmap.Config.ARGB_8888);
+        Bitmap bitmap = Bitmap.createBitmap(v.getWidth(), v.getHeight(), Bitmap.Config.ARGB_8888);
         Canvas canvas = new Canvas(bitmap);
         v.draw(canvas);
         return bitmap;
@@ -85,8 +85,8 @@ public class UIHelper {
         int width = metric.widthPixels;
         int height = metric.heightPixels;
         int densityDpi = metric.densityDpi;
-        String returnStr = String.format("android-%d-%d-%d",width,height,densityDpi);
-        Log.d(Global.debugTag,"current platform is: " +returnStr);
+        String returnStr = String.format("android-%d-%d-%d", width, height, densityDpi);
+        Log.d(Global.debugTag, "current platform is: " + returnStr);
         return returnStr;
     }
 

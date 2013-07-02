@@ -25,12 +25,12 @@ public class FCCEditText extends EditText {
 
     @Override
     public boolean onKeyPreIme(int keyCode, KeyEvent event) {
-        if ((keyCode == KeyEvent.KEYCODE_BACK)&&(event.getAction() == KeyEvent.ACTION_DOWN)) {
-            if (mCallbacks !=null)
+        if ((keyCode == KeyEvent.KEYCODE_BACK) && (event.getAction() == KeyEvent.ACTION_DOWN)) {
+            if (mCallbacks != null)
 
-               mCallbacks.onKeyboardClose(this);
+                mCallbacks.onKeyboardClose(this);
             else
-                Log.w(Global.debugTag,"mCallbacks for FCCEditText is null");
+                Log.w(Global.debugTag, "mCallbacks for FCCEditText is null");
         }
         return super.onKeyPreIme(keyCode, event);
 

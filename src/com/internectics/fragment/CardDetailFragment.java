@@ -39,7 +39,7 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnKeyboa
     private LinearLayout mContentBodyLeft;
     private FCCEditText mSidebarTitle;
     private FrameLayout mSidebarBackground;
-    private TextView    mCardSN;
+    private TextView mCardSN;
     private FCCEditText mTitle;
     private LinearLayout mTitleBackground;
     private FCCEditText mCreator;
@@ -228,7 +228,7 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnKeyboa
 
                     if (mIsCreatingCard == false) {
                         mCurrentPack.save(AppContext.getAppContext());
-                        ((MainActivity)getActivity()).setMaskButtonForContentUpdating();
+                        ((MainActivity) getActivity()).setMaskButtonForContentUpdating();
                         takeSnapshotAll();
                     }
 
@@ -500,14 +500,14 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnKeyboa
             public void afterTextChanged(Editable s) {
                 if (mIsQuestionShowing) {
                     mCurrentPack.questionTitle = mTitle.getText().toString();
-                    if ((!mIsCreatingCard) &&(!mIsPlayingCard)) {
+                    if ((!mIsCreatingCard) && (!mIsPlayingCard)) {
                         mIsTakeSnapshotAllNeeded = true;
                     }
                 } else {
                     mCurrentPack.answerTitle = mTitle.getText().toString();
                 }
 
-                Log.d(Global.debugTag,"mTitle has changed");
+                Log.d(Global.debugTag, "mTitle has changed");
             }
         });
 
@@ -523,11 +523,11 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnKeyboa
             @Override
             public void afterTextChanged(Editable s) {
                 mCurrentPack.creatorNickName = mCreator.getText().toString();
-                if ((!mIsCreatingCard) &&(!mIsPlayingCard)) {
+                if ((!mIsCreatingCard) && (!mIsPlayingCard)) {
                     mIsTakeSnapshotAllNeeded = true;
                 }
 
-                Log.d(Global.debugTag,"mCreator has changed");
+                Log.d(Global.debugTag, "mCreator has changed");
 
             }
         });
@@ -544,11 +544,11 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnKeyboa
             @Override
             public void afterTextChanged(Editable s) {
                 mCurrentPack.sidebarTitle = mSidebarTitle.getText().toString();
-                if ((!mIsCreatingCard) &&(!mIsPlayingCard)) {
+                if ((!mIsCreatingCard) && (!mIsPlayingCard)) {
                     mIsTakeSnapshotAllNeeded = true;
                 }
 
-                Log.d(Global.debugTag,"mSidebarTitle has changed");
+                Log.d(Global.debugTag, "mSidebarTitle has changed");
 
             }
         });
@@ -571,7 +571,7 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnKeyboa
                     mCurrentCard.answer.subheading = mSubheading.getText().toString();
                 }
 
-                Log.d(Global.debugTag,"mSubheading has changed");
+                Log.d(Global.debugTag, "mSubheading has changed");
             }
         });
 
@@ -592,7 +592,7 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnKeyboa
                     mCurrentCard.answer.main = mMain.getText().toString();
                 }
 
-                Log.d(Global.debugTag,"mMain has changed");
+                Log.d(Global.debugTag, "mMain has changed");
             }
         });
 
@@ -613,7 +613,7 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnKeyboa
                     mCurrentCard.answer.sub = mSub.getText().toString();
                 }
 
-                Log.d(Global.debugTag,"mSub has changed");
+                Log.d(Global.debugTag, "mSub has changed");
             }
         });
     }
@@ -621,7 +621,7 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnKeyboa
 
     private void updateCommonContent() {
         mSidebarTitle.setText(mCurrentPack.sidebarTitle);
-        mCardSN.setText(String.format("%d",mCurrentCard.cardSN));
+        mCardSN.setText(String.format("%d", mCurrentCard.cardSN));
 
         mLogoImage.setImageURI(Uri.parse(mCurrentPack.logoImageUriFormatStr));
         mCreator.setText(mCurrentPack.creatorNickName);
@@ -1349,11 +1349,11 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnKeyboa
     /**
      * simply close keyboard and do nothing
      */
-    public  void dismissKeyboard() {
+    public void dismissKeyboard() {
         if (mCurrentFocusedEditText != null) {
             mIMM.hideSoftInputFromWindow(mCurrentFocusedEditText.getWindowToken(), 0);
         } else {
-            Log.d(Global.debugTag,"mCurrentFocusedEditText is null");
+            Log.d(Global.debugTag, "mCurrentFocusedEditText is null");
         }
 
     }
@@ -1362,11 +1362,11 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnKeyboa
     /**
      * simply close keyboard and do nothing
      */
-    public  void dismissKeyboard2() {
+    public void dismissKeyboard2() {
         if (mCurrentFocusedEditText != null) {
             mIMM.hideSoftInputFromInputMethod(mCurrentFocusedEditText.getWindowToken(), 0);
         } else {
-            Log.d(Global.debugTag,"mCurrentFocusedEditText is null");
+            Log.d(Global.debugTag, "mCurrentFocusedEditText is null");
         }
 
     }
@@ -1374,8 +1374,8 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnKeyboa
     public void saveEdittedCard() {
 
         //step2: prepare update info in mast list view
-        if (mIsTakeSnapshotAllNeeded&&(mIsCreatingCard == false)) {
-            ((MainActivity)getActivity()).setMaskButtonForContentUpdating();
+        if (mIsTakeSnapshotAllNeeded && (mIsCreatingCard == false)) {
+            ((MainActivity) getActivity()).setMaskButtonForContentUpdating();
         }
 
         //step3:

@@ -17,6 +17,7 @@ public class CardListModel {
 
     /**
      * Return card list for current pack
+     *
      * @param curentPack
      * @return non-null return value
      */
@@ -48,7 +49,7 @@ public class CardListModel {
 
         Pack pack;
         int size = getAllPacks().size();
-        if (size >0) {
+        if (size > 0) {
             pack = getAllPacks().get(size - 1);
             return pack;
         } else {
@@ -91,7 +92,7 @@ public class CardListModel {
         Pack returnPack = null;
         ArrayList<Pack> packs = User.defaultUser(AppContext.getAppContext()).packs;
 
-        for (int i=0;i<packs.size();i++) {
+        for (int i = 0; i < packs.size(); i++) {
             if (packs.get(i).packID == currentPack.packID) {
                 returnPack = packs.get(i);
                 return returnPack;

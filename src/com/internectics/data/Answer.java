@@ -1,4 +1,5 @@
 package com.internectics.data;
+
 import android.content.Context;
 import android.database.Cursor;
 import android.util.Log;
@@ -6,6 +7,7 @@ import com.internectics.helper.FileOperationHelper;
 import com.internectics.helper.SQLiteHelper;
 import com.internectics.util.Global;
 import com.internectics.util.StringUtils;
+
 import java.io.File;
 import java.util.HashMap;
 
@@ -95,7 +97,7 @@ public class Answer {
         String decodedSub = StringUtils.stringDecodeForSQlite(sub);
 
         String query = String.format("UPDATE Answer_Tables SET answer_id=%d, subheading=?, main=?, sub=?, image=\"%s\",css_id=%d, template_id=%d WHERE card_id=%d", answerID, imageUriFormatStr, cssID, templateID, cardID);
-        SQLiteHelper.defaultDatabase(context).execSQL(query,new Object[] {decodedSubheading,decodedMain,decodedSub});
+        SQLiteHelper.defaultDatabase(context).execSQL(query, new Object[]{decodedSubheading, decodedMain, decodedSub});
     }
 
     private void insert(Context context) {
@@ -109,7 +111,7 @@ public class Answer {
         String decodedSub = StringUtils.stringDecodeForSQlite(sub);
 
         String query = String.format("INSERT INTO Answer_Tables(answer_id, card_id, subheading, main, sub, image, css_id, template_id) VALUES (%d,%d, ?, ?, ?, \"%s\", %d, %d)", answerID, cardID, imageUriFormatStr, cssID, templateID);
-        SQLiteHelper.defaultDatabase(context).execSQL(query,new Object[] {decodedSubheading,decodedMain,decodedSub});
+        SQLiteHelper.defaultDatabase(context).execSQL(query, new Object[]{decodedSubheading, decodedMain, decodedSub});
 
     }
 

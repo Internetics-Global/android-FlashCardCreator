@@ -21,6 +21,7 @@ import com.internectics.data.Pack;
 import com.internectics.data.User;
 import com.internectics.helper.FileOperationHelper;
 import com.internectics.util.*;
+
 import java.io.File;
 import java.io.FileNotFoundException;
 
@@ -116,7 +117,7 @@ public class PackListFragment extends Fragment {
             final Pack currentPack = User.defaultUser(AppContext.getAppContext()).packs.get(position);
 
             LayoutInflater inflater = (LayoutInflater) getActivity().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-            View contentView = inflater.inflate(R.layout.pack_list_item,parent,false);
+            View contentView = inflater.inflate(R.layout.pack_list_item, parent, false);
 
             TextView packNameView = (TextView) contentView.findViewById(R.id.pack_name_text);
             ImageView imageView = (ImageView) contentView.findViewById(R.id.pack_cover_image);
@@ -138,7 +139,6 @@ public class PackListFragment extends Fragment {
                     e.printStackTrace();
                 }
             }
-
 
 
             changeCoverImageButton.setOnClickListener(new View.OnClickListener() {
