@@ -38,6 +38,7 @@ public class PackParserHelper {
                 break;
             }
             Card resultCard = parseCardJsonFiles(cardDirectory, resultPack);
+            resultCard.cardSN = i;
 
 
             newFile = FileOperationHelper.copyImageToImagesFolder(getCardImageFullPath(resultCard.coverImageUriFormatStr, i));
@@ -159,8 +160,6 @@ public class PackParserHelper {
 
             currentPack.questionTitle = (String) questionObj.get("title");
 
-            //card.cardSN = Integer.parseInt((String) questionObj.get("cardSN"));
-
             temp = (String) questionObj.get("cover_image");
             if (StringUtils.isCorrectImageName(temp)) {
                 card.coverImageUriFormatStr = temp;
@@ -172,7 +171,7 @@ public class PackParserHelper {
             }
 
             temp = (String) questionObj.get("template_id");
-            if (StringUtils.isCorrectImageName(temp)) {
+            if (temp != null) {
                 card.question.templateID = Integer.parseInt(temp);
             } else {
                 card.question.templateID = 0;
@@ -267,7 +266,7 @@ public class PackParserHelper {
             currentPack.answerTitle = (String) answerObj.get("title");
 
             temp = (String) answerObj.get("template_id");
-            if (StringUtils.isCorrectImageName(temp))  {
+            if (temp != null)  {
                 card.answer.templateID = Integer.parseInt(temp);
             } else {
                 card.answer.templateID = 0;
