@@ -10,7 +10,6 @@ import android.content.Intent;
 import android.graphics.PixelFormat;
 import android.net.Uri;
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.util.Log;
 import android.util.TypedValue;
@@ -64,7 +63,9 @@ public class MainActivity extends FragmentActivity implements
 
     public SymbolBoxFragment mSymbolBoxFragment;
 
-    private boolean mIsKeyboardVisible; //we can NOT judge by imm.isActive
+    private Button mSymbolKeyboardSwitchButton;
+
+    public boolean mIsKeyboardVisible; //we can NOT judge by imm.isActive
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -424,6 +425,12 @@ public class MainActivity extends FragmentActivity implements
         mIsCreatingCard = false;
         invalidateOptionsMenu();
 
+        removeCSSToolbar();
+        InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+        if ( imm.isActive( ) ) {
+            imm.hideSoftInputFromWindow(mMasterMaskButton.getApplicationWindowToken( ) , 0 );
+        }
+
     }
 
     private boolean checkEntryConditionBeforeCreatingNewCard(Pack currentPack) {
@@ -552,6 +559,9 @@ public class MainActivity extends FragmentActivity implements
             @Override
             public void onClick(View v) {
                 mCardDetailFragment.dismissKeyboard();
+                if (mSymbolBoxFragment!=null) {
+                    mSymbolBoxFragment.hideSymbolBox();
+                }
                 mCardDetailFragment.saveEdittedCard();
                 removeCSSToolbar();
             }
@@ -565,17 +575,17 @@ public class MainActivity extends FragmentActivity implements
             }
         });
 
-        Button symbolButton = (Button) mCSSToolbar.findViewById(R.id.csstoolbar_symbol_btn);
-        symbolButton.setOnClickListener(new View.OnClickListener() {
+        mSymbolKeyboardSwitchButton = (Button) mCSSToolbar.findViewById(R.id.csstoolbar_symbol_btn);
+        mSymbolKeyboardSwitchButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
                 imm.toggleSoftInput(InputMethodManager.SHOW_IMPLICIT, InputMethodManager.HIDE_NOT_ALWAYS);
                 if (mIsKeyboardVisible) {
-                    mSymbolBoxFragment.showSymbolBox();
+                    setAsSymbolStatus();
                     mIsKeyboardVisible = false;
                 } else {
-                    mSymbolBoxFragment.hideSymbolBox();
+                    setAsKeyboardStatus();
                     mIsKeyboardVisible = true;
                 }
 
@@ -620,6 +630,20 @@ public class MainActivity extends FragmentActivity implements
         });
     }
 
+
+    public void setAsSymbolStatus() {
+        mSymbolBoxFragment.showSymbolBox();
+        mSymbolKeyboardSwitchButton.setText("Keyboard");
+    }
+
+    public void setAsKeyboardStatus() {
+        mSymbolBoxFragment.hideSymbolBox();
+        if (mSymbolKeyboardSwitchButton != null) {
+            mSymbolKeyboardSwitchButton.setText("Symbol");
+        }
+
+    }
+
     public void prepareCSSToolbar() {
         if ((mCSSToolbar == null) || (mCSSToolbar.getParent() == null)) {
             initializeCSSToolbar();
@@ -637,6 +661,9 @@ public class MainActivity extends FragmentActivity implements
             Spinner spinnerColor = (Spinner) mCSSToolbar.findViewById(R.id.spinner_color);
             Spinner spinnerSize = (Spinner) mCSSToolbar.findViewById(R.id.spinner_size);
 
+            Button saveButton = (Button)mCSSToolbar.findViewById(R.id.csstoolbar_save_btn);
+            Button cancelButton = (Button)mCSSToolbar.findViewById(R.id.csstoolbar_close_btn);
+
             spinnerAlign.setSelection(0);
             spinnerColor.setSelection(0);
             spinnerSize.setSelection(0);
@@ -644,6 +671,14 @@ public class MainActivity extends FragmentActivity implements
             Log.d(Global.debugTag, "prepareCSSToolbar is called");
 
             mIsKeyboardVisible = true;
+
+            if (mIsCreatingCard) {
+                saveButton.setVisibility(View.INVISIBLE);
+                cancelButton.setVisibility(View.INVISIBLE);
+            } else {
+                saveButton.setVisibility(View.VISIBLE);
+                cancelButton.setVisibility(View.VISIBLE);
+            }
         }
     }
 

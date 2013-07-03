@@ -136,6 +136,7 @@ public class CardListFragment extends Fragment {
 
     @Override
     public void onDestroy() {
+        super.onDestroy();
         getActivity().unregisterReceiver(mReceiver);
     }
 

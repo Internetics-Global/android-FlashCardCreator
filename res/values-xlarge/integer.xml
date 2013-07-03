@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <!--symbol box related-->
+    <integer name="symbox_box_column_no">16</integer>
+
+</resources>

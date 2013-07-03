@@ -16,7 +16,7 @@ public class AppStart extends Activity {
 
         //fade effect
         AlphaAnimation aa = new AlphaAnimation(0.3f, 1.0f);
-        aa.setDuration(2000);
+        aa.setDuration(500);
         view.startAnimation(aa);
         aa.setAnimationListener(new Animation.AnimationListener() {
             @Override

@@ -8,22 +8,24 @@
 
     <Button
             android:id="@+id/csstoolbar_save_btn"
-            android:layout_width="65dp"
+            android:layout_width="@dimen/csstoolbar_button_width"
             android:layout_height="match_parent"
             android:textSize="@dimen/csstoolbar_text_size"
             android:layout_alignParentLeft="true"
             android:layout_margin="5dp"
+            android:gravity="center"
             android:background="@drawable/selector_csstoolbar_button"
             style="@style/BlackButtonText"
             android:text="@string/button_save"/>
 
     <Button
             android:id="@+id/csstoolbar_close_btn"
-            android:layout_width="65dp"
+            android:layout_width="@dimen/csstoolbar_button_width"
             android:layout_height="match_parent"
             android:textSize="@dimen/csstoolbar_text_size"
             android:layout_toRightOf="@id/csstoolbar_save_btn"
             android:layout_margin="5dp"
+            android:gravity="center"
             android:background="@drawable/selector_csstoolbar_button"
             style="@style/BlackButtonText"
             android:text="@string/button_cancel"/>
@@ -31,7 +33,7 @@
     <Spinner
             android:id="@+id/spinner_align"
             android:gravity="center"
-            android:layout_width="70dp"
+            android:layout_width="@dimen/csstoolbar_button_width"
             android:layout_height="match_parent"
             android:layout_alignParentRight="true"
             android:entries="@array/css_align"
@@ -42,7 +44,7 @@
     <Spinner
             android:id="@+id/spinner_color"
             android:gravity="center"
-            android:layout_width="70dp"
+            android:layout_width="@dimen/csstoolbar_button_width"
             android:layout_height="match_parent"
             android:entries="@array/css_color"
             android:background="@drawable/selector_black_spinner"
@@ -53,7 +55,7 @@
     <Spinner
             android:id="@+id/spinner_size"
             android:gravity="center"
-            android:layout_width="70dp"
+            android:layout_width="@dimen/csstoolbar_button_width"
             android:layout_height="match_parent"
             android:entries="@array/css_size"
             android:background="@drawable/selector_black_spinner"
@@ -63,8 +65,10 @@
 
     <Button
             android:id="@+id/csstoolbar_symbol_btn"
-            android:layout_width="70dp"
+            android:layout_width="@dimen/csstoolbar_button_width"
             android:layout_height="match_parent"
+            android:gravity="center"
+            android:textAlignment="center"
             android:textSize="@dimen/csstoolbar_text_size"
             android:layout_toLeftOf="@id/spinner_size"
             android:layout_margin="5dp"

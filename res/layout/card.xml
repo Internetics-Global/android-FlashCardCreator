@@ -25,6 +25,7 @@
                 android:layout_gravity="center"
                 android:textSize="@dimen/sidebar_text_size"
                 android:text="1"
+                android:tag = "2001"
                 android:rotation="-90"
                 android:gravity="center" />
 
@@ -68,6 +69,7 @@
                         android:layout_height="match_parent"
                         android:layout_width="0dp"
                         android:layout_weight="400"
+                        android:tag = "2002"
                         android:text="Question"
                         android:textStyle="bold"
                         android:shadowColor="@android:color/holo_orange_dark"
@@ -86,6 +88,7 @@
                         android:layout_gravity="bottom"
                         android:layout_width="0dp"
                         android:layout_weight="160"
+                        android:tag = "2003"
                         android:gravity="bottom"
                         android:text="Create by"
                         android:textSize="@dimen/creator_text_size"

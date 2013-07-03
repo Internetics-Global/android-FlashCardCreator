@@ -56,7 +56,7 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnKeyboa
     private RadioGroup mRadioGroup;
 
     private InputMethodManager mIMM;
-    private EditText mCurrentFocusedEditText;
+    private EditText mCurrentFocusedCardContentText;  // only applicable to subheading, main and sub text
 
     private int CODE_REQUEST_IMAGE_SOURCE_IS_LOGO = 1001; //when user click on the logo img
     private int CODE_REQUEST_IMAGE_SOURCE_IS_IMAGE = 1002;//when user click on the image img
@@ -1157,7 +1157,7 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnKeyboa
         CSS currentCSS;
 
         //Step2: determine operaton target
-        int editTextTag = Integer.parseInt((String) mCurrentFocusedEditText.getTag());
+        int editTextTag = Integer.parseInt((String) mCurrentFocusedCardContentText.getTag());
         if (mIsQuestionShowing) {
             currentCSS = mCurrentCard.question.css;
         } else {
@@ -1181,13 +1181,13 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnKeyboa
 
                 switch (subMenuID) {
                     case 0:
-                        mCurrentFocusedEditText.setGravity(Gravity.LEFT);
+                        mCurrentFocusedCardContentText.setGravity(Gravity.LEFT);
                         break;
                     case 1:
-                        mCurrentFocusedEditText.setGravity(Gravity.CENTER);
+                        mCurrentFocusedCardContentText.setGravity(Gravity.CENTER);
                         break;
                     case 2:
-                        mCurrentFocusedEditText.setGravity(Gravity.RIGHT);
+                        mCurrentFocusedCardContentText.setGravity(Gravity.RIGHT);
                         break;
                     default:
                         Log.w(Global.debugTag, "Out of range of subMenuID");
@@ -1209,19 +1209,19 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnKeyboa
 
                 switch (subMenuID) {
                     case 0:
-                        mCurrentFocusedEditText.setTextSize(size);
+                        mCurrentFocusedCardContentText.setTextSize(size);
                         break;
                     case 1:
-                        mCurrentFocusedEditText.setTextSize(size);
+                        mCurrentFocusedCardContentText.setTextSize(size);
                         break;
                     case 2:
-                        mCurrentFocusedEditText.setTextSize(size);
+                        mCurrentFocusedCardContentText.setTextSize(size);
                         break;
                     case 3:
-                        mCurrentFocusedEditText.setTextSize(size);
+                        mCurrentFocusedCardContentText.setTextSize(size);
                         break;
                     case 4:
-                        mCurrentFocusedEditText.setTextSize(size);
+                        mCurrentFocusedCardContentText.setTextSize(size);
                         break;
                     default:
                         Log.w(Global.debugTag, "Out of range of subMenuID");
@@ -1239,19 +1239,19 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnKeyboa
 
                 switch (subMenuID) {
                     case 0:
-                        mCurrentFocusedEditText.setTextColor(Color.RED);
+                        mCurrentFocusedCardContentText.setTextColor(Color.RED);
                         break;
                     case 1:
-                        mCurrentFocusedEditText.setTextColor(Color.BLUE);
+                        mCurrentFocusedCardContentText.setTextColor(Color.BLUE);
                         break;
                     case 2:
-                        mCurrentFocusedEditText.setTextColor(Color.BLACK);
+                        mCurrentFocusedCardContentText.setTextColor(Color.BLACK);
                         break;
                     case 3:
-                        mCurrentFocusedEditText.setTextColor(Color.YELLOW);
+                        mCurrentFocusedCardContentText.setTextColor(Color.YELLOW);
                         break;
                     case 4:
-                        mCurrentFocusedEditText.setTextColor(Color.GREEN);
+                        mCurrentFocusedCardContentText.setTextColor(Color.GREEN);
                         break;
                     default:
                         Log.w(Global.debugTag, "Out of range of subMenuID");
@@ -1278,6 +1278,10 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnKeyboa
 
 
         if ((v.getTag() != null) && (event.getAction() == MotionEvent.ACTION_DOWN)) {
+
+            ((MainActivity) getActivity()).mIsKeyboardVisible = true;
+            ((MainActivity) getActivity()).setAsKeyboardStatus();
+
             int tag = Integer.parseInt((String) v.getTag());
 
             if ((tag == 1001) || (tag == 1002) || (tag == 1003)) {
@@ -1286,10 +1290,13 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnKeyboa
 
                 ((MainActivity) getActivity()).prepareCSSToolbar();
                 ((MainActivity) getActivity()).showCSSToolbar();
+
+                mCurrentFocusedCardContentText = (EditText) v;
+            }
+            else {
+                ((MainActivity)getActivity()).removeCSSToolbar();
             }
         }
-
-        mCurrentFocusedEditText = (EditText) v;
 
         return false; //don't set to false;
     }
@@ -1351,10 +1358,10 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnKeyboa
      * simply close keyboard and do nothing
      */
     public void dismissKeyboard() {
-        if (mCurrentFocusedEditText != null) {
-            mIMM.hideSoftInputFromWindow(mCurrentFocusedEditText.getWindowToken(), 0);
+        if (mCurrentFocusedCardContentText != null) {
+            mIMM.hideSoftInputFromWindow(mCurrentFocusedCardContentText.getWindowToken(), 0);
         } else {
-            Log.d(Global.debugTag, "mCurrentFocusedEditText is null");
+            Log.d(Global.debugTag, "mCurrentFocusedCardContentText is null");
         }
 
     }
@@ -1364,10 +1371,10 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnKeyboa
      * simply close keyboard and do nothing
      */
     public void dismissKeyboard2() {
-        if (mCurrentFocusedEditText != null) {
-            mIMM.hideSoftInputFromInputMethod(mCurrentFocusedEditText.getWindowToken(), 0);
+        if (mCurrentFocusedCardContentText != null) {
+            mIMM.hideSoftInputFromInputMethod(mCurrentFocusedCardContentText.getWindowToken(), 0);
         } else {
-            Log.d(Global.debugTag, "mCurrentFocusedEditText is null");
+            Log.d(Global.debugTag, "mCurrentFocusedCardContentText is null");
         }
 
     }
@@ -1420,12 +1427,16 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnKeyboa
 
     public void onGridViewItemClicked(int index) {
         Log.d(Global.debugTag,"index of symobol/emotion is:" + index);
-        int start = mCurrentFocusedEditText.getSelectionStart();
+        int start = mCurrentFocusedCardContentText.getSelectionStart();
 
-        String beforeString = mCurrentFocusedEditText.getText().toString().substring(0,start);
-        String afterString = mCurrentFocusedEditText.getText().toString().substring(start);
+        String beforeString = mCurrentFocusedCardContentText.getText().toString().substring(0,start);
+        String afterString = mCurrentFocusedCardContentText.getText().toString().substring(start);
 
-        mCurrentFocusedEditText.setText(beforeString + SymbolHelper.mUnicodeArray[index] + afterString);
+        mCurrentFocusedCardContentText.setText(beforeString + SymbolHelper.mUnicodeArray[index] + afterString);
+
+        Log.d(Global.debugTag,"the result is:" + mCurrentFocusedCardContentText.getText().toString());
+
+        mCurrentFocusedCardContentText.setSelection(mCurrentFocusedCardContentText.getText().length());
 
     }
 }

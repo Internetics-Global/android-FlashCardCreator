@@ -110,7 +110,7 @@
             android:layout_gravity="bottom"
             android:layout_marginBottom="0dp"
             android:layout_width="match_parent"
-            android:layout_height="285dp"/>
+            android:layout_height="@dimen/symbol_box_height"/>
 
 
 
