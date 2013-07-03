@@ -227,5 +227,11 @@ public class StringUtils {
         }
     }
 
+    public static boolean isCorrectImageName(String str) {
+        boolean result = false;
+        result = ((str != null) && (str.toLowerCase().contains(".png")) && (str.toLowerCase().contains(".jpg")));
+        return result;
+    }
+
 
 }
