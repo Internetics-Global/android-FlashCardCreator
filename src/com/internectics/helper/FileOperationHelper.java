@@ -301,4 +301,21 @@ public class FileOperationHelper {
         folder.delete();
     }
 
+
+    public static void deleteAllFileUnderFolder(File folder) {
+        if (!folder.exists())
+            return;
+
+        File[] files = folder.listFiles();
+        if (files != null) {
+            for (File f : files) {
+                if (f.isDirectory()) {
+                    deleteFolder(f);
+                } else {
+                    f.delete();
+                }
+            }
+        }
+    }
+
 }

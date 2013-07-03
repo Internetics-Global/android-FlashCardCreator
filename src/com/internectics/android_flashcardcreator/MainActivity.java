@@ -257,7 +257,7 @@ public class MainActivity extends FragmentActivity implements
         if ((data != null) && (data.getScheme().equalsIgnoreCase("fcc"))) {
 
             if (Global.apiReachableWithAlert(MainActivity.this)) {
-                String downloableShareLink = data.toString().replace("fcc", "http").replace("wwww", "dl");
+                String downloableShareLink = data.toString().replace("fcc", "http").replace("www", "dl");
                 File downloadedZipFile = new File(FileOperationHelper.downloadedPackDirectory(), "downloadedPackZip.zip");
                 PackDownloadHelper packDownloadHelper = new PackDownloadHelper(MainActivity.this, downloableShareLink, downloadedZipFile.toString());
                 packDownloadHelper.execute();
@@ -428,7 +428,7 @@ public class MainActivity extends FragmentActivity implements
         removeCSSToolbar();
         InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
         if ( imm.isActive( ) ) {
-            imm.hideSoftInputFromWindow(mMasterMaskButton.getApplicationWindowToken( ) , 0 );
+            imm.hideSoftInputFromWindow(mMasterMaskButton.getApplicationWindowToken() , 0 );
         }
 
     }
@@ -706,5 +706,17 @@ public class MainActivity extends FragmentActivity implements
 
     public void clearMaskButtonForContentUpdating() {
         mMasterMaskButtonForContentUpdating.setVisibility(View.INVISIBLE);
+    }
+
+    @Override
+    public void onBackPressed() {
+
+
+        if ((mSymbolBoxFragment !=null) && (mSymbolBoxFragment.isSymbolBoxVisible())) {
+            mSymbolBoxFragment.hideSymbolBox();
+            return;
+        }
+
+        super.onBackPressed();    //To change body of overridden methods use File | Settings | File Templates.
     }
 }

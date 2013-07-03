@@ -1439,6 +1439,8 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnKeyboa
         mCurrentFocusedCardContentText.setSelection(mCurrentFocusedCardContentText.getText().length());
 
     }
+
+
 }
 
 

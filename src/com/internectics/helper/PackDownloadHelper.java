@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.AsyncTask;
+import android.util.Log;
 import android.widget.Toast;
 import com.internectics.util.AppConfig;
 import com.internectics.util.Global;
@@ -32,6 +33,11 @@ public class PackDownloadHelper extends AsyncTask<Void, Long, Boolean> {
 
     public PackDownloadHelper(Context context, String downloadURL, String downloadedZipFile) {
         mContext = context;
+
+        //Delete previous in case
+        File file = FileOperationHelper.downloadedPackDirectory();
+        FileOperationHelper.deleteAllFileUnderFolder(file);
+
         mDownloadURL = downloadURL;
         mSavedFilePath = downloadedZipFile;
         mDialog = new ProgressDialog(context);
@@ -75,7 +81,9 @@ public class PackDownloadHelper extends AsyncTask<Void, Long, Boolean> {
 
                 if (!mIsAllowPostExecute) {
                     mErrorMsg = "Download cancelled";
-
+                    output.flush();
+                    output.close();
+                    input.close();
                     return false;
                 }
             }
@@ -86,6 +94,7 @@ public class PackDownloadHelper extends AsyncTask<Void, Long, Boolean> {
             return true;
         } catch (Exception e) {
             e.printStackTrace();
+            Log.e(Global.debugTag,"Download failed:" + e.getCause() );
             mErrorMsg = "Download failed";
         }
         return false;
@@ -122,6 +131,7 @@ public class PackDownloadHelper extends AsyncTask<Void, Long, Boolean> {
                 mContext.sendBroadcast(intent);
 
             } catch (Exception e) {
+                Log.e(Global.debugTag,"Error:", e.getCause());
                 e.printStackTrace();
             }
 

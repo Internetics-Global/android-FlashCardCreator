@@ -54,6 +54,11 @@ public class SymbolBoxFragment extends Fragment {
         mContentView.setVisibility(View.VISIBLE);
     }
 
+    public boolean isSymbolBoxVisible() {
+        boolean bool = mContentView.getVisibility() == View.VISIBLE;
+        return bool;
+    }
+
 
 
     private List<SymbolGridViewFragment> getGridViewFragments() {

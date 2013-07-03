@@ -59,6 +59,9 @@ public class PackParserHelper {
         newFile = FileOperationHelper.copyImageToImagesFolder(getLogoImageFullPath(resultPack.logoImageUriFormatStr));
         resultPack.logoImageUriFormatStr = FileOperationHelper.convertToUriFormatFile(newFile);
         resultPack.save(AppContext.getAppContext());
+
+        File file = FileOperationHelper.downloadedPackDirectory();
+        FileOperationHelper.deleteAllFileUnderFolder(file);
     }
 
 
@@ -139,17 +142,25 @@ public class PackParserHelper {
             FileReader fileReader = new FileReader(questionJsonFile);
             JSONObject questionObj = (JSONObject) parser.parse(fileReader);
 
+            String temp;
+
             //this is a history issue(to compatibible with iOS version), i have to get logoImageUriFormatStr from question
             //Better way is to put them in pack
             currentPack.logoImageUriFormatStr = (String) questionObj.get("logo");
             currentPack.logoURL = (String) questionObj.get("logo_url");
             currentPack.questionTitle = (String) questionObj.get("title");
 
-            card.cardSN = Integer.parseInt((String) questionObj.get("cardSN"));
+            //card.cardSN = Integer.parseInt((String) questionObj.get("cardSN"));
             card.coverImageUriFormatStr = (String) questionObj.get("cover_image");
             card.templateBackground = (String) questionObj.get("template_background");
 
-            card.question.templateID = Integer.parseInt((String) questionObj.get("template_id"));
+            temp = (String) questionObj.get("template_id");
+            if (temp == null) {
+                card.question.templateID = 0;
+            } else {
+                card.question.templateID = Integer.parseInt(temp);
+            }
+
             card.question.imageUriFormatStr = (String) questionObj.get("image");
             card.question.subheading = ((String) questionObj.get("subheading")).replace("\\s+$", "");
             card.question.main = ((String) questionObj.get("main")).replace("\\s+$", "");
@@ -162,9 +173,31 @@ public class PackParserHelper {
             card.question.css.subAlign = (String) questionObj.get("sub_align");
             card.question.css.subColor = (String) questionObj.get("sub_color");
 
-            int subheadingSize = Integer.parseInt((String) questionObj.get("subheading_size"));
-            int mainSize = Integer.parseInt((String) questionObj.get("main_size"));
-            int subSize = card.answer.css.subSize = Integer.parseInt((String) questionObj.get("sub_size"));
+            int subheadingSize;
+            temp = (String) questionObj.get("subheading_size");
+            if (temp == null) {
+                subheadingSize = 0;
+            } else {
+                subheadingSize =  Integer.parseInt(temp);
+            }
+
+
+            int mainSize;
+            temp = (String) questionObj.get("main_size");
+            if (temp == null) {
+                mainSize = 0;
+            } else {
+                mainSize =  Integer.parseInt(temp);
+            }
+
+            int subSize;
+            temp = (String) questionObj.get("sub_size");
+            if (temp == null) {
+                subSize = 0;
+            } else {
+                subSize =  Integer.parseInt(temp);
+            }
+
             int[] standardCSSArrary = AppContext.getAppContext().getResources().getIntArray(R.array.css_size_int);
 
             if (subheadingSize == 0) {
@@ -205,12 +238,19 @@ public class PackParserHelper {
 
         //Answer
         try {
+            String temp;
+
             FileReader fileReader = new FileReader(answerJsonFile);
             JSONObject answerObj = (JSONObject) parser.parse(fileReader);
 
             currentPack.answerTitle = (String) answerObj.get("title");
 
-            card.answer.templateID = Integer.parseInt((String) answerObj.get("template_id"));
+            temp = (String) answerObj.get("template_id");
+            if (temp == null) {
+                card.answer.templateID = 0;
+            } else {
+                card.answer.templateID = Integer.parseInt(temp);
+            }
             card.answer.imageUriFormatStr = (String) answerObj.get("image");
             card.answer.subheading = ((String) answerObj.get("subheading")).replace("\\s+$", ""); //delete trailing space
             card.answer.main = ((String) answerObj.get("main")).replace("\\s+$", "");
@@ -223,9 +263,31 @@ public class PackParserHelper {
             card.answer.css.subAlign = (String) answerObj.get("sub_align");
             card.answer.css.subColor = (String) answerObj.get("sub_color");
 
-            int subheadingSize = Integer.parseInt((String) answerObj.get("subheading_size"));
-            int mainSize = Integer.parseInt((String) answerObj.get("main_size"));
-            int subSize = card.answer.css.subSize = Integer.parseInt((String) answerObj.get("sub_size"));
+            int subheadingSize;
+            temp = (String) answerObj.get("subheading_size");
+            if (temp == null) {
+                subheadingSize = 0;
+            } else {
+                subheadingSize =  Integer.parseInt(temp);
+            }
+
+
+            int mainSize;
+            temp = (String) answerObj.get("main_size");
+            if (temp == null) {
+                mainSize = 0;
+            } else {
+                mainSize =  Integer.parseInt(temp);
+            }
+
+            int subSize;
+            temp = (String) answerObj.get("sub_size");
+            if (temp == null) {
+                subSize = 0;
+            } else {
+                subSize =  Integer.parseInt(temp);
+            }
+
             int[] standardCSSArrary = AppContext.getAppContext().getResources().getIntArray(R.array.css_size_int);
 
             if (subheadingSize == 0) {
