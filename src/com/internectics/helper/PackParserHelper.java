@@ -38,7 +38,7 @@ public class PackParserHelper {
                 break;
             }
             Card resultCard = parseCardJsonFiles(cardDirectory, resultPack);
-            resultCard.cardSN = i;
+            resultCard.cardSN = i + 1;
 
 
             newFile = FileOperationHelper.copyImageToImagesFolder(getCardImageFullPath(resultCard.coverImageUriFormatStr, i));

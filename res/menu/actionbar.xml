@@ -22,7 +22,7 @@
     <item
             android:id="@+id/actionbar_play"
             android:icon="@drawable/actionbar_play_button"
-            android:title="@string/actionbar_item_play" android:showAsAction="always">
+            android:title="@string/actionbar_item_play" android:showAsAction="always|withText">
     </item>
 
     <item
@@ -46,7 +46,7 @@
     <item
             android:id="@+id/actionbar_share"
             android:icon="@drawable/actionbar_share_button"
-            android:title="@string/actionbar_item_share" android:showAsAction="ifRoom">
+            android:title="@string/actionbar_item_share" android:showAsAction="always">
     </item>
 
 </menu>
