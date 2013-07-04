@@ -32,8 +32,8 @@ import java.io.File;
 
 public class CardDetailFragment extends Fragment implements FCCEditText.OnKeyboardCloseListener, FCCEditText.OnTouchListener {
 
-    private Card mCurrentCard;
-    private Pack mCurrentPack;
+    public Card mCurrentCard;
+    public Pack mCurrentPack;
 
     public View mContentView;
 

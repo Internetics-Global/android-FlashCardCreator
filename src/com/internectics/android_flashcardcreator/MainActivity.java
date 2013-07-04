@@ -388,6 +388,11 @@ public class MainActivity extends FragmentActivity implements
         });
 
         mCardDetailFragment = new CardDetailFragment(mCurrentPack, null, 1);
+        if (mCurrentPack.cards.size() >0) {
+            //History of reason, we put templateBackground in Card, rather than Pack. It's not a good design practce anyway.
+            mCardDetailFragment.mCurrentCard.templateBackground =  mCurrentPack.cards.get(0).templateBackground;
+        }
+
         getSupportFragmentManager().beginTransaction()
                 .setCustomAnimations(R.anim.in_from_right, R.anim.out_to_right)
                 .replace(R.id.add_card_frame_layout, mCardDetailFragment)
