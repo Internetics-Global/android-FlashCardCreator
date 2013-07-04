@@ -4,25 +4,25 @@
     <item
             android:id="@+id/actionbar_packs"
             android:icon="@null"
-            android:showAsAction="ifRoom|withText"
+            android:showAsAction="always|withText"
             android:title="@string/actionbar_item_packs">
     </item>
     <item
             android:id="@+id/actionbar_edit"
             android:icon="@null"
             android:title="@string/actionbar_item_edit"
-            android:showAsAction="ifRoom">
+            android:showAsAction="always">
     </item>
     <item
             android:id="@+id/actionbar_add_pack"
             android:icon="@drawable/actionbar_add_pack_button"
-            android:title="@string/actionbar_item_add" android:showAsAction="ifRoom|withText">
+            android:title="@string/actionbar_item_add" android:showAsAction="always|withText">
     </item>
 
     <item
             android:id="@+id/actionbar_play"
             android:icon="@drawable/actionbar_play_button"
-            android:title="@string/actionbar_item_play" android:showAsAction="ifRoom">
+            android:title="@string/actionbar_item_play" android:showAsAction="always">
     </item>
 
     <item
@@ -47,12 +47,6 @@
             android:id="@+id/actionbar_share"
             android:icon="@drawable/actionbar_share_button"
             android:title="@string/actionbar_item_share" android:showAsAction="ifRoom">
-    </item>
-
-    <item
-            android:id="@+id/actionbar_test1"
-            android:icon="@android:drawable/btn_default"
-            android:title="test1" android:showAsAction="ifRoom|withText">
     </item>
 
 </menu>

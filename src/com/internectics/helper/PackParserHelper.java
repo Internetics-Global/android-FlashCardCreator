@@ -61,8 +61,6 @@ public class PackParserHelper {
         resultPack.logoImageUriFormatStr = FileOperationHelper.convertToUriFormatFile(newFile);
         resultPack.save(AppContext.getAppContext());
 
-        File file = FileOperationHelper.downloadedPackDirectory();
-        FileOperationHelper.deleteAllFileUnderFolder(file);
     }
 
 
@@ -154,8 +152,10 @@ public class PackParserHelper {
             }
 
             temp = (String) questionObj.get("logo_url");
-            if (StringUtils.isCorrectImageName(temp)) {
+            if ((temp != null) && (temp.contains("http"))) {
                 currentPack.logoURL = temp;
+            } else {
+                currentPack.logoURL = "http://novalidurl.com";
             }
 
             currentPack.questionTitle = (String) questionObj.get("title");
@@ -195,7 +195,7 @@ public class PackParserHelper {
 
             int subheadingSize;
             temp = (String) questionObj.get("subheading_size");
-            if (StringUtils.isCorrectImageName(temp)) {
+            if ((temp != null) && (StringUtils.isNumeric(temp))) {
                 subheadingSize =  Integer.parseInt(temp);
             } else {
                 subheadingSize = 0;
@@ -204,7 +204,7 @@ public class PackParserHelper {
 
             int mainSize;
             temp = (String) questionObj.get("main_size");
-            if (StringUtils.isCorrectImageName(temp)) {
+            if ((temp != null) && (StringUtils.isNumeric(temp))) {
                 mainSize =  Integer.parseInt(temp);
             } else {
                 mainSize = 0;
@@ -212,7 +212,7 @@ public class PackParserHelper {
 
             int subSize;
             temp = (String) questionObj.get("sub_size");
-            if (StringUtils.isCorrectImageName(temp)) {
+            if ((temp != null) && (StringUtils.isNumeric(temp))) {
                 subSize =  Integer.parseInt(temp);
             } else {
                 subSize = 0;
@@ -250,10 +250,13 @@ public class PackParserHelper {
 
         } catch (FileNotFoundException e) {
             e.printStackTrace();
+            Log.e(Global.debugTag,"Error during parse questionTextContent.json, reason:", e.getCause());
         } catch (ParseException e) {
             e.printStackTrace();
+            Log.e(Global.debugTag,"Error during parse questionTextContent.json, reason:", e.getCause());
         } catch (IOException e) {
             e.printStackTrace();
+            Log.e(Global.debugTag,"Error during parse questionTextContent.json, reason:", e.getCause());
         }
 
         //Answer
@@ -290,7 +293,7 @@ public class PackParserHelper {
 
             int subheadingSize;
             temp = (String) answerObj.get("subheading_size");
-            if (StringUtils.isCorrectImageName(temp)) {
+            if ((temp != null) && (StringUtils.isNumeric(temp))) {
                 subheadingSize =  Integer.parseInt(temp);
 
             } else {
@@ -300,7 +303,7 @@ public class PackParserHelper {
 
             int mainSize;
             temp = (String) answerObj.get("main_size");
-            if (StringUtils.isCorrectImageName(temp)) {
+            if ((temp != null) && (StringUtils.isNumeric(temp))) {
                 mainSize =  Integer.parseInt(temp);
             } else {
                 mainSize = 0;
@@ -308,7 +311,7 @@ public class PackParserHelper {
 
             int subSize;
             temp = (String) answerObj.get("sub_size");
-            if (StringUtils.isCorrectImageName(temp)) {
+            if ((temp != null) && (StringUtils.isNumeric(temp))) {
                 subSize =  Integer.parseInt(temp);
             } else {
                 subSize = 0;
@@ -346,10 +349,13 @@ public class PackParserHelper {
 
         } catch (FileNotFoundException e) {
             e.printStackTrace();
+            Log.e(Global.debugTag,"Error during parse questionTextContent.json, reason:", e.getCause());
         } catch (ParseException e) {
             e.printStackTrace();
+            Log.e(Global.debugTag,"Error during parse questionTextContent.json, reason:", e.getCause());
         } catch (IOException e) {
             e.printStackTrace();
+            Log.e(Global.debugTag,"Error during parse questionTextContent.json, reason:", e.getCause());
         }
 
         return card;
