@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.util.Log;
+import android.widget.Toast;
 import com.dropbox.client2.DropboxAPI;
 import com.dropbox.client2.exception.DropboxException;
 import com.internectics.data.Pack;
@@ -49,10 +50,16 @@ public class ShareLinkHelper extends AsyncTask<Void, Long, Boolean> {
             String shortedShareLink = link.url;
             String shareLink = getUnshortedURL(shortedShareLink);
             String fccShareLink = shareLink.replace("https","fcc").replace("http","fcc");
+            Log.d(Global.debugTag, "the fcc share linkage is: " + fccShareLink);
             String redirectedShareLink = getRidirectedURL(fccShareLink);
-            Log.d(Global.debugTag, "the shareLink is: " + redirectedShareLink);
-            PackRecordHelper.savePackUploadRecord(mContext, mCurentPack, shareLink);
-            execShareAction();
+            if (redirectedShareLink.indexOf("http://") != 0) {
+                Toast.makeText(mContext, "Failure to creat an redirected URL, Please try later or again", 1).show();
+            } else {
+                Log.d(Global.debugTag, "the shareLink is: " + redirectedShareLink);
+                PackRecordHelper.savePackUploadRecord(mContext, mCurentPack, redirectedShareLink);
+                execShareAction();
+            }
+
 
         } catch (DropboxException e) {
             e.printStackTrace();
@@ -109,8 +116,9 @@ public class ShareLinkHelper extends AsyncTask<Void, Long, Boolean> {
 
         if (responseString.contains("http://") == false) {
             Log.e(Global.debugTag,"The generated redirected URL from tinyurl.com is not correct:" + responseString);
+            responseString = "";
         } else {
-            Log.e(Global.debugTag,"The generated redirected URL from tinyurl.com is:" + responseString);
+            Log.d(Global.debugTag,"The generated redirected URL from tinyurl.com is:" + responseString);
         }
 
         return responseString;
@@ -119,10 +127,11 @@ public class ShareLinkHelper extends AsyncTask<Void, Long, Boolean> {
 
     public void execShareAction() {
         String shareLink = PackRecordHelper.getCurrentPackShareLink(mCurentPack);
+
         Intent intent = new Intent(Intent.ACTION_SEND);
         intent.setType("text/plain");
         intent.putExtra(Intent.EXTRA_TEXT, shareLink);
-        intent.putExtra(Intent.EXTRA_SUBJECT, "Something to say:");
+        intent.putExtra(Intent.EXTRA_SUBJECT, "Share:");
         mContext.startActivity(Intent.createChooser(intent, "Share current pack to"));
     }
 

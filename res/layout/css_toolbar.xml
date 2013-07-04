@@ -14,7 +14,7 @@
             android:layout_alignParentLeft="true"
             android:layout_margin="5dp"
             android:gravity="center"
-            android:background="@drawable/selector_csstoolbar_button"
+            android:background="@drawable/selector_csstoolbar_button_highligh"
             style="@style/BlackButtonText"
             android:text="@string/button_save"/>
 
@@ -37,7 +37,7 @@
             android:layout_height="match_parent"
             android:layout_alignParentRight="true"
             android:entries="@array/css_align"
-            android:background="@drawable/selector_black_spinner"
+            android:background="@drawable/selector_csstoolbar_button"
             android:layout_margin="5dp"/>
 
 
@@ -47,7 +47,7 @@
             android:layout_width="@dimen/csstoolbar_button_width"
             android:layout_height="match_parent"
             android:entries="@array/css_color"
-            android:background="@drawable/selector_black_spinner"
+            android:background="@drawable/selector_csstoolbar_button"
             android:layout_margin="5dp"
             android:layout_toLeftOf="@id/spinner_align"
             />
@@ -58,7 +58,7 @@
             android:layout_width="@dimen/csstoolbar_button_width"
             android:layout_height="match_parent"
             android:entries="@array/css_size"
-            android:background="@drawable/selector_black_spinner"
+            android:background="@drawable/selector_csstoolbar_button"
             android:layout_margin="5dp"
             android:layout_toLeftOf="@id/spinner_color"
             />

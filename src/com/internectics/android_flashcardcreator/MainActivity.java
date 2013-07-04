@@ -21,6 +21,7 @@ import android.widget.*;
 import com.dropbox.client2.DropboxAPI;
 import com.dropbox.client2.android.AndroidAuthSession;
 import com.dropbox.client2.session.TokenPair;
+import com.google.analytics.tracking.android.EasyTracker;
 import com.internectics.data.Card;
 import com.internectics.data.Pack;
 import com.internectics.fragment.AddPackFragment;
@@ -105,6 +106,8 @@ public class MainActivity extends FragmentActivity implements
         mSymbolBoxFragment = (SymbolBoxFragment) getSupportFragmentManager().findFragmentById(R.id.fragment_symbol_box);
 
         mIsFromRestartApp = true;
+
+        EasyTracker.getInstance().setContext(this);
     }
 
     @Override
@@ -450,6 +453,17 @@ public class MainActivity extends FragmentActivity implements
         return true;
     }
 
+    @Override
+    protected void onStart() {
+        super.onStart();
+        EasyTracker.getInstance().activityStart(this);
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        EasyTracker.getInstance().activityStop(this);
+    }
 
     @Override
     protected Dialog onCreateDialog(int id) {
@@ -560,7 +574,7 @@ public class MainActivity extends FragmentActivity implements
             public void onClick(View v) {
                 mCardDetailFragment.dismissKeyboard();
                 if (mSymbolBoxFragment!=null) {
-                    mSymbolBoxFragment.hideSymbolBox();
+                    mSymbolBoxFragment.hideSymbolBoxWithAnimation(true);
                 }
                 mCardDetailFragment.saveEdittedCard();
                 removeCSSToolbar();
@@ -570,6 +584,9 @@ public class MainActivity extends FragmentActivity implements
         cssCancelButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                if (mSymbolBoxFragment!=null) {
+                    mSymbolBoxFragment.hideSymbolBoxWithAnimation(true);
+                }
                 mCardDetailFragment.dismissKeyboard();
                 removeCSSToolbar();
             }
@@ -632,12 +649,12 @@ public class MainActivity extends FragmentActivity implements
 
 
     public void setAsSymbolStatus() {
-        mSymbolBoxFragment.showSymbolBox();
+        mSymbolBoxFragment.showSymbolBoxWithAnimation(false);
         mSymbolKeyboardSwitchButton.setText("Keyboard");
     }
 
     public void setAsKeyboardStatus() {
-        mSymbolBoxFragment.hideSymbolBox();
+        mSymbolBoxFragment.hideSymbolBoxWithAnimation(false);
         if (mSymbolKeyboardSwitchButton != null) {
             mSymbolKeyboardSwitchButton.setText("Symbol");
         }
@@ -713,7 +730,7 @@ public class MainActivity extends FragmentActivity implements
 
 
         if ((mSymbolBoxFragment !=null) && (mSymbolBoxFragment.isSymbolBoxVisible())) {
-            mSymbolBoxFragment.hideSymbolBox();
+            mSymbolBoxFragment.hideSymbolBoxWithAnimation(false);
             return;
         }
 

@@ -8,6 +8,8 @@ import android.support.v4.view.ViewPager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.AlphaAnimation;
+import android.view.animation.Animation;
 import com.internectics.android_flashcardcreator.R;
 import com.internectics.helper.SymbolHelper;
 
@@ -41,17 +43,28 @@ public class SymbolBoxFragment extends Fragment {
         mPager = (ViewPager) mContentView.findViewById(R.id.symbol_pager);
         mPageAdapter = new SymbolPageAdapter(getFragmentManager(), getGridViewFragments());
         mPager.setAdapter(mPageAdapter);
-        hideSymbolBox();
+        hideSymbolBoxWithAnimation(false);
         return mContentView;
     }
 
 
-    public void hideSymbolBox() {
+    public void hideSymbolBoxWithAnimation(boolean animation) {
+        if ((animation) && (mContentView.getVisibility() == View.VISIBLE)) {
+            final Animation animAlphaUp = new AlphaAnimation(1.0f, 0.0f);
+            animAlphaUp.setDuration(500);
+            mContentView.startAnimation(animAlphaUp);
+        }
         mContentView.setVisibility(View.INVISIBLE);
     }
 
-    public void showSymbolBox() {
+    public void showSymbolBoxWithAnimation(boolean animation) {
+        if ((animation) && (mContentView.getVisibility() == View.INVISIBLE)) {
+            final Animation animAlphaUp = new AlphaAnimation(0.0f, 1.0f);
+            animAlphaUp.setDuration(500);
+            mContentView.startAnimation(animAlphaUp);
+        }
         mContentView.setVisibility(View.VISIBLE);
+
     }
 
     public boolean isSymbolBoxVisible() {

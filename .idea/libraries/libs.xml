@@ -4,6 +4,7 @@
       <root url="jar://$PROJECT_DIR$/libs/dropbox-android-sdk-1.5.4.jar!/" />
       <root url="jar://$PROJECT_DIR$/libs/httpmime-4.0.3.jar!/" />
       <root url="jar://$PROJECT_DIR$/libs/json_simple-1.1.jar!/" />
+      <root url="jar://$PROJECT_DIR$/libs/libGoogleAnalyticsV2.jar!/" />
     </CLASSES>
     <JAVADOC />
     <SOURCES />
