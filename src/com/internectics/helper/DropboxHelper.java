@@ -52,6 +52,11 @@ public class DropboxHelper {
         clearKeys(context);
     }
 
+    public static boolean isLinked() {
+        boolean b = DropboxHelper.getDropboxAPI().getSession().isLinked();
+        return b;
+    }
+
     private static AndroidAuthSession buildSession() {
         AppKeyPair appKeyPair = new AppKeyPair(APP_KEY, APP_SECRET);
         AndroidAuthSession session;

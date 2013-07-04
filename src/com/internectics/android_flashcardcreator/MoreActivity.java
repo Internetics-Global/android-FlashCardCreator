@@ -32,6 +32,12 @@ public class MoreActivity extends PreferenceActivity {
         PreferenceScreen helpPreference = (PreferenceScreen) findPreference("help_preference");
         PreferenceScreen aboutPreference = (PreferenceScreen) findPreference("about_preference");
 
+        if (DropboxHelper.isLinked()) {
+            dropboxPreference.setChecked(true);
+        } else {
+            dropboxPreference.setChecked(false);
+        }
+
         dropboxPreference.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
             @Override
             public boolean onPreferenceClick(Preference preference) {

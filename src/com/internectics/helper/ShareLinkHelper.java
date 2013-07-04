@@ -53,7 +53,7 @@ public class ShareLinkHelper extends AsyncTask<Void, Long, Boolean> {
             Log.d(Global.debugTag, "the fcc share linkage is: " + fccShareLink);
             String redirectedShareLink = getRidirectedURL(fccShareLink);
             if (redirectedShareLink.indexOf("http://") != 0) {
-                Toast.makeText(mContext, "Failure to creat an redirected URL, Please try later or again", 1).show();
+                Toast.makeText(mContext, "Redirect sevice is not available now, please try again", 1).show();
             } else {
                 Log.d(Global.debugTag, "the shareLink is: " + redirectedShareLink);
                 PackRecordHelper.savePackUploadRecord(mContext, mCurentPack, redirectedShareLink);
