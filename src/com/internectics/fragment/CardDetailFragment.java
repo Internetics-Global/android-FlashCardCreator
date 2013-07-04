@@ -1172,11 +1172,11 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnKeyboa
             case 0:   //stand for align
 
                 if (editTextTag == 1001) {
-                    currentCSS.subheadingAlign = alignArray[subMenuID];
+                    currentCSS.subheadingAlign = alignArray[subMenuID +1];
                 } else if (editTextTag == 1002) {
-                    currentCSS.mainAlign = alignArray[subMenuID];
+                    currentCSS.mainAlign = alignArray[subMenuID +1];
                 } else if (editTextTag == 1003) {
-                    currentCSS.subAlign = alignArray[subMenuID];
+                    currentCSS.subAlign = alignArray[subMenuID + 1];
                 }
 
                 switch (subMenuID) {
@@ -1196,7 +1196,7 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnKeyboa
 
             case 1:   //stand for size
 
-                int size = Integer.parseInt(sizeArray[subMenuID]);
+                int size = Integer.parseInt(sizeArray[subMenuID +1]);
 
                 //you can find the tag definition(1001,1002,1003) in card.xml
                 if (editTextTag == 1001) {
@@ -1230,11 +1230,11 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnKeyboa
             case 2:   //stand for color
 
                 if (editTextTag == 1001) {
-                    currentCSS.subheadingColor = colorArray[subMenuID];
+                    currentCSS.subheadingColor = colorArray[subMenuID +1];
                 } else if (editTextTag == 1002) {
-                    currentCSS.mainColor = colorArray[subMenuID];
+                    currentCSS.mainColor = colorArray[subMenuID +1];
                 } else if (editTextTag == 1003) {
-                    currentCSS.subColor = colorArray[subMenuID];
+                    currentCSS.subColor = colorArray[subMenuID +1];
                 }
 
                 switch (subMenuID) {
