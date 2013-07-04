@@ -43,6 +43,9 @@ public class Global {
     //Used to judge whether to play random
     public static final String isRandomPlay = "is_random_play";
 
+    //used to generate a redirected URL
+    public static final String URL_REDIRECT_API = "http://tinyurl.com/api-create.php?url=";
+
 
     /**
      * detect network

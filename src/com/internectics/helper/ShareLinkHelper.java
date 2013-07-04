@@ -8,6 +8,19 @@ import com.dropbox.client2.DropboxAPI;
 import com.dropbox.client2.exception.DropboxException;
 import com.internectics.data.Pack;
 import com.internectics.util.Global;
+import org.apache.http.HttpResponse;
+import org.apache.http.HttpStatus;
+import org.apache.http.StatusLine;
+import org.apache.http.client.ClientProtocolException;
+import org.apache.http.client.HttpClient;
+import org.apache.http.client.methods.HttpGet;
+import org.apache.http.impl.client.DefaultHttpClient;
+
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.net.URLConnection;
 
 /**
  * 1. create share linkage
@@ -33,8 +46,11 @@ public class ShareLinkHelper extends AsyncTask<Void, Long, Boolean> {
     protected Boolean doInBackground(Void... params) {
         try {
             DropboxAPI.DropboxLink link = DropboxHelper.getDropboxAPI().share(mFilePathInDropbox);
-            String shareLink = link.url;
-            Log.d(Global.debugTag, "the shareLink is: " + shareLink);
+            String shortedShareLink = link.url;
+            String shareLink = getUnshortedURL(shortedShareLink);
+            String fccShareLink = shareLink.replace("https","fcc").replace("http","fcc");
+            String redirectedShareLink = getRidirectedURL(fccShareLink);
+            Log.d(Global.debugTag, "the shareLink is: " + redirectedShareLink);
             PackRecordHelper.savePackUploadRecord(mContext, mCurentPack, shareLink);
             execShareAction();
 
@@ -43,6 +59,61 @@ public class ShareLinkHelper extends AsyncTask<Void, Long, Boolean> {
         }
 
         return false;
+    }
+
+
+    String getUnshortedURL(String shortedURL) {
+        URLConnection conn = null;
+        try {
+            URL inputURL = new URL(shortedURL);
+            conn = inputURL.openConnection();
+
+        } catch (MalformedURLException e) {
+            Log.d(Global.debugTag,"Please input a valid URL");
+        } catch (IOException ioe) {
+            Log.d(Global.debugTag,"Can not connect to the URL");
+        }
+
+        String str =  conn.getHeaderField("location");
+
+        return str;
+
+    }
+
+    String getRidirectedURL(String url){
+
+        String responseString= "";
+
+        String wholeURL = Global.URL_REDIRECT_API + url;
+
+        HttpClient httpclient = new DefaultHttpClient();
+        HttpResponse response = null;
+        try {
+            response = httpclient.execute(new HttpGet(wholeURL));
+            StatusLine statusLine = response.getStatusLine();
+            if(statusLine.getStatusCode() == HttpStatus.SC_OK){
+                ByteArrayOutputStream out = new ByteArrayOutputStream();
+                response.getEntity().writeTo(out);
+                out.close();
+                responseString = out.toString();
+            } else{
+                response.getEntity().getContent().close();
+                throw new IOException(statusLine.getReasonPhrase());
+            }
+
+        } catch (ClientProtocolException e) {
+            e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+        } catch (IOException e) {
+            e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+        }
+
+        if (responseString.contains("http://") == false) {
+            Log.e(Global.debugTag,"The generated redirected URL from tinyurl.com is not correct:" + responseString);
+        } else {
+            Log.e(Global.debugTag,"The generated redirected URL from tinyurl.com is:" + responseString);
+        }
+
+        return responseString;
     }
 
 
