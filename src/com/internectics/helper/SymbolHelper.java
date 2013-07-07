@@ -30,7 +30,7 @@ public class SymbolHelper {
 
     public static String[] mUnicodeArray = {
             "×", "÷", "∑", "λ", "∩", "∪", "∫", "∴", "≠", "≈",
-            "≉", "≤", "≥", "⊂", "⊃", "°", "♭", "♯", "♮", "♩",
+            "≉", "≤", "≥", "⊂", "⊃", "°", "♭", "♯", "µ", "♩",
             "♪", "♫", "✓", "✗", "★", "□", "►", "∞", "Ω", "❄",
             "♻", "⚠", "☢", "☠", "✈", "✇", "☎", "✓", "⚑", "♥",
             "✝", "✚", "☤", "☮", "♂", "♀", "☂", "⬭", "○", "◁",
@@ -40,7 +40,7 @@ public class SymbolHelper {
 
     public static String[] mDescriptionArray = {
             "Multiple", "Division", "Summation", "Lambda", "Intersection", "Union", "Integral", "Therefore", "Not equal", "Approxi",
-            "Not approxi", "Less than", "More than", "Subset", "Superset", "Degree", "Flat sign", "Sharp sign", "Natural sign", "Quarter note",
+            "Not approxi", "Less than", "More than", "Subset", "Superset", "Degree", "Flat sign", "Sharp sign", "Micro", "Quarter note",
             "Eighth note", "Double eight", "Check", "Cross", "Star", "Square", "Pointer", "Infinity", "Omega", "Snowflake",
             "Recycling", "Caution", "Nuclear", "Skull", "Airplane", "Recording", "Telephone", "Check mark", "Flag", "Heart",
             "Latin cross", "Cross", "Caduceus", "Peace", "Male", "Female", "Umbrella", "Ellipse", "Circle", "Hexagon",
