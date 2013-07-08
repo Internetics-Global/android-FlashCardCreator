@@ -112,6 +112,20 @@ public class Pack {
         }
     }
 
+    public void saveAllCards(Context context) {
+        try {
+            SQLiteHelper.defaultDatabase(context).beginTransaction();
+
+            for (Card card:cards) {
+                card.save(context);
+            }
+
+            SQLiteHelper.defaultDatabase(context).setTransactionSuccessful();
+        } finally {
+            SQLiteHelper.defaultDatabase(context).endTransaction();
+        }
+    }
+
 
     private void update(Context context) {
         String query = String.format("UPDATE Packs_Tables SET pack_name=\"%s\",sidebar_title=\"%s\",user_id= %d,question_title=\"%s\",answer_title=\"%s\",cover_image=\"%s\",logo_image=\"%s\",logo_url=\"%s\",creator_id= \"%s\",creator_nick_name=\"%s\",platform=\"%s\" WHERE pack_id=%d", packName, sidebarTitle, userID, questionTitle, answerTitle, coverImageUriFormatStr, logoImageUriFormatStr, logoURL, creatorID, creatorNickName, platform, packID);

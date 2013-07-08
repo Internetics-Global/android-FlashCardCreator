@@ -329,15 +329,21 @@ public class CardListFragment extends Fragment {
         mCurrentPack.cards.remove(which);
         removedCard.destroy(AppContext.getAppContext());
 
-        //Step2: reorder all cards' SN and save to database
-        for (int i = 0; i < mCurrentPack.cards.size(); i++) {
-            Card card = mCurrentPack.cards.get(i);
-            card.cardSN = i + 1;
-            card.save(AppContext.getAppContext());
+        //Step2: reorder all cards' SN
+        int index = 0;
+        for (Card card:mCurrentPack.cards) {
+            card.cardSN = index + 1;
+            index ++;
         }
 
         //Step3: update list view
         updateListView(0);
+
+        Log.d(Global.debugTag, "test point 0");
+        //Step4: save change
+        mCurrentPack.saveAllCards(AppContext.getAppContext());
+
+        Log.d(Global.debugTag, "test point 1");
 
     }
 
