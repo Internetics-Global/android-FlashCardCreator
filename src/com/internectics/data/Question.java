@@ -58,16 +58,20 @@ public class Question {
 
         String queryString = String.format("SELECT * FROM Question_Tables WHERE card_id=%d", cardID);
         Cursor cur = SQLiteHelper.defaultDatabase(context).rawQuery(queryString, null);
-        while (cur.moveToNext()) {
-            questionDict.put("question_id", cur.getInt(0));
-            questionDict.put("card_id", cur.getInt(1));
-            questionDict.put("subheading", cur.getString(2));
-            questionDict.put("main", cur.getString(3));
-            questionDict.put("sub", cur.getString(4));
-            questionDict.put("image", cur.getString(5));
-            questionDict.put("css_id", cur.getInt(6));
-            questionDict.put("template_id", cur.getInt(7));
-            questionDict.put("css", CSS.cssForCSSID(context, cur.getInt(6)));
+        try {
+            while (cur.moveToNext()) {
+                questionDict.put("question_id", cur.getInt(0));
+                questionDict.put("card_id", cur.getInt(1));
+                questionDict.put("subheading", cur.getString(2));
+                questionDict.put("main", cur.getString(3));
+                questionDict.put("sub", cur.getString(4));
+                questionDict.put("image", cur.getString(5));
+                questionDict.put("css_id", cur.getInt(6));
+                questionDict.put("template_id", cur.getInt(7));
+                questionDict.put("css", CSS.cssForCSSID(context, cur.getInt(6)));
+            }
+        }  finally {
+            cur.close();
         }
 
         return questionDict;

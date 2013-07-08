@@ -63,17 +63,21 @@ public class CSS {
         HashMap<String, Object> cssDict = new HashMap<String, Object>();
         String queryString = String.format("SELECT * FROM CSS_Tables WHERE css_id=%d", cssID);
         Cursor cur = SQLiteHelper.defaultDatabase(context).rawQuery(queryString, null);
-        while (cur.moveToNext()) {
-            cssDict.put("css_id", cur.getInt(0));
-            cssDict.put("subheading_size", cur.getInt(1));
-            cssDict.put("subheading_align", cur.getString(2));
-            cssDict.put("subheading_color", cur.getString(3));
-            cssDict.put("main_size", cur.getInt(4));
-            cssDict.put("main_align", cur.getString(5));
-            cssDict.put("main_color", cur.getString(6));
-            cssDict.put("sub_size", cur.getInt(7));
-            cssDict.put("sub_align", cur.getString(8));
-            cssDict.put("sub_color", cur.getString(9));
+        try {
+            while (cur.moveToNext()) {
+                cssDict.put("css_id", cur.getInt(0));
+                cssDict.put("subheading_size", cur.getInt(1));
+                cssDict.put("subheading_align", cur.getString(2));
+                cssDict.put("subheading_color", cur.getString(3));
+                cssDict.put("main_size", cur.getInt(4));
+                cssDict.put("main_align", cur.getString(5));
+                cssDict.put("main_color", cur.getString(6));
+                cssDict.put("sub_size", cur.getInt(7));
+                cssDict.put("sub_align", cur.getString(8));
+                cssDict.put("sub_color", cur.getString(9));
+            }
+        } finally {
+            cur.close();
         }
         return cssDict;
     }

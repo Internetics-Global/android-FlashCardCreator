@@ -76,22 +76,26 @@ public class Pack {
 
         String queryString = String.format("SELECT * FROM Packs_Tables WHERE user_id=%d", userID);
         Cursor cur = SQLiteHelper.defaultDatabase(context).rawQuery(queryString, null);
-        while (cur.moveToNext()) {
-            HashMap<String, Object> cardDict = new HashMap<String, Object>();
-            cardDict.put("pack_id", cur.getInt(0));
-            cardDict.put("pack_name", cur.getString(1));
-            cardDict.put("sidebar_title", cur.getString(2));
-            cardDict.put("user_id", cur.getInt(3));
-            cardDict.put("question_title", cur.getString(4));
-            cardDict.put("answer_title", cur.getString(5));
-            cardDict.put("cover_image", cur.getString(6));
-            cardDict.put("logo_image", cur.getString(7));
-            cardDict.put("logo_url", cur.getString(8));
-            cardDict.put("creator_id", cur.getString(9));
-            cardDict.put("platform", cur.getString(10));
-            cardDict.put("creator_nick_name", cur.getString(11));
-            cardDict.put("cards", Card.cardsForPackID(context, cur.getInt(0)));
-            returnArray.add(cardDict);
+        try {
+            while (cur.moveToNext()) {
+                HashMap<String, Object> cardDict = new HashMap<String, Object>();
+                cardDict.put("pack_id", cur.getInt(0));
+                cardDict.put("pack_name", cur.getString(1));
+                cardDict.put("sidebar_title", cur.getString(2));
+                cardDict.put("user_id", cur.getInt(3));
+                cardDict.put("question_title", cur.getString(4));
+                cardDict.put("answer_title", cur.getString(5));
+                cardDict.put("cover_image", cur.getString(6));
+                cardDict.put("logo_image", cur.getString(7));
+                cardDict.put("logo_url", cur.getString(8));
+                cardDict.put("creator_id", cur.getString(9));
+                cardDict.put("platform", cur.getString(10));
+                cardDict.put("creator_nick_name", cur.getString(11));
+                cardDict.put("cards", Card.cardsForPackID(context, cur.getInt(0)));
+                returnArray.add(cardDict);
+            }
+        } finally {
+            cur.close();
         }
         return returnArray;
     }

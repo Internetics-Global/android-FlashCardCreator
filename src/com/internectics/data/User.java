@@ -32,10 +32,14 @@ public class User {
         SQLiteDatabase db = SQLiteHelper.defaultDatabase(context);
         String query = String.format("SELECT * FROM Users_Tables WHERE user_id=%d", Global.USER_ID);
         Cursor cur = db.rawQuery(query, null);
-        while (cur.moveToNext()) {
-            dataDict.put("user_id", cur.getInt(0));
-            dataDict.put("nick_name", cur.getString(1));
-            dataDict.put("packs", Pack.packsForUserID(context, cur.getInt(0)));
+        try {
+            while (cur.moveToNext()) {
+                dataDict.put("user_id", cur.getInt(0));
+                dataDict.put("nick_name", cur.getString(1));
+                dataDict.put("packs", Pack.packsForUserID(context, cur.getInt(0)));
+            }
+        } finally {
+            cur.close();
         }
 
         defaultUser = (new User()).initWithDictionary(dataDict);

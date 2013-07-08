@@ -65,6 +65,7 @@ public class SQLiteHelper {
         public void onCreate(SQLiteDatabase db) {
             db.execSQL("CREATE TABLE " + "Users_Tables" + " (" + "user_id"
                     + " INTEGER PRIMARY KEY, " + "nick_name" + " TEXT)");
+            db.execSQL("CREATE INDEX IF NOT EXISTS IA on Users_Tables(user_id)");
 
             // compare with iOS version, we made changes:
             // 1. delete is_public, language_name, 2. add question_title,
@@ -78,6 +79,7 @@ public class SQLiteHelper {
                     + "logo_url" + " TEXT," + "creator_id" + " TEXT,"
                     + "platform" + " TEXT,"
                     + "creator_nick_name" + " TEXT)");
+            db.execSQL("CREATE INDEX IF NOT EXISTS IA on Packs_Tables(pack_id)");
 
             // compared with iOS version, we made changes:
             // 1. delete creator, card_name
@@ -85,6 +87,7 @@ public class SQLiteHelper {
                     + " INTEGER PRIMARY KEY," + "pack_id" + " INTEGER,"
                     + "cover_image" + " TEXT," + "template_background" + " TEXT,"
                     + "card_sn" + " INTEGER)");
+            db.execSQL("CREATE INDEX IF NOT EXISTS IA on Cards_Tables(card_id)");
 
             // compared with iOS version, we made changes:
             // 1. delete title, log and logo_url
@@ -93,6 +96,7 @@ public class SQLiteHelper {
                     + "subheading" + " TEXT," + "main" + " TEXT," + "sub"
                     + " TEXT," + "image" + " TEXT," + "css_id" + " INTEGER,"
                     + "template_id" + " INTEGER)");
+            db.execSQL("CREATE INDEX IF NOT EXISTS IA on Question_Tables(question_id)");
 
             // compared with iOS version, we made changes:
             // 1. delete log and logo_url
@@ -101,6 +105,7 @@ public class SQLiteHelper {
                     + "subheading" + " TEXT," + "main" + " TEXT," + "sub"
                     + " TEXT," + "image" + " TEXT," + "css_id" + " INTEGER,"
                     + "template_id" + " INTEGER)");
+            db.execSQL("CREATE INDEX IF NOT EXISTS IA on Answer_Tables(answer_id)");
 
             // compared with iOS version, we made changes:
             // 1.
@@ -110,6 +115,7 @@ public class SQLiteHelper {
                     + "main_size" + " INTEGER," + "main_align" + " TEXT,"
                     + "main_color" + " TEXT," + "sub_size" + " INTEGER,"
                     + "sub_align" + " TEXT," + "sub_color" + " TEXT)");
+            db.execSQL("CREATE INDEX IF NOT EXISTS IA on CSS_Tables(css_id)");
 
 
             //Build default user table
