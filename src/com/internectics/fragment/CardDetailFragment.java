@@ -288,6 +288,7 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnKeyboa
         ActionItem questionActionItem2 = new ActionItem(2, null, getResources().getDrawable(R.drawable.question_templatescreenshot2));
         ActionItem questionActionItem3 = new ActionItem(3, null, getResources().getDrawable(R.drawable.question_templatescreenshot3));
         ActionItem questionActionItem4 = new ActionItem(4, null, getResources().getDrawable(R.drawable.question_templatescreenshot4));
+        ActionItem questionActionItem5 = new ActionItem(5, null, getResources().getDrawable(R.drawable.question_templatescreenshot5));
 
         ActionItem answerActionItem0 = new ActionItem(0, null, getResources().getDrawable(R.drawable.answer_templatescreenshot0));
         ActionItem answerActionItem1 = new ActionItem(1, null, getResources().getDrawable(R.drawable.answer_templatescreenshot1));
@@ -304,6 +305,7 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnKeyboa
         questionQuickAction.addActionItem(questionActionItem2);
         questionQuickAction.addActionItem(questionActionItem3);
         questionQuickAction.addActionItem(questionActionItem4);
+        questionQuickAction.addActionItem(questionActionItem5);
         questionQuickAction.setOnActionItemClickListener(new QuickAction.OnActionItemClickListener() {
             @Override
             public void onItemClick(QuickAction source, int pos, int actionId) {
@@ -853,6 +855,8 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnKeyboa
 
         switch (templateID) {
             case 0:
+                mImage.setVisibility(View.INVISIBLE);
+
                 params = (LinearLayout.LayoutParams) mSubheading.getLayoutParams();
                 params.width = LinearLayout.LayoutParams.FILL_PARENT;
                 params.weight = 50;
@@ -870,6 +874,8 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnKeyboa
 
                 break;
             case 1:
+                mImage.setVisibility(View.INVISIBLE);
+
                 params = (LinearLayout.LayoutParams) mSubheading.getLayoutParams();
                 params.width = LinearLayout.LayoutParams.FILL_PARENT;
                 params.weight = 50;
@@ -886,6 +892,8 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnKeyboa
                 mSub.setLayoutParams(params);
                 break;
             case 2:
+                mImage.setVisibility(View.INVISIBLE);
+
                 params = (LinearLayout.LayoutParams) mSubheading.getLayoutParams();
                 params.width = LinearLayout.LayoutParams.FILL_PARENT;
                 params.weight = 0;
@@ -902,6 +910,8 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnKeyboa
                 mSub.setLayoutParams(params);
                 break;
             case 3:
+                mImage.setVisibility(View.INVISIBLE);
+
                 params = (LinearLayout.LayoutParams) mSubheading.getLayoutParams();
                 params.width = LinearLayout.LayoutParams.FILL_PARENT;
                 params.weight = 0;
@@ -918,6 +928,8 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnKeyboa
                 mSub.setLayoutParams(params);
                 break;
             case 4:
+                mImage.setVisibility(View.INVISIBLE);
+
                 params = (LinearLayout.LayoutParams) mSubheading.getLayoutParams();
                 params.width = LinearLayout.LayoutParams.FILL_PARENT;
                 params.weight = 0;
@@ -926,6 +938,32 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnKeyboa
                 params = (LinearLayout.LayoutParams) mMain.getLayoutParams();
                 params.width = LinearLayout.LayoutParams.FILL_PARENT;
                 params.weight = 380;
+                mMain.setLayoutParams(params);
+
+                params = (LinearLayout.LayoutParams) mSub.getLayoutParams();
+                params.width = LinearLayout.LayoutParams.FILL_PARENT;
+                params.weight = 0;
+                mSub.setLayoutParams(params);
+                break;
+            case 5:
+                //part1: image
+                params = (LinearLayout.LayoutParams) mContentBodyLeft.getLayoutParams();
+                params.weight = 0f;
+                mContentBodyLeft.setLayoutParams(params);
+                params = (LinearLayout.LayoutParams) mImage.getLayoutParams();
+                params.weight = 710f;
+                mImage.setLayoutParams(params);
+                mImage.setVisibility(View.VISIBLE);
+
+                //part2:text
+                params = (LinearLayout.LayoutParams) mSubheading.getLayoutParams();
+                params.width = LinearLayout.LayoutParams.FILL_PARENT;
+                params.weight = 0;
+                mSubheading.setLayoutParams(params);
+
+                params = (LinearLayout.LayoutParams) mMain.getLayoutParams();
+                params.width = LinearLayout.LayoutParams.FILL_PARENT;
+                params.weight = 0;
                 mMain.setLayoutParams(params);
 
                 params = (LinearLayout.LayoutParams) mSub.getLayoutParams();
@@ -955,6 +993,7 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnKeyboa
                 params = (LinearLayout.LayoutParams) mImage.getLayoutParams();
                 params.weight = 350f;
                 mImage.setLayoutParams(params);
+                mImage.setVisibility(View.VISIBLE);
 
                 //part2:text
                 params = (LinearLayout.LayoutParams) mSubheading.getLayoutParams();
@@ -981,6 +1020,7 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnKeyboa
                 params = (LinearLayout.LayoutParams) mImage.getLayoutParams();
                 params.weight = 210f;
                 mImage.setLayoutParams(params);
+                mImage.setVisibility(View.VISIBLE);
 
                 //part2:text
                 params = (LinearLayout.LayoutParams) mSubheading.getLayoutParams();
@@ -1007,6 +1047,7 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnKeyboa
                 params = (LinearLayout.LayoutParams) mImage.getLayoutParams();
                 params.weight = 350f;
                 mImage.setLayoutParams(params);
+                mImage.setVisibility(View.VISIBLE);
 
                 //part2:text
                 params = (LinearLayout.LayoutParams) mSubheading.getLayoutParams();
@@ -1029,9 +1070,11 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnKeyboa
                 params = (LinearLayout.LayoutParams) mContentBodyLeft.getLayoutParams();
                 params.weight = 710f;
                 mContentBodyLeft.setLayoutParams(params);
+
                 params = (LinearLayout.LayoutParams) mImage.getLayoutParams();
                 params.weight = 0f;
                 mImage.setLayoutParams(params);
+                mImage.setVisibility(View.INVISIBLE);
 
                 //part2:text
                 params = (LinearLayout.LayoutParams) mSubheading.getLayoutParams();
@@ -1057,6 +1100,7 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnKeyboa
                 params = (LinearLayout.LayoutParams) mImage.getLayoutParams();
                 params.weight = 350f;
                 mImage.setLayoutParams(params);
+                mImage.setVisibility(View.VISIBLE);
 
                 //part2:text
                 params = (LinearLayout.LayoutParams) mSubheading.getLayoutParams();
@@ -1082,6 +1126,7 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnKeyboa
                 params = (LinearLayout.LayoutParams) mImage.getLayoutParams();
                 params.weight = 710f;
                 mImage.setLayoutParams(params);
+                mImage.setVisibility(View.VISIBLE);
 
                 //part2:text
                 params = (LinearLayout.LayoutParams) mSubheading.getLayoutParams();
