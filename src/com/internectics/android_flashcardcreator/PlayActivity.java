@@ -25,7 +25,7 @@ import java.util.Random;
 public class PlayActivity extends FragmentActivity implements SensorEventListener {
 
     private Pack mCurrentPack;
-    private int mPosition;
+    private int mPosition = 0;
     private List<Fragment> mFragments;
     private FCCPageAdapter mPageAdapter;
 
@@ -56,28 +56,34 @@ public class PlayActivity extends FragmentActivity implements SensorEventListene
         marginLayoutParams.rightMargin = margin;
         pager.setLayoutParams(marginLayoutParams);
 
-        pager.setOffscreenPageLimit(2);
+        pager.setOffscreenPageLimit(1);
         pager.setAdapter(mPageAdapter);
         pager.setOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             @Override
             public void onPageScrolled(int i, float v, int i2) {
                 if ((mPosition != i) && (i2 == 0)) {
                     Log.i(Global.debugTag, "onPageScrolled, page index=" + i);
-                    mPosition = i;
 
+                    ((CardDetailFragment) (mFragments.get(i))).switchToQuestionView();
+
+                    //Restore previous card to question view
                     ((CardDetailFragment) (mFragments.get(mPosition))).switchToQuestionView();
+
+                    mPosition = i;
                     enableSwitch = true;
 
                 }
             }
 
+
             @Override
             public void onPageSelected(int i) {
             }
 
+
+
             @Override
             public void onPageScrollStateChanged(int i) {
-
             }
 
         });
