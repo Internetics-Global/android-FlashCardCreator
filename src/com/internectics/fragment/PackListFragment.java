@@ -32,9 +32,13 @@ public class PackListFragment extends Fragment {
     private int CODE_REQUEST_IMAGE_FROM_IMAGE_LIBRARY = 1001;
     private int mIndexOfCurrentPack;
 
+    private User mUser;
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        mUser = User.defaultUser(AppContext.getAppContext());
     }
 
     @Override
@@ -100,7 +104,7 @@ public class PackListFragment extends Fragment {
         }
 
         public int getCount() {
-            return User.defaultUser(AppContext.getAppContext()).packs.size();
+            return mUser.packs.size();
         }
 
         public Object getItem(int position) {
@@ -114,7 +118,7 @@ public class PackListFragment extends Fragment {
         public View getView(int position, View convertView, ViewGroup parent) {
 
             final int indexOfCurrentPack = position;
-            final Pack currentPack = User.defaultUser(AppContext.getAppContext()).packs.get(position);
+            final Pack currentPack = mUser.packs.get(position);
 
             LayoutInflater inflater = (LayoutInflater) getActivity().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             View contentView = inflater.inflate(R.layout.pack_list_item, parent, false);
@@ -157,11 +161,10 @@ public class PackListFragment extends Fragment {
             deleteButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    User defaultUser = User.defaultUser(AppContext.getAppContext());
-                    defaultUser.removePack(currentPack);
-                    int count = defaultUser.packs.size();
+                    mUser.removePack(currentPack);
+                    int count = mUser.packs.size();
                     if (count > 0) {
-                        Pack lastPack = defaultUser.packs.get(count - 1);
+                        Pack lastPack = mUser.packs.get(count - 1);
                         AppConfig.sharedInstance().set(Global.mostRecentPackCreatedID_Property, String.format("%d", lastPack.packID));
                     }
                     ((ImageAdapter) mGallery.getAdapter()).notifyDataSetChanged();
@@ -178,7 +181,7 @@ public class PackListFragment extends Fragment {
                     changeCoverImageButton.setVisibility(View.INVISIBLE);
                 }
 
-                if (User.defaultUser(AppContext.getAppContext()).packs.size() <= 1) {
+                if (mUser.packs.size() <= 1) {
                     deleteButton.setVisibility(View.INVISIBLE);
                 } else {
                     if (((MainActivity) getActivity()).mCurrentPack.packID == currentPack.packID) {
@@ -214,7 +217,7 @@ public class PackListFragment extends Fragment {
                     Log.w(Global.debugTag, "resultBitmap is null");
                 } else {
                     File toSaveFile = UIHelper.saveImageToCaches(resultBitmap);
-                    Pack currentPack = User.defaultUser(AppContext.getAppContext()).packs.get(mIndexOfCurrentPack);
+                    Pack currentPack = mUser.packs.get(mIndexOfCurrentPack);
                     currentPack.coverImageUriFormatStr = FileOperationHelper.convertToUriFormatFile(toSaveFile);
                     Log.d(Global.debugTag, "currentPack.coverImageUriFormatStr is " + currentPack.coverImageUriFormatStr);
                     currentPack.save(AppContext.getAppContext());
