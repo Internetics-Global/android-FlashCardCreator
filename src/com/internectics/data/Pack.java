@@ -11,6 +11,8 @@ import com.internectics.util.StringUtils;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashMap;
 
 public class Pack {
@@ -65,6 +67,17 @@ public class Pack {
         for (int i = 0; i < cardArray.size(); i++) {
             Card newCard = (Card) (new Card()).initWithDictionary(cardArray.get(i));
             cards.add(newCard);
+        }
+
+        Collections.sort(cards, new Comparator<Card>() {
+            @Override
+            public int compare(Card lhs, Card rhs) {
+                return (lhs.cardSN - rhs.cardSN);
+            }
+        });
+
+        if (cards.get(0).cardSN != 1) {
+            Log.e(Global.debugTag, "Something is not right, cardSN should begin from 1");
         }
 
         return this;

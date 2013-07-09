@@ -9,15 +9,13 @@ import com.internectics.util.AppConfig;
 import com.internectics.util.AppContext;
 import com.internectics.util.Global;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
+import java.util.*;
 
 public class CardListModel {
 
     /**
      * Return card list for current pack
-     *
+     * returned List is re-sorted by cardSN, rather than others
      * @param curentPack
      * @return non-null return value
      */
@@ -30,6 +28,13 @@ public class CardListModel {
         }
 
         ArrayList<Card> cardArrayList = curentPack.cards;
+
+        Collections.sort(cardArrayList,new Comparator<Card>() {
+            @Override
+            public int compare(Card lhs, Card rhs) {
+                return (lhs.cardSN - rhs.cardSN);  //To change body of implemented methods use File | Settings | File Templates.
+            }
+        });
 
         for (int i = 0; i < cardArrayList.size(); i++) {
             HashMap<String, Object> map = new HashMap<String, Object>();

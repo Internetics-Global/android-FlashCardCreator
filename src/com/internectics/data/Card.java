@@ -65,8 +65,6 @@ public class Card {
         String queryString = String.format("SELECT * FROM Cards_Tables WHERE pack_id=%d", packID);
         Cursor cur = SQLiteHelper.defaultDatabase(context).rawQuery(queryString, null);
 
-        int lastCardSN = 0;
-
         try {
             while (cur.moveToNext()) {
                 HashMap<String, Object> cardDict = new HashMap<String, Object>();
@@ -74,17 +72,7 @@ public class Card {
                 cardDict.put("pack_id", cur.getInt(1));
                 cardDict.put("cover_image", cur.getString(2));
                 cardDict.put("template_background", cur.getString(3));
-
-                //this is an self-repairment in case the cardSN is not in right order
-                if ((lastCardSN + 1) != cur.getInt(4)) {
-                    cardDict.put("card_sn", lastCardSN);
-                    Log.w(Global.debugTag, "no successive cardSN");
-                } else {
-                    cardDict.put("card_sn", cur.getInt(4));
-                }
-                lastCardSN++;
-                Log.d(Global.debugTag, "lastCardSN:" + lastCardSN);
-
+                cardDict.put("card_sn", cur.getInt(4));
                 cardDict.put("question", Question.questionForCardID(context, cur.getInt(0)));
                 cardDict.put("answer", Answer.answerForCardID(context, cur.getInt(0)));
                 returnArray.add(cardDict);

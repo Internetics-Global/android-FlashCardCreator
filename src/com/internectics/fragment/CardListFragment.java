@@ -14,8 +14,6 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.animation.Animation;
-import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -29,13 +27,12 @@ import com.internectics.util.Global;
 import com.mobeta.android.dslv.DragSortListView;
 import com.mobeta.android.dslv.SimpleDragSortCursorAdapter;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
+import java.util.*;
 
 
 /**
  * CardListFragment manage ListAdapter including updating ListView
+ * the order of card shown in CardListFragment is consisitent with cardSN order
  */
 public class CardListFragment extends Fragment {
 
@@ -211,8 +208,8 @@ public class CardListFragment extends Fragment {
             ImageView removeImage = (ImageView) v.findViewById(R.id.card_list_item_click_remove);
             TextView cardSNText = (TextView) v.findViewById(R.id.card_list_item_card_sn);
 
-            Animation alphaOut = AnimationUtils.loadAnimation(getActivity(), R.anim.fade_in);
-            Animation alphaIn = AnimationUtils.loadAnimation(getActivity(), R.anim.fade_in);
+            //Animation alphaOut = AnimationUtils.loadAnimation(getActivity(), R.anim.fade_in);
+            //Animation alphaIn = AnimationUtils.loadAnimation(getActivity(), R.anim.fade_in);
             if (mIsListViewEditable) {
                 drageImage.setVisibility(View.VISIBLE);
                 removeImage.setVisibility(View.VISIBLE);
@@ -298,27 +295,42 @@ public class CardListFragment extends Fragment {
 
     private void dragListItem(int from, int to) {
 
+        Card card;
         if (from == to) {
             return;
         } else if (from < to) {
 
             for (int i = from + 1; i <= to; i++) {
-                Card card = mCurrentPack.cards.get(i);
+                card = mCurrentPack.cards.get(i);
                 card.cardSN = i;
                 card.save(AppContext.getAppContext());
             }
 
+            card = mCurrentPack.cards.get(from);
+            card.cardSN = to + 1;
+            card.save(AppContext.getAppContext());
+
         } else {
 
             for (int i = to; i < from; i++) {
-                Card card = mCurrentPack.cards.get(i);
+                card = mCurrentPack.cards.get(i);
                 card.cardSN = i + 2;
                 card.save(AppContext.getAppContext());
             }
+
+            card = mCurrentPack.cards.get(from);
+            card.cardSN = to + 1;
+            card.save(AppContext.getAppContext());
+
         }
 
-        //Step3: update list view
-        updateListView(0);
+        //Step3: reorder
+        Collections.sort(mCurrentPack.cards, new Comparator<Card>() {
+            @Override
+            public int compare(Card lhs, Card rhs) {
+                return (lhs.cardSN - rhs.cardSN);
+            }
+        });
     }
 
 
