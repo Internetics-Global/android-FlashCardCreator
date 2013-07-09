@@ -144,16 +144,22 @@ public class MainActivity extends FragmentActivity implements
             }
             case R.id.actionbar_edit:
 
-                if ((mCurrentPack != null) && (mCurrentPack.cards.size() > 0)) {
-                    CardListFragment cardListFragment = (CardListFragment) (getSupportFragmentManager().findFragmentById(R.id.fragment_card_list));
-                    if (item.getTitle().toString().toUpperCase().equals("EDIT")) {
-                        item.setTitle("done");
-                        cardListFragment.enterEditStyle(true);
-                    } else {
-                        item.setTitle("edit");
-                        cardListFragment.enterEditStyle(false);
+                if (!mCurrentPack.creatorID.equals(OpenUDID_manager.getOpenUDID())) {
+                    Toast.makeText(this, "You can only make changes to cards you have created yourself", 1).show();
+
+                } else {
+                    if ((mCurrentPack != null) && (mCurrentPack.cards.size() > 0)) {
+                        CardListFragment cardListFragment = (CardListFragment) (getSupportFragmentManager().findFragmentById(R.id.fragment_card_list));
+                        if (item.getTitle().toString().toUpperCase().equals("EDIT")) {
+                            item.setTitle("done");
+                            cardListFragment.enterEditStyle(true);
+                        } else {
+                            item.setTitle("edit");
+                            cardListFragment.enterEditStyle(false);
+                        }
                     }
                 }
+
                 break;
             case R.id.actionbar_packs:
                 View popupLayout = inflater.inflate(R.layout.pack_list, null, false);
