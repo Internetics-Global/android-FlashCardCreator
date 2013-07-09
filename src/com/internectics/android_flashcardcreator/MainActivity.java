@@ -278,6 +278,8 @@ public class MainActivity extends FragmentActivity implements
                 }
             }
         }
+
+        getIntent().setData(null); //in case it will be recalled time and time
     }
 
 
