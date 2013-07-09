@@ -172,28 +172,33 @@ public class MainActivity extends FragmentActivity implements
 
             case R.id.actionbar_change_template_color:
 
-                if (mCardDetailFragment == null) {
-                    Toast.makeText(this, "You need to select a card beforehand", Toast.LENGTH_SHORT).show();
-                    break;
-                }
+                if (!mCurrentPack.creatorID.equals(OpenUDID_manager.getOpenUDID())) {
+                    Toast.makeText(this, "You can only make changes to cards you have created yourself", 1).show();
 
-                int defaultIndex = (StringUtils.convertTemplateBackgroundStringToResourceID(mCurrentCard.templateBackground))[0];
-                if (mCurrentPack.cards.size() >= 0) {
-                    new AlertDialog.Builder(this)
-                            .setTitle(R.string.change_title)
-                            .setSingleChoiceItems(new String[]{getResources().getString(R.string.change_blue),
-                                    getResources().getString(R.string.change_coffee), getResources().getString(R.string.change_gray),
-                                    getResources().getString(R.string.change_purple), getResources().getString(R.string.change_red)}, defaultIndex,
-                                    new DialogInterface.OnClickListener() {
-                                        @Override
-                                        public void onClick(DialogInterface dialog, int which) {
-                                            dialog.dismiss();
-                                            setMaskButtonForContentUpdating();
-                                            mCardDetailFragment.cardColorTemplateSelectedPostAction(which);
-                                        }
-                                    })
+                }  else {
+                    if (mCardDetailFragment == null) {
+                        Toast.makeText(this, "You need to select a card beforehand", Toast.LENGTH_SHORT).show();
+                        break;
+                    }
 
-                            .show();
+                    int defaultIndex = (StringUtils.convertTemplateBackgroundStringToResourceID(mCurrentCard.templateBackground))[0];
+                    if (mCurrentPack.cards.size() >= 0) {
+                        new AlertDialog.Builder(this)
+                                .setTitle(R.string.change_title)
+                                .setSingleChoiceItems(new String[]{getResources().getString(R.string.change_blue),
+                                        getResources().getString(R.string.change_coffee), getResources().getString(R.string.change_gray),
+                                        getResources().getString(R.string.change_purple), getResources().getString(R.string.change_red)}, defaultIndex,
+                                        new DialogInterface.OnClickListener() {
+                                            @Override
+                                            public void onClick(DialogInterface dialog, int which) {
+                                                dialog.dismiss();
+                                                setMaskButtonForContentUpdating();
+                                                mCardDetailFragment.cardColorTemplateSelectedPostAction(which);
+                                            }
+                                        })
+
+                                .show();
+                    }
                 }
                 break;
             case R.id.actionbar_more:
