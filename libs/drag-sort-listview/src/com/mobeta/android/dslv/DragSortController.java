@@ -1,5 +1,8 @@
 package com.mobeta.android.dslv;
 
+import android.app.AlertDialog;
+import android.content.Context;
+import android.content.DialogInterface;
 import android.graphics.Point;
 import android.view.GestureDetector;
 import android.view.HapticFeedbackConstants;
@@ -81,6 +84,8 @@ public class DragSortController extends SimpleFloatViewManager implements View.O
     private DragSortListView mDslv;
     private int mPositionX;
 
+    private Context mContext;
+
     /**
      * Calls {@link #DragSortController(DragSortListView, int)} with a
      * 0 drag handle id, FLING_RIGHT_REMOVE remove mode,
@@ -112,6 +117,7 @@ public class DragSortController extends SimpleFloatViewManager implements View.O
                               int removeMode, int clickRemoveId, int flingHandleId) {
         super(dslv);
         mDslv = dslv;
+        mContext =  dslv.getContext();
         mDetector = new GestureDetector(dslv.getContext(), this);
         mFlingRemoveDetector = new GestureDetector(dslv.getContext(), mFlingRemoveListener);
         mFlingRemoveDetector.setIsLongpressEnabled(false);
@@ -422,11 +428,25 @@ public class DragSortController extends SimpleFloatViewManager implements View.O
     // complete the OnGestureListener interface
     @Override
     public boolean onSingleTapUp(MotionEvent ev) {
-        if (mRemoveEnabled && mRemoveMode == CLICK_REMOVE) {
-            if (mClickRemoveHitPos != MISS) {
-                mDslv.removeItem(mClickRemoveHitPos - mDslv.getHeaderViewsCount());
-            }
-        }
+
+        new AlertDialog.Builder(mContext)
+                .setTitle("Are you sure to delete?")
+                .setPositiveButton("Delete",new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+
+                        if (mRemoveEnabled && mRemoveMode == CLICK_REMOVE) {
+                            if (mClickRemoveHitPos != MISS) {
+                                mDslv.removeItem(mClickRemoveHitPos - mDslv.getHeaderViewsCount());
+                            }
+                        }
+
+                    }
+                })
+                .setNegativeButton("Cancel",null)
+                .show();
+
+
         return true;
     }
 
