@@ -429,23 +429,22 @@ public class DragSortController extends SimpleFloatViewManager implements View.O
     @Override
     public boolean onSingleTapUp(MotionEvent ev) {
 
-        new AlertDialog.Builder(mContext)
-                .setTitle("Are you sure to delete?")
-                .setPositiveButton("Delete",new DialogInterface.OnClickListener() {
+        if (mRemoveEnabled && mRemoveMode == CLICK_REMOVE) {
+            if (mClickRemoveHitPos != MISS) {
+                new AlertDialog.Builder(mContext)
+                    .setTitle("Are you sure to delete?")
+                    .setPositiveButton("Delete",new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
 
-                        if (mRemoveEnabled && mRemoveMode == CLICK_REMOVE) {
-                            if (mClickRemoveHitPos != MISS) {
-                                mDslv.removeItem(mClickRemoveHitPos - mDslv.getHeaderViewsCount());
-                            }
-                        }
+                       mDslv.removeItem(mClickRemoveHitPos - mDslv.getHeaderViewsCount());
 
                     }
-                })
-                .setNegativeButton("Cancel",null)
-                .show();
-
+                    })
+                    .setNegativeButton("Cancel",null)
+                    .show();
+            }
+        }
 
         return true;
     }
