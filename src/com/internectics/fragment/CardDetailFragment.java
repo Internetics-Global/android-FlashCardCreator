@@ -5,6 +5,7 @@ import android.app.AlertDialog;
 import android.content.*;
 import android.graphics.Bitmap;
 import android.graphics.Color;
+import android.graphics.Typeface;
 import android.net.Uri;
 import android.os.*;
 import android.support.v4.app.Fragment;
@@ -169,6 +170,11 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnKeyboa
             ViewDidAppearTask dTask = new ViewDidAppearTask();
             dTask.execute(100);
         }
+
+        Typeface typeFace = Typeface.createFromAsset(getActivity().getAssets(), "DejaVuSans.ttf");
+        mSubheading.setTypeface(typeFace);
+        mMain.setTypeface(typeFace);
+        mSub.setTypeface(typeFace);
 
         return mContentView;
     }
@@ -456,6 +462,7 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnKeyboa
             mSidebarTitle.setOnTouchListener(this);
             mTitle.setOnTouchListener(this);
         }
+
     }
 
     private void setEditTextListener() {
@@ -596,6 +603,8 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnKeyboa
                 }
 
                 Log.d(Global.debugTag, "mMain has changed");
+
+
             }
         });
 
