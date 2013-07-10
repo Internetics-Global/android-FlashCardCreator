@@ -1,6 +1,7 @@
 package com.internectics.fragment;
 
 import android.content.Context;
+import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.util.Log;
@@ -25,6 +26,8 @@ public class SymbolGridViewFragment extends Fragment {
     public View mContentView;
     private GridView mGridView;
 
+    private Typeface mTypeFace;
+
     private LayoutInflater mInflater;
 
     @Override
@@ -40,6 +43,8 @@ public class SymbolGridViewFragment extends Fragment {
                 ((MainActivity) getActivity()).mCardDetailFragment.onGridViewItemClicked(position);
             }
         });
+
+        mTypeFace = Typeface.createFromAsset(getActivity().getAssets(), "DejaVuSans.ttf");
 
         return mContentView;
 
@@ -71,11 +76,10 @@ public class SymbolGridViewFragment extends Fragment {
 
             convertView = mInflater.inflate(R.layout.symbol_view, null);
 
-            ImageView symbolImage = (ImageView) convertView.findViewById(R.id.symbol_image);
             TextView summaryTextView = (TextView) convertView.findViewById(R.id.symbol_summary);
+            summaryTextView.setTypeface(mTypeFace,Typeface.NORMAL);
 
-            symbolImage.setImageResource(SymbolHelper.mImageResourceIDArray[position]);
-            summaryTextView.setText(SymbolHelper.mDescriptionArray[position]);
+            summaryTextView.setText(SymbolHelper.mUnicodeArray[position]);
 
             return convertView;
         }

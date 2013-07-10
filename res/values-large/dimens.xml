@@ -9,7 +9,7 @@
     <dimen name="card_round_corner">30dp</dimen>
 
     <!--symbol box related-->
-    <dimen name="symbol_text_size">10sp</dimen>
+    <dimen name="symbol_text_size">24sp</dimen>
     <dimen name="symbol_box_height">250dp</dimen>
 
     <!--segment related-->

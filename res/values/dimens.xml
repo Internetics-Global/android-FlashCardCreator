@@ -7,7 +7,7 @@
     <dimen name="card_round_corner">15dp</dimen>
 
     <!--symbol box related-->
-    <dimen name="symbol_text_size">7sp</dimen>
+    <dimen name="symbol_text_size">18sp</dimen>
 
     <!--segment related-->
     <dimen name="segment_text_size">12sp</dimen>
