@@ -33,26 +33,27 @@
     </string-array>
 
 
-    <!--sp unit-->
+    <!--sp unit, default value-->
     <integer-array
             name="css_size_int">
-        <item>28</item>
-        <item>32</item>
-        <item>28</item>
-        <item>28</item>
-        <item>32</item>
-        <item>28</item>
+        <item>28</item>    <!--question subheading-->
+        <item>32</item>    <!--question main-->
+        <item>28</item>    <!--question sub-->
+        <item>28</item>    <!--answer subheading-->
+        <item>32</item>    <!--answer main-->
+        <item>28</item>    <!--answer sub-->
     </integer-array>
 
-
+    <!--sp unit, spinner range-->
     <string-array
             name="css_size">
         <item>Size</item>
+        <item>12</item>
+        <item>18</item>
         <item>24</item>
-        <item>26</item>
         <item>28</item>
-        <item>30</item>
         <item>32</item>
+        <item>80</item>
     </string-array>
 
 

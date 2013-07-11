@@ -9,5 +9,8 @@
           android:horizontalSpacing="15dp"
           android:stretchMode="columnWidth"
           android:gravity="center"
+          android:scrollbarFadeDuration="100000"
+          android:scrollbarStyle="outsideOverlay"
+          android:scrollbarTrackVertical="@drawable/scrollbar_track"
           android:listSelector="@drawable/grid_selector"
         />

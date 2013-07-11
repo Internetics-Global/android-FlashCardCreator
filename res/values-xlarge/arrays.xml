@@ -18,11 +18,17 @@
     <string-array
             name="css_size">
         <item>Size</item>
+        <item>12</item>
+        <item>18</item>
+        <item>24</item>
+        <item>28</item>
         <item>32</item>
         <item>36</item>
-        <item>38</item>
-        <item>42</item>
-        <item>46</item>
+        <item>40</item>
+        <item>60</item>
+        <item>80</item>
+        <item>100</item>
+        <item>160</item>
     </string-array>
 
 

@@ -1261,25 +1261,8 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnKeyboa
                     currentCSS.subSize = size;
                 }
 
-                switch (subMenuID) {
-                    case 0:
-                        mCurrentFocusedCardContentText.setTextSize(size);
-                        break;
-                    case 1:
-                        mCurrentFocusedCardContentText.setTextSize(size);
-                        break;
-                    case 2:
-                        mCurrentFocusedCardContentText.setTextSize(size);
-                        break;
-                    case 3:
-                        mCurrentFocusedCardContentText.setTextSize(size);
-                        break;
-                    case 4:
-                        mCurrentFocusedCardContentText.setTextSize(size);
-                        break;
-                    default:
-                        Log.w(Global.debugTag, "Out of range of subMenuID");
-                }
+                mCurrentFocusedCardContentText.setTextSize(size);
+
                 break;
             case 2:   //stand for color
 
