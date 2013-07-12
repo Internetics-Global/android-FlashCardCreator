@@ -744,15 +744,45 @@ public class MainActivity extends FragmentActivity implements
         mMasterViewUpdatingLayout.setVisibility(View.INVISIBLE);
     }
 
-    @Override
-    public void onBackPressed() {
 
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        if (((keyCode == KeyEvent.KEYCODE_BACK) ||
+                (keyCode == KeyEvent.KEYCODE_HOME))
+                && event.getRepeatCount() == 0) {
 
-        if ((mSymbolBoxFragment !=null) && (mSymbolBoxFragment.isSymbolBoxVisible())) {
-            mSymbolBoxFragment.hideSymbolBoxWithAnimation(false);
-            return;
+            if ((mSymbolBoxFragment !=null) && (mSymbolBoxFragment.isSymbolBoxVisible())) {
+                mSymbolBoxFragment.hideSymbolBoxWithAnimation(false);
+                return false;
+            }
+
+            dialog_Exit(MainActivity.this);
         }
+        return false;
 
-        super.onBackPressed();    //To change body of overridden methods use File | Settings | File Templates.
+    }
+
+
+    public static void dialog_Exit(Context context) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(context);
+        builder.setMessage("Are you sure to exit");
+        builder.setTitle("Alert");
+        builder.setIcon(android.R.drawable.ic_dialog_alert);
+        builder.setPositiveButton("OK",
+                new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+                        android.os.Process.killProcess(android.os.Process
+                                .myPid());
+                    }
+                });
+
+        builder.setNegativeButton("Cancel",
+                new android.content.DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+                    }
+                });
+
+        builder.create().show();
     }
 }
