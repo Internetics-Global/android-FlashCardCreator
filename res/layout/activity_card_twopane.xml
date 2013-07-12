@@ -56,22 +56,45 @@
                     android:visibility="invisible">
             </Button>
 
-            <Button
-                    android:id="@+id/master_view_updating"
+            <LinearLayout
+                    android:id="@+id/master_view_updating_layout"
                     android:layout_width="114dp"
-                    android:layout_height="60dp"
+                    android:layout_height="70dp"
                     android:layout_marginLeft="10dp"
                     android:layout_marginRight="10dp"
-                    android:gravity="center"
-                    android:layout_gravity="center"
-                    android:enabled="false"
-                    android:text="Appling all cards..."
-                    android:textStyle="bold"
-                    android:textColor="#FFFFFF"
-                    android:textSize="12sp"
+                    android:orientation="vertical"
                     android:background="@drawable/button_updating_background"
-                    android:visibility="invisible">
-            </Button>
+                    android:visibility="invisible"
+                    android:gravity="center"
+                    android:layout_gravity="center">
+
+                <ProgressBar
+                        android:id="@+id/master_view_updating_progressBar"
+                        android:layout_marginTop="5dp"
+                        android:layout_width="114dp"
+                        android:layout_height="40dp"
+                        android:indeterminate="true"
+                        style="?android:attr/progressBarStyle"
+                        android:gravity="center"
+                        android:layout_gravity="center"
+                        ></ProgressBar>
+
+                <TextView
+                        android:layout_width="114dp"
+                        android:layout_height="25dp"
+                        android:gravity="center"
+                        android:layout_gravity="center"
+                        android:enabled="false"
+                        android:text="@string/alert_applying_to_all_cards"
+                        android:textStyle="bold"
+                        android:textColor="#FFFFFF"
+                        android:textSize="12sp"
+                        >
+                </TextView>
+
+
+            </LinearLayout>
+
 
         </FrameLayout>
 

@@ -56,7 +56,7 @@ public class MainActivity extends FragmentActivity implements
     private View mCSSToolbar;
     private ProgressDialog mProgressDialog;
     private Button mMasterMaskButton;
-    private Button mMasterMaskButtonForContentUpdating;
+    private View mMasterViewUpdatingLayout;
 
     private ArrayList<CardDetailFragment> mArrayCardDetailFragments;   //speical for snapshot(not include current card)
     public CardDetailFragment mCardDetailFragment;
@@ -101,7 +101,7 @@ public class MainActivity extends FragmentActivity implements
 
 
         mMasterMaskButton = (Button) findViewById(R.id.master_view_mask);
-        mMasterMaskButtonForContentUpdating = (Button) findViewById(R.id.master_view_updating);
+        mMasterViewUpdatingLayout = findViewById(R.id.master_view_updating_layout);
 
         mSymbolBoxFragment = (SymbolBoxFragment) getSupportFragmentManager().findFragmentById(R.id.fragment_symbol_box);
 
@@ -736,11 +736,12 @@ public class MainActivity extends FragmentActivity implements
     }
 
     public void setMaskButtonForContentUpdating() {
-        mMasterMaskButtonForContentUpdating.setVisibility(View.VISIBLE);
+        mMasterViewUpdatingLayout.setVisibility(View.VISIBLE);
+
     }
 
     public void clearMaskButtonForContentUpdating() {
-        mMasterMaskButtonForContentUpdating.setVisibility(View.INVISIBLE);
+        mMasterViewUpdatingLayout.setVisibility(View.INVISIBLE);
     }
 
     @Override
