@@ -1,5 +1,8 @@
 package com.internectics.helper;
 
+import android.util.Log;
+import com.internectics.util.Global;
+
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
@@ -107,6 +110,7 @@ public class ZipFileHelper {
 
         } catch (IOException ex) {
             ex.printStackTrace();
+            Log.d(Global.debugTag,"unzip failed:" + zipFile + ";description:" + ex.getCause());
         }
 
         return zippedCardFileArray;

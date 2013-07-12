@@ -156,29 +156,39 @@ public class Pack {
     }
 
     public void destroy(Context context) {
-        String query = String.format("DELETE FROM Packs_Tables WHERE pack_id=%d", packID);
-        SQLiteHelper.defaultDatabase(context).execSQL(query);
 
-        if (!StringUtils.isNumeric(logoImageUriFormatStr)) {
-            File file = new File(FileOperationHelper.deleteUriSchemeHeader(this.logoImageUriFormatStr));
-            if (file.delete()) {
-                Log.d(Global.debugTag, "Successful to delete logoImageUriFormatStr file");
-            } else {
-                Log.w(Global.debugTag, "Fail to delete logoImageUriFormatStr file");
+        try {
+            SQLiteHelper.defaultDatabase(context).beginTransaction();
+
+            String query = String.format("DELETE FROM Packs_Tables WHERE pack_id=%d", packID);
+            SQLiteHelper.defaultDatabase(context).execSQL(query);
+
+            if (!StringUtils.isNumeric(logoImageUriFormatStr)) {
+                File file = new File(FileOperationHelper.deleteUriSchemeHeader(this.logoImageUriFormatStr));
+                if (file.delete()) {
+                    Log.d(Global.debugTag, "Successful to delete logoImageUriFormatStr file");
+                } else {
+                    Log.w(Global.debugTag, "Fail to delete logoImageUriFormatStr file");
+                }
             }
-        }
 
-        if (!StringUtils.isNumeric(coverImageUriFormatStr)) {
-            File file = new File(FileOperationHelper.deleteUriSchemeHeader(this.coverImageUriFormatStr));
-            if (file.delete()) {
-                Log.d(Global.debugTag, "Successful to delete coverImageUriFormatStr file in Pack");
-            } else {
-                Log.w(Global.debugTag, "Fail to delete coverImageUriFormatStr file in Pack");
+            if (!StringUtils.isNumeric(coverImageUriFormatStr)) {
+                File file = new File(FileOperationHelper.deleteUriSchemeHeader(this.coverImageUriFormatStr));
+                if (file.delete()) {
+                    Log.d(Global.debugTag, "Successful to delete coverImageUriFormatStr file in Pack");
+                } else {
+                    Log.w(Global.debugTag, "Fail to delete coverImageUriFormatStr file in Pack");
+                }
             }
+
+            for (Card card : cards) {
+                card.destroy(AppContext.getAppContext());
+            }
+
+            SQLiteHelper.defaultDatabase(context).setTransactionSuccessful();
+        } finally {
+            SQLiteHelper.defaultDatabase(context).endTransaction();
         }
 
-        for (Card card : cards) {
-            card.destroy(AppContext.getAppContext());
-        }
     }
 }

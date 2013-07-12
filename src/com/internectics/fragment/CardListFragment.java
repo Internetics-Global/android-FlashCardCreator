@@ -200,7 +200,7 @@ public class CardListFragment extends Fragment {
         public View getView(final int position, View convertView, ViewGroup parent) {
             View v = super.getView(position, convertView, parent);
 
-            View tv = v.findViewById(R.id.card_list_item_cover_image);
+            ImageView coverImage = (ImageView) v.findViewById(R.id.card_list_item_cover_image);
 
             View background = v.findViewById(R.id.card_list_item_background);
 
@@ -225,7 +225,8 @@ public class CardListFragment extends Fragment {
                 //cardSNText.startAnimation(alphaIn);
             }
 
-            tv.setOnClickListener(new View.OnClickListener() {
+
+            coverImage.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     Log.d(Global.debugTag, "card item is clicked:" + position);
@@ -242,6 +243,11 @@ public class CardListFragment extends Fragment {
             } else {
                 background.setBackgroundColor(Color.TRANSPARENT);
 
+            }
+
+            //check whether cover image is empty or not
+            if (coverImage.getDrawable() == null) {
+                coverImage.setImageDrawable(getResources().getDrawable(R.drawable.card_cover_image_placeholder));
             }
 
 
