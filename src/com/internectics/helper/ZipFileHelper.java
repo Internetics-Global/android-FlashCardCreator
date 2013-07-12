@@ -57,6 +57,7 @@ public class ZipFileHelper {
 
         } catch (Exception e) {
             e.printStackTrace();
+            Log.d(Global.debugTag,"unzip failed:" + e.getCause());
         }
     }
 

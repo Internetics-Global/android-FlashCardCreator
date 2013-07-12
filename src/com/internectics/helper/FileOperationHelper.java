@@ -23,7 +23,7 @@ public class FileOperationHelper {
     private static String output[] = {
             "question_placeholder_logo.jpg",
             "question_placeholder_contentnt.jpg",
-            "answer_placeholder_content.jpgpg",
+            "answer_placeholder_content.jpg",
             "default_pack_cover_image.jpg",
             "card_cover_image_placeholder.jpg"};
 

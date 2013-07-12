@@ -65,7 +65,7 @@ public class StringUtils {
         return true;
     }
 
-    /**
+    /**used to diff whether it's a resource ID or not
      * return true if numeric
      */
     public static boolean isNumeric(String str) {
