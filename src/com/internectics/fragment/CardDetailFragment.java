@@ -135,16 +135,30 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnKeyboa
 
             @Override
             public void onClick(View v) {
-                if (isEditableMode()) {
-                    startActivityForResult(
-                            new Intent(
-                                    Intent.ACTION_PICK,
-                                    android.provider.MediaStore.Images.Media.INTERNAL_CONTENT_URI),
-                            CODE_REQUEST_IMAGE_SOURCE_IS_LOGO);
+
+                if (mIsPlayingCard == false) {
+                    if (isEditableMode()) {
+                        startActivityForResult(
+                                new Intent(
+                                        Intent.ACTION_PICK,
+                                        android.provider.MediaStore.Images.Media.INTERNAL_CONTENT_URI),
+                                CODE_REQUEST_IMAGE_SOURCE_IS_LOGO);
+                    } else {
+                        Intent intent = new Intent(getActivity(), WebViewActivity.class);
+                        intent.putExtra("url", mCurrentPack.logoURL);
+                        startActivity(intent);
+                    }
                 } else {
-                    Intent intent = new Intent(getActivity(), WebViewActivity.class);
-                    intent.putExtra("url", mCurrentPack.logoURL);
-                    startActivity(intent);
+                    if (mCurrentPack.logoURL.contains("@") && (mCurrentPack.logoURL.contains("http") == false)) {
+                        Intent intent = new Intent(Intent.ACTION_SEND);
+                        intent.setType("message/rfc822");
+                        intent.putExtra(Intent.EXTRA_EMAIL, "mCurrentPack.logoURL");
+                        intent.putExtra(Intent.EXTRA_SUBJECT, "Subject");
+                        intent.putExtra(Intent.EXTRA_TEXT, "");
+                        startActivity(Intent.createChooser(intent, "Send Email"));
+                    } else {
+                        startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(mCurrentPack.logoURL)));
+                    }
                 }
 
             }
@@ -369,6 +383,10 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnKeyboa
                                 mCurrentPack.logoURL = inputEditText.getText().toString();
                                 if (mIMM.isActive()) {
                                     mIMM.toggleSoftInput(InputMethodManager.SHOW_FORCED, InputMethodManager.HIDE_NOT_ALWAYS);
+                                }
+
+                                if (mIsCreatingCard == false) {
+                                    mCurrentPack.save(AppContext.getAppContext());
                                 }
 
                             }

@@ -49,8 +49,8 @@
     <string name="segment_question">Question</string>
     <string name="segment_answer">Répondre</string>
 
-    <string name="logourl_title">Set URL</string>
-    <string name="logourl_message">Sil vous plaît entrer une URL valide</string>
+    <string name="logourl_title">Set URL/Email</string>
+    <string name="logourl_message">Sil vous plaît entrer une URL/Email valide</string>
 
     <string name="button_cancel">Annuler</string>
     <string name="button_done">Terminé</string>
