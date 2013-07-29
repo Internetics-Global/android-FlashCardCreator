@@ -37,6 +37,8 @@ public class AddPackFragment extends DialogFragment implements TextView.OnEditor
 
     private InputMethodManager mIMM;
 
+    private ArrayList<Pack> mPacks;
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         pack = new Pack();
@@ -109,6 +111,15 @@ public class AddPackFragment extends DialogFragment implements TextView.OnEditor
         mSidebarTitleEditText.setOnEditorActionListener(this);
         mCreatorEditText.setOnEditorActionListener(this);
 
+        //this get mPacks is a time-cost operation, we put in background
+        new Thread()
+        {
+            @Override
+            public void run() {
+                mPacks = User.defaultUser(AppContext.getAppContext()).packs;
+            }
+        }.start();
+
         return mContentView;
     }
 
@@ -160,12 +171,13 @@ public class AddPackFragment extends DialogFragment implements TextView.OnEditor
         AppConfig.sharedInstance().set(Global.mostRecentPackCreatedID_Property, String.format("%d", pack.packID));
         AppConfig.sharedInstance().set(Global.mostRecentPackCreatedDate_Property, StringUtils.getCurrentTimeDate());
 
+        dismiss();
+
+
         Intent intent = new Intent();
         intent.setAction(Global.BROADCAST_ACTION_UPDATE_MASTER_VIEW);
         intent.putExtra(Global.KEY_FROM, Global.BROADCAST_EXTRA_FROM_NEW_PACK);
         getActivity().sendBroadcast(intent);
-
-        dismiss();
 
     }
 
@@ -194,11 +206,13 @@ public class AddPackFragment extends DialogFragment implements TextView.OnEditor
 
 
     private boolean checkExistingPackName(String packName) {
-        ArrayList<Pack> packs = User.defaultUser(AppContext.getAppContext()).packs;
-        if (packs.size() == 0) {
+        if (mPacks == null) {
+            mPacks = User.defaultUser(AppContext.getAppContext()).packs;
+        }
+        if (mPacks.size() == 0) {
             return false;
         }
-        for (Pack pack : packs) {
+        for (Pack pack : mPacks) {
             if (pack.packName.equals(packName)) {
                 return true;
             }
