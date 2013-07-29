@@ -594,8 +594,23 @@ public class MainActivity extends FragmentActivity implements
                 if (mSymbolBoxFragment!=null) {
                     mSymbolBoxFragment.hideSymbolBoxWithAnimation(true);
                 }
-                mCardDetailFragment.saveEdittedCard();
                 removeCSSToolbar();
+
+                new Thread() {
+                    public void run() {
+                        runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                try {
+                                    Thread.sleep(10);
+                                } catch (InterruptedException e) {
+                                    e.printStackTrace();
+                                }
+                                mCardDetailFragment.saveEdittedCard();
+                            }
+                        });
+                    };
+                }.start();
             }
         });
         Button cssCancelButton = (Button) mCSSToolbar.findViewById(R.id.csstoolbar_close_btn);
