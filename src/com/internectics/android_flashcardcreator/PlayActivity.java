@@ -62,7 +62,7 @@ public class PlayActivity extends FragmentActivity implements SensorEventListene
             @Override
             public void onPageScrolled(int i, float v, int i2) {
                 if ((mPosition != i) && (i2 == 0)) {
-                    Log.i(Global.debugTag, "onPageScrolled, page index=" + i);
+                    Log.i(Global.debugTag, "onPageScrolled, page index=" + i + "mPosition=" + mPosition);
 
                     ((CardDetailFragment) (mFragments.get(i))).switchToQuestionView();
 
@@ -89,20 +89,21 @@ public class PlayActivity extends FragmentActivity implements SensorEventListene
         });
 
         mSensorManager = (SensorManager) getSystemService(Context.SENSOR_SERVICE);
-        Sensor accelerometer = mSensorManager.getDefaultSensor(Sensor.TYPE_ORIENTATION);
-        mSensorManager.registerListener(this, accelerometer, SensorManager.SENSOR_DELAY_FASTEST); //considering different hardware, we need to set the fastest value
+
+
 
     }
 
     @Override
     protected void onResume() {
         super.onResume();
-
+        Sensor accelerometer = mSensorManager.getDefaultSensor(Sensor.TYPE_ORIENTATION);
+        mSensorManager.registerListener(this, accelerometer, SensorManager.SENSOR_DELAY_GAME); //considering different hardware, we need to set the fastest value
     }
 
     @Override
-    protected void onDestroy() {
-        super.onDestroy();
+    protected void onStop() {
+        super.onStop();
         mSensorManager.unregisterListener(this);
     }
 
@@ -142,6 +143,8 @@ public class PlayActivity extends FragmentActivity implements SensorEventListene
         for (int i = 0; i < size; i++) {
 
             fList.add(i, new CardDetailFragment(mCurrentPack, cardsArray.get(i), 2));
+            Log.d(Global.debugTag, String.format("%d", i));
+
         }
 
         if (AppConfig.sharedInstance().isRandomPlay()) {
@@ -157,6 +160,7 @@ public class PlayActivity extends FragmentActivity implements SensorEventListene
         float roll = event.values[2];
 
         Log.i(Global.debugTag, "roll angle =" + roll);
+
 
         int orientation = getOrientation();
         if (orientation == 1) {
