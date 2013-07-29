@@ -50,7 +50,7 @@ public class UIHelper {
         try {
             FileOutputStream fOutputStream = new FileOutputStream(toSaveFile);
             try {
-                savedBitmap.compress(Bitmap.CompressFormat.PNG, 90, fOutputStream);
+                savedBitmap.compress(Bitmap.CompressFormat.PNG, 80, fOutputStream);
                 fOutputStream.flush();
                 fOutputStream.close();
             } catch (Exception oException) {
@@ -68,7 +68,8 @@ public class UIHelper {
         Bitmap bitmap = Bitmap.createBitmap(v.getWidth(), v.getHeight(), Bitmap.Config.ARGB_8888);
         Canvas canvas = new Canvas(bitmap);
         v.draw(canvas);
-        return bitmap;
+        Bitmap resizedBitmap = Bitmap.createScaledBitmap(bitmap, v.getWidth()/3, v.getHeight()/3, false);
+        return resizedBitmap;
     }
 
     public static int getScreenWidth(Activity activity) {
