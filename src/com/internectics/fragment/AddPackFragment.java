@@ -159,12 +159,10 @@ public class AddPackFragment extends DialogFragment implements TextView.OnEditor
         pack.platform = UIHelper.getCurrentPlatform();
         pack.userID = Global.USER_ID;
         pack.packID = Global.generateNoRepeatInt();
-        pack.save(AppContext.getAppContext());
 
-        Card defaultCard = new Card();
+        final Card defaultCard = new Card();
         defaultCard.cardSN = 1;
         defaultCard.packID = pack.packID;
-        defaultCard.save(AppContext.getAppContext());
 
         PackRecordHelper.savePackUpdateRecord(AppContext.getAppContext(), pack);
 
@@ -173,11 +171,26 @@ public class AddPackFragment extends DialogFragment implements TextView.OnEditor
 
         dismiss();
 
+        final Activity activity = getActivity();
+        new Thread() {
+            public void run() {
+                activity.runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        pack.save(AppContext.getAppContext());
+                        defaultCard.save(AppContext.getAppContext());
 
-        Intent intent = new Intent();
-        intent.setAction(Global.BROADCAST_ACTION_UPDATE_MASTER_VIEW);
-        intent.putExtra(Global.KEY_FROM, Global.BROADCAST_EXTRA_FROM_NEW_PACK);
-        getActivity().sendBroadcast(intent);
+                        Intent intent = new Intent();
+                        intent.setAction(Global.BROADCAST_ACTION_UPDATE_MASTER_VIEW);
+                        intent.putExtra(Global.KEY_FROM, Global.BROADCAST_EXTRA_FROM_NEW_PACK);
+                        if (activity != null) {
+                            activity.sendBroadcast(intent);
+                        }
+
+                    }
+                });
+            };
+        }.start();
 
     }
 
