@@ -75,6 +75,7 @@ public class CSS {
                 cssDict.put("sub_size", cur.getInt(7));
                 cssDict.put("sub_align", cur.getString(8));
                 cssDict.put("sub_color", cur.getString(9));
+                break;
             }
         } finally {
             cur.close();

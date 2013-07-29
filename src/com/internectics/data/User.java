@@ -37,6 +37,7 @@ public class User {
                 dataDict.put("user_id", cur.getInt(0));
                 dataDict.put("nick_name", cur.getString(1));
                 dataDict.put("packs", Pack.packsForUserID(context, cur.getInt(0)));
+                break;
             }
         } finally {
             cur.close();

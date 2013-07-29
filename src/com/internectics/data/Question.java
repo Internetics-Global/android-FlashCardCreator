@@ -69,6 +69,7 @@ public class Question {
                 questionDict.put("css_id", cur.getInt(6));
                 questionDict.put("template_id", cur.getInt(7));
                 questionDict.put("css", CSS.cssForCSSID(context, cur.getInt(6)));
+                break;
             }
         }  finally {
             cur.close();
