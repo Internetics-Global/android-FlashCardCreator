@@ -24,6 +24,7 @@ import com.dropbox.client2.session.TokenPair;
 import com.google.analytics.tracking.android.EasyTracker;
 import com.internectics.data.Card;
 import com.internectics.data.Pack;
+import com.internectics.data.User;
 import com.internectics.fragment.AddPackFragment;
 import com.internectics.fragment.CardDetailFragment;
 import com.internectics.fragment.CardListFragment;
@@ -74,6 +75,7 @@ public class MainActivity extends FragmentActivity implements
 
         //Step1: check table and default user
         SQLiteHelper.defaultDatabase(AppContext.getAppContext());
+        User.defaultUser(AppContext.getAppContext());
 
         //step2: background of to-do-this. we hope to use Uri globally including resource files
         FileOperationHelper.copyResourcesImagesToCache(MainActivity.this);
