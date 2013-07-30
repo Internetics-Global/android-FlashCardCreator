@@ -650,7 +650,11 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnKeyboa
 
 
     private void updateCommonContent() {
-        mSidebarTitle.setText(mCurrentPack.sidebarTitle);
+        if (mCurrentPack.sidebarTitle.contains("null")) {
+            mSidebarTitle.setText("");
+        } else {
+            mSidebarTitle.setText(mCurrentPack.sidebarTitle);
+        }
         mCardSN.setText(String.format("%d", mCurrentCard.cardSN));
 
         mLogoImage.setImageURI(Uri.parse(mCurrentPack.logoImageUriFormatStr));

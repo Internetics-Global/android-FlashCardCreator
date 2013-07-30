@@ -108,11 +108,11 @@ public class PackDownloadHelper extends AsyncTask<Void, Long, Boolean> {
 
     @Override
     protected void onPostExecute(Boolean result) {
-        mDialog.dismiss();
         if (result) {
-            Toast.makeText(mContext, "Pack successfully downloaded", Toast.LENGTH_SHORT).show();
+            Toast.makeText(mContext, "Download pack successufully and now save it...", Toast.LENGTH_LONG).show();
             File outputDirectory = FileOperationHelper.downloadedPackDirectory();
             try {
+
                 //Step1: unzip
                 ZipFileHelper.unzipPackFile(mSavedFilePath, outputDirectory.toString());
 
@@ -138,5 +138,7 @@ public class PackDownloadHelper extends AsyncTask<Void, Long, Boolean> {
         } else {
             Toast.makeText(mContext, mErrorMsg, Toast.LENGTH_SHORT).show();
         }
+
+        mDialog.dismiss();
     }
 }
