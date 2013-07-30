@@ -251,7 +251,6 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnKeyboa
                         //step2: resize it
                         int noOfLines = v.getLineCount(); //this is very important, when setTextSize execute, getLineCount could possibly be zero
                         int textHeight = noOfLines * v.getLineHeight();
-                        Boolean dirty = false;
                         while (textHeight > v.getHeight()) {
 
                             Log.d(Global.debugTag, String.format("textHeight=%d, v.getHeight=%d, v.getTextSize=%f",textHeight,v.getHeight(), v.getTextSize()));
@@ -271,13 +270,8 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnKeyboa
                                 e.printStackTrace();
                             }
                             textHeight = noOfLines * v.getLineHeight();
-
-                            dirty = true;
                         }
 
-                        if (dirty == true) {
-                            v.setGravity(Gravity.CENTER_VERTICAL);
-                        }
 
                     }
                 });
