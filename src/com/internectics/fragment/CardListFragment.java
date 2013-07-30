@@ -202,6 +202,7 @@ public class CardListFragment extends Fragment {
 
             ImageView coverImage = (ImageView) v.findViewById(R.id.card_list_item_cover_image);
 
+
             View background = v.findViewById(R.id.card_list_item_background);
 
             ImageView drageImage = (ImageView) v.findViewById(R.id.card_list_item_drag_handle);

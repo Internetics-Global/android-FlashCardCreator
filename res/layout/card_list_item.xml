@@ -41,7 +41,7 @@
     </FrameLayout>
 
 
-    <ImageView
+    <com.internectics.UI.FCCImageView
             android:id="@+id/card_list_item_cover_image"
             android:layout_marginTop="10dp"
             android:layout_marginBottom="10dp"
@@ -51,7 +51,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
             android:src="@drawable/card_cover_image_placeholder"
-            android:scaleType="fitCenter"/>
+            android:scaleType="fitXY"/>
 
     <ImageView
             android:id="@id/card_list_item_drag_handle"
