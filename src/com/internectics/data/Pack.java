@@ -64,27 +64,31 @@ public class Pack {
         platform = (String) dataDict.get("platform");
 
         ArrayList<HashMap<String, Object>> cardArray = (ArrayList<HashMap<String, Object>>) dataDict.get("cards");
-        for (int i = 0; i < cardArray.size(); i++) {
-            Card newCard = (Card) (new Card()).initWithDictionary(cardArray.get(i));
-            cards.add(newCard);
-        }
-
-        Collections.sort(cards, new Comparator<Card>() {
-            @Override
-            public int compare(Card lhs, Card rhs) {
-                return (lhs.cardSN - rhs.cardSN);
+        if (cardArray != null) {
+            for (int i = 0; i < cardArray.size(); i++) {
+                Card newCard = (Card) (new Card()).initWithDictionary(cardArray.get(i));
+                cards.add(newCard);
             }
-        });
 
-        if (cards.get(0).cardSN != 1) {
-            Log.e(Global.debugTag, "Something is not right, cardSN should begin from 1");
+            Collections.sort(cards, new Comparator<Card>() {
+                @Override
+                public int compare(Card lhs, Card rhs) {
+                    return (lhs.cardSN - rhs.cardSN);
+                }
+            });
+
+            if (cards.get(0).cardSN != 1) {
+                Log.e(Global.debugTag, "Something is not right, cardSN should begin from 1");
+            }
+        } else {
+            Log.d(Global.debugTag, "cardArray is null. You may have used the parameter of isSummary = true in User.defaultUser");
         }
 
         return this;
     }
 
 
-    public static ArrayList<HashMap<String, Object>> packsForUserID(Context context, int userID) {
+    public static ArrayList<HashMap<String, Object>> packsForUserID(Context context, int userID, boolean isSummary) {
         ArrayList<HashMap<String, Object>> returnArray = new ArrayList<HashMap<String, Object>>();
 
         String queryString = String.format("SELECT * FROM Packs_Tables WHERE user_id=%d", userID);
@@ -104,7 +108,12 @@ public class Pack {
                 cardDict.put("creator_id", cur.getString(9));
                 cardDict.put("platform", cur.getString(10));
                 cardDict.put("creator_nick_name", cur.getString(11));
-                cardDict.put("cards", Card.cardsForPackID(context, cur.getInt(0)));
+                if (isSummary) {
+
+                } else {
+                    cardDict.put("cards", Card.cardsForPackID(context, cur.getInt(0)));
+                }
+
                 returnArray.add(cardDict);
             }
         } finally {

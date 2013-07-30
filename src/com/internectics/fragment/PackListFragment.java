@@ -38,7 +38,7 @@ public class PackListFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        mUser = User.defaultUser(AppContext.getAppContext());
+        mUser = User.defaultUserWithOnlyPackSummary(AppContext.getAppContext(),true);
     }
 
     @Override

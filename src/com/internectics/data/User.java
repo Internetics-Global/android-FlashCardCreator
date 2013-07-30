@@ -25,7 +25,22 @@ public class User {
         this.packs = new ArrayList<Pack>();
     }
 
+    /**
+     * it's quite time-cost operation because there're a lot of cards.
+     * @param context
+     * @return
+     */
     public static User defaultUser(Context context) {
+        return defaultUserWithOnlyPackSummary(context,false);
+    }
+
+    /**
+     * it's quite time-cost operation but you can reduce it if you set isSummary= true.
+     * @param context
+     * @param isSummary: not includes cards if isSummary =true. So Be careful enought when isSummary = true;
+     * @return
+     */
+    public static User defaultUserWithOnlyPackSummary(Context context, boolean isSummary) {
         gloalContext = context;
 
         HashMap<String, Object> dataDict = new HashMap<String, Object>();
@@ -36,7 +51,7 @@ public class User {
             while (cur.moveToNext()) {
                 dataDict.put("user_id", cur.getInt(0));
                 dataDict.put("nick_name", cur.getString(1));
-                dataDict.put("packs", Pack.packsForUserID(context, cur.getInt(0)));
+                dataDict.put("packs", Pack.packsForUserID(context, cur.getInt(0),isSummary));
                 break;
             }
         } finally {
