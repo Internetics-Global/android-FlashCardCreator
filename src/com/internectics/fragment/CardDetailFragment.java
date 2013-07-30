@@ -11,7 +11,9 @@ import android.os.*;
 import android.support.v4.app.Fragment;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.DisplayMetrics;
 import android.util.Log;
+import android.util.TypedValue;
 import android.view.*;
 import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputMethodManager;
@@ -212,10 +214,77 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnKeyboa
     @Override
     public void onResume() {
         super.onResume();
-
         mIsTakeSnapshotAllNeeded = false;  //necessary
 
+        autoResizeFontSizeToFitFrame(mSubheading);
+        autoResizeFontSizeToFitFrame(mMain);
+        autoResizeFontSizeToFitFrame(mSub);
+
         Log.d(Global.debugTag, "onResume in CardDetailFragment");
+    }
+
+    private void autoResizeFontSizeToFitFrame (final EditText v) {
+
+        final Activity activity = getActivity();
+
+        if (v.getText().length() == 0) {
+            return;
+        }
+
+        new Thread() {
+            public void run() {
+                activity.runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        //step1: make sure that Layout has bbeen built
+                        while (true) {
+                            if (v.getLineCount() >0) {
+                                break;
+                            }
+                            try {
+                                Thread.sleep(10);
+                            } catch (InterruptedException e) {
+                                e.printStackTrace();
+                            }
+                        }
+
+                        //step2: resize it
+                        int noOfLines = v.getLineCount(); //this is very important, when setTextSize execute, getLineCount could possibly be zero
+                        int textHeight = noOfLines * v.getLineHeight();
+                        Boolean dirty = false;
+                        while (textHeight > v.getHeight()) {
+
+                            Log.d(Global.debugTag, String.format("textHeight=%d, v.getHeight=%d, v.getTextSize=%f",textHeight,v.getHeight(), v.getTextSize()));
+
+                            float textSize = v.getTextSize();
+                            if (textSize >200) {
+                                v.setTextSize(TypedValue.COMPLEX_UNIT_PX,(v.getTextSize() - 40));
+                            } else if (textSize >100){
+                                v.setTextSize(TypedValue.COMPLEX_UNIT_PX,(v.getTextSize() - 20));
+                            } else {
+                                v.setTextSize(TypedValue.COMPLEX_UNIT_PX,(v.getTextSize() - 5));
+                            }
+
+                            try {
+                                Thread.sleep(5);
+                            } catch (InterruptedException e) {
+                                e.printStackTrace();
+                            }
+                            textHeight = noOfLines * v.getLineHeight();
+
+                            dirty = true;
+                        }
+
+                        if (dirty == true) {
+                            v.setGravity(Gravity.CENTER_VERTICAL);
+                        }
+
+                    }
+                });
+            };
+        }.start();
+
+
     }
 
     @Override

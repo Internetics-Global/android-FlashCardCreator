@@ -28,7 +28,7 @@
 
             <FrameLayout
                     android:layout_width="match_parent"
-                    android:layout_height="60dp"
+                    android:layout_height="40dp"
                     android:layout_gravity="bottom">
 
                 <Button
@@ -41,8 +41,8 @@
 
                 <Button
                         android:id="@+id/add_card_button"
-                        android:layout_width="60dp"
-                        android:layout_height="60dp"
+                        android:layout_width="40dp"
+                        android:layout_height="40dp"
                         android:layout_gravity="center"
                         android:background="@drawable/selector_add_card"/>
 
