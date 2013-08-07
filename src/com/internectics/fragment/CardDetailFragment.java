@@ -237,8 +237,9 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnKeyboa
                     @Override
                     public void run() {
                         //step1: make sure that Layout has bbeen built
+                        int timeout = 0;
                         while (true) {
-                            if (v.getLineCount() >0) {
+                            if ((v.getLineCount() >0) && (v.getHeight() > 0) && (v.getWidth() >0)) {
                                 break;
                             }
                             try {
@@ -246,12 +247,19 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnKeyboa
                             } catch (InterruptedException e) {
                                 e.printStackTrace();
                             }
+
+                            timeout++;
+                            if (timeout >20) {
+                                break;
+                            }
+
+
                         }
 
                         //step2: resize it
                         int noOfLines = v.getLineCount(); //this is very important, when setTextSize execute, getLineCount could possibly be zero
                         int textHeight = noOfLines * v.getLineHeight();
-                        while (textHeight > v.getHeight()) {
+                        while ((textHeight > v.getHeight()) && (v.getHeight() > 1)) {
 
                             Log.d(Global.debugTag, String.format("textHeight=%d, v.getHeight=%d, v.getTextSize=%f",textHeight,v.getHeight(), v.getTextSize()));
 
