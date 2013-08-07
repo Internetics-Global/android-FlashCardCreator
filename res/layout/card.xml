@@ -72,14 +72,14 @@
                         android:tag = "2002"
                         android:text="Question"
                         android:textStyle="bold"
-                        android:shadowColor="@android:color/holo_orange_dark"
+                        android:shadowColor="@android:color/white"
                         android:shadowRadius="16"
                         android:inputType="textNoSuggestions"
                         android:singleLine="true"
                         android:imeOptions="actionDone"
                         android:layout_gravity="left"
                         android:gravity="left|center_vertical"
-                        android:textColor="@android:color/holo_blue_dark"
+                        android:textColor="#0910FF"
                         android:textSize="@dimen/title_text_size"/>
 
                 <com.internectics.UI.FCCEditText
