@@ -10,9 +10,11 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.EditorInfo;
 import android.widget.*;
 import android.widget.AdapterView.OnItemClickListener;
 import com.internectics.android_flashcardcreator.MainActivity;
@@ -123,7 +125,19 @@ public class PackListFragment extends Fragment {
             LayoutInflater inflater = (LayoutInflater) getActivity().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             View contentView = inflater.inflate(R.layout.pack_list_item, parent, false);
 
-            TextView packNameView = (TextView) contentView.findViewById(R.id.pack_name_text);
+            final EditText packNameView = (EditText) contentView.findViewById(R.id.pack_name_text);
+            packNameView.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+                @Override
+                public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+                    if (actionId == EditorInfo.IME_ACTION_DONE) {
+                        currentPack.packName = packNameView.getText().toString();
+                        currentPack.save(AppContext.getAppContext());
+                    }
+                    return false;
+                }
+            });
+
+
             ImageView imageView = (ImageView) contentView.findViewById(R.id.pack_cover_image);
             Button changeCoverImageButton = (Button) contentView.findViewById(R.id.button_change_cover_image);
             Button deleteButton = (Button) contentView.findViewById(R.id.button_delete_pack);
@@ -172,7 +186,12 @@ public class PackListFragment extends Fragment {
             });
 
 
+
+
             if (mIsEditStatus) {
+
+                packNameView.setEnabled(true);
+
                 editLayout.setVisibility(View.VISIBLE);
 
                 if (currentPack.creatorID.equals(OpenUDID_manager.getOpenUDID())) {
@@ -193,6 +212,8 @@ public class PackListFragment extends Fragment {
 
 
             } else {
+                packNameView.setEnabled(false);
+
                 editLayout.setVisibility(View.INVISIBLE);
             }
 

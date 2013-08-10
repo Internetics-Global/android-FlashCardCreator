@@ -166,6 +166,7 @@ public class MainActivity extends FragmentActivity implements
             case R.id.actionbar_packs:
                 View popupLayout = inflater.inflate(R.layout.pack_list, null, false);
                 mPopupWindow = new PopupWindow(getResources().getDimensionPixelSize(R.dimen.pack_list_width), getResources().getDimensionPixelSize(R.dimen.pack_list_window_height));
+                mPopupWindow.setFocusable(true);
                 mPopupWindow.setOutsideTouchable(true);
                 mPopupWindow.setBackgroundDrawable(getResources().getDrawable(R.drawable.shape_popupwindow_background));
                 mPopupWindow.setContentView(popupLayout);
