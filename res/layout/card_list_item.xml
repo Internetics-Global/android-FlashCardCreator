@@ -41,17 +41,32 @@
     </FrameLayout>
 
 
-    <com.internectics.UI.FCCImageView
-            android:id="@+id/card_list_item_cover_image"
+    <FrameLayout
             android:layout_marginTop="10dp"
             android:layout_marginBottom="10dp"
             android:layout_weight="70"
-            android:layout_width="0dp"
-            android:adjustViewBounds="true"
             android:layout_height="wrap_content"
-            android:layout_gravity="center_vertical"
-            android:src="@drawable/card_cover_image_placeholder"
-            android:scaleType="fitXY"/>
+            android:layout_width="0dp">
+
+        <com.internectics.UI.FCCImageView
+                android:id="@+id/card_list_item_cover_image"
+                android:layout_width="fill_parent"
+                android:adjustViewBounds="true"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:src="@drawable/card_cover_image_placeholder"
+                android:scaleType="fitXY"/>
+
+        <com.internectics.UI.FCCImageView
+                android:id="@+id/card_list_item_cover_image_mask"
+                android:layout_width="fill_parent"
+                android:adjustViewBounds="true"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:src="@drawable/card_cover_image_mask_black"
+                android:scaleType="fitXY"/>
+
+    </FrameLayout>
 
     <ImageView
             android:id="@id/card_list_item_drag_handle"

@@ -202,6 +202,8 @@ public class CardListFragment extends Fragment {
 
             ImageView coverImage = (ImageView) v.findViewById(R.id.card_list_item_cover_image);
 
+            ImageView coverImageMask = (ImageView) v.findViewById(R.id.card_list_item_cover_image_mask);
+
 
             View background = v.findViewById(R.id.card_list_item_background);
 
@@ -241,9 +243,10 @@ public class CardListFragment extends Fragment {
             //highlight clor
             if (selectedPosition == position) {
                 background.setBackgroundColor(Color.rgb(47, 102, 167));
+                coverImageMask.setImageDrawable(getResources().getDrawable(R.drawable.card_cover_image_mask_blue));
             } else {
                 background.setBackgroundColor(Color.TRANSPARENT);
-
+                coverImageMask.setImageDrawable(getResources().getDrawable(R.drawable.card_cover_image_mask_black));
             }
 
             //check whether cover image is empty or not
