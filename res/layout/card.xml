@@ -82,22 +82,41 @@
                         android:textColor="#0910FF"
                         android:textSize="@dimen/title_text_size"/>
 
-                <com.internectics.UI.FCCEditText
-                        android:id="@+id/creator"
+                <LinearLayout
                         android:layout_height="wrap_content"
-                        android:layout_gravity="bottom"
                         android:layout_width="0dp"
-                        android:layout_weight="160"
-                        android:tag = "2003"
-                        android:gravity="bottom"
-                        android:text="Create by"
-                        android:textSize="@dimen/creator_text_size"
-                        android:inputType="textNoSuggestions"
-                        android:singleLine="true"
-                        android:imeOptions="actionDone"
-                        android:background="@drawable/shape_edittext_editable"
-                        android:textColor="@android:color/holo_blue_dark"
-                        />
+                        android:layout_gravity="center"
+                        android:orientation="vertical"
+                        android:layout_weight="160">
+                    <TextView
+                            android:layout_height="0dp"
+                            android:layout_gravity="bottom"
+                            android:layout_width="fill_parent"
+                            android:layout_weight="160"
+                            android:gravity="left"
+                            android:text="Created by"
+                            android:textSize="@dimen/creator_text_size"
+                            android:singleLine="true"
+                            android:editable="false"
+                            android:textColor="@android:color/darker_gray"
+                            />
+                    <com.internectics.UI.FCCEditText
+                            android:id="@+id/creator"
+                            android:layout_height="0dp"
+                            android:layout_gravity="bottom"
+                            android:layout_width="fill_parent"
+                            android:layout_weight="160"
+                            android:tag = "2003"
+                            android:gravity="bottom"
+                            android:text=""
+                            android:textSize="@dimen/creator_text_size"
+                            android:inputType="textNoSuggestions"
+                            android:singleLine="true"
+                            android:imeOptions="actionDone"
+                            android:background="@drawable/shape_edittext_editable"
+                            android:textColor="@android:color/darker_gray"
+                            />
+                </LinearLayout>
 
                 <ImageView
                         android:id="@+id/logo_url_btn"
