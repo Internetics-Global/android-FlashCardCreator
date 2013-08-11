@@ -39,8 +39,7 @@ public class StringUtils {
      * @return
      */
     public static String getCurrentTimeDate() {
-        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd_HH-mm-ss_SS");
-        String timeDateStr = format.format(new Timestamp(System.currentTimeMillis()));
+        String timeDateStr = dateFormater.format(new Date());
         Log.d(Global.debugTag, "current time/date is:" + timeDateStr);
         return timeDateStr;
     }

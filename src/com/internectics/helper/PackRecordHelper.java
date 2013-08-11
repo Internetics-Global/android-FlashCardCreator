@@ -1,8 +1,10 @@
 package com.internectics.helper;
 
 import android.content.Context;
+import android.content.SharedPreferences;
 import com.internectics.data.Pack;
 import com.internectics.util.AppConfig;
+import com.internectics.util.AppContext;
 import com.internectics.util.Global;
 import com.internectics.util.StringUtils;
 import org.json.simple.JSONObject;
@@ -22,65 +24,52 @@ public class PackRecordHelper {
 
     public static String getCurrentPackShareLink(Pack currentPack) {
 
-        String str = AppConfig.sharedInstance().get(String.format("%d", currentPack.packID));
-        JSONParser parser = new JSONParser();
-        JSONObject object = null;
-        try {
-            object = (JSONObject) parser.parse(str);
-
-        } catch (ParseException e) {
-            e.printStackTrace();
-        }
-        String shareLinkage = (String) object.get(Global.shareLink_Property);
+        SharedPreferences prefs = AppContext.getAppContext().getSharedPreferences(String.format("%d", currentPack.packID), 0);
+        String shareLinkage = prefs.getString(Global.shareLink_Property,StringUtils.getCurrentTimeDate());
 
         return shareLinkage;
     }
 
     public static void savePackUploadRecord(Context context, Pack currentPack, String shareLink) {
 
-        JSONObject object = new JSONObject();
-        object.put(Global.updateDate_Property, StringUtils.getCurrentTimeDate());
-        object.put(Global.shareLink_Property, shareLink);
-        AppConfig.sharedInstance().set(String.format("%d", currentPack.packID), object.toJSONString());
+        SharedPreferences prefs = context.getSharedPreferences(String.format("%d", currentPack.packID), 0);
+        SharedPreferences.Editor edit = prefs.edit();
+        edit.putString(Global.shareDate_Property,StringUtils.getCurrentTimeDate());
+        edit.putString(Global.shareLink_Property,shareLink);
+        edit.commit();
     }
 
     public static void savePackUpdateRecord(Context context, Pack currentPack) {
 
-        JSONObject object = new JSONObject();
-        object.put(Global.updateDate_Property, StringUtils.getCurrentTimeDate());
-        AppConfig.sharedInstance().set(String.format("%d", currentPack.packID), object.toJSONString());
+        SharedPreferences prefs = context.getSharedPreferences(String.format("%d", currentPack.packID), 0);
+        SharedPreferences.Editor edit = prefs.edit();
+        edit.putString(Global.updateDate_Property,StringUtils.getCurrentTimeDate());
+        edit.commit();
     }
 
     public static boolean checkUploadPackNecessary(Context context, Pack currentPack) {
 
-        boolean result = true;
+        boolean result;
 
-        String str = AppConfig.sharedInstance().get(String.format("%d", currentPack.packID));
+        SharedPreferences prefs = context.getSharedPreferences(String.format("%d", currentPack.packID), 0);
 
-        if (str == null) {
-            return result;
+        String updateDateStr = prefs.getString(Global.updateDate_Property,"");
+        String shareDateStr = prefs.getString(Global.shareDate_Property,StringUtils.getCurrentTimeDate());
+
+        if (updateDateStr.length() == 0) {
+            // this happens when the packed is downloaded.
+            savePackUpdateRecord(context,currentPack);
+            return true;
         }
 
-        JSONParser parser = new JSONParser();
-        try {
-            JSONObject object = (JSONObject) parser.parse(str);
-            String updateDateStr = (String) object.get(Global.updateDate_Property);
-            String shareDateStr = (String) object.get(Global.shareDate_Property);
-            String shareLinkStr = (String) object.get(Global.shareLink_Property);
-
-            if ((updateDateStr != null) && (shareDateStr != null) && (shareLinkStr != null)) {
-                Date updateDate = StringUtils.toDate(updateDateStr);
-                Date sharedate = StringUtils.toDate(shareDateStr);
-                if (updateDate.before(sharedate)) {
-                    return false; //don't need to upload pack again
-                } else {
-                    return true;
-                }
-            }
-
-        } catch (ParseException e) {
-            e.printStackTrace();
+        Date updateDate = StringUtils.toDate(updateDateStr);
+        Date sharedate = StringUtils.toDate(shareDateStr);
+        if (updateDate.before(sharedate)) {
+            result = false; //don't need to upload pack again
+        } else {
+            result = true;
         }
+
         return result;
     }
 }
