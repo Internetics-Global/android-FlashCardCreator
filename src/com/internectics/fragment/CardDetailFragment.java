@@ -1331,7 +1331,7 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnKeyboa
                         mCurrentFocusedCardContentText.setGravity(Gravity.LEFT);
                         break;
                     case 1:
-                        mCurrentFocusedCardContentText.setGravity(Gravity.CENTER);
+                        mCurrentFocusedCardContentText.setGravity(Gravity.CENTER_HORIZONTAL);
                         break;
                     case 2:
                         mCurrentFocusedCardContentText.setGravity(Gravity.RIGHT);
