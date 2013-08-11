@@ -54,11 +54,15 @@ public class PackRecordHelper {
         SharedPreferences prefs = context.getSharedPreferences(String.format("%d", currentPack.packID), 0);
 
         String updateDateStr = prefs.getString(Global.updateDate_Property,"");
-        String shareDateStr = prefs.getString(Global.shareDate_Property,StringUtils.getCurrentTimeDate());
+        String shareDateStr = prefs.getString(Global.shareDate_Property,"");
 
         if (updateDateStr.length() == 0) {
             // this happens when the packed is downloaded.
             savePackUpdateRecord(context,currentPack);
+            return true;
+        }
+
+        if (shareDateStr.length() ==0) {
             return true;
         }
 
