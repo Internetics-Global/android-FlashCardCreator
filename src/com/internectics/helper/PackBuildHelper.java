@@ -105,8 +105,6 @@ public class PackBuildHelper {
         obj.put("logo_url", pack.logoURL);
         obj.put("title", pack.questionTitle);
         obj.put("logo", StringUtils.lastComponentOfPath(pack.logoImageUriFormatStr));
-
-        obj.put("title", String.format("%d", card.cardSN));
         obj.put("template_background", card.templateBackground);
         obj.put("cover_image", StringUtils.lastComponentOfPath(card.coverImageUriFormatStr));
 
