@@ -26,6 +26,7 @@ import com.internectics.data.CSS;
 import com.internectics.data.Card;
 import com.internectics.data.Pack;
 import com.internectics.helper.FileOperationHelper;
+import com.internectics.helper.PackRecordHelper;
 import com.internectics.helper.SymbolHelper;
 import com.internectics.util.*;
 import net.londatiga.android.ActionItem;
@@ -1553,6 +1554,8 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnKeyboa
         }
 
         ((MainActivity) getActivity()).removeCSSToolbar();
+
+        PackRecordHelper.savePackUpdateRecord(AppContext.getAppContext(), mCurrentPack);
     }
 
     public void onGridViewItemClicked(int index) {

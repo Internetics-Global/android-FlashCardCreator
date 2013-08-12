@@ -7,12 +7,14 @@ import android.content.Intent;
 import android.os.AsyncTask;
 import android.util.Log;
 import android.widget.Toast;
+import com.internectics.helper.AmazonSDB.SimpleDBHelper;
 import com.internectics.util.AppConfig;
 import com.internectics.util.Global;
 
 import java.io.*;
 import java.net.URL;
 import java.net.URLConnection;
+import java.util.HashMap;
 
 /*
  * Download Pack
@@ -119,6 +121,17 @@ public class PackDownloadHelper extends AsyncTask<Void, Long, Boolean> {
                 //Step2: parse unzipped pack
                 PackParserHelper.parse();
 
+                if (mIsFromExamplePackDownload == false) {
+                    new Thread()
+                    {
+                        @Override
+                        public void run() {
+                            updateDownloadLimitCount();
+                        }
+                    }.start();
+
+                }
+
                 //Step3: write flag if it's from example pack download
                 if (mIsFromExamplePackDownload) {
                     AppConfig.sharedInstance().setExamplePackDownloadedFlag();
@@ -141,4 +154,14 @@ public class PackDownloadHelper extends AsyncTask<Void, Long, Boolean> {
 
         mDialog.dismiss();
     }
+
+    private static void updateDownloadLimitCount () {
+        Log.d(Global.debugTag, "Now begin to execute updateDownloadLimitCount");
+        final HashMap<String, String> rowData = new HashMap<String, String>();
+        rowData.put("currentNo",String.format("%d",Global.currentAmazonSimpleDBItemDownloadCount + 1));
+
+        SimpleDBHelper.updateAttributesForItem(Global.amazon_sdb_domain_name, Global.currentAmazonSimpleDBItemName, rowData);
+
+    }
+
 }

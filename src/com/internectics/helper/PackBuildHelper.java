@@ -117,13 +117,13 @@ public class PackBuildHelper {
         obj.put("sub", card.question.sub);
         obj.put("subheading_align", card.question.css.subheadingAlign);
         obj.put("subheading_color", card.question.css.subheadingColor);
-        obj.put("subheading_size", card.question.css.subheadingSize);
+        obj.put("subheading_size", String.format("%d",card.question.css.subheadingSize));
         obj.put("main_align", card.question.css.mainAlign);
         obj.put("main_color", card.question.css.mainColor);
-        obj.put("main_size", card.question.css.mainSize);
+        obj.put("main_size", String.format("%d",card.question.css.mainSize));
         obj.put("sub_align", card.question.css.subAlign);
         obj.put("sub_color", card.question.css.subColor);
-        obj.put("sub_size", card.question.css.subSize);
+        obj.put("sub_size", String.format("%d",card.question.css.subSize));
 
         File savedPath = FileOperationHelper.getUploadCardQuestionJsonFile();
         FileWriter file;
@@ -157,16 +157,15 @@ public class PackBuildHelper {
         obj.put("subheading", card.answer.subheading);
         obj.put("main", card.answer.main);
         obj.put("sub", card.answer.sub);
-        obj.put("template_id", card.answer.templateID);
         obj.put("subheading_align", card.answer.css.subheadingAlign);
         obj.put("subheading_color", card.answer.css.subheadingColor);
-        obj.put("subheading_size", card.answer.css.subheadingSize);
+        obj.put("subheading_size", String.format("%d",card.answer.css.subheadingSize));
         obj.put("main_align", card.answer.css.mainAlign);
         obj.put("main_color", card.answer.css.mainColor);
-        obj.put("main_size", card.answer.css.mainSize);
+        obj.put("main_size", String.format("%d",card.answer.css.mainSize));
         obj.put("sub_align", card.answer.css.subAlign);
         obj.put("sub_color", card.answer.css.subColor);
-        obj.put("sub_size", card.answer.css.subSize);
+        obj.put("sub_size", String.format("%d",card.answer.css.subSize));
 
         File savedPath = FileOperationHelper.getUploadCardAnswerJsonFile();
         FileWriter file;

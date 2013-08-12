@@ -30,10 +30,12 @@ import com.internectics.fragment.CardDetailFragment;
 import com.internectics.fragment.CardListFragment;
 import com.internectics.fragment.SymbolBoxFragment;
 import com.internectics.helper.*;
+import com.internectics.helper.AmazonSDB.SimpleDBHelper;
 import com.internectics.util.*;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.HashMap;
 
 /**
  * MainActivity is the entry for whole app
@@ -68,6 +70,9 @@ public class MainActivity extends FragmentActivity implements
     private Button mSymbolKeyboardSwitchButton;
 
     public boolean mIsKeyboardVisible; //we can NOT judge by imm.isActive
+
+    private boolean mIsAllowDownload;
+    private boolean mSemaphore;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -272,14 +277,44 @@ public class MainActivity extends FragmentActivity implements
         //Step2: call from other app or back from Dropbox authorization
         Uri data = getIntent().getData();
         if ((data != null) && (data.getScheme().equalsIgnoreCase("fcc"))) {
-
+            //for download (not include sample pack
             if (Global.apiReachableWithAlert(MainActivity.this)) {
-                String downloableShareLink = data.toString().replace("fcc", "http").replace("www", "dl");
-                File downloadedZipFile = new File(FileOperationHelper.downloadedPackDirectory(), "downloadedPackZip.zip");
-                PackDownloadHelper packDownloadHelper = new PackDownloadHelper(MainActivity.this, downloableShareLink, downloadedZipFile.toString());
-                packDownloadHelper.execute();
+
+                String packFileName = data.getLastPathSegment();
+                Global.currentAmazonSimpleDBItemName = packFileName.substring(0,packFileName.indexOf(".zip"));
+                mSemaphore = false;
+
+                //The reason why we design this is: network operation could not be done on main thread
+                new Thread()
+                {
+                    @Override
+                    public void run() {
+                        mIsAllowDownload = checkDownloadable(Global.currentAmazonSimpleDBItemName);
+                        mSemaphore = true;
+                    }
+                }.start();
+
+                while (mSemaphore == false) {
+                    try {
+                        Thread.sleep(20);
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+                }
+
+                if (mIsAllowDownload) {
+                    String downloableShareLink = data.toString().replace("fcc", "http").replace("www", "dl");
+                    File downloadedZipFile = new File(FileOperationHelper.downloadedPackDirectory(), "downloadedPackZip.zip");
+                    PackDownloadHelper packDownloadHelper = new PackDownloadHelper(MainActivity.this, downloableShareLink, downloadedZipFile.toString());
+                    packDownloadHelper.execute();
+                }   else {
+                    Toast.makeText(this, "You have reached the limit of downloads for this pack", Toast.LENGTH_LONG).show();
+                }
+
+
             }
         } else {
+            //for uploading
             if (true == mIsGoingAuthorizationBeforeUpload) {
                 AndroidAuthSession session = DropboxHelper.getDropboxAPI().getSession();
                 if (session.authenticationSuccessful()) {
@@ -294,6 +329,36 @@ public class MainActivity extends FragmentActivity implements
         }
 
         getIntent().setData(null); //in case it will be recalled time and time
+    }
+
+    private boolean checkDownloadable (String itemName) {
+        Log.d(Global.debugTag, "Now begin to execute checkDownloadable");
+
+        boolean result = false;
+
+        HashMap<String,String> rowData = SimpleDBHelper.getAttributesForItem(Global.amazon_sdb_domain_name, itemName);
+
+        if (rowData.containsKey("currentNo")){
+            Global.currentAmazonSimpleDBItemDownloadCount = Integer.parseInt(rowData.get("currentNo"));
+        } else {
+            Global.currentAmazonSimpleDBItemDownloadCount = 0;
+        }
+
+        int maxNo;
+        if (rowData.containsKey("maxNo")) {
+            maxNo = Integer.parseInt(rowData.get("maxNo"));
+        } else {
+            maxNo = 1000000; //as big as possible
+        }
+
+
+        if ((Global.currentAmazonSimpleDBItemDownloadCount < maxNo)  || (maxNo == 0)) {  //maxNo = 0 means no record in AmazonSDB
+            result = true;
+        } else {
+            result = false;
+        }
+
+        return result;
     }
 
 

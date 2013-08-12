@@ -5,6 +5,7 @@ import android.util.Log;
 import com.internectics.android_flashcardcreator.R;
 import com.internectics.data.Card;
 import com.internectics.data.Pack;
+import com.internectics.helper.AmazonSDB.SimpleDBHelper;
 import com.internectics.util.AppContext;
 import com.internectics.util.Global;
 import com.internectics.util.StringUtils;
@@ -17,6 +18,7 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
+import java.util.HashMap;
 
 public class PackParserHelper {
 
@@ -62,7 +64,6 @@ public class PackParserHelper {
         resultPack.save(AppContext.getAppContext());
 
     }
-
 
     /**
      * Special purpose for get card related image under unzipped downloaded pack folder

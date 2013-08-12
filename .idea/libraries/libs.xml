@@ -5,6 +5,7 @@
       <root url="jar://$PROJECT_DIR$/libs/httpmime-4.0.3.jar!/" />
       <root url="jar://$PROJECT_DIR$/libs/json_simple-1.1.jar!/" />
       <root url="jar://$PROJECT_DIR$/libs/libGoogleAnalyticsV2.jar!/" />
+      <root url="jar://$PROJECT_DIR$/libs/aws-android-sdk-1.6.0-debug.jar!/" />
     </CLASSES>
     <JAVADOC />
     <SOURCES />

@@ -46,6 +46,13 @@ public class Global {
     //used to generate a redirected URL
     public static final String URL_REDIRECT_API = "http://tinyurl.com/api-create.php?url=";
 
+    //Amazon SimpleDB
+    public static final String amazon_sdb_accessKey = "AKIAJTO4QTQX2BPPFNAQ";
+    public static final String amazon_sdb_secretKey = "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";
+    public static final String amazon_sdb_domain_name = "flashcardcreator";
+    public static int currentAmazonSimpleDBItemDownloadCount = -1;
+    public static String currentAmazonSimpleDBItemName = "";
+
 
     /**
      * detect network
