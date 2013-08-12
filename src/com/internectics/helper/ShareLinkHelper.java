@@ -87,7 +87,7 @@ public class ShareLinkHelper extends AsyncTask<Void, Long, Boolean> {
         //Dialog to show max allowable download time
         final  EditText editText = new EditText(mContext);
         editText.setGravity(Gravity.CENTER);
-        editText.setText("999");
+        editText.setText("9999");
         editText.setInputType(InputType.TYPE_CLASS_NUMBER);
         new AlertDialog.Builder(mContext)
                 .setTitle("Set max number of downloads")
