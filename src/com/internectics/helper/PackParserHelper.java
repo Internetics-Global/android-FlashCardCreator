@@ -142,60 +142,108 @@ public class PackParserHelper {
             FileReader fileReader = new FileReader(questionJsonFile);
             JSONObject questionObj = (JSONObject) parser.parse(fileReader);
 
-            String temp;
+            String temp = "";
 
             //this is a history issue(to compatibible with iOS version), i have to get logoImageUriFormatStr from question
             //Better way is to put them in pack
 
-            temp = (String) questionObj.get("logo");
+            if (questionObj.containsKey("logo")) {
+                temp = (String) questionObj.get("logo");
+            }
             if (StringUtils.isCorrectImageName(temp)) {
                 currentPack.logoImageUriFormatStr = temp;
             }
 
-            temp = (String) questionObj.get("logo_url");
+            temp = null;
+            if (questionObj.containsKey("logo_url")) {
+                temp = (String) questionObj.get("logo_url");
+            }
             if ((temp != null) && (temp.contains("http"))) {
                 currentPack.logoURL = temp;
             } else {
                 currentPack.logoURL = "http://novalidurl.com";
             }
 
-            currentPack.questionTitle = (String) questionObj.get("title");
 
-            temp = (String) questionObj.get("cover_image");
+            if (questionObj.containsKey("title")) {
+                currentPack.questionTitle = (String) questionObj.get("title");
+            }
+
+            temp = "";
+            if (questionObj.containsKey("cover_image")) {
+                temp = (String) questionObj.get("cover_image");
+            }
             if (StringUtils.isCorrectImageName(temp)) {
                 card.coverImageUriFormatStr = temp;
             }
 
-            temp = (String) questionObj.get("template_background");
+            temp = "";
+            if (questionObj.containsKey("template_background")) {
+                temp = (String) questionObj.get("template_background");
+            }
             if (StringUtils.isCorrectImageName(temp)) {
                 card.templateBackground = temp;
             }
 
-            temp = (String) questionObj.get("template_id");
+            temp = null;
+            if (questionObj.containsKey("template_id")) {
+                temp = (String) questionObj.get("template_id");
+            }
             if (temp != null) {
                 card.question.templateID = Integer.parseInt(temp);
             } else {
                 card.question.templateID = 0;
             }
 
-            temp = (String) questionObj.get("image");
+            temp = "";
+            if (questionObj.containsKey("image")) {
+                temp = (String) questionObj.get("image");
+            }
             if (StringUtils.isCorrectImageName(temp)) {
                 card.question.imageUriFormatStr = temp;
             }
 
-            card.question.subheading = ((String) questionObj.get("subheading")).replace("\\s+$", "");
-            card.question.main = ((String) questionObj.get("main")).replace("\\s+$", "");
-            card.question.sub = ((String) questionObj.get("sub")).replace("\\s+$", "");
+            if (questionObj.containsKey("subheading")) {
+                card.question.subheading = ((String) questionObj.get("subheading")).replace("\\s+$", "");
+            }
 
-            card.question.css.subheadingAlign = (String) questionObj.get("subheading_align");
-            card.question.css.subheadingColor = (String) questionObj.get("subheading_color");
-            card.question.css.mainAlign = (String) questionObj.get("main_align");
-            card.question.css.mainColor = (String) questionObj.get("main_color");
-            card.question.css.subAlign = (String) questionObj.get("sub_align");
-            card.question.css.subColor = (String) questionObj.get("sub_color");
+            if (questionObj.containsKey("main")) {
+                card.question.main = ((String) questionObj.get("main")).replace("\\s+$", "");
+            }
+
+            if (questionObj.containsKey("sub")) {
+                card.question.sub = ((String) questionObj.get("sub")).replace("\\s+$", "");
+            }
+
+            if (questionObj.containsKey("subheading_align"))  {
+                card.question.css.subheadingAlign = (String) questionObj.get("subheading_align");
+            }
+
+            if (questionObj.containsKey("subheading_color")) {
+                card.question.css.subheadingColor = (String) questionObj.get("subheading_color");
+            }
+
+            if (questionObj.containsKey("main_align"))  {
+                card.question.css.mainAlign = (String) questionObj.get("main_align");
+            }
+
+            if (questionObj.containsKey("main_color")) {
+                card.question.css.mainColor = (String) questionObj.get("main_color");
+            }
+
+            if (questionObj.containsKey("sub_align"))  {
+                card.question.css.subAlign = (String) questionObj.get("sub_align");
+            }
+
+            if (questionObj.containsKey("sub_color")) {
+                card.question.css.subColor = (String) questionObj.get("sub_color");
+            }
 
             int subheadingSize;
-            temp = (String) questionObj.get("subheading_size");
+            temp = null;
+            if (questionObj.containsKey("subheading_size"))  {
+                temp = (String) questionObj.get("subheading_size");
+            }
             if ((temp != null) && (StringUtils.isNumeric(temp))) {
                 subheadingSize =  Integer.parseInt(temp);
             } else {
@@ -204,6 +252,7 @@ public class PackParserHelper {
 
 
             int mainSize;
+            temp = null;
             temp = (String) questionObj.get("main_size");
             if ((temp != null) && (StringUtils.isNumeric(temp))) {
                 mainSize =  Integer.parseInt(temp);
@@ -212,6 +261,7 @@ public class PackParserHelper {
             }
 
             int subSize;
+            temp = null;
             temp = (String) questionObj.get("sub_size");
             if ((temp != null) && (StringUtils.isNumeric(temp))) {
                 subSize =  Integer.parseInt(temp);
@@ -262,38 +312,71 @@ public class PackParserHelper {
 
         //Answer
         try {
-            String temp;
+            String temp = null;
 
             FileReader fileReader = new FileReader(answerJsonFile);
             JSONObject answerObj = (JSONObject) parser.parse(fileReader);
 
             currentPack.answerTitle = (String) answerObj.get("title");
 
-            temp = (String) answerObj.get("template_id");
+            if (answerObj.containsKey("template_id")) {
+                temp = (String) answerObj.get("template_id");
+            }
             if (temp != null)  {
                 card.answer.templateID = Integer.parseInt(temp);
             } else {
                 card.answer.templateID = 0;
             }
 
-            temp = (String) answerObj.get("image");
+            temp = "";
+            if (answerObj.containsKey("image")) {
+                temp = (String) answerObj.get("image");
+            }
             if (StringUtils.isCorrectImageName(temp)) {
                 card.answer.imageUriFormatStr = temp;
             }
 
-            card.answer.subheading = ((String) answerObj.get("subheading")).replace("\\s+$", ""); //delete trailing space
-            card.answer.main = ((String) answerObj.get("main")).replace("\\s+$", "");
-            card.answer.sub = ((String) answerObj.get("sub")).replace("\\s+$", "");
+            if (answerObj.containsKey("subheading"))  {
+                card.answer.subheading = ((String) answerObj.get("subheading")).replace("\\s+$", ""); //delete trailing space
+            }
 
-            card.answer.css.subheadingAlign = (String) answerObj.get("subheading_align");
-            card.answer.css.subheadingColor = (String) answerObj.get("subheading_color");
-            card.answer.css.mainAlign = (String) answerObj.get("main_align");
-            card.answer.css.mainColor = (String) answerObj.get("main_color");
-            card.answer.css.subAlign = (String) answerObj.get("sub_align");
-            card.answer.css.subColor = (String) answerObj.get("sub_color");
+            if (answerObj.containsKey("main"))  {
+                card.answer.main = ((String) answerObj.get("main")).replace("\\s+$", "");
+            }
+
+            if (answerObj.containsKey("sub")) {
+                card.answer.sub = ((String) answerObj.get("sub")).replace("\\s+$", "");
+            }
+
+            if (answerObj.containsKey("subheading_align")) {
+                card.answer.css.subheadingAlign = (String) answerObj.get("subheading_align");
+            }
+
+            if (answerObj.containsKey("subheading_color")) {
+                card.answer.css.subheadingColor = (String) answerObj.get("subheading_color");
+            }
+
+            if (answerObj.containsKey("main_align")) {
+                card.answer.css.mainAlign = (String) answerObj.get("main_align");
+            }
+
+            if (answerObj.containsKey("main_color")) {
+                card.answer.css.mainColor = (String) answerObj.get("main_color");
+            }
+
+            if (answerObj.containsKey("sub_align")) {
+                card.answer.css.subAlign = (String) answerObj.get("sub_align");
+            }
+
+            if (answerObj.containsKey("sub_color")) {
+                card.answer.css.subColor = (String) answerObj.get("sub_color");
+            }
 
             int subheadingSize;
-            temp = (String) answerObj.get("subheading_size");
+            temp = null;
+            if (answerObj.containsKey("subheading_size")) {
+                temp = (String) answerObj.get("subheading_size");
+            }
             if ((temp != null) && (StringUtils.isNumeric(temp))) {
                 subheadingSize =  Integer.parseInt(temp);
 
@@ -303,7 +386,10 @@ public class PackParserHelper {
 
 
             int mainSize;
-            temp = (String) answerObj.get("main_size");
+            temp = null;
+            if (answerObj.containsKey("main_size")) {
+                temp = (String) answerObj.get("main_size");
+            }
             if ((temp != null) && (StringUtils.isNumeric(temp))) {
                 mainSize =  Integer.parseInt(temp);
             } else {
@@ -311,7 +397,10 @@ public class PackParserHelper {
             }
 
             int subSize;
-            temp = (String) answerObj.get("sub_size");
+            temp = null;
+            if (answerObj.containsKey("sub_size"))  {
+                temp = (String) answerObj.get("sub_size");
+            }
             if ((temp != null) && (StringUtils.isNumeric(temp))) {
                 subSize =  Integer.parseInt(temp);
             } else {

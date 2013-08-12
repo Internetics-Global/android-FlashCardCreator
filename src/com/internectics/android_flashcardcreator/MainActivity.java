@@ -294,24 +294,29 @@ public class MainActivity extends FragmentActivity implements
                     }
                 }.start();
 
-                while (mSemaphore == false) {
+                int timeoutCount = 0;    //set timeout = 5 second
+                final int kTimeoutThreshold = 250;
+                while ((mSemaphore == false) && (timeoutCount <kTimeoutThreshold)) {
                     try {
                         Thread.sleep(20);
+                        timeoutCount ++;
                     } catch (InterruptedException e) {
                         e.printStackTrace();
                     }
                 }
 
-                if (mIsAllowDownload) {
-                    String downloableShareLink = data.toString().replace("fcc", "http").replace("www", "dl");
-                    File downloadedZipFile = new File(FileOperationHelper.downloadedPackDirectory(), "downloadedPackZip.zip");
-                    PackDownloadHelper packDownloadHelper = new PackDownloadHelper(MainActivity.this, downloableShareLink, downloadedZipFile.toString());
-                    packDownloadHelper.execute();
-                }   else {
-                    Toast.makeText(this, "You have reached the limit of downloads for this pack", Toast.LENGTH_LONG).show();
+                if (timeoutCount == kTimeoutThreshold) {
+                    Toast.makeText(this, "Network timeout, please try again", Toast.LENGTH_LONG).show();
+                } else {
+                    if (mIsAllowDownload) {
+                        String downloableShareLink = data.toString().replace("fcc", "http").replace("www", "dl");
+                        File downloadedZipFile = new File(FileOperationHelper.downloadedPackDirectory(), "downloadedPackZip.zip");
+                        PackDownloadHelper packDownloadHelper = new PackDownloadHelper(MainActivity.this, downloableShareLink, downloadedZipFile.toString());
+                        packDownloadHelper.execute();
+                    }   else {
+                        Toast.makeText(this, "You have reached the limit of downloads for this pack", Toast.LENGTH_LONG).show();
+                    }
                 }
-
-
             }
         } else {
             //for uploading

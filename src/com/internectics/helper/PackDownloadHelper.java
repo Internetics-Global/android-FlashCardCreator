@@ -111,7 +111,7 @@ public class PackDownloadHelper extends AsyncTask<Void, Long, Boolean> {
     @Override
     protected void onPostExecute(Boolean result) {
         if (result) {
-            Toast.makeText(mContext, "Download pack successufully and now save it...", Toast.LENGTH_LONG).show();
+            Toast.makeText(mContext, "Download pack successufully.\n       Now saving it...", Toast.LENGTH_LONG).show();
             File outputDirectory = FileOperationHelper.downloadedPackDirectory();
             try {
 
