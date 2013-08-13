@@ -64,7 +64,7 @@
         <activity
                 android:name="com.internectics.android_flashcardcreator.PlayActivity"
                 android:windowSoftInputMode="stateAlwaysHidden"
-                android:screenOrientation="sensorLandscape">
+                android:screenOrientation="landscape">
         </activity>
         <activity android:name=".InstructionActivity"
                   android:screenOrientation="sensorLandscape"/>

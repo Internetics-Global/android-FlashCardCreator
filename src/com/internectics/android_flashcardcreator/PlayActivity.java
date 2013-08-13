@@ -73,7 +73,6 @@ public class PlayActivity extends FragmentActivity implements SensorEventListene
                     ((CardDetailFragment) (mFragments.get(mPosition))).switchToQuestionView();
 
                     mPosition = i;
-                    mIsResetRoll = true;
 
                 }
             }
@@ -101,6 +100,7 @@ public class PlayActivity extends FragmentActivity implements SensorEventListene
         Sensor accelerometer = mSensorManager.getDefaultSensor(Sensor.TYPE_ORIENTATION);
         mSensorManager.registerListener(this, accelerometer, SensorManager.SENSOR_DELAY_GAME); //considering different hardware, we need to set the fastest value
 
+        mIsResetRoll = true;
     }
 
     @Override
