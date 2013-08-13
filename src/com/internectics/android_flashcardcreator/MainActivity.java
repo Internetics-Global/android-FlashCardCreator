@@ -864,7 +864,7 @@ public class MainActivity extends FragmentActivity implements
     }
 
 
-    public static void dialog_Exit(Context context) {
+    public void dialog_Exit(Context context) {
         AlertDialog.Builder builder = new AlertDialog.Builder(context);
         builder.setMessage("Are you sure to exit");
         builder.setTitle("Alert");
@@ -872,9 +872,11 @@ public class MainActivity extends FragmentActivity implements
         builder.setPositiveButton("OK",
                 new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int which) {
-                        dialog.dismiss();
-                        android.os.Process.killProcess(android.os.Process
-                                .myPid());
+
+                        Intent intent = new Intent(Intent.ACTION_MAIN);
+                        intent.addCategory(Intent.CATEGORY_HOME);
+                        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                        startActivity(intent);
                     }
                 });
 
@@ -888,10 +890,4 @@ public class MainActivity extends FragmentActivity implements
         builder.create().show();
     }
 
-    private void determineActionBarMenuItemsShowOrNot () {
-        float screenWidthWithDPUnit = UIHelper.getScreenWidthDPUnit(this);
-        if (screenWidthWithDPUnit > 500) {  // for example, galaxy s4, htc one
-
-        }
-    }
 }

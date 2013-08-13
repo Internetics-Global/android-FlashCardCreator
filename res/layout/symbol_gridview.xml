@@ -6,11 +6,11 @@
           android:numColumns="@integer/symbox_box_column_no"
           android:background="#7C7C85"
           android:verticalSpacing="0dp"
-          android:horizontalSpacing="15dp"
+          android:horizontalSpacing="0dp"
           android:stretchMode="columnWidth"
           android:gravity="center"
           android:scrollbarFadeDuration="100000"
-          android:scrollbarStyle="outsideOverlay"
+          android:scrollbarStyle="outsideInset"
           android:scrollbarTrackVertical="@drawable/scrollbar_track"
           android:listSelector="@drawable/grid_selector"
         />
