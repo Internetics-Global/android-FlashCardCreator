@@ -11,6 +11,7 @@ import android.graphics.PixelFormat;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
+import android.util.AttributeSet;
 import android.util.Log;
 import android.util.TypedValue;
 import android.view.*;
@@ -131,9 +132,22 @@ public class MainActivity extends FragmentActivity implements
             menuID = R.menu.actionbar_add_card;
         } else {
             menuID = R.menu.actionbar;
+
         }
+
         menu.clear();
         getMenuInflater().inflate(menuID, menu);
+
+        if (UIHelper.getScreenWidthDPUnit(this) > 500) {
+            MenuItem item = menu.findItem(R.id.actionbar_change_template_color);
+            item.setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS);
+            item = menu.findItem(R.id.actionbar_help);
+            item.setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS);
+            item = menu.findItem(R.id.actionbar_more);
+            item.setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS);
+
+        }
+
         return true;
     }
 
@@ -872,5 +886,12 @@ public class MainActivity extends FragmentActivity implements
                 });
 
         builder.create().show();
+    }
+
+    private void determineActionBarMenuItemsShowOrNot () {
+        float screenWidthWithDPUnit = UIHelper.getScreenWidthDPUnit(this);
+        if (screenWidthWithDPUnit > 500) {  // for example, galaxy s4, htc one
+
+        }
     }
 }

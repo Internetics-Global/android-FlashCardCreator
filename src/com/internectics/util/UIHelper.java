@@ -76,7 +76,18 @@ public class UIHelper {
         Display display = activity.getWindowManager().getDefaultDisplay();
         int width = display.getWidth();
 
+
         return width;
+    }
+
+    public static float getScreenWidthDPUnit (Activity activity) {
+        DisplayMetrics metric = new DisplayMetrics();
+        activity.getWindowManager().getDefaultDisplay().getMetrics(metric);
+
+        float density  = metric.density;
+        float dpWidth  = metric.widthPixels / density;
+
+        return dpWidth;
     }
 
     public static String getCurrentPlatform() {
