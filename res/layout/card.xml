@@ -168,7 +168,7 @@
                             android:textColor="@android:color/black"
                             android:textStyle="bold"
                             android:tag="1001"
-                            android:gravity="center|top"
+                            android:gravity="center"
                             android:cursorVisible="true"
                             android:textCursorDrawable="@null"
                             android:background="@drawable/shape_edittext_editable"
