@@ -26,7 +26,7 @@
     <dimen name="add_pack_window_width">400dp</dimen>
 
     <!--creator related-->
-    <dimen name="creator_text_size">12sp</dimen>
+    <dimen name="creator_text_size">8sp</dimen>
 
     <!--title related-->
     <dimen name="title_text_size">20sp</dimen>
