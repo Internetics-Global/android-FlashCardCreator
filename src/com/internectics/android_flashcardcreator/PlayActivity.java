@@ -161,18 +161,22 @@ public class PlayActivity extends FragmentActivity implements SensorEventListene
 
         Log.i(Global.debugTag, "roll angle =" + roll);
 
-
+        CardDetailFragment cardDetailFragment = ((CardDetailFragment) (mFragments.get(mPosition)));
+        if (cardDetailFragment == null) {
+            Log.e(Global.debugTag, "cardDetailFragment is null during play mode");
+            return;
+        }
         int orientation = getOrientation();
         if (orientation == 1) {
             if ((roll < -15.0) && (enableSwitch)) {
-                ((CardDetailFragment) (mFragments.get(mPosition))).switchQuestionAnswerView();
+                cardDetailFragment.switchQuestionAnswerView();
                 enableSwitch = false;
             } else if ((Math.abs(roll) < 2) && (!enableSwitch)) {
                 enableSwitch = true;
             }
         } else if (orientation == 0) {
             if ((roll > 15.0) && (enableSwitch)) {
-                ((CardDetailFragment) (mFragments.get(mPosition))).switchQuestionAnswerView();
+                cardDetailFragment.switchQuestionAnswerView();
                 enableSwitch = false;
             } else if ((Math.abs(roll) < 2) && (!enableSwitch)) {
                 enableSwitch = true;
