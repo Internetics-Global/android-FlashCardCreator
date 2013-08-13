@@ -19,7 +19,6 @@ import com.internectics.util.UIHelper;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-import java.util.Random;
 
 
 public class PlayActivity extends FragmentActivity implements SensorEventListener {
@@ -29,8 +28,12 @@ public class PlayActivity extends FragmentActivity implements SensorEventListene
     private List<Fragment> mFragments;
     private FCCPageAdapter mPageAdapter;
 
-    private static boolean enableSwitch = true;
     private SensorManager mSensorManager;
+
+    private float mOrigalRoll = 0;
+    private boolean mIsResetRoll = false;
+    private boolean mEnableA = true;
+    private boolean mEnableB = true;
 
 
     @Override
@@ -70,7 +73,7 @@ public class PlayActivity extends FragmentActivity implements SensorEventListene
                     ((CardDetailFragment) (mFragments.get(mPosition))).switchToQuestionView();
 
                     mPosition = i;
-                    enableSwitch = true;
+                    mIsResetRoll = true;
 
                 }
             }
@@ -90,8 +93,6 @@ public class PlayActivity extends FragmentActivity implements SensorEventListene
 
         mSensorManager = (SensorManager) getSystemService(Context.SENSOR_SERVICE);
 
-
-
     }
 
     @Override
@@ -99,6 +100,7 @@ public class PlayActivity extends FragmentActivity implements SensorEventListene
         super.onResume();
         Sensor accelerometer = mSensorManager.getDefaultSensor(Sensor.TYPE_ORIENTATION);
         mSensorManager.registerListener(this, accelerometer, SensorManager.SENSOR_DELAY_GAME); //considering different hardware, we need to set the fastest value
+
     }
 
     @Override
@@ -106,6 +108,7 @@ public class PlayActivity extends FragmentActivity implements SensorEventListene
         super.onStop();
         mSensorManager.unregisterListener(this);
     }
+
 
     public class FCCPageAdapter extends FragmentStatePagerAdapter {
 
@@ -156,32 +159,47 @@ public class PlayActivity extends FragmentActivity implements SensorEventListene
 
     @Override
     public void onSensorChanged(SensorEvent event) {
-        //range of values is 90 degrees to -90 degrees.
-        float roll = event.values[2];
-
-        Log.i(Global.debugTag, "roll angle =" + roll);
 
         CardDetailFragment cardDetailFragment = ((CardDetailFragment) (mFragments.get(mPosition)));
-        if (cardDetailFragment == null) {
-            Log.e(Global.debugTag, "cardDetailFragment is null during play mode");
+        if ((cardDetailFragment == null) || (cardDetailFragment.mCardSN == null))  {
+            //this could happen when cardDetailFragment is not full inflated
+            Log.w(Global.debugTag, "cardDetailFragment is not fully intialized during play mode");
             return;
         }
+
+
+        if (mIsResetRoll) {
+            mOrigalRoll = event.values[2];
+            mIsResetRoll = false;
+        }
+
+
+        //range of values is 90 degrees to -90 degrees.
+        float roll = event.values[2];
+        Log.i(Global.debugTag, "roll angle =" + roll);
+
         int orientation = getOrientation();
-        if (orientation == 1) {
-            if ((roll < -15.0) && (enableSwitch)) {
+        if (orientation == 0) {
+            if ((roll - mOrigalRoll > 15.0) && (mEnableA)) {
                 cardDetailFragment.switchQuestionAnswerView();
-                enableSwitch = false;
-            } else if ((Math.abs(roll) < 2) && (!enableSwitch)) {
-                enableSwitch = true;
+                mEnableA = false;
             }
-        } else if (orientation == 0) {
-            if ((roll > 15.0) && (enableSwitch)) {
+            if (roll - mOrigalRoll < 0) {
+                mEnableA = true;
+            }
+
+        } else if ((orientation == 1) && (mEnableB)) {
+            if (roll - mOrigalRoll < -15.0) {
                 cardDetailFragment.switchQuestionAnswerView();
-                enableSwitch = false;
-            } else if ((Math.abs(roll) < 2) && (!enableSwitch)) {
-                enableSwitch = true;
+                mEnableB = false;
+            }
+
+            if (roll - mOrigalRoll > 0) {
+                mEnableB = true;
             }
         }
+
+
 
     }
 

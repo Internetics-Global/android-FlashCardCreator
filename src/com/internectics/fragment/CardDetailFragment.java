@@ -44,7 +44,7 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnKeyboa
     private LinearLayout mContentBodyLeft;
     private FCCEditText mSidebarTitle;
     private FrameLayout mSidebarBackground;
-    private TextView mCardSN;
+    public  TextView mCardSN;
     private FCCEditText mTitle;
     private LinearLayout mTitleBackground;
     private FCCEditText mCreator;
