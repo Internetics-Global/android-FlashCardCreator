@@ -1304,6 +1304,10 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnKeyboa
     public void updateCSS(int menuID, int subMenuID) {
         CSS currentCSS;
 
+        if (mCurrentFocusedCardContentText == null) {
+            Log.e(Global.debugTag,"mCurrentFocusedCardContentText is null during execution on updateCSS");
+        }
+
         //Step2: determine operaton target
         int editTextTag = Integer.parseInt((String) mCurrentFocusedCardContentText.getTag());
         if (mIsQuestionShowing) {
