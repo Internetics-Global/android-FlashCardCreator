@@ -462,6 +462,8 @@ public class MainActivity extends FragmentActivity implements
         for (CardDetailFragment cardDetailFragment : mArrayCardDetailFragments) {
             getSupportFragmentManager().beginTransaction().remove(cardDetailFragment).commitAllowingStateLoss();
         }
+
+        mArrayCardDetailFragments.clear();
         mArrayCardDetailFragments = null;
 
     }

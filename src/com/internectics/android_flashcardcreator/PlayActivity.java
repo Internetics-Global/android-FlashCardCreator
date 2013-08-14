@@ -109,6 +109,12 @@ public class PlayActivity extends FragmentActivity implements SensorEventListene
         mSensorManager.unregisterListener(this);
     }
 
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        mFragments.clear();
+        mFragments = null;
+    }
 
     public class FCCPageAdapter extends FragmentStatePagerAdapter {
 

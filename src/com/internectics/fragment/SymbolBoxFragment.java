@@ -28,12 +28,10 @@ public class SymbolBoxFragment extends Fragment {
     public View mContentView;
     private SymbolPageAdapter mPageAdapter;
     private ViewPager mPager;
-    private List<SymbolGridViewFragment> mSymbolGridViewFragments;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        mSymbolGridViewFragments = getGridViewFragments();
     }
 
     @Override

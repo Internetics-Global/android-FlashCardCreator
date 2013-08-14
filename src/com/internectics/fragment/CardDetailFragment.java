@@ -293,8 +293,9 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnKeyboa
 
     @Override
     public void onDestroy() {
+        Log.d(Global.debugTag, String.format("onDestroy in CardDetailFragment, cardSN = %d",mCurrentCard.cardSN));
         super.onDestroy();
-        Log.d(Global.debugTag, "onDestroy in CardDetailFragment");
+
 
     }
 
@@ -878,9 +879,11 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnKeyboa
             intent.putExtra(Global.KEY_FROM, Global.BROADCAST_EXTRA_FROM_CURRENT_PACK_UPDATE);
             getActivity().sendBroadcast(intent);
             mSemaphore = 0;
+
+            ((MainActivity) getActivity()).finishSnapShotAllExceptCurrent();
         }
 
-        ((MainActivity) getActivity()).finishSnapShot(this);
+
 
     }
 
