@@ -290,16 +290,12 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnKeyboa
 
     }
 
-    @Override
-    public void onDestroyView() {
-        super.onDestroyView();
-        Log.d(Global.debugTag, "onDestroyView in CardDetailFragment");
-    }
 
     @Override
     public void onDestroy() {
         super.onDestroy();
         Log.d(Global.debugTag, "onDestroy in CardDetailFragment");
+
     }
 
 
@@ -600,7 +596,7 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnKeyboa
             public void afterTextChanged(Editable s) {
                 if (mIsQuestionShowing) {
                     mCurrentPack.questionTitle = mTitle.getText().toString();
-                    if ((!mIsCreatingCard) && (!mIsPlayingCard)) {
+                    if ((!mIsPlayingCard)) {
                         mIsTakeSnapshotAllNeeded = true;
                     }
                 } else {
@@ -623,7 +619,7 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnKeyboa
             @Override
             public void afterTextChanged(Editable s) {
                 mCurrentPack.creatorNickName = mCreator.getText().toString();
-                if ((!mIsCreatingCard) && (!mIsPlayingCard)) {
+                if ((!mIsPlayingCard)) {
                     mIsTakeSnapshotAllNeeded = true;
                 }
 
@@ -644,7 +640,7 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnKeyboa
             @Override
             public void afterTextChanged(Editable s) {
                 mCurrentPack.sidebarTitle = mSidebarTitle.getText().toString();
-                if ((!mIsCreatingCard) && (!mIsPlayingCard)) {
+                if ((!mIsPlayingCard)) {
                     mIsTakeSnapshotAllNeeded = true;
                 }
 
@@ -835,8 +831,10 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnKeyboa
     public void saveNewCreatedCard() {
 
         if (mIsTakeSnapshotAllNeeded) {
+            ((MainActivity) getActivity()).setMaskButtonForContentUpdating();
             takeSnapshotAll();
             mCurrentPack.save(AppContext.getAppContext());
+
         } else {
             takeSnapshotCurrentCard();
         }
@@ -880,12 +878,9 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnKeyboa
             intent.putExtra(Global.KEY_FROM, Global.BROADCAST_EXTRA_FROM_CURRENT_PACK_UPDATE);
             getActivity().sendBroadcast(intent);
             mSemaphore = 0;
-
-            //free resources
-            ((MainActivity) getActivity()).finishSnapShotAllExceptCurrent();
-
-            Log.w(Global.debugTag, "Get done all cards' snapshot after reach mSemaphore");
         }
+
+        ((MainActivity) getActivity()).finishSnapShot(this);
 
     }
 
@@ -941,6 +936,7 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnKeyboa
             return false;
         }
     }
+
 
     private void updateQuestionViewTemplate() {
 
@@ -1254,7 +1250,7 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnKeyboa
 
     private void updateQuestionCSS() {
         //step1: alignment
-        mSubheading.setGravity(StringUtils.convertGravityStringToInt(mCurrentCard.question.css.subheadingAlign) | Gravity.TOP);
+        mSubheading.setGravity(StringUtils.convertGravityStringToInt(mCurrentCard.question.css.subheadingAlign) | Gravity.CENTER_VERTICAL);
         mMain.setGravity(StringUtils.convertGravityStringToInt(mCurrentCard.question.css.mainAlign) | Gravity.TOP);
         mSub.setGravity(StringUtils.convertGravityStringToInt(mCurrentCard.question.css.subAlign) | Gravity.TOP);
 
@@ -1271,7 +1267,7 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnKeyboa
 
     private void updateAnswerCSS() {
         //step1: alignment
-        mSubheading.setGravity(StringUtils.convertGravityStringToInt(mCurrentCard.answer.css.subheadingAlign));
+        mSubheading.setGravity(StringUtils.convertGravityStringToInt(mCurrentCard.answer.css.subheadingAlign ) | Gravity.CENTER_VERTICAL);
         mMain.setGravity(StringUtils.convertGravityStringToInt(mCurrentCard.answer.css.mainAlign));
         mSub.setGravity(StringUtils.convertGravityStringToInt(mCurrentCard.answer.css.subAlign));
 
@@ -1304,8 +1300,8 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnKeyboa
     public void updateCSS(int menuID, int subMenuID) {
         CSS currentCSS;
 
-        if (mCurrentFocusedCardContentText == null) {
-            Log.e(Global.debugTag,"mCurrentFocusedCardContentText is null during execution on updateCSS");
+        if ((mCurrentFocusedCardContentText == null) || (mCurrentFocusedCardContentText.getTag() == null)) {
+            Log.e(Global.debugTag,"mCurrentFocusedCardContentText or mCurrentFocusedCardContentText.getTag()  is null during execution on updateCSS");
         }
 
         //Step2: determine operaton target

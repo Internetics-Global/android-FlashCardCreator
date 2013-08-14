@@ -5,7 +5,6 @@
 <resources>
 
     <!--card related-->
-    <dimen name="cardsn_text_size">10sp</dimen>
     <dimen name="card_round_corner">15dp</dimen>
 
     <!--symbol box related-->
@@ -36,7 +35,7 @@
 
     <!--sidebar title related-->
     <dimen name="sidebar_text_size">12sp</dimen>
-    <dimen name="cardsn_text_size">10sp</dimen>
+    <dimen name="cardsn_text_size">8sp</dimen>
     <dimen name="cardsn_top_margin">12dp</dimen>
     <dimen name="cardsn_size">18dp</dimen>
 

@@ -466,6 +466,16 @@ public class MainActivity extends FragmentActivity implements
 
     }
 
+    public void finishSnapShot(CardDetailFragment fragment) {
+        if ((fragment == null) || (fragment.mCurrentCard == null)) {
+            return;
+        }
+
+        getSupportFragmentManager().beginTransaction().remove(fragment).commitAllowingStateLoss();
+
+        Log.w(Global.debugTag, String.format("FinishSnapShot on cardSN = %d",fragment.mCurrentCard.cardID));
+    }
+
 
     private void startCreateCard() {
 
