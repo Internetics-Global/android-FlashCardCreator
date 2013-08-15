@@ -11,7 +11,6 @@ import android.os.*;
 import android.support.v4.app.Fragment;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.util.DisplayMetrics;
 import android.util.Log;
 import android.util.TypedValue;
 import android.view.*;
@@ -210,7 +209,16 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnKeyboa
             configureCardStatus();
         }
 
+
+        //we have to disable because of performance issue
+        if (mIsCreatingCard) {
+            mSidebarTitle.setEnabled(false);
+            mTitle.setEnabled(false);
+            mCreator.setEnabled(false);
+        }
+
     }
+
 
     @Override
     public void onResume() {
@@ -845,6 +853,7 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnKeyboa
 
         mIsTakeSnapshotAllNeeded = false;
 
+
     }
 
 
@@ -861,6 +870,8 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnKeyboa
         View cardView = mContentView.findViewById(R.id.card);
         Bitmap bitmap = UIHelper.loadBitmapFromView(cardView);
         File savedFile = UIHelper.saveImageToCaches(bitmap);
+        bitmap.recycle();
+        System.gc();
         mCurrentCard.coverImageUriFormatStr = FileOperationHelper.convertToUriFormatFile(savedFile);
 
         if (isEditableMode()) {

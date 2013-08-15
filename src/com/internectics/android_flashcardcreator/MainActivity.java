@@ -491,11 +491,15 @@ public class MainActivity extends FragmentActivity implements
         addCardLayout.setVisibility(View.VISIBLE);
 
         mMasterMaskButton.setVisibility(View.VISIBLE);
+        final Animation animAlphaUp = new AlphaAnimation(0.0f, 1.0f);
+        animAlphaUp.setDuration(500);
+        mMasterMaskButton.startAnimation(animAlphaUp);
 
         mMasterMaskButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 dismissCardCreateWindow();
+
             }
         });
 
@@ -533,6 +537,7 @@ public class MainActivity extends FragmentActivity implements
     }
 
     private void dismissCardCreateWindow() {
+        getSupportFragmentManager().beginTransaction().remove(mCardDetailFragment).commit();
         FrameLayout addCardLayout = (FrameLayout) findViewById(R.id.add_card_frame_layout);
         addCardLayout.setVisibility(View.GONE);
 

@@ -1,11 +1,9 @@
 package com.internectics.util;
 
 import android.app.Activity;
-import android.content.ContentResolver;
 import android.content.Context;
 import android.content.res.Resources;
 import android.graphics.*;
-import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.util.DisplayMetrics;
 import android.util.Log;
@@ -30,17 +28,25 @@ public class UIHelper {
 
 
     public static Bitmap resizeImageTo400(Context context, Uri imageUri) {
-        ContentResolver cResolver = context.getContentResolver();
-        Bitmap resizeBitmap = null;
-        try {
-            Bitmap bitmap = BitmapFactory.decodeStream(cResolver
-                    .openInputStream(imageUri));
-            resizeBitmap = FileOperationHelper.resizeBitmap(
-                    bitmap, 400, 400);
 
-        } catch (FileNotFoundException e) {
-            Log.e("Exception", e.getMessage(), e);
+        Bitmap resizeBitmap = null;
+        //imageUri: content://media/external/images/media/5076
+        //pathName: /storage/emulated/0/Download/2013_06_04_21.51.40.png
+        String pathName = FileOperationHelper.getRealImagePathFromURI(context, imageUri);
+        File f = new File(pathName);
+        if (f.exists()) {
+            BitmapFactory.Options opts = new BitmapFactory.Options();
+            opts.inJustDecodeBounds = true;
+            BitmapFactory.decodeFile(pathName, opts);
+            int max;
+            if ((opts.outWidth > 400) || (opts.outHeight > 400) ) {
+                max = (opts.outWidth > opts.outHeight)?opts.outWidth:opts.outHeight;
+                opts.inSampleSize = (max/400);
+            }
+            opts.inJustDecodeBounds = false;
+            resizeBitmap = BitmapFactory.decodeFile(pathName, opts);
         }
+
         return resizeBitmap;
     }
 
@@ -50,7 +56,7 @@ public class UIHelper {
         try {
             FileOutputStream fOutputStream = new FileOutputStream(toSaveFile);
             try {
-                savedBitmap.compress(Bitmap.CompressFormat.PNG, 80, fOutputStream);
+                savedBitmap.compress(Bitmap.CompressFormat.PNG, 30, fOutputStream);
                 fOutputStream.flush();
                 fOutputStream.close();
             } catch (Exception oException) {
@@ -65,10 +71,16 @@ public class UIHelper {
 
 
     public static Bitmap loadBitmapFromView(View v) {
-        Bitmap bitmap = Bitmap.createBitmap(v.getWidth(), v.getHeight(), Bitmap.Config.ARGB_8888);
+        Bitmap bitmap = Bitmap.createBitmap(v.getWidth(), v.getHeight(), Bitmap.Config.ARGB_4444);
         Canvas canvas = new Canvas(bitmap);
         v.draw(canvas);
-        Bitmap resizedBitmap = Bitmap.createScaledBitmap(bitmap, v.getWidth()/3, v.getHeight()/3, false);
+
+        int factor = v.getWidth()/400 + 1;
+
+        Bitmap resizedBitmap = Bitmap.createScaledBitmap(bitmap, v.getWidth()/factor, v.getHeight()/factor, false);
+
+        bitmap.recycle();
+
         return resizedBitmap;
     }
 
