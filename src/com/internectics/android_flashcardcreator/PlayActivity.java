@@ -15,13 +15,14 @@ import com.internectics.model.CardListModel;
 import com.internectics.util.AppConfig;
 import com.internectics.util.Global;
 import com.internectics.util.UIHelper;
+import com.internectics.util.VGViewPager;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
 
-public class PlayActivity extends FragmentActivity implements SensorEventListener {
+public class PlayActivity extends FragmentActivity implements SensorEventListener,GestureDetector.OnDoubleTapListener,GestureDetector.OnGestureListener {
 
     private Pack mCurrentPack;
     private int mPosition = 0;
@@ -29,12 +30,18 @@ public class PlayActivity extends FragmentActivity implements SensorEventListene
     private FCCPageAdapter mPageAdapter;
 
     private SensorManager mSensorManager;
+    private boolean       mIsSensorAvailable;
 
     private float mOrigalRoll = 0;
     private boolean mIsResetRoll = false;
     private boolean mEnableA = true;
     private boolean mEnableB = true;
 
+    private VGViewPager mPager;
+
+    private GestureDetector mGestureDetector;
+
+    private boolean mIsScrollStop = true;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,18 +57,18 @@ public class PlayActivity extends FragmentActivity implements SensorEventListene
 
         mFragments = getFragments();
         mPageAdapter = new FCCPageAdapter(getSupportFragmentManager(), mFragments);
-        ViewPager pager = (ViewPager) findViewById(R.id.viewpager);
+        mPager = (VGViewPager) findViewById(R.id.viewpager);
 
         //Keep same size with non-playmode
-        ViewGroup.MarginLayoutParams marginLayoutParams = (ViewGroup.MarginLayoutParams) pager.getLayoutParams();
+        ViewGroup.MarginLayoutParams marginLayoutParams = (ViewGroup.MarginLayoutParams) mPager.getLayoutParams();
         int margin = (UIHelper.getScreenWidth(this)) / 6 / 2;
         marginLayoutParams.leftMargin = margin;
         marginLayoutParams.rightMargin = margin;
-        pager.setLayoutParams(marginLayoutParams);
+        mPager.setLayoutParams(marginLayoutParams);
 
-        pager.setOffscreenPageLimit(1);
-        pager.setAdapter(mPageAdapter);
-        pager.setOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+        mPager.setOffscreenPageLimit(1);
+        mPager.setAdapter(mPageAdapter);
+        mPager.setOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             @Override
             public void onPageScrolled(int i, float v, int i2) {
                 if ((mPosition != i) && (i2 == 0)) {
@@ -74,6 +81,9 @@ public class PlayActivity extends FragmentActivity implements SensorEventListene
 
                     mPosition = i;
 
+                    mIsScrollStop = true;
+                    Log.d(Global.debugTag, "Stopped");
+
                 }
             }
 
@@ -82,15 +92,16 @@ public class PlayActivity extends FragmentActivity implements SensorEventListene
             public void onPageSelected(int i) {
             }
 
-
-
             @Override
             public void onPageScrollStateChanged(int i) {
             }
 
         });
 
+
         mSensorManager = (SensorManager) getSystemService(Context.SENSOR_SERVICE);
+
+        mGestureDetector = new GestureDetector(this);
 
     }
 
@@ -98,7 +109,15 @@ public class PlayActivity extends FragmentActivity implements SensorEventListene
     protected void onResume() {
         super.onResume();
         Sensor accelerometer = mSensorManager.getDefaultSensor(Sensor.TYPE_ORIENTATION);
-        mSensorManager.registerListener(this, accelerometer, SensorManager.SENSOR_DELAY_GAME); //considering different hardware, we need to set the fastest value
+
+        if (accelerometer != null) {
+            mSensorManager.registerListener(this, accelerometer, SensorManager.SENSOR_DELAY_GAME); //considering different hardware, we need to set the fastest value
+            mIsSensorAvailable = true;
+        } else {
+            mIsSensorAvailable = false;
+            Log.w(Global.debugTag, "No Sensor.TYPE_ORIENTATION exists");
+        }
+
 
         mIsResetRoll = true;
     }
@@ -106,7 +125,9 @@ public class PlayActivity extends FragmentActivity implements SensorEventListene
     @Override
     protected void onStop() {
         super.onStop();
-        mSensorManager.unregisterListener(this);
+        if (mIsSensorAvailable) {
+            mSensorManager.unregisterListener(this);
+        }
     }
 
     @Override
@@ -169,7 +190,7 @@ public class PlayActivity extends FragmentActivity implements SensorEventListene
         CardDetailFragment cardDetailFragment = ((CardDetailFragment) (mFragments.get(mPosition)));
         if ((cardDetailFragment == null) || (cardDetailFragment.mCardSN == null))  {
             //this could happen when cardDetailFragment is not full inflated
-            Log.w(Global.debugTag, "cardDetailFragment is not fully intialized during play mode");
+            //Log.w(Global.debugTag, "cardDetailFragment is not fully intialized during play mode");
             return;
         }
 
@@ -182,7 +203,7 @@ public class PlayActivity extends FragmentActivity implements SensorEventListene
 
         //range of values is 90 degrees to -90 degrees.
         float roll = event.values[2];
-        Log.i(Global.debugTag, "roll angle =" + roll);
+        //Log.i(Global.debugTag, "roll angle =" + roll);
 
         int orientation = getOrientation();
         if (orientation == 0) {
@@ -226,13 +247,13 @@ public class PlayActivity extends FragmentActivity implements SensorEventListene
         if (orientation == Configuration.ORIENTATION_LANDSCAPE) {
             if ((rotation == Surface.ROTATION_0)
                     || (rotation == Surface.ROTATION_90)) {
-                Log.d(Global.debugTag, "current rotation is landscape");
+                //Log.d(Global.debugTag, "current rotation is landscape");
                 return 0; //landscape (for nexus 7, camera is left side of screen)
             }
 
             if ((rotation == Surface.ROTATION_180)
                     || (rotation == Surface.ROTATION_270)) {
-                Log.d(Global.debugTag, "current rotation is reverselandscape");
+                //Log.d(Global.debugTag, "current rotation is reverselandscape");
                 return 1; //reverse landscape   (for nexus 7, camera is right side of screen)
             }
 
@@ -241,5 +262,101 @@ public class PlayActivity extends FragmentActivity implements SensorEventListene
         return -1; //other rotation
 
     }
+
+
+
+    @Override
+    public boolean onSingleTapConfirmed(MotionEvent e) {
+        Log.d(Global.debugTag, "onSingleTapConfirmed");
+        return false;
+    }
+
+    @Override
+    public boolean onDoubleTap(MotionEvent e) {
+        Log.d(Global.debugTag, "onDoubleTap");
+        return false;
+    }
+
+    @Override
+    public boolean onDoubleTapEvent(MotionEvent e) {
+        Log.d(Global.debugTag, "onDoubleTapEvent");
+        return false;
+    }
+
+    @Override
+    public boolean onDown(MotionEvent e) {
+        Log.d(Global.debugTag, "onDown");
+        return false;
+    }
+
+    @Override
+    public void onShowPress(MotionEvent e) {
+        Log.d(Global.debugTag, "onShowPress");
+    }
+
+    @Override
+    public boolean onSingleTapUp(MotionEvent e) {
+        Log.d(Global.debugTag, "onSingleTapUp");
+        return false;
+    }
+
+    @Override
+    public boolean onScroll(MotionEvent e1, MotionEvent e2, float distanceX, float distanceY) {
+        Log.d(Global.debugTag, "onScroll");
+        return false;
+    }
+
+    @Override
+    public void onLongPress(MotionEvent e) {
+        Log.d(Global.debugTag, "onLongPress");
+    }
+
+    @Override
+    public boolean onFling(MotionEvent e1, MotionEvent e2, float velocityX, float velocityY) {
+
+        final float xDistance = Math.abs(e1.getX() - e2.getX());
+
+        final float yDistance = Math.abs(e1.getY() - e2.getY());
+
+        if (Math.abs(xDistance) < 100) {
+            if (e1.getRawY() < e2.getRawY() - 10) {
+                Log.d(Global.debugTag, "Down swipe");
+                ((CardDetailFragment) (mFragments.get(mPosition))).switchQuestionAnswerView();
+            } else if (e1.getRawY() > e2.getRawY() + 10) {
+                Log.d(Global.debugTag, "Up swipe");
+                ((CardDetailFragment) (mFragments.get(mPosition))).switchQuestionAnswerView();
+            }
+
+        }
+
+        if (Math.abs(yDistance) < 100) {
+            if (e1.getRawX() > e2.getRawX() + 10) {
+                Log.d(Global.debugTag, "swipe Left");
+
+                if (mPosition < mFragments.size()) {
+                    mIsScrollStop = false;
+                    mPager.setCurrentItem(mPosition + 1, true);
+                }
+
+            } else if (e1.getRawX() < e2.getRawX() - 10) {
+                Log.d(Global.debugTag, "Swipe Right");
+
+                if (mPosition >= 0) {
+                    mIsScrollStop = false;
+                    mPager.setCurrentItem(mPosition - 1, true);
+                }
+            }
+        }
+
+        return true;
+
+    }
+
+    @Override
+    public boolean onTouchEvent(MotionEvent event) {
+        return mGestureDetector.onTouchEvent(event);
+    }
+
+
 
 }
