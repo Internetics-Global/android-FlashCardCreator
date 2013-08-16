@@ -319,7 +319,7 @@ public class PlayActivity extends FragmentActivity implements SensorEventListene
         final float yDistance = Math.abs(e1.getY() - e2.getY());
 
         if (Math.abs(xDistance) < 100) {
-            if (e1.getRawY() < e2.getRawY() - 10) {
+            if (e1.getRawY() < e2.getRawY() - 30) {
                 Log.d(Global.debugTag, "Down swipe");
                 ((CardDetailFragment) (mFragments.get(mPosition))).switchQuestionAnswerView();
             } else if (e1.getRawY() > e2.getRawY() + 10) {
@@ -330,7 +330,7 @@ public class PlayActivity extends FragmentActivity implements SensorEventListene
         }
 
         if (Math.abs(yDistance) < 100) {
-            if (e1.getRawX() > e2.getRawX() + 10) {
+            if (e1.getRawX() > e2.getRawX() + 30) {
                 Log.d(Global.debugTag, "swipe Left");
 
                 if (mPosition < mFragments.size()) {
