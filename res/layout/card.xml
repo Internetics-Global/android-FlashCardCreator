@@ -73,7 +73,7 @@
                         android:background="@null"
                         android:tag = "2002"
                         android:text="Question"
-                        android:textStyle="bold"
+                        android:textStyle="normal"
                         android:shadowColor="@android:color/white"
                         android:shadowRadius="16"
                         android:inputType="textNoSuggestions"
