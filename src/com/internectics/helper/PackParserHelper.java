@@ -275,23 +275,32 @@ public class PackParserHelper {
                 subheadingSize = standardCSSArrary[0];
                 Log.w(Global.debugTag, "subheadingSize = 0 (from parseCardJsonFiles)or subheading.length = 0");
             }
-            if ((mainSize == 0) || (card.question.main.length() == 0)) {
-                mainSize = standardCSSArrary[1];
-                Log.w(Global.debugTag, "mainSize = 0 (from parseCardJsonFiles)  or main.length = 0");
-            }
-            if ((subSize == 0) || (card.question.sub.length() == 0)) {
-                subSize = standardCSSArrary[2];
-                Log.w(Global.debugTag, "subSize = 0 (from parseCardJsonFiles)  or sub.length = 0");
-            }
+
 
             if (currentPack.platform.equals(UIHelper.getCurrentPlatform()) == false) {
 
-                float average = (subheadingSize + mainSize + subSize) / 3;
-                float factor = (standardCSSArrary[0] + standardCSSArrary[1] + standardCSSArrary[2]) / 3 / average;
+                //set subheading
+                card.question.css.subheadingSize = (standardCSSArrary[0] + standardCSSArrary[1] + standardCSSArrary[2]) / 3;
 
-                card.question.css.subheadingSize = (int) (factor * subheadingSize);
-                card.question.css.mainSize = (int) (factor * mainSize);
-                card.question.css.subSize = (int) (factor * subSize);
+
+                //set main
+                if ((mainSize == 0) || (card.question.main.length() == 0) || (card.question.subheading.length() == 0)) {
+                    card.question.css.mainSize = standardCSSArrary[1];
+                } else {
+                    card.question.css.mainSize = (int)(card.question.css.subheadingSize * ((float)mainSize/subheadingSize));
+                }
+
+                //set sub
+                if ((subSize == 0) || (card.question.sub.length() == 0) || (card.question.subheading.length() == 0)) {
+                    card.question.css.subSize = standardCSSArrary[2];
+                } else {
+                    card.question.css.subSize = (int)(card.question.css.subheadingSize * ((float)subSize/subheadingSize));
+                }
+
+
+
+
+
             } else {
                 card.question.css.subheadingSize = subheadingSize;
                 card.question.css.mainSize = mainSize;
@@ -413,24 +422,28 @@ public class PackParserHelper {
                 subheadingSize = standardCSSArrary[3];
                 Log.w(Global.debugTag, "subheadingSize = 0 or subheading.length = 0");
             }
-            if ((mainSize == 0) ||(card.answer.main.length() == 0)) {
-                mainSize = standardCSSArrary[4];
-                Log.w(Global.debugTag, "mainSize = 0 or main.length = 0");
-            }
-            if ((subSize == 0) ||(card.answer.sub.length() == 0)) {
-                subSize = standardCSSArrary[5];
-                Log.w(Global.debugTag, "subSize = 0 or sub.length = 0");
-            }
 
             if (currentPack.platform.equals(UIHelper.getCurrentPlatform()) == false) {
                 //size interchangeable with iOS, and other android devices
 
-                float average = (subheadingSize + mainSize + subSize) / 3;
-                float factor = (standardCSSArrary[3] + standardCSSArrary[4] + standardCSSArrary[5]) / 3 / average;
+                //set subheading
+                card.answer.css.subheadingSize = (standardCSSArrary[0] + standardCSSArrary[1] + standardCSSArrary[2]) / 3;
 
-                card.answer.css.subheadingSize = (int) (factor * subheadingSize);
-                card.answer.css.mainSize = (int) (factor * mainSize);
-                card.answer.css.subSize = (int) (factor * subSize);
+
+                //set main
+                if ((mainSize == 0) || (card.answer.main.length() == 0) || (card.answer.subheading.length() == 0)) {
+                    card.answer.css.mainSize = standardCSSArrary[1];
+                } else {
+                    card.answer.css.mainSize = (int)(card.answer.css.subheadingSize * ((float)mainSize/subheadingSize));
+                }
+
+                //set sub
+                if ((subSize == 0) || (card.answer.sub.length() == 0) || (card.answer.subheading.length() == 0)) {
+                    card.answer.css.subSize = standardCSSArrary[2];
+                } else {
+                    card.answer.css.subSize = (int)(card.answer.css.subheadingSize * ((float)subSize/subheadingSize));
+                }
+
             } else {
                 card.answer.css.subheadingSize = subheadingSize;
                 card.answer.css.mainSize = mainSize;

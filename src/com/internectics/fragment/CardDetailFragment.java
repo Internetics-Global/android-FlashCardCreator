@@ -290,7 +290,7 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnKeyboa
                             } catch (InterruptedException e) {
                                 e.printStackTrace();
                             }
-                            textHeight = noOfLines * v.getLineHeight();
+                            textHeight = v.getLineCount() * v.getLineHeight();
                         }
 
 
@@ -626,6 +626,8 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnKeyboa
                     mCurrentPack.answerTitle = mTitle.getText().toString();
                 }
 
+
+
                 Log.d(Global.debugTag, "mTitle has changed");
             }
         });
@@ -676,6 +678,8 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnKeyboa
         mSubheading.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+                mSubheading.setGravity(mSubheading.getGravity() | Gravity.CENTER_VERTICAL);
             }
 
             @Override
@@ -691,6 +695,10 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnKeyboa
                 }
 
                 Log.d(Global.debugTag, "mSubheading has changed");
+
+                autoResizeFontSizeToFitFrame(mSubheading);
+
+                mSubheading.setGravity(mSubheading.getGravity() | Gravity.CENTER_VERTICAL);
             }
         });
 
@@ -713,7 +721,7 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnKeyboa
 
                 Log.d(Global.debugTag, "mMain has changed");
 
-
+                autoResizeFontSizeToFitFrame(mMain);
             }
         });
 
@@ -735,6 +743,8 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnKeyboa
                 }
 
                 Log.d(Global.debugTag, "mSub has changed");
+
+                autoResizeFontSizeToFitFrame(mSub);
             }
         });
     }
