@@ -270,27 +270,21 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnKeyboa
 
                             float textSize = v.getTextSize();
 
-
-
                             if (textSize >200) {
-                                v.setTextSize(TypedValue.COMPLEX_UNIT_PX,(v.getTextSize() - 40));
+                                v.setTextSize(TypedValue.COMPLEX_UNIT_PX,(v.getTextSize() - 30));
 
                             } else if ((textSize >100) && (textSize <= 200)){
                                 v.setTextSize(TypedValue.COMPLEX_UNIT_PX,(v.getTextSize() - 20));
                             } else if ((textSize >50) && (textSize <= 100)) {
                                 v.setTextSize(TypedValue.COMPLEX_UNIT_PX,(v.getTextSize() - 5));
                             } else if ((textSize >30) && (textSize <= 50)) {
-                                v.setTextSize(TypedValue.COMPLEX_UNIT_PX,(v.getTextSize() - 3));
+                                v.setTextSize(TypedValue.COMPLEX_UNIT_PX,(v.getTextSize() - 2));
                             } else if (textSize <= 30) {
                                 v.setTextSize(TypedValue.COMPLEX_UNIT_PX,(v.getTextSize() - 1));
                             }
 
-                            try {
-                                Thread.sleep(5);
-                            } catch (InterruptedException e) {
-                                e.printStackTrace();
-                            }
-                            textHeight = v.getLineCount() * v.getLineHeight();
+                            textHeight = noOfLines * v.getLineHeight();
+
                         }
 
 
@@ -679,11 +673,12 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnKeyboa
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
 
-                mSubheading.setGravity(mSubheading.getGravity() | Gravity.CENTER_VERTICAL);
             }
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+                mSubheading.setGravity(mSubheading.getGravity() | Gravity.CENTER_VERTICAL);
             }
 
             @Override
