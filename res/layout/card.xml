@@ -26,6 +26,7 @@
                 android:textSize="@dimen/sidebar_text_size"
                 android:text="1"
                 android:tag = "2001"
+                android:textColor="@android:color/white"
                 android:rotation="-90"
                 android:gravity="center" />
 
