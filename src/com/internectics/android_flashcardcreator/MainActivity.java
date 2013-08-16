@@ -138,7 +138,7 @@ public class MainActivity extends FragmentActivity implements
         menu.clear();
         getMenuInflater().inflate(menuID, menu);
 
-        if ((UIHelper.getScreenWidthDPUnit(this) > 500) && (mIsCreatingCard == false)) {
+        if ((UIHelper.getScreenWidthDPUnit(this) >= 600) && (mIsCreatingCard == false)) {
             MenuItem item = menu.findItem(R.id.actionbar_change_template_color);
             item.setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS);
             item = menu.findItem(R.id.actionbar_help);
