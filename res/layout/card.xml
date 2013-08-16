@@ -125,7 +125,7 @@
                         android:id="@+id/logo_url_btn"
                         android:layout_width="0dp"
                         android:layout_weight="80"
-                        android:layout_height="30dp"
+                        android:layout_height="@dimen/logo_url_btn_size"
                         android:layout_gravity="bottom"
                         android:src="@drawable/button_edit_link"/>
 
@@ -229,8 +229,8 @@
                 android:layout_gravity="right|bottom"
                 android:layout_marginBottom="15dp"
                 android:layout_marginRight="15dp"
-                android:layout_height="30dp"
-                android:layout_width="30dp"
+                android:layout_height= "@dimen/button_change_template_size"
+                android:layout_width="@dimen/button_change_template_size"
                 android:src="@drawable/button_change_template"/>
 
     </FrameLayout>

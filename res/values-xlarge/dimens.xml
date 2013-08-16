@@ -6,6 +6,8 @@
 
     <!--card related-->
     <dimen name="card_round_corner">40dp</dimen>
+    <dimen name="logo_url_btn_size">30dp</dimen>
+    <dimen name="button_change_template_size">30dp</dimen>
 
     <!--symbol box related-->
     <dimen name="symbol_text_size">36sp</dimen>
@@ -41,5 +43,8 @@
     <!--css toolbar related-->
     <dimen name="csstoolbar_text_size">16sp</dimen>
     <dimen name="csstoolbar_button_width">90dp</dimen>
+
+    <!-- add card related -->
+    <dimen name="add_card_button_size">60dp</dimen>
 
 </resources>
