@@ -225,10 +225,6 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnKeyboa
         super.onResume();
         mIsTakeSnapshotAllNeeded = false;  //necessary
 
-        autoResizeFontSizeToFitFrame(mSubheading);
-        autoResizeFontSizeToFitFrame(mMain);
-        autoResizeFontSizeToFitFrame(mSub);
-
         Log.d(Global.debugTag, "onResume in CardDetailFragment");
     }
 
@@ -273,12 +269,20 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnKeyboa
                             Log.d(Global.debugTag, String.format("textHeight=%d, v.getHeight=%d, v.getTextSize=%f",textHeight,v.getHeight(), v.getTextSize()));
 
                             float textSize = v.getTextSize();
+
+
+
                             if (textSize >200) {
                                 v.setTextSize(TypedValue.COMPLEX_UNIT_PX,(v.getTextSize() - 40));
-                            } else if (textSize >100){
+
+                            } else if ((textSize >100) && (textSize <= 200)){
                                 v.setTextSize(TypedValue.COMPLEX_UNIT_PX,(v.getTextSize() - 20));
-                            } else {
+                            } else if ((textSize >50) && (textSize <= 100)) {
                                 v.setTextSize(TypedValue.COMPLEX_UNIT_PX,(v.getTextSize() - 5));
+                            } else if ((textSize >30) && (textSize <= 50)) {
+                                v.setTextSize(TypedValue.COMPLEX_UNIT_PX,(v.getTextSize() - 3));
+                            } else if (textSize <= 30) {
+                                v.setTextSize(TypedValue.COMPLEX_UNIT_PX,(v.getTextSize() - 1));
                             }
 
                             try {
@@ -507,6 +511,8 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnKeyboa
         updateQuestionContent();
         updateQuestionViewTemplate();
         updateQuestionCSS();
+
+        applyAutoResizePolicy();
     }
 
 
@@ -515,6 +521,14 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnKeyboa
         updateAnswerContent();
         updateAnswerViewTemplate();
         updateAnswerCSS();
+
+        applyAutoResizePolicy();
+    }
+
+    private void applyAutoResizePolicy () {
+        autoResizeFontSizeToFitFrame(mSubheading);
+        autoResizeFontSizeToFitFrame(mMain);
+        autoResizeFontSizeToFitFrame(mSub);
     }
 
 

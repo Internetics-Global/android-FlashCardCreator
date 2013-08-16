@@ -271,17 +271,17 @@ public class PackParserHelper {
 
             int[] standardCSSArrary = AppContext.getAppContext().getResources().getIntArray(R.array.css_size_int);
 
-            if (subheadingSize == 0) {
+            if ((subheadingSize == 0) || (card.question.subheading.length() == 0)) {
                 subheadingSize = standardCSSArrary[0];
-                Log.w(Global.debugTag, "subheadingSize = 0 (from parseCardJsonFiles)");
+                Log.w(Global.debugTag, "subheadingSize = 0 (from parseCardJsonFiles)or subheading.length = 0");
             }
-            if (mainSize == 0) {
+            if ((mainSize == 0) || (card.question.main.length() == 0)) {
                 mainSize = standardCSSArrary[1];
-                Log.w(Global.debugTag, "mainSize = 0 (from parseCardJsonFiles)");
+                Log.w(Global.debugTag, "mainSize = 0 (from parseCardJsonFiles)  or main.length = 0");
             }
-            if (subSize == 0) {
+            if ((subSize == 0) || (card.question.sub.length() == 0)) {
                 subSize = standardCSSArrary[2];
-                Log.w(Global.debugTag, "subSize = 0 (from parseCardJsonFiles)");
+                Log.w(Global.debugTag, "subSize = 0 (from parseCardJsonFiles)  or sub.length = 0");
             }
 
             if (currentPack.platform.equals(UIHelper.getCurrentPlatform()) == false) {
@@ -409,17 +409,17 @@ public class PackParserHelper {
 
             int[] standardCSSArrary = AppContext.getAppContext().getResources().getIntArray(R.array.css_size_int);
 
-            if (subheadingSize == 0) {
+            if ((subheadingSize == 0) ||(card.answer.subheading.length() == 0)) {
                 subheadingSize = standardCSSArrary[3];
-                Log.w(Global.debugTag, "subheadingSize = 0");
+                Log.w(Global.debugTag, "subheadingSize = 0 or subheading.length = 0");
             }
-            if (mainSize == 0) {
+            if ((mainSize == 0) ||(card.answer.main.length() == 0)) {
                 mainSize = standardCSSArrary[4];
-                Log.w(Global.debugTag, "mainSize = 0");
+                Log.w(Global.debugTag, "mainSize = 0 or main.length = 0");
             }
-            if (subSize == 0) {
+            if ((subSize == 0) ||(card.answer.sub.length() == 0)) {
                 subSize = standardCSSArrary[5];
-                Log.w(Global.debugTag, "subSize = 0");
+                Log.w(Global.debugTag, "subSize = 0 or sub.length = 0");
             }
 
             if (currentPack.platform.equals(UIHelper.getCurrentPlatform()) == false) {
