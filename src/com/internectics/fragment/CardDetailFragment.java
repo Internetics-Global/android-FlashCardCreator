@@ -1282,8 +1282,8 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnKeyboa
     private void updateAnswerCSS() {
         //step1: alignment
         mSubheading.setGravity(StringUtils.convertGravityStringToInt(mCurrentCard.answer.css.subheadingAlign ) | Gravity.CENTER_VERTICAL);
-        mMain.setGravity(StringUtils.convertGravityStringToInt(mCurrentCard.answer.css.mainAlign));
-        mSub.setGravity(StringUtils.convertGravityStringToInt(mCurrentCard.answer.css.subAlign));
+        mMain.setGravity(StringUtils.convertGravityStringToInt(mCurrentCard.answer.css.mainAlign) | Gravity.TOP);
+        mSub.setGravity(StringUtils.convertGravityStringToInt(mCurrentCard.answer.css.subAlign) | Gravity.TOP);
 
         //step2: size
         mSubheading.setTextSize(mCurrentCard.answer.css.subheadingSize);
