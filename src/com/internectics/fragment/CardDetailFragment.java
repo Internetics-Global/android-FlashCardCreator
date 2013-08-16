@@ -764,6 +764,13 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnKeyboa
             }
         }
 
+
+        //Invisible if logo is a placeholder
+        if ((mIsPlayingCard) && (mCurrentPack.logoImageUriFormatStr.contains("placeholder") == true)) {
+            mLogoImage.setVisibility(View.INVISIBLE);
+        }
+
+
     }
 
 
@@ -881,12 +888,20 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnKeyboa
             disableCardEditable();
         }
 
+        //hide logo image if its placeholder
+        if (mCurrentPack.logoImageUriFormatStr.contains("placeholder") == true) {
+            mLogoImage.setVisibility(View.INVISIBLE);
+        }
+
         View cardView = mContentView.findViewById(R.id.card);
         Bitmap bitmap = UIHelper.loadBitmapFromView(cardView);
         File savedFile = UIHelper.saveImageToCaches(bitmap);
         bitmap.recycle();
         System.gc();
         mCurrentCard.coverImageUriFormatStr = FileOperationHelper.convertToUriFormatFile(savedFile);
+
+        //restore and show logo image
+        mLogoImage.setVisibility(View.VISIBLE);
 
         if (isEditableMode()) {
             enableCardEditable();
