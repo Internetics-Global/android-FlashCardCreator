@@ -3,6 +3,10 @@
 
     <!--galaxy s4 (1080*1920, 441dpi, 696dp)-->
     <!--htc one (1080*1920, 469dpi, 655dp)-->
+    <!--galaxy s3(1280*720,306dpi, 669dp) -->
+    <!--nexus4 (1280*768,318dpi, 644dp) -->
+    <!--moto x (1280*720, 316dpi,648dp) -->
+    <!--htc one mini (1280*720, 342dpi,598dp) -->
 
     <!--sp unit-->
     <integer-array

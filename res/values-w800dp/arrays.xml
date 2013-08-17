@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <!--sp unit-->
+    <integer-array
+            name="css_size_int">
+        <item>23</item>
+        <item>26</item>
+        <item>23</item>
+        <item>19</item>
+        <item>22</item>
+        <item>19</item>
+    </integer-array>
+
+
+</resources>

@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <!--galaxy note 8.0 (1280*800, 189dpi, 1083dp)-->
+    <!--galaxy note 10.1 (1280*800, 149dpi, 1374dp)-->
+
+    <!--sp unit-->
+    <integer-array
+            name="css_size_int">
+        <item>39</item>
+        <item>42</item>
+        <item>39</item>
+        <item>36</item>
+        <item>39</item>
+        <item>36</item>
+    </integer-array>
+
+
+</resources>

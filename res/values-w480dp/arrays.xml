@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <integer-array
+            name="css_size_int">
+        <item>12</item>
+        <item>15</item>
+        <item>12</item>
+        <item>10</item>
+        <item>13</item>
+        <item>10</item>
+    </integer-array>
+
+
+</resources>

@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <!--sp unit-->
+    <!--nexus one (800*480, 252dpi, 507dp)-->
+
+    <integer-array
+            name="css_size_int">
+        <item>13</item>
+        <item>17</item>
+        <item>13</item>
+        <item>11</item>
+        <item>14</item>
+        <item>11</item>
+    </integer-array>
+
+
+</resources>
