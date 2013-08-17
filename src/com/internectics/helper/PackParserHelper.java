@@ -204,15 +204,15 @@ public class PackParserHelper {
             }
 
             if (questionObj.containsKey("subheading")) {
-                card.question.subheading = ((String) questionObj.get("subheading")).replace("\\s+$", "");
+                card.question.subheading = ((String) questionObj.get("subheading")).replace("\\s+[$\r]", "");
             }
 
             if (questionObj.containsKey("main")) {
-                card.question.main = ((String) questionObj.get("main")).replace("\\s+$", "");
+                card.question.main = ((String) questionObj.get("main")).replace("\\s+[$\r]", "");
             }
 
             if (questionObj.containsKey("sub")) {
-                card.question.sub = ((String) questionObj.get("sub")).replace("\\s+$", "");
+                card.question.sub = ((String) questionObj.get("sub")).replace("\\s+[$\r]", "");
             }
 
             if (questionObj.containsKey("subheading_align"))  {
@@ -269,43 +269,131 @@ public class PackParserHelper {
                 subSize = 0;
             }
 
+            //-----begin scale down policy with error protection
+
+            //step1: get which is trustable
+            int baseSize = 0;
+            int whichAsBase = 0;  //0, subheading; 1, main; 2. sub
             int[] standardCSSArrary = AppContext.getAppContext().getResources().getIntArray(R.array.css_size_int);
 
-            if ((subheadingSize == 0) || (card.question.subheading.length() == 0)) {
-                subheadingSize = standardCSSArrary[0];
-                Log.w(Global.debugTag, "subheadingSize = 0 (from parseCardJsonFiles)or subheading.length = 0");
+            if ((subheadingSize == 0) ||(card.question.subheading.length() == 0)) {
+                card.question.css.subheadingSize = standardCSSArrary[0];
+                Log.w(Global.debugTag, "subheadingSize = 0 or subheading.length = 0");
+            } else {
+                baseSize =  subheadingSize;
+                whichAsBase = 0;
             }
 
 
+            if ((subSize == 0) ||(card.question.sub.length() == 0)) {
+                card.question.css.subSize = standardCSSArrary[2];
+                Log.w(Global.debugTag, "subSize = 0 or sub.length = 0");
+            } else {
+                baseSize =  subSize;
+                whichAsBase =2;
+            }
+
+            //put main at last is very important, because it's the most trustable value
+            if ((mainSize == 0) ||(card.question.main.length() == 0)) {
+                card.question.css.mainSize = standardCSSArrary[1];
+                Log.w(Global.debugTag, "mainSize = 0 or main.length = 0");
+            } else {
+                baseSize =  mainSize;
+                whichAsBase = 1;
+            }
+
+            if (baseSize == 0) {
+                baseSize =  standardCSSArrary[1];
+                whichAsBase = 0;
+            }
+
+
+            //step2: scale down
             if (currentPack.platform.equals(UIHelper.getCurrentPlatform()) == false) {
 
-                //set subheading
-                card.question.css.subheadingSize = (standardCSSArrary[0] + standardCSSArrary[1] + standardCSSArrary[2]) / 3;
+                //size interchangeable with iOS, and other android devices
 
+                switch (whichAsBase) {
+                    case    0: {
 
-                //set main
-                if ((mainSize == 0) || (card.question.main.length() == 0) || (card.question.subheading.length() == 0)) {
-                    card.question.css.mainSize = standardCSSArrary[1];
-                } else {
-                    card.question.css.mainSize = (int)(card.question.css.subheadingSize * ((float)mainSize/subheadingSize));
+                        //subheadingSize is trustable
+                        //card.question.css.subheadingSize will be base value
+                        //baseSize is same as subHeadingSize
+
+                        card.question.css.subheadingSize = standardCSSArrary[0];
+
+                        if ((mainSize == 0) || (card.question.main.length() == 0)) {
+                            card.question.css.mainSize = standardCSSArrary[1];
+                        } else {
+                            card.question.css.mainSize = (int)(card.question.css.subheadingSize * ((float)mainSize/baseSize));
+                        }
+
+                        if ((subSize == 0) || (card.question.sub.length() == 0)) {
+                            card.question.css.subSize = standardCSSArrary[2];
+                        } else {
+                            card.question.css.subSize = (int)(card.question.css.subheadingSize * ((float)subSize/baseSize));
+                        }
+
+                        break;
+                    }
+
+                    case    1: {
+
+                        //mainSize is trustable
+                        //card.question.css.mainSize will be base value
+                        //baseSize is same as mainSize
+
+                        card.question.css.mainSize = standardCSSArrary[1];
+
+                        if ((subheadingSize == 0) || (card.question.subheading.length() == 0)) {
+                            card.question.css.subheadingSize = standardCSSArrary[0];
+                        } else {
+                            card.question.css.subheadingSize = (int)(card.question.css.mainSize * ((float)subheadingSize/baseSize));
+                        }
+
+                        if ((subSize == 0) || (card.question.sub.length() == 0)) {
+                            card.question.css.subSize = standardCSSArrary[2];
+                        } else {
+                            card.question.css.subSize = (int)(card.question.css.mainSize * ((float)subSize/baseSize));
+                        }
+
+                        break;
+                    }
+
+                    case    2: {
+
+                        //subSize is trustable
+                        //card.question.css.subSize will be base value
+                        //baseSize is same as subSize
+
+                        card.question.css.subSize = standardCSSArrary[1];
+
+                        if ((subheadingSize == 0) || (card.question.subheading.length() == 0)) {
+                            card.question.css.subheadingSize = standardCSSArrary[0];
+                        } else {
+                            card.question.css.subheadingSize = (int)(card.question.css.subSize * ((float)subheadingSize/baseSize));
+                        }
+
+                        if ((mainSize == 0) || (card.question.main.length() == 0)) {
+                            card.question.css.mainSize = standardCSSArrary[1];
+                        } else {
+                            card.question.css.mainSize = (int)(card.question.css.subSize * ((float)mainSize/baseSize));
+                        }
+
+                        break;
+                    }
+
+                    default:
+                        break;
                 }
-
-                //set sub
-                if ((subSize == 0) || (card.question.sub.length() == 0) || (card.question.subheading.length() == 0)) {
-                    card.question.css.subSize = standardCSSArrary[2];
-                } else {
-                    card.question.css.subSize = (int)(card.question.css.subheadingSize * ((float)subSize/subheadingSize));
-                }
-
-
-
-
 
             } else {
                 card.question.css.subheadingSize = subheadingSize;
                 card.question.css.mainSize = mainSize;
                 card.question.css.subSize = subSize;
             }
+
+            //-----end scale down policy with error protection
 
 
         } catch (FileNotFoundException e) {
@@ -416,32 +504,123 @@ public class PackParserHelper {
                 subSize = 0;
             }
 
+
+            //-----begin scale down policy with error protection
+
+            //step1: get which is trustable
+            int baseSize = 0;
+            int whichAsBase = 0;  //0, subheading; 1, main; 2. sub
             int[] standardCSSArrary = AppContext.getAppContext().getResources().getIntArray(R.array.css_size_int);
 
             if ((subheadingSize == 0) ||(card.answer.subheading.length() == 0)) {
-                subheadingSize = standardCSSArrary[3];
+                card.answer.css.subheadingSize = standardCSSArrary[3];
                 Log.w(Global.debugTag, "subheadingSize = 0 or subheading.length = 0");
+            } else {
+                baseSize =  subheadingSize;
+                whichAsBase = 0;
             }
 
+
+            if ((subSize == 0) ||(card.answer.sub.length() == 0)) {
+                card.answer.css.subSize = standardCSSArrary[5];
+                Log.w(Global.debugTag, "subSize = 0 or sub.length = 0");
+            } else {
+                baseSize =  subSize;
+                whichAsBase =2;
+            }
+
+            //put main at last is very important, because it's the most trustable value
+            if ((mainSize == 0) ||(card.answer.main.length() == 0)) {
+                card.answer.css.mainSize = standardCSSArrary[4];
+                Log.w(Global.debugTag, "mainSize = 0 or main.length = 0");
+            } else {
+                baseSize =  mainSize;
+                whichAsBase = 1;
+            }
+
+            if (baseSize == 0) {
+                baseSize =  standardCSSArrary[4];
+                whichAsBase = 0;
+            }
+
+
+            //step2: scale down
             if (currentPack.platform.equals(UIHelper.getCurrentPlatform()) == false) {
+
                 //size interchangeable with iOS, and other android devices
 
-                //set subheading
-                card.answer.css.subheadingSize = (standardCSSArrary[0] + standardCSSArrary[1] + standardCSSArrary[2]) / 3;
+                switch (whichAsBase) {
+                    case    0: {
 
+                        //subheadingSize is trustable
+                        //card.answer.css.subheadingSize will be base value
+                        //baseSize is same as subHeadingSize
 
-                //set main
-                if ((mainSize == 0) || (card.answer.main.length() == 0) || (card.answer.subheading.length() == 0)) {
-                    card.answer.css.mainSize = standardCSSArrary[1];
-                } else {
-                    card.answer.css.mainSize = (int)(card.answer.css.subheadingSize * ((float)mainSize/subheadingSize));
-                }
+                        card.answer.css.subheadingSize = standardCSSArrary[3];
 
-                //set sub
-                if ((subSize == 0) || (card.answer.sub.length() == 0) || (card.answer.subheading.length() == 0)) {
-                    card.answer.css.subSize = standardCSSArrary[2];
-                } else {
-                    card.answer.css.subSize = (int)(card.answer.css.subheadingSize * ((float)subSize/subheadingSize));
+                        if ((mainSize == 0) || (card.answer.main.length() == 0)) {
+                            card.answer.css.mainSize = standardCSSArrary[4];
+                        } else {
+                            card.answer.css.mainSize = (int)(card.answer.css.subheadingSize * ((float)mainSize/baseSize));
+                        }
+
+                        if ((subSize == 0) || (card.answer.sub.length() == 0)) {
+                            card.answer.css.subSize = standardCSSArrary[5];
+                        } else {
+                            card.answer.css.subSize = (int)(card.answer.css.subheadingSize * ((float)subSize/baseSize));
+                        }
+
+                        break;
+                    }
+
+                    case    1: {
+
+                        //mainSize is trustable
+                        //card.answer.css.mainSize will be base value
+                        //baseSize is same as mainSize
+
+                        card.answer.css.mainSize = standardCSSArrary[4];
+
+                        if ((subheadingSize == 0) || (card.answer.subheading.length() == 0)) {
+                            card.answer.css.subheadingSize = standardCSSArrary[3];
+                        } else {
+                            card.answer.css.subheadingSize = (int)(card.answer.css.mainSize * ((float)subheadingSize/baseSize));
+                        }
+
+                        if ((subSize == 0) || (card.answer.sub.length() == 0)) {
+                            card.answer.css.subSize = standardCSSArrary[5];
+                        } else {
+                            card.answer.css.subSize = (int)(card.answer.css.mainSize * ((float)subSize/baseSize));
+                        }
+
+                        break;
+                    }
+
+                    case    2: {
+
+                        //subSize is trustable
+                        //card.answer.css.subSize will be base value
+                        //baseSize is same as subSize
+
+                        card.answer.css.subSize = standardCSSArrary[4];
+
+                        if ((subheadingSize == 0) || (card.answer.subheading.length() == 0)) {
+                            card.answer.css.subheadingSize = standardCSSArrary[3];
+                        } else {
+                            card.answer.css.subheadingSize = (int)(card.answer.css.subSize * ((float)subheadingSize/baseSize));
+                        }
+
+                        if ((mainSize == 0) || (card.answer.main.length() == 0)) {
+                            card.answer.css.mainSize = standardCSSArrary[4];
+                        } else {
+                            card.answer.css.mainSize = (int)(card.answer.css.subSize * ((float)mainSize/baseSize));
+                        }
+
+                        break;
+                    }
+
+                    default:
+                        break;
                 }
 
             } else {
@@ -449,6 +628,8 @@ public class PackParserHelper {
                 card.answer.css.mainSize = mainSize;
                 card.answer.css.subSize = subSize;
             }
+
+            //-----end scale down policy with error protection
 
         } catch (FileNotFoundException e) {
             e.printStackTrace();

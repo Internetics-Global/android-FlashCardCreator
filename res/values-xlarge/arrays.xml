@@ -1,19 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <!--nexus 10, similar-->
-
-    <!--sp unit-->
-    <integer-array
-            name="css_size_int">
-        <item>38</item>
-        <item>42</item>
-        <item>42</item>
-        <item>38</item>
-        <item>42</item>
-        <item>42</item>
-    </integer-array>
-
 
     <string-array
             name="css_size">

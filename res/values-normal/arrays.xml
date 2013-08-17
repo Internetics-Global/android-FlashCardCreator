@@ -3,17 +3,6 @@
 <!--nexus 4, galaxy note2, similar-->
 
 <resources>
-    <!--sp unit-->
-    <integer-array
-            name="css_size_int">
-        <item>14</item>
-        <item>18</item>
-        <item>14</item>
-        <item>14</item>
-        <item>18</item>
-        <item>14</item>
-    </integer-array>
-
 
     <string-array
             name="css_size">

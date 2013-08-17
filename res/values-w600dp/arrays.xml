@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <!--galaxy s4 (1080*1920, 441dpi, 696dp)-->
+    <!--htc one (1080*1920, 469dpi, 655dp)-->
+
+    <!--sp unit-->
+    <integer-array
+            name="css_size_int">
+        <item>16</item>
+        <item>19</item>
+        <item>16</item>
+        <item>14</item>
+        <item>17</item>
+        <item>14</item>
+    </integer-array>
+
+
+</resources>
