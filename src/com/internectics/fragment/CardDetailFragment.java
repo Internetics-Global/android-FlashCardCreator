@@ -228,74 +228,6 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnKeyboa
         Log.d(Global.debugTag, "onResume in CardDetailFragment");
     }
 
-    private void autoResizeFontSizeToFitFrame (final EditText v) {
-
-        final Activity activity = getActivity();
-
-        if (v.getText().length() == 0) {
-            return;
-        }
-
-        new Thread() {
-            public void run() {
-                activity.runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-                        //step1: make sure that Layout has bbeen built
-                        int timeout = 0;
-                        while (true) {
-                            if ((v.getLineCount() >0) && (v.getHeight() > 0) && (v.getWidth() >0)) {
-                                break;
-                            }
-                            try {
-                                Thread.sleep(10);
-                            } catch (InterruptedException e) {
-                                e.printStackTrace();
-                            }
-
-                            timeout++;
-                            if (timeout >20) {
-                                break;
-                            }
-
-
-                        }
-
-                        //step2: resize it
-                        int noOfLines = v.getLineCount(); //this is very important, when setTextSize execute, getLineCount could possibly be zero
-                        int textHeight = noOfLines * v.getLineHeight();
-                        while ((textHeight > v.getHeight()) && (v.getHeight() > 1)) {
-
-                            Log.d(Global.debugTag, String.format("textHeight=%d, v.getHeight=%d, v.getTextSize=%f",textHeight,v.getHeight(), v.getTextSize()));
-
-                            float textSize = v.getTextSize();
-
-                            if (textSize >200) {
-                                v.setTextSize(TypedValue.COMPLEX_UNIT_PX,(v.getTextSize() - 30));
-
-                            } else if ((textSize >100) && (textSize <= 200)){
-                                v.setTextSize(TypedValue.COMPLEX_UNIT_PX,(v.getTextSize() - 20));
-                            } else if ((textSize >50) && (textSize <= 100)) {
-                                v.setTextSize(TypedValue.COMPLEX_UNIT_PX,(v.getTextSize() - 5));
-                            } else if ((textSize >30) && (textSize <= 50)) {
-                                v.setTextSize(TypedValue.COMPLEX_UNIT_PX,(v.getTextSize() - 2));
-                            } else if (textSize <= 30) {
-                                v.setTextSize(TypedValue.COMPLEX_UNIT_PX,(v.getTextSize() - 1));
-                            }
-
-                            textHeight = noOfLines * v.getLineHeight();
-
-                        }
-
-
-                    }
-                });
-            };
-        }.start();
-
-
-    }
-
 
     @Override
     public void onDestroy() {
@@ -505,8 +437,6 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnKeyboa
         updateQuestionContent();
         updateQuestionViewTemplate();
         updateQuestionCSS();
-
-        applyAutoResizePolicy();
     }
 
 
@@ -515,14 +445,6 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnKeyboa
         updateAnswerContent();
         updateAnswerViewTemplate();
         updateAnswerCSS();
-
-        applyAutoResizePolicy();
-    }
-
-    private void applyAutoResizePolicy () {
-        autoResizeFontSizeToFitFrame(mSubheading);
-        autoResizeFontSizeToFitFrame(mMain);
-        autoResizeFontSizeToFitFrame(mSub);
     }
 
 
@@ -566,6 +488,51 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnKeyboa
             mTitle.setOnTouchListener(this);
         }
 
+        ViewTreeObserver vtoSubheading = mSubheading.getViewTreeObserver();
+        vtoSubheading.addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
+            @Override
+            public void onGlobalLayout() {
+                resizeTextToFitFrame(mSubheading);
+                resizeTextToFitFrame(mMain);
+                resizeTextToFitFrame(mSub);
+            }
+        });
+
+
+    }
+
+
+    private void resizeTextToFitFrame (final EditText v) {
+
+        //Log.d("ccaa2", "Entering resizeTextToFitFrame on EditText" + v.getText().toString());
+
+        if (v.getText().length() == 0) {
+            return;
+        }
+
+        int noOfLines = v.getLineCount(); //this is very important, when setTextSize execute, getLineCount could possibly be zero
+        int textHeight = noOfLines * v.getLineHeight();
+        //Log.d("ccaa2", String.format("before resizing textHeight=%d, v.getLineCount()=%d,v.getHeight() = %d",textHeight,noOfLines,v.getHeight()));
+
+        if ((textHeight > v.getHeight()) && (v.getHeight() > 1) && (noOfLines > 0)) {
+
+            //Log.d("ccaa2", String.format("Now executing textHeight=%d, v.getHeight=%d, v.getTextSize=%f",textHeight,v.getHeight(), v.getTextSize()));
+
+            float textSize = v.getTextSize();
+
+            if (textSize >200) {
+                v.setTextSize(TypedValue.COMPLEX_UNIT_PX,(v.getTextSize() - 30));
+
+            } else if ((textSize >100) && (textSize <= 200)){
+                v.setTextSize(TypedValue.COMPLEX_UNIT_PX,(v.getTextSize() - 20));
+            } else if ((textSize >50) && (textSize <= 100)) {
+                v.setTextSize(TypedValue.COMPLEX_UNIT_PX,(v.getTextSize() - 5));
+            } else if ((textSize >30) && (textSize <= 50)) {
+                v.setTextSize(TypedValue.COMPLEX_UNIT_PX,(v.getTextSize() - 2));
+            } else if (textSize <= 30) {
+                v.setTextSize(TypedValue.COMPLEX_UNIT_PX,(v.getTextSize() - 1));
+            }
+        }
     }
 
     private void setEditTextListener() {
@@ -691,8 +658,6 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnKeyboa
 
                 Log.d(Global.debugTag, "mSubheading has changed");
 
-                autoResizeFontSizeToFitFrame(mSubheading);
-
                 mSubheading.setGravity(mSubheading.getGravity() | Gravity.CENTER_VERTICAL);
             }
         });
@@ -715,8 +680,6 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnKeyboa
                 }
 
                 Log.d(Global.debugTag, "mMain has changed");
-
-                autoResizeFontSizeToFitFrame(mMain);
             }
         });
 
@@ -738,8 +701,6 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnKeyboa
                 }
 
                 Log.d(Global.debugTag, "mSub has changed");
-
-                autoResizeFontSizeToFitFrame(mSub);
             }
         });
     }
