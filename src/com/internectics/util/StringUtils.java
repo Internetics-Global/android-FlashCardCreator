@@ -233,4 +233,23 @@ public class StringUtils {
     }
 
 
+    public static String deleteEndLinesSpace(String str) {
+        String splitStr =  System.getProperty ("line.separator");
+        String[] lines = str.split(splitStr);
+
+        String result = "";
+
+        int i = 0;
+        for (String strLine:lines) {
+            String trimmedStr = strLine.replaceAll("\\s+$", "");
+            if (i == lines.length - 1) {
+                result = result + trimmedStr;
+            } else {
+                result = result + trimmedStr + splitStr;
+            }
+        }
+        return result;
+    }
+
+
 }

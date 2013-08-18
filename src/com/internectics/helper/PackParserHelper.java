@@ -204,16 +204,18 @@ public class PackParserHelper {
             }
 
             if (questionObj.containsKey("subheading")) {
-                card.question.subheading = ((String) questionObj.get("subheading")).replace("\\s+[$\r]", "");
+                card.question.subheading = StringUtils.deleteEndLinesSpace((String) questionObj.get("subheading"));
             }
 
             if (questionObj.containsKey("main")) {
-                card.question.main = ((String) questionObj.get("main")).replace("\\s+[$\r]", "");
+                card.question.main = StringUtils.deleteEndLinesSpace((String) questionObj.get("main"));
             }
 
             if (questionObj.containsKey("sub")) {
-                card.question.sub = ((String) questionObj.get("sub")).replace("\\s+[$\r]", "");
+                card.question.sub = StringUtils.deleteEndLinesSpace((String) questionObj.get("sub"));
             }
+
+
 
             if (questionObj.containsKey("subheading_align"))  {
                 card.question.css.subheadingAlign = (String) questionObj.get("subheading_align");
