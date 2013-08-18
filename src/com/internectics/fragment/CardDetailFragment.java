@@ -75,6 +75,8 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnKeyboa
 
     private static int mSemaphore = 0; //used to indicate all snapshots are done
 
+    private static boolean isSaveNeededAfterResize = false;
+
 
     private Handler myHandler;
 
@@ -492,9 +494,9 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnKeyboa
         vtoSubheading.addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
             @Override
             public void onGlobalLayout() {
-                resizeTextToFitFrame(mSubheading);
-                resizeTextToFitFrame(mMain);
-                resizeTextToFitFrame(mSub);
+                triggerResizeTextToFitFrame(mSubheading);
+                triggerResizeTextToFitFrame(mMain);
+                triggerResizeTextToFitFrame(mSub);
             }
         });
 
@@ -502,9 +504,9 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnKeyboa
     }
 
 
-    private void resizeTextToFitFrame (final EditText v) {
+    private void triggerResizeTextToFitFrame(final EditText v) {
 
-        //Log.d("ccaa2", "Entering resizeTextToFitFrame on EditText" + v.getText().toString());
+        //Log.d("ccaa2", "Entering triggerResizeTextToFitFrame on EditText" + v.getText().toString());
 
         if (v.getText().length() == 0) {
             return;
@@ -532,7 +534,40 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnKeyboa
             } else if (textSize <= 30) {
                 v.setTextSize(TypedValue.COMPLEX_UNIT_PX,(v.getTextSize() - 1));
             }
+
+            isSaveNeededAfterResize = true;
+        } else {
+            if ((isSaveNeededAfterResize) && (mCurrentCard != null)) {
+                //saveAfterResize(v);
+
+            }
         }
+    }
+
+    private void saveAfterResize(EditText v) {
+        int editTextTag = Integer.parseInt((String) v.getTag());
+        if (editTextTag == 1001) {
+            if (mIsQuestionShowing) {
+                mCurrentCard.question.css.subheadingSize = UIHelper.pixelsToSp(mSubheading.getTextSize());
+            } else {
+                mCurrentCard.answer.css.subheadingSize = UIHelper.pixelsToSp(mSubheading.getTextSize());
+            }
+        } else if (editTextTag == 1002) {
+            if (mIsQuestionShowing) {
+                mCurrentCard.question.css.mainSize = UIHelper.pixelsToSp(mMain.getTextSize());
+            } else {
+                mCurrentCard.answer.css.mainSize = UIHelper.pixelsToSp(mMain.getTextSize());
+            }
+        } else if (editTextTag == 1003) {
+            if (mIsQuestionShowing) {
+                mCurrentCard.question.css.subSize = UIHelper.pixelsToSp(mSub.getTextSize());
+            } else {
+                mCurrentCard.answer.css.subSize = UIHelper.pixelsToSp(mSub.getTextSize());
+            }
+        }
+
+        mCurrentCard.save(AppContext.getAppContext());
+        isSaveNeededAfterResize = false;
     }
 
     private void setEditTextListener() {
@@ -644,8 +679,6 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnKeyboa
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
-
-                mSubheading.setGravity(mSubheading.getGravity() | Gravity.CENTER_VERTICAL);
             }
 
             @Override
@@ -657,8 +690,7 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnKeyboa
                 }
 
                 Log.d(Global.debugTag, "mSubheading has changed");
-
-                mSubheading.setGravity(mSubheading.getGravity() | Gravity.CENTER_VERTICAL);
+                triggerResizeTextToFitFrame(mSubheading);
             }
         });
 
@@ -680,6 +712,7 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnKeyboa
                 }
 
                 Log.d(Global.debugTag, "mMain has changed");
+                triggerResizeTextToFitFrame(mMain);
             }
         });
 
@@ -701,9 +734,11 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnKeyboa
                 }
 
                 Log.d(Global.debugTag, "mSub has changed");
+                triggerResizeTextToFitFrame(mSub);
             }
         });
     }
+
 
 
     private void updateCommonContent() {

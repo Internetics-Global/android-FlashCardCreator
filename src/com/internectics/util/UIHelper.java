@@ -26,6 +26,12 @@ public class UIHelper {
         return px;
     }
 
+    public static int pixelsToSp(Float px) {
+        Resources r = AppContext.getAppContext().getResources();
+        float scaledDensity = r.getDisplayMetrics().scaledDensity;
+        return (int)(px/scaledDensity);
+    }
+
 
     public static Bitmap resizeImageTo400(Context context, Uri imageUri) {
 
