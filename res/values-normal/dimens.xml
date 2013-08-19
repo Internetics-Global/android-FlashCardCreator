@@ -42,8 +42,8 @@
     <dimen name="cardsn_size">18dp</dimen>
 
     <!--css toolbar related-->
-    <dimen name="csstoolbar_text_size">10sp</dimen>
-    <dimen name="csstoolbar_button_width">65dp</dimen>
+    <dimen name="csstoolbar_text_size">9sp</dimen>
+    <dimen name="csstoolbar_button_width">60dp</dimen>
 
     <!-- add card related -->
     <dimen name="add_card_button_size">20dp</dimen>
