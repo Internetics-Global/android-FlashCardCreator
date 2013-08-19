@@ -40,6 +40,10 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnKeyboa
 
     public View mContentView;
 
+
+    private LinearLayout mContentBodyType1;
+    private LinearLayout mContentBodyType2;
+
     private LinearLayout mContentBodyLeft;
     private FCCEditText mSidebarTitle;
     private FrameLayout mSidebarBackground;
@@ -51,6 +55,10 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnKeyboa
     private FCCEditText mMain;
     private FCCEditText mSub;
     private ImageView mImage;
+    private FCCEditText mSubheading2;
+    private FCCEditText mMain2;
+    private FCCEditText mSub2;
+    private ImageView mImage2;
     private ImageView mLogoImage;
     private ImageView mChangeTemplateImage;
     private ImageView mLogoURLImage;
@@ -181,6 +189,19 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnKeyboa
             }
         });
 
+        mImage2.setOnClickListener(new View.OnClickListener() {
+
+            @Override
+            public void onClick(View v) {
+                startActivityForResult(
+                        new Intent(
+                                Intent.ACTION_PICK,
+                                android.provider.MediaStore.Images.Media.INTERNAL_CONTENT_URI),
+                        CODE_REQUEST_IMAGE_SOURCE_IS_IMAGE);
+
+            }
+        });
+
 
         if (mIsSnapShotNotCurrent == true) {
             mContentView.setVisibility(View.INVISIBLE);
@@ -193,6 +214,9 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnKeyboa
         mSubheading.setTypeface(typeFace,Typeface.BOLD);
         mMain.setTypeface(typeFace,Typeface.BOLD);
         mSub.setTypeface(typeFace,Typeface.BOLD);
+        mSubheading2.setTypeface(typeFace,Typeface.BOLD);
+        mMain2.setTypeface(typeFace,Typeface.BOLD);
+        mSub2.setTypeface(typeFace,Typeface.BOLD);
 
         return mContentView;
     }
@@ -264,6 +288,7 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnKeyboa
 
                 } else if (requestCode == CODE_REQUEST_IMAGE_SOURCE_IS_IMAGE) {
                     mImage.setImageBitmap(resultBitmap);
+                    mImage2.setImageBitmap(resultBitmap);
                     if (mIsQuestionShowing) {
                         mCurrentCard.question.imageUriFormatStr = FileOperationHelper.convertToUriFormatFile(toSaveFile);
                     } else {
@@ -421,6 +446,7 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnKeyboa
     }
 
     public void switchQuestionAnswerView() {
+
         if (mIsQuestionShowing) {
             switchToAnswerView();
             mIsQuestionShowing = false;
@@ -450,6 +476,7 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnKeyboa
     }
 
 
+
     private void getAllViews() {
         mSidebarTitle = (FCCEditText) mContentView.findViewById(R.id.sidebar_title);
         mSidebarBackground = (FrameLayout) mContentView.findViewById(R.id.sidebar_background_linearlayout);
@@ -461,14 +488,23 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnKeyboa
 
         mContentBodyLeft = (LinearLayout) mContentView.findViewById(R.id.content_body_left);
 
+        mContentBodyType1 = (LinearLayout) mContentView.findViewById(R.id.content_body_type1);
+        mContentBodyType2 = (LinearLayout) mContentView.findViewById(R.id.content_body_type2);
+
         mSubheading = (FCCEditText) mContentView.findViewById(R.id.subheading);
         mMain = (FCCEditText) mContentView.findViewById(R.id.main);
         mSub = (FCCEditText) mContentView.findViewById(R.id.sub);
+        mImage = (ImageView) mContentView.findViewById(R.id.image);
+
+        mSubheading2 = (FCCEditText) mContentView.findViewById(R.id.subheading2);
+        mMain2 = (FCCEditText) mContentView.findViewById(R.id.main2);
+        mSub2 = (FCCEditText) mContentView.findViewById(R.id.sub2);
+        mImage2 = (ImageView) mContentView.findViewById(R.id.image2);
 
         mChangeTemplateImage = (ImageView) mContentView.findViewById(R.id.change_template_button);
         mLogoImage = (ImageView) mContentView.findViewById(R.id.logo_image);
         mLogoURLImage = (ImageView) mContentView.findViewById(R.id.logo_url_btn);
-        mImage = (ImageView) mContentView.findViewById(R.id.image);
+
 
         if (!mIsPlayingCard) {
             mQuestionRadioButton = (RadioButton) mContentView.findViewById(R.id.radio_segment_question);
@@ -481,10 +517,17 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnKeyboa
         mMain.mCallbacks = this;
         mSub.mCallbacks = this;
 
+        mSubheading2.mCallbacks = this;
+        mMain2.mCallbacks = this;
+        mSub2.mCallbacks = this;
+
         if (!mIsPlayingCard) {
             mSubheading.setOnTouchListener(this);
             mMain.setOnTouchListener(this);
             mSub.setOnTouchListener(this);
+            mSubheading2.setOnTouchListener(this);
+            mMain2.setOnTouchListener(this);
+            mSub2.setOnTouchListener(this);
             mCreator.setOnTouchListener(this);
             mSidebarTitle.setOnTouchListener(this);
             mTitle.setOnTouchListener(this);
@@ -495,10 +538,54 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnKeyboa
             @Override
             public void onGlobalLayout() {
                 triggerResizeTextToFitFrame(mSubheading);
+            }
+        });
+
+
+        ViewTreeObserver vtoMain = mMain.getViewTreeObserver();
+        vtoMain.addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
+            @Override
+            public void onGlobalLayout() {
                 triggerResizeTextToFitFrame(mMain);
+            }
+        });
+
+        ViewTreeObserver vtoSub = mSub.getViewTreeObserver();
+        vtoSub.addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
+            @Override
+            public void onGlobalLayout() {
                 triggerResizeTextToFitFrame(mSub);
             }
         });
+
+        ViewTreeObserver vtoSubheading2 = mSubheading2.getViewTreeObserver();
+        vtoSubheading2.addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
+            @Override
+            public void onGlobalLayout() {
+                triggerResizeTextToFitFrame(mSubheading2);
+            }
+        });
+
+
+        ViewTreeObserver vtoMain2 = mMain2.getViewTreeObserver();
+        vtoMain2.addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
+            @Override
+            public void onGlobalLayout() {
+                triggerResizeTextToFitFrame(mMain2);
+            }
+        });
+
+        ViewTreeObserver vtoSub2 = mSub2.getViewTreeObserver();
+        vtoSub2.addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
+            @Override
+            public void onGlobalLayout() {
+                triggerResizeTextToFitFrame(mSub2);
+            }
+        });
+
+
+
+
 
 
     }
@@ -538,37 +625,11 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnKeyboa
             isSaveNeededAfterResize = true;
         } else {
             if ((isSaveNeededAfterResize) && (mCurrentCard != null)) {
-                //saveAfterResize(v);
 
             }
         }
     }
 
-    private void saveAfterResize(EditText v) {
-        int editTextTag = Integer.parseInt((String) v.getTag());
-        if (editTextTag == 1001) {
-            if (mIsQuestionShowing) {
-                mCurrentCard.question.css.subheadingSize = UIHelper.pixelsToSp(mSubheading.getTextSize());
-            } else {
-                mCurrentCard.answer.css.subheadingSize = UIHelper.pixelsToSp(mSubheading.getTextSize());
-            }
-        } else if (editTextTag == 1002) {
-            if (mIsQuestionShowing) {
-                mCurrentCard.question.css.mainSize = UIHelper.pixelsToSp(mMain.getTextSize());
-            } else {
-                mCurrentCard.answer.css.mainSize = UIHelper.pixelsToSp(mMain.getTextSize());
-            }
-        } else if (editTextTag == 1003) {
-            if (mIsQuestionShowing) {
-                mCurrentCard.question.css.subSize = UIHelper.pixelsToSp(mSub.getTextSize());
-            } else {
-                mCurrentCard.answer.css.subSize = UIHelper.pixelsToSp(mSub.getTextSize());
-            }
-        }
-
-        mCurrentCard.save(AppContext.getAppContext());
-        isSaveNeededAfterResize = false;
-    }
 
     private void setEditTextListener() {
 
@@ -737,6 +798,74 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnKeyboa
                 triggerResizeTextToFitFrame(mSub);
             }
         });
+
+
+        mSubheading2.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                if (mIsQuestionShowing) {
+                    mCurrentCard.question.subheading = mSubheading2.getText().toString();
+                } else {
+                    mCurrentCard.answer.subheading = mSubheading2.getText().toString();
+                }
+
+                Log.d(Global.debugTag, "mSubheading2 has changed");
+                triggerResizeTextToFitFrame(mSubheading2);
+            }
+        });
+
+        mMain2.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                if (mIsQuestionShowing) {
+                    mCurrentCard.question.main = mMain2.getText().toString();
+                } else {
+                    mCurrentCard.answer.main = mMain2.getText().toString();
+                }
+
+                Log.d(Global.debugTag, "mMain2 has changed");
+                triggerResizeTextToFitFrame(mMain2);
+            }
+        });
+
+        mSub2.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                if (mIsQuestionShowing) {
+                    mCurrentCard.question.sub = mSub2.getText().toString();
+                } else {
+                    mCurrentCard.answer.sub = mSub2.getText().toString();
+                }
+
+                Log.d(Global.debugTag, "mSub2 has changed");
+                triggerResizeTextToFitFrame(mSub2);
+            }
+        });
     }
 
 
@@ -782,6 +911,11 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnKeyboa
         mSub.setText(mCurrentCard.question.sub);
         mImage.setImageURI(Uri.parse(mCurrentCard.question.imageUriFormatStr));
 
+        mSubheading2.setText(mCurrentCard.question.subheading);
+        mMain2.setText(mCurrentCard.question.main);
+        mSub2.setText(mCurrentCard.question.sub);
+        mImage2.setImageURI(Uri.parse(mCurrentCard.question.imageUriFormatStr));
+
     }
 
     private void updateAnswerContent() {
@@ -790,6 +924,11 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnKeyboa
         mMain.setText(mCurrentCard.answer.main);
         mSub.setText(mCurrentCard.answer.sub);
         mImage.setImageURI(Uri.parse(mCurrentCard.answer.imageUriFormatStr));
+
+        mSubheading2.setText(mCurrentCard.answer.subheading);
+        mMain2.setText(mCurrentCard.answer.main);
+        mSub2.setText(mCurrentCard.answer.sub);
+        mImage2.setImageURI(Uri.parse(mCurrentCard.answer.imageUriFormatStr));
 
     }
 
@@ -815,13 +954,20 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnKeyboa
         mSubheading.setEnabled(true);
         mMain.setEnabled(true);
         mSub.setEnabled(true);
+        mSubheading2.setEnabled(true);
+        mMain2.setEnabled(true);
+        mSub2.setEnabled(true);
         mCreator.setEnabled(true);
         mImage.setEnabled(true);
+        mImage2.setEnabled(true);
 
         mCreator.setBackgroundResource(R.drawable.shape_edittext_editable);
         mSubheading.setBackgroundResource(R.drawable.shape_edittext_editable);
         mMain.setBackgroundResource(R.drawable.shape_edittext_editable);
         mSub.setBackgroundResource(R.drawable.shape_edittext_editable);
+        mSubheading2.setBackgroundResource(R.drawable.shape_edittext_editable);
+        mMain2.setBackgroundResource(R.drawable.shape_edittext_editable);
+        mSub2.setBackgroundResource(R.drawable.shape_edittext_editable);
 
     }
 
@@ -830,17 +976,24 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnKeyboa
         mChangeTemplateImage.setVisibility(View.INVISIBLE);
 
         mTitle.setEnabled(false);
+        mCreator.setEnabled(false);
         mSidebarTitle.setEnabled(false);
         mSubheading.setEnabled(false);
         mMain.setEnabled(false);
         mSub.setEnabled(false);
-        mCreator.setEnabled(false);
         mImage.setEnabled(false);
+        mSubheading2.setEnabled(false);
+        mMain2.setEnabled(false);
+        mSub2.setEnabled(false);
+        mImage2.setEnabled(false);
 
         mCreator.setBackgroundResource(R.drawable.shape_edittext_no_editable);
         mSubheading.setBackgroundResource(R.drawable.shape_edittext_no_editable);
         mMain.setBackgroundResource(R.drawable.shape_edittext_no_editable);
         mSub.setBackgroundResource(R.drawable.shape_edittext_no_editable);
+        mSubheading2.setBackgroundResource(R.drawable.shape_edittext_no_editable);
+        mMain2.setBackgroundResource(R.drawable.shape_edittext_no_editable);
+        mSub2.setBackgroundResource(R.drawable.shape_edittext_no_editable);
 
     }
 
@@ -998,6 +1151,10 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnKeyboa
 
         switch (templateID) {
             case 0:
+
+                mContentBodyType1.setVisibility(View.VISIBLE);
+                mContentBodyType2.setVisibility(View.INVISIBLE);
+
                 mImage.setVisibility(View.INVISIBLE);
 
                 params = (LinearLayout.LayoutParams) mSubheading.getLayoutParams();
@@ -1017,6 +1174,10 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnKeyboa
 
                 break;
             case 1:
+
+                mContentBodyType1.setVisibility(View.VISIBLE);
+                mContentBodyType2.setVisibility(View.INVISIBLE);
+
                 mImage.setVisibility(View.INVISIBLE);
 
                 params = (LinearLayout.LayoutParams) mSubheading.getLayoutParams();
@@ -1035,6 +1196,10 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnKeyboa
                 mSub.setLayoutParams(params);
                 break;
             case 2:
+
+                mContentBodyType1.setVisibility(View.VISIBLE);
+                mContentBodyType2.setVisibility(View.INVISIBLE);
+
                 mImage.setVisibility(View.INVISIBLE);
 
                 params = (LinearLayout.LayoutParams) mSubheading.getLayoutParams();
@@ -1053,6 +1218,10 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnKeyboa
                 mSub.setLayoutParams(params);
                 break;
             case 3:
+
+                mContentBodyType1.setVisibility(View.VISIBLE);
+                mContentBodyType2.setVisibility(View.INVISIBLE);
+
                 mImage.setVisibility(View.INVISIBLE);
 
                 params = (LinearLayout.LayoutParams) mSubheading.getLayoutParams();
@@ -1071,6 +1240,10 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnKeyboa
                 mSub.setLayoutParams(params);
                 break;
             case 4:
+
+                mContentBodyType1.setVisibility(View.VISIBLE);
+                mContentBodyType2.setVisibility(View.INVISIBLE);
+
                 mImage.setVisibility(View.INVISIBLE);
 
                 params = (LinearLayout.LayoutParams) mSubheading.getLayoutParams();
@@ -1089,6 +1262,10 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnKeyboa
                 mSub.setLayoutParams(params);
                 break;
             case 5:
+
+                mContentBodyType1.setVisibility(View.VISIBLE);
+                mContentBodyType2.setVisibility(View.INVISIBLE);
+
                 //part1: image
                 params = (LinearLayout.LayoutParams) mContentBodyLeft.getLayoutParams();
                 params.weight = 0f;
@@ -1129,6 +1306,10 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnKeyboa
 
         switch (templateID) {
             case 0:
+
+                mContentBodyType1.setVisibility(View.VISIBLE);
+                mContentBodyType2.setVisibility(View.INVISIBLE);
+
                 //part1: image
                 params = (LinearLayout.LayoutParams) mContentBodyLeft.getLayoutParams();
                 params.weight = 360f;
@@ -1156,33 +1337,18 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnKeyboa
 
                 break;
             case 1:
-                //part1: image
-                params = (LinearLayout.LayoutParams) mContentBodyLeft.getLayoutParams();
-                params.weight = 500f;
-                mContentBodyLeft.setLayoutParams(params);
-                params = (LinearLayout.LayoutParams) mImage.getLayoutParams();
-                params.weight = 210f;
-                mImage.setLayoutParams(params);
-                mImage.setVisibility(View.VISIBLE);
 
-                //part2:text
-                params = (LinearLayout.LayoutParams) mSubheading.getLayoutParams();
-                params.width = LinearLayout.LayoutParams.FILL_PARENT;
-                params.weight = 60;
-                mSubheading.setLayoutParams(params);
+                mContentBodyType1.setVisibility(View.INVISIBLE);
+                mContentBodyType2.setVisibility(View.VISIBLE);
 
-                params = (LinearLayout.LayoutParams) mMain.getLayoutParams();
-                params.width = LinearLayout.LayoutParams.FILL_PARENT;
-                params.weight = 290;
-                mMain.setLayoutParams(params);
-
-                params = (LinearLayout.LayoutParams) mSub.getLayoutParams();
-                params.width = LinearLayout.LayoutParams.FILL_PARENT;
-                params.weight = 60;
-                mSub.setLayoutParams(params);
+                //use default in card.xml is OK
 
                 break;
             case 2:
+
+                mContentBodyType1.setVisibility(View.VISIBLE);
+                mContentBodyType2.setVisibility(View.INVISIBLE);
+
                 //part1: image
                 params = (LinearLayout.LayoutParams) mContentBodyLeft.getLayoutParams();
                 params.weight = 360f;
@@ -1209,6 +1375,10 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnKeyboa
                 mSub.setLayoutParams(params);
                 break;
             case 3:
+
+                mContentBodyType1.setVisibility(View.VISIBLE);
+                mContentBodyType2.setVisibility(View.INVISIBLE);
+
                 //part1: image
                 params = (LinearLayout.LayoutParams) mContentBodyLeft.getLayoutParams();
                 params.weight = 710f;
@@ -1236,6 +1406,10 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnKeyboa
                 mSub.setLayoutParams(params);
                 break;
             case 4:
+
+                mContentBodyType1.setVisibility(View.VISIBLE);
+                mContentBodyType2.setVisibility(View.INVISIBLE);
+
                 //part1: image
                 params = (LinearLayout.LayoutParams) mContentBodyLeft.getLayoutParams();
                 params.weight = 360f;
@@ -1262,6 +1436,10 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnKeyboa
                 mSub.setLayoutParams(params);
                 break;
             case 5:
+
+                mContentBodyType1.setVisibility(View.VISIBLE);
+                mContentBodyType2.setVisibility(View.INVISIBLE);
+
                 //part1: image
                 params = (LinearLayout.LayoutParams) mContentBodyLeft.getLayoutParams();
                 params.weight = 0f;
@@ -1310,6 +1488,21 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnKeyboa
         mSubheading.setTextColor(StringUtils.convertColorStringToInt(mCurrentCard.question.css.subheadingColor));
         mMain.setTextColor(StringUtils.convertColorStringToInt(mCurrentCard.question.css.mainColor));
         mSub.setTextColor(StringUtils.convertColorStringToInt(mCurrentCard.question.css.subColor));
+
+        //step1: alignment
+        mSubheading2.setGravity(StringUtils.convertGravityStringToInt(mCurrentCard.question.css.subheadingAlign) | Gravity.CENTER_VERTICAL);
+        mMain2.setGravity(StringUtils.convertGravityStringToInt(mCurrentCard.question.css.mainAlign) | Gravity.TOP);
+        mSub2.setGravity(StringUtils.convertGravityStringToInt(mCurrentCard.question.css.subAlign) | Gravity.TOP);
+
+        //step2: size
+        mSubheading2.setTextSize(mCurrentCard.question.css.subheadingSize);
+        mMain2.setTextSize(mCurrentCard.question.css.mainSize);
+        mSub2.setTextSize(mCurrentCard.question.css.subSize);
+
+        //step3: color
+        mSubheading2.setTextColor(StringUtils.convertColorStringToInt(mCurrentCard.question.css.subheadingColor));
+        mMain2.setTextColor(StringUtils.convertColorStringToInt(mCurrentCard.question.css.mainColor));
+        mSub2.setTextColor(StringUtils.convertColorStringToInt(mCurrentCard.question.css.subColor));
     }
 
     private void updateAnswerCSS() {
@@ -1330,6 +1523,21 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnKeyboa
         mSubheading.setTextColor(StringUtils.convertColorStringToInt(mCurrentCard.answer.css.subheadingColor));
         mMain.setTextColor(StringUtils.convertColorStringToInt(mCurrentCard.answer.css.mainColor));
         mSub.setTextColor(StringUtils.convertColorStringToInt(mCurrentCard.answer.css.subColor));
+
+        //step1: alignment
+        mSubheading2.setGravity(StringUtils.convertGravityStringToInt(mCurrentCard.answer.css.subheadingAlign ) | Gravity.CENTER_VERTICAL);
+        mMain2.setGravity(StringUtils.convertGravityStringToInt(mCurrentCard.answer.css.mainAlign) | Gravity.TOP);
+        mSub2.setGravity(StringUtils.convertGravityStringToInt(mCurrentCard.answer.css.subAlign) | Gravity.TOP);
+
+        //step2: size
+        mSubheading2.setTextSize(mCurrentCard.answer.css.subheadingSize);
+        mMain2.setTextSize(mCurrentCard.answer.css.mainSize);
+        mSub2.setTextSize(mCurrentCard.answer.css.subSize);
+
+        //step3: color
+        mSubheading2.setTextColor(StringUtils.convertColorStringToInt(mCurrentCard.answer.css.subheadingColor));
+        mMain2.setTextColor(StringUtils.convertColorStringToInt(mCurrentCard.answer.css.mainColor));
+        mSub2.setTextColor(StringUtils.convertColorStringToInt(mCurrentCard.answer.css.subColor));
     }
 
     /**

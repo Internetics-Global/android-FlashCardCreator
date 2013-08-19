@@ -140,30 +140,109 @@
                         android:src="@drawable/question_placeholder_logo"/>
             </LinearLayout>
 
-            <LinearLayout
-                    android:id="@+id/content_body"
+            <FrameLayout
                     android:layout_width="match_parent"
                     android:layout_height="0dp"
-                    android:layout_weight="440"
-                    android:baselineAligned="false"
-                    android:orientation="horizontal">
+                    android:layout_weight="440">
 
                 <LinearLayout
-                        android:id="@+id/content_body_left"
-                        android:layout_height="match_parent"
-                        android:layout_width="0dp"
-                        android:layout_weight="360"
-                        android:layout_marginLeft="5dp"
-                        android:layout_marginTop="5dp"
-                        android:layout_marginBottom="5dp"
-                        android:background="@null"
+                        android:id="@+id/content_body_type1"
+                        android:layout_width="fill_parent"
+                        android:layout_height="fill_parent"
+                        android:baselineAligned="false"
+                        android:visibility="visible"
+                        android:orientation="horizontal">
+
+                    <LinearLayout
+                            android:id="@+id/content_body_left"
+                            android:layout_height="match_parent"
+                            android:layout_width="0dp"
+                            android:layout_weight="360"
+                            android:layout_marginLeft="5dp"
+                            android:layout_marginTop="5dp"
+                            android:layout_marginBottom="5dp"
+                            android:background="@null"
+                            android:orientation="vertical">
+
+                        <com.internectics.UI.FCCEditText
+                                android:id="@+id/subheading"
+                                android:layout_width="match_parent"
+                                android:layout_height="0dp"
+                                android:layout_weight="60"
+                                android:layout_marginTop="5dp"
+                                android:inputType="textMultiLine|textNoSuggestions"
+                                android:textColor="@android:color/black"
+                                android:textStyle="bold"
+                                android:tag="1001"
+                                android:gravity="center"
+                                android:cursorVisible="true"
+                                android:textCursorDrawable="@null"
+                                android:background="@drawable/shape_edittext_editable"
+                                android:ems="10" />
+
+                        <com.internectics.UI.FCCEditText
+                                android:id="@+id/main"
+                                android:layout_width="match_parent"
+                                android:layout_height="0dp"
+                                android:layout_weight="290"
+                                android:layout_marginTop="5dp"
+                                android:inputType="textMultiLine|textNoSuggestions"
+                                android:textColor="@android:color/black"
+                                android:textStyle="bold"
+                                android:tag="1002"
+                                android:cursorVisible="true"
+                                android:gravity="center|top"
+                                android:textCursorDrawable="@null"
+                                android:background="@drawable/shape_edittext_editable"
+                                android:ems="10"/>
+
+                        <com.internectics.UI.FCCEditText
+                                android:id="@+id/sub"
+                                android:layout_width="match_parent"
+                                android:layout_height="0dp"
+                                android:layout_weight="50"
+                                android:layout_marginTop="5dp"
+                                android:inputType="textMultiLine|textNoSuggestions"
+                                android:textColor="@android:color/black"
+                                android:textStyle="bold"
+                                android:tag="1003"
+                                android:cursorVisible="true"
+                                android:gravity="center|top"
+                                android:textCursorDrawable="@null"
+                                android:background="@drawable/shape_edittext_editable"
+                                android:ems="10"/>
+
+                    </LinearLayout>
+
+                    <ImageView
+                            android:id="@+id/image"
+                            android:layout_height="match_parent"
+                            android:layout_width="0dp"
+                            android:layout_weight="350"
+                            android:layout_marginLeft="5dp"
+                            android:layout_marginTop="5dp"
+                            android:layout_marginRight="10dp"
+                            android:layout_marginBottom="10dp"
+                            android:src="@drawable/question_placeholder_content"/>
+
+
+                </LinearLayout>
+
+                <LinearLayout
+                        android:id="@+id/content_body_type2"
+                        android:layout_width="fill_parent"
+                        android:layout_height="fill_parent"
+                        android:baselineAligned="false"
+                        android:visibility="invisible"
                         android:orientation="vertical">
 
                     <com.internectics.UI.FCCEditText
-                            android:id="@+id/subheading"
+                            android:id="@+id/subheading2"
                             android:layout_width="match_parent"
                             android:layout_height="0dp"
                             android:layout_weight="60"
+                            android:layout_marginLeft="5dp"
+                            android:layout_marginRight="10dp"
                             android:layout_marginTop="5dp"
                             android:inputType="textMultiLine|textNoSuggestions"
                             android:textColor="@android:color/black"
@@ -175,53 +254,78 @@
                             android:background="@drawable/shape_edittext_editable"
                             android:ems="10" />
 
-                    <com.internectics.UI.FCCEditText
-                            android:id="@+id/main"
-                            android:layout_width="match_parent"
+                    <LinearLayout
                             android:layout_height="0dp"
-                            android:layout_weight="290"
+                            android:layout_width="fill_parent"
+                            android:layout_weight="340"
+                            android:layout_marginLeft="5dp"
                             android:layout_marginTop="5dp"
-                            android:inputType="textMultiLine|textNoSuggestions"
-                            android:textColor="@android:color/black"
-                            android:textStyle="bold"
-                            android:tag="1002"
-                            android:cursorVisible="true"
-                            android:gravity="center|top"
-                            android:textCursorDrawable="@null"
-                            android:background="@drawable/shape_edittext_editable"
-                            android:ems="10"/>
+                            android:layout_marginBottom="5dp"
+                            android:background="@null"
+                            android:orientation="horizontal">
 
-                    <com.internectics.UI.FCCEditText
-                            android:id="@+id/sub"
-                            android:layout_width="match_parent"
-                            android:layout_height="0dp"
-                            android:layout_weight="50"
-                            android:layout_marginTop="5dp"
-                            android:inputType="textMultiLine|textNoSuggestions"
-                            android:textColor="@android:color/black"
-                            android:textStyle="bold"
-                            android:tag="1003"
-                            android:cursorVisible="true"
-                            android:gravity="center|top"
-                            android:textCursorDrawable="@null"
-                            android:background="@drawable/shape_edittext_editable"
-                            android:ems="10"/>
+
+
+                        <LinearLayout
+                                android:layout_weight="360"
+                                android:layout_width="0dp"
+                                android:layout_height="fill_parent"
+                                android:orientation="vertical">
+
+                            <com.internectics.UI.FCCEditText
+                                    android:id="@+id/main2"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="0dp"
+                                    android:layout_weight="290"
+                                    android:layout_marginTop="5dp"
+                                    android:inputType="textMultiLine|textNoSuggestions"
+                                    android:textColor="@android:color/black"
+                                    android:textStyle="bold"
+                                    android:tag="1002"
+                                    android:cursorVisible="true"
+                                    android:gravity="center|top"
+                                    android:textCursorDrawable="@null"
+                                    android:background="@drawable/shape_edittext_editable"
+                                    android:ems="10"/>
+
+                            <com.internectics.UI.FCCEditText
+                                    android:id="@+id/sub2"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="0dp"
+                                    android:layout_weight="50"
+                                    android:layout_marginTop="5dp"
+                                    android:inputType="textMultiLine|textNoSuggestions"
+                                    android:textColor="@android:color/black"
+                                    android:textStyle="bold"
+                                    android:tag="1003"
+                                    android:cursorVisible="true"
+                                    android:gravity="center|top"
+                                    android:textCursorDrawable="@null"
+                                    android:background="@drawable/shape_edittext_editable"
+                                    android:ems="10"/>
+
+                        </LinearLayout>
+
+                        <ImageView
+                                android:id="@+id/image2"
+                                android:layout_height="match_parent"
+                                android:layout_width="0dp"
+                                android:layout_weight="350"
+                                android:layout_marginLeft="5dp"
+                                android:layout_marginTop="5dp"
+                                android:layout_marginRight="10dp"
+                                android:layout_marginBottom="10dp"
+                                android:src="@drawable/question_placeholder_content"/>
+
+                    </LinearLayout>
+
+
+
 
                 </LinearLayout>
 
-                <ImageView
-                        android:id="@+id/image"
-                        android:layout_height="match_parent"
-                        android:layout_width="0dp"
-                        android:layout_weight="350"
-                        android:layout_marginLeft="5dp"
-                        android:layout_marginTop="5dp"
-                        android:layout_marginRight="10dp"
-                        android:layout_marginBottom="10dp"
-                        android:src="@drawable/question_placeholder_content"/>
+            </FrameLayout>
 
-
-            </LinearLayout>
         </LinearLayout>
 
         <ImageView
