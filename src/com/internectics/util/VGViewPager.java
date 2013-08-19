@@ -1,11 +1,14 @@
 package com.internectics.util;
 
 import android.content.Context;
+import android.graphics.Rect;
 import android.support.v4.view.ViewPager;
 import android.util.AttributeSet;
 import android.view.MotionEvent;
 import android.view.animation.DecelerateInterpolator;
+import android.widget.ImageView;
 import android.widget.Scroller;
+import com.internectics.android_flashcardcreator.R;
 
 import java.lang.reflect.Field;
 
@@ -29,9 +32,17 @@ public class VGViewPager extends ViewPager {
     }
 
     @Override
-    public boolean onInterceptTouchEvent(MotionEvent ev) {
-        super.onInterceptTouchEvent(ev);
+    public boolean onInterceptTouchEvent(MotionEvent event) {
+        super.onInterceptTouchEvent(event);
         //Log.d(Global.debugTag, "onInterceptTouchEvent for VGViewPager");
+
+        ImageView logo_image = (ImageView)findViewById(R.id.logo_image);
+        Rect outRect = new Rect();
+        logo_image.getHitRect(outRect);
+        if (outRect.contains((int) event.getX(), (int) event.getY())) {
+            return false;
+        }
+
         return true;
     }
 
@@ -67,7 +78,7 @@ public class VGViewPager extends ViewPager {
         @Override
         public void startScroll(int startX, int startY, int dx, int dy, int duration)
         {
-            super.startScroll(startX, startY, dx, dy, 300 /*1 secs*/);
+            super.startScroll(startX, startY, dx, dy, 500 /*1 secs*/);
         }
     }
 
