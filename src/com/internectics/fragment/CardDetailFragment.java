@@ -1293,6 +1293,9 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnKeyboa
     }
 
     private void updateQuestionCSS() {
+
+        mTitle.setTextColor(Color.parseColor("#0910FF"));
+
         //step1: alignment
         mSubheading.setGravity(StringUtils.convertGravityStringToInt(mCurrentCard.question.css.subheadingAlign) | Gravity.CENTER_VERTICAL);
         mMain.setGravity(StringUtils.convertGravityStringToInt(mCurrentCard.question.css.mainAlign) | Gravity.TOP);
@@ -1310,6 +1313,9 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnKeyboa
     }
 
     private void updateAnswerCSS() {
+
+        mTitle.setTextColor(Color.RED);
+
         //step1: alignment
         mSubheading.setGravity(StringUtils.convertGravityStringToInt(mCurrentCard.answer.css.subheadingAlign ) | Gravity.CENTER_VERTICAL);
         mMain.setGravity(StringUtils.convertGravityStringToInt(mCurrentCard.answer.css.mainAlign) | Gravity.TOP);
