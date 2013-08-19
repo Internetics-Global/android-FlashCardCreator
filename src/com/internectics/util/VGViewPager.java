@@ -39,7 +39,12 @@ public class VGViewPager extends ViewPager {
         ImageView logo_image = (ImageView)findViewById(R.id.logo_image);
         Rect outRect = new Rect();
         logo_image.getHitRect(outRect);
-        if (outRect.contains((int) event.getX(), (int) event.getY())) {
+        int marginValLeft = this.getLeft() +this.getPaddingLeft();
+        int marginValTop = this.getTop() + this.getPaddingTop();
+        outRect.offset(marginValLeft,marginValTop);
+        int x =  (int) event.getX();
+        int y =  (int) event.getY();
+        if (outRect.contains(x, y)) {
             return false;
         }
 

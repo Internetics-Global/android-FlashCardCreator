@@ -330,7 +330,7 @@ public class PlayActivity extends FragmentActivity implements SensorEventListene
         }
 
         if (Math.abs(yDistance) < 100) {
-            if (e1.getRawX() > e2.getRawX() + 30) {
+            if (e1.getRawX() > e2.getRawX() + 10) {
                 Log.d(Global.debugTag, "swipe Left");
 
                 if (mPosition < mFragments.size()) {
