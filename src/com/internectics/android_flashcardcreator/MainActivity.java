@@ -865,6 +865,12 @@ public class MainActivity extends FragmentActivity implements
 
 
     public boolean onKeyDown(int keyCode, KeyEvent event) {
+
+        if (mIsCreatingCard == true) {
+            dismissCardCreateWindow();
+            return false;
+        }
+
         if (((keyCode == KeyEvent.KEYCODE_BACK) ||
                 (keyCode == KeyEvent.KEYCODE_HOME))
                 && event.getRepeatCount() == 0) {
