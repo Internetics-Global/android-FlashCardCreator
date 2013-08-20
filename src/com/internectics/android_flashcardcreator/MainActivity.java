@@ -889,7 +889,7 @@ public class MainActivity extends FragmentActivity implements
 
     public void dialog_Exit(Context context) {
         AlertDialog.Builder builder = new AlertDialog.Builder(context);
-        builder.setMessage("Are you sure to exit");
+        builder.setMessage("Are you sure you want to exit?");
         builder.setTitle("Alert");
         builder.setIcon(android.R.drawable.ic_dialog_alert);
         builder.setPositiveButton("OK",

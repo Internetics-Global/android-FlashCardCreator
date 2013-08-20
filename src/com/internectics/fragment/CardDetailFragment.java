@@ -1779,11 +1779,13 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnKeyboa
         //mCurrentPack and mCurrentCard save have been done in addTextChangedListener
 
         //step4: take screenshot if necessary
-        if (mIsTakeSnapshotAllNeeded) {
-            takeSnapshotAll();
-        } else {
-            if (mIsQuestionShowing) {
-                takeSnapshotCurrentCard();
+        if (mIsQuestionShowing) {
+            if (mIsTakeSnapshotAllNeeded) {
+                takeSnapshotAll();
+            } else {
+                if (mIsQuestionShowing) {
+                    takeSnapshotCurrentCard();
+                }
             }
         }
 

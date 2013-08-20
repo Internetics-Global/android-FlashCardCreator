@@ -93,7 +93,7 @@ public class ShareLinkHelper extends AsyncTask<Void, Long, Boolean> {
                 .setTitle("Set max number of downloads")
                 .setIcon(android.R.drawable.ic_dialog_info)
                 .setView(editText)
-                .setPositiveButton("Done", new DialogInterface.OnClickListener() {
+                .setPositiveButton("OK", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         Uri uri = Uri.parse(mUnshortedFCCShareLink);
@@ -101,6 +101,17 @@ public class ShareLinkHelper extends AsyncTask<Void, Long, Boolean> {
                         simpleDBItemNamedata = simpleDBItemNamedata.substring(0, simpleDBItemNamedata.indexOf(".zip"));
                         Global.currentAmazonSimpleDBItemName = simpleDBItemNamedata;
                         int maxNo = Integer.parseInt(editText.getText().toString());
+                        insertIntoAmazonSimpleDB(simpleDBItemNamedata, maxNo);
+                    }
+                })
+                .setNegativeButton("Unlimited", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        Uri uri = Uri.parse(mUnshortedFCCShareLink);
+                        String simpleDBItemNamedata = uri.getLastPathSegment();
+                        simpleDBItemNamedata = simpleDBItemNamedata.substring(0, simpleDBItemNamedata.indexOf(".zip"));
+                        Global.currentAmazonSimpleDBItemName = simpleDBItemNamedata;
+                        int maxNo = 9999999;
                         insertIntoAmazonSimpleDB(simpleDBItemNamedata, maxNo);
                     }
                 })
