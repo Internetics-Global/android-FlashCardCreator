@@ -176,6 +176,7 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnKeyboa
             }
         });
 
+
         mImage.setOnClickListener(new View.OnClickListener() {
 
             @Override
@@ -240,7 +241,6 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnKeyboa
         if (mIsCreatingCard) {
             mSidebarTitle.setEnabled(false);
             mTitle.setEnabled(false);
-            mCreator.setEnabled(false);
         }
 
     }
@@ -531,6 +531,23 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnKeyboa
             mCreator.setOnTouchListener(this);
             mSidebarTitle.setOnTouchListener(this);
             mTitle.setOnTouchListener(this);
+        } else {
+            mCreator.setOnTouchListener(new View.OnTouchListener() {
+                @Override
+                public boolean onTouch(View v, MotionEvent event) {
+                    if (mCurrentPack.logoURL.contains("@") && (mCurrentPack.logoURL.contains("http") == false)) {
+                        Intent intent = new Intent(Intent.ACTION_SEND);
+                        intent.setType("message/rfc822");
+                        intent.putExtra(Intent.EXTRA_EMAIL, "mCurrentPack.logoURL");
+                        intent.putExtra(Intent.EXTRA_SUBJECT, "Subject");
+                        intent.putExtra(Intent.EXTRA_TEXT, "");
+                        startActivity(Intent.createChooser(intent, "Send Email"));
+                    } else {
+                        startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(mCurrentPack.logoURL)));
+                    }
+                    return false;
+                }
+            });
         }
 
         ViewTreeObserver vtoSubheading = mSubheading.getViewTreeObserver();
@@ -976,7 +993,6 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnKeyboa
         mChangeTemplateImage.setVisibility(View.INVISIBLE);
 
         mTitle.setEnabled(false);
-        mCreator.setEnabled(false);
         mSidebarTitle.setEnabled(false);
         mSubheading.setEnabled(false);
         mMain.setEnabled(false);

@@ -6,7 +6,9 @@ import android.support.v4.view.ViewPager;
 import android.util.AttributeSet;
 import android.view.MotionEvent;
 import android.view.animation.DecelerateInterpolator;
+import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.Scroller;
 import com.internectics.android_flashcardcreator.R;
 
@@ -36,18 +38,30 @@ public class VGViewPager extends ViewPager {
         super.onInterceptTouchEvent(event);
         //Log.d(Global.debugTag, "onInterceptTouchEvent for VGViewPager");
 
-        ImageView logo_image = (ImageView)findViewById(R.id.logo_image);
         Rect outRect = new Rect();
-        logo_image.getHitRect(outRect);
         int marginValLeft = this.getLeft() +this.getPaddingLeft();
         int marginValTop = this.getTop() + this.getPaddingTop();
-        outRect.offset(marginValLeft,marginValTop);
+
         int x =  (int) event.getX();
         int y =  (int) event.getY();
+
+        ImageView logo_image = (ImageView)findViewById(R.id.logo_image);
+        logo_image.getHitRect(outRect);
+        outRect.offset(marginValLeft,marginValTop);
         if (outRect.contains(x, y)) {
             return false;
         }
 
+        LinearLayout creatorLayout = (LinearLayout) findViewById(R.id.creator_layout);
+        int[] location = new int[2];
+        creatorLayout.getLocationOnScreen(location);
+
+        EditText creator = (EditText)findViewById(R.id.creator);
+        creator.getHitRect(outRect);
+        outRect.offset((location[0] -marginValLeft),location[1]);
+        if (outRect.contains(x, y)) {
+            return false;
+        }
         return true;
     }
 
