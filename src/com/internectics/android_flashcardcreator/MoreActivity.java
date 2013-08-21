@@ -66,6 +66,9 @@ public class MoreActivity extends PreferenceActivity {
         registerPreference.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
             @Override
             public boolean onPreferenceClick(Preference preference) {
+                Intent intent = new Intent(MoreActivity.this, WebViewActivity.class);
+                intent.putExtra("url", "http://internetics.net.au/fcc/register/");
+                startActivity(intent);
                 return false;
             }
         });
@@ -73,6 +76,9 @@ public class MoreActivity extends PreferenceActivity {
         submitPreference.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
             @Override
             public boolean onPreferenceClick(Preference preference) {
+                Intent intent = new Intent(MoreActivity.this, WebViewActivity.class);
+                intent.putExtra("url", "http://internetics.net.au/fcc/add-new/");
+                startActivity(intent);
                 return false;
             }
         });
