@@ -1,6 +1,11 @@
 package com.internectics.helper;
 
+import android.app.AlertDialog;
+import android.content.Context;
+import android.content.DialogInterface;
 import android.util.Log;
+import android.widget.EditText;
+import android.widget.Toast;
 import com.internectics.util.Global;
 
 import java.io.File;
@@ -11,6 +16,9 @@ import java.util.ArrayList;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
 import java.util.zip.ZipOutputStream;
+
+import net.lingala.zip4j.core.ZipFile;
+import net.lingala.zip4j.exception.ZipException;
 
 /**
  * Created with IntelliJ IDEA.
@@ -41,10 +49,19 @@ public class ZipFileHelper {
         out.close();
     }
 
-    public static void unzipPackFile(String zipFileName, String outputDirectory) {
+    public static void unzipPackFile(Context context,String zipFileName,String password) {
+        File outputDirectory = FileOperationHelper.downloadedPackDirectory();
         try {
+
             //Step1, unzip pack
-            ArrayList<String> zippedCardFileArray = unzip(zipFileName, outputDirectory);
+            ZipFile zipFile = new ZipFile(zipFileName);
+
+            if (zipFile.isEncrypted()) {
+                zipFile.setPassword(password);
+            }
+            zipFile.extractAll(outputDirectory.toString());
+
+            ArrayList<String> zippedCardFileArray = FileOperationHelper.listAllZipCardFilesUnderDirectory(outputDirectory.toString());
 
             //Step2, unzip cards in the pack
             for (int i = 0; i < zippedCardFileArray.size(); i++) {
@@ -54,11 +71,12 @@ public class ZipFileHelper {
                 unzip(zippedCardFileArray.get(i), unzippedDirectory.toString());
             }
 
-
-        } catch (Exception e) {
+        } catch (ZipException e) {
             e.printStackTrace();
             Log.d(Global.debugTag,"unzip failed:" + e.getCause());
+            Toast.makeText(context, "Wrong password", Toast.LENGTH_LONG).show();
         }
+
     }
 
     /*

@@ -1,15 +1,18 @@
 package com.internectics.helper;
 
+import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.util.Log;
+import android.widget.EditText;
 import android.widget.Toast;
 import com.internectics.helper.AmazonSDB.SimpleDBHelper;
 import com.internectics.util.AppConfig;
 import com.internectics.util.Global;
+import net.lingala.zip4j.core.ZipFile;
 
 import java.io.*;
 import java.net.URL;
@@ -111,37 +114,33 @@ public class PackDownloadHelper extends AsyncTask<Void, Long, Boolean> {
     @Override
     protected void onPostExecute(Boolean result) {
         if (result) {
-            Toast.makeText(mContext, "Download pack successfully.\n       Loading...", Toast.LENGTH_LONG).show();
-            File outputDirectory = FileOperationHelper.downloadedPackDirectory();
+            Toast.makeText(mContext, "Download pack successfully.\n       Loading...", Toast.LENGTH_SHORT).show();
             try {
 
-                //Step1: unzip
-                ZipFileHelper.unzipPackFile(mSavedFilePath, outputDirectory.toString());
+                ZipFile zipFile = new ZipFile(mSavedFilePath);
+                if (zipFile.isEncrypted()) {
 
-                //Step2: parse unzipped pack
-                PackParserHelper.parse();
+                    final EditText passwordEditText = new EditText(mContext);
+                    new AlertDialog.Builder(mContext)
+                            .setTitle("Input a password")
+                            .setIcon(android.R.drawable.ic_dialog_info)
+                            .setView(passwordEditText)
+                            .setPositiveButton("Done", new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+                                    ZipFileHelper.unzipPackFile(mContext, mSavedFilePath,passwordEditText.getText().toString());
+                                    parsePackAndGoOn();
+                                }
+                            })
+                            .setNegativeButton("Cancel", null)
+                            .show();
 
-                if (mIsFromExamplePackDownload == false) {
-                    new Thread()
-                    {
-                        @Override
-                        public void run() {
-                            updateDownloadLimitCount();
-                        }
-                    }.start();
-
+                } {
+                    ZipFileHelper.unzipPackFile(mContext, mSavedFilePath, "");
+                    parsePackAndGoOn();
                 }
 
-                //Step3: write flag if it's from example pack download
-                if (mIsFromExamplePackDownload) {
-                    AppConfig.sharedInstance().setExamplePackDownloadedFlag();
-                }
 
-                //Step4: notify master view to update
-                Intent intent = new Intent();
-                intent.setAction(Global.BROADCAST_ACTION_UPDATE_MASTER_VIEW);
-                intent.putExtra(Global.KEY_FROM, Global.BROADCAST_EXTRA_FROM_PACK_DOWNLOADED);
-                mContext.sendBroadcast(intent);
 
             } catch (Exception e) {
                 Log.e(Global.debugTag,"Error:", e.getCause());
@@ -153,6 +152,33 @@ public class PackDownloadHelper extends AsyncTask<Void, Long, Boolean> {
         }
 
         mDialog.dismiss();
+    }
+
+    private void parsePackAndGoOn() {
+        //Step2: parse unzipped pack
+        PackParserHelper.parse();
+
+        if (mIsFromExamplePackDownload == false) {
+            new Thread()
+            {
+                @Override
+                public void run() {
+                    updateDownloadLimitCount();
+                }
+            }.start();
+
+        }
+
+        //Step3: write flag if it's from example pack download
+        if (mIsFromExamplePackDownload) {
+            AppConfig.sharedInstance().setExamplePackDownloadedFlag();
+        }
+
+        //Step4: notify master view to update
+        Intent intent = new Intent();
+        intent.setAction(Global.BROADCAST_ACTION_UPDATE_MASTER_VIEW);
+        intent.putExtra(Global.KEY_FROM, Global.BROADCAST_EXTRA_FROM_PACK_DOWNLOADED);
+        mContext.sendBroadcast(intent);
     }
 
     private static void updateDownloadLimitCount () {

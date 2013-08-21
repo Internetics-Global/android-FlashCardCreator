@@ -12,6 +12,7 @@ import com.internectics.util.AppContext;
 import com.internectics.util.Global;
 
 import java.io.*;
+import java.util.ArrayList;
 import java.util.UUID;
 
 /*
@@ -337,6 +338,27 @@ public class FileOperationHelper {
                 }
             }
         }
+    }
+
+    public static ArrayList<String> listAllZipCardFilesUnderDirectory(String folder) {
+
+        ArrayList<String> zippedCardFileArray = new ArrayList<String>();
+
+        File folderFile = new File(folder);
+        File[] listOfFiles = folderFile.listFiles();
+
+        for (int i = 0; i < listOfFiles.length; i++) {
+            String fileName = listOfFiles[i].getName();
+
+            if (listOfFiles[i].isFile() && (fileName.endsWith(".zip")) && (fileName.substring(fileName.lastIndexOf("/") + 1).indexOf("card") == 0)) {
+                System.out.println("File " + listOfFiles[i].getName());
+                zippedCardFileArray.add(listOfFiles[i].toString());
+            } else if (listOfFiles[i].isDirectory()) {
+                System.out.println("Directory " + listOfFiles[i].getName());
+            }
+        }
+
+        return zippedCardFileArray;
     }
 
 }

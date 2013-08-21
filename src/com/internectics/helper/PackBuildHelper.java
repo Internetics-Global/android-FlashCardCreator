@@ -1,7 +1,9 @@
 package com.internectics.helper;
 
+import android.util.Log;
 import com.internectics.data.Card;
 import com.internectics.data.Pack;
+import com.internectics.util.Global;
 import com.internectics.util.StringUtils;
 import org.json.simple.JSONObject;
 
@@ -10,12 +12,17 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
 
+import net.lingala.zip4j.core.ZipFile;
+import net.lingala.zip4j.exception.ZipException;
+import net.lingala.zip4j.model.ZipParameters;
+import net.lingala.zip4j.util.Zip4jConstants;
+
 public class PackBuildHelper {
 
-    public static File createPackZipFile(Pack currentPack) {
+    public static File createPackZipFile(Pack currentPack, String password) {
 
         ArrayList<String> cardFiles = new ArrayList<String>();
-        ArrayList<String> packFiles = new ArrayList<String>();
+        ArrayList<File> packFiles = new ArrayList<File>();
 
         int i = 0;
 
@@ -45,21 +52,34 @@ public class PackBuildHelper {
             }
 
             //step2: add this new zip file to packFiles
-            packFiles.add(cardZipFile.toString());
+            packFiles.add(cardZipFile);
 
             //step3: reset
             cardFiles.clear();
         }
 
         //step3:
-        packFiles.add(FileOperationHelper.deleteUriSchemeHeader(currentPack.coverImageUriFormatStr));
-        String singleFile = PackBuildHelper.buildPackJsonFile(currentPack).toString();
-        packFiles.add(singleFile);
+        packFiles.add(new File(FileOperationHelper.deleteUriSchemeHeader(currentPack.coverImageUriFormatStr)));
+        File jsonPackFile = PackBuildHelper.buildPackJsonFile(currentPack);
+        packFiles.add(jsonPackFile);
         File packZipFile = FileOperationHelper.generateUniquePackZipFilePathForUploading();
         try {
-            ZipFileHelper.zipPackFiles(packZipFile.toString(), packFiles);
-        } catch (Exception e) {
+
+            ZipFile zipFile = new ZipFile(packZipFile.toString());
+            ZipParameters parameters = new ZipParameters();
+            parameters.setCompressionMethod(Zip4jConstants.COMP_DEFLATE);
+            parameters.setCompressionLevel(Zip4jConstants.DEFLATE_LEVEL_NORMAL);
+            if ((password != null) && (password.length() >0)) {
+                parameters.setEncryptFiles(true);
+                parameters.setEncryptionMethod(Zip4jConstants.ENC_METHOD_STANDARD);
+                parameters.setPassword(password);
+            } else {
+                parameters.setEncryptFiles(false);
+            }
+            zipFile.addFiles(packFiles, parameters);
+        } catch (ZipException e) {
             e.printStackTrace();
+            Log.d(Global.debugTag,"zip pack file failure");
         }
         return packZipFile;
     }

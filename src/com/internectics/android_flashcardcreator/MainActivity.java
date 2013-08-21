@@ -622,16 +622,39 @@ public class MainActivity extends FragmentActivity implements
         if (PackRecordHelper.checkUploadPackNecessary(MainActivity.this, mCurrentPack)) {
             AndroidAuthSession session = DropboxHelper.getDropboxAPI().getSession();
             if (session.isLinked()) {
-                File file = PackBuildHelper.createPackZipFile(mCurrentPack);
-                //File file = new File(FileOperationHelper.getTestFile().toString()); test purpose
-                PackUploadHelper upload = new PackUploadHelper(this, "/FlashCardCreator/", file, mCurrentPack);
-                upload.execute();
+                setPassword();
             }
         } else {
             String shareLink = PackRecordHelper.getCurrentPackShareLink(mCurrentPack);
             ShareLinkHelper shareLinkHelper = new ShareLinkHelper(this, shareLink, mCurrentPack);
             shareLinkHelper.execShareAction();
         }
+    }
+
+    private void setPassword() {
+        final EditText passwordEditText = new EditText(this);
+        new AlertDialog.Builder(this)
+                .setTitle("Set a password?")
+                .setIcon(android.R.drawable.ic_dialog_info)
+                .setView(passwordEditText)
+                .setPositiveButton("Set", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        String password = passwordEditText.getText().toString();
+                        File file = PackBuildHelper.createPackZipFile(mCurrentPack,password);
+                        PackUploadHelper upload = new PackUploadHelper(MainActivity.this, "/FlashCardCreator/", file, mCurrentPack);
+                        upload.execute();
+                    }
+                })
+                .setNegativeButton("No needed", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        File file = PackBuildHelper.createPackZipFile(mCurrentPack,"");
+                        PackUploadHelper upload = new PackUploadHelper(MainActivity.this, "/FlashCardCreator/", file, mCurrentPack);
+                        upload.execute();
+                    }
+                })
+                .show();
     }
 
     private void initializeCSSToolbar() {
