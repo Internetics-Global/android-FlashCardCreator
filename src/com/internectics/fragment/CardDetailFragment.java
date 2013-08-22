@@ -51,6 +51,7 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnKeyboa
     private FCCEditText mTitle;
     private LinearLayout mTitleBackground;
     private FCCEditText mCreator;
+    private LinearLayout mCreatorLayout;
     private FCCEditText mSubheading;
     private FCCEditText mMain;
     private FCCEditText mSub;
@@ -486,6 +487,8 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnKeyboa
         mTitleBackground = (LinearLayout) mContentView.findViewById(R.id.title_background_linearlayout);
         mCreator = (FCCEditText) mContentView.findViewById(R.id.creator);
 
+        mCreatorLayout = (LinearLayout) mContentView.findViewById(R.id.creator_layout);
+
         mContentBodyLeft = (LinearLayout) mContentView.findViewById(R.id.content_body_left);
 
         mContentBodyType1 = (LinearLayout) mContentView.findViewById(R.id.content_body_type1);
@@ -535,6 +538,12 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnKeyboa
             mCreator.setOnTouchListener(new View.OnTouchListener() {
                 @Override
                 public boolean onTouch(View v, MotionEvent event) {
+                    return false;
+                }
+            });
+            mCreatorLayout.setOnTouchListener(new View.OnTouchListener() {
+                @Override
+                public boolean onTouch(View v, MotionEvent event) {
                     if (mCurrentPack.logoURL.contains("@") && (mCurrentPack.logoURL.contains("http") == false)) {
                         Intent intent = new Intent(Intent.ACTION_SEND);
                         intent.setType("message/rfc822");
@@ -545,7 +554,7 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnKeyboa
                     } else {
                         startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(mCurrentPack.logoURL)));
                     }
-                    return false;
+                    return true;
                 }
             });
         }
@@ -1002,6 +1011,7 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnKeyboa
         mMain2.setEnabled(false);
         mSub2.setEnabled(false);
         mImage2.setEnabled(false);
+        mCreator.setEnabled(false);
 
         mCreator.setBackgroundResource(R.drawable.shape_edittext_no_editable);
         mSubheading.setBackgroundResource(R.drawable.shape_edittext_no_editable);

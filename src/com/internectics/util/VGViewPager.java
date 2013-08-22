@@ -1,17 +1,15 @@
 package com.internectics.util;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.graphics.Rect;
 import android.support.v4.view.ViewPager;
 import android.util.AttributeSet;
 import android.view.MotionEvent;
 import android.view.animation.DecelerateInterpolator;
-import android.widget.EditText;
-import android.widget.ImageView;
-import android.widget.LinearLayout;
-import android.widget.Scroller;
+import android.widget.*;
 import com.internectics.android_flashcardcreator.R;
-
+import android.util.Log;
 import java.lang.reflect.Field;
 
 /**
@@ -39,27 +37,30 @@ public class VGViewPager extends ViewPager {
         //Log.d(Global.debugTag, "onInterceptTouchEvent for VGViewPager");
 
         Rect outRect = new Rect();
-        int marginValLeft = this.getLeft() +this.getPaddingLeft();
-        int marginValTop = this.getTop() + this.getPaddingTop();
+        int marginValLeft = this.getPaddingLeft();
+        int marginValTop = this.getPaddingTop();
 
         int x =  (int) event.getX();
         int y =  (int) event.getY();
 
+        FrameLayout sidebarLayout = (FrameLayout) findViewById(R.id.sidebar_background_linearlayout);
+        int sidebarWidth = sidebarLayout.getWidth();
+
         ImageView logo_image = (ImageView)findViewById(R.id.logo_image);
         logo_image.getHitRect(outRect);
-        outRect.offset(marginValLeft,marginValTop);
+        outRect.offset(marginValLeft + sidebarWidth,marginValTop);
         if (outRect.contains(x, y)) {
+            Log.d(Global.debugTag, "touch location in logo_image");
             return false;
         }
 
-        LinearLayout creatorLayout = (LinearLayout) findViewById(R.id.creator_layout);
-        int[] location = new int[2];
-        creatorLayout.getLocationOnScreen(location);
 
-        EditText creator = (EditText)findViewById(R.id.creator);
-        creator.getHitRect(outRect);
-        outRect.offset((location[0] -marginValLeft),location[1]);
-        if (outRect.contains(x, y)) {
+        LinearLayout creatorLayout = (LinearLayout) findViewById(R.id.creator_layout);
+        creatorLayout.getHitRect(outRect);
+        outRect.offset(marginValLeft + sidebarWidth,marginValTop);
+        if (outRect.contains(x, y))
+        {
+            Log.d(Global.debugTag,"touch location in creatorLayout");
             return false;
         }
         return true;
