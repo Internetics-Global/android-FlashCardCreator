@@ -717,38 +717,48 @@ public class MainActivity extends FragmentActivity implements
         cssSaveButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
                 mCardDetailFragment.dismissKeyboard();
                 if (mSymbolBoxFragment!=null) {
                     mSymbolBoxFragment.hideSymbolBoxWithAnimation(true);
                 }
                 removeCSSToolbar();
 
-                new Thread() {
-                    public void run() {
-                        runOnUiThread(new Runnable() {
-                            @Override
-                            public void run() {
-                                try {
-                                    Thread.sleep(10);
-                                } catch (InterruptedException e) {
-                                    e.printStackTrace();
+                if (mIsCreatingCard) {
+                    saveNewCreatedCard();
+                } else {
+                    new Thread() {
+                        public void run() {
+                            runOnUiThread(new Runnable() {
+                                @Override
+                                public void run() {
+                                    try {
+                                        Thread.sleep(10);
+                                    } catch (InterruptedException e) {
+                                        e.printStackTrace();
+                                    }
+                                    mCardDetailFragment.saveEdittedCard();
                                 }
-                                mCardDetailFragment.saveEdittedCard();
-                            }
-                        });
-                    };
-                }.start();
+                            });
+                        };
+                    }.start();
+                }
             }
         });
         Button cssCancelButton = (Button) mCSSToolbar.findViewById(R.id.csstoolbar_close_btn);
         cssCancelButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
                 if (mSymbolBoxFragment!=null) {
                     mSymbolBoxFragment.hideSymbolBoxWithAnimation(true);
                 }
                 mCardDetailFragment.dismissKeyboard();
                 removeCSSToolbar();
+
+                if (mIsCreatingCard) {
+                    dismissCardCreateWindow();
+                }
             }
         });
 
@@ -849,13 +859,8 @@ public class MainActivity extends FragmentActivity implements
 
             mIsKeyboardVisible = true;
 
-            if (mIsCreatingCard) {
-                saveButton.setVisibility(View.INVISIBLE);
-                cancelButton.setVisibility(View.INVISIBLE);
-            } else {
-                saveButton.setVisibility(View.VISIBLE);
-                cancelButton.setVisibility(View.VISIBLE);
-            }
+            saveButton.setVisibility(View.VISIBLE);
+            cancelButton.setVisibility(View.VISIBLE);
         }
     }
 

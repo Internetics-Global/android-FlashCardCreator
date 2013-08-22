@@ -46,7 +46,7 @@
     <dimen name="csstoolbar_button_width">60dp</dimen>
 
     <!-- add card related -->
-    <dimen name="add_card_button_size">20dp</dimen>
+    <dimen name="add_card_button_size">30dp</dimen>
 
 
 </resources>
