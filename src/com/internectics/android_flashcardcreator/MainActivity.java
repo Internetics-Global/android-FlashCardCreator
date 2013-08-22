@@ -646,7 +646,7 @@ public class MainActivity extends FragmentActivity implements
                         upload.execute();
                     }
                 })
-                .setNegativeButton("No needed", new DialogInterface.OnClickListener() {
+                .setNegativeButton("Not needed", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         File file = PackBuildHelper.createPackZipFile(mCurrentPack,"");
