@@ -641,7 +641,7 @@ public class MainActivity extends FragmentActivity implements
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         String password = passwordEditText.getText().toString();
-                        File file = PackBuildHelper.createPackZipFile(mCurrentPack,password);
+                        File file = PackBuildHelper.createPackZipFile(MainActivity.this,mCurrentPack,password);
                         PackUploadHelper upload = new PackUploadHelper(MainActivity.this, "/FlashCardCreator/", file, mCurrentPack);
                         upload.execute();
                     }
@@ -649,7 +649,7 @@ public class MainActivity extends FragmentActivity implements
                 .setNegativeButton("Not needed", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        File file = PackBuildHelper.createPackZipFile(mCurrentPack,"");
+                        File file = PackBuildHelper.createPackZipFile(MainActivity.this,mCurrentPack,"");
                         PackUploadHelper upload = new PackUploadHelper(MainActivity.this, "/FlashCardCreator/", file, mCurrentPack);
                         upload.execute();
                     }

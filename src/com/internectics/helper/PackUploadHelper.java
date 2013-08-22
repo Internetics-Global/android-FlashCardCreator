@@ -136,6 +136,10 @@ public class PackUploadHelper extends AsyncTask<Void, Long, Boolean> {
         mDialog.dismiss();
         if (result) {
             Toast.makeText(mContext, "Pack successfully uploaded", Toast.LENGTH_SHORT).show();
+
+            String fileName = mFile.getName();
+            PackRecordHelper.savePackUploadRecord(mContext,mCurrentPack,null,fileName);
+
             ShareLinkHelper createShareLink = new ShareLinkHelper(mContext, mFilePathInDropbox, mCurrentPack);
             createShareLink.execute();
 

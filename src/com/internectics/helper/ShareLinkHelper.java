@@ -68,7 +68,7 @@ public class ShareLinkHelper extends AsyncTask<Void, Long, Boolean> {
                 Toast.makeText(mContext, "Redirect sevice is not available now, please try again", 1).show();
             } else {
                 Log.d(Global.debugTag, "the shareLink is: " + redirectedShareLink);
-                PackRecordHelper.savePackUploadRecord(mContext, mCurentPack, redirectedShareLink);
+                PackRecordHelper.savePackUploadRecord(mContext, mCurentPack, redirectedShareLink,null);
 
             }
 

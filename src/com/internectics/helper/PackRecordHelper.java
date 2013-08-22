@@ -30,12 +30,24 @@ public class PackRecordHelper {
         return shareLinkage;
     }
 
-    public static void savePackUploadRecord(Context context, Pack currentPack, String shareLink) {
+    /**
+     * You can ignore those as long as set as null
+     * @param context
+     * @param currentPack
+     * @param shareLink
+     * @param dropboxFileName
+     */
+    public static void savePackUploadRecord(Context context, Pack currentPack, String shareLink, String dropboxFileName) {
 
         SharedPreferences prefs = context.getSharedPreferences(String.format("%d", currentPack.packID), 0);
         SharedPreferences.Editor edit = prefs.edit();
         edit.putString(Global.shareDate_Property,StringUtils.getCurrentTimeDate());
-        edit.putString(Global.shareLink_Property,shareLink);
+        if ((shareLink != null) && (shareLink.length() != 0)) {
+            edit.putString(Global.shareLink_Property,shareLink);
+        }
+        if ((dropboxFileName != null) && (dropboxFileName.length() !=0)) {
+            edit.putString(Global.shareFileName_Property,dropboxFileName);
+        }
         edit.commit();
     }
 

@@ -1,5 +1,7 @@
 package com.internectics.helper;
 
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.util.Log;
 import com.internectics.data.Card;
 import com.internectics.data.Pack;
@@ -19,7 +21,7 @@ import net.lingala.zip4j.util.Zip4jConstants;
 
 public class PackBuildHelper {
 
-    public static File createPackZipFile(Pack currentPack, String password) {
+    public static File createPackZipFile(Context context,Pack currentPack, String password) {
 
         ArrayList<String> cardFiles = new ArrayList<String>();
         ArrayList<File> packFiles = new ArrayList<File>();
@@ -62,7 +64,19 @@ public class PackBuildHelper {
         packFiles.add(new File(FileOperationHelper.deleteUriSchemeHeader(currentPack.coverImageUriFormatStr)));
         File jsonPackFile = PackBuildHelper.buildPackJsonFile(currentPack);
         packFiles.add(jsonPackFile);
-        File packZipFile = FileOperationHelper.generateUniquePackZipFilePathForUploading();
+
+        SharedPreferences prefs = context.getSharedPreferences(String.format("%d", currentPack.packID), 0);
+        String shareFileName = prefs.getString(Global.shareFileName_Property,"");
+
+        File packZipFile;
+        if ((shareFileName == null) || (shareFileName.length() == 0)) {
+            packZipFile = FileOperationHelper.generateUniquePackZipFilePathForUploading();
+        } else {
+            packZipFile = new File(FileOperationHelper.uploadPackDirectory(),shareFileName);
+        }
+
+
+
         try {
 
             ZipFile zipFile = new ZipFile(packZipFile.toString());
