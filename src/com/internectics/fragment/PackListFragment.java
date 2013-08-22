@@ -1,8 +1,10 @@
 package com.internectics.fragment;
 
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.content.ContentResolver;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -175,13 +177,26 @@ public class PackListFragment extends Fragment {
             deleteButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    mUser.removePack(currentPack);
-                    int count = mUser.packs.size();
-                    if (count > 0) {
-                        Pack lastPack = mUser.packs.get(count - 1);
-                        AppConfig.sharedInstance().set(Global.mostRecentPackCreatedID_Property, String.format("%d", lastPack.packID));
-                    }
-                    ((ImageAdapter) mGallery.getAdapter()).notifyDataSetChanged();
+
+                    new AlertDialog.Builder(mContext)
+                            .setTitle("Are you sure to delete?")
+                            .setPositiveButton("Delete",new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+                                    mUser.removePack(currentPack);
+                                    int count = mUser.packs.size();
+                                    if (count > 0) {
+                                        Pack lastPack = mUser.packs.get(count - 1);
+                                        AppConfig.sharedInstance().set(Global.mostRecentPackCreatedID_Property, String.format("%d", lastPack.packID));
+                                    }
+                                    ((ImageAdapter) mGallery.getAdapter()).notifyDataSetChanged();
+                                }
+                            })
+                            .setNegativeButton("Cancel",null)
+                            .show();
+
+
+
                 }
             });
 
@@ -222,6 +237,10 @@ public class PackListFragment extends Fragment {
 
 
             return contentView;
+        }
+
+        private void deleteCurrentPack() {
+
         }
     }
 
