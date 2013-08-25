@@ -151,10 +151,12 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnKeyboa
 
                 if (mIsPlayingCard == false) {
                     if (isEditableMode()) {
+                        Intent intent = new Intent(
+                                Intent.ACTION_PICK,
+                                android.provider.MediaStore.Images.Media.INTERNAL_CONTENT_URI);
+                        intent.putExtra(Intent.EXTRA_LOCAL_ONLY, true);
                         startActivityForResult(
-                                new Intent(
-                                        Intent.ACTION_PICK,
-                                        android.provider.MediaStore.Images.Media.INTERNAL_CONTENT_URI),
+                                intent,
                                 CODE_REQUEST_IMAGE_SOURCE_IS_LOGO);
                     } else {
                         Intent intent = new Intent(getActivity(), WebViewActivity.class);
@@ -182,10 +184,12 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnKeyboa
 
             @Override
             public void onClick(View v) {
+                Intent intent = new Intent(
+                        Intent.ACTION_PICK,
+                        android.provider.MediaStore.Images.Media.INTERNAL_CONTENT_URI);
+                intent.putExtra(Intent.EXTRA_LOCAL_ONLY, true);
                 startActivityForResult(
-                        new Intent(
-                                Intent.ACTION_PICK,
-                                android.provider.MediaStore.Images.Media.INTERNAL_CONTENT_URI),
+                        intent,
                         CODE_REQUEST_IMAGE_SOURCE_IS_IMAGE);
 
             }
@@ -195,10 +199,12 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnKeyboa
 
             @Override
             public void onClick(View v) {
+                Intent intent = new Intent(
+                        Intent.ACTION_PICK,
+                        android.provider.MediaStore.Images.Media.INTERNAL_CONTENT_URI);
+                intent.putExtra(Intent.EXTRA_LOCAL_ONLY, true);
                 startActivityForResult(
-                        new Intent(
-                                Intent.ACTION_PICK,
-                                android.provider.MediaStore.Images.Media.INTERNAL_CONTENT_URI),
+                        intent,
                         CODE_REQUEST_IMAGE_SOURCE_IS_IMAGE);
 
             }
