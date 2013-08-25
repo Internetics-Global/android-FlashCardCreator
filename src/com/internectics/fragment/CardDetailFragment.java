@@ -1070,8 +1070,15 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnKeyboa
      */
     private void takeSnapshotCurrentCard() {
 
+        boolean toggle = false;
+
         if (isEditableMode()) {
             disableCardEditable();
+        }
+
+        if (mIsQuestionShowing == false) {
+            switchToQuestionView();
+            toggle = true;
         }
 
         //hide logo image if its placeholder
@@ -1097,6 +1104,10 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnKeyboa
             mCurrentCard.save(AppContext.getAppContext());
         }
 
+        if (toggle == true) {
+            switchToAnswerView();
+        }
+
         //Notify master list view to update
         mSemaphore++;
         if (mSemaphore == mCurrentPack.cards.size()) {
@@ -1108,8 +1119,6 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnKeyboa
 
             ((MainActivity) getActivity()).finishSnapShotAllExceptCurrent();
         }
-
-
 
     }
 
