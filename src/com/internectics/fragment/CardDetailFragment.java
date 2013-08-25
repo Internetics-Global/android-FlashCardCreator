@@ -313,6 +313,11 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnKeyboa
                     }
                 }
             }
+
+            if(resultBitmap != null && !resultBitmap.isRecycled()) {
+                resultBitmap.recycle();
+                resultBitmap = null;
+            }
         }
     }
 
@@ -1089,8 +1094,10 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnKeyboa
         View cardView = mContentView.findViewById(R.id.card);
         Bitmap bitmap = UIHelper.loadBitmapFromView(cardView);
         File savedFile = UIHelper.saveImageToCaches(bitmap);
-        bitmap.recycle();
-        System.gc();
+        if(bitmap != null && !bitmap.isRecycled()) {
+            bitmap.recycle();
+            bitmap = null;
+        }
         mCurrentCard.coverImageUriFormatStr = FileOperationHelper.convertToUriFormatFile(savedFile);
 
         //restore and show logo image
