@@ -626,7 +626,10 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnKeyboa
 
     private void triggerResizeTextToFitFrame(final EditText v) {
 
-        //Log.d("ccaa2", "Entering triggerResizeTextToFitFrame on EditText" + v.getText().toString());
+        //we only do this during non-editable mode
+        if (mCurrentPack.creatorID.equals(OpenUDID_manager.getOpenUDID()))  {
+            return;
+        }
 
         if (v.getText().length() == 0) {
             return;
@@ -1718,6 +1721,16 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnKeyboa
             int tag = Integer.parseInt((String) v.getTag());
 
             if ((tag == 1001) || (tag == 1002) || (tag == 1003)) {
+
+
+                //this is quite a trick in order to make EditText scrollable
+                EditText text = (EditText) v;
+                if (text.getLineCount() * text.getLineHeight() < 2 *text.getHeight()) {
+                    int position = text.getSelectionStart();
+                    text.setText(text.getText().toString() + "\n");
+                    text.setSelection(position);
+                }
+
                 //check card.xml for tag
                 ((MainActivity) getActivity()).mIsEdittingCard = true;
 
@@ -1838,6 +1851,8 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnKeyboa
             //we will do that when we click the save button
         } else {
             //We do here
+            removeAllLineBreaksBeforeCardSave();
+
             mCurrentPack.save(AppContext.getAppContext());
             mCurrentCard.save(AppContext.getAppContext());
 
@@ -1874,6 +1889,22 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnKeyboa
         Log.d(Global.debugTag,"the result is:" + mCurrentFocusedCardContentText.getText().toString());
 
         mCurrentFocusedCardContentText.setSelection(mCurrentFocusedCardContentText.getText().length());
+
+    }
+
+    private void removeAllLineBreaksBeforeCardSave() {
+
+        String str = null;
+
+        str = mMain.getText().toString();
+        mMain.setText(str.replaceAll("\\n+$", ""));
+
+        str = mSubheading.getText().toString();
+        mSubheading.setText(str.replaceAll("\\n+$", ""));
+
+        str = mSub.getText().toString();
+        mSub.setText(str.replaceAll("\\n+$", ""));
+
 
     }
 

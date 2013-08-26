@@ -5,11 +5,14 @@ import android.content.Context;
 import android.content.res.Resources;
 import android.graphics.*;
 import android.net.Uri;
+import android.text.Layout;
+import android.text.Selection;
 import android.util.DisplayMetrics;
 import android.util.Log;
 import android.util.TypedValue;
 import android.view.Display;
 import android.view.View;
+import android.widget.EditText;
 import com.internectics.helper.FileOperationHelper;
 
 import java.io.File;
@@ -119,5 +122,19 @@ public class UIHelper {
         Log.d(Global.debugTag, "current platform is: " + returnStr);
         return returnStr;
     }
+
+    public int getCurrentCursorLine(EditText editText)
+    {
+        int selectionStart = Selection.getSelectionStart(editText.getText());
+        Layout layout = editText.getLayout();
+
+        if (!(selectionStart == -1)) {
+            return layout.getLineForOffset(selectionStart);
+        }
+
+        return -1;
+    }
+
+
 
 }
