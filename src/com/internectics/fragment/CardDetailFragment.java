@@ -626,11 +626,6 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnKeyboa
 
     private void triggerResizeTextToFitFrame(final EditText v) {
 
-        //we only do this during non-editable mode
-        if (mCurrentPack.creatorID.equals(OpenUDID_manager.getOpenUDID()))  {
-            return;
-        }
-
         if (v.getText().length() == 0) {
             return;
         }
@@ -641,21 +636,29 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnKeyboa
 
         if ((textHeight > v.getHeight()) && (v.getHeight() > 1) && (noOfLines > 0)) {
 
-            //Log.d("ccaa2", String.format("Now executing textHeight=%d, v.getHeight=%d, v.getTextSize=%f",textHeight,v.getHeight(), v.getTextSize()));
+            if (mCurrentPack.creatorID.equals(OpenUDID_manager.getOpenUDID())) {
+                //we only do this during non-editable mode
+                String text = v.getText().toString();
+                int index = text.length() - 1;
+                Log.d(Global.debugTag, text + index);
+                v.setText(text.substring(0, index));
 
-            float textSize = v.getTextSize();
+            }  else {
+                // resize action
+                float textSize = v.getTextSize();
 
-            if (textSize >200) {
-                v.setTextSize(TypedValue.COMPLEX_UNIT_PX,(v.getTextSize() - 30));
+                if (textSize >200) {
+                    v.setTextSize(TypedValue.COMPLEX_UNIT_PX,(v.getTextSize() - 30));
 
-            } else if ((textSize >100) && (textSize <= 200)){
-                v.setTextSize(TypedValue.COMPLEX_UNIT_PX,(v.getTextSize() - 20));
-            } else if ((textSize >50) && (textSize <= 100)) {
-                v.setTextSize(TypedValue.COMPLEX_UNIT_PX,(v.getTextSize() - 5));
-            } else if ((textSize >30) && (textSize <= 50)) {
-                v.setTextSize(TypedValue.COMPLEX_UNIT_PX,(v.getTextSize() - 2));
-            } else if (textSize <= 30) {
-                v.setTextSize(TypedValue.COMPLEX_UNIT_PX,(v.getTextSize() - 1));
+                } else if ((textSize >100) && (textSize <= 200)){
+                    v.setTextSize(TypedValue.COMPLEX_UNIT_PX,(v.getTextSize() - 20));
+                } else if ((textSize >50) && (textSize <= 100)) {
+                    v.setTextSize(TypedValue.COMPLEX_UNIT_PX,(v.getTextSize() - 5));
+                } else if ((textSize >30) && (textSize <= 50)) {
+                    v.setTextSize(TypedValue.COMPLEX_UNIT_PX,(v.getTextSize() - 2));
+                } else if (textSize <= 30) {
+                    v.setTextSize(TypedValue.COMPLEX_UNIT_PX,(v.getTextSize() - 1));
+                }
             }
 
             isSaveNeededAfterResize = true;
@@ -771,6 +774,7 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnKeyboa
         mSubheading.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
 
             }
 

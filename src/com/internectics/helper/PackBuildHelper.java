@@ -110,7 +110,7 @@ public class PackBuildHelper {
         summary.put("creator_nick_name", pack.creatorNickName);
         summary.put("platform", pack.platform);
         summary.put("logo_image", StringUtils.lastComponentOfPath(pack.logoImageUriFormatStr));
-        summary.put("platform", "Android");//TODO
+        summary.put("platform", "Android");
 
         FileWriter file;
         File savedPath = FileOperationHelper.getUploadPackJsonFile();
