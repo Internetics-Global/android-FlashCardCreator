@@ -123,7 +123,7 @@ public class UIHelper {
         return returnStr;
     }
 
-    public int getCurrentCursorLine(EditText editText)
+    public static int getCurrentCursorLine(EditText editText)
     {
         int selectionStart = Selection.getSelectionStart(editText.getText());
         Layout layout = editText.getLayout();

@@ -1725,10 +1725,19 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnKeyboa
 
                 //this is quite a trick in order to make EditText scrollable
                 EditText text = (EditText) v;
-                if (text.getLineCount() * text.getLineHeight() < 2 *text.getHeight()) {
-                    int position = text.getSelectionStart();
-                    text.setText(text.getText().toString() + "\n");
-                    text.setSelection(position);
+                int lineHeight = text.getLineHeight();
+                int lineCount = text.getLineCount();
+                int textHeight = text.getHeight();
+                int maxNoOfLines = (2* textHeight)/lineHeight;
+                int addedNoOfLines = maxNoOfLines - lineCount;
+
+                if ((addedNoOfLines > 0) && (lineCount > 1) && (lineCount * lineHeight < 2 *textHeight)) {
+
+                    String addedStr = "";
+                    for (int i = 0; i< addedNoOfLines; i ++) {
+                        addedStr = addedStr + "\n";
+                    }
+                    text.setText(text.getText().toString() + addedStr);
                 }
 
                 //check card.xml for tag
