@@ -786,6 +786,8 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnKeyboa
                     mCurrentCard.answer.subheading = mSubheading.getText().toString();
                 }
 
+                mSubheading2.setText(mSubheading.getText().toString());
+
                 Log.d(Global.debugTag, "mSubheading has changed");
                 triggerResizeTextToFitFrame(mSubheading);
             }
@@ -808,6 +810,8 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnKeyboa
                     mCurrentCard.answer.main = mMain.getText().toString();
                 }
 
+                mMain2.setText(mMain.getText().toString());
+
                 Log.d(Global.debugTag, "mMain has changed");
                 triggerResizeTextToFitFrame(mMain);
             }
@@ -829,6 +833,8 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnKeyboa
                 } else {
                     mCurrentCard.answer.sub = mSub.getText().toString();
                 }
+
+                mSub2.setText(mSub.getText().toString());
 
                 Log.d(Global.debugTag, "mSub has changed");
                 triggerResizeTextToFitFrame(mSub);
@@ -854,6 +860,8 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnKeyboa
                     mCurrentCard.answer.subheading = mSubheading2.getText().toString();
                 }
 
+                mSubheading.setText(mSubheading2.getText().toString());
+
                 Log.d(Global.debugTag, "mSubheading2 has changed");
                 triggerResizeTextToFitFrame(mSubheading2);
             }
@@ -876,6 +884,8 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnKeyboa
                     mCurrentCard.answer.main = mMain2.getText().toString();
                 }
 
+                mMain.setText(mMain2.getText().toString());
+
                 Log.d(Global.debugTag, "mMain2 has changed");
                 triggerResizeTextToFitFrame(mMain2);
             }
@@ -897,6 +907,8 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnKeyboa
                 } else {
                     mCurrentCard.answer.sub = mSub2.getText().toString();
                 }
+
+                mSub.setText(mSub2.getText().toString());
 
                 Log.d(Global.debugTag, "mSub2 has changed");
                 triggerResizeTextToFitFrame(mSub2);
