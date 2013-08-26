@@ -314,10 +314,6 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnKeyboa
                 }
             }
 
-            if(resultBitmap != null && !resultBitmap.isRecycled()) {
-                resultBitmap.recycle();
-                resultBitmap = null;
-            }
         }
     }
 
