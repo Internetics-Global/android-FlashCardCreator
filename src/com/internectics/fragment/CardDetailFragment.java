@@ -136,7 +136,6 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnKeyboa
         }
 
         getAllViews();
-        setEditTextListener();
 
         if (!mIsPlayingCard) {
             configureSegmentView();
@@ -235,7 +234,7 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnKeyboa
         Log.d(Global.debugTag, "onViewCreated in CardDetailFragment is called");
 
         updateCommonContent();
-        switchToQuestionView();
+        switchToQuestionView(false);
 
         if (mIsPlayingCard) {
             disableCardEditable();
@@ -257,6 +256,9 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnKeyboa
     public void onResume() {
         super.onResume();
         mIsTakeSnapshotAllNeeded = false;  //necessary
+
+        //need to be put onResume, see http://stackoverflow.com/questions/13721063/aftertextchanged-being-called-without-the-text-being-actually-changed
+        setEditTextListener();
 
         Log.d(Global.debugTag, "onResume in CardDetailFragment");
     }
@@ -329,13 +331,13 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnKeyboa
                     mQuestionRadioButton.setTextColor(Color.WHITE);
                     mAnswerRadioButton.setBackgroundResource(R.drawable.button_segment_unselected);
                     mAnswerRadioButton.setTextColor(Color.BLACK);
-                    switchToQuestionView();
+                    switchToQuestionView(false);
                 } else {
                     mQuestionRadioButton.setBackgroundResource(R.drawable.button_segment_unselected);
                     mQuestionRadioButton.setTextColor(Color.BLACK);
                     mAnswerRadioButton.setBackgroundResource(R.drawable.button_segment_selected);
                     mAnswerRadioButton.setTextColor(Color.WHITE);
-                    switchToAnswerView();
+                    switchToAnswerView(false);
                 }
             }
         });
@@ -443,11 +445,33 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnKeyboa
     private void changeTemplateNotification(int index) {
         if (mIsQuestionShowing) {
             mCurrentCard.question.templateID = index;
-            switchToQuestionView();
+            switchToQuestionView(true);
 
         } else {
             mCurrentCard.answer.templateID = index;
-            switchToAnswerView();
+            switchToAnswerView(true);
+        }
+
+        if ((mIsPlayingCard == false) && (mIsCreatingCard == false)) {
+
+            new Thread() {
+                public void run() {
+                    try {
+
+                        Thread.sleep(10);
+
+                        getActivity().runOnUiThread(new Runnable() {
+
+                            @Override
+                            public void run() {
+                                saveEdittedCard();
+                            }
+                        });
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+                }
+            }.start();
         }
 
 
@@ -456,28 +480,39 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnKeyboa
     public void switchQuestionAnswerView() {
 
         if (mIsQuestionShowing) {
-            switchToAnswerView();
+            switchToAnswerView(false);
             mIsQuestionShowing = false;
         } else {
-            switchToQuestionView();
+            switchToQuestionView(false);
             mIsQuestionShowing = true;
         }
     }
 
-
     /**
-     * Set public since play modes need it
+     * *Set public since play modes need it
+     * @param excludeTitle,mTitle will trigger takeSnapAll function is it is set
      */
-    public void switchToQuestionView() {
+    public void switchToQuestionView(boolean excludeTitle) {
         mIsQuestionShowing = true;
+        if (!excludeTitle) {
+            mTitle.setText(mCurrentPack.questionTitle);
+        }
+
         updateQuestionContent();
         updateQuestionViewTemplate();
         updateQuestionCSS();
     }
 
 
-    private void switchToAnswerView() {
+    /**
+     * @param excludeTitle,mTitle will trigger takeSnapAll function is it is set
+     */
+    private void switchToAnswerView(boolean excludeTitle) {
         mIsQuestionShowing = false;
+        if (!excludeTitle) {
+            mTitle.setText(mCurrentPack.answerTitle);
+        }
+
         updateAnswerContent();
         updateAnswerViewTemplate();
         updateAnswerCSS();
@@ -952,7 +987,6 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnKeyboa
 
 
     private void updateQuestionContent() {
-        mTitle.setText(mCurrentPack.questionTitle);
         mSubheading.setText(mCurrentCard.question.subheading);
         mMain.setText(mCurrentCard.question.main);
         mSub.setText(mCurrentCard.question.sub);
@@ -966,7 +1000,6 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnKeyboa
     }
 
     private void updateAnswerContent() {
-        mTitle.setText(mCurrentPack.answerTitle);
         mSubheading.setText(mCurrentCard.answer.subheading);
         mMain.setText(mCurrentCard.answer.main);
         mSub.setText(mCurrentCard.answer.sub);
@@ -1092,7 +1125,7 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnKeyboa
         }
 
         if (mIsQuestionShowing == false) {
-            switchToQuestionView();
+            switchToQuestionView(false);
             toggle = true;
         }
 
@@ -1122,7 +1155,7 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnKeyboa
         }
 
         if (toggle == true) {
-            switchToAnswerView();
+            switchToAnswerView(false);
         }
 
         //Notify master list view to update

@@ -74,10 +74,10 @@ public class PlayActivity extends FragmentActivity implements SensorEventListene
                 if ((mPosition != i) && (i2 == 0)) {
                     Log.i(Global.debugTag, "onPageScrolled, page index=" + i + "mPosition=" + mPosition);
 
-                    ((CardDetailFragment) (mFragments.get(i))).switchToQuestionView();
+                    ((CardDetailFragment) (mFragments.get(i))).switchToQuestionView(false);
 
                     //Restore previous card to question view
-                    ((CardDetailFragment) (mFragments.get(mPosition))).switchToQuestionView();
+                    ((CardDetailFragment) (mFragments.get(mPosition))).switchToQuestionView(false);
 
                     mPosition = i;
 
