@@ -33,7 +33,7 @@ import net.londatiga.android.QuickAction;
 
 import java.io.File;
 
-public class CardDetailFragment extends Fragment implements FCCEditText.OnKeyboardCloseListener, FCCEditText.OnTouchListener, ViewTreeObserver.OnGlobalLayoutListener {
+public class CardDetailFragment extends Fragment implements FCCEditText.OnKeyboardCloseListener, FCCEditText.OnTouchListener {
 
     public Card mCurrentCard;
     public Pack mCurrentPack;
@@ -93,6 +93,12 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnKeyboa
     private ViewTreeObserver mVtoMain2;
     private ViewTreeObserver mVtoSub;
     private ViewTreeObserver mVtoSub2;
+    private ViewTreeObserver.OnGlobalLayoutListener mVtoSubheadingListener;
+    private ViewTreeObserver.OnGlobalLayoutListener mVtoSubheading2Listener;
+    private ViewTreeObserver.OnGlobalLayoutListener mVtoMainListener;
+    private ViewTreeObserver.OnGlobalLayoutListener mVtoMain2Listener;
+    private ViewTreeObserver.OnGlobalLayoutListener mVtoSubListener;
+    private ViewTreeObserver.OnGlobalLayoutListener mVtoSub2Listener;
 
 
     /**
@@ -281,12 +287,13 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnKeyboa
     public void onStop() {
         Log.d(Global.debugTag, String.format("onStop in CardDetailFragment, cardSN = %d",mCurrentCard.cardSN));
         super.onStop();
-        mVtoSubheading.removeGlobalOnLayoutListener(this);
-        mVtoSubheading2.removeGlobalOnLayoutListener(this);
-        mVtoMain.removeGlobalOnLayoutListener(this);
-        mVtoMain2.removeGlobalOnLayoutListener(this);
-        mVtoSub.removeGlobalOnLayoutListener(this);
-        mVtoSub2.removeGlobalOnLayoutListener(this);
+
+        mVtoSubheading.removeGlobalOnLayoutListener(mVtoSubheadingListener);
+        mVtoSubheading2.removeGlobalOnLayoutListener(mVtoSubheading2Listener);
+        mVtoMain.removeGlobalOnLayoutListener(mVtoMainListener);
+        mVtoMain2.removeGlobalOnLayoutListener(mVtoMain2Listener);
+        mVtoSub.removeGlobalOnLayoutListener(mVtoSubListener);
+        mVtoSub2.removeGlobalOnLayoutListener(mVtoSub2Listener);
 
     }
 
@@ -631,23 +638,11 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnKeyboa
         int textHeight = noOfLines * v.getLineHeight();
         int viewHeight = v.getHeight();
         int lineHeight = v.getLineHeight();
-        if ((textHeight > viewHeight) && (textHeight < viewHeight + lineHeight) && (viewHeight > 1) && (noOfLines > 0)) {
+        if ((textHeight > viewHeight) && (viewHeight > 1) && (noOfLines > 0)) {
 
             int cursorPosition = v.getSelectionStart();
 
-            if (mCurrentPack.creatorID.equals(OpenUDID_manager.getOpenUDID())) {
-                //we only do this during editable mode
-                String text = v.getText().toString();
-                int index = text.length() - 1;
-                Log.d(Global.debugTag, text + index);
-                v.setText(text.substring(0, index));
-                if (cursorPosition == index + 1) {
-                    v.setSelection(index);
-                } else {
-                    v.setSelection(cursorPosition);
-                }
-
-            }  else {
+            if ((mCurrentPack.creatorID.equals(OpenUDID_manager.getOpenUDID())) == false) {
                 // resize action
                 float textSize = v.getTextSize();
 
@@ -662,6 +657,19 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnKeyboa
                     v.setTextSize(TypedValue.COMPLEX_UNIT_PX,(v.getTextSize() - 2));
                 } else if (textSize <= 30) {
                     v.setTextSize(TypedValue.COMPLEX_UNIT_PX,(v.getTextSize() - 1));
+                }
+            } else {
+                if (textHeight < viewHeight + lineHeight) {
+                    //we only do this during editable mode
+                    String text = v.getText().toString();
+                    int index = text.length() - 1;
+                    Log.d(Global.debugTag, text + index);
+                    v.setText(text.substring(0, index));
+                    if (cursorPosition == index + 1) {
+                        v.setSelection(index);
+                    } else {
+                        v.setSelection(cursorPosition);
+                    }
                 }
             }
 
@@ -911,24 +919,60 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnKeyboa
             }
         });
 
+        mVtoSubheadingListener = new ViewTreeObserver.OnGlobalLayoutListener() {
+            @Override
+            public void onGlobalLayout() {
+                triggerResizeTextToFitFrame(mSubheading);
+            }
+        };
         mVtoSubheading = mSubheading.getViewTreeObserver();
-        mVtoSubheading.addOnGlobalLayoutListener(this);
+        mVtoSubheading.addOnGlobalLayoutListener(mVtoSubheadingListener);
 
+        mVtoMainListener = new ViewTreeObserver.OnGlobalLayoutListener() {
+            @Override
+            public void onGlobalLayout() {
+                triggerResizeTextToFitFrame(mMain);
+            }
+        };
         mVtoMain = mMain.getViewTreeObserver();
-        mVtoMain.addOnGlobalLayoutListener(this);
+        mVtoMain.addOnGlobalLayoutListener(mVtoMainListener);
 
+        mVtoSubListener = new ViewTreeObserver.OnGlobalLayoutListener() {
+            @Override
+            public void onGlobalLayout() {
+                triggerResizeTextToFitFrame(mSub);
+            }
+        };
         mVtoSub = mSub.getViewTreeObserver();
-        mVtoSub.addOnGlobalLayoutListener(this);
+        mVtoSub.addOnGlobalLayoutListener(mVtoSubListener);
 
+        mVtoSubheading2Listener = new ViewTreeObserver.OnGlobalLayoutListener() {
+            @Override
+            public void onGlobalLayout() {
+                triggerResizeTextToFitFrame(mSubheading2);
+            }
+        };
         mVtoSubheading2 = mSubheading2.getViewTreeObserver();
-        mVtoSubheading2.addOnGlobalLayoutListener(this);
+        mVtoSubheading2.addOnGlobalLayoutListener(mVtoSubheading2Listener);
 
-
+        mVtoMain2Listener = new ViewTreeObserver.OnGlobalLayoutListener() {
+            @Override
+            public void onGlobalLayout() {
+                triggerResizeTextToFitFrame(mMain2);
+            }
+        };
         mVtoMain2 = mMain2.getViewTreeObserver();
-        mVtoMain2.addOnGlobalLayoutListener(this);
+        mVtoMain2.addOnGlobalLayoutListener(mVtoMain2Listener);
 
+        mVtoSub2Listener = new ViewTreeObserver.OnGlobalLayoutListener() {
+            @Override
+            public void onGlobalLayout() {
+                triggerResizeTextToFitFrame(mSub2);
+            }
+        };
         mVtoSub2 = mSub2.getViewTreeObserver();
-        mVtoSub2.addOnGlobalLayoutListener(this);
+        mVtoSub2.addOnGlobalLayoutListener(mVtoSub2Listener);
+
     }
 
 
@@ -1838,11 +1882,6 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnKeyboa
     @Override
     public void onKeyboardClose(EditText editText) {
         ((MainActivity) getActivity()).removeCSSToolbar();
-    }
-
-    @Override
-    public void onGlobalLayout() {
-        triggerResizeTextToFitFrame(mSubheading);
     }
 
 
