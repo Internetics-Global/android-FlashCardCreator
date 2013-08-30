@@ -403,10 +403,15 @@ public class MainActivity extends FragmentActivity implements
 
         if (index >= 0) {
             mCurrentCardIndex = index;
-            mCurrentCard = mCurrentPack.cards.get(mCurrentCardIndex);
-            mCardDetailFragment = new CardDetailFragment(mCurrentPack, mCurrentCard, 0);
-            getSupportFragmentManager().beginTransaction()
-                    .replace(R.id.card_detail_container, mCardDetailFragment).commitAllowingStateLoss();
+            if (mCurrentPack.cards.size() > mCurrentCardIndex) {
+                mCurrentCard = mCurrentPack.cards.get(mCurrentCardIndex);
+                mCardDetailFragment = new CardDetailFragment(mCurrentPack, mCurrentCard, 0);
+                getSupportFragmentManager().beginTransaction()
+                        .replace(R.id.card_detail_container, mCardDetailFragment).commitAllowingStateLoss();
+            }  else {
+                Log.e(Global.debugTag,"Out of index of array during executing onItemSelected");
+            }
+
         } else {
             mCurrentCardIndex = -1;
             mCurrentCard = null;
@@ -465,6 +470,10 @@ public class MainActivity extends FragmentActivity implements
 
         mArrayCardDetailFragments.clear();
         mArrayCardDetailFragments = null;
+
+        //we don't need to conisder "during creating card" since we have disabled that
+        //this used to free memory since we "except current" in finishSnapShotAllExceptCurrent
+        onItemSelected(mCurrentCardIndex);
 
     }
 
