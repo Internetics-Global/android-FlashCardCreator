@@ -4,8 +4,6 @@ package com.internectics.helper;
 
 import android.app.ProgressDialog;
 import android.content.Context;
-import android.content.DialogInterface;
-import android.content.DialogInterface.OnClickListener;
 import android.os.AsyncTask;
 import android.widget.Toast;
 import com.dropbox.client2.DropboxAPI;

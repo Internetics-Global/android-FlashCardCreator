@@ -16,7 +16,6 @@ import com.internectics.util.AppConfig;
 import com.internectics.util.Global;
 import com.internectics.util.UIHelper;
 import com.internectics.util.VGViewPager;
-
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;

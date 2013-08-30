@@ -3,13 +3,9 @@ package com.internectics.helper;
 import android.content.Context;
 import android.content.SharedPreferences;
 import com.internectics.data.Pack;
-import com.internectics.util.AppConfig;
 import com.internectics.util.AppContext;
 import com.internectics.util.Global;
 import com.internectics.util.StringUtils;
-import org.json.simple.JSONObject;
-import org.json.simple.parser.JSONParser;
-import org.json.simple.parser.ParseException;
 
 import java.util.Date;
 

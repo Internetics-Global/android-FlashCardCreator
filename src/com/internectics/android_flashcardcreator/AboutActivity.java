@@ -1,8 +1,10 @@
 package com.internectics.android_flashcardcreator;
 
 import android.app.Activity;
+import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.view.WindowManager;
+import android.widget.TextView;
 
 public class AboutActivity extends Activity {
     public void onCreate(Bundle savedInstanceState) {
@@ -10,6 +12,14 @@ public class AboutActivity extends Activity {
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
         setTitle(R.string.more_about);
         setContentView(R.layout.about);
+
+        TextView versionTextView = (TextView) findViewById(R.id.version);
+        try {
+            String versionName = getPackageManager().getPackageInfo(getPackageName(), 0).versionName;
+            versionTextView.setText("Version " + versionName);
+        } catch (PackageManager.NameNotFoundException e) {
+            e.printStackTrace();
+        }
     }
 
 

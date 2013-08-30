@@ -11,7 +11,6 @@ import android.graphics.PixelFormat;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
-import android.util.AttributeSet;
 import android.util.Log;
 import android.util.TypedValue;
 import android.view.*;
@@ -33,7 +32,6 @@ import com.internectics.fragment.SymbolBoxFragment;
 import com.internectics.helper.*;
 import com.internectics.helper.AmazonSDB.SimpleDBHelper;
 import com.internectics.util.*;
-
 import java.io.File;
 import java.util.ArrayList;
 import java.util.HashMap;

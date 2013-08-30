@@ -1,9 +1,5 @@
 package com.internectics.helper;
 
-import com.internectics.android_flashcardcreator.R;
-
-import java.util.ArrayList;
-
 /**
  * Created with IntelliJ IDEA.
  * User: bournewang
