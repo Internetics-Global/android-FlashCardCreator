@@ -29,6 +29,17 @@
                     android:layout_width="fill_parent"
                     android:layout_height="0dp"
                     android:layout_weight="20"
+                    android:text="www.internetics.net.au"
+                    android:textColor="@android:color/holo_orange_dark"
+                    android:layout_gravity="center"
+                    android:singleLine="false"
+                    android:gravity="center"/>
+
+            <TextView
+                    android:layout_marginTop="30dp"
+                    android:layout_width="fill_parent"
+                    android:layout_height="0dp"
+                    android:layout_weight="20"
                     android:text="Version1.0"
                     android:layout_gravity="center"
                     android:singleLine="false"
