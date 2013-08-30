@@ -59,6 +59,15 @@ public class PlayActivity extends FragmentActivity implements SensorEventListene
         mPageAdapter = new FCCPageAdapter(getSupportFragmentManager(), mFragments);
         mPager = (VGViewPager) findViewById(R.id.viewpager);
 
+        //used to get rid of interrupt during scroll
+        View playMask = findViewById(R.id.play_mask);
+        playMask.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                return (mIsScrollStop == false);
+            }
+        });
+
         //Keep same size with non-playmode
         ViewGroup.MarginLayoutParams marginLayoutParams = (ViewGroup.MarginLayoutParams) mPager.getLayoutParams();
         int margin = (UIHelper.getScreenWidth(this)) / 6 / 2;
@@ -314,6 +323,8 @@ public class PlayActivity extends FragmentActivity implements SensorEventListene
     @Override
     public boolean onFling(MotionEvent e1, MotionEvent e2, float velocityX, float velocityY) {
 
+        Log.d(Global.debugTag, "OnFlying");
+
         final float xDistance = Math.abs(e1.getX() - e2.getX());
 
         final float yDistance = Math.abs(e1.getY() - e2.getY());
@@ -331,17 +342,17 @@ public class PlayActivity extends FragmentActivity implements SensorEventListene
 
         if (Math.abs(yDistance) < 100) {
             if (e1.getRawX() > e2.getRawX() + 10) {
-                Log.d(Global.debugTag, "swipe Left");
+                Log.d(Global.debugTag, "swipe Left" + mPosition);
 
-                if (mPosition < mFragments.size()) {
+                if (mPosition < mFragments.size() - 1) {
                     mIsScrollStop = false;
                     mPager.setCurrentItem(mPosition + 1, true);
                 }
 
             } else if (e1.getRawX() < e2.getRawX() - 10) {
-                Log.d(Global.debugTag, "Swipe Right");
+                Log.d(Global.debugTag, "Swipe Right" + mPosition);
 
-                if (mPosition >= 0) {
+                if (mPosition >= 1) {
                     mIsScrollStop = false;
                     mPager.setCurrentItem(mPosition - 1, true);
                 }
@@ -354,6 +365,7 @@ public class PlayActivity extends FragmentActivity implements SensorEventListene
 
     @Override
     public boolean onTouchEvent(MotionEvent event) {
+        Log.d(Global.debugTag, "onTouchEvent");
         return mGestureDetector.onTouchEvent(event);
     }
 

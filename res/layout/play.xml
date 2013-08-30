@@ -13,5 +13,16 @@
             android:paddingBottom="34dp"
             android:layout_height="fill_parent" />
 
+    <View
+            android:id="@+id/play_mask"
+            android:layout_width="fill_parent"
+            android:paddingLeft="0dp"
+            android:clickable="false"
+            android:paddingRight="0dp"
+            android:paddingTop="0dp"
+            android:background="#00FFFFFF"
+            android:paddingBottom="0dp"
+            android:layout_height="fill_parent" />
+
 
 </FrameLayout>
