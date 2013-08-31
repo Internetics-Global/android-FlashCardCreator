@@ -471,7 +471,14 @@ public class MainActivity extends FragmentActivity implements
 
         //we don't need to conisder "during creating card" since we have disabled that
         //this used to free memory since we "except current" in finishSnapShotAllExceptCurrent
-        onItemSelected(mCurrentCardIndex);
+        Intent intent = new Intent();
+        intent.setAction(Global.BROADCAST_ACTION_UPDATE_MASTER_VIEW);
+        intent.putExtra(Global.KEY_FROM, Global.BROADCAST_EXTRA_FROM_SNAPSHOT_ALL);
+        Bundle extraBundle = new Bundle();
+        extraBundle.putInt("EXTRA_PACK_ID",mCurrentPack.packID);
+        extraBundle.putInt("EXTRA_INDEX",mCurrentCardIndex);
+        intent.putExtra("BUNDLE", extraBundle);
+        sendBroadcast(intent);
 
     }
 

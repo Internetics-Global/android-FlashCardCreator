@@ -24,6 +24,7 @@ public class Global {
     public static final String BROADCAST_EXTRA_FROM_CURRENT_PACK_UPDATE = "from_current_pack_update";
     public static final String BROADCAST_EXTRA_FROM_PACK_SELECTED = "from_pack_selected";
     public static final String BROADCAST_EXTRA_FROM_PACK_DOWNLOADED = "from_pack_downloaded";
+    public static final String BROADCAST_EXTRA_FROM_SNAPSHOT_ALL = "snapshot_all";
 
     //Used to judge which pack is to load during start-up
     public static final String mostRecentPackCreatedID_Property = "most_recent_pack_id";

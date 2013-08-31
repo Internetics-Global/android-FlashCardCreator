@@ -293,6 +293,10 @@ public class CardListFragment extends Fragment {
                 } else if (extraFrom.equals(Global.BROADCAST_EXTRA_FROM_PACK_DOWNLOADED)) {
                     extraCardIndex = 0;
                     mCurrentPack = CardListModel.getLastPack();
+                } else if (extraFrom.equals(Global.BROADCAST_EXTRA_FROM_SNAPSHOT_ALL)) {
+                    Bundle bundle = intent.getBundleExtra("BUNDLE");
+                    extraCardIndex = bundle.getInt("EXTRA_INDEX");
+                    mCurrentPack = CardListModel.getPack(bundle.getInt("EXTRA_PACK_ID"));
                 }
 
                 //step2: update listview
