@@ -15,9 +15,8 @@ import android.view.View;
 import android.widget.EditText;
 import com.internectics.helper.FileOperationHelper;
 
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
+import java.io.*;
+import java.net.URL;
 
 public class UIHelper {
 
@@ -36,12 +35,16 @@ public class UIHelper {
     }
 
 
-    public static Bitmap resizeImageTo400(Context context, Uri imageUri) {
+    /**
+     * local image uri, not include picasa web image
+     * @param context
+     * @param localImageUri
+     * @return
+     */
+    public static Bitmap resizeImageTo400(Context context, Uri localImageUri) {
 
         Bitmap resizeBitmap = null;
-        //imageUri: content://media/external/images/media/5076
-        //pathName: /storage/emulated/0/Download/2013_06_04_21.51.40.png
-        String pathName = FileOperationHelper.getRealImagePathFromURI(context, imageUri);
+        String pathName = FileOperationHelper.getRealImagePathFromURI(context, localImageUri);
         File f = new File(pathName);
         if (f.exists()) {
             BitmapFactory.Options opts = new BitmapFactory.Options();
@@ -133,6 +136,73 @@ public class UIHelper {
         }
 
         return -1;
+    }
+
+
+    public static Bitmap getResized400SizeBitmapFromPicasa(Context context, Uri url)
+    {
+        File cacheDir;
+        Bitmap resizeBitmap = null;
+
+        // if the device has an SD card
+        if (android.os.Environment.getExternalStorageState().equals(android.os.Environment.MEDIA_MOUNTED)) {
+            cacheDir=new File(android.os.Environment.getExternalStorageDirectory(),".OCFL311");
+        } else {
+            // it does not have an SD card
+            cacheDir=context.getCacheDir();
+        }
+        if(!cacheDir.exists())
+            cacheDir.mkdirs();
+
+        File tempFile=new File(cacheDir, "tempfile.jpg");
+
+        try {
+
+            //Step1: copy picasa image to local
+            InputStream is = null;
+            if (url.toString().startsWith("content://com.google.android.gallery3d")) {
+                is=context.getContentResolver().openInputStream(url);
+            } else {
+                is=new URL(url.toString()).openStream();
+            }
+            OutputStream os = new FileOutputStream(tempFile);
+            copyStream(is, os);
+            os.close();
+
+            //Step2:resize it
+            BitmapFactory.Options opts = new BitmapFactory.Options();
+            opts.inJustDecodeBounds = true;
+            BitmapFactory.decodeFile(tempFile.toString(), opts);
+            int max;
+            if ((opts.outWidth > 400) || (opts.outHeight > 400) ) {
+                max = (opts.outWidth > opts.outHeight)?opts.outWidth:opts.outHeight;
+                opts.inSampleSize = (max/400);
+            }
+            opts.inJustDecodeBounds = false;
+            resizeBitmap = BitmapFactory.decodeFile(tempFile.toString(), opts);
+
+            //Step3: delete temp file
+            tempFile.delete();
+
+            return resizeBitmap;
+
+        } catch (Exception ex) {
+            Log.e(Global.debugTag, "Exception: " + ex.getMessage());
+            ex.printStackTrace();
+            return resizeBitmap;
+        }
+    }
+
+    private static void copyStream(InputStream is, OutputStream os) {
+        byte[] buffer = new byte[1024];
+        int len;
+        try {
+            while ((len = is.read(buffer)) != -1) {
+                os.write(buffer, 0, len);
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
 

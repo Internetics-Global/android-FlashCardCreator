@@ -3,11 +3,13 @@ package com.internectics.fragment;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.*;
+import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.graphics.Typeface;
 import android.net.Uri;
 import android.os.*;
+import android.provider.MediaStore;
 import android.support.v4.app.Fragment;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -161,12 +163,10 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnKeyboa
 
                 if (mIsPlayingCard == false) {
                     if (isEditableMode()) {
-                        Intent intent = new Intent(
-                                Intent.ACTION_PICK,
-                                android.provider.MediaStore.Images.Media.INTERNAL_CONTENT_URI);
-                        intent.putExtra(Intent.EXTRA_LOCAL_ONLY, true);
                         startActivityForResult(
-                                intent,
+                                new Intent(
+                                        Intent.ACTION_PICK,
+                                        android.provider.MediaStore.Images.Media.INTERNAL_CONTENT_URI),
                                 CODE_REQUEST_IMAGE_SOURCE_IS_LOGO);
                     } else {
                         Intent intent = new Intent(getActivity(), WebViewActivity.class);
@@ -194,12 +194,10 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnKeyboa
 
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(
-                        Intent.ACTION_PICK,
-                        android.provider.MediaStore.Images.Media.INTERNAL_CONTENT_URI);
-                intent.putExtra(Intent.EXTRA_LOCAL_ONLY, true);
                 startActivityForResult(
-                        intent,
+                        new Intent(
+                                Intent.ACTION_PICK,
+                                android.provider.MediaStore.Images.Media.INTERNAL_CONTENT_URI),
                         CODE_REQUEST_IMAGE_SOURCE_IS_IMAGE);
 
             }
@@ -209,12 +207,10 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnKeyboa
 
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(
-                        Intent.ACTION_PICK,
-                        android.provider.MediaStore.Images.Media.INTERNAL_CONTENT_URI);
-                intent.putExtra(Intent.EXTRA_LOCAL_ONLY, true);
                 startActivityForResult(
-                        intent,
+                        new Intent(
+                                Intent.ACTION_PICK,
+                                android.provider.MediaStore.Images.Media.INTERNAL_CONTENT_URI),
                         CODE_REQUEST_IMAGE_SOURCE_IS_IMAGE);
 
             }
@@ -301,11 +297,32 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnKeyboa
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (resultCode == Activity.RESULT_OK) {
+
+            Bitmap resultBitmap = null;
             Uri selectedImageURI = data.getData();
 
-            Bitmap resultBitmap = UIHelper.resizeImageTo400(getActivity(), selectedImageURI);
+            //step1: get image
+            final String[] filePathColumn = { MediaStore.MediaColumns.DATA, MediaStore.MediaColumns.DISPLAY_NAME };
+            Cursor cursor = getActivity().getContentResolver().query(selectedImageURI, filePathColumn, null, null, null);
+            if (cursor != null) {
+                cursor.moveToFirst();
+                int columnIndex;
+                // if it is a picasa image on newer devices with OS 3.0 and up
+                if (selectedImageURI.toString().startsWith("content://com.google.android.gallery3d")){
+                    columnIndex = cursor.getColumnIndex(MediaStore.MediaColumns.DISPLAY_NAME);
+                    if (columnIndex != -1) {
+                        final Uri picasaUri = selectedImageURI;
+                        resultBitmap = UIHelper.getResized400SizeBitmapFromPicasa(getActivity(), picasaUri);
+                    }
+                } else { // it is a regular local image file
+                    resultBitmap = UIHelper.resizeImageTo400(getActivity(), selectedImageURI);
+                }
+                cursor.close();
+            }
+
+            //step2: do next
             if (resultBitmap == null) {
-                Log.w(Global.debugTag, "resultBitmap is null");
+                Log.e(Global.debugTag, "resultBitmap is null");
             } else {
                 File toSaveFile = UIHelper.saveImageToCaches(resultBitmap);
 
