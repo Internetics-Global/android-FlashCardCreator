@@ -234,10 +234,38 @@ public class MainActivity extends FragmentActivity implements
                 //overridePendingTransition(R.anim.in_from_bottom, R.anim.out_to_above);
                 break;
 
-            case R.id.actionbar_share:
+            case R.id.actionbar_share_pack:
                 if (Global.apiReachableWithAlert(MainActivity.this)) {
                     onActionbarShareSelected();
                 }
+                break;
+
+            case R.id.actionbar_install_from_code:
+
+                final EditText codeEditText = new EditText(this);
+                codeEditText.setHint("lzupcb1");
+                new AlertDialog.Builder(this)
+                        .setTitle("Input download code")
+                        .setIcon(android.R.drawable.ic_dialog_info)
+                        .setView(codeEditText)
+                        .setPositiveButton("Done", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                String codeString = codeEditText.getText().toString();
+                                if ((codeString != null) && (codeString.length() > 0)) {
+                                    String finalURL = "http://tinyurl.com/" + codeString;
+                                    Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(finalURL));
+                                    startActivity(browserIntent);
+                                }
+                            }
+                        })
+                        .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                            }
+                        })
+                        .show();
+
                 break;
 
             case R.id.actionbar_add_card_cancel:

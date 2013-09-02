@@ -44,9 +44,18 @@
     </item>
 
     <item
-            android:id="@+id/actionbar_share"
             android:icon="@drawable/actionbar_share_button"
             android:title="@string/actionbar_item_share" android:showAsAction="always">
+
+        <menu>
+            <item
+                    android:id="@+id/actionbar_install_from_code"
+                    android:title="Install from code" />
+            <item
+                    android:id="@+id/actionbar_share_pack"
+                    android:title="Share the pack" />
+        </menu>
+
     </item>
 
 </menu>
