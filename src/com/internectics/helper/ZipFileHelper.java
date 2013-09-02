@@ -65,7 +65,9 @@ public class ZipFileHelper {
                 File unzippedDirectory = new File(outputDirectory + File.separator + String.format("card%d", i));
                 if (!unzippedDirectory.exists())
                     unzippedDirectory.mkdir();
-                unzip(zippedCardFileArray.get(i), unzippedDirectory.toString());
+
+                zipFile = new ZipFile(zippedCardFileArray.get(i));
+                zipFile.extractAll(unzippedDirectory.toString());
             }
 
         } catch (ZipException e) {
@@ -74,62 +76,6 @@ public class ZipFileHelper {
             Toast.makeText(context, "Wrong password", Toast.LENGTH_LONG).show();
         }
 
-    }
-
-    /*
-     * if unzip a pack, an array will be returned which inculude all .zip card
-     */
-    private static ArrayList<String> unzip(String zipFile, String outputFolder) {
-
-        ArrayList<String> zippedCardFileArray = new ArrayList<String>();
-        byte[] buffer = new byte[1024];
-
-        try {
-            //create output directory is not exists
-            File folder = new File(outputFolder);
-            if (!folder.exists()) {
-                folder.mkdir();
-            }
-
-            //get the zip file content
-            ZipInputStream zis =
-                    new ZipInputStream(new FileInputStream(zipFile));
-            //get the zipped file list entry
-            ZipEntry ze = zis.getNextEntry();
-
-            while (ze != null) {
-
-                String fileName = ze.getName();
-                File newFile = new File(outputFolder + File.separator + fileName);
-
-                System.out.println("file unzip : " + newFile.getAbsoluteFile());
-
-                FileOutputStream fos = new FileOutputStream(newFile);
-
-                int len;
-                while ((len = zis.read(buffer)) > 0) {
-                    fos.write(buffer, 0, len);
-                }
-
-                fos.close();
-
-                //if the unzipped is still a zip file, we continue it
-                if (ze.getName().contains(".zip")) {
-                    zippedCardFileArray.add(newFile.toString());
-                }
-
-                ze = zis.getNextEntry();
-            }
-
-            zis.closeEntry();
-            zis.close();
-
-        } catch (IOException ex) {
-            ex.printStackTrace();
-            Log.d(Global.debugTag,"unzip failed:" + zipFile + ";description:" + ex.getCause());
-        }
-
-        return zippedCardFileArray;
     }
 
 }
