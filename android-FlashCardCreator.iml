@@ -16,6 +16,7 @@
     <orderEntry type="jdk" jdkName="Android SDK" jdkType="Android SDK" />
     <orderEntry type="sourceFolder" forTests="false" />
     <orderEntry type="library" name="android-support-v43" level="project" />
+    <orderEntry type="module" module-name="facebook" />
     <orderEntry type="library" name="libs" level="project" />
     <orderEntry type="module" module-name="viewflow" />
     <orderEntry type="module" module-name="drag-sort-listview" />

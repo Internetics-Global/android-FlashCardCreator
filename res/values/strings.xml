@@ -3,6 +3,8 @@
 
     <string name="app_name">FlashCardCreator</string>
 
+    <!--facebook related-->
+    <string name="app_id">430339350417672</string>
 
     <string name="actionbar_item_packs">Packs</string>
     <string name="actionbar_item_edit">Edit</string>

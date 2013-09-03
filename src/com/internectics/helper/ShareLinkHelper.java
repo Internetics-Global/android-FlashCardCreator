@@ -1,9 +1,11 @@
 package com.internectics.helper;
 
 import android.app.AlertDialog;
-import android.content.Context;
-import android.content.DialogInterface;
-import android.content.Intent;
+import android.app.Service;
+import android.content.*;
+import android.content.pm.ApplicationInfo;
+import android.content.pm.PackageManager;
+import android.content.pm.ResolveInfo;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.text.InputType;
@@ -13,6 +15,8 @@ import android.widget.EditText;
 import android.widget.Toast;
 import com.dropbox.client2.DropboxAPI;
 import com.dropbox.client2.exception.DropboxException;
+import com.facebook.widget.FacebookDialog;
+import com.internectics.android_flashcardcreator.MainActivity;
 import com.internectics.data.Pack;
 import com.internectics.helper.AmazonSDB.SimpleDBHelper;
 import com.internectics.util.Global;
@@ -30,6 +34,10 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLConnection;
 import java.util.HashMap;
+import java.util.List;
+
+import com.facebook.*;
+import com.facebook.model.*;
 
 /**
  * 1. create share linkage
@@ -41,6 +49,8 @@ public class ShareLinkHelper extends AsyncTask<Void, Long, Boolean> {
     private String mFilePathInDropbox;
     private Pack mCurentPack;
     private String mUnshortedFCCShareLink;
+
+    private boolean canPresentShareDialog;
 
 
     /*
@@ -175,13 +185,36 @@ public class ShareLinkHelper extends AsyncTask<Void, Long, Boolean> {
 
 
     public void execShareAction() {
-        String shareLink = PackRecordHelper.getCurrentPackShareLink(mCurentPack);
-        String finalPostString = "I've just created a pack of Flash Cards with the Flash Card Creator! ( " + shareLink +" ) Check it out!";
-        Intent intent = new Intent(Intent.ACTION_SEND);
-        intent.setType("text/plain");
-        intent.putExtra(Intent.EXTRA_TEXT, finalPostString);
-        intent.putExtra(Intent.EXTRA_SUBJECT, "Share my pack");
-        mContext.startActivity(Intent.createChooser(intent, "Share current pack to"));
+
+        String facebook = "Facebook";
+        try {
+            ApplicationInfo info = mContext.getPackageManager().
+                    getApplicationInfo("com.facebook.katana", 0 );
+        } catch (PackageManager.NameNotFoundException e) {
+            e.printStackTrace();
+            facebook = facebook + "(Install required)";
+        }
+
+        String twitter = "Twitter";
+        try {
+            ApplicationInfo info = mContext.getPackageManager().
+                    getApplicationInfo("com.twitter.android", 0 );
+        } catch (PackageManager.NameNotFoundException e) {
+            e.printStackTrace();
+            twitter = twitter + "(Install required)";
+        }
+
+        new AlertDialog.Builder(mContext)
+                .setTitle("Share")
+                .setItems(new String[] {facebook,twitter,"Email","Copy"}, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+                        String shareLink = PackRecordHelper.getCurrentPackShareLink(mCurentPack);
+                        shareActionOnItemSelected(which,shareLink);
+                    }
+                })
+                .show();
     }
 
     public boolean insertIntoAmazonSimpleDB(final String itemName, int maxNo) {
@@ -204,5 +237,159 @@ public class ShareLinkHelper extends AsyncTask<Void, Long, Boolean> {
         return result;
 
     }
+
+
+    private void shareActionOnItemSelected (int position,String shareLink) {
+        switch (position) {
+            case 0: {
+                Log.d(Global.debugTag, "Facebook share");
+                shareToFacebook(shareLink);
+                break;
+            }
+
+            case 1: {
+                Log.d(Global.debugTag, "Twitter share");
+                String finalPostString = "I've just created a pack of Flash Cards with the Flash Card Creator! ( " + shareLink +" ) Check it out!";
+                Intent intent = findTwitterClient();
+                if (intent != null) {
+                    intent.putExtra(Intent.EXTRA_TEXT, finalPostString);
+                    intent.putExtra(Intent.EXTRA_SUBJECT, "Share my pack");
+                    mContext.startActivity(Intent.createChooser(intent, "Share current pack to"));
+                }
+                break;
+            }
+            case 2: {
+                Log.d(Global.debugTag, "Email share");
+                Intent emailIntent = new Intent(android.content.Intent.ACTION_SEND);
+                emailIntent.putExtra(android.content.Intent.EXTRA_SUBJECT, "This is my pack");
+                emailIntent.setType("message/rfc822");
+                emailIntent.putExtra(android.content.Intent.EXTRA_TEXT, shareLink);
+                mContext.startActivity(Intent.createChooser(emailIntent, "Share via Email"));
+                break;
+            }
+            case 3: {
+                Log.d(Global.debugTag, "Copy");
+                ClipboardManager clipboard = (ClipboardManager) mContext.getSystemService(Service.CLIPBOARD_SERVICE);
+                ClipData clip = ClipData.newPlainText( "share linkage",shareLink);
+                clipboard.setPrimaryClip(clip);
+                break;
+            }
+            case 4: {
+                String finalPostString = "I've just created a pack of Flash Cards with the Flash Card Creator! ( " + shareLink +" ) Check it out!";
+                Intent intent = new Intent(Intent.ACTION_SEND);
+                intent.setType("text/plain");
+                intent.putExtra(Intent.EXTRA_TEXT, finalPostString);
+                intent.putExtra(Intent.EXTRA_SUBJECT, "Share my pack");
+                mContext.startActivity(Intent.createChooser(intent, "Share current pack to"));
+            }
+            default:
+                break;
+        }
+    }
+
+
+    private void shareToFacebook(String shareLink) {
+        if (mContext instanceof MainActivity) {
+
+            canPresentShareDialog = FacebookDialog.canPresentShareDialog(mContext,
+                    FacebookDialog.ShareDialogFeature.SHARE_DIALOG);
+
+            Session session = Session.getActiveSession();
+            if (session != null) {
+                if (hasPublishPermission()) {
+                    // We can do the action right away.
+                    handlePendingAction(shareLink);
+                    return;
+                } else if (session.isOpened()) {
+                    // We need to get new permissions, then complete the action when we get called back.
+                    session.requestNewPublishPermissions(new Session.NewPermissionsRequest((MainActivity) mContext, "publish_actions"));
+                    return;
+                }
+            }
+
+            if (canPresentShareDialog) {
+                handlePendingAction(shareLink);
+            }
+
+
+
+        } else {
+            Log.d(Global.debugTag, "mContext is NOT instanceof MainActivity during shareToFacebook");
+        }
+
+    }
+
+    private boolean hasPublishPermission() {
+        Session session = Session.getActiveSession();
+        return session != null && session.getPermissions().contains("publish_actions");
+    }
+
+
+    private void handlePendingAction(String shareLink) {
+
+        if (canPresentShareDialog) {
+            FacebookDialog shareDialog = new FacebookDialog.ShareDialogBuilder((MainActivity)mContext)
+                    .setName("Hi All:")
+                    .setPicture("https://fbcdn-sphotos-h-a.akamaihd.net/hphotos-ak-prn1/27928_228440670639329_1320586523_n.jpg")
+                    .setDescription("I've just created a pack of Flash Cards with the Flash Card Creator! Check it out!")
+                    .setLink(shareLink)
+                    .build();
+            shareDialog.present();
+        } else if (hasPublishPermission()) {
+            final String message = "Test";
+            Request request = Request
+                    .newStatusUpdateRequest(Session.getActiveSession(), message, null, null, new Request.Callback() {
+                        @Override
+                        public void onCompleted(Response response) {
+                            showPublishResult(message, response.getGraphObject(), response.getError());
+                        }
+                    });
+            request.executeAsync();
+        } else {
+        }
+    }
+
+
+    private void showPublishResult(String message, GraphObject result, FacebookRequestError error) {
+        String title = null;
+        if (error == null) {
+            title = "Successfully done";
+        } else {
+            title = "Error during share, try gain";
+        }
+
+        new AlertDialog.Builder(mContext)
+                .setTitle(title)
+                .setPositiveButton("OK", null)
+                .show();
+    }
+
+
+    public Intent findTwitterClient() {
+        final String[] twitterApps = {
+                // package // name - nb installs (thousands)
+                "com.twitter.android", // official - 10 000
+                "com.twidroid", // twidroid - 5 000
+                "com.handmark.tweetcaster", // Tweecaster - 5 000
+                "com.thedeck.android" }; // TweetDeck - 5 000 };
+        Intent tweetIntent = new Intent();
+        tweetIntent.setType("text/plain");
+        final PackageManager packageManager = mContext.getPackageManager();
+        List<ResolveInfo> list = packageManager.queryIntentActivities(
+                tweetIntent, PackageManager.MATCH_DEFAULT_ONLY);
+
+        for (int i = 0; i < twitterApps.length; i++) {
+            for (ResolveInfo resolveInfo : list) {
+                String p = resolveInfo.activityInfo.packageName;
+                if (p != null && p.startsWith(twitterApps[i])) {
+                    tweetIntent.setPackage(p);
+                    return tweetIntent;
+                }
+            }
+        }
+        return null;
+
+    }
+
 
 }

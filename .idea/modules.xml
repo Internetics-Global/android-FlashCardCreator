@@ -5,6 +5,7 @@
       <module fileurl="file://$PROJECT_DIR$/libs/NewQuickAction3D/NewQuickAction3D.iml" filepath="$PROJECT_DIR$/libs/NewQuickAction3D/NewQuickAction3D.iml" />
       <module fileurl="file://$PROJECT_DIR$/android-FlashCardCreator.iml" filepath="$PROJECT_DIR$/android-FlashCardCreator.iml" />
       <module fileurl="file://$PROJECT_DIR$/libs/drag-sort-listview/drag-sort-listview.iml" filepath="$PROJECT_DIR$/libs/drag-sort-listview/drag-sort-listview.iml" />
+      <module fileurl="file://$PROJECT_DIR$/libs/facebook-android-sdk-3.5/facebook/facebook.iml" filepath="$PROJECT_DIR$/libs/facebook-android-sdk-3.5/facebook/facebook.iml" />
       <module fileurl="file://$PROJECT_DIR$/libs/viewflow/viewflow.iml" filepath="$PROJECT_DIR$/libs/viewflow/viewflow.iml" />
     </modules>
   </component>
