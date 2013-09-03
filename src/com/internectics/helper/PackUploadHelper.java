@@ -2,6 +2,7 @@
 
 package com.internectics.helper;
 
+import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.os.AsyncTask;
@@ -27,25 +28,25 @@ public class PackUploadHelper extends AsyncTask<Void, Long, Boolean> {
 
     private long mFileLen;
     private UploadRequest mRequest;
-    private Context mContext;
+    private Activity mActivity;
     private final ProgressDialog mDialog;
     private Pack mCurrentPack;
 
     private String mErrorMsg;
 
 
-    public PackUploadHelper(Context context, String dropboxPath,
+    public PackUploadHelper(Activity activity, String dropboxPath,
                             File file, Pack currentPack) {
 
         // We set the context this way so we don't accidentally leak activities
-        mContext = context;
+        mActivity = activity;
 
         mFileLen = file.length();
         mApi = DropboxHelper.getDropboxAPI();
         mCurrentPack = currentPack;
         mFile = file;
         mFilePathInDropbox = dropboxPath + file.getName();
-        mDialog = new ProgressDialog(context);
+        mDialog = new ProgressDialog(activity);
         mDialog.setMax(100);
         mDialog.setMessage("Uploading " + file.getName());
         mDialog.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
@@ -133,17 +134,17 @@ public class PackUploadHelper extends AsyncTask<Void, Long, Boolean> {
     protected void onPostExecute(Boolean result) {
         mDialog.dismiss();
         if (result) {
-            Toast.makeText(mContext, "Pack successfully uploaded", Toast.LENGTH_SHORT).show();
+            Toast.makeText(mActivity, "Pack successfully uploaded", Toast.LENGTH_SHORT).show();
 
             String fileName = mFile.getName();
-            PackRecordHelper.savePackUploadRecord(mContext,mCurrentPack,null,fileName);
+            PackRecordHelper.savePackUploadRecord(mActivity,mCurrentPack,null,fileName);
 
-            ShareLinkHelper createShareLink = new ShareLinkHelper(mContext, mFilePathInDropbox, mCurrentPack);
+            ShareLinkHelper createShareLink = new ShareLinkHelper(mActivity, mFilePathInDropbox, mCurrentPack);
             createShareLink.execute();
 
 
         } else {
-            Toast.makeText(mContext, mErrorMsg, Toast.LENGTH_SHORT).show();
+            Toast.makeText(mActivity, mErrorMsg, Toast.LENGTH_SHORT).show();
         }
     }
 }
