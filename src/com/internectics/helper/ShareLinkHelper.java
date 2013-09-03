@@ -207,7 +207,7 @@ public class ShareLinkHelper extends AsyncTask<Void, Long, Boolean> {
 
         new AlertDialog.Builder(mActivity)
                 .setTitle("Share")
-                .setItems(new String[] {"Facebook","Twitter","Email","Copy"}, new DialogInterface.OnClickListener() {
+                .setItems(new String[] {"Facebook","Twitter","Email","Copy to clipboard"}, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         dialog.dismiss();
