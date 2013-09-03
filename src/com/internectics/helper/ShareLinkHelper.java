@@ -176,11 +176,11 @@ public class ShareLinkHelper extends AsyncTask<Void, Long, Boolean> {
 
     public void execShareAction() {
         String shareLink = PackRecordHelper.getCurrentPackShareLink(mCurentPack);
-
+        String finalPostString = "I've just created a pack of Flash Cards with the Flash Card Creator! ( " + shareLink +" ) Check it out!";
         Intent intent = new Intent(Intent.ACTION_SEND);
         intent.setType("text/plain");
-        intent.putExtra(Intent.EXTRA_TEXT, shareLink);
-        intent.putExtra(Intent.EXTRA_SUBJECT, "Share:");
+        intent.putExtra(Intent.EXTRA_TEXT, finalPostString);
+        intent.putExtra(Intent.EXTRA_SUBJECT, "Share my pack");
         mContext.startActivity(Intent.createChooser(intent, "Share current pack to"));
     }
 
