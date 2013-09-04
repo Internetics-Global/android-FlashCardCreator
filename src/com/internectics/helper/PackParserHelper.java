@@ -345,7 +345,12 @@ public class PackParserHelper {
                         //card.question.css.mainSize will be base value
                         //baseSize is same as mainSize
 
-                        card.question.css.mainSize = standardCSSArrary[1];
+                        //when the mainSize is quite big
+                        if (mainSize > standardCSSArrary[6]) {
+                            card.question.css.mainSize = mainSize;
+                        }  else {
+                            card.question.css.mainSize = standardCSSArrary[1];
+                        }
 
                         if ((subheadingSize == 0) || (card.question.subheading.length() == 0)) {
                             card.question.css.subheadingSize = standardCSSArrary[0];
@@ -581,7 +586,14 @@ public class PackParserHelper {
                         //card.answer.css.mainSize will be base value
                         //baseSize is same as mainSize
 
-                        card.answer.css.mainSize = standardCSSArrary[4];
+
+                        //when the mainSize is quite big
+                        if (mainSize > standardCSSArrary[6]) {
+                            card.answer.css.mainSize = mainSize;
+                        }  else {
+                            card.answer.css.mainSize = standardCSSArrary[4];
+                        }
+
 
                         if ((subheadingSize == 0) || (card.answer.subheading.length() == 0)) {
                             card.answer.css.subheadingSize = standardCSSArrary[3];
