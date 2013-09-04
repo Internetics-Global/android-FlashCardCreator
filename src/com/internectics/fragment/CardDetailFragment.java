@@ -1295,19 +1295,19 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnKeyboa
                 params = (LinearLayout.LayoutParams) mSubheading.getLayoutParams();
                 params.width = LinearLayout.LayoutParams.FILL_PARENT;
                 params.weight = 70;
-                params.rightMargin =  UIHelper.getPixels(2);
+                params.rightMargin =  UIHelper.getPixels(4);
                 mSubheading.setLayoutParams(params);
 
                 params = (LinearLayout.LayoutParams) mMain.getLayoutParams();
                 params.width = LinearLayout.LayoutParams.FILL_PARENT;
                 params.weight = 330;
-                params.rightMargin =  UIHelper.getPixels(2);
+                params.rightMargin =  UIHelper.getPixels(4);
                 mMain.setLayoutParams(params);
 
                 params = (LinearLayout.LayoutParams) mSub.getLayoutParams();
                 params.width = LinearLayout.LayoutParams.FILL_PARENT;
                 params.weight = 0;
-                params.rightMargin =  UIHelper.getPixels(2);
+                params.rightMargin =  UIHelper.getPixels(4);
                 mSub.setLayoutParams(params);
 
                 break;
@@ -1327,13 +1327,13 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnKeyboa
                 params = (LinearLayout.LayoutParams) mMain.getLayoutParams();
                 params.width = LinearLayout.LayoutParams.FILL_PARENT;
                 params.weight = 160;
-                params.rightMargin =  UIHelper.getPixels(2);
+                params.rightMargin =  UIHelper.getPixels(4);
                 mMain.setLayoutParams(params);
 
                 params = (LinearLayout.LayoutParams) mSub.getLayoutParams();
                 params.width = LinearLayout.LayoutParams.FILL_PARENT;
                 params.weight = 160;
-                params.rightMargin =  UIHelper.getPixels(2);
+                params.rightMargin =  UIHelper.getPixels(4);
                 mSub.setLayoutParams(params);
                 break;
             case 2:
@@ -1346,19 +1346,19 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnKeyboa
                 params = (LinearLayout.LayoutParams) mSubheading.getLayoutParams();
                 params.width = LinearLayout.LayoutParams.FILL_PARENT;
                 params.weight = 0;
-                params.rightMargin =  UIHelper.getPixels(2);
+                params.rightMargin =  UIHelper.getPixels(4);
                 mSubheading.setLayoutParams(params);
 
                 params = (LinearLayout.LayoutParams) mMain.getLayoutParams();
                 params.width = LinearLayout.LayoutParams.FILL_PARENT;
                 params.weight = 280;
-                params.rightMargin =  UIHelper.getPixels(2);
+                params.rightMargin =  UIHelper.getPixels(4);
                 mMain.setLayoutParams(params);
 
                 params = (LinearLayout.LayoutParams) mSub.getLayoutParams();
                 params.width = LinearLayout.LayoutParams.FILL_PARENT;
                 params.weight = 100;
-                params.rightMargin =  UIHelper.getPixels(2);
+                params.rightMargin =  UIHelper.getPixels(4);
                 mSub.setLayoutParams(params);
                 break;
             case 3:
@@ -1371,19 +1371,19 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnKeyboa
                 params = (LinearLayout.LayoutParams) mSubheading.getLayoutParams();
                 params.width = LinearLayout.LayoutParams.FILL_PARENT;
                 params.weight = 0;
-                params.rightMargin =  UIHelper.getPixels(2);
+                params.rightMargin =  UIHelper.getPixels(4);
                 mSubheading.setLayoutParams(params);
 
                 params = (LinearLayout.LayoutParams) mMain.getLayoutParams();
                 params.width = LinearLayout.LayoutParams.FILL_PARENT;
                 params.weight = 200;
-                params.rightMargin =  UIHelper.getPixels(2);
+                params.rightMargin =  UIHelper.getPixels(4);
                 mMain.setLayoutParams(params);
 
                 params = (LinearLayout.LayoutParams) mSub.getLayoutParams();
                 params.width = LinearLayout.LayoutParams.FILL_PARENT;
                 params.weight = 190;
-                params.rightMargin =  UIHelper.getPixels(2);
+                params.rightMargin =  UIHelper.getPixels(4);
                 mSub.setLayoutParams(params);
                 break;
             case 4:
@@ -1396,19 +1396,19 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnKeyboa
                 params = (LinearLayout.LayoutParams) mSubheading.getLayoutParams();
                 params.width = LinearLayout.LayoutParams.FILL_PARENT;
                 params.weight = 0;
-                params.rightMargin =  UIHelper.getPixels(2);
+                params.rightMargin =  UIHelper.getPixels(4);
                 mSubheading.setLayoutParams(params);
 
                 params = (LinearLayout.LayoutParams) mMain.getLayoutParams();
                 params.width = LinearLayout.LayoutParams.FILL_PARENT;
                 params.weight = 380;
-                params.rightMargin =  UIHelper.getPixels(2);
+                params.rightMargin =  UIHelper.getPixels(4);
                 mMain.setLayoutParams(params);
 
                 params = (LinearLayout.LayoutParams) mSub.getLayoutParams();
                 params.width = LinearLayout.LayoutParams.FILL_PARENT;
                 params.weight = 0;
-                params.rightMargin =  UIHelper.getPixels(2);
+                params.rightMargin =  UIHelper.getPixels(4);
                 mSub.setLayoutParams(params);
                 break;
             case 5:
@@ -1419,12 +1419,12 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnKeyboa
                 //part1: image
                 params = (LinearLayout.LayoutParams) mContentBodyLeft.getLayoutParams();
                 params.weight = 0f;
-                params.rightMargin =  UIHelper.getPixels(2);
+                params.rightMargin =  UIHelper.getPixels(4);
                 mContentBodyLeft.setLayoutParams(params);
 
                 params = (LinearLayout.LayoutParams) mImage.getLayoutParams();
                 params.weight = 710f;
-                params.rightMargin =  UIHelper.getPixels(2);
+                params.rightMargin =  UIHelper.getPixels(4);
                 mImage.setLayoutParams(params);
                 mImage.setVisibility(View.VISIBLE);
 
@@ -1432,19 +1432,19 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnKeyboa
                 params = (LinearLayout.LayoutParams) mSubheading.getLayoutParams();
                 params.width = LinearLayout.LayoutParams.FILL_PARENT;
                 params.weight = 0;
-                params.rightMargin =  UIHelper.getPixels(2);
+                params.rightMargin =  UIHelper.getPixels(4);
                 mSubheading.setLayoutParams(params);
 
                 params = (LinearLayout.LayoutParams) mMain.getLayoutParams();
                 params.width = LinearLayout.LayoutParams.FILL_PARENT;
                 params.weight = 0;
-                params.rightMargin =  UIHelper.getPixels(2);
+                params.rightMargin =  UIHelper.getPixels(4);
                 mMain.setLayoutParams(params);
 
                 params = (LinearLayout.LayoutParams) mSub.getLayoutParams();
                 params.width = LinearLayout.LayoutParams.FILL_PARENT;
                 params.weight = 0;
-                params.rightMargin =  UIHelper.getPixels(2);
+                params.rightMargin =  UIHelper.getPixels(4);
                 mSub.setLayoutParams(params);
                 break;
             default:
@@ -1469,12 +1469,12 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnKeyboa
                 //part1: image
                 params = (LinearLayout.LayoutParams) mContentBodyLeft.getLayoutParams();
                 params.weight = 360f;
-                params.rightMargin =  UIHelper.getPixels(2);
+                params.rightMargin =  UIHelper.getPixels(4);
                 mContentBodyLeft.setLayoutParams(params);
 
                 params = (LinearLayout.LayoutParams) mImage.getLayoutParams();
                 params.weight = 350f;
-                params.rightMargin =  UIHelper.getPixels(2);
+                params.rightMargin =  UIHelper.getPixels(4);
                 mImage.setLayoutParams(params);
                 mImage.setVisibility(View.VISIBLE);
 
@@ -1482,19 +1482,19 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnKeyboa
                 params = (LinearLayout.LayoutParams) mSubheading.getLayoutParams();
                 params.width = LinearLayout.LayoutParams.FILL_PARENT;
                 params.weight = 80;
-                params.rightMargin =  UIHelper.getPixels(2);
+                params.rightMargin =  UIHelper.getPixels(4);
                 mSubheading.setLayoutParams(params);
 
                 params = (LinearLayout.LayoutParams) mMain.getLayoutParams();
                 params.width = LinearLayout.LayoutParams.FILL_PARENT;
                 params.weight = 320;
-                params.rightMargin =  UIHelper.getPixels(2);
+                params.rightMargin =  UIHelper.getPixels(4);
                 mMain.setLayoutParams(params);
 
                 params = (LinearLayout.LayoutParams) mSub.getLayoutParams();
                 params.width = LinearLayout.LayoutParams.FILL_PARENT;
                 params.weight = 0;
-                params.rightMargin =  UIHelper.getPixels(2);
+                params.rightMargin =  UIHelper.getPixels(4);
                 mSub.setLayoutParams(params);
 
                 break;
@@ -1514,12 +1514,12 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnKeyboa
                 //part1: image
                 params = (LinearLayout.LayoutParams) mContentBodyLeft.getLayoutParams();
                 params.weight = 360f;
-                params.rightMargin =  UIHelper.getPixels(2);
+                params.rightMargin =  UIHelper.getPixels(4);
                 mContentBodyLeft.setLayoutParams(params);
 
                 params = (LinearLayout.LayoutParams) mImage.getLayoutParams();
                 params.weight = 350f;
-                params.rightMargin =  UIHelper.getPixels(2);
+                params.rightMargin =  UIHelper.getPixels(4);
                 mImage.setLayoutParams(params);
                 mImage.setVisibility(View.VISIBLE);
 
@@ -1527,19 +1527,19 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnKeyboa
                 params = (LinearLayout.LayoutParams) mSubheading.getLayoutParams();
                 params.width = LinearLayout.LayoutParams.FILL_PARENT;
                 params.weight = 70;
-                params.rightMargin =  UIHelper.getPixels(2);
+                params.rightMargin =  UIHelper.getPixels(4);
                 mSubheading.setLayoutParams(params);
 
                 params = (LinearLayout.LayoutParams) mMain.getLayoutParams();
                 params.width = LinearLayout.LayoutParams.FILL_PARENT;
                 params.weight = 360;
-                params.rightMargin =  UIHelper.getPixels(2);
+                params.rightMargin =  UIHelper.getPixels(4);
                 mMain.setLayoutParams(params);
 
                 params = (LinearLayout.LayoutParams) mSub.getLayoutParams();
                 params.width = LinearLayout.LayoutParams.FILL_PARENT;
                 params.weight = 0;
-                params.rightMargin =  UIHelper.getPixels(2);
+                params.rightMargin =  UIHelper.getPixels(4);
                 mSub.setLayoutParams(params);
                 break;
             case 3:
@@ -1550,12 +1550,12 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnKeyboa
                 //part1: image
                 params = (LinearLayout.LayoutParams) mContentBodyLeft.getLayoutParams();
                 params.weight = 710f;
-                params.rightMargin =  UIHelper.getPixels(2);
+                params.rightMargin =  UIHelper.getPixels(4);
                 mContentBodyLeft.setLayoutParams(params);
 
                 params = (LinearLayout.LayoutParams) mImage.getLayoutParams();
                 params.weight = 0f;
-                params.rightMargin =  UIHelper.getPixels(2);
+                params.rightMargin =  UIHelper.getPixels(4);
                 mImage.setLayoutParams(params);
                 mImage.setVisibility(View.INVISIBLE);
 
@@ -1563,19 +1563,19 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnKeyboa
                 params = (LinearLayout.LayoutParams) mSubheading.getLayoutParams();
                 params.width = LinearLayout.LayoutParams.FILL_PARENT;
                 params.weight = 0;
-                params.rightMargin =  UIHelper.getPixels(2);
+                params.rightMargin =  UIHelper.getPixels(4);
                 mSubheading.setLayoutParams(params);
 
                 params = (LinearLayout.LayoutParams) mMain.getLayoutParams();
                 params.width = LinearLayout.LayoutParams.FILL_PARENT;
                 params.weight = 420;
-                params.rightMargin =  UIHelper.getPixels(2);
+                params.rightMargin =  UIHelper.getPixels(4);
                 mMain.setLayoutParams(params);
 
                 params = (LinearLayout.LayoutParams) mSub.getLayoutParams();
                 params.width = LinearLayout.LayoutParams.FILL_PARENT;
                 params.weight = 0;
-                params.rightMargin =  UIHelper.getPixels(2);
+                params.rightMargin =  UIHelper.getPixels(4);
                 mSub.setLayoutParams(params);
                 break;
             case 4:
@@ -1586,12 +1586,12 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnKeyboa
                 //part1: image
                 params = (LinearLayout.LayoutParams) mContentBodyLeft.getLayoutParams();
                 params.weight = 360f;
-                params.rightMargin =  UIHelper.getPixels(2);
+                params.rightMargin =  UIHelper.getPixels(4);
                 mContentBodyLeft.setLayoutParams(params);
                 params = (LinearLayout.LayoutParams) mImage.getLayoutParams();
 
                 params.weight = 350f;
-                params.rightMargin =  UIHelper.getPixels(2);
+                params.rightMargin =  UIHelper.getPixels(4);
                 mImage.setLayoutParams(params);
                 mImage.setVisibility(View.VISIBLE);
 
@@ -1599,19 +1599,19 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnKeyboa
                 params = (LinearLayout.LayoutParams) mSubheading.getLayoutParams();
                 params.width = LinearLayout.LayoutParams.FILL_PARENT;
                 params.weight = 0;
-                params.rightMargin =  UIHelper.getPixels(2);
+                params.rightMargin =  UIHelper.getPixels(4);
                 mSubheading.setLayoutParams(params);
 
                 params = (LinearLayout.LayoutParams) mMain.getLayoutParams();
                 params.width = LinearLayout.LayoutParams.FILL_PARENT;
                 params.weight = 420;
-                params.rightMargin =  UIHelper.getPixels(2);
+                params.rightMargin =  UIHelper.getPixels(4);
                 mMain.setLayoutParams(params);
 
                 params = (LinearLayout.LayoutParams) mSub.getLayoutParams();
                 params.width = LinearLayout.LayoutParams.FILL_PARENT;
                 params.weight = 0;
-                params.rightMargin =  UIHelper.getPixels(2);
+                params.rightMargin =  UIHelper.getPixels(4);
                 mSub.setLayoutParams(params);
                 break;
             case 5:
@@ -1622,12 +1622,12 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnKeyboa
                 //part1: image
                 params = (LinearLayout.LayoutParams) mContentBodyLeft.getLayoutParams();
                 params.weight = 0f;
-                params.rightMargin =  UIHelper.getPixels(2);
+                params.rightMargin =  UIHelper.getPixels(4);
                 mContentBodyLeft.setLayoutParams(params);
 
                 params = (LinearLayout.LayoutParams) mImage.getLayoutParams();
                 params.weight = 710f;
-                params.rightMargin =  UIHelper.getPixels(2);
+                params.rightMargin =  UIHelper.getPixels(4);
                 mImage.setLayoutParams(params);
                 mImage.setVisibility(View.VISIBLE);
 
@@ -1635,19 +1635,19 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnKeyboa
                 params = (LinearLayout.LayoutParams) mSubheading.getLayoutParams();
                 params.width = LinearLayout.LayoutParams.FILL_PARENT;
                 params.weight = 0;
-                params.rightMargin =  UIHelper.getPixels(2);
+                params.rightMargin =  UIHelper.getPixels(4);
                 mSubheading.setLayoutParams(params);
 
                 params = (LinearLayout.LayoutParams) mMain.getLayoutParams();
                 params.width = LinearLayout.LayoutParams.FILL_PARENT;
                 params.weight = 0;
-                params.rightMargin =  UIHelper.getPixels(2);
+                params.rightMargin =  UIHelper.getPixels(4);
                 mMain.setLayoutParams(params);
 
                 params = (LinearLayout.LayoutParams) mSub.getLayoutParams();
                 params.width = LinearLayout.LayoutParams.FILL_PARENT;
                 params.weight = 0;
-                params.rightMargin =  UIHelper.getPixels(2);
+                params.rightMargin =  UIHelper.getPixels(4);
                 mSub.setLayoutParams(params);
                 break;
             default:
