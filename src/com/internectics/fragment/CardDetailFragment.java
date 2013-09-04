@@ -348,6 +348,7 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnKeyboa
                     if (mIsCreatingCard == false) {
                         mCurrentCard.save(AppContext.getAppContext());
                         if (mIsQuestionShowing) {
+                            takeSnapshotCurrentCard();
                             Intent intent = new Intent();
                             intent.setAction(Global.BROADCAST_ACTION_UPDATE_MASTER_VIEW);
                             intent.putExtra(Global.KEY_FROM, Global.BROADCAST_EXTRA_FROM_CURRENT_PACK_UPDATE);
@@ -1157,6 +1158,7 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnKeyboa
     /**
      * do save when editting curent card
      * do NOT save when creating a new card
+     * do NOT refresh card list view
      */
     private void takeSnapshotCurrentCard() {
 
