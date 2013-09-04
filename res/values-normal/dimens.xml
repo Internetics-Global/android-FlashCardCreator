@@ -49,7 +49,7 @@
     <dimen name="add_card_button_size">30dp</dimen>
 
     <!--template change relate-->
-    <dimen name="question_template_1_margin_right">200dp</dimen>
+    <dimen name="question_template_1_margin_right">120dp</dimen>
 
 
 </resources>
