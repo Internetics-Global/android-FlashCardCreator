@@ -151,6 +151,7 @@
                         android:layout_width="fill_parent"
                         android:layout_height="fill_parent"
                         android:baselineAligned="false"
+                        android:layout_marginLeft="5dp"
                         android:visibility="visible"
                         android:orientation="horizontal">
 
@@ -235,6 +236,7 @@
                         android:id="@+id/content_body_type2"
                         android:layout_width="fill_parent"
                         android:layout_height="fill_parent"
+                        android:layout_marginLeft="5dp"
                         android:baselineAligned="false"
                         android:visibility="invisible"
                         android:orientation="vertical">
