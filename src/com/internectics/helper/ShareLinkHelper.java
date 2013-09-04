@@ -330,7 +330,7 @@ public class ShareLinkHelper extends AsyncTask<Void, Long, Boolean> {
         if (canPresentShareDialog) {
             FacebookDialog shareDialog = new FacebookDialog.ShareDialogBuilder(mActivity)
                     .setName("Hi All:")
-                    .setPicture("https://fbcdn-sphotos-h-a.akamaihd.net/hphotos-ak-prn1/27928_228440670639329_1320586523_n.jpg")
+                    .setPicture("https://dl.dropbox.com/s/qprzhxl2gpzicoe/icon114x114iPhoneHiRes.png")
                     .setDescription("I've just created a pack of Flash Cards with the Flash Card Creator! Check it out!")
                     .setLink(shareLink)
                     .build();
