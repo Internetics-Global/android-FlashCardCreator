@@ -682,11 +682,13 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnKeyboa
                     String text = v.getText().toString();
                     int index = text.length() - 1;
                     Log.d(Global.debugTag, text + index);
-                    v.setText(text.substring(0, index));
-                    if (cursorPosition == index + 1) {
-                        v.setSelection(index);
-                    } else {
-                        v.setSelection(cursorPosition);
+                    if (index > 0) {
+                        v.setText(text.substring(0, index));
+                        if (cursorPosition == index + 1) {
+                            v.setSelection(index);
+                        } else {
+                            v.setSelection(cursorPosition);
+                        }
                     }
                 }
             }
@@ -820,8 +822,9 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnKeyboa
                     mCurrentCard.answer.subheading = mSubheading.getText().toString();
                 }
 
-                Log.d(Global.debugTag, "mSubheading has changed");
-                triggerResizeTextToFitFrame(mSubheading);
+                if (isEditableMode() == false) {
+                    triggerResizeTextToFitFrame(mSubheading);
+                }
             }
         });
 
@@ -842,8 +845,9 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnKeyboa
                     mCurrentCard.answer.main = mMain.getText().toString();
                 }
 
-                Log.d(Global.debugTag, "mMain has changed");
-                triggerResizeTextToFitFrame(mMain);
+                if (isEditableMode() == false) {
+                    triggerResizeTextToFitFrame(mMain);
+                }
             }
         });
 
@@ -864,8 +868,9 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnKeyboa
                     mCurrentCard.answer.sub = mSub.getText().toString();
                 }
 
-                Log.d(Global.debugTag, "mSub has changed");
-                triggerResizeTextToFitFrame(mSub);
+                if (isEditableMode() == false) {
+                    triggerResizeTextToFitFrame(mSub);
+                }
             }
         });
 
@@ -888,8 +893,9 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnKeyboa
                     mCurrentCard.answer.subheading = mSubheading2.getText().toString();
                 }
 
-                Log.d(Global.debugTag, "mSubheading2 has changed");
-                triggerResizeTextToFitFrame(mSubheading2);
+                if (isEditableMode() == false) {
+                    triggerResizeTextToFitFrame(mSubheading2);
+                }
             }
         });
 
@@ -910,8 +916,9 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnKeyboa
                     mCurrentCard.answer.main = mMain2.getText().toString();
                 }
 
-                Log.d(Global.debugTag, "mMain2 has changed");
-                triggerResizeTextToFitFrame(mMain2);
+                if (isEditableMode() == false) {
+                    triggerResizeTextToFitFrame(mMain2);
+                }
             }
         });
 
@@ -932,8 +939,9 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnKeyboa
                     mCurrentCard.answer.sub = mSub2.getText().toString();
                 }
 
-                Log.d(Global.debugTag, "mSub2 has changed");
-                triggerResizeTextToFitFrame(mSub2);
+                if (isEditableMode() == false) {
+                    triggerResizeTextToFitFrame(mSub2);
+                }
             }
         });
 
