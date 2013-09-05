@@ -682,6 +682,10 @@ public class MainActivity extends FragmentActivity implements
                 .setPositiveButton("Set", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
+
+                        InputMethodManager imm =(InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
+                        imm.hideSoftInputFromWindow(passwordEditText.getWindowToken(),0);
+
                         String password = passwordEditText.getText().toString();
                         File file = PackBuildHelper.createPackZipFile(MainActivity.this,mCurrentPack,password);
                         PackUploadHelper upload = new PackUploadHelper(MainActivity.this, "/FlashCardCreator/", file, mCurrentPack);
@@ -691,6 +695,10 @@ public class MainActivity extends FragmentActivity implements
                 .setNegativeButton("Not needed", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
+
+                        InputMethodManager imm =(InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
+                        imm.hideSoftInputFromWindow(passwordEditText.getWindowToken(),0);
+
                         File file = PackBuildHelper.createPackZipFile(MainActivity.this,mCurrentPack,"");
                         PackUploadHelper upload = new PackUploadHelper(MainActivity.this, "/FlashCardCreator/", file, mCurrentPack);
                         upload.execute();

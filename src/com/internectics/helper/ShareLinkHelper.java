@@ -12,6 +12,7 @@ import android.os.AsyncTask;
 import android.text.InputType;
 import android.util.Log;
 import android.view.Gravity;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.Toast;
 import com.dropbox.client2.DropboxAPI;
@@ -104,6 +105,10 @@ public class ShareLinkHelper extends AsyncTask<Void, Long, Boolean> {
                 .setPositiveButton("OK", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
+
+                        InputMethodManager imm =(InputMethodManager)mActivity.getSystemService(Context.INPUT_METHOD_SERVICE);
+                        imm.hideSoftInputFromWindow(editText.getWindowToken(),0);
+
                         Uri uri = Uri.parse(mUnshortedFCCShareLink);
                         String simpleDBItemNamedata = uri.getLastPathSegment();
                         simpleDBItemNamedata = simpleDBItemNamedata.substring(0, simpleDBItemNamedata.indexOf(".zip"));
@@ -115,6 +120,10 @@ public class ShareLinkHelper extends AsyncTask<Void, Long, Boolean> {
                 .setNegativeButton("Unlimited", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
+
+                        InputMethodManager imm =(InputMethodManager)mActivity.getSystemService(Context.INPUT_METHOD_SERVICE);
+                        imm.hideSoftInputFromWindow(editText.getWindowToken(),0);
+
                         Uri uri = Uri.parse(mUnshortedFCCShareLink);
                         String simpleDBItemNamedata = uri.getLastPathSegment();
                         simpleDBItemNamedata = simpleDBItemNamedata.substring(0, simpleDBItemNamedata.indexOf(".zip"));
