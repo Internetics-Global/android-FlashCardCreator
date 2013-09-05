@@ -368,6 +368,15 @@ public class PlayActivity extends FragmentActivity implements SensorEventListene
         return mGestureDetector.onTouchEvent(event);
     }
 
-
-
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        if (((keyCode == KeyEvent.KEYCODE_BACK) ||
+                (keyCode == KeyEvent.KEYCODE_HOME))
+                && event.getRepeatCount() == 0) {
+            if (mIsSensorAvailable) {
+                mSensorManager.unregisterListener(this);
+            }
+        }
+        return super.onKeyDown(keyCode, event);  // need to use super to exit current activity
+    }
 }
