@@ -9,6 +9,7 @@
     <!--htc one mini (1280*720, 342dpi,598dp) -->
 
     <!--sp unit-->
+    <!--we only use index 1 and 4-->
     <integer-array
             name="css_size_int">
         <item>16</item>
@@ -17,7 +18,7 @@
         <item>16</item>
         <item>19</item>
         <item>16</item>
-        <item>60</item>
+        <item>40</item>
     </integer-array>
 
 

@@ -4,6 +4,7 @@
     <!--nexus7 (1280*800, 216dpi, 948dp)-->
 
     <!--sp unit-->
+    <!--we only use index 1 and 4-->
     <integer-array
             name="css_size_int">
         <item>28</item>

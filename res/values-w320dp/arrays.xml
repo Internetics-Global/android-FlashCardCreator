@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
+    <!--we only use index 1 and 4-->
     <integer-array
             name="css_size_int">
         <item>10</item>

@@ -5,7 +5,6 @@ import android.util.Log;
 import com.internectics.android_flashcardcreator.R;
 import com.internectics.data.Card;
 import com.internectics.data.Pack;
-import com.internectics.helper.AmazonSDB.SimpleDBHelper;
 import com.internectics.util.AppContext;
 import com.internectics.util.Global;
 import com.internectics.util.StringUtils;
@@ -18,9 +17,10 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
-import java.util.HashMap;
 
 public class PackParserHelper {
+
+    private static float mScreenWidthFromSharedDevice; // the screen width whose device has shared the pack
 
     /**
      * after finshing pack download and unzip, this methold will be called to build pack and add to current user
@@ -115,6 +115,21 @@ public class PackParserHelper {
             pack.platform = (String) obj.get("platform");
             pack.userID = Global.USER_ID; // there's no this information in json file, so we have to add manually
             pack.packID = Global.generateNoRepeatInt();
+
+            if (pack.platform.contains("iPhone") == true) {
+                mScreenWidthFromSharedDevice = 640;
+            } else if (pack.platform.contains("iPad") == true) {
+                mScreenWidthFromSharedDevice = 1024;
+            } else {
+                String temp = (String) obj.get("screen_width");
+                if ((temp != null) && (StringUtils.isNumeric(temp))) {
+                    mScreenWidthFromSharedDevice =  Integer.parseInt(temp);
+                } else {
+                    mScreenWidthFromSharedDevice = 0;
+                }
+            }
+            Log.d(Global.debugTag2,"screenWith from shared device is:" + mScreenWidthFromSharedDevice);
+
 
         } catch (FileNotFoundException e) {
             e.printStackTrace();
@@ -271,136 +286,171 @@ public class PackParserHelper {
                 subSize = 0;
             }
 
-            //-----begin scale down policy with error protection
-
-            //step1: get which is trustable
-            int baseSize = 0;
-            int whichAsBase = 0;  //0, subheading; 1, main; 2. sub
             int[] standardCSSArrary = AppContext.getAppContext().getResources().getIntArray(R.array.css_size_int);
 
-            if ((subheadingSize == 0) ||(card.question.subheading.length() == 0)) {
-                card.question.css.subheadingSize = standardCSSArrary[0];
-                Log.w(Global.debugTag, "subheadingSize = 0 or subheading.length = 0");
-            } else {
-                baseSize =  subheadingSize;
-                whichAsBase = 0;
-            }
-
-
-            if ((subSize == 0) ||(card.question.sub.length() == 0)) {
-                card.question.css.subSize = standardCSSArrary[2];
-                Log.w(Global.debugTag, "subSize = 0 or sub.length = 0");
-            } else {
-                baseSize =  subSize;
-                whichAsBase =2;
-            }
-
-            //put main at last is very important, because it's the most trustable value
-            if ((mainSize == 0) ||(card.question.main.length() == 0)) {
-                card.question.css.mainSize = standardCSSArrary[1];
-                Log.w(Global.debugTag, "mainSize = 0 or main.length = 0");
-            } else {
-                baseSize =  mainSize;
-                whichAsBase = 1;
-            }
-
-            if (baseSize == 0) {
-                baseSize =  standardCSSArrary[1];
-                whichAsBase = 0;
-            }
-
-
-            //step2: scale down
-            if (currentPack.platform.equals(UIHelper.getCurrentPlatform()) == false) {
-
-                //size interchangeable with iOS, and other android devices
-
-                switch (whichAsBase) {
-                    case    0: {
-
-                        //subheadingSize is trustable
-                        //card.question.css.subheadingSize will be base value
-                        //baseSize is same as subHeadingSize
-
-                        card.question.css.subheadingSize = standardCSSArrary[0];
-
-                        if ((mainSize == 0) || (card.question.main.length() == 0)) {
-                            card.question.css.mainSize = standardCSSArrary[1];
-                        } else {
-                            card.question.css.mainSize = (int)(card.question.css.subheadingSize * ((float)mainSize/baseSize));
-                        }
-
-                        if ((subSize == 0) || (card.question.sub.length() == 0)) {
-                            card.question.css.subSize = standardCSSArrary[2];
-                        } else {
-                            card.question.css.subSize = (int)(card.question.css.subheadingSize * ((float)subSize/baseSize));
-                        }
-
-                        break;
-                    }
-
-                    case    1: {
-
-                        //mainSize is trustable
-                        //card.question.css.mainSize will be base value
-                        //baseSize is same as mainSize
-
-                        //when the mainSize is quite big
-                        if (mainSize > standardCSSArrary[6]) {
-                            card.question.css.mainSize = mainSize;
-                        }  else {
-                            card.question.css.mainSize = standardCSSArrary[1];
-                        }
-
-                        if ((subheadingSize == 0) || (card.question.subheading.length() == 0)) {
-                            card.question.css.subheadingSize = standardCSSArrary[0];
-                        } else {
-                            card.question.css.subheadingSize = (int)(card.question.css.mainSize * ((float)subheadingSize/baseSize));
-                        }
-
-                        if ((subSize == 0) || (card.question.sub.length() == 0)) {
-                            card.question.css.subSize = standardCSSArrary[2];
-                        } else {
-                            card.question.css.subSize = (int)(card.question.css.mainSize * ((float)subSize/baseSize));
-                        }
-
-                        break;
-                    }
-
-                    case    2: {
-
-                        //subSize is trustable
-                        //card.question.css.subSize will be base value
-                        //baseSize is same as subSize
-
-                        card.question.css.subSize = standardCSSArrary[1];
-
-                        if ((subheadingSize == 0) || (card.question.subheading.length() == 0)) {
-                            card.question.css.subheadingSize = standardCSSArrary[0];
-                        } else {
-                            card.question.css.subheadingSize = (int)(card.question.css.subSize * ((float)subheadingSize/baseSize));
-                        }
-
-                        if ((mainSize == 0) || (card.question.main.length() == 0)) {
-                            card.question.css.mainSize = standardCSSArrary[1];
-                        } else {
-                            card.question.css.mainSize = (int)(card.question.css.subSize * ((float)mainSize/baseSize));
-                        }
-
-                        break;
-                    }
-
-                    default:
-                        break;
+            if (currentPack.platform.equals(UIHelper.getCurrentPlatform()) == true) {
+                if (subheadingSize >0) {
+                    card.question.css.subheadingSize = subheadingSize;
+                } else {
+                    card.question.css.subheadingSize = standardCSSArrary[0];
                 }
 
-            } else {
-                card.question.css.subheadingSize = subheadingSize;
-                card.question.css.mainSize = mainSize;
-                card.question.css.subSize = subSize;
-            }
+                if (subheadingSize >0) {
+                    card.question.css.subSize = subSize;
+                } else {
+                    card.question.css.mainSize = standardCSSArrary[1];
+                }
 
-            //-----end scale down policy with error protection
+                if (subheadingSize >0) {
+                    card.question.css.subSize = subSize;
+                } else {
+                    card.question.css.subSize = standardCSSArrary[2];
+                }
+
+
+            } else {
+                if (mScreenWidthFromSharedDevice == 0) { // mean no this field in pack json file
+
+                    //-----begin scale down policy with error protection
+                    //step1: get which is trustable
+                    int baseSize = 0;
+                    int whichAsBase = 0;  //0, subheading; 1, main; 2. sub
+
+                    if ((subheadingSize == 0) ||(card.question.subheading.length() == 0)) {
+                        card.question.css.subheadingSize = standardCSSArrary[0];
+                        Log.w(Global.debugTag, "subheadingSize = 0 or subheading.length = 0");
+                    } else {
+                        baseSize =  subheadingSize;
+                        whichAsBase = 0;
+                    }
+
+
+                    if ((subSize == 0) ||(card.question.sub.length() == 0)) {
+                        card.question.css.subSize = standardCSSArrary[2];
+                        Log.w(Global.debugTag, "subSize = 0 or sub.length = 0");
+                    } else {
+                        baseSize =  subSize;
+                        whichAsBase =2;
+                    }
+
+                    //put main at last is very important, because it's the most trustable value
+                    if ((mainSize == 0) ||(card.question.main.length() == 0)) {
+                        card.question.css.mainSize = standardCSSArrary[1];
+                        Log.w(Global.debugTag, "mainSize = 0 or main.length = 0");
+                    } else {
+                        baseSize =  mainSize;
+                        whichAsBase = 1;
+                    }
+
+                    if (baseSize == 0) {
+                        baseSize =  standardCSSArrary[1];
+                        whichAsBase = 0;
+                    }
+
+
+                    //step2: scale down
+                    //size interchangeable with iOS, and other android devices
+
+                    switch (whichAsBase) {
+                        case    0: {
+
+                            //subheadingSize is trustable
+                            //card.question.css.subheadingSize will be base value
+                            //baseSize is same as subHeadingSize
+
+                            card.question.css.subheadingSize = standardCSSArrary[0];
+
+                            if ((mainSize == 0) || (card.question.main.length() == 0)) {
+                                card.question.css.mainSize = standardCSSArrary[1];
+                            } else {
+                                card.question.css.mainSize = (int)(card.question.css.subheadingSize * ((float)mainSize/baseSize));
+                            }
+
+                            if ((subSize == 0) || (card.question.sub.length() == 0)) {
+                                card.question.css.subSize = standardCSSArrary[2];
+                            } else {
+                                card.question.css.subSize = (int)(card.question.css.subheadingSize * ((float)subSize/baseSize));
+                            }
+
+                            break;
+                        }
+
+                        case    1: {
+
+                            //mainSize is trustable
+                            //card.question.css.mainSize will be base value
+                            //baseSize is same as mainSize
+
+                            //when the mainSize is quite big
+                            if (mainSize > standardCSSArrary[6]) {
+                                card.question.css.mainSize = mainSize;
+                            }  else {
+                                card.question.css.mainSize = standardCSSArrary[1];
+                            }
+
+                            if ((subheadingSize == 0) || (card.question.subheading.length() == 0)) {
+                                card.question.css.subheadingSize = standardCSSArrary[0];
+                            } else {
+                                card.question.css.subheadingSize = (int)(card.question.css.mainSize * ((float)subheadingSize/baseSize));
+                            }
+
+                            if ((subSize == 0) || (card.question.sub.length() == 0)) {
+                                card.question.css.subSize = standardCSSArrary[2];
+                            } else {
+                                card.question.css.subSize = (int)(card.question.css.mainSize * ((float)subSize/baseSize));
+                            }
+
+                            break;
+                        }
+
+                        case    2: {
+
+                            //subSize is trustable
+                            //card.question.css.subSize will be base value
+                            //baseSize is same as subSize
+
+                            card.question.css.subSize = standardCSSArrary[1];
+
+                            if ((subheadingSize == 0) || (card.question.subheading.length() == 0)) {
+                                card.question.css.subheadingSize = standardCSSArrary[0];
+                            } else {
+                                card.question.css.subheadingSize = (int)(card.question.css.subSize * ((float)subheadingSize/baseSize));
+                            }
+
+                            if ((mainSize == 0) || (card.question.main.length() == 0)) {
+                                card.question.css.mainSize = standardCSSArrary[1];
+                            } else {
+                                card.question.css.mainSize = (int)(card.question.css.subSize * ((float)mainSize/baseSize));
+                            }
+
+                            break;
+                        }
+
+                        default:
+                            break;
+                    }
+
+                    //-----end scale down policy with error protection
+                } else {
+
+                    float bestFontSizeFromSharedDevice = UIHelper.getBestFontSize(mScreenWidthFromSharedDevice);
+                    int baseFontSizeOnCurrentDevice = standardCSSArrary[1];
+                    float factor = baseFontSizeOnCurrentDevice/bestFontSizeFromSharedDevice;
+
+                    if (subheadingSize >0) {
+                        card.question.css.subheadingSize = (int)(subheadingSize * factor);
+                    }
+
+                    if (mainSize >0) {
+                        card.question.css.mainSize = (int)(mainSize * factor);
+                    }
+
+                    if (subSize >0) {
+                        card.question.css.subSize = (int)(subSize * factor);
+                    }
+
+                }
+            }
 
 
         } catch (FileNotFoundException e) {
@@ -511,139 +561,175 @@ public class PackParserHelper {
                 subSize = 0;
             }
 
-
-            //-----begin scale down policy with error protection
-
-            //step1: get which is trustable
-            int baseSize = 0;
-            int whichAsBase = 0;  //0, subheading; 1, main; 2. sub
             int[] standardCSSArrary = AppContext.getAppContext().getResources().getIntArray(R.array.css_size_int);
 
-            if ((subheadingSize == 0) ||(card.answer.subheading.length() == 0)) {
-                card.answer.css.subheadingSize = standardCSSArrary[3];
-                Log.w(Global.debugTag, "subheadingSize = 0 or subheading.length = 0");
-            } else {
-                baseSize =  subheadingSize;
-                whichAsBase = 0;
-            }
 
-
-            if ((subSize == 0) ||(card.answer.sub.length() == 0)) {
-                card.answer.css.subSize = standardCSSArrary[5];
-                Log.w(Global.debugTag, "subSize = 0 or sub.length = 0");
-            } else {
-                baseSize =  subSize;
-                whichAsBase =2;
-            }
-
-            //put main at last is very important, because it's the most trustable value
-            if ((mainSize == 0) ||(card.answer.main.length() == 0)) {
-                card.answer.css.mainSize = standardCSSArrary[4];
-                Log.w(Global.debugTag, "mainSize = 0 or main.length = 0");
-            } else {
-                baseSize =  mainSize;
-                whichAsBase = 1;
-            }
-
-            if (baseSize == 0) {
-                baseSize =  standardCSSArrary[4];
-                whichAsBase = 0;
-            }
-
-
-            //step2: scale down
-            if (currentPack.platform.equals(UIHelper.getCurrentPlatform()) == false) {
-
-                //size interchangeable with iOS, and other android devices
-
-                switch (whichAsBase) {
-                    case    0: {
-
-                        //subheadingSize is trustable
-                        //card.answer.css.subheadingSize will be base value
-                        //baseSize is same as subHeadingSize
-
-                        card.answer.css.subheadingSize = standardCSSArrary[3];
-
-                        if ((mainSize == 0) || (card.answer.main.length() == 0)) {
-                            card.answer.css.mainSize = standardCSSArrary[4];
-                        } else {
-                            card.answer.css.mainSize = (int)(card.answer.css.subheadingSize * ((float)mainSize/baseSize));
-                        }
-
-                        if ((subSize == 0) || (card.answer.sub.length() == 0)) {
-                            card.answer.css.subSize = standardCSSArrary[5];
-                        } else {
-                            card.answer.css.subSize = (int)(card.answer.css.subheadingSize * ((float)subSize/baseSize));
-                        }
-
-                        break;
-                    }
-
-                    case    1: {
-
-                        //mainSize is trustable
-                        //card.answer.css.mainSize will be base value
-                        //baseSize is same as mainSize
-
-
-                        //when the mainSize is quite big
-                        if (mainSize > standardCSSArrary[6]) {
-                            card.answer.css.mainSize = mainSize;
-                        }  else {
-                            card.answer.css.mainSize = standardCSSArrary[4];
-                        }
-
-
-                        if ((subheadingSize == 0) || (card.answer.subheading.length() == 0)) {
-                            card.answer.css.subheadingSize = standardCSSArrary[3];
-                        } else {
-                            card.answer.css.subheadingSize = (int)(card.answer.css.mainSize * ((float)subheadingSize/baseSize));
-                        }
-
-                        if ((subSize == 0) || (card.answer.sub.length() == 0)) {
-                            card.answer.css.subSize = standardCSSArrary[5];
-                        } else {
-                            card.answer.css.subSize = (int)(card.answer.css.mainSize * ((float)subSize/baseSize));
-                        }
-
-                        break;
-                    }
-
-                    case    2: {
-
-                        //subSize is trustable
-                        //card.answer.css.subSize will be base value
-                        //baseSize is same as subSize
-
-                        card.answer.css.subSize = standardCSSArrary[4];
-
-                        if ((subheadingSize == 0) || (card.answer.subheading.length() == 0)) {
-                            card.answer.css.subheadingSize = standardCSSArrary[3];
-                        } else {
-                            card.answer.css.subheadingSize = (int)(card.answer.css.subSize * ((float)subheadingSize/baseSize));
-                        }
-
-                        if ((mainSize == 0) || (card.answer.main.length() == 0)) {
-                            card.answer.css.mainSize = standardCSSArrary[4];
-                        } else {
-                            card.answer.css.mainSize = (int)(card.answer.css.subSize * ((float)mainSize/baseSize));
-                        }
-
-                        break;
-                    }
-
-                    default:
-                        break;
+            if (currentPack.platform.equals(UIHelper.getCurrentPlatform()) == true) {
+                if (subheadingSize >0) {
+                    card.answer.css.subheadingSize = subheadingSize;
+                } else {
+                    card.answer.css.subheadingSize = standardCSSArrary[3];
                 }
 
+                if (subheadingSize >0) {
+                    card.answer.css.subSize = subSize;
+                } else {
+                    card.answer.css.mainSize = standardCSSArrary[4];
+                }
+
+                if (subheadingSize >0) {
+                    card.answer.css.subSize = subSize;
+                } else {
+                    card.answer.css.subSize = standardCSSArrary[5];
+                }
+
+
             } else {
-                card.answer.css.subheadingSize = subheadingSize;
-                card.answer.css.mainSize = mainSize;
-                card.answer.css.subSize = subSize;
+                if (mScreenWidthFromSharedDevice == 0) {  // mean no this field in pack json file
+                    //-----begin scale down policy with error protection
+
+                    //step1: get which is trustable
+                    int baseSize = 0;
+                    int whichAsBase = 0;  //0, subheading; 1, main; 2. sub
+
+                    if ((subheadingSize == 0) ||(card.answer.subheading.length() == 0)) {
+                        card.answer.css.subheadingSize = standardCSSArrary[3];
+                        Log.w(Global.debugTag, "subheadingSize = 0 or subheading.length = 0");
+                    } else {
+                        baseSize =  subheadingSize;
+                        whichAsBase = 0;
+                    }
+
+
+                    if ((subSize == 0) ||(card.answer.sub.length() == 0)) {
+                        card.answer.css.subSize = standardCSSArrary[5];
+                        Log.w(Global.debugTag, "subSize = 0 or sub.length = 0");
+                    } else {
+                        baseSize =  subSize;
+                        whichAsBase =2;
+                    }
+
+                    //put main at last is very important, because it's the most trustable value
+                    if ((mainSize == 0) ||(card.answer.main.length() == 0)) {
+                        card.answer.css.mainSize = standardCSSArrary[4];
+                        Log.w(Global.debugTag, "mainSize = 0 or main.length = 0");
+                    } else {
+                        baseSize =  mainSize;
+                        whichAsBase = 1;
+                    }
+
+                    if (baseSize == 0) {
+                        baseSize =  standardCSSArrary[4];
+                        whichAsBase = 0;
+                    }
+
+
+                    //step2: scale down
+                    //size interchangeable with iOS, and other android devices
+
+                    switch (whichAsBase) {
+                        case    0: {
+
+                            //subheadingSize is trustable
+                            //card.answer.css.subheadingSize will be base value
+                            //baseSize is same as subHeadingSize
+
+                            card.answer.css.subheadingSize = standardCSSArrary[3];
+
+                            if ((mainSize == 0) || (card.answer.main.length() == 0)) {
+                                card.answer.css.mainSize = standardCSSArrary[4];
+                            } else {
+                                card.answer.css.mainSize = (int)(card.answer.css.subheadingSize * ((float)mainSize/baseSize));
+                            }
+
+                            if ((subSize == 0) || (card.answer.sub.length() == 0)) {
+                                card.answer.css.subSize = standardCSSArrary[5];
+                            } else {
+                                card.answer.css.subSize = (int)(card.answer.css.subheadingSize * ((float)subSize/baseSize));
+                            }
+
+                            break;
+                        }
+
+                        case    1: {
+
+                            //mainSize is trustable
+                            //card.answer.css.mainSize will be base value
+                            //baseSize is same as mainSize
+
+
+                            //when the mainSize is quite big
+                            if (mainSize > standardCSSArrary[6]) {
+                                card.answer.css.mainSize = mainSize;
+                            }  else {
+                                card.answer.css.mainSize = standardCSSArrary[4];
+                            }
+
+
+                            if ((subheadingSize == 0) || (card.answer.subheading.length() == 0)) {
+                                card.answer.css.subheadingSize = standardCSSArrary[3];
+                            } else {
+                                card.answer.css.subheadingSize = (int)(card.answer.css.mainSize * ((float)subheadingSize/baseSize));
+                            }
+
+                            if ((subSize == 0) || (card.answer.sub.length() == 0)) {
+                                card.answer.css.subSize = standardCSSArrary[5];
+                            } else {
+                                card.answer.css.subSize = (int)(card.answer.css.mainSize * ((float)subSize/baseSize));
+                            }
+
+                            break;
+                        }
+
+                        case    2: {
+
+                            //subSize is trustable
+                            //card.answer.css.subSize will be base value
+                            //baseSize is same as subSize
+
+                            card.answer.css.subSize = standardCSSArrary[4];
+
+                            if ((subheadingSize == 0) || (card.answer.subheading.length() == 0)) {
+                                card.answer.css.subheadingSize = standardCSSArrary[3];
+                            } else {
+                                card.answer.css.subheadingSize = (int)(card.answer.css.subSize * ((float)subheadingSize/baseSize));
+                            }
+
+                            if ((mainSize == 0) || (card.answer.main.length() == 0)) {
+                                card.answer.css.mainSize = standardCSSArrary[4];
+                            } else {
+                                card.answer.css.mainSize = (int)(card.answer.css.subSize * ((float)mainSize/baseSize));
+                            }
+
+                            break;
+                        }
+
+                        default:
+                            break;
+                    }
+
+                    //-----end scale down policy with error protection
+                } else {
+
+                    float bestFontSizeFromSharedDevice = UIHelper.getBestFontSize(mScreenWidthFromSharedDevice);
+                    int baseFontSizeOnCurrentDevice = standardCSSArrary[4];
+                    float factor = baseFontSizeOnCurrentDevice/bestFontSizeFromSharedDevice;
+
+                    if (subheadingSize >0) {
+                        card.answer.css.subheadingSize = (int)(subheadingSize * factor);
+                    }
+
+                    if (mainSize >0) {
+                        card.answer.css.mainSize = (int)(mainSize * factor);
+                    }
+
+                    if (subSize >0) {
+                        card.answer.css.subSize = (int)(subSize * factor);
+                    }
+
+                }
             }
 
-            //-----end scale down policy with error protection
 
         } catch (FileNotFoundException e) {
             e.printStackTrace();

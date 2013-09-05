@@ -1,5 +1,6 @@
 package com.internectics.helper;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.util.Log;
@@ -7,6 +8,7 @@ import com.internectics.data.Card;
 import com.internectics.data.Pack;
 import com.internectics.util.Global;
 import com.internectics.util.StringUtils;
+import com.internectics.util.UIHelper;
 import org.json.simple.JSONObject;
 
 import java.io.File;
@@ -21,7 +23,11 @@ import net.lingala.zip4j.util.Zip4jConstants;
 
 public class PackBuildHelper {
 
-    public static File createPackZipFile(Context context,Pack currentPack, String password) {
+    private static Activity mActivity;
+
+    public static File createPackZipFile(Activity activity,Pack currentPack, String password) {
+
+        mActivity = activity;
 
         ArrayList<String> cardFiles = new ArrayList<String>();
         ArrayList<File> packFiles = new ArrayList<File>();
@@ -65,7 +71,7 @@ public class PackBuildHelper {
         File jsonPackFile = PackBuildHelper.buildPackJsonFile(currentPack);
         packFiles.add(jsonPackFile);
 
-        SharedPreferences prefs = context.getSharedPreferences(String.format("%d", currentPack.packID), 0);
+        SharedPreferences prefs = activity.getSharedPreferences(String.format("%d", currentPack.packID), 0);
         String shareFileName = prefs.getString(Global.shareFileName_Property,"");
 
         File packZipFile;
@@ -101,7 +107,7 @@ public class PackBuildHelper {
     /*
     * Result saved file path is: FileOperationHelper.getUploadPackJsonFile()
     */
-    public static File buildPackJsonFile(Pack pack) {
+    private static File buildPackJsonFile(Pack pack) {
         JSONObject summary = new JSONObject();
         summary.put("pack_name", pack.packName);
         summary.put("sidebar_title", pack.sidebarTitle);
@@ -111,6 +117,7 @@ public class PackBuildHelper {
         summary.put("platform", pack.platform);
         summary.put("logo_image", StringUtils.lastComponentOfPath(pack.logoImageUriFormatStr));
         summary.put("platform", "Android");
+        summary.put("screen_width",String.format("%d", (int)(UIHelper.getScreenWidthDPUnit(mActivity))));
 
         FileWriter file;
         File savedPath = FileOperationHelper.getUploadPackJsonFile();

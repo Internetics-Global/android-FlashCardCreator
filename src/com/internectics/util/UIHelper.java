@@ -206,5 +206,48 @@ public class UIHelper {
     }
 
 
+    public static float getBestFontSize(float screenDPSize) {
+        float val = 0;
+        if (screenDPSize >=1600) {
+            val= 52;
+        } else if (screenDPSize >=1500) {
+            val= 50;
+        } else if (screenDPSize >=1400) {
+            val= 48;
+        } else if (screenDPSize >=1350) {
+            val= 46;
+        }else if (screenDPSize >=1300) {
+            val= 44;
+        }else if (screenDPSize >=1200) {
+            val= 42;
+        } else if (screenDPSize >=1150) {
+            val= 40;
+        } else if (screenDPSize >=1100) {
+            val= 38;
+        }else if (screenDPSize >=1050) {
+            val= 36;
+        } else if (screenDPSize >=1000) {
+            val= 34;
+        } else if (screenDPSize >=900) {
+            val= 30;
+        } else if (screenDPSize >=800) {
+            val= 26;
+        } else if (screenDPSize >=700) {
+            val= 24;
+        } else if (screenDPSize >=600) {
+            val= 20;
+        } else if (screenDPSize >=500) {
+            val= 16;
+        } else if (screenDPSize >=450) {
+            val= 14;
+        } else if (screenDPSize >=350) {
+            val= 12;
+        } else {
+            val= 11;
+        }
+        return (val);
+    }
+
+
 
 }
