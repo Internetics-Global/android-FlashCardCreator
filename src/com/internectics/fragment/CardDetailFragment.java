@@ -86,8 +86,7 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnKeyboa
 
     private static int mSemaphore = 0; //used to indicate all snapshots are done
 
-    private static boolean isSaveNeededAfterResize = false;
-
+    private static boolean mIsSaveNeededAfterResize = false;
 
     private ViewTreeObserver mVtoSubheading;
     private ViewTreeObserver mVtoSubheading2;
@@ -291,6 +290,53 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnKeyboa
         mVtoSub.removeGlobalOnLayoutListener(mVtoSubListener);
         mVtoSub2.removeGlobalOnLayoutListener(mVtoSub2Listener);
 
+
+        //when non-edible mode, we need to save it after triggerResizeTextToFitFrame
+        //it's a little strange to put this logic in onStop, but that's it.
+        if (((mCurrentPack.creatorID.equals(OpenUDID_manager.getOpenUDID())) == false) && (mIsSaveNeededAfterResize)) {
+            mIsSaveNeededAfterResize = false;
+
+            prepareToSavingTextFontSizeInfo();
+
+            mCurrentCard.save(AppContext.getAppContext());
+            Log.d(Global.debugTag2, "Saving to database after triggerResizeTextToFitFrame in onStop");
+        }
+
+    }
+
+
+    /**
+     * The only purpose of this method is to keep text font size info after triggerResizeTextToFitFrame and prepare for coming save at onStop
+     * mSubheading/mMain/mSub are shared both answer and question view
+     */
+    private void prepareToSavingTextFontSizeInfo() {
+
+        if (mIsPlayingCard) {
+            return;
+        }
+
+        if (mIsQuestionShowing) {
+            if (mContentBodyType1.getVisibility() == View.VISIBLE) {
+                mCurrentCard.question.css.subheadingSize =  UIHelper.pixelsToSp(mSubheading.getTextSize());
+                mCurrentCard.question.css.mainSize =  UIHelper.pixelsToSp(mMain.getTextSize());
+                mCurrentCard.question.css.subSize = UIHelper.pixelsToSp(mSub.getTextSize());
+            } else {
+                mCurrentCard.question.css.subheadingSize =  UIHelper.pixelsToSp(mSubheading2.getTextSize());
+                mCurrentCard.question.css.mainSize =  UIHelper.pixelsToSp(mMain2.getTextSize());
+                mCurrentCard.question.css.subSize = UIHelper.pixelsToSp(mSub2.getTextSize());
+            }
+
+        } else {
+            if (mContentBodyType1.getVisibility() == View.VISIBLE) {
+                mCurrentCard.answer.css.subheadingSize =  UIHelper.pixelsToSp(mSubheading.getTextSize());
+                mCurrentCard.answer.css.mainSize =  UIHelper.pixelsToSp(mMain.getTextSize());
+                mCurrentCard.answer.css.subSize = UIHelper.pixelsToSp(mSub.getTextSize());
+            } else {
+                mCurrentCard.answer.css.subheadingSize =  UIHelper.pixelsToSp(mSubheading2.getTextSize());
+                mCurrentCard.answer.css.mainSize =  UIHelper.pixelsToSp(mMain2.getTextSize());
+                mCurrentCard.answer.css.subSize = UIHelper.pixelsToSp(mSub2.getTextSize());
+            }
+        }
     }
 
     @Override
@@ -521,6 +567,11 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnKeyboa
 
     public void switchQuestionAnswerView() {
 
+        if ((mCurrentPack.creatorID.equals(OpenUDID_manager.getOpenUDID())) == false) {
+            prepareToSavingTextFontSizeInfo(); // do this before reset mIsQuestionShowing
+        }
+
+
         if (mIsQuestionShowing) {
             switchToAnswerView(false);
             mIsQuestionShowing = false;
@@ -663,20 +714,33 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnKeyboa
             if ((mCurrentPack.creatorID.equals(OpenUDID_manager.getOpenUDID())) == false) {
                 // resize action
                 float textSize = v.getTextSize();
+                float newTextSize = 0;
 
                 if (textSize >200) {
-                    v.setTextSize(TypedValue.COMPLEX_UNIT_PX,(v.getTextSize() - 30));
+                    newTextSize =  v.getTextSize() - 30;
+                    v.setTextSize(TypedValue.COMPLEX_UNIT_PX,newTextSize);
 
                 } else if ((textSize >100) && (textSize <= 200)){
-                    v.setTextSize(TypedValue.COMPLEX_UNIT_PX,(v.getTextSize() - 20));
+                    newTextSize =  v.getTextSize() - 20;
+                    v.setTextSize(TypedValue.COMPLEX_UNIT_PX,newTextSize);
                 } else if ((textSize >50) && (textSize <= 100)) {
-                    v.setTextSize(TypedValue.COMPLEX_UNIT_PX,(v.getTextSize() - 5));
+                    newTextSize =  v.getTextSize() - 5;
+                    v.setTextSize(TypedValue.COMPLEX_UNIT_PX,newTextSize);
                 } else if ((textSize >30) && (textSize <= 50)) {
-                    v.setTextSize(TypedValue.COMPLEX_UNIT_PX,(v.getTextSize() - 2));
+                    newTextSize =  v.getTextSize() - 2;
+                    v.setTextSize(TypedValue.COMPLEX_UNIT_PX,newTextSize);
                 } else if (textSize <= 30) {
-                    v.setTextSize(TypedValue.COMPLEX_UNIT_PX,(v.getTextSize() - 1));
+                    newTextSize =  v.getTextSize() - 1;
+                    v.setTextSize(TypedValue.COMPLEX_UNIT_PX,newTextSize);
+                } else {
+                    newTextSize =  v.getTextSize();
                 }
+
+                mIsSaveNeededAfterResize = true;
+
+
             } else {
+
                 if (textHeight < viewHeight + lineHeight) {
                     //we only do this during editable mode
                     String text = v.getText().toString();
@@ -693,12 +757,9 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnKeyboa
                 }
             }
 
-            isSaveNeededAfterResize = true;
-        } else {
-            if ((isSaveNeededAfterResize) && (mCurrentCard != null)) {
 
-            }
         }
+
     }
 
 
@@ -995,6 +1056,7 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnKeyboa
             public void onGlobalLayout() {
                 triggerResizeTextToFitFrame(mSub2);
             }
+
         };
         mVtoSub2 = mSub2.getViewTreeObserver();
         mVtoSub2.addOnGlobalLayoutListener(mVtoSub2Listener);
