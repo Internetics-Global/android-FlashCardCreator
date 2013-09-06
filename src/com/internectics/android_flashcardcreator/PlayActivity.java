@@ -80,7 +80,7 @@ public class PlayActivity extends FragmentActivity implements SensorEventListene
             @Override
             public void onPageScrolled(int i, float v, int i2) {
                 if ((mPosition != i) && (i2 == 0)) {
-                    Log.i(Global.debugTag, "onPageScrolled, page index=" + i + "mPosition=" + mPosition);
+                    Log.i(Global.debugTag, "onPageScrolled, page index=" + i + " .mPosition=" + mPosition);
 
                     ((CardDetailFragment) (mFragments.get(i))).switchToQuestionView(false);
 
@@ -181,7 +181,7 @@ public class PlayActivity extends FragmentActivity implements SensorEventListene
         for (int i = 0; i < size; i++) {
 
             fList.add(i, new CardDetailFragment(mCurrentPack, cardsArray.get(i), 2));
-            Log.d(Global.debugTag, String.format("%d", i));
+            Log.d(Global.debugTag, String.format("new CardDetailFragment %d", i));
 
         }
 
@@ -275,54 +275,54 @@ public class PlayActivity extends FragmentActivity implements SensorEventListene
 
     @Override
     public boolean onSingleTapConfirmed(MotionEvent e) {
-        Log.d(Global.debugTag, "onSingleTapConfirmed");
+        Log.d(Global.debugTag3, "onSingleTapConfirmed");
         return false;
     }
 
     @Override
     public boolean onDoubleTap(MotionEvent e) {
-        Log.d(Global.debugTag, "onDoubleTap");
+        Log.d(Global.debugTag3, "onDoubleTap");
         return false;
     }
 
     @Override
     public boolean onDoubleTapEvent(MotionEvent e) {
-        Log.d(Global.debugTag, "onDoubleTapEvent");
+        Log.d(Global.debugTag3, "onDoubleTapEvent");
         return false;
     }
 
     @Override
     public boolean onDown(MotionEvent e) {
-        Log.d(Global.debugTag, "onDown");
+        Log.d(Global.debugTag3, "onDown");
         return false;
     }
 
     @Override
     public void onShowPress(MotionEvent e) {
-        Log.d(Global.debugTag, "onShowPress");
+        Log.d(Global.debugTag3, "onShowPress");
     }
 
     @Override
     public boolean onSingleTapUp(MotionEvent e) {
-        Log.d(Global.debugTag, "onSingleTapUp");
+        Log.d(Global.debugTag3, "onSingleTapUp");
         return false;
     }
 
     @Override
     public boolean onScroll(MotionEvent e1, MotionEvent e2, float distanceX, float distanceY) {
-        Log.d(Global.debugTag, "onScroll");
+        Log.d(Global.debugTag3, "onScroll");
         return false;
     }
 
     @Override
     public void onLongPress(MotionEvent e) {
-        Log.d(Global.debugTag, "onLongPress");
+        Log.d(Global.debugTag3, "onLongPress");
     }
 
     @Override
     public boolean onFling(MotionEvent e1, MotionEvent e2, float velocityX, float velocityY) {
 
-        Log.d(Global.debugTag, "OnFlying");
+        Log.d(Global.debugTag3, "OnFlying");
 
         final float xDistance = Math.abs(e1.getX() - e2.getX());
 
@@ -341,7 +341,7 @@ public class PlayActivity extends FragmentActivity implements SensorEventListene
 
         if (Math.abs(yDistance) < 100) {
             if (e1.getRawX() > e2.getRawX() + 10) {
-                Log.d(Global.debugTag, "swipe Left" + mPosition);
+                Log.d(Global.debugTag, "swipe Left, mPosition is: " + mPosition);
 
                 if (mPosition < mFragments.size() - 1) {
                     mIsScrollStop = false;
@@ -364,7 +364,7 @@ public class PlayActivity extends FragmentActivity implements SensorEventListene
 
     @Override
     public boolean onTouchEvent(MotionEvent event) {
-        Log.d(Global.debugTag, "onTouchEvent");
+        Log.d(Global.debugTag3, "onTouchEvent");
         return mGestureDetector.onTouchEvent(event);
     }
 

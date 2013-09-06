@@ -237,7 +237,7 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnKeyboa
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        Log.d(Global.debugTag, "onViewCreated in CardDetailFragment is called");
+        Log.d(Global.debugTag, "onViewCreated in CardDetailFragment is called, cardSN=" + mCurrentCard.cardSN);
 
         updateCommonContent();
         switchToQuestionView(false);
@@ -264,6 +264,7 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnKeyboa
         mIsTakeSnapshotAllNeeded = false;  //necessary
 
         //need to be put onResume, see http://stackoverflow.com/questions/13721063/aftertextchanged-being-called-without-the-text-being-actually-changed
+
         setEditTextListener();
 
         Log.d(Global.debugTag, "onResume in CardDetailFragment");
@@ -765,103 +766,102 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnKeyboa
 
     private void setEditTextListener() {
 
-        mSidebarTitle.setOnEditorActionListener(new TextView.OnEditorActionListener() {
-            @Override
-            public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
-                if (actionId == EditorInfo.IME_ACTION_DONE) {
-                    saveEdittedCard();
+        if (mIsPlayingCard == false) {
+            mSidebarTitle.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+                @Override
+                public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+                    if (actionId == EditorInfo.IME_ACTION_DONE) {
+                        saveEdittedCard();
+                    }
+                    return false;
                 }
-                return false;
-            }
-        });
-        mCreator.setOnEditorActionListener(new TextView.OnEditorActionListener() {
-            @Override
-            public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
-                if (actionId == EditorInfo.IME_ACTION_DONE) {
-                    saveEdittedCard();
+            });
+            mCreator.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+                @Override
+                public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+                    if (actionId == EditorInfo.IME_ACTION_DONE) {
+                        saveEdittedCard();
+                    }
+                    return false;
                 }
-                return false;
-            }
-        });
+            });
 
-        mTitle.setOnEditorActionListener(new TextView.OnEditorActionListener() {
-            @Override
-            public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
-                if (actionId == EditorInfo.IME_ACTION_DONE) {
-                    saveEdittedCard();
+            mTitle.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+                @Override
+                public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+                    if (actionId == EditorInfo.IME_ACTION_DONE) {
+                        saveEdittedCard();
+                    }
+                    return false;
                 }
-                return false;
-            }
-        });
+            });
 
 
-        mTitle.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-            }
+            mTitle.addTextChangedListener(new TextWatcher() {
+                @Override
+                public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+                }
 
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-            }
+                @Override
+                public void onTextChanged(CharSequence s, int start, int before, int count) {
+                }
 
-            @Override
-            public void afterTextChanged(Editable s) {
-                if (mIsQuestionShowing) {
-                    mCurrentPack.questionTitle = mTitle.getText().toString();
+                @Override
+                public void afterTextChanged(Editable s) {
+                    if (mIsQuestionShowing) {
+                        mCurrentPack.questionTitle = mTitle.getText().toString();
+                        if ((!mIsPlayingCard)) {
+                            mIsTakeSnapshotAllNeeded = true;
+                        }
+                    } else {
+                        mCurrentPack.answerTitle = mTitle.getText().toString();
+                    }
+                    Log.d(Global.debugTag, "mTitle has changed");
+                }
+            });
+
+            mCreator.addTextChangedListener(new TextWatcher() {
+                @Override
+                public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+                }
+
+                @Override
+                public void onTextChanged(CharSequence s, int start, int before, int count) {
+                }
+
+                @Override
+                public void afterTextChanged(Editable s) {
+                    mCurrentPack.creatorNickName = mCreator.getText().toString();
                     if ((!mIsPlayingCard)) {
                         mIsTakeSnapshotAllNeeded = true;
                     }
-                } else {
-                    mCurrentPack.answerTitle = mTitle.getText().toString();
+
+                    Log.d(Global.debugTag, "mCreator has changed");
+
+                }
+            });
+
+            mSidebarTitle.addTextChangedListener(new TextWatcher() {
+                @Override
+                public void beforeTextChanged(CharSequence s, int start, int count, int after) {
                 }
 
-
-
-                Log.d(Global.debugTag, "mTitle has changed");
-            }
-        });
-
-        mCreator.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-            }
-
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-            }
-
-            @Override
-            public void afterTextChanged(Editable s) {
-                mCurrentPack.creatorNickName = mCreator.getText().toString();
-                if ((!mIsPlayingCard)) {
-                    mIsTakeSnapshotAllNeeded = true;
+                @Override
+                public void onTextChanged(CharSequence s, int start, int before, int count) {
                 }
 
-                Log.d(Global.debugTag, "mCreator has changed");
+                @Override
+                public void afterTextChanged(Editable s) {
+                    mCurrentPack.sidebarTitle = mSidebarTitle.getText().toString();
+                    if ((!mIsPlayingCard)) {
+                        mIsTakeSnapshotAllNeeded = true;
+                    }
 
-            }
-        });
+                    Log.d(Global.debugTag, "mSidebarTitle has changed");
 
-        mSidebarTitle.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-            }
-
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-            }
-
-            @Override
-            public void afterTextChanged(Editable s) {
-                mCurrentPack.sidebarTitle = mSidebarTitle.getText().toString();
-                if ((!mIsPlayingCard)) {
-                    mIsTakeSnapshotAllNeeded = true;
                 }
-
-                Log.d(Global.debugTag, "mSidebarTitle has changed");
-
-            }
-        });
+            });
+        }
 
 
         mSubheading.addTextChangedListener(new TextWatcher() {
@@ -877,15 +877,18 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnKeyboa
 
             @Override
             public void afterTextChanged(Editable s) {
-                if (mIsQuestionShowing) {
-                    mCurrentCard.question.subheading = mSubheading.getText().toString();
-                } else {
-                    mCurrentCard.answer.subheading = mSubheading.getText().toString();
+                if ((mContentBodyType1.getVisibility() == View.VISIBLE)) {
+                    if (mIsQuestionShowing) {
+                        mCurrentCard.question.subheading = mSubheading.getText().toString();
+                    } else {
+                        mCurrentCard.answer.subheading = mSubheading.getText().toString();
+                    }
+
+                    if (isEditableMode() == false) {
+                        triggerResizeTextToFitFrame(mSubheading);
+                    }
                 }
 
-                if (isEditableMode() == false) {
-                    triggerResizeTextToFitFrame(mSubheading);
-                }
             }
         });
 
@@ -900,15 +903,18 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnKeyboa
 
             @Override
             public void afterTextChanged(Editable s) {
-                if (mIsQuestionShowing) {
-                    mCurrentCard.question.main = mMain.getText().toString();
-                } else {
-                    mCurrentCard.answer.main = mMain.getText().toString();
+                if ((mContentBodyType1.getVisibility() == View.VISIBLE)) {
+                    if (mIsQuestionShowing) {
+                        mCurrentCard.question.main = mMain.getText().toString();
+                    } else {
+                        mCurrentCard.answer.main = mMain.getText().toString();
+                    }
+
+                    if (isEditableMode() == false) {
+                        triggerResizeTextToFitFrame(mMain);
+                    }
                 }
 
-                if (isEditableMode() == false) {
-                    triggerResizeTextToFitFrame(mMain);
-                }
             }
         });
 
@@ -923,15 +929,18 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnKeyboa
 
             @Override
             public void afterTextChanged(Editable s) {
-                if (mIsQuestionShowing) {
-                    mCurrentCard.question.sub = mSub.getText().toString();
-                } else {
-                    mCurrentCard.answer.sub = mSub.getText().toString();
+                if ((mContentBodyType1.getVisibility() == View.VISIBLE)) {
+                    if (mIsQuestionShowing) {
+                        mCurrentCard.question.sub = mSub.getText().toString();
+                    } else {
+                        mCurrentCard.answer.sub = mSub.getText().toString();
+                    }
+
+                    if (isEditableMode() == false) {
+                        triggerResizeTextToFitFrame(mSub);
+                    }
                 }
 
-                if (isEditableMode() == false) {
-                    triggerResizeTextToFitFrame(mSub);
-                }
             }
         });
 
@@ -948,15 +957,18 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnKeyboa
 
             @Override
             public void afterTextChanged(Editable s) {
-                if (mIsQuestionShowing) {
-                    mCurrentCard.question.subheading = mSubheading2.getText().toString();
-                } else {
-                    mCurrentCard.answer.subheading = mSubheading2.getText().toString();
+                if ((mContentBodyType2.getVisibility() == View.VISIBLE)) {
+                    if (mIsQuestionShowing) {
+                        mCurrentCard.question.subheading = mSubheading2.getText().toString();
+                    } else {
+                        mCurrentCard.answer.subheading = mSubheading2.getText().toString();
+                    }
+
+                    if (isEditableMode() == false) {
+                        triggerResizeTextToFitFrame(mSubheading2);
+                    }
                 }
 
-                if (isEditableMode() == false) {
-                    triggerResizeTextToFitFrame(mSubheading2);
-                }
             }
         });
 
@@ -971,15 +983,18 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnKeyboa
 
             @Override
             public void afterTextChanged(Editable s) {
-                if (mIsQuestionShowing) {
-                    mCurrentCard.question.main = mMain2.getText().toString();
-                } else {
-                    mCurrentCard.answer.main = mMain2.getText().toString();
+                if ((mContentBodyType2.getVisibility() == View.VISIBLE)) {
+                    if (mIsQuestionShowing) {
+                        mCurrentCard.question.main = mMain2.getText().toString();
+                    } else {
+                        mCurrentCard.answer.main = mMain2.getText().toString();
+                    }
+
+                    if (isEditableMode() == false) {
+                        triggerResizeTextToFitFrame(mMain2);
+                    }
                 }
 
-                if (isEditableMode() == false) {
-                    triggerResizeTextToFitFrame(mMain2);
-                }
             }
         });
 
@@ -994,14 +1009,16 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnKeyboa
 
             @Override
             public void afterTextChanged(Editable s) {
-                if (mIsQuestionShowing) {
-                    mCurrentCard.question.sub = mSub2.getText().toString();
-                } else {
-                    mCurrentCard.answer.sub = mSub2.getText().toString();
-                }
+                if ((mContentBodyType2.getVisibility() == View.VISIBLE)) {
+                    if (mIsQuestionShowing) {
+                        mCurrentCard.question.sub = mSub2.getText().toString();
+                    } else {
+                        mCurrentCard.answer.sub = mSub2.getText().toString();
+                    }
 
-                if (isEditableMode() == false) {
-                    triggerResizeTextToFitFrame(mSub2);
+                    if (isEditableMode() == false) {
+                        triggerResizeTextToFitFrame(mSub2);
+                    }
                 }
             }
         });

@@ -8,6 +8,7 @@ import android.net.NetworkInfo;
 public class Global {
     public static final String debugTag = "ccaa";
     public static final String debugTag2 = "ccaa2";
+    public static final String debugTag3 = "ccaa3";
     public static final String DATABASE_NAME = "FlashCardCreator-Local.db";
     public static final int DATABASE_VERSION = 1;  // you need to update this when changing
 
