@@ -97,6 +97,7 @@ public class ShareLinkHelper extends AsyncTask<Void, Long, Boolean> {
         final  EditText editText = new EditText(mActivity);
         editText.setGravity(Gravity.CENTER);
         editText.setText("9999");
+        editText.setSingleLine();
         editText.setInputType(InputType.TYPE_CLASS_NUMBER);
         new AlertDialog.Builder(mActivity)
                 .setTitle("Set max number of downloads")

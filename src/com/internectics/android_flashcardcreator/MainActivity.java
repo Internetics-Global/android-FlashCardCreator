@@ -11,6 +11,7 @@ import android.graphics.PixelFormat;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
+import android.text.InputType;
 import android.util.Log;
 import android.util.TypedValue;
 import android.view.*;
@@ -244,6 +245,8 @@ public class MainActivity extends FragmentActivity implements
 
                 final EditText codeEditText = new EditText(this);
                 codeEditText.setHint("lzupcb1");
+                codeEditText.setInputType(InputType.TYPE_TEXT_FLAG_NO_SUGGESTIONS);
+                codeEditText.setSingleLine();
                 new AlertDialog.Builder(this)
                         .setTitle("Input download code")
                         .setIcon(android.R.drawable.ic_dialog_info)
@@ -675,6 +678,8 @@ public class MainActivity extends FragmentActivity implements
 
     private void setPassword() {
         final EditText passwordEditText = new EditText(this);
+        passwordEditText.setInputType(InputType.TYPE_TEXT_FLAG_NO_SUGGESTIONS);
+        passwordEditText.setSingleLine();
         new AlertDialog.Builder(this)
                 .setTitle("Set a password?")
                 .setIcon(android.R.drawable.ic_dialog_info)

@@ -48,7 +48,7 @@ public class PackUploadHelper extends AsyncTask<Void, Long, Boolean> {
         mFilePathInDropbox = dropboxPath + file.getName();
         mDialog = new ProgressDialog(activity);
         mDialog.setMax(100);
-        mDialog.setMessage("Uploading " + file.getName());
+        mDialog.setMessage("Uploading...");
         mDialog.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
         mDialog.setProgress(0);
         mDialog.show();
