@@ -22,7 +22,7 @@
     <string name="packlist_delete">Delete</string>
 
     <string name="addpack_close">Close</string>
-    <string name="addpack_title">Add Pack</string>
+    <string name="addpack_title">New Pack</string>
     <string name="addpack_save">Save</string>
     <string name="addpack_packname">Pack Name</string>
     <string name="addpack_sidebar">Sidebar Title</string>
