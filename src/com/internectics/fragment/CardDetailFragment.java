@@ -291,17 +291,22 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnKeyboa
         mVtoSub.removeGlobalOnLayoutListener(mVtoSubListener);
         mVtoSub2.removeGlobalOnLayoutListener(mVtoSub2Listener);
 
+        new Thread()
+        {
+            @Override
+            public void run() {
+                //when non-edible mode, we need to save it after triggerResizeTextToFitFrame
+                //it's a little strange to put this logic in onStop, but that's it.
+                if (((mCurrentPack.creatorID.equals(OpenUDID_manager.getOpenUDID())) == false) && (mIsSaveNeededAfterResize)) {
+                    mIsSaveNeededAfterResize = false;
 
-        //when non-edible mode, we need to save it after triggerResizeTextToFitFrame
-        //it's a little strange to put this logic in onStop, but that's it.
-        if (((mCurrentPack.creatorID.equals(OpenUDID_manager.getOpenUDID())) == false) && (mIsSaveNeededAfterResize)) {
-            mIsSaveNeededAfterResize = false;
+                    prepareToSavingTextFontSizeInfo();
 
-            prepareToSavingTextFontSizeInfo();
-
-            mCurrentCard.save(AppContext.getAppContext());
-            Log.d(Global.debugTag2, "Saving to database after triggerResizeTextToFitFrame in onStop");
-        }
+                    mCurrentCard.save(AppContext.getAppContext());
+                    Log.d(Global.debugTag2, "Saving to database after triggerResizeTextToFitFrame in onStop");
+                }
+            }
+        }.start();
 
     }
 
@@ -311,10 +316,6 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnKeyboa
      * mSubheading/mMain/mSub are shared both answer and question view
      */
     private void prepareToSavingTextFontSizeInfo() {
-
-        if (mIsPlayingCard) {
-            return;
-        }
 
         if (mIsQuestionShowing) {
             if (mContentBodyType1.getVisibility() == View.VISIBLE) {
