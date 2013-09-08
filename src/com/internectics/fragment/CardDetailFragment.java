@@ -53,7 +53,6 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnKeyboa
     private FCCEditText mTitle;
     private LinearLayout mTitleBackground;
     private FCCEditText mCreator;
-    private LinearLayout mCreatorLayout;
     private FCCEditText mSubheading;
     private FCCEditText mMain;
     private FCCEditText mSub;
@@ -624,7 +623,7 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnKeyboa
         mTitleBackground = (LinearLayout) mContentView.findViewById(R.id.title_background_linearlayout);
         mCreator = (FCCEditText) mContentView.findViewById(R.id.creator);
 
-        mCreatorLayout = (LinearLayout) mContentView.findViewById(R.id.creator_layout);
+        LinearLayout creatorLayout = (LinearLayout) mContentView.findViewById(R.id.creator_layout);
 
         mContentBodyLeft = (LinearLayout) mContentView.findViewById(R.id.content_body_left);
 
@@ -678,7 +677,7 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnKeyboa
                     return false;
                 }
             });
-            mCreatorLayout.setOnTouchListener(new View.OnTouchListener() {
+            creatorLayout.setOnTouchListener(new View.OnTouchListener() {
                 @Override
                 public boolean onTouch(View v, MotionEvent event) {
                     if (mCurrentPack.logoURL.contains("@") && (mCurrentPack.logoURL.contains("http") == false)) {
@@ -1409,7 +1408,7 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnKeyboa
                 params = (LinearLayout.LayoutParams) mSubheading.getLayoutParams();
                 params.width = LinearLayout.LayoutParams.FILL_PARENT;
                 params.weight = 70;
-                params.rightMargin =  getResources().getDimensionPixelSize(R.dimen.question_template_1_margin_right);;
+                params.rightMargin =  getResources().getDimensionPixelSize(R.dimen.question_template_1_margin_right);
                 mSubheading.setLayoutParams(params);
 
                 params = (LinearLayout.LayoutParams) mMain.getLayoutParams();

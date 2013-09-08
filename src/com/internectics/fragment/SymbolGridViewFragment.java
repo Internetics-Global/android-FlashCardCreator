@@ -22,7 +22,6 @@ import com.internectics.helper.SymbolHelper;
 public class SymbolGridViewFragment extends Fragment {
 
     public View mContentView;
-    private GridView mGridView;
 
     private Typeface mTypeFace;
 
@@ -33,10 +32,10 @@ public class SymbolGridViewFragment extends Fragment {
         super.onCreateView(inflater, container, savedInstanceState);
         mContentView = inflater.inflate(R.layout.symbol_gridview, container, false);
 
-        mGridView = (GridView) mContentView.findViewById(R.id.symbol_gridview);
-        mGridView.setAdapter(new SymbolAdapter(getActivity()));
+        GridView gridView = (GridView) mContentView.findViewById(R.id.symbol_gridview);
+        gridView.setAdapter(new SymbolAdapter(getActivity()));
 
-        mGridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+        gridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             public void onItemClick(AdapterView<?> parent, View v, int position, long id) {
                 ((MainActivity) getActivity()).mCardDetailFragment.onGridViewItemClicked(position);
             }

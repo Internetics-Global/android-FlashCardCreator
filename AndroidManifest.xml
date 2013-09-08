@@ -22,7 +22,7 @@
 
     <uses-sdk
             android:minSdkVersion="14"
-            android:targetSdkVersion="17"/>
+            android:targetSdkVersion="18"/>
 
     <application
             android:name="com.internectics.util.AppContext"

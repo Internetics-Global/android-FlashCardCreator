@@ -26,8 +26,6 @@ import java.util.List;
 public class SymbolBoxFragment extends Fragment {
 
     public View mContentView;
-    private SymbolPageAdapter mPageAdapter;
-    private ViewPager mPager;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -38,9 +36,9 @@ public class SymbolBoxFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         super.onCreateView(inflater, container, savedInstanceState);
         mContentView = inflater.inflate(R.layout.fragment_symbol_box, container);
-        mPager = (ViewPager) mContentView.findViewById(R.id.symbol_pager);
-        mPageAdapter = new SymbolPageAdapter(getFragmentManager(), getGridViewFragments());
-        mPager.setAdapter(mPageAdapter);
+        ViewPager pager = (ViewPager) mContentView.findViewById(R.id.symbol_pager);
+        SymbolPageAdapter pageAdapter = new SymbolPageAdapter(getFragmentManager(), getGridViewFragments());
+        pager.setAdapter(pageAdapter);
         hideSymbolBoxWithAnimation(false);
         return mContentView;
     }

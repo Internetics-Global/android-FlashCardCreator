@@ -16,8 +16,6 @@ public class User {
     public ArrayList<Pack> packs;
     public static Context gloalContext;
 
-    private static User defaultUser = null;
-
 
     public User() {
         super();
@@ -58,7 +56,7 @@ public class User {
             cur.close();
         }
 
-        defaultUser = (new User()).initWithDictionary(dataDict);
+        User defaultUser = (new User()).initWithDictionary(dataDict);
 
         return defaultUser;
     }

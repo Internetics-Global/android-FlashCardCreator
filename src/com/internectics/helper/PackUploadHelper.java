@@ -4,7 +4,6 @@ package com.internectics.helper;
 
 import android.app.Activity;
 import android.app.ProgressDialog;
-import android.content.Context;
 import android.os.AsyncTask;
 import android.widget.Toast;
 import com.dropbox.client2.DropboxAPI;
@@ -27,7 +26,6 @@ public class PackUploadHelper extends AsyncTask<Void, Long, Boolean> {
     private String mFilePathInDropbox;
 
     private long mFileLen;
-    private UploadRequest mRequest;
     private Activity mActivity;
     private final ProgressDialog mDialog;
     private Pack mCurrentPack;
@@ -60,7 +58,7 @@ public class PackUploadHelper extends AsyncTask<Void, Long, Boolean> {
             // By creating a request, we get a handle to the putFile operation,
             // so we can cancel it later if we want to
             FileInputStream fis = new FileInputStream(mFile);
-            mRequest = mApi.putFileOverwriteRequest(mFilePathInDropbox, fis, mFile.length(),
+            UploadRequest request = mApi.putFileOverwriteRequest(mFilePathInDropbox, fis, mFile.length(),
                     new ProgressListener() {
                         @Override
                         public long progressInterval() {
@@ -74,8 +72,8 @@ public class PackUploadHelper extends AsyncTask<Void, Long, Boolean> {
                         }
                     });
 
-            if (mRequest != null) {
-                mRequest.upload();
+            if (request != null) {
+                request.upload();
                 return true;
             }
 

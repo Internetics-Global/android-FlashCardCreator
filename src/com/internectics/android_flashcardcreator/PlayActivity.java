@@ -26,7 +26,6 @@ public class PlayActivity extends FragmentActivity implements SensorEventListene
     private Pack mCurrentPack;
     private int mPosition = 0;
     private List<Fragment> mFragments;
-    private FCCPageAdapter mPageAdapter;
 
     private SensorManager mSensorManager;
     private boolean       mIsSensorAvailable;
@@ -55,7 +54,7 @@ public class PlayActivity extends FragmentActivity implements SensorEventListene
         getActionBar().hide();
 
         mFragments = getFragments();
-        mPageAdapter = new FCCPageAdapter(getSupportFragmentManager(), mFragments);
+        FCCPageAdapter pageAdapter = new FCCPageAdapter(getSupportFragmentManager(), mFragments);
         mPager = (VGViewPager) findViewById(R.id.viewpager);
 
         //used to get rid of interrupt during scroll
@@ -75,7 +74,7 @@ public class PlayActivity extends FragmentActivity implements SensorEventListene
         mPager.setLayoutParams(marginLayoutParams);
 
         mPager.setOffscreenPageLimit(1);
-        mPager.setAdapter(mPageAdapter);
+        mPager.setAdapter(pageAdapter);
         mPager.setOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             @Override
             public void onPageScrolled(int i, float v, int i2) {

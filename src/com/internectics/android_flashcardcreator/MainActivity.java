@@ -63,7 +63,6 @@ public class MainActivity extends FragmentActivity implements
 
     private ArrayList<CardDetailFragment> mArrayCardDetailFragments;   //speical for snapshot(not include current card)
     public CardDetailFragment mCardDetailFragment;
-    private CardDetailFragment mSnapshotCardDetailFragment;
 
     public SymbolBoxFragment mSymbolBoxFragment;
 
@@ -165,7 +164,7 @@ public class MainActivity extends FragmentActivity implements
             case R.id.actionbar_edit:
 
                 if (!mCurrentPack.creatorID.equals(OpenUDID_manager.getOpenUDID())) {
-                    Toast.makeText(this, "You can only make changes to cards you have created yourself", 1).show();
+                    Toast.makeText(this, "You can only make changes to cards you have created yourself", Toast.LENGTH_LONG).show();
 
                 } else {
                     if ((mCurrentPack != null) && (mCurrentPack.cards.size() > 0)) {
@@ -194,7 +193,7 @@ public class MainActivity extends FragmentActivity implements
             case R.id.actionbar_change_template_color:
 
                 if (!mCurrentPack.creatorID.equals(OpenUDID_manager.getOpenUDID())) {
-                    Toast.makeText(this, "You can only make changes to cards you have created yourself", 1).show();
+                    Toast.makeText(this, "You can only make changes to cards you have created yourself", Toast.LENGTH_LONG).show();
 
                 }  else {
                     if (mCardDetailFragment == null) {
@@ -457,15 +456,14 @@ public class MainActivity extends FragmentActivity implements
      * @param card
      */
     private void prepareSnapShotSelectedCard(Pack pack, Card card) {
-        mSnapshotCardDetailFragment = new CardDetailFragment(pack, card, 3);
+        CardDetailFragment snapshotCardDetailFragment = new CardDetailFragment(pack, card, 3);
         getSupportFragmentManager().beginTransaction()
-                .add(R.id.detail, mSnapshotCardDetailFragment).commitAllowingStateLoss();
+                .add(R.id.detail, snapshotCardDetailFragment).commitAllowingStateLoss();
 
         if (mArrayCardDetailFragments == null) {
             mArrayCardDetailFragments = new ArrayList<CardDetailFragment>();
         }
-
-        mArrayCardDetailFragments.add(mSnapshotCardDetailFragment);
+        mArrayCardDetailFragments.add(snapshotCardDetailFragment);
     }
 
 
@@ -607,12 +605,12 @@ public class MainActivity extends FragmentActivity implements
 
         //case1: check whether pack is empty or not
         if (currentPack == null) {
-            Toast.makeText(this, "Create a pack first before creating a new card", 1).show();
+            Toast.makeText(this, "Create a pack first before creating a new card", Toast.LENGTH_LONG).show();
             return false;
         }
         //case2: check owner
         if (!currentPack.creatorID.equals(OpenUDID_manager.getOpenUDID())) {
-            Toast.makeText(this, "You cannot create a card in pack you haven't created yourself.", 1).show();
+            Toast.makeText(this, "You cannot create a card in pack you haven't created yourself.", Toast.LENGTH_LONG).show();
             return false;
 
         }
