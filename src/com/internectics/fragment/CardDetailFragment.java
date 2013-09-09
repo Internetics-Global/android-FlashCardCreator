@@ -150,8 +150,8 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnKeyboa
 
         if (!mIsPlayingCard) {
             configureSegmentView();
+            configureChangeTemplateView();
         }
-        configureChangeTemplateView();
         configureLogoURLView();
 
         mLogoImage.setOnClickListener(new View.OnClickListener() {
