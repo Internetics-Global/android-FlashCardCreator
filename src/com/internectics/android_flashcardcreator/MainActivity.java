@@ -9,6 +9,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.PixelFormat;
 import android.net.Uri;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.text.InputType;
@@ -114,6 +115,7 @@ public class MainActivity extends FragmentActivity implements
         mIsFromRestartApp = true;
 
         EasyTracker.getInstance().setContext(this);
+
     }
 
     @Override
@@ -145,6 +147,11 @@ public class MainActivity extends FragmentActivity implements
             item.setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS);
 
         }
+
+        //Used to show pack list
+        ShowPacklistAfterViewDidAppearTask dTask = new ShowPacklistAfterViewDidAppearTask();
+        dTask.execute(100);
+
 
         return true;
     }
@@ -377,6 +384,18 @@ public class MainActivity extends FragmentActivity implements
 
         getIntent().setData(null); //in case it will be recalled time and time
     }
+
+    public void showPackListView() {
+        LayoutInflater inflater = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        View popupLayout = inflater.inflate(R.layout.pack_list, null, false);
+        mPopupWindow = new PopupWindow(getResources().getDimensionPixelSize(R.dimen.pack_list_width), getResources().getDimensionPixelSize(R.dimen.pack_list_window_height));
+        mPopupWindow.setFocusable(true);
+        mPopupWindow.setOutsideTouchable(true);
+        mPopupWindow.setBackgroundDrawable(getResources().getDrawable(R.drawable.shape_popupwindow_background));
+        mPopupWindow.setContentView(popupLayout);
+        mPopupWindow.showAsDropDown(findViewById(R.id.actionbar_packs));
+    }
+
 
     private boolean checkDownloadable (String itemName) {
         Log.d(Global.debugTag, "Now begin to execute checkDownloadable");
@@ -992,6 +1011,47 @@ public class MainActivity extends FragmentActivity implements
                 });
 
         builder.create().show();
+    }
+
+
+    /**
+     *
+     */
+    class ShowPacklistAfterViewDidAppearTask extends AsyncTask<Integer, Integer, String> {
+
+        final View myView = findViewById(R.id.card_list);
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+        }
+
+        @Override
+        protected String doInBackground(Integer... params) {
+
+            while (myView.getHeight() == 0 || myView.getWidth() == 0) {
+                try {
+                    Thread.sleep(1);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+            }
+
+            return "Done";
+        }
+
+        @Override
+        protected void onProgressUpdate(Integer... progress) {
+            super.onProgressUpdate(progress);
+        }
+
+        @Override
+        protected void onPostExecute(String result) {
+            super.onPostExecute(result);
+            showPackListView();
+
+        }
+
     }
 
 }
