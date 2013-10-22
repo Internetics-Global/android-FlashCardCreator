@@ -2,6 +2,7 @@ package com.internectics.fragment;
 
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.app.DialogFragment;
 import android.content.ContentResolver;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -36,6 +37,10 @@ public class PackListFragment extends Fragment {
     private int CODE_REQUEST_IMAGE_FROM_IMAGE_LIBRARY = 1001;
     private int mIndexOfCurrentPack;
 
+    private View mRootView;
+
+    private int mSelectedItemIndex = -1;
+
     private User mUser;
 
     @Override
@@ -48,25 +53,32 @@ public class PackListFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View rootView = inflater.inflate(R.layout.fragment_pack_list,
+        mRootView = inflater.inflate(R.layout.fragment_pack_list,
                 container, false);
 
 
-        TextView titileTextView = (TextView) rootView.findViewById(R.id.dialog_title);
+        TextView titileTextView = (TextView) mRootView.findViewById(R.id.dialog_title);
         titileTextView.setText(R.string.packlist_title);
 
-        final Button editButton = (Button) rootView.findViewById(R.id.dialog_head_save_btn);
-        editButton.setText("Edit");
+        final Button editButton = (Button) mRootView.findViewById(R.id.dialog_head_save_btn);
+        editButton.setText("Create New Pack");
+        ViewGroup.LayoutParams params = editButton.getLayoutParams();
+        params.width = params.width + 80;
+        editButton.setLayoutParams(params);
         mIsEditStatus = false;
         editButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
-                if (editButton.getText().equals("Edit")) {
-                    editButton.setText("Done");
-                    mIsEditStatus = true;
+                if (editButton.getText().equals("Create New Pack")) {
+                    ((MainActivity) getActivity()).mPopupWindow.dismiss();
+                    DialogFragment dialogFragment = new AddPackFragment();
+                    dialogFragment.show(getActivity().getFragmentManager(), "add_pack_fragment");
                 } else {
-                    editButton.setText("Edit");
+                    editButton.setText("Create New Pack");
+                    ViewGroup.LayoutParams params = editButton.getLayoutParams();
+                    params.width = params.width + 80;
+                    editButton.setLayoutParams(params);
                     mIsEditStatus = false;
                 }
                 ((ImageAdapter) mGallery.getAdapter()).notifyDataSetChanged();
@@ -74,28 +86,34 @@ public class PackListFragment extends Fragment {
             }
         });
 
-        Button closeButton = (Button) rootView.findViewById(R.id.dialog_head_close_btn);
+        Button closeButton = (Button) mRootView.findViewById(R.id.dialog_head_close_btn);
         closeButton.setVisibility(View.INVISIBLE);
 
 
-        mGallery = (Gallery) rootView.findViewById(R.id.pack_list_gallery);
+        mGallery = (Gallery) mRootView.findViewById(R.id.pack_list_gallery);
         // Set the adapter to our custom adapter (below)
         mGallery.setAdapter(new ImageAdapter(getActivity()));
         mGallery.setOnItemClickListener(new OnItemClickListener() {
             public void onItemClick(AdapterView<?> parent, View v, int position, long id) {
-                Log.d(Global.debugTag, "Index of pack in pack list is:" + position);
-                Intent intent = new Intent();
-                intent.setAction(Global.BROADCAST_ACTION_UPDATE_MASTER_VIEW);
-                intent.putExtra(Global.KEY_FROM, Global.BROADCAST_EXTRA_FROM_PACK_SELECTED);
-                intent.putExtra("indexOfPack", position);  //id begin from 0
-                getActivity().sendBroadcast(intent);
-                ((MainActivity) getActivity()).mPopupWindow.dismiss();
+                if (position ==0) {
+                    ((MainActivity) getActivity()).mPopupWindow.dismiss();
+                    DialogFragment dialogFragment = new AddPackFragment();
+                    dialogFragment.show(getActivity().getFragmentManager(), "add_pack_fragment");
+                } else {
+                    Log.d(Global.debugTag, "Index of pack in pack list is:" + position);
+                    Intent intent = new Intent();
+                    intent.setAction(Global.BROADCAST_ACTION_UPDATE_MASTER_VIEW);
+                    intent.putExtra(Global.KEY_FROM, Global.BROADCAST_EXTRA_FROM_PACK_SELECTED);
+                    intent.putExtra("indexOfPack", position-1);
+                    getActivity().sendBroadcast(intent);
+                    ((MainActivity) getActivity()).mPopupWindow.dismiss();
+                }
 
             }
         });
 
 
-        return rootView;
+        return mRootView;
     }
 
 
@@ -108,7 +126,7 @@ public class PackListFragment extends Fragment {
         }
 
         public int getCount() {
-            return mUser.packs.size();
+            return mUser.packs.size() +1;
         }
 
         public Object getItem(int position) {
@@ -119,121 +137,152 @@ public class PackListFragment extends Fragment {
             return position;
         }
 
-        public View getView(int position, View convertView, ViewGroup parent) {
-
-            final int indexOfCurrentPack = position;
-            final Pack currentPack = mUser.packs.get(position);
+        public View getView(final int position, View convertView, ViewGroup parent) {
 
             LayoutInflater inflater = (LayoutInflater) getActivity().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-            View contentView = inflater.inflate(R.layout.pack_list_item, parent, false);
-
-            final EditText packNameView = (EditText) contentView.findViewById(R.id.pack_name_text);
-            packNameView.setOnEditorActionListener(new TextView.OnEditorActionListener() {
-                @Override
-                public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
-                    if (actionId == EditorInfo.IME_ACTION_DONE) {
-                        currentPack.packName = packNameView.getText().toString();
-                        currentPack.save(AppContext.getAppContext());
-                    }
-                    return false;
-                }
-            });
-
-
-            ImageView imageView = (ImageView) contentView.findViewById(R.id.pack_cover_image);
-            Button changeCoverImageButton = (Button) contentView.findViewById(R.id.button_change_cover_image);
-            Button deleteButton = (Button) contentView.findViewById(R.id.button_delete_pack);
-            LinearLayout editLayout = (LinearLayout) contentView.findViewById(R.id.pack_list_edit_layout);
-
-            ContentResolver cResolver = AppContext.getAppContext().getContentResolver();
-            String str = currentPack.coverImageUriFormatStr;
-            if (StringUtils.isNumeric(str)) {
-                imageView.setImageResource(Integer.parseInt(str));
+            View contentView;
+            if (position == 0) {
+                contentView = inflater.inflate(R.layout.pack_list_item_add_pack, parent, false);
             } else {
-                Uri dataUri = Uri.parse(str);
-                try {
-                    Bitmap bitmap = BitmapFactory.decodeStream(cResolver
-                            .openInputStream(dataUri));
-                    imageView.setImageBitmap(bitmap);
-                } catch (FileNotFoundException e) {
-                    e.printStackTrace();
-                }
+                contentView = inflater.inflate(R.layout.pack_list_item, parent, false);
             }
 
 
-            changeCoverImageButton.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    mIndexOfCurrentPack = indexOfCurrentPack;
-                    Intent intent = new Intent(
-                            Intent.ACTION_PICK,
-                            android.provider.MediaStore.Images.Media.INTERNAL_CONTENT_URI);
+            //also share add pack function
+            ImageView imageView = (ImageView) contentView.findViewById(R.id.pack_cover_image);
 
-                    startActivityForResult(intent, CODE_REQUEST_IMAGE_FROM_IMAGE_LIBRARY);
+            //also share the edit cards function
+            Button changeCoverImageButton = (Button) contentView.findViewById(R.id.button_change_cover_image);
+
+            final Button deleteButton = (Button) contentView.findViewById(R.id.button_delete_pack);
+
+
+            if (position != 0) {
+
+                ContentResolver cResolver = AppContext.getAppContext().getContentResolver();
+                String str = mUser.packs.get(position -1).coverImageUriFormatStr;
+                if (StringUtils.isNumeric(str)) {
+                    imageView.setImageResource(Integer.parseInt(str));
+                } else {
+                    Uri dataUri = Uri.parse(str);
+                    try {
+                        Bitmap bitmap = BitmapFactory.decodeStream(cResolver
+                                .openInputStream(dataUri));
+                        imageView.setImageBitmap(bitmap);
+                    } catch (FileNotFoundException e) {
+                        e.printStackTrace();
+                    }
                 }
-            });
+
+                final EditText packNameView = (EditText) contentView.findViewById(R.id.pack_name_text);
+                packNameView.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+                    @Override
+                    public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+                        if (actionId == EditorInfo.IME_ACTION_DONE) {
+
+                            mUser.packs.get(position -1).packName = packNameView.getText().toString();
+                            mUser.packs.get(position -1).save(AppContext.getAppContext());
+                        }
+                        return false;
+                    }
+                });
+
+                changeCoverImageButton.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+
+                        if (mIsEditStatus) {
+                            if (position == 0) {
+
+                            } else {
+                                mIndexOfCurrentPack = position -1;
+                                Intent intent = new Intent(
+                                        Intent.ACTION_PICK,
+                                        android.provider.MediaStore.Images.Media.INTERNAL_CONTENT_URI);
+
+                                startActivityForResult(intent, CODE_REQUEST_IMAGE_FROM_IMAGE_LIBRARY);
+                            }
+                        } else {
+                            mSelectedItemIndex = position;
+                            mIsEditStatus = true;
+                            final Button editButton = (Button) mRootView.findViewById(R.id.dialog_head_save_btn);
+                            editButton.setText("Done");
+                            ViewGroup.LayoutParams params = editButton.getLayoutParams();
+                            params.width = params.width - 80;
+                            editButton.setLayoutParams(params);
+                            ((ImageAdapter) mGallery.getAdapter()).notifyDataSetChanged();
+                        }
+                    }
+                });
 
 
-            deleteButton.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
+                deleteButton.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
 
-                    new AlertDialog.Builder(mContext)
-                            .setTitle("Are you sure to delete?")
-                            .setPositiveButton("Delete",new DialogInterface.OnClickListener() {
-                                @Override
-                                public void onClick(DialogInterface dialog, int which) {
-                                    mUser.removePack(currentPack);
-                                    int count = mUser.packs.size();
-                                    if (count > 0) {
-                                        Pack lastPack = mUser.packs.get(count - 1);
-                                        AppConfig.sharedInstance().set(Global.mostRecentPackCreatedID_Property, String.format("%d", lastPack.packID));
+                        new AlertDialog.Builder(mContext)
+                                .setTitle("Are you sure to delete?")
+                                .setPositiveButton("Delete",new DialogInterface.OnClickListener() {
+                                    @Override
+                                    public void onClick(DialogInterface dialog, int which) {
+                                        final Button editButton = (Button) mRootView.findViewById(R.id.dialog_head_save_btn);
+                                        editButton.setText("Create New Pack");
+                                        mIsEditStatus = false;
+                                        mIndexOfCurrentPack = -1;
+                                        mUser.removePack(mUser.packs.get(position -1));
+                                        int count = mUser.packs.size();
+                                        if (count > 0) {
+                                            Pack lastPack = mUser.packs.get(count - 1);
+                                            AppConfig.sharedInstance().set(Global.mostRecentPackCreatedID_Property, String.format("%d", lastPack.packID));
+                                        }
+                                        ((ImageAdapter) mGallery.getAdapter()).notifyDataSetChanged();
                                     }
-                                    ((ImageAdapter) mGallery.getAdapter()).notifyDataSetChanged();
-                                }
-                            })
-                            .setNegativeButton("Cancel",null)
-                            .show();
+                                })
+                                .setNegativeButton("Cancel",null)
+                                .show();
 
 
 
-                }
-            });
+                    }
+                });
 
 
 
 
-            if (mIsEditStatus) {
+                if ((mIsEditStatus) && (mSelectedItemIndex == position)) {
 
-                packNameView.setEnabled(true);
-
-                editLayout.setVisibility(View.VISIBLE);
-
-                if (currentPack.creatorID.equals(OpenUDID_manager.getOpenUDID())) {
-                    changeCoverImageButton.setVisibility(View.VISIBLE);
-                } else {
-                    changeCoverImageButton.setVisibility(View.INVISIBLE);
-                }
-
-                if (mUser.packs.size() <= 1) {
+                    packNameView.setEnabled(true);
                     deleteButton.setVisibility(View.INVISIBLE);
-                } else {
-                    if (((MainActivity) getActivity()).mCurrentPack.packID == currentPack.packID) {
+
+                    changeCoverImageButton.setText("Change Image");
+
+                    if (mUser.packs.get(position -1).creatorID.equals(OpenUDID_manager.getOpenUDID())) {
+                        changeCoverImageButton.setVisibility(View.VISIBLE);
+                    } else {
+                        changeCoverImageButton.setVisibility(View.INVISIBLE);
+                    }
+
+                    if (mUser.packs.size() <= 1) {
                         deleteButton.setVisibility(View.INVISIBLE);
                     } else {
-                        deleteButton.setVisibility(View.VISIBLE);
+                        if (((MainActivity) getActivity()).mCurrentPack.packID == mUser.packs.get(position - 1).packID) {
+                            deleteButton.setVisibility(View.INVISIBLE);
+                        } else {
+                            deleteButton.setVisibility(View.VISIBLE);
+                        }
                     }
+
+
+                } else {
+                    packNameView.setEnabled(false);
+                    deleteButton.setVisibility(View.INVISIBLE);
+
+                    changeCoverImageButton.setText("Edit Cards");
                 }
 
 
-            } else {
-                packNameView.setEnabled(false);
-
-                editLayout.setVisibility(View.INVISIBLE);
+                packNameView.setText(mUser.packs.get(position -1).packName);
             }
-
-
-            packNameView.setText(currentPack.packName);
 
 
             return contentView;

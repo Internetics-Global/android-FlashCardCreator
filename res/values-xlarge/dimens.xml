@@ -22,7 +22,7 @@
     <!--title bar height is 48dp-->
     <dimen name="pack_list_height">290dp</dimen>
     <dimen name="pack_list_item_width">230dp</dimen>
-    <dimen name="pack_list_text_size">18sp</dimen>
+    <dimen name="pack_list_text_size">15sp</dimen>
 
     <!--add pack related-->
     <dimen name="add_pack_edit_text_size">20sp</dimen>
