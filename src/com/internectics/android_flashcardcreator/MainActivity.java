@@ -234,7 +234,6 @@ public class MainActivity extends FragmentActivity implements
 
             case R.id.actionbar_play:
 
-
                 Intent intent = new Intent(MainActivity.this, PlayActivity.class);
                 intent.putExtra("packID", mCurrentPack.packID);
                 startActivity(intent);

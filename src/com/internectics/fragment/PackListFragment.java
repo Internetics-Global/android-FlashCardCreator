@@ -21,6 +21,7 @@ import android.view.inputmethod.EditorInfo;
 import android.widget.*;
 import android.widget.AdapterView.OnItemClickListener;
 import com.internectics.android_flashcardcreator.MainActivity;
+import com.internectics.android_flashcardcreator.PlayActivity;
 import com.internectics.android_flashcardcreator.R;
 import com.internectics.data.Pack;
 import com.internectics.data.User;
@@ -149,26 +150,38 @@ public class PackListFragment extends Fragment {
 
 
             //also share add pack function
-            ImageView imageView = (ImageView) contentView.findViewById(R.id.pack_cover_image);
-
-            //also share the edit cards function
-            Button changeCoverImageButton = (Button) contentView.findViewById(R.id.button_change_cover_image);
-
-            final Button deleteButton = (Button) contentView.findViewById(R.id.button_delete_pack);
+            ImageView coverImageView = (ImageView) contentView.findViewById(R.id.pack_cover_image);
 
 
             if (position != 0) {
 
+                final Pack currentPack = mUser.packs.get(position -1);
+
+                //also share the edit cards function
+                Button changeCoverImageButton = (Button) contentView.findViewById(R.id.button_change_cover_image);
+
+                final Button deleteButton = (Button) contentView.findViewById(R.id.button_delete_pack);
+
+                ImageView playImageView = (ImageView) contentView.findViewById(R.id.pack_play);
+                playImageView.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        Intent intent = new Intent(getActivity(), PlayActivity.class);
+                        intent.putExtra("packID", currentPack.packID);
+                        startActivity(intent);
+                    }
+                });
+
                 ContentResolver cResolver = AppContext.getAppContext().getContentResolver();
-                String str = mUser.packs.get(position -1).coverImageUriFormatStr;
+                String str = currentPack.coverImageUriFormatStr;
                 if (StringUtils.isNumeric(str)) {
-                    imageView.setImageResource(Integer.parseInt(str));
+                    coverImageView.setImageResource(Integer.parseInt(str));
                 } else {
                     Uri dataUri = Uri.parse(str);
                     try {
                         Bitmap bitmap = BitmapFactory.decodeStream(cResolver
                                 .openInputStream(dataUri));
-                        imageView.setImageBitmap(bitmap);
+                        coverImageView.setImageBitmap(bitmap);
                     } catch (FileNotFoundException e) {
                         e.printStackTrace();
                     }
@@ -180,8 +193,8 @@ public class PackListFragment extends Fragment {
                     public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
                         if (actionId == EditorInfo.IME_ACTION_DONE) {
 
-                            mUser.packs.get(position -1).packName = packNameView.getText().toString();
-                            mUser.packs.get(position -1).save(AppContext.getAppContext());
+                            currentPack.packName = packNameView.getText().toString();
+                            currentPack.save(AppContext.getAppContext());
                         }
                         return false;
                     }
@@ -229,7 +242,7 @@ public class PackListFragment extends Fragment {
                                         editButton.setText("Create New Pack");
                                         mIsEditStatus = false;
                                         mIndexOfCurrentPack = -1;
-                                        mUser.removePack(mUser.packs.get(position -1));
+                                        mUser.removePack(currentPack);
                                         int count = mUser.packs.size();
                                         if (count > 0) {
                                             Pack lastPack = mUser.packs.get(count - 1);
