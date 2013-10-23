@@ -83,6 +83,8 @@ public class PackListFragment extends Fragment {
                     params.width = params.width + UIHelper.getPixels(60);;
                     editButton.setLayoutParams(params);
                     mIsEditStatus = false;
+                    mSelectedItemIndex = -1;
+                    ((ImageAdapter) mGallery.getAdapter()).notifyDataSetChanged();
                 }
                 ((ImageAdapter) mGallery.getAdapter()).notifyDataSetChanged();
 
@@ -293,7 +295,12 @@ public class PackListFragment extends Fragment {
                     packNameView.setEnabled(false);
                     deleteButton.setVisibility(View.INVISIBLE);
 
+
                     changeCoverImageButton.setText("Edit Cards");
+                }
+
+                if ((mSelectedItemIndex >=0 ) && (mSelectedItemIndex != position)){
+                    changeCoverImageButton.setVisibility(View.INVISIBLE);
                 }
 
 
