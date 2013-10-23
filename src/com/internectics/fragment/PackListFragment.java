@@ -64,7 +64,7 @@ public class PackListFragment extends Fragment {
         final Button editButton = (Button) mRootView.findViewById(R.id.dialog_head_save_btn);
         editButton.setText("Create New Pack");
         ViewGroup.LayoutParams params = editButton.getLayoutParams();
-        params.width = params.width + 80;
+        params.width = params.width + UIHelper.getPixels(60);
         editButton.setLayoutParams(params);
         mIsEditStatus = false;
         editButton.setOnClickListener(new View.OnClickListener() {
@@ -78,7 +78,7 @@ public class PackListFragment extends Fragment {
                 } else {
                     editButton.setText("Create New Pack");
                     ViewGroup.LayoutParams params = editButton.getLayoutParams();
-                    params.width = params.width + 80;
+                    params.width = params.width + UIHelper.getPixels(60);;
                     editButton.setLayoutParams(params);
                     mIsEditStatus = false;
                 }
@@ -221,7 +221,7 @@ public class PackListFragment extends Fragment {
                             final Button editButton = (Button) mRootView.findViewById(R.id.dialog_head_save_btn);
                             editButton.setText("Done");
                             ViewGroup.LayoutParams params = editButton.getLayoutParams();
-                            params.width = params.width - 80;
+                            params.width = params.width - UIHelper.getPixels(60);;
                             editButton.setLayoutParams(params);
                             ((ImageAdapter) mGallery.getAdapter()).notifyDataSetChanged();
                         }
