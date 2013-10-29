@@ -51,6 +51,7 @@ public class MainActivity extends FragmentActivity implements
     private boolean mIsGoingAuthorizationBeforeUpload = false;
     private boolean mIsNecessaryToRestoreCSSToolbar = false;
     private boolean mIsFromRestartApp = false;
+    private boolean mIsNecessaryToShowPackListAutomatically  = true;
 
     public Pack mCurrentPack = new Pack();//mCurrentPack will be automatically refreshed after creating a new card, add a new pack and new pack selected
     public int mCurrentCardIndex = 0;
@@ -148,9 +149,12 @@ public class MainActivity extends FragmentActivity implements
 
         }
 
-        //Used to show pack list
-        ShowPacklistAfterViewDidAppearTask dTask = new ShowPacklistAfterViewDidAppearTask();
-        dTask.execute(100);
+        if (mIsNecessaryToShowPackListAutomatically) {
+            //Used to show pack list
+            ShowPacklistAfterViewDidAppearTask dTask = new ShowPacklistAfterViewDidAppearTask();
+            dTask.execute(100);
+        }
+
 
 
         return true;
@@ -1048,6 +1052,7 @@ public class MainActivity extends FragmentActivity implements
         protected void onPostExecute(String result) {
             super.onPostExecute(result);
             showPackListView();
+            mIsNecessaryToShowPackListAutomatically = false;
 
         }
 
