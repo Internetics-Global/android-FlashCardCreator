@@ -28,10 +28,6 @@ public class Global {
     public static final String BROADCAST_EXTRA_FROM_PACK_DOWNLOADED = "from_pack_downloaded";
     public static final String BROADCAST_EXTRA_FROM_SNAPSHOT_ALL = "snapshot_all";
 
-    //Used to judge which pack is to load during start-up
-    public static final String mostRecentPackCreatedID_Property = "most_recent_pack_id";
-    public static final String mostRecentPackCreatedDate_Property = "most_recent_pack_created_date";
-
     //Used to judge whether need to upload pack again for certain pack
     public static final String shareDate_Property = "share_date";
     public static final String shareLink_Property = "share_link";

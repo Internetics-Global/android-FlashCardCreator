@@ -8,6 +8,8 @@ import com.internectics.helper.SQLiteHelper;
 import com.internectics.util.Global;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashMap;
 
 public class User {
@@ -16,6 +18,8 @@ public class User {
     public ArrayList<Pack> packs;
     public static Context gloalContext;
 
+    private static User defaultUser;
+
 
     public User() {
         super();
@@ -23,40 +27,29 @@ public class User {
         this.packs = new ArrayList<Pack>();
     }
 
-    /**
-     * it's quite time-cost operation because there're a lot of cards.
-     * @param context
-     * @return
-     */
-    public static User defaultUser(Context context) {
-        return defaultUserWithOnlyPackSummary(context,false);
-    }
 
-    /**
-     * it's quite time-cost operation but you can reduce it if you set isSummary= true.
-     * @param context
-     * @param isSummary: not includes cards if isSummary =true. So Be careful enought when isSummary = true;
-     * @return
-     */
-    public static User defaultUserWithOnlyPackSummary(Context context, boolean isSummary) {
+    public static User defaultUser(Context context) {
         gloalContext = context;
 
-        HashMap<String, Object> dataDict = new HashMap<String, Object>();
-        SQLiteDatabase db = SQLiteHelper.defaultDatabase(context);
-        String query = String.format("SELECT * FROM Users_Tables WHERE user_id=%d", Global.USER_ID);
-        Cursor cur = db.rawQuery(query, null);
-        try {
-            while (cur.moveToNext()) {
-                dataDict.put("user_id", cur.getInt(0));
-                dataDict.put("nick_name", cur.getString(1));
-                dataDict.put("packs", Pack.packsForUserID(context, cur.getInt(0),isSummary));
-                break;
+        if ((defaultUser == null)||(defaultUser.packs.size() == 0))  {
+            HashMap<String, Object> dataDict = new HashMap<String, Object>();
+            SQLiteDatabase db = SQLiteHelper.defaultDatabase(context);
+            String query = String.format("SELECT * FROM Users_Tables WHERE user_id=%d", Global.USER_ID);
+            Cursor cur = db.rawQuery(query, null);
+            try {
+                while (cur.moveToNext()) {
+                    dataDict.put("user_id", cur.getInt(0));
+                    dataDict.put("nick_name", cur.getString(1));
+                    dataDict.put("packs", Pack.packsForUserID(context, cur.getInt(0),false));
+                    break;
+                }
+            } finally {
+                cur.close();
             }
-        } finally {
-            cur.close();
+
+            defaultUser = (new User()).initWithDictionary(dataDict);
         }
 
-        User defaultUser = (new User()).initWithDictionary(dataDict);
 
         return defaultUser;
     }
@@ -93,5 +86,61 @@ public class User {
     public void removePack(Pack pack) {
         packs.remove(pack);
         pack.destroy(gloalContext);
+    }
+
+    public ArrayList<Pack> sortPacks(int sortType) {
+
+        switch (sortType) {
+            case 0: { //created ascend
+                Collections.sort(packs, new Comparator<Pack>() {
+                    @Override
+                    public int compare(Pack lhs, Pack rhs) {
+                        return (rhs.createDate - lhs.createDate);
+                    }
+                });
+                break;
+            }
+            case 1: { //created descend
+                Collections.sort(packs, new Comparator<Pack>() {
+                    @Override
+                    public int compare(Pack lhs, Pack rhs) {
+                        return (lhs.createDate - rhs.createDate);
+                    }
+                });
+                break;
+            }
+            case 2: { //visited ascend
+                Collections.sort(packs, new Comparator<Pack>() {
+                    @Override
+                    public int compare(Pack lhs, Pack rhs) {
+                        return (rhs.lastVistDate - lhs.lastVistDate);
+                    }
+                });
+                break;
+            }
+            case 3: { //visited descend
+                Collections.sort(packs, new Comparator<Pack>() {
+                    @Override
+                    public int compare(Pack lhs, Pack rhs) {
+                        return (lhs.lastVistDate - rhs.lastVistDate);
+                    }
+                });
+                break;
+            }
+        }
+
+        if ((sortType == 0) || (sortType == 1)) {
+            for (int i =0;i<packs.size();i++) {
+                Log.d(Global.debugTag3,"Create date: " + packs.get(i).createDate );
+            }
+        } else {
+            for (int i =0;i<packs.size();i++) {
+                Log.d(Global.debugTag3,"Last Visit date: " + packs.get(i).lastVistDate );
+            }
+        }
+
+
+        return packs;
+
     }
 }

@@ -43,6 +43,8 @@ public class PackListFragment extends Fragment {
 
     private View mRootView;
 
+    private int  mSortType = 2;
+
     private int mSelectedItemIndex = -1;
 
     private User mUser;
@@ -51,7 +53,12 @@ public class PackListFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        mUser = User.defaultUserWithOnlyPackSummary(AppContext.getAppContext(),true);
+        mUser = User.defaultUser(AppContext.getAppContext());
+
+        mSortType = 2;
+        mUser.sortPacks(mSortType);
+
+
     }
 
     @Override
@@ -85,7 +92,6 @@ public class PackListFragment extends Fragment {
                     editButton.setLayoutParams(params);
                     mIsEditStatus = false;
                     mSelectedItemIndex = -1;
-                    ((ImageAdapter) mGallery.getAdapter()).notifyDataSetChanged();
                 }
                 ((ImageAdapter) mGallery.getAdapter()).notifyDataSetChanged();
 
@@ -111,8 +117,14 @@ public class PackListFragment extends Fragment {
                     Intent intent = new Intent();
                     intent.setAction(Global.BROADCAST_ACTION_UPDATE_MASTER_VIEW);
                     intent.putExtra(Global.KEY_FROM, Global.BROADCAST_EXTRA_FROM_PACK_SELECTED);
-                    intent.putExtra("indexOfPack", position-1);
+                    int selectedIndex = position-1;
+                    intent.putExtra("indexOfPack", selectedIndex);
                     getActivity().sendBroadcast(intent);
+
+                    Pack selectPack = mUser.packs.get(selectedIndex);
+                    selectPack.lastVistDate = (int)System.currentTimeMillis();
+                    selectPack.save(AppContext.getAppContext());
+
                     ((MainActivity) getActivity()).mPopupWindow.dismiss();
                 }
 
@@ -134,6 +146,24 @@ public class PackListFragment extends Fragment {
         sortButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                switch (Integer.parseInt((String)sortButton.getTag())) {
+                    case 0: {
+                        sortButton.setTag("1");
+                        mUser.sortPacks(0);
+                        sortButton.setText("Sorted by recently created first");
+                        ((ImageAdapter) mGallery.getAdapter()).notifyDataSetChanged();
+
+                        break;
+                    }
+                    case 1: {
+                        sortButton.setTag("0");
+                        mUser.sortPacks(2);
+                        sortButton.setText("Sorted by recently viewed first");
+                        ((ImageAdapter) mGallery.getAdapter()).notifyDataSetChanged();
+
+                        break;
+                    }
+                }
             }
         });
 
@@ -264,14 +294,13 @@ public class PackListFragment extends Fragment {
                                     public void onClick(DialogInterface dialog, int which) {
                                         final Button editButton = (Button) mRootView.findViewById(R.id.dialog_head_save_btn);
                                         editButton.setText("Create New Pack");
+                                        ViewGroup.LayoutParams params = editButton.getLayoutParams();
+                                        params.width = params.width + UIHelper.getPixels(60);
+                                        editButton.setLayoutParams(params);
                                         mIsEditStatus = false;
                                         mIndexOfCurrentPack = -1;
                                         mUser.removePack(currentPack);
-                                        int count = mUser.packs.size();
-                                        if (count > 0) {
-                                            Pack lastPack = mUser.packs.get(count - 1);
-                                            AppConfig.sharedInstance().set(Global.mostRecentPackCreatedID_Property, String.format("%d", lastPack.packID));
-                                        }
+                                        mUser.sortPacks(mSortType);
                                         ((ImageAdapter) mGallery.getAdapter()).notifyDataSetChanged();
                                     }
                                 })
@@ -371,6 +400,7 @@ public class PackListFragment extends Fragment {
                     currentPack.coverImageUriFormatStr = FileOperationHelper.convertToUriFormatFile(toSaveFile);
                     Log.d(Global.debugTag, "currentPack.coverImageUriFormatStr is " + currentPack.coverImageUriFormatStr);
                     currentPack.save(AppContext.getAppContext());
+                    mUser.sortPacks(mSortType);
                     ((ImageAdapter) mGallery.getAdapter()).notifyDataSetChanged();
                 }
             }

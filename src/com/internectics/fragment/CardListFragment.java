@@ -352,8 +352,7 @@ public class CardListFragment extends Fragment {
 
         //Step1: remove current card from mCurrentPack and database
         Card removedCard = mCurrentPack.cards.get(which);
-        mCurrentPack.cards.remove(which);
-        removedCard.destroy(AppContext.getAppContext());
+        mCurrentPack.removeCard(AppContext.getAppContext(),removedCard);
 
         //Step2: reorder all cards' SN
         int index = 0;

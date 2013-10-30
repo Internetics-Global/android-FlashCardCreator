@@ -159,15 +159,14 @@ public class AddPackFragment extends DialogFragment implements TextView.OnEditor
         pack.platform = UIHelper.getCurrentPlatform();
         pack.userID = Global.USER_ID;
         pack.packID = Global.generateNoRepeatInt();
+        pack.createDate = (int)System.currentTimeMillis();
+        pack.lastVistDate = (int)System.currentTimeMillis();
 
         final Card defaultCard = new Card();
         defaultCard.cardSN = 1;
         defaultCard.packID = pack.packID;
 
         PackRecordHelper.savePackUpdateRecord(AppContext.getAppContext(), pack);
-
-        AppConfig.sharedInstance().set(Global.mostRecentPackCreatedID_Property, String.format("%d", pack.packID));
-        AppConfig.sharedInstance().set(Global.mostRecentPackCreatedDate_Property, StringUtils.getCurrentTimeDate());
 
         dismiss();
 
@@ -177,8 +176,8 @@ public class AddPackFragment extends DialogFragment implements TextView.OnEditor
                 activity.runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
-                        pack.save(AppContext.getAppContext());
-                        defaultCard.save(AppContext.getAppContext());
+                        User.defaultUser(AppContext.getAppContext()).addPack(pack);
+                        pack.addCard(AppContext.getAppContext(),defaultCard);
 
                         Intent intent = new Intent();
                         intent.setAction(Global.BROADCAST_ACTION_UPDATE_MASTER_VIEW);

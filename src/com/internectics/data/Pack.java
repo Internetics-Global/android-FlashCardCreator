@@ -29,6 +29,9 @@ public class Pack {
     public String creatorNickName;
     public String platform;
 
+    public int    lastVistDate;
+    public int    createDate;
+
     public ArrayList<Card> cards;
 
     public Pack() {
@@ -62,6 +65,9 @@ public class Pack {
         creatorID = (String) dataDict.get("creator_id");
         creatorNickName = (String) dataDict.get("creator_nick_name");
         platform = (String) dataDict.get("platform");
+
+        createDate = (Integer) dataDict.get("create_date");
+        lastVistDate = (Integer) dataDict.get("last_visit_date");
 
         ArrayList<HashMap<String, Object>> cardArray = (ArrayList<HashMap<String, Object>>) dataDict.get("cards");
         if (cardArray != null) {
@@ -107,7 +113,9 @@ public class Pack {
                 cardDict.put("logo_url", cur.getString(8));
                 cardDict.put("creator_id", cur.getString(9));
                 cardDict.put("platform", cur.getString(10));
-                cardDict.put("creator_nick_name", cur.getString(11));
+                cardDict.put("create_date", cur.getInt(11));
+                cardDict.put("last_visit_date", cur.getInt(12));
+                cardDict.put("creator_nick_name", cur.getString(13));
                 if (isSummary) {
 
                 } else {
@@ -134,6 +142,10 @@ public class Pack {
         }
     }
 
+
+/*
+No new card included
+ */
     public void saveAllCards(Context context) {
         try {
             SQLiteHelper.defaultDatabase(context).beginTransaction();
@@ -150,7 +162,7 @@ public class Pack {
 
 
     private void update(Context context) {
-        String query = String.format("UPDATE Packs_Tables SET pack_name=\"%s\",sidebar_title=\"%s\",user_id= %d,question_title=\"%s\",answer_title=\"%s\",cover_image=\"%s\",logo_image=\"%s\",logo_url=\"%s\",creator_id= \"%s\",creator_nick_name=\"%s\",platform=\"%s\" WHERE pack_id=%d", packName, sidebarTitle, userID, questionTitle, answerTitle, coverImageUriFormatStr, logoImageUriFormatStr, logoURL, creatorID, creatorNickName, platform, packID);
+        String query = String.format("UPDATE Packs_Tables SET pack_name=\"%s\",sidebar_title=\"%s\",user_id= %d,question_title=\"%s\",answer_title=\"%s\",cover_image=\"%s\",logo_image=\"%s\",logo_url=\"%s\",creator_id= \"%s\",creator_nick_name=\"%s\",platform=\"%s\",create_date= %d,last_visit_date= %d WHERE pack_id=%d", packName, sidebarTitle, userID, questionTitle, answerTitle, coverImageUriFormatStr, logoImageUriFormatStr, logoURL, creatorID, creatorNickName, platform,createDate,lastVistDate, packID);
         SQLiteHelper.defaultDatabase(context).execSQL(query);
     }
 
@@ -160,7 +172,7 @@ public class Pack {
             packID = Global.generateNoRepeatInt();
         }
 
-        String query = String.format("INSERT INTO Packs_Tables(pack_id, pack_name, sidebar_title, user_id, question_title, answer_title, cover_image,logo_image,logo_url,creator_id,creator_nick_name,platform) VALUES (%d,\"%s\",\"%s\",%d,\"%s\",\"%s\",\"%s\",\"%s\",\"%s\",\"%s\",\"%s\",\"%s\")", packID, packName, sidebarTitle, userID, questionTitle, answerTitle, coverImageUriFormatStr, logoImageUriFormatStr, logoURL, creatorID, creatorNickName, platform);
+        String query = String.format("INSERT INTO Packs_Tables(pack_id, pack_name, sidebar_title, user_id, question_title, answer_title, cover_image,logo_image,logo_url,creator_id,creator_nick_name,platform,create_date,last_visit_date) VALUES (%d,\"%s\",\"%s\",%d,\"%s\",\"%s\",\"%s\",\"%s\",\"%s\",\"%s\",\"%s\",\"%s\",%d,%d)", packID, packName, sidebarTitle, userID, questionTitle, answerTitle, coverImageUriFormatStr, logoImageUriFormatStr, logoURL, creatorID, creatorNickName, platform,createDate,lastVistDate);
         SQLiteHelper.defaultDatabase(context).execSQL(query);
     }
 
@@ -199,5 +211,16 @@ public class Pack {
             SQLiteHelper.defaultDatabase(context).endTransaction();
         }
 
+    }
+
+    public void removeCard (Context context,Card card) {
+        cards.remove(card);
+        card.destroy(context);
+    }
+
+    public void addCard (Context context,Card card) {
+        card.packID = packID;
+        cards.add(card);
+        card.save(context);
     }
 }

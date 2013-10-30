@@ -78,6 +78,8 @@ public class SQLiteHelper {
                     + "cover_image" + " TEXT," + "logo_image" + " TEXT,"
                     + "logo_url" + " TEXT," + "creator_id" + " TEXT,"
                     + "platform" + " TEXT,"
+                    + "create_date" + " INTEGER,"
+                    + "last_visit_date" + " INTEGER,"
                     + "creator_nick_name" + " TEXT)");
             db.execSQL("CREATE INDEX IF NOT EXISTS IA on Packs_Tables(pack_id)");
 

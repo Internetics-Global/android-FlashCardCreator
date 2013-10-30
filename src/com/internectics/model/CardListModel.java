@@ -68,26 +68,13 @@ public class CardListModel {
      */
     public static Pack getLatestCreatedPack() {
         Pack latestPack;
-        String packIDString = AppConfig.sharedInstance().get(Global.mostRecentPackCreatedID_Property);
 
-        ArrayList<Pack> packs = User.defaultUser(AppContext.getAppContext()).packs;
+        ArrayList<Pack> packs = User.defaultUser(AppContext.getAppContext()).sortPacks(0);
 
         //case1: no pack
         if (packs.size() == 0)
             return null;
 
-        //case2: existing last saved pack
-        if (packIDString != null) {
-            for (int i = 0; i < packs.size(); i++) {
-                if (packs.get(i).packID == Integer.parseInt(packIDString)) {
-                    latestPack = packs.get(i);
-                    Log.d(Global.debugTag, "latest Pack's ID is:" + packIDString);
-                    return latestPack;
-                }
-            }
-        }
-
-        //case3: return first pack
         latestPack = packs.get(0);
 
         return latestPack;

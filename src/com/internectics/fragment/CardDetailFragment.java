@@ -1233,7 +1233,7 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnKeyboa
             takeSnapshotCurrentCard();
         }
 
-        mCurrentCard.save(AppContext.getAppContext());
+        mCurrentPack.addCard(AppContext.getAppContext(),mCurrentCard);
         Log.d(Global.debugTag, "finish execution of saveNewCreatedCard");
 
         mIsTakeSnapshotAllNeeded = false;

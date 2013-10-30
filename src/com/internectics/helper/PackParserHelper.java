@@ -53,7 +53,7 @@ public class PackParserHelper {
 
             resultCard.packID = resultPack.packID; //this is necessary
 
-            resultCard.save(AppContext.getAppContext());
+            resultPack.addCard(AppContext.getAppContext(),resultCard);
 
         }
 
@@ -115,6 +115,9 @@ public class PackParserHelper {
             pack.platform = (String) obj.get("platform");
             pack.userID = Global.USER_ID; // there's no this information in json file, so we have to add manually
             pack.packID = Global.generateNoRepeatInt();
+
+            pack.createDate = (int)System.currentTimeMillis();
+            pack.lastVistDate = (int)System.currentTimeMillis();
 
             if (pack.platform.contains("iPhone") == true) {
                 mScreenWidthFromSharedDevice = 640;
