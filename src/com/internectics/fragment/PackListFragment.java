@@ -351,6 +351,12 @@ public class PackListFragment extends Fragment {
                     changeCoverImageButton.setVisibility(View.INVISIBLE);
                 }
 
+                if (mUser.packs.get(position -1).creatorID.equals(OpenUDID_manager.getOpenUDID())) {
+
+                } else {
+                    changeCoverImageButton.setVisibility(View.INVISIBLE);
+                }
+
 
                 packNameView.setText(mUser.packs.get(position -1).packName);
             }
@@ -380,7 +386,8 @@ public class PackListFragment extends Fragment {
                     cursor.moveToFirst();
                     int columnIndex;
                     // if it is a picasa image on newer devices with OS 3.0 and up
-                    if (selectedImageURI.toString().startsWith("content://com.google.android.gallery3d")){
+                    if ((selectedImageURI.toString().startsWith("content://com.google.android.gallery3d"))
+                            ||(selectedImageURI.toString().startsWith("content://com.sec.android.gallery3d"))){
                         columnIndex = cursor.getColumnIndex(MediaStore.MediaColumns.DISPLAY_NAME);
                         if (columnIndex != -1) {
                             final Uri picasaUri = selectedImageURI;

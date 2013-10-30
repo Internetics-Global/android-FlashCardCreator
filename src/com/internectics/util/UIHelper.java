@@ -159,7 +159,8 @@ public class UIHelper {
 
             //Step1: copy picasa image to local
             InputStream is = null;
-            if (url.toString().startsWith("content://com.google.android.gallery3d")) {
+            if ((url.toString().startsWith("content://com.google.android.gallery3d"))
+            ||(url.toString().startsWith("content://com.sec.android.gallery3d"))){
                 is=context.getContentResolver().openInputStream(url);
             } else {
                 is=new URL(url.toString()).openStream();
