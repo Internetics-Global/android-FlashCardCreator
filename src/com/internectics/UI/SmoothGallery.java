@@ -1,0 +1,35 @@
+package com.internectics.UI;
+
+import android.content.Context;
+import android.os.SystemClock;
+import android.util.AttributeSet;
+import android.view.MotionEvent;
+import android.widget.Gallery;
+
+/**
+ * make scroll smooth
+ */
+public class SmoothGallery extends Gallery {
+
+    private long mLastScrollEvent;
+
+    public SmoothGallery(Context context) {
+        super(context);
+    }
+
+    public SmoothGallery(Context context, AttributeSet attrs) {
+        super(context, attrs);
+    }
+
+    public SmoothGallery(Context context, AttributeSet attrs, int defStyle) {
+        super(context, attrs, defStyle);
+    }
+
+    @Override
+    protected void onLayout(boolean changed, int l, int t, int r, int b) {
+        int viewsOnScreen = getLastVisiblePosition() - getFirstVisiblePosition();
+        if(viewsOnScreen <= 0)
+            super.onLayout(changed, l, t, r, b);
+
+    }
+}

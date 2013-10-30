@@ -22,6 +22,8 @@ import android.view.ViewGroup;
 import android.view.inputmethod.EditorInfo;
 import android.widget.*;
 import android.widget.AdapterView.OnItemClickListener;
+
+import com.internectics.UI.SmoothGallery;
 import com.internectics.android_flashcardcreator.MainActivity;
 import com.internectics.android_flashcardcreator.PlayActivity;
 import com.internectics.android_flashcardcreator.R;
@@ -37,7 +39,7 @@ import java.io.FileNotFoundException;
 public class PackListFragment extends Fragment {
 
     private boolean mIsEditStatus;
-    private Gallery mGallery;
+    private SmoothGallery mGallery;
     private int CODE_REQUEST_IMAGE_FROM_IMAGE_LIBRARY = 1001;
     private int mIndexOfCurrentPack;
 
@@ -102,7 +104,7 @@ public class PackListFragment extends Fragment {
         closeButton.setVisibility(View.INVISIBLE);
 
 
-        mGallery = (Gallery) mRootView.findViewById(R.id.pack_list_gallery);
+        mGallery = (SmoothGallery) mRootView.findViewById(R.id.pack_list_gallery);
         // Set the adapter to our custom adapter (below)
         mGallery.setAdapter(new ImageAdapter(getActivity()));
         mGallery.setSelection(1);
