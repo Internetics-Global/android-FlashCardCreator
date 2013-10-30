@@ -26,10 +26,24 @@ public class SmoothGallery extends Gallery {
     }
 
     @Override
-    protected void onLayout(boolean changed, int l, int t, int r, int b) {
-        int viewsOnScreen = getLastVisiblePosition() - getFirstVisiblePosition();
-        if(viewsOnScreen <= 0)
+    protected void onLayout(boolean changed, int l, int t, int r, int b)
+    {
+        long now = SystemClock.uptimeMillis();
+        if (Math.abs(now - mLastScrollEvent) > 250) {
             super.onLayout(changed, l, t, r, b);
+        }
+    }
 
+    @Override
+    public boolean onScroll(MotionEvent e1, MotionEvent e2, float distanceX,
+                            float distanceY)
+    {
+        mLastScrollEvent = SystemClock.uptimeMillis();
+
+        if (Math.abs(distanceX) > 2.5){
+        return super.onScroll(e1, e2, distanceX, distanceY);
+        }else{
+        return false;
+    }
     }
 }
