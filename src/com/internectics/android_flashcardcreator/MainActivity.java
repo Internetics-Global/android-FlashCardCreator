@@ -193,7 +193,7 @@ public class MainActivity extends FragmentActivity implements
                 break;
             case R.id.actionbar_packs:
                 View popupLayout = inflater.inflate(R.layout.pack_list, null, false);
-                mPopupWindow = new PopupWindow(getResources().getDimensionPixelSize(R.dimen.pack_list_width), getResources().getDimensionPixelSize(R.dimen.pack_list_window_height));
+                mPopupWindow = new PopupWindow(UIHelper.getScreenWidth(this)- 50, getResources().getDimensionPixelSize(R.dimen.pack_list_window_height));
                 mPopupWindow.setFocusable(true);
                 mPopupWindow.setOutsideTouchable(true);
                 mPopupWindow.setBackgroundDrawable(getResources().getDrawable(R.drawable.shape_popupwindow_background));
@@ -391,7 +391,7 @@ public class MainActivity extends FragmentActivity implements
     public void showPackListView() {
         LayoutInflater inflater = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         View popupLayout = inflater.inflate(R.layout.pack_list, null, false);
-        mPopupWindow = new PopupWindow(getResources().getDimensionPixelSize(R.dimen.pack_list_width), getResources().getDimensionPixelSize(R.dimen.pack_list_window_height));
+        mPopupWindow = new PopupWindow(UIHelper.getScreenWidth(this)- 50, getResources().getDimensionPixelSize(R.dimen.pack_list_window_height));
         mPopupWindow.setFocusable(true);
         mPopupWindow.setOutsideTouchable(true);
         mPopupWindow.setBackgroundDrawable(getResources().getDrawable(R.drawable.shape_popupwindow_background));

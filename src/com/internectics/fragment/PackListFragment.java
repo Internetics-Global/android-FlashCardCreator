@@ -25,6 +25,7 @@ import android.widget.AdapterView.OnItemClickListener;
 import com.internectics.android_flashcardcreator.MainActivity;
 import com.internectics.android_flashcardcreator.PlayActivity;
 import com.internectics.android_flashcardcreator.R;
+import com.internectics.android_flashcardcreator.WebViewActivity;
 import com.internectics.data.Pack;
 import com.internectics.data.User;
 import com.internectics.helper.FileOperationHelper;
@@ -98,6 +99,7 @@ public class PackListFragment extends Fragment {
         mGallery = (Gallery) mRootView.findViewById(R.id.pack_list_gallery);
         // Set the adapter to our custom adapter (below)
         mGallery.setAdapter(new ImageAdapter(getActivity()));
+        mGallery.setSelection(1);
         mGallery.setOnItemClickListener(new OnItemClickListener() {
             public void onItemClick(AdapterView<?> parent, View v, int position, long id) {
                 if (position ==0) {
@@ -117,6 +119,23 @@ public class PackListFragment extends Fragment {
             }
         });
 
+
+        final Button newUserButton = (Button) mRootView.findViewById(R.id.new_user_btn);
+        newUserButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getActivity(), WebViewActivity.class);
+                intent.putExtra("url", "http://www.youtube.com.au");
+                startActivity(intent);
+            }
+        });
+
+        final Button sortButton = (Button) mRootView.findViewById(R.id.sort_btn);
+        sortButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+            }
+        });
 
         return mRootView;
     }

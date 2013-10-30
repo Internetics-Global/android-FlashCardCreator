@@ -100,7 +100,6 @@ public class UIHelper {
         Display display = activity.getWindowManager().getDefaultDisplay();
         int width = display.getWidth();
 
-
         return width;
     }
 

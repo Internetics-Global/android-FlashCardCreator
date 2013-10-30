@@ -18,7 +18,7 @@
 
     <!--pack list related-->
     <dimen name="pack_list_width">624dp</dimen>
-    <dimen name="pack_list_window_height">330dp</dimen>
+    <dimen name="pack_list_window_height">380dp</dimen>
     <!--title bar height is 48dp-->
     <dimen name="pack_list_height">290dp</dimen>
     <dimen name="pack_list_item_width">230dp</dimen>
