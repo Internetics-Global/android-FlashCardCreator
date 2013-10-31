@@ -16,6 +16,7 @@
             android:textColor="#FFFFFF"
             android:gravity="center"
             android:singleLine="true"
+            android:textCursorDrawable="@null"
             android:imeOptions="actionDone"
             android:background="@null"
             android:inputType="textNoSuggestions"
