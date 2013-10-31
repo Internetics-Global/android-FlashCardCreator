@@ -11,7 +11,7 @@
             android:layout_height="0dp"
             android:layout_weight="25"
             android:text="default"
-            android:enabled="false"
+            android:enabled="true"
             android:textSize="@dimen/pack_list_text_size"
             android:textColor="#FFFFFF"
             android:gravity="center"

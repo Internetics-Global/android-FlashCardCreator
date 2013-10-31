@@ -17,6 +17,7 @@ import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.provider.MediaStore;
 import android.support.v4.app.Fragment;
+import android.text.InputType;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
@@ -111,7 +112,7 @@ public class PackListFragment extends Fragment {
         mGallery = (SmoothGallery) mRootView.findViewById(R.id.pack_list_gallery);
         // Set the adapter to our custom adapter (below)
         mGallery.setAdapter(new ImageAdapter(getActivity()));
-        mGallery.setSelection(1);
+        mGallery.setSelection(1); //when set this, everytime after notifyDataSetChanged finishe, getView(1) will be called one more
         mGallery.setOnItemClickListener(new OnItemClickListener() {
             public void onItemClick(AdapterView<?> parent, View v, int position, long id) {
                 if (position ==0) {
@@ -358,11 +359,14 @@ public class PackListFragment extends Fragment {
                         changeCoverImageButton.setVisibility(View.VISIBLE);
                         packNameView.setTextColor(Color.BLACK);
                         packNameView.setEnabled(true);
+                        packNameView.setFocusable(true);
+                        packNameView.setInputType(InputType.TYPE_TEXT_FLAG_NO_SUGGESTIONS);
                     } else {
                         changeCoverImageButton.setVisibility(View.INVISIBLE);
                         packNameView.setBackgroundColor(Color.TRANSPARENT);
                         packNameView.setTextColor(Color.WHITE);
                         packNameView.setEnabled(false);
+                        packNameView.setFocusable(false);
                     }
 
                     if (mUser.packs.size() <= 1) {
@@ -374,6 +378,7 @@ public class PackListFragment extends Fragment {
 
                 } else {
                     packNameView.setEnabled(false);
+                    packNameView.setFocusable(false);
                     packNameView.setBackgroundColor(Color.TRANSPARENT);
                     packNameView.setTextColor(Color.WHITE);
                     deleteButton.setVisibility(View.INVISIBLE);
