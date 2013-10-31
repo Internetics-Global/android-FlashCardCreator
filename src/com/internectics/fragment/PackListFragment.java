@@ -11,6 +11,7 @@ import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
@@ -183,7 +184,7 @@ public class PackListFragment extends Fragment {
                 }
             }
         });
-        
+
         switch (mSortType) {
             case 0: {
                 sortButton.setText("Sorted by recently created first");
@@ -372,11 +373,15 @@ public class PackListFragment extends Fragment {
                         }
                     }
 
+                    packNameView.setBackgroundColor(Color.WHITE);
+                    packNameView.setTextColor(Color.BLACK);
+
 
                 } else {
                     packNameView.setEnabled(false);
+                    packNameView.setBackgroundColor(Color.TRANSPARENT);
+                    packNameView.setTextColor(Color.WHITE);
                     deleteButton.setVisibility(View.INVISIBLE);
-
 
                     changeCoverImageButton.setText("Edit Cards");
                 }
@@ -393,6 +398,7 @@ public class PackListFragment extends Fragment {
 
 
                 packNameView.setText(mUser.packs.get(position -1).packName);
+
             }
 
 

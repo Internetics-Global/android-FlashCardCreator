@@ -24,18 +24,36 @@
 
     </EditText>
 
-    <ImageView
+
+    <FrameLayout
+        android:layout_width="fill_parent"
+        android:layout_marginTop="5dp"
+        android:layout_height="0dp"
+        android:layout_weight="100">
+
+
+        <ImageView
             android:id="@+id/pack_cover_image"
             android:layout_width="fill_parent"
-            android:layout_marginTop="5dp"
-            android:layout_gravity="center"
-            android:layout_height="0dp"
-            android:layout_weight="100"
+            android:layout_height="fill_parent"
             android:scaleType="fitCenter"
             android:src="@drawable/create_new_pack"
             android:background="@drawable/shape_image_round_corner">
 
-    </ImageView>
+        </ImageView>
+
+        <TextView
+            android:layout_height="fill_parent"
+            android:layout_width="fill_parent"
+            android:textAlignment="center"
+            android:textColor="@android:color/white"
+            android:textSize="14sp"
+            android:gravity="center_horizontal|bottom"
+            android:layout_marginBottom="15dp"
+            android:text="Create a new Pack"/>
+
+
+        </FrameLayout>
 
 
     <LinearLayout
