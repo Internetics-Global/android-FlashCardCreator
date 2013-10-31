@@ -356,7 +356,6 @@ public class PackListFragment extends Fragment {
 
                     if (mUser.packs.get(position -1).creatorID.equals(OpenUDID_manager.getOpenUDID())) {
                         changeCoverImageButton.setVisibility(View.VISIBLE);
-                        packNameView.setBackgroundColor(Color.WHITE);
                         packNameView.setTextColor(Color.BLACK);
                         packNameView.setEnabled(true);
                     } else {

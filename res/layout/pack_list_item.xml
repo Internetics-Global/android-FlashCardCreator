@@ -18,7 +18,7 @@
             android:singleLine="true"
             android:textCursorDrawable="@null"
             android:imeOptions="actionDone"
-            android:background="@null"
+            android:background="@drawable/shape_edittext_rounded_corner"
             android:inputType="textNoSuggestions"
             android:layout_marginTop="10dp">
 
