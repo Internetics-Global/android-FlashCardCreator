@@ -381,9 +381,12 @@ public class PackListFragment extends Fragment {
                     changeCoverImageButton.setText("Edit Cards");
                 }
 
-                if ((mSelectedItemIndex >=0 ) && (mSelectedItemIndex != position)){
+                if (((mSelectedItemIndex >=0 ) && (mSelectedItemIndex != position))
+                        ||((currentPack.creatorID.equals(OpenUDID_manager.getOpenUDID()) == false)&&(currentPack.packID == ((MainActivity)getActivity()).packIDForMasterViewPack))){
+
                     changeCoverImageButton.setVisibility(View.INVISIBLE);
                 }
+                //Log.d(Global.debugTag3,currentPack.creatorID + "====" + OpenUDID_manager.getOpenUDID() + "----" + position + "packID: " + currentPack.packID + "PackID2: " + ((MainActivity)getActivity()).packIDForMasterViewPack);
 
                 packNameView.setText(mUser.packs.get(position -1).packName);
 

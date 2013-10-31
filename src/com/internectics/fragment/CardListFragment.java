@@ -61,8 +61,10 @@ public class CardListFragment extends Fragment {
 
     public CardListFragment() {
         mCurrentPack = CardListModel.getLatestCreatedPack();
+
         if (mCurrentPack != null) {
             mCardArrayList = CardListModel.getCardList(mCurrentPack);
+
         } else {
             mCardArrayList = new ArrayList<HashMap<String, Object>>();
         }
@@ -115,6 +117,9 @@ public class CardListFragment extends Fragment {
         filter.addAction(Global.BROADCAST_ACTION_UPDATE_MASTER_VIEW);
         getActivity().registerReceiver(mReceiver, filter);
 
+        if (mCurrentPack != null) {
+            ((MainActivity)getActivity()).packIDForMasterViewPack = mCurrentPack.packID;
+        }
 
         return mContentView;
     }
