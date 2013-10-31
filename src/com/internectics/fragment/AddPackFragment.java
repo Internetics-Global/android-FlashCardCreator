@@ -4,9 +4,11 @@ import android.app.Activity;
 import android.app.DialogFragment;
 import android.content.Context;
 import android.content.Intent;
+import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.util.Log;
 import android.view.*;
 import android.view.inputmethod.EditorInfo;
@@ -198,9 +200,30 @@ public class AddPackFragment extends DialogFragment implements TextView.OnEditor
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == CODE_REQUEST_IMAGE_FROM_IMAGE_LIBRARY) {
             if (resultCode == Activity.RESULT_OK) {
+
+                Bitmap resultBitmap = null;
                 Uri selectedImageURI = data.getData();
 
-                Bitmap resultBitmap = UIHelper.resizeImageTo400(getActivity(), selectedImageURI);
+                //step1: get image
+                final String[] filePathColumn = { MediaStore.MediaColumns.DATA, MediaStore.MediaColumns.DISPLAY_NAME };
+                Cursor cursor = getActivity().getContentResolver().query(selectedImageURI, filePathColumn, null, null, null);
+                if (cursor != null) {
+                    cursor.moveToFirst();
+                    int columnIndex;
+                    // if it is a picasa image on newer devices with OS 3.0 and up
+                    if ((selectedImageURI.toString().startsWith("content://com.google.android.gallery3d"))
+                            ||(selectedImageURI.toString().startsWith("content://com.sec.android.gallery3d"))){
+                        columnIndex = cursor.getColumnIndex(MediaStore.MediaColumns.DISPLAY_NAME);
+                        if (columnIndex != -1) {
+                            final Uri picasaUri = selectedImageURI;
+                            resultBitmap = UIHelper.getResized400SizeBitmapFromPicasa(getActivity(), picasaUri);
+                        }
+                    } else { // it is a regular local image file
+                        resultBitmap = UIHelper.resizeImageTo400(getActivity(), selectedImageURI);
+                    }
+                    cursor.close();
+                }
+
                 if (resultBitmap == null) {
                     Log.w(Global.debugTag, "resultBitmap is null");
                 } else {
