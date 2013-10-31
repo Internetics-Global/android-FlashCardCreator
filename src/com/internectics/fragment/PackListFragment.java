@@ -352,29 +352,25 @@ public class PackListFragment extends Fragment {
 
                 if ((mIsEditStatus) && (mSelectedItemIndex == position)) {
 
-                    packNameView.setEnabled(true);
-                    deleteButton.setVisibility(View.INVISIBLE);
-
                     changeCoverImageButton.setText("Change Image");
 
                     if (mUser.packs.get(position -1).creatorID.equals(OpenUDID_manager.getOpenUDID())) {
                         changeCoverImageButton.setVisibility(View.VISIBLE);
+                        packNameView.setBackgroundColor(Color.WHITE);
+                        packNameView.setTextColor(Color.BLACK);
+                        packNameView.setEnabled(true);
                     } else {
                         changeCoverImageButton.setVisibility(View.INVISIBLE);
+                        packNameView.setBackgroundColor(Color.TRANSPARENT);
+                        packNameView.setTextColor(Color.WHITE);
+                        packNameView.setEnabled(false);
                     }
 
                     if (mUser.packs.size() <= 1) {
                         deleteButton.setVisibility(View.INVISIBLE);
                     } else {
-                        if (((MainActivity) getActivity()).mCurrentPack.packID == mUser.packs.get(position - 1).packID) {
-                            deleteButton.setVisibility(View.INVISIBLE);
-                        } else {
-                            deleteButton.setVisibility(View.VISIBLE);
-                        }
                     }
 
-                    packNameView.setBackgroundColor(Color.WHITE);
-                    packNameView.setTextColor(Color.BLACK);
 
 
                 } else {
@@ -389,13 +385,6 @@ public class PackListFragment extends Fragment {
                 if ((mSelectedItemIndex >=0 ) && (mSelectedItemIndex != position)){
                     changeCoverImageButton.setVisibility(View.INVISIBLE);
                 }
-
-                if (mUser.packs.get(position -1).creatorID.equals(OpenUDID_manager.getOpenUDID())) {
-
-                } else {
-                    changeCoverImageButton.setVisibility(View.INVISIBLE);
-                }
-
 
                 packNameView.setText(mUser.packs.get(position -1).packName);
 

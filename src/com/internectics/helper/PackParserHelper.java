@@ -5,6 +5,7 @@ import android.util.Log;
 import com.internectics.android_flashcardcreator.R;
 import com.internectics.data.Card;
 import com.internectics.data.Pack;
+import com.internectics.data.User;
 import com.internectics.util.AppContext;
 import com.internectics.util.Global;
 import com.internectics.util.StringUtils;
@@ -61,7 +62,7 @@ public class PackParserHelper {
         resultPack.coverImageUriFormatStr = FileOperationHelper.convertToUriFormatFile(newFile);
         newFile = FileOperationHelper.copyImageToImagesFolder(getLogoImageFullPath(resultPack.logoImageUriFormatStr));
         resultPack.logoImageUriFormatStr = FileOperationHelper.convertToUriFormatFile(newFile);
-        resultPack.save(AppContext.getAppContext());
+        User.defaultUser(AppContext.getAppContext()).addPack(resultPack);
 
     }
 
