@@ -75,6 +75,8 @@ public class MainActivity extends FragmentActivity implements
     private boolean mIsAllowDownload;
     private boolean mSemaphore;
 
+    public int packIDForMasterViewPack;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

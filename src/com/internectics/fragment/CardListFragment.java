@@ -299,6 +299,8 @@ public class CardListFragment extends Fragment {
                     mCurrentPack = CardListModel.getPack(bundle.getInt("EXTRA_PACK_ID"));
                 }
 
+                ((MainActivity)getActivity()).packIDForMasterViewPack = mCurrentPack.packID;
+
                 //step2: update listview
                 updateListView(extraCardIndex);
             }

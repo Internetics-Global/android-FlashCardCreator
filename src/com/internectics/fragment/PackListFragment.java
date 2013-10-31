@@ -388,6 +388,10 @@ public class PackListFragment extends Fragment {
 
                 packNameView.setText(mUser.packs.get(position -1).packName);
 
+                if (currentPack.packID == ((MainActivity)getActivity()).packIDForMasterViewPack) {
+                    deleteButton.setVisibility(View.INVISIBLE);
+                }
+
             }
 
 
