@@ -53,6 +53,9 @@ public class Global {
     public static int currentAmazonSimpleDBItemDownloadCount = -1;
     public static String currentAmazonSimpleDBItemName = "";
 
+    //
+    public static final String sortType = "sort_Type";
+
 
     /**
      * detect network

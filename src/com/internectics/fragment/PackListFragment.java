@@ -7,11 +7,13 @@ import android.content.ContentResolver;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.provider.MediaStore;
 import android.support.v4.app.Fragment;
 import android.util.Log;
@@ -45,7 +47,7 @@ public class PackListFragment extends Fragment {
 
     private View mRootView;
 
-    private int  mSortType = 2;
+    private int  mSortType;
 
     private int mSelectedItemIndex = -1;
 
@@ -57,7 +59,8 @@ public class PackListFragment extends Fragment {
 
         mUser = User.defaultUser(AppContext.getAppContext());
 
-        mSortType = 2;
+        SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(AppContext.getAppContext());
+        mSortType = sp.getInt(Global.sortType,2);
         mUser.sortPacks(mSortType);
 
 
@@ -153,6 +156,12 @@ public class PackListFragment extends Fragment {
                         sortButton.setTag("1");
                         mUser.sortPacks(0);
                         sortButton.setText("Sorted by recently created first");
+
+                        SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(AppContext.getAppContext());
+                        SharedPreferences.Editor editor = sp.edit();
+                        editor.putInt(Global.sortType,0);
+                        editor.commit();
+
                         ((ImageAdapter) mGallery.getAdapter()).notifyDataSetChanged();
 
                         break;
@@ -161,6 +170,12 @@ public class PackListFragment extends Fragment {
                         sortButton.setTag("0");
                         mUser.sortPacks(2);
                         sortButton.setText("Sorted by recently viewed first");
+
+                        SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(AppContext.getAppContext());
+                        SharedPreferences.Editor editor = sp.edit();
+                        editor.putInt(Global.sortType,2);
+                        editor.commit();
+
                         ((ImageAdapter) mGallery.getAdapter()).notifyDataSetChanged();
 
                         break;
@@ -168,6 +183,19 @@ public class PackListFragment extends Fragment {
                 }
             }
         });
+        
+        switch (mSortType) {
+            case 0: {
+                sortButton.setText("Sorted by recently created first");
+                break;
+            }
+            case 2: {
+                sortButton.setText("Sorted by recently visited first");
+                break;
+            }
+            default:
+                break;
+        }
 
         return mRootView;
     }
