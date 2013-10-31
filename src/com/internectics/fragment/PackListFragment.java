@@ -386,7 +386,7 @@ public class PackListFragment extends Fragment {
                     changeCoverImageButton.setText("Edit Cards");
                 }
 
-                if (((mSelectedItemIndex >=0 ) && (mSelectedItemIndex != position))
+                if (((mSelectedItemIndex >=0 ) && (mSelectedItemIndex != position) && mIsEditStatus)
                         ||((currentPack.creatorID.equals(OpenUDID_manager.getOpenUDID()) == false)&&(currentPack.packID == ((MainActivity)getActivity()).packIDForMasterViewPack))){
 
                     changeCoverImageButton.setVisibility(View.INVISIBLE);
