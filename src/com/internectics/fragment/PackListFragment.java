@@ -221,6 +221,10 @@ public class PackListFragment extends Fragment {
                 playImageView.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
+
+                        currentPack.lastVistDate = (int)System.currentTimeMillis();
+                        currentPack.save(AppContext.getAppContext());
+
                         ((MainActivity) getActivity()).mPopupWindow.dismiss();
                         Intent intent = new Intent(getActivity(), PlayActivity.class);
                         intent.putExtra("packID", currentPack.packID);
