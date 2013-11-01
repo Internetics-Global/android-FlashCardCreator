@@ -6,6 +6,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.AsyncTask;
+import android.text.InputType;
 import android.util.Log;
 import android.widget.EditText;
 import android.widget.Toast;
@@ -121,6 +122,8 @@ public class PackDownloadHelper extends AsyncTask<Void, Long, Boolean> {
                 if (zipFile.isEncrypted()) {
 
                     final EditText passwordEditText = new EditText(mContext);
+                    passwordEditText.setSingleLine(true);
+                    passwordEditText.setInputType(InputType.TYPE_TEXT_FLAG_NO_SUGGESTIONS);
                     new AlertDialog.Builder(mContext)
                             .setTitle("Input a password")
                             .setIcon(android.R.drawable.ic_dialog_info)
