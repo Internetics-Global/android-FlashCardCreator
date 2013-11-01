@@ -121,7 +121,7 @@ public class Question {
         String query = String.format("DELETE FROM Question_Tables WHERE card_id=%d", cardID);
         SQLiteHelper.defaultDatabase(context).execSQL(query);
 
-        if (!StringUtils.isNumeric(imageUriFormatStr) && (!imageUriFormatStr.contains("question_placeholder_content.jpg"))) {
+        if (!StringUtils.isNumeric(imageUriFormatStr) && (!imageUriFormatStr.contains("placeholder"))) {
             File file = new File(FileOperationHelper.deleteUriSchemeHeader(this.imageUriFormatStr));
             if (file.delete()) {
                 Log.d(Global.debugTag, "Successful to delete imageUriFormatStr file in Question");

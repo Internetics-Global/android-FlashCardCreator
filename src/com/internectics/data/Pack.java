@@ -184,7 +184,7 @@ No new card included
             String query = String.format("DELETE FROM Packs_Tables WHERE pack_id=%d", packID);
             SQLiteHelper.defaultDatabase(context).execSQL(query);
 
-            if (!StringUtils.isNumeric(logoImageUriFormatStr)) {
+            if ((!StringUtils.isNumeric(logoImageUriFormatStr))&&(!logoImageUriFormatStr.contains("placeholder"))) {
                 File file = new File(FileOperationHelper.deleteUriSchemeHeader(this.logoImageUriFormatStr));
                 if (file.delete()) {
                     Log.d(Global.debugTag, "Successful to delete logoImageUriFormatStr file");
@@ -193,7 +193,7 @@ No new card included
                 }
             }
 
-            if (!StringUtils.isNumeric(coverImageUriFormatStr)) {
+            if ((!StringUtils.isNumeric(coverImageUriFormatStr))&&(!logoImageUriFormatStr.contains("placeholder"))) {
                 File file = new File(FileOperationHelper.deleteUriSchemeHeader(this.coverImageUriFormatStr));
                 if (file.delete()) {
                     Log.d(Global.debugTag, "Successful to delete coverImageUriFormatStr file in Pack");

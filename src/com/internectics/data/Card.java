@@ -120,7 +120,7 @@ public class Card {
         SQLiteHelper.defaultDatabase(context).execSQL(query);
 
         //Step2: delete image resources
-        if (!StringUtils.isNumeric(coverImageUriFormatStr)) {
+        if ((!StringUtils.isNumeric(coverImageUriFormatStr))&&(!coverImageUriFormatStr.contains("placeholder"))) {
             File file = new File(FileOperationHelper.deleteUriSchemeHeader(this.coverImageUriFormatStr));
             if (file.delete()) {
                 Log.d(Global.debugTag, "Successful to delete coverImageUriFormatStr file");
