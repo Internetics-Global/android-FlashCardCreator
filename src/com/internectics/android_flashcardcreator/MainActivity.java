@@ -162,6 +162,8 @@ public class MainActivity extends FragmentActivity implements
     }
 
 
+
+
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
 
@@ -319,7 +321,7 @@ public class MainActivity extends FragmentActivity implements
 
         if ((!isDownloaded) && (isReachable) && (mIsFromRestartApp)) {
             mIsFromRestartApp = false;
-            String downloableShareLink = "http://dl.dropbox.com/s/1evrmjjypjisb0o/Pack1366592957-936257718.zip";
+            String downloableShareLink = "http://dl.dropbox.com/s/k16jthgv3awwdvk/new%20example%202013.11.03.zip";
             File downloadedZipFile = new File(FileOperationHelper.downloadedPackDirectory(), "downloadedPackZip.zip");
             PackDownloadHelper packDownloadHelper = new PackDownloadHelper(MainActivity.this, downloableShareLink, downloadedZipFile.toString());
             packDownloadHelper.mIsFromExamplePackDownload = true;
