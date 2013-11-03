@@ -16,16 +16,6 @@
     </PreferenceCategory>
 
     <PreferenceCategory
-            android:title="@string/more_register">
-        <PreferenceScreen
-                android:key="register_preference"
-                android:title="@string/more_register"/>
-        <PreferenceScreen
-                android:key="submit_preference"
-                android:title="@string/more_submit"/>
-    </PreferenceCategory>
-
-    <PreferenceCategory
             android:title="@string/more_others">
         <PreferenceScreen
                 android:key="help_preference"
