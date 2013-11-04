@@ -112,7 +112,9 @@ public class PackListFragment extends Fragment {
         mGallery = (SmoothGallery) mRootView.findViewById(R.id.pack_list_gallery);
         // Set the adapter to our custom adapter (below)
         mGallery.setAdapter(new ImageAdapter(getActivity()));
-        mGallery.setSelection(1); //when set this, everytime after notifyDataSetChanged finishe, getView(1) will be called one more
+        if (mUser.packs.size() >0) {
+            mGallery.setSelection(1); //when set this, everytime after notifyDataSetChanged finishe, getView(1) will be called one more
+        }
         mGallery.setOnItemClickListener(new OnItemClickListener() {
             public void onItemClick(AdapterView<?> parent, View v, int position, long id) {
                 if (position ==0) {
@@ -238,7 +240,7 @@ public class PackListFragment extends Fragment {
             ImageView coverImageView = (ImageView) contentView.findViewById(R.id.pack_cover_image);
 
 
-            if (position != 0) {
+            if ((position != 0)&&(mUser.packs.size() > 0)) {
 
                 final Pack currentPack = mUser.packs.get(position -1);
 
