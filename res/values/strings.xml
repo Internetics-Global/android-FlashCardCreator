@@ -70,5 +70,10 @@
     <string name="alert_create_pack_first">Create a pack first before creating a new card</string>
     <string name="alert_fail_to_log_dropbox">Dropbox login failure. Please try again.</string>
     <string name="alert_can_not_create_card">You cannot create a card in pack you have not created yourself.</string>
+    <string name="new_user">New user?</string>
+    <string name="sorted_by_recently_viewed_first">Sorted by recently viewed first</string>
+    <string name="sorted_by_recently_created_first">Sorted by recently created first</string>
+    <string name="create_new_pack">Create New Pack</string>
+
 
 </resources>
