@@ -599,7 +599,7 @@ public class MainActivity extends FragmentActivity implements
         Intent intent = new Intent();
         intent.setAction(Global.BROADCAST_ACTION_UPDATE_MASTER_VIEW);
         intent.putExtra(Global.KEY_FROM, Global.BROADCAST_EXTRA_FROM_NEW_CARD);
-        intent.putExtra(Global.KEY_CARD_INDEX, mCurrentPack.cards.size());
+        intent.putExtra(Global.KEY_CARD_INDEX, (mCurrentPack.cards.size()-1));
         sendBroadcast(intent);
 
     }
