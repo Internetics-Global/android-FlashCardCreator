@@ -1832,6 +1832,7 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnKeyboa
 
         if ((mCurrentFocusedCardContentText == null) || (mCurrentFocusedCardContentText.getTag() == null)) {
             Log.e(Global.debugTag,"mCurrentFocusedCardContentText or mCurrentFocusedCardContentText.getTag()  is null during execution on updateCSS");
+            return;
         }
 
         //Step2: determine operaton target
