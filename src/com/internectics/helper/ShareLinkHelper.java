@@ -32,6 +32,7 @@ import org.apache.http.impl.client.DefaultHttpClient;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLConnection;
@@ -70,6 +71,9 @@ public class ShareLinkHelper extends AsyncTask<Void, Long, Boolean> {
             DropboxAPI.DropboxLink link = DropboxHelper.getDropboxAPI().share(mFilePathInDropbox);
             String shortedShareLink = link.url;
             String shareLink = getUnshortedURL(shortedShareLink);
+            if (shareLink == null) {
+                return false;
+            }
             mUnshortedFCCShareLink = shareLink.replace("https","fcc").replace("http","fcc");
             Log.d(Global.debugTag, "the fcc share linkage is: " + mUnshortedFCCShareLink);
             String redirectedShareLink = getRidirectedURL(mUnshortedFCCShareLink);
@@ -137,20 +141,21 @@ public class ShareLinkHelper extends AsyncTask<Void, Long, Boolean> {
     }
 
     public static String getUnshortedURL(String shortedURL) {
-        URLConnection conn = null;
+        String location = null;
         try {
-            URL inputURL = new URL(shortedURL);
-            conn = inputURL.openConnection();
+            final URL url = new URL(shortedURL);
+            final HttpURLConnection urlConnection = (HttpURLConnection) url.openConnection();
+            urlConnection.setInstanceFollowRedirects(false);
+            location = urlConnection.getHeaderField("location");
+            Log.d(Global.debugTag,"unshortened url is: " + location);
 
         } catch (MalformedURLException e) {
-            Log.d(Global.debugTag,"Please input a valid URL");
-        } catch (IOException ioe) {
-            Log.d(Global.debugTag,"Can not connect to the URL");
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
         }
 
-        String str =  conn.getHeaderField("location");
-
-        return str;
+        return location;
 
     }
 
