@@ -145,7 +145,7 @@ public class ShareLinkHelper extends AsyncTask<Void, Long, Boolean> {
         try {
             final URL url = new URL(shortedURL);
             final HttpURLConnection urlConnection = (HttpURLConnection) url.openConnection();
-            urlConnection.setInstanceFollowRedirects(false);
+            urlConnection.setInstanceFollowRedirects(false); //this is very important
             location = urlConnection.getHeaderField("location");
             Log.d(Global.debugTag,"unshortened url is: " + location);
 

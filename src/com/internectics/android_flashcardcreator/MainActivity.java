@@ -51,7 +51,6 @@ public class MainActivity extends FragmentActivity implements
     private boolean mIsGoingAuthorizationBeforeUpload = false;
     private boolean mIsNecessaryToRestoreCSSToolbar = false;
     private boolean mIsFromRestartApp = false;
-    private boolean mIsNecessaryToShowPackListAutomatically  = true;
 
     public Pack mCurrentPack = new Pack();//mCurrentPack will be automatically refreshed after creating a new card, add a new pack and new pack selected
     public int mCurrentCardIndex = 0;
@@ -149,13 +148,6 @@ public class MainActivity extends FragmentActivity implements
             item.setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS);
 
         }
-
-        if (mIsNecessaryToShowPackListAutomatically) {
-            //Used to show pack list
-            ShowPacklistAfterViewDidAppearTask dTask = new ShowPacklistAfterViewDidAppearTask();
-            dTask.execute(100);
-        }
-
 
 
         return true;
@@ -321,7 +313,7 @@ public class MainActivity extends FragmentActivity implements
 
         if ((!isDownloaded) && (isReachable) && (mIsFromRestartApp)) {
             mIsFromRestartApp = false;
-            String downloableShareLink = "http://dl.dropbox.com/s/k16jthgv3awwdvk/new%20example%202013.11.03.zip";
+            String downloableShareLink = "http://dl.dropbox.com/s/vmoadics2r6edni/Pack1383541900-532977974.zip";
             File downloadedZipFile = new File(FileOperationHelper.downloadedPackDirectory(), "downloadedPackZip.zip");
             PackDownloadHelper packDownloadHelper = new PackDownloadHelper(MainActivity.this, downloableShareLink, downloadedZipFile.toString());
             packDownloadHelper.mIsFromExamplePackDownload = true;
@@ -389,6 +381,11 @@ public class MainActivity extends FragmentActivity implements
         }
 
         getIntent().setData(null); //in case it will be recalled time and time
+
+        //Used to show pack list
+        ShowPacklistAfterViewDidAppearTask dTask = new ShowPacklistAfterViewDidAppearTask();
+        dTask.execute(100);
+
     }
 
     public void showPackListView() {
@@ -1055,7 +1052,6 @@ public class MainActivity extends FragmentActivity implements
         protected void onPostExecute(String result) {
             super.onPostExecute(result);
             showPackListView();
-            mIsNecessaryToShowPackListAutomatically = false;
 
         }
 
