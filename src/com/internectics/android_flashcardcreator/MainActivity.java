@@ -52,6 +52,8 @@ public class MainActivity extends FragmentActivity implements
     private boolean mIsNecessaryToRestoreCSSToolbar = false;
     private boolean mIsFromRestartApp = false;
 
+    public boolean mIsPackListShowing = false;
+
     public Pack mCurrentPack = new Pack();//mCurrentPack will be automatically refreshed after creating a new card, add a new pack and new pack selected
     public int mCurrentCardIndex = 0;
     public Card mCurrentCard = new Card();
@@ -194,6 +196,8 @@ public class MainActivity extends FragmentActivity implements
                 mPopupWindow.setBackgroundDrawable(getResources().getDrawable(R.drawable.shape_popupwindow_background));
                 mPopupWindow.setContentView(popupLayout);
                 mPopupWindow.showAsDropDown(findViewById(R.id.actionbar_packs));
+                mIsPackListShowing = true;
+
                 break;
 
             case R.id.actionbar_change_template_color:
@@ -383,8 +387,10 @@ public class MainActivity extends FragmentActivity implements
         getIntent().setData(null); //in case it will be recalled time and time
 
         //Used to show pack list
-        ShowPacklistAfterViewDidAppearTask dTask = new ShowPacklistAfterViewDidAppearTask();
-        dTask.execute(100);
+        if (mIsPackListShowing == false) {
+            ShowPacklistAfterViewDidAppearTask dTask = new ShowPacklistAfterViewDidAppearTask();
+            dTask.execute(100);
+        }
 
     }
 
@@ -396,7 +402,14 @@ public class MainActivity extends FragmentActivity implements
         mPopupWindow.setOutsideTouchable(true);
         mPopupWindow.setBackgroundDrawable(getResources().getDrawable(R.drawable.shape_popupwindow_background));
         mPopupWindow.setContentView(popupLayout);
+        mPopupWindow.setOnDismissListener(new PopupWindow.OnDismissListener() {
+            @Override
+            public void onDismiss() {
+                mIsPackListShowing = false;
+            }
+        });
         mPopupWindow.showAsDropDown(findViewById(R.id.actionbar_packs));
+        mIsPackListShowing = true;
     }
 
 
