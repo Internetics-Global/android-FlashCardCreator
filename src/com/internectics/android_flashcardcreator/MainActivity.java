@@ -54,6 +54,8 @@ public class MainActivity extends FragmentActivity implements
 
     public boolean mIsPackListShowing = false;
 
+
+
     public Pack mCurrentPack = new Pack();//mCurrentPack will be automatically refreshed after creating a new card, add a new pack and new pack selected
     public int mCurrentCardIndex = 0;
     public Card mCurrentCard = new Card();
@@ -317,7 +319,7 @@ public class MainActivity extends FragmentActivity implements
 
         if ((!isDownloaded) && (isReachable) && (mIsFromRestartApp)) {
             mIsFromRestartApp = false;
-            String downloableShareLink = "https://dl.dropbox.com/s/93qa5tu5cwgoaw3/checknetworkstatussample.zip";
+            String downloableShareLink = "https://dl.dropbox.com/s/f1qbzsis8d6y6mi/new%20example%202013.11.17.zip";
             File downloadedZipFile = new File(FileOperationHelper.downloadedPackDirectory(), "downloadedPackZip.zip");
             PackDownloadHelper packDownloadHelper = new PackDownloadHelper(MainActivity.this, downloableShareLink, downloadedZipFile.toString());
             packDownloadHelper.mIsFromExamplePackDownload = true;
