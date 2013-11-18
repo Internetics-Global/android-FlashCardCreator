@@ -228,6 +228,7 @@ public class MainActivity extends FragmentActivity implements
                 break;
             case R.id.actionbar_more:
                 startActivity(new Intent(MainActivity.this, MoreActivity.class));
+                mIsAllowedToShowPackList = false;
                 break;
 
             case R.id.actionbar_play:
@@ -236,6 +237,7 @@ public class MainActivity extends FragmentActivity implements
                 intent.putExtra("packID", mCurrentPack.packID);
                 startActivity(intent);
                 //overridePendingTransition(R.anim.in_from_bottom, R.anim.out_to_above);
+                mIsAllowedToShowPackList = false;
                 break;
 
             case R.id.actionbar_share_pack:
@@ -286,6 +288,7 @@ public class MainActivity extends FragmentActivity implements
 
             case R.id.actionbar_help:
                 startActivity(new Intent(MainActivity.this, InstructionActivity.class));
+                mIsAllowedToShowPackList = false;
                 break;
 
             default:
