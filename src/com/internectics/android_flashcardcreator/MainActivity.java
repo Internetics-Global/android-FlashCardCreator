@@ -191,17 +191,7 @@ public class MainActivity extends FragmentActivity implements
 
                 break;
             case R.id.actionbar_packs:
-                if (mPopupWindow == null) {
-                    View popupLayout = inflater.inflate(R.layout.pack_list, null, false);
-                    mPopupWindow = new PopupWindow(UIHelper.getScreenWidth(this)- 50, getResources().getDimensionPixelSize(R.dimen.pack_list_window_height));
-                    mPopupWindow.setFocusable(true);
-                    mPopupWindow.setOutsideTouchable(true);
-                    mPopupWindow.setBackgroundDrawable(getResources().getDrawable(R.drawable.shape_popupwindow_background));
-                    mPopupWindow.setContentView(popupLayout);
-                }
-                if ((mPopupWindow != null) &&(mPopupWindow.isShowing() == false)) {
-                    mPopupWindow.showAsDropDown(findViewById(R.id.actionbar_packs));
-                }
+                showPackListView();
 
                 break;
 
@@ -404,17 +394,24 @@ public class MainActivity extends FragmentActivity implements
     public void showPackListView() {
 
         if (mPopupWindow == null) {
-            LayoutInflater inflater = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-            View popupLayout = inflater.inflate(R.layout.pack_list, null, false);
             mPopupWindow = new PopupWindow(UIHelper.getScreenWidth(this)- 50, getResources().getDimensionPixelSize(R.dimen.pack_list_window_height));
             mPopupWindow.setFocusable(true);
             mPopupWindow.setOutsideTouchable(true);
             mPopupWindow.setBackgroundDrawable(getResources().getDrawable(R.drawable.shape_popupwindow_background));
-            mPopupWindow.setContentView(popupLayout);
+            mPopupWindow.setOnDismissListener(new PopupWindow.OnDismissListener() {
+                @Override
+                public void onDismiss() {
+                    mPopupWindow.dismiss();
+                }
+            });
+
 
         }
 
         if ((mPopupWindow != null) &&(mPopupWindow.isShowing() == false)) {
+            LayoutInflater inflater = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+            View popupLayout = inflater.inflate(R.layout.pack_list, null, false);
+            mPopupWindow.setContentView(popupLayout);
             mPopupWindow.showAsDropDown(findViewById(R.id.actionbar_packs));
         }
     }

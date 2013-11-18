@@ -60,7 +60,7 @@ public class PackParserHelper {
 
         newFile = FileOperationHelper.copyImageToImagesFolder(getPackImageFullPath(resultPack.coverImageUriFormatStr));
         resultPack.coverImageUriFormatStr = FileOperationHelper.convertToUriFormatFile(newFile);
-        newFile = FileOperationHelper.copyImageToImagesFolder(getLogoImageFullPath(resultPack.logoImageUriFormatStr));
+        newFile = FileOperationHelper.copyImageToImagesFolder(getLogoImageFullPath(resultPack.logoImageUriFormatStr,resultPack.cards.size()-1));//be careful, we set logoImageUriFormatStr from last card in parseCardJsonFiles
         resultPack.logoImageUriFormatStr = FileOperationHelper.convertToUriFormatFile(newFile);
         User.defaultUser(AppContext.getAppContext()).addPack(resultPack);
 
@@ -91,8 +91,8 @@ public class PackParserHelper {
      * Because of history reason, the card logo image belong to card, rather than to pack.
      * All the log images are same under same package, so we only need to take one
      */
-    private static File getLogoImageFullPath(String uriFormatStr) {
-        return getCardImageFullPath(uriFormatStr, 0);
+    private static File getLogoImageFullPath(String uriFormatStr,int index) {
+        return getCardImageFullPath(uriFormatStr, index);
     }
 
 
