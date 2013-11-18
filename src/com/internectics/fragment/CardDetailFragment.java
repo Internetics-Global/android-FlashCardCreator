@@ -371,6 +371,9 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnKeyboa
             if (resultBitmap == null) {
                 Log.e(Global.debugTag, "resultBitmap is null");
             } else {
+
+                ((MainActivity)getActivity()).mIsAllowedToShowPackList = false;
+
                 File toSaveFile = UIHelper.saveImageToCaches(resultBitmap);
 
                 if (requestCode == CODE_REQUEST_IMAGE_SOURCE_IS_LOGO) {

@@ -52,7 +52,7 @@ public class MainActivity extends FragmentActivity implements
     private boolean mIsNecessaryToRestoreCSSToolbar = false;
     private boolean mIsFromRestartApp = false;
 
-    public boolean mIsPackListShowing = false;
+    public boolean mIsAllowedToShowPackList = true;
 
 
 
@@ -191,14 +191,17 @@ public class MainActivity extends FragmentActivity implements
 
                 break;
             case R.id.actionbar_packs:
-                View popupLayout = inflater.inflate(R.layout.pack_list, null, false);
-                mPopupWindow = new PopupWindow(UIHelper.getScreenWidth(this)- 50, getResources().getDimensionPixelSize(R.dimen.pack_list_window_height));
-                mPopupWindow.setFocusable(true);
-                mPopupWindow.setOutsideTouchable(true);
-                mPopupWindow.setBackgroundDrawable(getResources().getDrawable(R.drawable.shape_popupwindow_background));
-                mPopupWindow.setContentView(popupLayout);
-                mPopupWindow.showAsDropDown(findViewById(R.id.actionbar_packs));
-                mIsPackListShowing = true;
+                if (mPopupWindow == null) {
+                    View popupLayout = inflater.inflate(R.layout.pack_list, null, false);
+                    mPopupWindow = new PopupWindow(UIHelper.getScreenWidth(this)- 50, getResources().getDimensionPixelSize(R.dimen.pack_list_window_height));
+                    mPopupWindow.setFocusable(true);
+                    mPopupWindow.setOutsideTouchable(true);
+                    mPopupWindow.setBackgroundDrawable(getResources().getDrawable(R.drawable.shape_popupwindow_background));
+                    mPopupWindow.setContentView(popupLayout);
+                }
+                if ((mPopupWindow != null) &&(mPopupWindow.isShowing() == false)) {
+                    mPopupWindow.showAsDropDown(findViewById(R.id.actionbar_packs));
+                }
 
                 break;
 
@@ -319,7 +322,7 @@ public class MainActivity extends FragmentActivity implements
 
         if ((!isDownloaded) && (isReachable) && (mIsFromRestartApp)) {
             mIsFromRestartApp = false;
-            String downloableShareLink = "https://dl.dropbox.com/s/f1qbzsis8d6y6mi/new%20example%202013.11.17.zip";
+            String downloableShareLink = "https://dl.dropbox.com/s/cz1p49g45o1vqpx/new%20example%202013.11.18.zip";
             File downloadedZipFile = new File(FileOperationHelper.downloadedPackDirectory(), "downloadedPackZip.zip");
             PackDownloadHelper packDownloadHelper = new PackDownloadHelper(MainActivity.this, downloableShareLink, downloadedZipFile.toString());
             packDownloadHelper.mIsFromExamplePackDownload = true;
@@ -389,29 +392,31 @@ public class MainActivity extends FragmentActivity implements
         getIntent().setData(null); //in case it will be recalled time and time
 
         //Used to show pack list
-        if (mIsPackListShowing == false) {
+        if (mIsAllowedToShowPackList) {
             ShowPacklistAfterViewDidAppearTask dTask = new ShowPacklistAfterViewDidAppearTask();
             dTask.execute(100);
         }
 
+        mIsAllowedToShowPackList = true;
+
     }
 
     public void showPackListView() {
-        LayoutInflater inflater = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        View popupLayout = inflater.inflate(R.layout.pack_list, null, false);
-        mPopupWindow = new PopupWindow(UIHelper.getScreenWidth(this)- 50, getResources().getDimensionPixelSize(R.dimen.pack_list_window_height));
-        mPopupWindow.setFocusable(true);
-        mPopupWindow.setOutsideTouchable(true);
-        mPopupWindow.setBackgroundDrawable(getResources().getDrawable(R.drawable.shape_popupwindow_background));
-        mPopupWindow.setContentView(popupLayout);
-        mPopupWindow.setOnDismissListener(new PopupWindow.OnDismissListener() {
-            @Override
-            public void onDismiss() {
-                mIsPackListShowing = false;
-            }
-        });
-        mPopupWindow.showAsDropDown(findViewById(R.id.actionbar_packs));
-        mIsPackListShowing = true;
+
+        if (mPopupWindow == null) {
+            LayoutInflater inflater = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+            View popupLayout = inflater.inflate(R.layout.pack_list, null, false);
+            mPopupWindow = new PopupWindow(UIHelper.getScreenWidth(this)- 50, getResources().getDimensionPixelSize(R.dimen.pack_list_window_height));
+            mPopupWindow.setFocusable(true);
+            mPopupWindow.setOutsideTouchable(true);
+            mPopupWindow.setBackgroundDrawable(getResources().getDrawable(R.drawable.shape_popupwindow_background));
+            mPopupWindow.setContentView(popupLayout);
+
+        }
+
+        if ((mPopupWindow != null) &&(mPopupWindow.isShowing() == false)) {
+            mPopupWindow.showAsDropDown(findViewById(R.id.actionbar_packs));
+        }
     }
 
 
