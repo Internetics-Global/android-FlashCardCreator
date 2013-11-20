@@ -315,7 +315,7 @@ public class MainActivity extends FragmentActivity implements
 
         if ((!isDownloaded) && (isReachable) && (mIsFromRestartApp)) {
             mIsFromRestartApp = false;
-            String downloableShareLink = "https://dl.dropbox.com/s/cz1p49g45o1vqpx/new%20example%202013.11.18.zip";
+            String downloableShareLink = "https://dl.dropbox.com/s/m5dn072h9lfx2ae/new%20example%202013.11.20.zip";
             File downloadedZipFile = new File(FileOperationHelper.downloadedPackDirectory(), "downloadedPackZip.zip");
             PackDownloadHelper packDownloadHelper = new PackDownloadHelper(MainActivity.this, downloableShareLink, downloadedZipFile.toString());
             packDownloadHelper.mIsFromExamplePackDownload = true;
