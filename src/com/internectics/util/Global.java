@@ -56,6 +56,9 @@ public class Global {
     //
     public static final String sortType = "sort_Type";
 
+    //TestFlight TOKEN
+    public static final String appToken = "e2ff3645-94eb-464f-b752-283a6d03d443";
+
 
     /**
      * detect network

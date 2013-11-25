@@ -4,6 +4,7 @@ import android.app.Application;
 import android.content.Context;
 
 import java.util.UUID;
+import com.testflightapp.lib.TestFlight;
 
 
 public class AppContext extends Application {
@@ -13,6 +14,8 @@ public class AppContext extends Application {
     @Override
     public void onCreate() {
         super.onCreate();
+        TestFlight.takeOff(this, Global.appToken);
+
         AppContext.mContext = getApplicationContext();
     }
 
