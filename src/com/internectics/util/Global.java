@@ -57,7 +57,7 @@ public class Global {
     public static final String sortType = "sort_Type";
 
     //TestFlight TOKEN
-    public static final String appToken = "e2ff3645-94eb-464f-b752-283a6d03d443";
+    public static final String appToken = "3b389237-d528-4d77-8540-5bf7122ffb2f";
 
 
     /**
