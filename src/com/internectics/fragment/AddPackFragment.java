@@ -14,6 +14,8 @@ import android.view.*;
 import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.*;
+
+import com.internectics.android_flashcardcreator.MainActivity;
 import com.internectics.android_flashcardcreator.R;
 import com.internectics.data.Card;
 import com.internectics.data.Pack;
@@ -199,6 +201,9 @@ public class AddPackFragment extends DialogFragment implements TextView.OnEditor
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == CODE_REQUEST_IMAGE_FROM_IMAGE_LIBRARY) {
+
+            ((MainActivity)getActivity()).mIsAllowedToShowPackList = false;
+
             if (resultCode == Activity.RESULT_OK) {
 
                 Bitmap resultBitmap = null;
