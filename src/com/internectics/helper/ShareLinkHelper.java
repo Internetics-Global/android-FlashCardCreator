@@ -17,8 +17,6 @@ import android.widget.EditText;
 import android.widget.Toast;
 import com.dropbox.client2.DropboxAPI;
 import com.dropbox.client2.exception.DropboxException;
-import com.facebook.widget.FacebookDialog;
-import com.internectics.android_flashcardcreator.MainActivity;
 import com.internectics.data.Pack;
 import com.internectics.helper.AmazonSDB.SimpleDBHelper;
 import com.internectics.util.Global;
@@ -35,12 +33,13 @@ import java.io.IOException;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
-import java.net.URLConnection;
 import java.util.HashMap;
 import java.util.List;
 
-import com.facebook.*;
-import com.facebook.model.*;
+import com.nostra13.socialsharing.common.AuthListener;
+import com.nostra13.socialsharing.common.PostListener;
+import com.nostra13.socialsharing.facebook.FacebookEvents;
+import com.nostra13.socialsharing.facebook.FacebookFacade;
 
 /**
  * 1. create share linkage
@@ -65,6 +64,10 @@ public class ShareLinkHelper extends AsyncTask<Void, Long, Boolean> {
         mCurentPack = currentPack;
     }
 
+
+    /*
+    URL shorten
+     */
     @Override
     protected Boolean doInBackground(Void... params) {
         try {
@@ -93,6 +96,9 @@ public class ShareLinkHelper extends AsyncTask<Void, Long, Boolean> {
         return false;
     }
 
+    /*
+    Set max downloade count
+     */
     @Override
     protected void onPostExecute(Boolean aBoolean) {
         super.onPostExecute(aBoolean);
@@ -140,6 +146,9 @@ public class ShareLinkHelper extends AsyncTask<Void, Long, Boolean> {
                 .show();
     }
 
+    /*
+    URL unshorten
+     */
     public static String getUnshortedURL(String shortedURL) {
         String location = null;
         try {
@@ -158,6 +167,7 @@ public class ShareLinkHelper extends AsyncTask<Void, Long, Boolean> {
         return location;
 
     }
+
 
     String getRidirectedURL(String url){
 
@@ -238,22 +248,7 @@ public class ShareLinkHelper extends AsyncTask<Void, Long, Boolean> {
         String finalPostString = "I've just created a pack of Flash Cards with the Flash Card Creator! ( " + shareLink +" ) Check it out!";
         switch (position) {
             case 0: {
-
-                boolean isFacebookAppInstalled = true;
-                try {
-                    ApplicationInfo info = mActivity.getPackageManager().
-                            getApplicationInfo("com.facebook.katana", 0 );
-                } catch (PackageManager.NameNotFoundException e) {
-                    e.printStackTrace();
-                    isFacebookAppInstalled = false;
-                }
-
-                if (isFacebookAppInstalled) {
-                    shareToFacebook(shareLink);
-                }  else {
-                    Toast.makeText(mActivity, "Share is allowed only when Facebook app is installed.", Toast.LENGTH_LONG).show();
-                }
-
+                shareToFacebook(shareLink);
                 break;
             }
 
@@ -311,73 +306,45 @@ public class ShareLinkHelper extends AsyncTask<Void, Long, Boolean> {
     }
 
 
-    private void shareToFacebook(String shareLink) {
+    private void shareToFacebook(final String shareLink) {
 
-        canPresentShareDialog = FacebookDialog.canPresentShareDialog(mActivity,
-                FacebookDialog.ShareDialogFeature.SHARE_DIALOG);
+        FacebookEvents.addPostListener(postListener);
 
-        Session session = Session.getActiveSession();
-        if (session != null) {
-            if (hasPublishPermission()) {
-                // We can do the action right away.
-                handlePendingAction(shareLink);
-                return;
-            } else if (session.isOpened()) {
-                // We need to get new permissions, then complete the action when we get called back.
-                session.requestNewPublishPermissions(new Session.NewPermissionsRequest((MainActivity) mActivity, "publish_actions"));
-                return;
-            }
-        }
-
-        if (canPresentShareDialog) {
-            handlePendingAction(shareLink);
-        }
-
-    }
-
-    private boolean hasPublishPermission() {
-        Session session = Session.getActiveSession();
-        return session != null && session.getPermissions().contains("publish_actions");
-    }
-
-
-    private void handlePendingAction(String shareLink) {
-        if (canPresentShareDialog) {
-            FacebookDialog shareDialog = new FacebookDialog.ShareDialogBuilder(mActivity)
-                    .setName("Hi All:")
-                    .setPicture("https://dl.dropbox.com/s/qprzhxl2gpzicoe/icon114x114iPhoneHiRes.png")
-                    .setDescription("I've just created a pack of Flash Cards with the Flash Card Creator! Check it out!")
-                    .setLink(shareLink)
-                    .build();
-            shareDialog.present();
-        } else if (hasPublishPermission()) {
-            final String message = "Test";
-            Request request = Request
-                    .newStatusUpdateRequest(Session.getActiveSession(), message, null, null, new Request.Callback() {
-                        @Override
-                        public void onCompleted(Response response) {
-                            showPublishResult(message, response.getGraphObject(), response.getError());
-                        }
-                    });
-            request.executeAsync();
+        final FacebookFacade facebook = new FacebookFacade(mActivity, "430339350417672");
+        if (facebook.isAuthorized()) {
+            facebook.publishMessage("I've just created a pack of Flash Cards with the Flash Card Creator! ( " + shareLink +" ) Check it out!");
         } else {
+            // Start authentication dialog and publish message after successful authentication
+            facebook.authorize(new AuthListener() {
+                @Override
+                public void onAuthSucceed() {
+                    facebook.publishMessage("I've just created a pack of Flash Cards with the Flash Card Creator! ( " + shareLink +" ) Check it out!");
+                }
+
+                @Override
+                public void onAuthFail(String error) { // Do noting
+                    showToastOnUIThread("Authorization was failed");
+                    FacebookEvents.removePostListener(postListener);
+                }
+            });
         }
+
     }
 
 
-    private void showPublishResult(String message, GraphObject result, FacebookRequestError error) {
-        String title = null;
-        if (error == null) {
-            title = "Successfully done";
-        } else {
-            title = "Error during share, try gain";
+    private PostListener postListener = new PostListener() {
+        @Override
+        public void onPostPublishingFailed() {
+            showToastOnUIThread("Post publishing was failed");
+            FacebookEvents.removePostListener(postListener);
         }
 
-        new AlertDialog.Builder(mActivity)
-                .setTitle(title)
-                .setPositiveButton("OK", null)
-                .show();
-    }
+        @Override
+        public void onPostPublished() {
+            showToastOnUIThread("Posted to Facebook successfully");
+            FacebookEvents.removePostListener(postListener);
+        }
+    };
 
 
     public Intent findTwitterClient() {
@@ -404,6 +371,16 @@ public class ShareLinkHelper extends AsyncTask<Void, Long, Boolean> {
         }
         return null;
 
+    }
+
+
+    private void showToastOnUIThread(final String text) {
+        mActivity.runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                Toast.makeText(mActivity, text, Toast.LENGTH_LONG).show();
+            }
+        });
     }
 
 
