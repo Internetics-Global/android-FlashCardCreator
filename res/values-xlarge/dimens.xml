@@ -10,7 +10,7 @@
     <dimen name="button_change_template_size">60dp</dimen>
 
     <!--symbol box related-->
-    <dimen name="symbol_text_size">36sp</dimen>
+    <dimen name="symbol_text_size">32sp</dimen>
     <dimen name="symbol_box_height">285dp</dimen>
 
     <!--segment related-->
