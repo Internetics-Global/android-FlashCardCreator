@@ -9,10 +9,11 @@
 
     <!--symbol box related-->
     <dimen name="symbol_text_size">12sp</dimen>
+    <dimen name="symbol__width">30dp</dimen>
+    <dimen name="symbol_box_height">162dp</dimen>
 
     <!--segment related-->
     <dimen name="segment_text_size">12sp</dimen>
-    <dimen name="symbol_box_height">162dp</dimen>
 
 
     <!--pack list related-->

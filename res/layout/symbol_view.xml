@@ -7,8 +7,8 @@
               android:layout_height="match_parent">
 
     <ImageView
-            android:layout_width="30dp"
-            android:layout_height="30dp"
+            android:layout_width="@dimen/symbol__width"
+            android:layout_height="@dimen/symbol__width"
             android:gravity="center"
             android:scaleType="fitXY"
             android:src="@drawable/key"
@@ -16,8 +16,8 @@
 
 
     <TextView
-            android:layout_width="30dp"
-            android:layout_height="30dp"
+            android:layout_width="@dimen/symbol__width"
+            android:layout_height="@dimen/symbol__width"
             android:text="1"
             android:paddingTop="2dp"
             android:gravity="center"
