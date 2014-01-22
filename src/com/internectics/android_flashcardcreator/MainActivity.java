@@ -233,11 +233,21 @@ public class MainActivity extends FragmentActivity implements
 
             case R.id.actionbar_play:
 
-                Intent intent = new Intent(MainActivity.this, PlayActivity.class);
-                intent.putExtra("packID", mCurrentPack.packID);
-                startActivity(intent);
-                //overridePendingTransition(R.anim.in_from_bottom, R.anim.out_to_above);
-                mIsAllowedToShowPackList = false;
+                if (mCurrentPack.cards.size() > 0) {
+                    Intent intent = new Intent(MainActivity.this, PlayActivity.class);
+                    intent.putExtra("packID", mCurrentPack.packID);
+                    startActivity(intent);
+                    //overridePendingTransition(R.anim.in_from_bottom, R.anim.out_to_above);
+                    mIsAllowedToShowPackList = false;
+                }  else {
+
+                    new AlertDialog.Builder(this)
+                            .setTitle("Alert")
+                            .setMessage("No card available")
+                            .setPositiveButton("OK", null)
+                            .show();
+                }
+
                 break;
 
             case R.id.actionbar_share_pack:
