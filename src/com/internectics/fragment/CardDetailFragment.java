@@ -179,8 +179,14 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnKeyboa
                         intent.putExtra(Intent.EXTRA_SUBJECT, "Subject");
                         intent.putExtra(Intent.EXTRA_TEXT, "");
                         startActivity(Intent.createChooser(intent, "Send Email"));
-                    } else {
+                    } else if (mCurrentPack.logoURL.contains("http") == true) {
                         startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(mCurrentPack.logoURL)));
+                    } else {
+                        new AlertDialog.Builder(getActivity())
+                                .setTitle("Alert")
+                                .setMessage("Uncorrect website or mail address")
+                                .setPositiveButton("OK", null)
+                                .show();
                     }
                 }
 
