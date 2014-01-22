@@ -153,6 +153,17 @@ public class MainActivity extends FragmentActivity implements
 
         }
 
+        //update status
+        MenuItem item = menu.findItem(R.id.actionbar_edit);
+        if (item != null) {
+            CardListFragment cardListFragment = (CardListFragment) (getSupportFragmentManager().findFragmentById(R.id.fragment_card_list));
+            if (cardListFragment.getEditStyle()) {
+                item.setTitle("done");
+            } else {
+                item.setTitle("edit");
+            }
+        }
+
 
         return true;
     }

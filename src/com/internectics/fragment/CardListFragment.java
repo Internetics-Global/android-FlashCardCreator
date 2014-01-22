@@ -184,6 +184,10 @@ public class CardListFragment extends Fragment {
         return cursor;
     }
 
+    public boolean getEditStyle() {
+        return mIsListViewEditable;
+    }
+
 
     public void enterEditStyle(boolean isEditingStyle) {
 
