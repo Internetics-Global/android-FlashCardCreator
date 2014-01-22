@@ -83,7 +83,7 @@ public class Pack {
                 }
             });
 
-            if (cards.get(0).cardSN != 1) {
+            if ((cards.size() > 0) && (cards.get(0).cardSN != 1)) {
                 Log.e(Global.debugTag, "Something is not right, cardSN should begin from 1");
             }
         } else {

@@ -414,8 +414,13 @@ public class MainActivity extends FragmentActivity implements
         if ((mPopupWindow != null) &&(mPopupWindow.isShowing() == false)) {
             LayoutInflater inflater = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             View popupLayout = inflater.inflate(R.layout.pack_list, null, false);
-            mPopupWindow.setContentView(popupLayout);
-            mPopupWindow.showAsDropDown(findViewById(R.id.actionbar_packs));
+            if (popupLayout != null) {
+                mPopupWindow.setContentView(popupLayout);
+                View actionbarPacks = findViewById(R.id.actionbar_packs);
+                if (actionbarPacks != null) {
+                    mPopupWindow.showAsDropDown(actionbarPacks);
+                }
+            }
         }
     }
 

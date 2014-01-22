@@ -52,7 +52,10 @@ public class ZipFileHelper {
             ZipFile zipFile = new ZipFile(zipFileName);
 
             if (zipFile.isEncrypted()) {
-                zipFile.setPassword(password);
+                if ((password == null) || (password.equals(""))) {
+                } else {
+                    zipFile.setPassword(password);
+                }
             }
             zipFile.extractAll(outputDirectory.toString());
 
