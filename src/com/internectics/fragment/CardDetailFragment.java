@@ -349,6 +349,12 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnKeyboa
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
+
+        //it's better add CODE_REQUEST_IMAGE_FROM_IMAGE_LIBRARY later
+
+        //whatever RESULT_OK or RESULT_CANCELED, we need to do this first
+        ((MainActivity)getActivity()).mIsAllowedToShowPackList = false;
+
         if (resultCode == Activity.RESULT_OK) {
 
             Bitmap resultBitmap = null;
@@ -377,8 +383,6 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnKeyboa
             if (resultBitmap == null) {
                 Log.e(Global.debugTag, "resultBitmap is null");
             } else {
-
-                ((MainActivity)getActivity()).mIsAllowedToShowPackList = false;
 
                 File toSaveFile = UIHelper.saveImageToCaches(resultBitmap);
 
