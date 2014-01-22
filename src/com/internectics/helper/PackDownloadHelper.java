@@ -138,7 +138,7 @@ public class PackDownloadHelper extends AsyncTask<Void, Long, Boolean> {
                             .setNegativeButton("Cancel", null)
                             .show();
 
-                } {
+                } else { // no password or the password is empty
                     ZipFileHelper.unzipPackFile(mContext, mSavedFilePath, "");
                     parsePackAndGoOn();
                 }
