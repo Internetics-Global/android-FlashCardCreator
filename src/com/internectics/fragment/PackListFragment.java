@@ -254,6 +254,8 @@ public class PackListFragment extends Fragment {
                     @Override
                     public void onClick(View v) {
 
+                        ((MainActivity)getActivity()).mIsAllowedToShowPackList = false;
+
                         currentPack.lastVistDate = (int)System.currentTimeMillis();
                         currentPack.save(AppContext.getAppContext());
 

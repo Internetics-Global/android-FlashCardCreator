@@ -118,6 +118,7 @@ public class PackUploadHelper extends AsyncTask<Void, Long, Boolean> {
             // Unknown error
             mErrorMsg = "Unknown error.  Try again.";
         } catch (FileNotFoundException e) {
+            e.printStackTrace();
         }
         return false;
     }

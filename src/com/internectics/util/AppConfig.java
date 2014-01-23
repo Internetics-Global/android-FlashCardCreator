@@ -37,10 +37,12 @@ public class AppConfig {
 
             props.load(fis);
         } catch (Exception e) {
+            e.printStackTrace();
         } finally {
             try {
                 fis.close();
             } catch (Exception e) {
+                e.printStackTrace();
             }
         }
         return props;
@@ -64,6 +66,7 @@ public class AppConfig {
             try {
                 fos.close();
             } catch (Exception e) {
+                e.printStackTrace();
             }
         }
     }
