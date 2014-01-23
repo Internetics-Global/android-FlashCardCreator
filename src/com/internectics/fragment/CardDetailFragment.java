@@ -610,6 +610,14 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnKeyboa
         updateQuestionContent();
         updateQuestionViewTemplate();
         updateQuestionCSS();
+
+        //hide placeholder image if play mode
+        if (mIsPlayingCard) {
+            if (mCurrentCard.question.imageUriFormatStr.contains("placeholder")) {
+                mImage.setVisibility(View.INVISIBLE);
+                mImage2.setVisibility(View.INVISIBLE);
+            }
+        }
     }
 
 
@@ -625,6 +633,14 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnKeyboa
         updateAnswerContent();
         updateAnswerViewTemplate();
         updateAnswerCSS();
+
+        //hide placeholder image if play mode
+        if (mIsPlayingCard) {
+            if (mCurrentCard.answer.imageUriFormatStr.contains("placeholder")) {
+                mImage.setVisibility(View.INVISIBLE);
+                mImage2.setVisibility(View.INVISIBLE);
+            }
+        }
     }
 
 
