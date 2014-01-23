@@ -229,7 +229,7 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnKeyboa
             dTask.execute(100);
         }
 
-        Typeface typeFace = Typeface.createFromAsset(getActivity().getAssets(), "DejaVuSans.ttf");
+        Typeface typeFace = FontCache.get(Global.customFontType,getActivity());
         mSubheading.setTypeface(typeFace,Typeface.BOLD);
         mMain.setTypeface(typeFace,Typeface.BOLD);
         mSub.setTypeface(typeFace,Typeface.BOLD);
