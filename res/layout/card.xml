@@ -103,10 +103,11 @@
                             android:textSize="@dimen/creator_text_size"
                             android:singleLine="true"
                             android:editable="false"
-                            android:textColor="@android:color/darker_gray"
+                            android:textColor="#ff4a4a4a"
                             />
                     <com.internectics.UI.FCCEditText
                             android:id="@+id/creator"
+                            android:textCursorDrawable="@null"
                             android:layout_height="0dp"
                             android:layout_gravity="bottom"
                             android:layout_width="fill_parent"
@@ -119,7 +120,7 @@
                             android:singleLine="true"
                             android:imeOptions="actionDone"
                             android:background="@drawable/shape_edittext_editable"
-                            android:textColor="@android:color/darker_gray"
+                            android:textColor="#ff4a4a4a"
                             />
                 </LinearLayout>
 

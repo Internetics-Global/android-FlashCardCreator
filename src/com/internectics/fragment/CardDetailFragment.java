@@ -12,6 +12,7 @@ import android.os.*;
 import android.provider.MediaStore;
 import android.support.v4.app.Fragment;
 import android.text.Editable;
+import android.text.InputType;
 import android.text.TextWatcher;
 import android.util.Log;
 import android.util.TypedValue;
@@ -517,6 +518,7 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnKeyboa
                 final EditText inputEditText = new EditText(getActivity());
                 inputEditText.setSingleLine(true);
                 inputEditText.setText(mCurrentPack.logoURL);
+                inputEditText.setInputType(InputType.TYPE_TEXT_FLAG_NO_SUGGESTIONS);
                 inputEditText.setSelection(inputEditText.getText().length());
                 inputEditText.setImeOptions(EditorInfo.IME_ACTION_DONE);
                 new AlertDialog.Builder(getActivity())
