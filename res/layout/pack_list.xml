@@ -8,6 +8,7 @@
 
     <fragment
             android:name="com.internectics.fragment.PackListFragment"
+            android:tag="tag_pack_list_fragment"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
         tools:layout="@layout/pack_list_item">

@@ -11,7 +11,9 @@ import android.graphics.PixelFormat;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
+import android.support.v4.app.FragmentManager;
 import android.text.InputType;
 import android.util.Log;
 import android.util.TypedValue;
@@ -426,6 +428,10 @@ public class MainActivity extends FragmentActivity implements
                 @Override
                 public void onDismiss() {
                     mPopupWindow.dismiss();
+
+                    FragmentManager fragmentManager = getSupportFragmentManager();
+                    Fragment fm = fragmentManager.findFragmentByTag("tag_pack_list_fragment");
+                    fragmentManager.beginTransaction().remove(fm).commit();
                 }
             });
 

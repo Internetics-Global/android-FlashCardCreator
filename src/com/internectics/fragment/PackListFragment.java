@@ -458,4 +458,15 @@ public class PackListFragment extends Fragment {
         }
     }
 
+    @Override
+    public void onStop() {
+        super.onStop();
+        Log.d("ccaa","onStop in PackListFragment");
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        Log.d("ccaa","onDestory in PackListFragment");
+    }
 }
