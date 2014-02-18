@@ -12,12 +12,15 @@ import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
+import android.graphics.Paint;
 import android.net.Uri;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.provider.MediaStore;
 import android.support.v4.app.Fragment;
 import android.text.InputType;
+import android.text.SpannableString;
+import android.text.style.UnderlineSpan;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
@@ -151,50 +154,56 @@ public class PackListFragment extends Fragment {
             }
         });
 
-        final Button sortButton = (Button) mRootView.findViewById(R.id.sort_btn);
-        sortButton.setOnClickListener(new View.OnClickListener() {
+        final TextView sortCreatedTextView = (TextView) mRootView.findViewById(R.id.sort_created);
+        final TextView sortViewedTextView = (TextView) mRootView.findViewById(R.id.sort_viewed);
+
+        sortCreatedTextView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                switch (Integer.parseInt((String)sortButton.getTag())) {
-                    case 0: {
-                        sortButton.setTag("1");
-                        mUser.sortPacks(0);
-                        sortButton.setText("Sorted by recently created first");
+                mUser.sortPacks(0);
 
-                        SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(AppContext.getAppContext());
-                        SharedPreferences.Editor editor = sp.edit();
-                        editor.putInt(Global.sortType,0);
-                        editor.commit();
+                sortCreatedTextView.setPaintFlags(sortCreatedTextView.getPaintFlags() | Paint.UNDERLINE_TEXT_FLAG);
+                sortViewedTextView.setPaintFlags(sortCreatedTextView.getPaintFlags() & (~Paint.UNDERLINE_TEXT_FLAG));
 
-                        ((ImageAdapter) mGallery.getAdapter()).notifyDataSetChanged();
+                SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(AppContext.getAppContext());
+                SharedPreferences.Editor editor = sp.edit();
+                editor.putInt(Global.sortType,0);
+                editor.commit();
 
-                        break;
-                    }
-                    case 1: {
-                        sortButton.setTag("0");
-                        mUser.sortPacks(2);
-                        sortButton.setText("Sorted by recently viewed first");
+                ((ImageAdapter) mGallery.getAdapter()).notifyDataSetChanged();
+            }
+        });
 
-                        SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(AppContext.getAppContext());
-                        SharedPreferences.Editor editor = sp.edit();
-                        editor.putInt(Global.sortType,2);
-                        editor.commit();
+        sortViewedTextView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mUser.sortPacks(2);
 
-                        ((ImageAdapter) mGallery.getAdapter()).notifyDataSetChanged();
+                sortViewedTextView.setPaintFlags(sortCreatedTextView.getPaintFlags() | Paint.UNDERLINE_TEXT_FLAG);
+                sortCreatedTextView.setPaintFlags(sortCreatedTextView.getPaintFlags() & (~Paint.UNDERLINE_TEXT_FLAG));
 
-                        break;
-                    }
-                }
+                SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(AppContext.getAppContext());
+                SharedPreferences.Editor editor = sp.edit();
+                editor.putInt(Global.sortType,2);
+                editor.commit();
+
+                ((ImageAdapter) mGallery.getAdapter()).notifyDataSetChanged();
             }
         });
 
         switch (mSortType) {
             case 0: {
-                sortButton.setText("Sorted by recently created first");
+
+                sortCreatedTextView.setPaintFlags(sortCreatedTextView.getPaintFlags() | Paint.UNDERLINE_TEXT_FLAG);
+                sortViewedTextView.setPaintFlags(sortViewedTextView.getPaintFlags() & (~Paint.UNDERLINE_TEXT_FLAG));
+
                 break;
             }
             case 2: {
-                sortButton.setText("Sorted by recently visited first");
+
+                sortCreatedTextView.setPaintFlags(sortCreatedTextView.getPaintFlags() & (~Paint.UNDERLINE_TEXT_FLAG));
+                sortViewedTextView.setPaintFlags(sortViewedTextView.getPaintFlags() | Paint.UNDERLINE_TEXT_FLAG);
+
                 break;
             }
             default:
