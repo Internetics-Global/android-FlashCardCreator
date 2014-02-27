@@ -323,26 +323,35 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnKeyboa
      */
     private void prepareToSavingTextFontSizeInfo() {
 
+        //since we have made the text size bigger in play mode, we need to restore it to original value when saving.
+        double scaleVal;
+        if (mIsPlayingCard) {
+            scaleVal = Global.scaleInPlayMode;
+        } else {
+            scaleVal = 1.0;
+        }
+
+
         if (mIsQuestionShowing) {
             if (mContentBodyType1.getVisibility() == View.VISIBLE) {
-                mCurrentCard.question.css.subheadingSize =  UIHelper.pixelsToSp(mSubheading.getTextSize());
-                mCurrentCard.question.css.mainSize =  UIHelper.pixelsToSp(mMain.getTextSize());
-                mCurrentCard.question.css.subSize = UIHelper.pixelsToSp(mSub.getTextSize());
+                mCurrentCard.question.css.subheadingSize =  UIHelper.pixelsToSp((float)(mSubheading.getTextSize()/scaleVal));
+                mCurrentCard.question.css.mainSize =  UIHelper.pixelsToSp((float)(mMain.getTextSize()/scaleVal));
+                mCurrentCard.question.css.subSize = UIHelper.pixelsToSp((float)(mSub.getTextSize()/scaleVal));
             } else {
-                mCurrentCard.question.css.subheadingSize =  UIHelper.pixelsToSp(mSubheading2.getTextSize());
-                mCurrentCard.question.css.mainSize =  UIHelper.pixelsToSp(mMain2.getTextSize());
-                mCurrentCard.question.css.subSize = UIHelper.pixelsToSp(mSub2.getTextSize());
+                mCurrentCard.question.css.subheadingSize =  UIHelper.pixelsToSp((float)(mSubheading2.getTextSize()/scaleVal));
+                mCurrentCard.question.css.mainSize =  UIHelper.pixelsToSp((float)(mMain2.getTextSize()/scaleVal));
+                mCurrentCard.question.css.subSize = UIHelper.pixelsToSp((float)(mSub2.getTextSize()/scaleVal));
             }
 
         } else {
             if (mContentBodyType1.getVisibility() == View.VISIBLE) {
-                mCurrentCard.answer.css.subheadingSize =  UIHelper.pixelsToSp(mSubheading.getTextSize());
-                mCurrentCard.answer.css.mainSize =  UIHelper.pixelsToSp(mMain.getTextSize());
-                mCurrentCard.answer.css.subSize = UIHelper.pixelsToSp(mSub.getTextSize());
+                mCurrentCard.answer.css.subheadingSize =  UIHelper.pixelsToSp((float)(mSubheading.getTextSize()/scaleVal));
+                mCurrentCard.answer.css.mainSize =  UIHelper.pixelsToSp((float)(mMain.getTextSize()/scaleVal));
+                mCurrentCard.answer.css.subSize = UIHelper.pixelsToSp((float)(mSub.getTextSize()/scaleVal));
             } else {
-                mCurrentCard.answer.css.subheadingSize =  UIHelper.pixelsToSp(mSubheading2.getTextSize());
-                mCurrentCard.answer.css.mainSize =  UIHelper.pixelsToSp(mMain2.getTextSize());
-                mCurrentCard.answer.css.subSize = UIHelper.pixelsToSp(mSub2.getTextSize());
+                mCurrentCard.answer.css.subheadingSize =  UIHelper.pixelsToSp((float)(mSubheading2.getTextSize()/scaleVal));
+                mCurrentCard.answer.css.mainSize =  UIHelper.pixelsToSp((float)(mMain2.getTextSize()/scaleVal));
+                mCurrentCard.answer.css.subSize = UIHelper.pixelsToSp((float)(mSub2.getTextSize()/scaleVal));
             }
         }
     }
@@ -1783,9 +1792,16 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnKeyboa
         mSub.setGravity(StringUtils.convertGravityStringToInt(mCurrentCard.question.css.subAlign) | Gravity.TOP);
 
         //step2: size
-        mSubheading.setTextSize(mCurrentCard.question.css.subheadingSize);
-        mMain.setTextSize(mCurrentCard.question.css.mainSize);
-        mSub.setTextSize(mCurrentCard.question.css.subSize);
+        double scaleVal;
+        if (mIsPlayingCard) {
+          scaleVal = Global.scaleInPlayMode;
+        } else {
+            scaleVal = 1.0;
+        }
+
+        mSubheading.setTextSize((int)(mCurrentCard.question.css.subheadingSize *scaleVal));
+        mMain.setTextSize((int)(mCurrentCard.question.css.mainSize *scaleVal));
+        mSub.setTextSize((int)(mCurrentCard.question.css.subSize * scaleVal));
 
         //step3: color
         mSubheading.setTextColor(StringUtils.convertColorStringToInt(mCurrentCard.question.css.subheadingColor));
@@ -1798,9 +1814,9 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnKeyboa
         mSub2.setGravity(StringUtils.convertGravityStringToInt(mCurrentCard.question.css.subAlign) | Gravity.TOP);
 
         //step2: size
-        mSubheading2.setTextSize(mCurrentCard.question.css.subheadingSize);
-        mMain2.setTextSize(mCurrentCard.question.css.mainSize);
-        mSub2.setTextSize(mCurrentCard.question.css.subSize);
+        mSubheading2.setTextSize((int)(mCurrentCard.question.css.subheadingSize *scaleVal));
+        mMain2.setTextSize((int)(mCurrentCard.question.css.mainSize *scaleVal));
+        mSub2.setTextSize((int)(mCurrentCard.question.css.subSize *scaleVal));
 
         //step3: color
         mSubheading2.setTextColor(StringUtils.convertColorStringToInt(mCurrentCard.question.css.subheadingColor));
@@ -1810,6 +1826,13 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnKeyboa
 
     private void updateAnswerCSS() {
 
+        double scaleVal;
+        if (mIsPlayingCard) {
+            scaleVal = Global.scaleInPlayMode;
+        } else {
+            scaleVal = 1.0;
+        }
+
         mTitle.setTextColor(Color.RED);
 
         //step1: alignment
@@ -1818,9 +1841,9 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnKeyboa
         mSub.setGravity(StringUtils.convertGravityStringToInt(mCurrentCard.answer.css.subAlign) | Gravity.TOP);
 
         //step2: size
-        mSubheading.setTextSize(mCurrentCard.answer.css.subheadingSize);
-        mMain.setTextSize(mCurrentCard.answer.css.mainSize);
-        mSub.setTextSize(mCurrentCard.answer.css.subSize);
+        mSubheading.setTextSize((int)(mCurrentCard.answer.css.subheadingSize *scaleVal));
+        mMain.setTextSize((int)(mCurrentCard.answer.css.mainSize *scaleVal));
+        mSub.setTextSize((int)(mCurrentCard.answer.css.subSize *scaleVal));
 
         //step3: color
         mSubheading.setTextColor(StringUtils.convertColorStringToInt(mCurrentCard.answer.css.subheadingColor));
@@ -1833,9 +1856,9 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnKeyboa
         mSub2.setGravity(StringUtils.convertGravityStringToInt(mCurrentCard.answer.css.subAlign) | Gravity.TOP);
 
         //step2: size
-        mSubheading2.setTextSize(mCurrentCard.answer.css.subheadingSize);
-        mMain2.setTextSize(mCurrentCard.answer.css.mainSize);
-        mSub2.setTextSize(mCurrentCard.answer.css.subSize);
+        mSubheading2.setTextSize((int)(mCurrentCard.answer.css.subheadingSize *scaleVal));
+        mMain2.setTextSize((int)(mCurrentCard.answer.css.mainSize *scaleVal));
+        mSub2.setTextSize((int)(mCurrentCard.answer.css.subSize *scaleVal));
 
         //step3: color
         mSubheading2.setTextColor(StringUtils.convertColorStringToInt(mCurrentCard.answer.css.subheadingColor));
@@ -1917,7 +1940,15 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnKeyboa
                     currentCSS.subSize = size;
                 }
 
-                mCurrentFocusedCardContentText.setTextSize(size);
+                double scaleVal;
+                if (mIsPlayingCard) {
+                    scaleVal = Global.scaleInPlayMode;
+                } else {
+                    scaleVal = 1.0;
+                }
+
+
+                mCurrentFocusedCardContentText.setTextSize((int)(size *scaleVal));
 
                 break;
             case 2:   //stand for color

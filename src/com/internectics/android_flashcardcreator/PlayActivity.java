@@ -88,6 +88,12 @@ public class PlayActivity extends FragmentActivity implements SensorEventListene
             marginHorizontal = (screenWidth - widthOfCard)/2;
         }
 
+        Global.scaleInPlayMode = widthOfCard/Global.widthOfCardInEditMode;
+        if ((Global.scaleInPlayMode >2) || (Global.scaleInPlayMode <0.5)) {
+            Log.e(Global.debugTag,"the value of scaleInPlayMode is out of normal value");
+            Global.scaleInPlayMode = 1.2; //default value
+        }
+
         marginLayoutParams.leftMargin = marginHorizontal;
         marginLayoutParams.rightMargin = marginHorizontal;
         marginLayoutParams.topMargin = marginVertical;

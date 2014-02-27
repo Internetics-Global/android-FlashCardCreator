@@ -249,9 +249,9 @@ public class MainActivity extends FragmentActivity implements
                 if (Global.ratioCard == 0) {
                     View myCard = findViewById(R.id.card);
                     if (myCard !=null) {
-                        double widthOfCard = myCard.getWidth();
+                        Global.widthOfCardInEditMode = myCard.getWidth();
                         double heightOfCard = myCard.getHeight();
-                        Global.ratioCard = heightOfCard/widthOfCard;
+                        Global.ratioCard = heightOfCard/Global.widthOfCardInEditMode;
 
                     } else {
 
