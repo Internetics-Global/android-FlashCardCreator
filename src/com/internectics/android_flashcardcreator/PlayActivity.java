@@ -68,9 +68,30 @@ public class PlayActivity extends FragmentActivity implements SensorEventListene
 
         //Keep same size with non-playmode
         ViewGroup.MarginLayoutParams marginLayoutParams = (ViewGroup.MarginLayoutParams) mPager.getLayoutParams();
-        int margin = (UIHelper.getScreenWidth(this)) / 6 / 2;
-        marginLayoutParams.leftMargin = margin;
-        marginLayoutParams.rightMargin = margin;
+        int screenWidth = UIHelper.getScreenWidth(this);
+        int screenHeight = UIHelper.getScreenHeight(this);
+        double ratio = screenHeight/screenWidth;
+        int marginHorizontal;
+        int marginVertical;
+        int widthOfCard;
+        int heightOfCard;
+        if (ratio >= Global.ratioCard) {
+            //mean we should use width as reference
+            marginHorizontal = 10;
+            widthOfCard = screenWidth - 2*marginHorizontal;
+            heightOfCard = (int)(widthOfCard *Global.ratioCard);
+            marginVertical = (screenHeight - heightOfCard)/2;
+        } else {
+            marginVertical = 10;
+            heightOfCard = screenHeight - 2*marginVertical;
+            widthOfCard = (int) (heightOfCard / Global.ratioCard);
+            marginHorizontal = (screenWidth - widthOfCard)/2;
+        }
+
+        marginLayoutParams.leftMargin = marginHorizontal;
+        marginLayoutParams.rightMargin = marginHorizontal;
+        marginLayoutParams.topMargin = marginVertical;
+        marginLayoutParams.bottomMargin = marginVertical;
         mPager.setLayoutParams(marginLayoutParams);
 
         mPager.setOffscreenPageLimit(1);

@@ -103,6 +103,13 @@ public class UIHelper {
         return width;
     }
 
+    public static int getScreenHeight(Activity activity) {
+        Display display = activity.getWindowManager().getDefaultDisplay();
+        int height = display.getHeight();
+
+        return height;
+    }
+
     public static float getScreenWidthDPUnit (Activity activity) {
         DisplayMetrics metric = new DisplayMetrics();
         activity.getWindowManager().getDefaultDisplay().getMetrics(metric);

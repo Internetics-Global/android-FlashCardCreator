@@ -61,6 +61,9 @@ public class Global {
     //TestFlight TOKEN
     public static final String appToken = "3b389237-d528-4d77-8540-5bf7122ffb2f";
 
+    //ratio of height and width;
+    public static double   ratioCard = 0;
+
 
     /**
      * detect network
