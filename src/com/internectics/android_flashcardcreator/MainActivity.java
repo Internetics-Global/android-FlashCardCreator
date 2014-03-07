@@ -746,12 +746,35 @@ public class MainActivity extends FragmentActivity implements
             Toast.makeText(this, "NO pack selected", Toast.LENGTH_LONG).show();
             return;
         }
-        DropboxAPI<AndroidAuthSession> mDBApi = DropboxHelper.getDropboxAPI();
-        if (mDBApi.getSession().isLinked()) {
-            uploadingPackAfterLinked();
+
+        if ((mCurrentPack.creatorID).equals(OpenUDID_manager.getOpenUDID())) {
+            DropboxAPI<AndroidAuthSession> mDBApi = DropboxHelper.getDropboxAPI();
+            if (mDBApi.getSession().isLinked()) {
+                uploadingPackAfterLinked();
+            } else {
+                mIsGoingAuthorizationBeforeUpload = true;
+                mDBApi.getSession().startAuthentication(MainActivity.this);
+            }
         } else {
-            mIsGoingAuthorizationBeforeUpload = true;
-            mDBApi.getSession().startAuthentication(MainActivity.this);
+           //directly share
+           String shareLink = AppConfig.sharedInstance().get(Integer.toString(mCurrentPack.packID));
+           if ((shareLink == null) || (shareLink.length() == 0)) {
+               AlertDialog.Builder builder = new AlertDialog.Builder(this);
+               builder.setMessage("Packs downloaded before current version of FlashCardCreator are no more supported to share");
+               builder.setTitle("Alert");
+               builder.setPositiveButton("OK",null);
+               builder.show();
+           } else {
+               String tempShareLink = shareLink.replace("http://dl", "fcc://www")
+                       .replace("https://dl", "fcc://www")
+                               .replace("https://www", "fcc://www")
+                                     .replace("http://www", "fcc://www");
+               ShareLinkHelper shareLinkHelper = new ShareLinkHelper(this,null,tempShareLink, mCurrentPack,true);
+               shareLinkHelper.execute();
+
+
+           }
+
         }
     }
 
@@ -763,7 +786,7 @@ public class MainActivity extends FragmentActivity implements
             }
         } else {
             String shareLink = PackRecordHelper.getCurrentPackShareLink(mCurrentPack);
-            ShareLinkHelper shareLinkHelper = new ShareLinkHelper(this, shareLink, mCurrentPack);
+            ShareLinkHelper shareLinkHelper = new ShareLinkHelper(this, null,shareLink, mCurrentPack,false);
             shareLinkHelper.execShareAction();
         }
     }

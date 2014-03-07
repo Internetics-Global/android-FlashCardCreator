@@ -138,7 +138,7 @@ public class PackUploadHelper extends AsyncTask<Void, Long, Boolean> {
             String fileName = mFile.getName();
             PackRecordHelper.savePackUploadRecord(mActivity,mCurrentPack,null,fileName);
 
-            ShareLinkHelper createShareLink = new ShareLinkHelper(mActivity, mFilePathInDropbox, mCurrentPack);
+            ShareLinkHelper createShareLink = new ShareLinkHelper(mActivity, mFilePathInDropbox,null, mCurrentPack,false);
             createShareLink.execute();
 
 

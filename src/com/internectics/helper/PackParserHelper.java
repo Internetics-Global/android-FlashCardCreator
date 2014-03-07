@@ -26,7 +26,7 @@ public class PackParserHelper {
     /**
      * after finshing pack download and unzip, this methold will be called to build pack and add to current user
      */
-    public static void parse() {
+    public static Pack parse() {
 
         File newFile;
 
@@ -63,6 +63,8 @@ public class PackParserHelper {
         newFile = FileOperationHelper.copyImageToImagesFolder(getLogoImageFullPath(resultPack.logoImageUriFormatStr,resultPack.cards.size()-1));//be careful, we set logoImageUriFormatStr from last card in parseCardJsonFiles
         resultPack.logoImageUriFormatStr = FileOperationHelper.convertToUriFormatFile(newFile);
         User.defaultUser(AppContext.getAppContext()).addPack(resultPack);
+
+        return resultPack;
 
     }
 

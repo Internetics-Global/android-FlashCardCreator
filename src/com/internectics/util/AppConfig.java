@@ -71,12 +71,19 @@ public class AppConfig {
         }
     }
 
+
+    /*
+    存放在app_config下的config文件中
+     */
     public void set(String key, String value) {
         Properties props = getProps();
         props.setProperty(key, value);
         setProps(props);
     }
 
+    /*
+    存放在app_config下的config文件中
+     */
     public String get(String key) {
         Properties props = getProps();
         return (props != null) ? props.getProperty(key) : null;

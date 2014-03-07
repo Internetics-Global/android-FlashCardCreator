@@ -48,20 +48,32 @@ import com.nostra13.socialsharing.facebook.FacebookFacade;
 public class ShareLinkHelper extends AsyncTask<Void, Long, Boolean> {
 
     private Activity mActivity;
-    private String mFilePathInDropbox;
     private Pack mCurentPack;
-    private String mUnshortedFCCShareLink;
 
-    private boolean canPresentShareDialog;
+    private String mFilePathInDropbox;
+
+    private String mUnshortedFCCShareLink;//如果share link是在本类中生成，而不是作为一个参数引入，则会用到。否则忽略
+
+    private String mShareLink;
+    private String mRedirectedShareLink;//经过tinyurl.com处理过的短域名，无论是何种形式（isDirectShare）的分享，都会涉及到
+
+    private boolean mIsDirectShare; //true: 没有经过上传，设密码等，直接share
 
 
     /*
-      @param shareLink must enter a valid value when directly sharing; enter anything when creating share link first
+      isDirectShare. yes: 直接分享，不经过上传，设密码等，这时shareLink参数必不可少；no:需要经过上传等操作才能share pack
+      参数file和shareLink是互斥的，即file=nil,则sharelink！=nil，反之也是
+
+      实际中，这个类有两个作用：
+      a. share的完整过程，这时new ShareLinkHelper(...)，后执行execute
+      b. 部分，比如仅仅执行execShareAction
      */
-    public ShareLinkHelper(Activity activity, String file, Pack currentPack) {
+    public ShareLinkHelper(Activity activity, String file, String shareLink, Pack currentPack, Boolean isDirectShare) {
         mActivity = activity;
         mFilePathInDropbox = file;
         mCurentPack = currentPack;
+        mIsDirectShare= isDirectShare;
+        mShareLink = shareLink;
     }
 
 
@@ -71,22 +83,27 @@ public class ShareLinkHelper extends AsyncTask<Void, Long, Boolean> {
     @Override
     protected Boolean doInBackground(Void... params) {
         try {
-            DropboxAPI.DropboxLink link = DropboxHelper.getDropboxAPI().share(mFilePathInDropbox);
-            String shortedShareLink = link.url;
-            String shareLink = getUnshortedURL(shortedShareLink);
-            if (shareLink == null) {
-                return false;
-            }
-            mUnshortedFCCShareLink = shareLink.replace("https","fcc").replace("http","fcc");
-            Log.d(Global.debugTag, "the fcc share linkage is: " + mUnshortedFCCShareLink);
-            String redirectedShareLink = getRidirectedURL(mUnshortedFCCShareLink);
-            if (redirectedShareLink.indexOf("http://") != 0) {
-                Toast.makeText(mActivity, "Redirect sevice is not available now, please try again", Toast.LENGTH_LONG).show();
+            if(mIsDirectShare) {
+                mRedirectedShareLink= getRidirectedURL(mShareLink);
             } else {
-                Log.d(Global.debugTag, "the shareLink is: " + redirectedShareLink);
-                PackRecordHelper.savePackUploadRecord(mActivity, mCurentPack, redirectedShareLink,null);
+                DropboxAPI.DropboxLink link = DropboxHelper.getDropboxAPI().share(mFilePathInDropbox);
+                String shortedShareLink = link.url;
+                String shareLink = getUnshortedURL(shortedShareLink);
+                if (shareLink == null) {
+                    return false;
+                }
+                mUnshortedFCCShareLink = shareLink.replace("https","fcc").replace("http","fcc");
+                Log.d(Global.debugTag, "the fcc share linkage is: " + mUnshortedFCCShareLink);
+                mRedirectedShareLink = getRidirectedURL(mUnshortedFCCShareLink);
+                if (mRedirectedShareLink.indexOf("http://") != 0) {
+                    Toast.makeText(mActivity, "Redirect sevice is not available now, please try again", Toast.LENGTH_LONG).show();
+                } else {
+                    Log.d(Global.debugTag, "the shareLink is: " + mRedirectedShareLink);
+                    PackRecordHelper.savePackUploadRecord(mActivity, mCurentPack, mRedirectedShareLink,null);
 
+                }
             }
+
 
 
         } catch (DropboxException e) {
@@ -103,47 +120,51 @@ public class ShareLinkHelper extends AsyncTask<Void, Long, Boolean> {
     protected void onPostExecute(Boolean aBoolean) {
         super.onPostExecute(aBoolean);
 
-        //Dialog to show max allowable download time
-        final  EditText editText = new EditText(mActivity);
-        editText.setGravity(Gravity.CENTER);
-        editText.setText("9999");
-        editText.setSingleLine();
-        editText.setInputType(InputType.TYPE_CLASS_NUMBER);
-        new AlertDialog.Builder(mActivity)
-                .setTitle("Set max number of downloads")
-                .setIcon(android.R.drawable.ic_dialog_info)
-                .setView(editText)
-                .setPositiveButton("OK", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
+        if (mIsDirectShare) {
+            execShareAction2(mRedirectedShareLink);
+        } else {
+            //Dialog to show max allowable download time
+            final  EditText editText = new EditText(mActivity);
+            editText.setGravity(Gravity.CENTER);
+            editText.setText("9999");
+            editText.setSingleLine();
+            editText.setInputType(InputType.TYPE_CLASS_NUMBER);
+            new AlertDialog.Builder(mActivity)
+                    .setTitle("Set max number of downloads")
+                    .setIcon(android.R.drawable.ic_dialog_info)
+                    .setView(editText)
+                    .setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
 
-                        InputMethodManager imm =(InputMethodManager)mActivity.getSystemService(Context.INPUT_METHOD_SERVICE);
-                        imm.hideSoftInputFromWindow(editText.getWindowToken(),0);
+                            InputMethodManager imm =(InputMethodManager)mActivity.getSystemService(Context.INPUT_METHOD_SERVICE);
+                            imm.hideSoftInputFromWindow(editText.getWindowToken(),0);
 
-                        Uri uri = Uri.parse(mUnshortedFCCShareLink);
-                        String simpleDBItemNamedata = uri.getLastPathSegment();
-                        simpleDBItemNamedata = simpleDBItemNamedata.substring(0, simpleDBItemNamedata.indexOf(".zip"));
-                        Global.currentAmazonSimpleDBItemName = simpleDBItemNamedata;
-                        int maxNo = Integer.parseInt(editText.getText().toString());
-                        insertIntoAmazonSimpleDB(simpleDBItemNamedata, maxNo);
-                    }
-                })
-                .setNegativeButton("Unlimited", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
+                            Uri uri = Uri.parse(mUnshortedFCCShareLink);
+                            String simpleDBItemNamedata = uri.getLastPathSegment();
+                            simpleDBItemNamedata = simpleDBItemNamedata.substring(0, simpleDBItemNamedata.indexOf(".zip"));
+                            Global.currentAmazonSimpleDBItemName = simpleDBItemNamedata;
+                            int maxNo = Integer.parseInt(editText.getText().toString());
+                            insertIntoAmazonSimpleDB(simpleDBItemNamedata, maxNo);
+                        }
+                    })
+                    .setNegativeButton("Unlimited", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
 
-                        InputMethodManager imm =(InputMethodManager)mActivity.getSystemService(Context.INPUT_METHOD_SERVICE);
-                        imm.hideSoftInputFromWindow(editText.getWindowToken(),0);
+                            InputMethodManager imm =(InputMethodManager)mActivity.getSystemService(Context.INPUT_METHOD_SERVICE);
+                            imm.hideSoftInputFromWindow(editText.getWindowToken(),0);
 
-                        Uri uri = Uri.parse(mUnshortedFCCShareLink);
-                        String simpleDBItemNamedata = uri.getLastPathSegment();
-                        simpleDBItemNamedata = simpleDBItemNamedata.substring(0, simpleDBItemNamedata.indexOf(".zip"));
-                        Global.currentAmazonSimpleDBItemName = simpleDBItemNamedata;
-                        int maxNo = 9999999;
-                        insertIntoAmazonSimpleDB(simpleDBItemNamedata, maxNo);
-                    }
-                })
-                .show();
+                            Uri uri = Uri.parse(mUnshortedFCCShareLink);
+                            String simpleDBItemNamedata = uri.getLastPathSegment();
+                            simpleDBItemNamedata = simpleDBItemNamedata.substring(0, simpleDBItemNamedata.indexOf(".zip"));
+                            Global.currentAmazonSimpleDBItemName = simpleDBItemNamedata;
+                            int maxNo = 9999999;
+                            insertIntoAmazonSimpleDB(simpleDBItemNamedata, maxNo);
+                        }
+                    })
+                    .show();
+        }
     }
 
     /*
@@ -228,6 +249,11 @@ public class ShareLinkHelper extends AsyncTask<Void, Long, Boolean> {
     }
 
 
+    /*
+    用于自己创建的pack,自己share。有两种情况下会被调用
+    1. 自动被调用：.execute执行后
+    2. 手动被调用: 当已经保存了share link（比如上次share过），这时直接调用这个
+     */
     public void execShareAction() {
 
         new AlertDialog.Builder(mActivity)
@@ -238,6 +264,24 @@ public class ShareLinkHelper extends AsyncTask<Void, Long, Boolean> {
                         dialog.dismiss();
                         String shareLink = PackRecordHelper.getCurrentPackShareLink(mCurentPack);
                         shareActionOnItemSelected(which,shareLink);
+                    }
+                })
+                .show();
+    }
+
+
+    /*
+    直接分享：用于分享别人的，这时不允许设置密码上传等，
+     */
+    public void execShareAction2(final String finalShareLink) {
+
+        new AlertDialog.Builder(mActivity)
+                .setTitle("Share")
+                .setItems(new String[] {"Facebook","Twitter","Email","Copy to clipboard"}, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+                        shareActionOnItemSelected(which,finalShareLink);
                     }
                 })
                 .show();

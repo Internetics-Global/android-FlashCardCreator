@@ -10,6 +10,8 @@ import android.text.InputType;
 import android.util.Log;
 import android.widget.EditText;
 import android.widget.Toast;
+
+import com.internectics.data.Pack;
 import com.internectics.helper.AmazonSDB.SimpleDBHelper;
 import com.internectics.util.AppConfig;
 import com.internectics.util.Global;
@@ -32,6 +34,8 @@ public class PackDownloadHelper extends AsyncTask<Void, Long, Boolean> {
     private String mErrorMsg;
     private String mSavedFilePath;
 
+    private String mDownloadedLinkage;
+
     private boolean mIsAllowPostExecute = true;
 
     public boolean mIsFromExamplePackDownload = false;
@@ -39,6 +43,8 @@ public class PackDownloadHelper extends AsyncTask<Void, Long, Boolean> {
 
     public PackDownloadHelper(Context context, String downloadURL, String downloadedZipFile) {
         mContext = context;
+
+        mDownloadedLinkage = downloadURL;
 
         //Delete previous in case
         File file = FileOperationHelper.downloadedPackDirectory();
@@ -159,7 +165,7 @@ public class PackDownloadHelper extends AsyncTask<Void, Long, Boolean> {
 
     private void parsePackAndGoOn() {
         //Step2: parse unzipped pack
-        PackParserHelper.parse();
+        Pack downloadedPack = PackParserHelper.parse();
 
         if (mIsFromExamplePackDownload == false) {
             new Thread()
@@ -177,7 +183,16 @@ public class PackDownloadHelper extends AsyncTask<Void, Long, Boolean> {
             AppConfig.sharedInstance().setExamplePackDownloadedFlag();
         }
 
-        //Step4: notify master view to update
+        //Step4: save the downloaded linkage to persistence, which will be used during share
+        int packID = downloadedPack.packID;
+        if (mDownloadedLinkage != null) {
+            //我们的保存策略与share时不一样，请注意
+            AppConfig.sharedInstance().set(Integer.toString(packID),mDownloadedLinkage);
+            Log.d(Global.debugTag, "save downloaded link:" + mDownloadedLinkage + "with packID=" + packID);
+        }
+
+
+        //Step5: notify master view to update
         Intent intent = new Intent();
         intent.setAction(Global.BROADCAST_ACTION_UPDATE_MASTER_VIEW);
         intent.putExtra(Global.KEY_FROM, Global.BROADCAST_EXTRA_FROM_PACK_DOWNLOADED);
