@@ -246,24 +246,6 @@ public class MainActivity extends FragmentActivity implements
 
             case R.id.actionbar_play:
 
-                if (Global.ratioCard == 0) {
-                    View myCard = findViewById(R.id.card);
-                    if (myCard !=null) {
-                        Global.widthOfCardInEditMode = myCard.getWidth();
-                        double heightOfCard = myCard.getHeight();
-                        Global.ratioCard = heightOfCard/Global.widthOfCardInEditMode;
-
-                    } else {
-
-                        new AlertDialog.Builder(this)
-                                .setTitle("Alert")
-                                .setMessage("You have to select one card in left")
-                                .setPositiveButton("OK", null)
-                                .show();
-                        break;
-                    }
-                }
-
                 if (mCurrentPack.cards.size() > 0) {
                     Intent intent = new Intent(MainActivity.this, PlayActivity.class);
                     intent.putExtra("packID", mCurrentPack.packID);

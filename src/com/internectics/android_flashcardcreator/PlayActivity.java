@@ -68,23 +68,26 @@ public class PlayActivity extends FragmentActivity implements SensorEventListene
 
         //Keep same size with non-playmode
         ViewGroup.MarginLayoutParams marginLayoutParams = (ViewGroup.MarginLayoutParams) mPager.getLayoutParams();
-        int screenWidth = UIHelper.getScreenWidth(this);
-        int screenHeight = UIHelper.getScreenHeight(this);
+        double screenWidth = UIHelper.getScreenWidth(this);
+        double screenHeight = UIHelper.getScreenHeight(this);
         double ratio = screenHeight/screenWidth;
-        int marginHorizontal;
-        int marginVertical;
-        int widthOfCard;
-        int heightOfCard;
-        if (ratio >= Global.ratioCard) {
+        double marginHorizontal;
+        double marginVertical;
+        double widthOfCard;
+        double heightOfCard;
+
+        double ratioCard = UIHelper.getCardRatio(this);
+
+        if (ratio >= ratioCard) {
             //mean we should use width as reference
             marginHorizontal = 10;
             widthOfCard = screenWidth - 2*marginHorizontal;
-            heightOfCard = (int)(widthOfCard *Global.ratioCard);
+            heightOfCard = (int)(widthOfCard *ratioCard);
             marginVertical = (screenHeight - heightOfCard)/2;
         } else {
             marginVertical = 10;
             heightOfCard = screenHeight - 2*marginVertical;
-            widthOfCard = (int) (heightOfCard / Global.ratioCard);
+            widthOfCard = (int) (heightOfCard / ratioCard);
             marginHorizontal = (screenWidth - widthOfCard)/2;
         }
 
@@ -94,10 +97,10 @@ public class PlayActivity extends FragmentActivity implements SensorEventListene
             Global.scaleInPlayMode = 1.2; //default value
         }
 
-        marginLayoutParams.leftMargin = marginHorizontal;
-        marginLayoutParams.rightMargin = marginHorizontal;
-        marginLayoutParams.topMargin = marginVertical;
-        marginLayoutParams.bottomMargin = marginVertical;
+        marginLayoutParams.leftMargin = (int)marginHorizontal;
+        marginLayoutParams.rightMargin =  (int)marginHorizontal;
+        marginLayoutParams.topMargin =  (int)marginVertical;
+        marginLayoutParams.bottomMargin =  (int)marginVertical;
         mPager.setLayoutParams(marginLayoutParams);
 
         mPager.setOffscreenPageLimit(1);

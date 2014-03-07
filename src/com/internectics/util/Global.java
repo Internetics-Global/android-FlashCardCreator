@@ -62,7 +62,6 @@ public class Global {
     public static final String appToken = "3b389237-d528-4d77-8540-5bf7122ffb2f";
 
     //ratio of height and width;
-    public static double   ratioCard = 0; //must take 0 as default value
     public static double   widthOfCardInEditMode = 0;
     public static double   scaleInPlayMode = 1; //scale in play mode compared with in edit mode
 

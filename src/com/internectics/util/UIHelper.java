@@ -3,6 +3,7 @@ package com.internectics.util;
 import android.app.Activity;
 import android.content.Context;
 import android.content.res.Resources;
+import android.content.res.TypedArray;
 import android.graphics.*;
 import android.net.Uri;
 import android.text.Layout;
@@ -108,6 +109,34 @@ public class UIHelper {
         int height = display.getHeight();
 
         return height;
+    }
+
+    public static double getCardHeight(Activity activity) {
+        double cardHeight = (getScreenHeight(activity)- getActionbarHeight(activity) - getPixels(10 + 10 + 10)) * 550 /595;
+        return cardHeight;
+    }
+
+    public static double getCardWidth(Activity activity) {
+        double cardWidth = getScreenWidth(activity) *3/4;
+        return (cardWidth);
+    }
+
+    public static double getCardRatio(Activity activity) {
+        double cardHeight = getCardHeight(activity);
+        double cardWidth = getCardWidth(activity);
+        return cardHeight/cardWidth;
+    }
+
+
+    /*
+    Unit is pixel
+     */
+    public static int getActionbarHeight(Activity activity) {
+        TypedArray styledAttributes = activity.getTheme().obtainStyledAttributes(
+                new int[] { android.R.attr.actionBarSize });
+        int mActionBarHeight = (int) styledAttributes.getDimension(0, 0);
+
+        return mActionBarHeight;
     }
 
     public static float getScreenWidthDPUnit (Activity activity) {
