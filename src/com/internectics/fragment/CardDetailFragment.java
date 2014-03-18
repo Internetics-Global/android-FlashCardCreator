@@ -465,6 +465,8 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnKeyboa
         ActionItem questionActionItem3 = new ActionItem(3, null, getResources().getDrawable(R.drawable.question_templatescreenshot3));
         ActionItem questionActionItem4 = new ActionItem(4, null, getResources().getDrawable(R.drawable.question_templatescreenshot4));
         ActionItem questionActionItem5 = new ActionItem(5, null, getResources().getDrawable(R.drawable.question_templatescreenshot5));
+        ActionItem questionActionItem6 = new ActionItem(6, null, getResources().getDrawable(R.drawable.question_templatescreenshot6));
+        ActionItem questionActionItem7 = new ActionItem(7, null, getResources().getDrawable(R.drawable.question_templatescreenshot7));
 
         ActionItem answerActionItem0 = new ActionItem(0, null, getResources().getDrawable(R.drawable.answer_templatescreenshot0));
         ActionItem answerActionItem1 = new ActionItem(1, null, getResources().getDrawable(R.drawable.answer_templatescreenshot1));
@@ -472,6 +474,8 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnKeyboa
         ActionItem answerActionItem3 = new ActionItem(3, null, getResources().getDrawable(R.drawable.answer_templatescreenshot3));
         ActionItem answerActionItem4 = new ActionItem(4, null, getResources().getDrawable(R.drawable.answer_templatescreenshot4));
         ActionItem answerActionItem5 = new ActionItem(5, null, getResources().getDrawable(R.drawable.answer_templatescreenshot5));
+        ActionItem answerActionItem6 = new ActionItem(6, null, getResources().getDrawable(R.drawable.answer_templatescreenshot6));
+        ActionItem answerActionItem7 = new ActionItem(7, null, getResources().getDrawable(R.drawable.answer_templatescreenshot7));
 
         final QuickAction questionQuickAction = new QuickAction(getActivity(), QuickAction.VERTICAL);
         final QuickAction answerQuickAction = new QuickAction(getActivity(), QuickAction.VERTICAL);
@@ -482,6 +486,8 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnKeyboa
         questionQuickAction.addActionItem(questionActionItem3);
         questionQuickAction.addActionItem(questionActionItem4);
         questionQuickAction.addActionItem(questionActionItem5);
+        questionQuickAction.addActionItem(questionActionItem6);
+        questionQuickAction.addActionItem(questionActionItem7);
         questionQuickAction.setOnActionItemClickListener(new QuickAction.OnActionItemClickListener() {
             @Override
             public void onItemClick(QuickAction source, int pos, int actionId) {
@@ -495,6 +501,8 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnKeyboa
         answerQuickAction.addActionItem(answerActionItem3);
         answerQuickAction.addActionItem(answerActionItem4);
         answerQuickAction.addActionItem(answerActionItem5);
+        answerQuickAction.addActionItem(answerActionItem6);
+        answerQuickAction.addActionItem(answerActionItem7);
         answerQuickAction.setOnActionItemClickListener(new QuickAction.OnActionItemClickListener() {
             @Override
             public void onItemClick(QuickAction source, int pos, int actionId) {
@@ -1574,6 +1582,81 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnKeyboa
                 params.rightMargin =  UIHelper.getPixels(4);
                 mSub.setLayoutParams(params);
                 break;
+
+            case 6:
+
+                mContentBodyType1.setVisibility(View.VISIBLE);
+                mContentBodyType2.setVisibility(View.INVISIBLE);
+
+                //part1: image
+                params = (LinearLayout.LayoutParams) mContentBodyLeft.getLayoutParams();
+                params.weight = 360f;
+                params.rightMargin =  UIHelper.getPixels(4);
+                mContentBodyLeft.setLayoutParams(params);
+
+                params = (LinearLayout.LayoutParams) mImage.getLayoutParams();
+                params.weight = 350f;
+                params.rightMargin =  UIHelper.getPixels(4);
+                mImage.setLayoutParams(params);
+                mImage.setVisibility(View.VISIBLE);
+
+                //part2:text
+                params = (LinearLayout.LayoutParams) mSubheading.getLayoutParams();
+                params.width = LinearLayout.LayoutParams.FILL_PARENT;
+                params.weight = 70;
+                params.rightMargin =  UIHelper.getPixels(4);
+                mSubheading.setLayoutParams(params);
+
+                params = (LinearLayout.LayoutParams) mMain.getLayoutParams();
+                params.width = LinearLayout.LayoutParams.FILL_PARENT;
+                params.weight = 360;
+                params.rightMargin =  UIHelper.getPixels(4);
+                mMain.setLayoutParams(params);
+
+                params = (LinearLayout.LayoutParams) mSub.getLayoutParams();
+                params.width = LinearLayout.LayoutParams.FILL_PARENT;
+                params.weight = 0;
+                params.rightMargin =  UIHelper.getPixels(4);
+                mSub.setLayoutParams(params);
+                break;
+
+            case 7:
+
+                mContentBodyType1.setVisibility(View.VISIBLE);
+                mContentBodyType2.setVisibility(View.INVISIBLE);
+
+                //part1: image
+                params = (LinearLayout.LayoutParams) mContentBodyLeft.getLayoutParams();
+                params.weight = 360f;
+                params.rightMargin =  UIHelper.getPixels(4);
+                mContentBodyLeft.setLayoutParams(params);
+                params = (LinearLayout.LayoutParams) mImage.getLayoutParams();
+
+                params.weight = 350f;
+                params.rightMargin =  UIHelper.getPixels(4);
+                mImage.setLayoutParams(params);
+                mImage.setVisibility(View.VISIBLE);
+
+                //part2:text
+                params = (LinearLayout.LayoutParams) mSubheading.getLayoutParams();
+                params.width = LinearLayout.LayoutParams.FILL_PARENT;
+                params.weight = 0;
+                params.rightMargin =  UIHelper.getPixels(4);
+                mSubheading.setLayoutParams(params);
+
+                params = (LinearLayout.LayoutParams) mMain.getLayoutParams();
+                params.width = LinearLayout.LayoutParams.FILL_PARENT;
+                params.weight = 420;
+                params.rightMargin =  UIHelper.getPixels(4);
+                mMain.setLayoutParams(params);
+
+                params = (LinearLayout.LayoutParams) mSub.getLayoutParams();
+                params.width = LinearLayout.LayoutParams.FILL_PARENT;
+                params.weight = 0;
+                params.rightMargin =  UIHelper.getPixels(4);
+                mSub.setLayoutParams(params);
+                break;
+
             default:
                 Log.w(Global.debugTag, "mCurrentCard.question.templateID is out of scope");
         }
@@ -1777,6 +1860,85 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnKeyboa
                 params.rightMargin =  UIHelper.getPixels(4);
                 mSub.setLayoutParams(params);
                 break;
+
+            case 6:
+
+                mContentBodyType1.setVisibility(View.VISIBLE);
+                mContentBodyType2.setVisibility(View.INVISIBLE);
+
+                mImage.setVisibility(View.INVISIBLE);
+
+                //part1: image
+                params = (LinearLayout.LayoutParams) mContentBodyLeft.getLayoutParams();
+                params.weight = 710f;
+                params.rightMargin =  UIHelper.getPixels(4);
+                mContentBodyLeft.setLayoutParams(params);
+
+                params = (LinearLayout.LayoutParams) mImage.getLayoutParams();
+                params.weight = 0f;
+                params.rightMargin =  UIHelper.getPixels(4);
+                mImage.setLayoutParams(params);
+                mImage.setVisibility(View.INVISIBLE);
+
+                //part2:text
+                params = (LinearLayout.LayoutParams) mSubheading.getLayoutParams();
+                params.width = LinearLayout.LayoutParams.FILL_PARENT;
+                params.weight = 0;
+                params.rightMargin =  UIHelper.getPixels(4);
+                mSubheading.setLayoutParams(params);
+
+                params = (LinearLayout.LayoutParams) mMain.getLayoutParams();
+                params.width = LinearLayout.LayoutParams.FILL_PARENT;
+                params.weight = 200;
+                params.rightMargin =  UIHelper.getPixels(4);
+                mMain.setLayoutParams(params);
+
+                params = (LinearLayout.LayoutParams) mSub.getLayoutParams();
+                params.width = LinearLayout.LayoutParams.FILL_PARENT;
+                params.weight = 190;
+                params.rightMargin =  UIHelper.getPixels(4);
+                mSub.setLayoutParams(params);
+                break;
+
+            case 7:
+
+                mContentBodyType1.setVisibility(View.VISIBLE);
+                mContentBodyType2.setVisibility(View.INVISIBLE);
+
+                mImage.setVisibility(View.INVISIBLE);
+
+                //part1: image
+                params = (LinearLayout.LayoutParams) mContentBodyLeft.getLayoutParams();
+                params.weight = 710f;
+                params.rightMargin =  UIHelper.getPixels(4);
+                mContentBodyLeft.setLayoutParams(params);
+
+                params = (LinearLayout.LayoutParams) mImage.getLayoutParams();
+                params.weight = 0f;
+                params.rightMargin =  UIHelper.getPixels(4);
+                mImage.setLayoutParams(params);
+                mImage.setVisibility(View.INVISIBLE);
+
+                //part2:text
+                params = (LinearLayout.LayoutParams) mSubheading.getLayoutParams();
+                params.width = LinearLayout.LayoutParams.FILL_PARENT;
+                params.weight = 0;
+                params.rightMargin =  UIHelper.getPixels(4);
+                mSubheading.setLayoutParams(params);
+
+                params = (LinearLayout.LayoutParams) mMain.getLayoutParams();
+                params.width = LinearLayout.LayoutParams.FILL_PARENT;
+                params.weight = 200;
+                params.rightMargin =  UIHelper.getPixels(4);
+                mMain.setLayoutParams(params);
+
+                params = (LinearLayout.LayoutParams) mSub.getLayoutParams();
+                params.width = LinearLayout.LayoutParams.FILL_PARENT;
+                params.weight = 190;
+                params.rightMargin =  UIHelper.getPixels(4);
+                mSub.setLayoutParams(params);
+                break;
+
             default:
                 Log.w(Global.debugTag, "mCurrentCard.answer.templateID is out of scope");
         }
