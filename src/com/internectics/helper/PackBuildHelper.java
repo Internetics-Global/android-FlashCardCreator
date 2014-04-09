@@ -43,18 +43,40 @@ public class PackBuildHelper {
             cardFiles.add(singleFile);
             singleFile = PackBuildHelper.buildCardAnswerJsonFile(card, currentPack).toString();
             cardFiles.add(singleFile);
-            cardFiles.add(FileOperationHelper.deleteUriSchemeHeader(card.coverImageUriFormatStr));
-            cardFiles.add(FileOperationHelper.deleteUriSchemeHeader(card.question.imageUriFormatStr));
+
+            if (card.coverImageUriFormatStr.length() > 0) {
+                cardFiles.add(FileOperationHelper.deleteUriSchemeHeader(card.coverImageUriFormatStr));
+            }
+
+            if (card.question.imageUriFormatStr.length() >0) {
+                cardFiles.add(FileOperationHelper.deleteUriSchemeHeader(card.question.imageUriFormatStr));
+            }
+
             if (!(card.question.imageUriFormatStr.equals(card.answer.imageUriFormatStr))) {
                 //for history reason, in iOS version, this data could be same (answer_placeholder_content.jpg)
                 cardFiles.add(FileOperationHelper.deleteUriSchemeHeader(card.answer.imageUriFormatStr));
             }
-            cardFiles.add(FileOperationHelper.deleteUriSchemeHeader(currentPack.logoImageUriFormatStr));
 
-            cardFiles.add(FileOperationHelper.deleteUriSchemeHeader(card.question.backgroundImageUriFormatStr));
-            cardFiles.add(FileOperationHelper.deleteUriSchemeHeader(card.question.movieUriFormatStr));
-            cardFiles.add(FileOperationHelper.deleteUriSchemeHeader(card.answer.backgroundImageUriFormatStr));
-            cardFiles.add(FileOperationHelper.deleteUriSchemeHeader(card.answer.movieUriFormatStr));
+            if (currentPack.logoImageUriFormatStr.length() > 0) {
+                cardFiles.add(FileOperationHelper.deleteUriSchemeHeader(currentPack.logoImageUriFormatStr));
+            }
+
+            if (card.question.backgroundImageUriFormatStr.length() >0) {
+                cardFiles.add(FileOperationHelper.deleteUriSchemeHeader(card.question.backgroundImageUriFormatStr));
+            }
+
+            if (card.question.movieUriFormatStr.length() >0) {
+                cardFiles.add(FileOperationHelper.deleteUriSchemeHeader(card.question.movieUriFormatStr));
+            }
+
+            if (card.answer.backgroundImageUriFormatStr.length() >0) {
+                cardFiles.add(FileOperationHelper.deleteUriSchemeHeader(card.answer.backgroundImageUriFormatStr));
+            }
+
+            if (card.answer.movieUriFormatStr.length() >0) {
+                cardFiles.add(FileOperationHelper.deleteUriSchemeHeader(card.answer.movieUriFormatStr));
+            }
+
 
             File cardZipFile = new File(FileOperationHelper.uploadPackDirectory(), String.format("card%d.zip", i));
             try {

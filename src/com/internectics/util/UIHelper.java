@@ -82,7 +82,7 @@ public class UIHelper {
         try {
             FileOutputStream fOutputStream = new FileOutputStream(toSaveFile);
             try {
-                savedBitmap.compress(Bitmap.CompressFormat.PNG, 30, fOutputStream);
+                savedBitmap.compress(Bitmap.CompressFormat.PNG, 10, fOutputStream);
                 fOutputStream.flush();
                 fOutputStream.close();
             } catch (Exception oException) {

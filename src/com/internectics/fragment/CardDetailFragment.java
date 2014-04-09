@@ -9,7 +9,6 @@ import android.graphics.Color;
 import android.graphics.Typeface;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
-import android.graphics.drawable.shapes.RoundRectShape;
 import android.net.Uri;
 import android.os.*;
 import android.provider.MediaStore;
@@ -25,7 +24,6 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.*;
 import com.internectics.UI.FCCEditText;
 import com.internectics.android_flashcardcreator.MainActivity;
-import com.internectics.android_flashcardcreator.PlayActivity;
 import com.internectics.android_flashcardcreator.R;
 import com.internectics.android_flashcardcreator.VideoViewActivity;
 import com.internectics.android_flashcardcreator.WebViewActivity;
@@ -36,7 +34,6 @@ import com.internectics.helper.FileOperationHelper;
 import com.internectics.helper.PackRecordHelper;
 import com.internectics.helper.SymbolHelper;
 import com.internectics.util.*;
-import com.nostra13.socialsharing.facebook.extpack.com.facebook.android.Util;
 
 import net.londatiga.android.ActionItem;
 import net.londatiga.android.QuickAction;
@@ -2561,13 +2558,8 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnKeyboa
 
     private void setCardBackgroundImageWithDrawable(Drawable drawable) {
         //set background image
-        View card = mContentView.findViewById(R.id.card_basement);
-
-        BitmapDrawable bitmapDrawable = (BitmapDrawable) drawable;
-        Bitmap bitmap = bitmapDrawable.getBitmap();
-        //Bitmap resizedBitmap = Bitmap.createBitmap(card.getWidth(), card.getHeight(), bitmap.getConfig());
-        BitmapDrawable bbb = new BitmapDrawable(UIHelper.toRoundCorner(bitmap, getResources().getDimension(R.dimen.card_round_corner)));
-        card.setBackgroundDrawable(bbb);
+        ImageView backgroundImageView = (ImageView) mContentView.findViewById(R.id.card_background_image);
+        backgroundImageView.setImageDrawable(drawable);
     }
 
 
@@ -2576,9 +2568,8 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnKeyboa
      */
     private void setCardBackgroundImageWithBitmap(Bitmap bitmap) {
         //set background image
-        View card = mContentView.findViewById(R.id.card_basement);
-        BitmapDrawable bbb = new BitmapDrawable(UIHelper.toRoundCorner(bitmap, getResources().getDimension(R.dimen.card_round_corner)));
-        card.setBackgroundDrawable(bbb);
+        ImageView backgroundImageView = (ImageView) mContentView.findViewById(R.id.card_background_image);
+        backgroundImageView.setImageBitmap(bitmap);
 
     }
 
@@ -2592,8 +2583,9 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnKeyboa
 
 
     private void setCardBackgroundImageDefault () {
-        View card = mContentView.findViewById(R.id.card_basement);
-        card.setBackgroundDrawable(null);
+        ImageView backgroundImageView = (ImageView) mContentView.findViewById(R.id.card_background_image);
+        backgroundImageView.setImageBitmap(null);
+
     }
 
     //used in non-play mode

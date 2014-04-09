@@ -6,13 +6,17 @@
               android:layout_height="match_parent"
               android:background="@drawable/shape_card_bg"
               android:orientation="horizontal">
-
+    <ImageView
+        android:id="@+id/card_background_image"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:scaleType="centerCrop"
+        android:src="@null" />
 
     <LinearLayout
-        android:id="@+id/card_basement"
         android:background="@null"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">  <!-- id/card_basement的唯一用处是用于设置card的背景 -->
+        android:layout_height="match_parent">
 
         <FrameLayout
             android:id="@+id/sidebar_background_linearlayout"
@@ -367,6 +371,7 @@
         </FrameLayout>
 
     </LinearLayout>
+
 
     <FrameLayout
         android:id="@+id/card_mask"
