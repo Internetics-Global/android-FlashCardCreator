@@ -99,7 +99,7 @@ public class UIHelper {
 
         String path = getRealPathFromURI(context,uri);
 
-        Bitmap bMap = ThumbnailUtils.createVideoThumbnail(path, MediaStore.Video.Thumbnails.MICRO_KIND);
+        Bitmap bMap = ThumbnailUtils.createVideoThumbnail(path, MediaStore.Video.Thumbnails.MINI_KIND);
 
         Bitmap bmOverlay = Bitmap.createBitmap(bMap.getWidth(), bMap.getHeight(), bMap.getConfig());
         Canvas canvas = new Canvas(bmOverlay);

@@ -305,6 +305,7 @@ public class PlayActivity extends FragmentActivity implements SensorEventListene
     @Override
     public boolean onSingleTapConfirmed(MotionEvent e) {
         Log.d(Global.debugTag3, "onSingleTapConfirmed");
+        ((CardDetailFragment) (mFragments.get(mPosition))).switchQuestionAnswerView();
         return false;
     }
 

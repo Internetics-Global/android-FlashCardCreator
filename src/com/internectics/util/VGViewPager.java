@@ -53,6 +53,22 @@ public class VGViewPager extends ViewPager {
             return false;
         }
 
+        ImageView image = (ImageView)findViewById(R.id.image);
+        image.getHitRect(outRect);
+        outRect.offset(marginValLeft + sidebarWidth,marginValTop);
+        if (outRect.contains(x, y)) {
+            Log.d(Global.debugTag, "touch location in image");
+            return false;
+        }
+
+        ImageView image2 = (ImageView)findViewById(R.id.image2);
+        image2.getHitRect(outRect);
+        outRect.offset(marginValLeft + sidebarWidth,marginValTop);
+        if (outRect.contains(x, y)) {
+            Log.d(Global.debugTag, "touch location in image2");
+            return false;
+        }
+
 
         LinearLayout creatorLayout = (LinearLayout) findViewById(R.id.creator_layout);
         creatorLayout.getHitRect(outRect);
