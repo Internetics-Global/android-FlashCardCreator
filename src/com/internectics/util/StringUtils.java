@@ -231,6 +231,12 @@ public class StringUtils {
         return result;
     }
 
+    public static boolean isCorrectMovName(String str) {
+        boolean result = false;
+        result = ((str != null) && (str.toLowerCase().contains(".mov")));
+        return result;
+    }
+
 
     public static String deleteEndLinesSpace(String str) {
         String splitStr =  System.getProperty ("line.separator");

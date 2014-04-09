@@ -199,6 +199,22 @@ public class PackParserHelper {
             }
 
             temp = "";
+            if (questionObj.containsKey("background_image")) {
+                temp = (String) questionObj.get("background_image");
+            }
+            if (StringUtils.isCorrectImageName(temp)) {
+                card.question.backgroundImageUriFormatStr = temp;
+            }
+
+            temp = "";
+            if (questionObj.containsKey("movie")) {
+                temp = (String) questionObj.get("movie");
+            }
+            if (StringUtils.isCorrectMovName(temp)) {
+                card.question.movieUriFormatStr = temp;
+            }
+
+            temp = "";
             if (questionObj.containsKey("template_background")) {
                 temp = (String) questionObj.get("template_background");
             }
@@ -530,6 +546,22 @@ public class PackParserHelper {
 
             if (answerObj.containsKey("sub_color")) {
                 card.answer.css.subColor = (String) answerObj.get("sub_color");
+            }
+
+            temp = "";
+            if (answerObj.containsKey("background_image")) {
+                temp = (String) answerObj.get("background_image");
+            }
+            if (StringUtils.isCorrectImageName(temp)) {
+                card.answer.backgroundImageUriFormatStr = temp;
+            }
+
+            temp = "";
+            if (answerObj.containsKey("movie")) {
+                temp = (String) answerObj.get("movie");
+            }
+            if (StringUtils.isCorrectMovName(temp)) {
+                card.answer.movieUriFormatStr = temp;
             }
 
             int subheadingSize;

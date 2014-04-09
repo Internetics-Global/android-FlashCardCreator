@@ -1,11 +1,15 @@
 package com.internectics.util;
 
 import android.app.Activity;
+import android.content.ContentResolver;
 import android.content.Context;
 import android.content.res.Resources;
 import android.content.res.TypedArray;
+import android.database.Cursor;
 import android.graphics.*;
+import android.media.ThumbnailUtils;
 import android.net.Uri;
+import android.provider.MediaStore;
 import android.text.Layout;
 import android.text.Selection;
 import android.util.DisplayMetrics;
@@ -17,6 +21,7 @@ import android.widget.EditText;
 import com.internectics.helper.FileOperationHelper;
 
 import java.io.*;
+import java.net.URI;
 import java.net.URL;
 
 public class UIHelper {
@@ -80,6 +85,64 @@ public class UIHelper {
         }
 
         return toSaveFile;
+    }
+
+    public static Bitmap getVideoThumbnail(Context context,Uri uri) {
+
+        String path = getRealPathFromURI(context,uri);
+
+        Bitmap bMap = ThumbnailUtils.createVideoThumbnail(path, MediaStore.Video.Thumbnails.MICRO_KIND);
+
+        return bMap;
+    }
+
+    public static String getRealPathFromURI(Context context, Uri contentUri) {
+        Cursor cursor = null;
+        try {
+            String[] proj = { MediaStore.Images.Media.DATA };
+            cursor = context.getContentResolver().query(contentUri,  proj, null, null, null);
+            int column_index = cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATA);
+            cursor.moveToFirst();
+            return cursor.getString(column_index);
+        } finally {
+            if (cursor != null) {
+                cursor.close();
+            }
+        }
+    }
+
+
+    public static File saveVideoToCaches(Context context, Uri uri) {
+        File toSaveFile = FileOperationHelper.generateUniqueVideoFilePath();
+
+        InputStream inputStream = null;
+        OutputStream outputStream = null;
+
+        try
+        {
+            ContentResolver content = context.getContentResolver();
+            inputStream = content.openInputStream(uri);
+
+            outputStream = new FileOutputStream( toSaveFile);
+            if(outputStream != null){
+                Log.e( Global.debugTag, "Output Stream Opened successfully");
+            }
+
+            byte[] buffer = new byte[1000];
+            int bytesRead = 0;
+            while ( ( bytesRead = inputStream.read( buffer, 0, buffer.length ) ) >= 0 )
+            {
+                outputStream.write( buffer, 0, buffer.length );
+            }
+        } catch ( Exception e ){
+            Log.e(Global.debugTag, "Exception occurred " + e.getMessage());
+
+        } finally{
+
+        }
+
+        return toSaveFile;
+
     }
 
 
@@ -285,5 +348,26 @@ public class UIHelper {
     }
 
 
+    public static Bitmap toRoundCorner(Bitmap bitmap, float pixels) {
+
+        Bitmap output = Bitmap.createBitmap(bitmap.getWidth(), bitmap.getHeight(), Bitmap.Config.ARGB_8888);
+        Canvas canvas = new Canvas(output);
+
+        final int color = 0xff424242;
+        final Paint paint = new Paint();
+        final Rect rect = new Rect(0, 0, bitmap.getWidth(), bitmap.getHeight());
+        final RectF rectF = new RectF(rect);
+        final float roundPx = pixels;
+
+        paint.setAntiAlias(true);
+        canvas.drawARGB(0, 0, 0, 0);
+        paint.setColor(color);
+        canvas.drawRoundRect(rectF, roundPx, roundPx, paint);
+
+        paint.setXfermode(new PorterDuffXfermode(PorterDuff.Mode.SRC_IN));
+        canvas.drawBitmap(bitmap, rect, rect, paint);
+
+        return output;
+    }
 
 }

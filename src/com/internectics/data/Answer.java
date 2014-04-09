@@ -22,6 +22,9 @@ public class Answer {
     public int cssID;
     public int templateID;
 
+    public String backgroundImageUriFormatStr;
+    public String movieUriFormatStr;
+
     public CSS css;
 
     public Answer() {
@@ -35,6 +38,9 @@ public class Answer {
         cssID = -1;
         templateID = 0;
         css = new CSS(false);
+
+        backgroundImageUriFormatStr = "";
+        movieUriFormatStr = "";
     }
 
     public Answer initWithDictionary(HashMap<String, Object> dataDict) {
@@ -46,6 +52,9 @@ public class Answer {
         imageUriFormatStr = (String) dataDict.get("image");
         cssID = (Integer) dataDict.get("css_id");
         templateID = (Integer) dataDict.get("template_id");
+
+        backgroundImageUriFormatStr = (String) dataDict.get("background_image");
+        movieUriFormatStr = (String) dataDict.get("movie");
 
         HashMap<String, Object> cssArray = (HashMap<String, Object>) dataDict.get("css");
         this.css = (new CSS(false)).initWithDictionary(cssArray);
@@ -68,6 +77,10 @@ public class Answer {
                 answerDict.put("image", cur.getString(5));
                 answerDict.put("css_id", cur.getInt(6));
                 answerDict.put("template_id", cur.getInt(7));
+
+                answerDict.put("background_image", cur.getString(8));
+                answerDict.put("movie", cur.getString(9));
+
                 answerDict.put("css", CSS.cssForCSSID(context, cur.getInt(6)));
                 break;
             }
@@ -101,7 +114,7 @@ public class Answer {
         String decodedMain = StringUtils.stringDecodeForSQlite(main);
         String decodedSub = StringUtils.stringDecodeForSQlite(sub);
 
-        String query = String.format("UPDATE Answer_Tables SET answer_id=%d, subheading=?, main=?, sub=?, image=\"%s\",css_id=%d, template_id=%d WHERE card_id=%d", answerID, imageUriFormatStr, cssID, templateID, cardID);
+        String query = String.format("UPDATE Answer_Tables SET answer_id=%d, subheading=?, main=?, sub=?, image=\"%s\",css_id=%d, template_id=%d,background_image=\"%s\",movie=\"%s\" WHERE card_id=%d", answerID, imageUriFormatStr, cssID, templateID,backgroundImageUriFormatStr,movieUriFormatStr, cardID);
         SQLiteHelper.defaultDatabase(context).execSQL(query, new Object[]{decodedSubheading, decodedMain, decodedSub});
     }
 
@@ -115,7 +128,7 @@ public class Answer {
         String decodedMain = StringUtils.stringDecodeForSQlite(main);
         String decodedSub = StringUtils.stringDecodeForSQlite(sub);
 
-        String query = String.format("INSERT INTO Answer_Tables(answer_id, card_id, subheading, main, sub, image, css_id, template_id) VALUES (%d,%d, ?, ?, ?, \"%s\", %d, %d)", answerID, cardID, imageUriFormatStr, cssID, templateID);
+        String query = String.format("INSERT INTO Answer_Tables(answer_id, card_id, subheading, main, sub, image, css_id, template_id,background_image,movie) VALUES (%d,%d, ?, ?, ?, \"%s\", %d, %d,\"%s\",\"%s\")", answerID, cardID, imageUriFormatStr, cssID, templateID,backgroundImageUriFormatStr,movieUriFormatStr);
         SQLiteHelper.defaultDatabase(context).execSQL(query, new Object[]{decodedSubheading, decodedMain, decodedSub});
 
     }
@@ -124,7 +137,7 @@ public class Answer {
         String query = String.format("DELETE FROM Answer_Tables WHERE card_id=%d", cardID);
         SQLiteHelper.defaultDatabase(context).execSQL(query);
 
-        if (!StringUtils.isNumeric(imageUriFormatStr) && (!imageUriFormatStr.contains("placeholder"))) {
+        if ((imageUriFormatStr != null) && (!StringUtils.isNumeric(imageUriFormatStr)) && (!imageUriFormatStr.contains("placeholder"))) {
             File file = new File(FileOperationHelper.deleteUriSchemeHeader(this.imageUriFormatStr));
             if (file.delete()) {
                 //Log.d(Global.debugTag, "Successful to delete imageUriFormatStr file in Answer");
@@ -132,5 +145,24 @@ public class Answer {
                 Log.e(Global.debugTag, "Fail to delete coverImageUriFormatStr file in Answer:" + file);
             }
         }
+
+        if ((backgroundImageUriFormatStr != null) && (!StringUtils.isNumeric(backgroundImageUriFormatStr))) {
+            File file = new File(FileOperationHelper.deleteUriSchemeHeader(this.backgroundImageUriFormatStr));
+            if (file.delete()) {
+                Log.d(Global.debugTag, "Successful to delete backgroundImageUriFormatStr file in Question");
+            } else {
+                Log.w(Global.debugTag, "Fail to delete backgroundImageUriFormatStr file in Question");
+            }
+        }
+
+        if ((movieUriFormatStr != null) && (!StringUtils.isNumeric(movieUriFormatStr))) {
+            File file = new File(FileOperationHelper.deleteUriSchemeHeader(this.movieUriFormatStr));
+            if (file.delete()) {
+                Log.d(Global.debugTag, "Successful to delete movieUriFormatStr file in Question");
+            } else {
+                Log.w(Global.debugTag, "Fail to delete movieUriFormatStr file in Question");
+            }
+        }
+
     }
 }

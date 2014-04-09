@@ -50,6 +50,12 @@ public class PackBuildHelper {
                 cardFiles.add(FileOperationHelper.deleteUriSchemeHeader(card.answer.imageUriFormatStr));
             }
             cardFiles.add(FileOperationHelper.deleteUriSchemeHeader(currentPack.logoImageUriFormatStr));
+
+            cardFiles.add(FileOperationHelper.deleteUriSchemeHeader(card.question.backgroundImageUriFormatStr));
+            cardFiles.add(FileOperationHelper.deleteUriSchemeHeader(card.question.movieUriFormatStr));
+            cardFiles.add(FileOperationHelper.deleteUriSchemeHeader(card.answer.backgroundImageUriFormatStr));
+            cardFiles.add(FileOperationHelper.deleteUriSchemeHeader(card.answer.movieUriFormatStr));
+
             File cardZipFile = new File(FileOperationHelper.uploadPackDirectory(), String.format("card%d.zip", i));
             try {
                 ZipFileHelper.zipPackFiles(cardZipFile.toString(), cardFiles);
@@ -148,6 +154,9 @@ public class PackBuildHelper {
         obj.put("template_background", card.templateBackground);
         obj.put("cover_image", StringUtils.lastComponentOfPath(card.coverImageUriFormatStr));
 
+        obj.put("background_image", StringUtils.lastComponentOfPath(card.question.backgroundImageUriFormatStr));
+        obj.put("movie", StringUtils.lastComponentOfPath(card.question.movieUriFormatStr));
+
         obj.put("image", StringUtils.lastComponentOfPath(card.question.imageUriFormatStr));
         obj.put("template_id", String.format("%d", card.question.templateID));
         obj.put("subheading", card.question.subheading);
@@ -204,6 +213,9 @@ public class PackBuildHelper {
         obj.put("sub_align", card.answer.css.subAlign);
         obj.put("sub_color", card.answer.css.subColor);
         obj.put("sub_size", String.format("%d",card.answer.css.subSize));
+
+        obj.put("background_image", StringUtils.lastComponentOfPath(card.answer.backgroundImageUriFormatStr));
+        obj.put("movie", StringUtils.lastComponentOfPath(card.answer.movieUriFormatStr));
 
         File savedPath = FileOperationHelper.getUploadCardAnswerJsonFile();
         FileWriter file;

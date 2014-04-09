@@ -67,6 +67,11 @@
                 android:windowSoftInputMode="stateAlwaysHidden"
                 android:screenOrientation="landscape">
         </activity>
+        <activity
+            android:name="com.internectics.android_flashcardcreator.VideoViewActivity"
+            android:windowSoftInputMode="stateAlwaysHidden"
+            android:screenOrientation="landscape">
+        </activity>
         <activity android:name=".InstructionActivity"
                   android:screenOrientation="sensorLandscape"/>
         <activity android:name=".MoreActivity"/>

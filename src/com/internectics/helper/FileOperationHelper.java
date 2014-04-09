@@ -84,6 +84,16 @@ public class FileOperationHelper {
     }
 
     /**
+     * All the video resouces in pack/card will be  format of .3gp Everytime you call
+     * this method, the file path will be unique
+     */
+    public static File generateUniqueVideoFilePath() {
+        String string = String.format("%s.3gp", UUID.randomUUID().toString());
+        File tempFile = new File(imagesDirectory(), string);
+        return tempFile;
+    }
+
+    /**
      * All the pack zips will be unique
      */
     public static File generateUniquePackZipFilePathForUploading() {
@@ -96,6 +106,7 @@ public class FileOperationHelper {
         String string = String.format("file://%s", file.toString());
         return string;
     }
+
 
     public static String deleteUriSchemeHeader(String str) {
 

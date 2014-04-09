@@ -622,6 +622,7 @@ public class MainActivity extends FragmentActivity implements
             }
         });
 
+
         mCardDetailFragment = new CardDetailFragment(mCurrentPack, null, 1);
         if (mCurrentPack.cards.size() >0) {
             //History of reason, we put templateBackground in Card, rather than Pack. It's not a good design practce anyway.
