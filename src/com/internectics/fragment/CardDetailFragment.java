@@ -267,6 +267,12 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnKeyboa
             mTitle.setEnabled(false);
         }
 
+        if (mIsPlayingCard) {
+            setCardBackgroundMaskBlack();
+        } else {
+            setCardBackgroundMaskGray();
+        }
+
     }
 
 
@@ -470,10 +476,29 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnKeyboa
                             columnIndex = cursor.getColumnIndex(MediaStore.MediaColumns.DISPLAY_NAME);
                             if (columnIndex != -1) {
                                 final Uri picasaUri = selectedURI;
-                                resultBitmap = UIHelper.getResized400SizeBitmapFromPicasa(getActivity(), picasaUri);
+
+                                if (requestCode == CODE_REQUEST_IMAGE_SOURCE_IS_BACKGROUND) {
+                                    //此时我们希望获取的图片大一些
+                                    View cardView = mContentView.findViewById(R.id.card);
+                                    int width = cardView.getWidth();
+                                    resultBitmap = UIHelper.getResizedSizeBitmapFromPicasa(getActivity(), picasaUri,width);
+                                } else {
+                                    resultBitmap = UIHelper.getResized400SizeBitmapFromPicasa(getActivity(), picasaUri);
+                                }
+
                             }
                         } else { // it is a regular local image file
-                            resultBitmap = UIHelper.resizeImageTo400(getActivity(), selectedURI);
+
+                            if (requestCode == CODE_REQUEST_IMAGE_SOURCE_IS_BACKGROUND) {
+                                //此时我们希望获取的图片大一些
+                                View cardView = mContentView.findViewById(R.id.card);
+                                int width = cardView.getWidth();
+                                resultBitmap = UIHelper.resizeImageTo(getActivity(), selectedURI,width);
+
+                            } else {
+                                resultBitmap = UIHelper.resizeImageTo400(getActivity(), selectedURI);
+                            }
+
                         }
                         cursor.close();
                     }
@@ -2536,17 +2561,22 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnKeyboa
 
     private void setCardBackgroundImageWithDrawable(Drawable drawable) {
         //set background image
-        View card = mContentView.findViewById(R.id.card);
+        View card = mContentView.findViewById(R.id.card_basement);
+
         BitmapDrawable bitmapDrawable = (BitmapDrawable) drawable;
         Bitmap bitmap = bitmapDrawable.getBitmap();
+        //Bitmap resizedBitmap = Bitmap.createBitmap(card.getWidth(), card.getHeight(), bitmap.getConfig());
         BitmapDrawable bbb = new BitmapDrawable(UIHelper.toRoundCorner(bitmap, getResources().getDimension(R.dimen.card_round_corner)));
         card.setBackgroundDrawable(bbb);
     }
 
 
+    /*
+      Be sure to have exact size of bitamp with card, othervise, the rounded size could vary;
+     */
     private void setCardBackgroundImageWithBitmap(Bitmap bitmap) {
         //set background image
-        View card = mContentView.findViewById(R.id.card);
+        View card = mContentView.findViewById(R.id.card_basement);
         BitmapDrawable bbb = new BitmapDrawable(UIHelper.toRoundCorner(bitmap, getResources().getDimension(R.dimen.card_round_corner)));
         card.setBackgroundDrawable(bbb);
 
@@ -2562,8 +2592,20 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnKeyboa
 
 
     private void setCardBackgroundImageDefault () {
-        View card = mContentView.findViewById(R.id.card);
-        card.setBackgroundDrawable(getResources().getDrawable(R.drawable.shape_card_bg));
+        View card = mContentView.findViewById(R.id.card_basement);
+        card.setBackgroundDrawable(null);
+    }
+
+    //used in non-play mode
+    private void setCardBackgroundMaskGray () {
+        View card = mContentView.findViewById(R.id.card_mask);
+        card.setBackgroundDrawable(getResources().getDrawable(R.drawable.mask_gray));
+    }
+
+    //used in play mode
+    private void setCardBackgroundMaskBlack () {
+        View card = mContentView.findViewById(R.id.card_mask);
+        card.setBackgroundDrawable(getResources().getDrawable(R.drawable.mask_black));
     }
 
 

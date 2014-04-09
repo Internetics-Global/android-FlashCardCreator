@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
               android:id="@+id/card"
               android:baselineAligned="false"
               android:layout_width="match_parent"
@@ -7,7 +7,14 @@
               android:background="@drawable/shape_card_bg"
               android:orientation="horizontal">
 
-    <FrameLayout
+
+    <LinearLayout
+        android:id="@+id/card_basement"
+        android:background="@null"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">  <!-- id/card_basement的唯一用处是用于设置card的背景 -->
+
+        <FrameLayout
             android:id="@+id/sidebar_background_linearlayout"
             android:layout_height="match_parent"
             android:layout_width="0dp"
@@ -16,7 +23,7 @@
             android:orientation="vertical">
 
 
-        <com.internectics.UI.FCCEditText
+            <com.internectics.UI.FCCEditText
                 android:id="@+id/sidebar_title"
                 android:layout_width="180dp"
                 android:layout_height="match_parent"
@@ -31,7 +38,7 @@
                 android:rotation="-90"
                 android:gravity="center" />
 
-        <TextView
+            <TextView
                 android:id="@+id/card_sn"
                 android:layout_gravity="center|top"
                 android:layout_marginTop="@dimen/cardsn_top_margin"
@@ -45,29 +52,29 @@
                 />
 
 
-        <ImageView
-            android:id="@+id/change_background_button"
-            android:layout_gravity="left|bottom"
-            android:layout_marginBottom="5dp"
-            android:layout_marginLeft="5dp"
-            android:layout_height= "@dimen/button_change_template_size"
-            android:layout_width="@dimen/button_change_template_size"
-            android:src="@drawable/button_change_background"/>
+            <ImageView
+                android:id="@+id/change_background_button"
+                android:layout_gravity="left|bottom"
+                android:layout_marginBottom="5dp"
+                android:layout_marginLeft="5dp"
+                android:layout_height= "@dimen/button_change_template_size"
+                android:layout_width="@dimen/button_change_template_size"
+                android:src="@drawable/button_change_background"/>
 
 
-    </FrameLayout>
+        </FrameLayout>
 
-    <FrameLayout
+        <FrameLayout
             android:layout_height="match_parent"
             android:layout_width="0dp"
             android:layout_weight="740">
 
-        <LinearLayout
+            <LinearLayout
                 android:layout_height="match_parent"
                 android:layout_width="fill_parent"
                 android:orientation="vertical">
 
-            <LinearLayout
+                <LinearLayout
                     android:id="@+id/title_background_linearlayout"
                     android:layout_width="match_parent"
                     android:layout_height="0dp"
@@ -76,7 +83,7 @@
                     android:orientation="horizontal"
                     android:background="@null">
 
-                <com.internectics.UI.FCCEditText
+                    <com.internectics.UI.FCCEditText
                         android:id="@+id/title"
                         android:layout_height="match_parent"
                         android:layout_width="0dp"
@@ -96,14 +103,14 @@
                         android:textColor="#0910FF"
                         android:textSize="@dimen/title_text_size"/>
 
-                <LinearLayout
+                    <LinearLayout
                         android:layout_height="wrap_content"
                         android:id = "@+id/creator_layout"
                         android:layout_width="0dp"
                         android:layout_gravity="center"
                         android:orientation="vertical"
                         android:layout_weight="160">
-                    <TextView
+                        <TextView
                             android:layout_height="0dp"
                             android:layout_gravity="bottom"
                             android:layout_width="fill_parent"
@@ -115,7 +122,7 @@
                             android:editable="false"
                             android:textColor="#ff4a4a4a"
                             />
-                    <com.internectics.UI.FCCEditText
+                        <com.internectics.UI.FCCEditText
                             android:id="@+id/creator"
                             android:textCursorDrawable="@null"
                             android:layout_height="0dp"
@@ -132,9 +139,9 @@
                             android:background="@drawable/shape_edittext_editable"
                             android:textColor="#ff4a4a4a"
                             />
-                </LinearLayout>
+                    </LinearLayout>
 
-                <ImageView
+                    <ImageView
                         android:id="@+id/logo_url_btn"
                         android:layout_width="0dp"
                         android:layout_weight="80"
@@ -142,23 +149,24 @@
                         android:layout_gravity="bottom"
                         android:src="@drawable/button_edit_link"/>
 
-                <ImageView
+                    <ImageView
                         android:id="@+id/logo_image"
                         android:layout_height="wrap_content"
                         android:layout_width="0dp"
                         android:layout_weight="120"
                         android:layout_marginTop="10dp"
+                        android:layout_marginRight="10dp"
                         android:scaleType="fitCenter"
                         android:background="@drawable/shape_image_round_corner"
                         android:src="@drawable/question_placeholder_logo"/>
-            </LinearLayout>
+                </LinearLayout>
 
-            <FrameLayout
+                <FrameLayout
                     android:layout_width="match_parent"
                     android:layout_height="0dp"
                     android:layout_weight="440">
 
-                <LinearLayout
+                    <LinearLayout
                         android:id="@+id/content_body_type1"
                         android:layout_width="fill_parent"
                         android:layout_height="fill_parent"
@@ -167,7 +175,7 @@
                         android:visibility="visible"
                         android:orientation="horizontal">
 
-                    <LinearLayout
+                        <LinearLayout
                             android:id="@+id/content_body_left"
                             android:layout_height="match_parent"
                             android:layout_width="0dp"
@@ -178,7 +186,7 @@
                             android:background="@null"
                             android:orientation="vertical">
 
-                        <com.internectics.UI.FCCEditText
+                            <com.internectics.UI.FCCEditText
                                 android:id="@+id/subheading"
                                 android:layout_width="match_parent"
                                 android:layout_height="0dp"
@@ -195,7 +203,7 @@
                                 android:background="@drawable/shape_edittext_editable"
                                 android:ems="10" />
 
-                        <com.internectics.UI.FCCEditText
+                            <com.internectics.UI.FCCEditText
                                 android:id="@+id/main"
                                 android:layout_width="match_parent"
                                 android:layout_height="0dp"
@@ -211,7 +219,7 @@
                                 android:background="@drawable/shape_edittext_editable"
                                 android:ems="10"/>
 
-                        <com.internectics.UI.FCCEditText
+                            <com.internectics.UI.FCCEditText
                                 android:id="@+id/sub"
                                 android:layout_width="match_parent"
                                 android:layout_height="0dp"
@@ -228,9 +236,9 @@
                                 android:background="@drawable/shape_edittext_editable"
                                 android:ems="10"/>
 
-                    </LinearLayout>
+                        </LinearLayout>
 
-                    <ImageView
+                        <ImageView
                             android:id="@+id/image"
                             android:layout_height="match_parent"
                             android:layout_width="0dp"
@@ -242,9 +250,9 @@
                             android:src="@drawable/question_placeholder_content"/>
 
 
-                </LinearLayout>
+                    </LinearLayout>
 
-                <LinearLayout
+                    <LinearLayout
                         android:id="@+id/content_body_type2"
                         android:layout_width="fill_parent"
                         android:layout_height="fill_parent"
@@ -253,7 +261,7 @@
                         android:visibility="invisible"
                         android:orientation="vertical">
 
-                    <com.internectics.UI.FCCEditText
+                        <com.internectics.UI.FCCEditText
                             android:id="@+id/subheading2"
                             android:layout_width="match_parent"
                             android:layout_height="0dp"
@@ -271,7 +279,7 @@
                             android:background="@drawable/shape_edittext_editable"
                             android:ems="10" />
 
-                    <LinearLayout
+                        <LinearLayout
                             android:layout_height="0dp"
                             android:layout_width="fill_parent"
                             android:layout_weight="340"
@@ -283,13 +291,13 @@
 
 
 
-                        <LinearLayout
+                            <LinearLayout
                                 android:layout_weight="360"
                                 android:layout_width="0dp"
                                 android:layout_height="fill_parent"
                                 android:orientation="vertical">
 
-                            <com.internectics.UI.FCCEditText
+                                <com.internectics.UI.FCCEditText
                                     android:id="@+id/main2"
                                     android:layout_width="match_parent"
                                     android:layout_height="0dp"
@@ -305,7 +313,7 @@
                                     android:background="@drawable/shape_edittext_editable"
                                     android:ems="10"/>
 
-                            <com.internectics.UI.FCCEditText
+                                <com.internectics.UI.FCCEditText
                                     android:id="@+id/sub2"
                                     android:layout_width="match_parent"
                                     android:layout_height="0dp"
@@ -322,9 +330,9 @@
                                     android:background="@drawable/shape_edittext_editable"
                                     android:ems="10"/>
 
-                        </LinearLayout>
+                            </LinearLayout>
 
-                        <ImageView
+                            <ImageView
                                 android:id="@+id/image2"
                                 android:layout_height="match_parent"
                                 android:layout_width="0dp"
@@ -335,18 +343,18 @@
                                 android:layout_marginBottom="10dp"
                                 android:src="@drawable/question_placeholder_content"/>
 
+                        </LinearLayout>
+
+
+
+
                     </LinearLayout>
 
+                </FrameLayout>
 
+            </LinearLayout>
 
-
-                </LinearLayout>
-
-            </FrameLayout>
-
-        </LinearLayout>
-
-        <ImageView
+            <ImageView
                 android:id="@+id/change_template_button"
                 android:layout_gravity="right|bottom"
                 android:layout_marginBottom="5dp"
@@ -356,8 +364,17 @@
                 android:src="@drawable/button_change_template"/>
 
 
-    </FrameLayout>
+        </FrameLayout>
+
+    </LinearLayout>
+
+    <FrameLayout
+        android:id="@+id/card_mask"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@drawable/mask_gray"
+        ></FrameLayout>
 
 
 
-</LinearLayout>
+</FrameLayout>

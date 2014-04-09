@@ -18,10 +18,11 @@ import android.util.TypedValue;
 import android.view.Display;
 import android.view.View;
 import android.widget.EditText;
+
+import com.internectics.android_flashcardcreator.R;
 import com.internectics.helper.FileOperationHelper;
 
 import java.io.*;
-import java.net.URI;
 import java.net.URL;
 
 public class UIHelper {
@@ -49,6 +50,13 @@ public class UIHelper {
      */
     public static Bitmap resizeImageTo400(Context context, Uri localImageUri) {
 
+        Bitmap resizeBitmap = resizeImageTo(context,localImageUri,400);
+
+        return resizeBitmap;
+    }
+
+    public static Bitmap resizeImageTo(Context context, Uri localImageUri,int width) {
+
         Bitmap resizeBitmap = null;
         String pathName = FileOperationHelper.getRealImagePathFromURI(context, localImageUri);
         File f = new File(pathName);
@@ -57,9 +65,9 @@ public class UIHelper {
             opts.inJustDecodeBounds = true;
             BitmapFactory.decodeFile(pathName, opts);
             int max;
-            if ((opts.outWidth > 400) || (opts.outHeight > 400) ) {
+            if ((opts.outWidth > width) || (opts.outHeight > width) ) {
                 max = (opts.outWidth > opts.outHeight)?opts.outWidth:opts.outHeight;
-                opts.inSampleSize = (max/400);
+                opts.inSampleSize = (max/width);
             }
             opts.inJustDecodeBounds = false;
             resizeBitmap = BitmapFactory.decodeFile(pathName, opts);
@@ -93,7 +101,18 @@ public class UIHelper {
 
         Bitmap bMap = ThumbnailUtils.createVideoThumbnail(path, MediaStore.Video.Thumbnails.MICRO_KIND);
 
-        return bMap;
+        Bitmap bmOverlay = Bitmap.createBitmap(bMap.getWidth(), bMap.getHeight(), bMap.getConfig());
+        Canvas canvas = new Canvas(bmOverlay);
+        canvas.drawBitmap(bMap, new Matrix(), null);
+
+        Bitmap playIconBitmap = BitmapFactory.decodeResource(context.getResources(), R.drawable.play_big);
+
+        int left = (int)(bMap.getWidth() *0.3);
+        int right = (int)(bMap.getWidth() *0.7);
+        Rect rect = new Rect(left,left,right,right);
+        canvas.drawBitmap(playIconBitmap,null,rect,null);
+
+        return bmOverlay;
     }
 
     public static String getRealPathFromURI(Context context, Uri contentUri) {
@@ -239,6 +258,13 @@ public class UIHelper {
 
     public static Bitmap getResized400SizeBitmapFromPicasa(Context context, Uri url)
     {
+        Bitmap resizeBitmap = getResizedSizeBitmapFromPicasa(context,url,400);
+
+        return resizeBitmap;
+    }
+
+    public static Bitmap getResizedSizeBitmapFromPicasa(Context context, Uri url,int width)
+    {
         File cacheDir;
         Bitmap resizeBitmap = null;
 
@@ -259,7 +285,7 @@ public class UIHelper {
             //Step1: copy picasa image to local
             InputStream is = null;
             if ((url.toString().startsWith("content://com.google.android.gallery3d"))
-            ||(url.toString().startsWith("content://com.sec.android.gallery3d"))){
+                    ||(url.toString().startsWith("content://com.sec.android.gallery3d"))){
                 is=context.getContentResolver().openInputStream(url);
             } else {
                 is=new URL(url.toString()).openStream();
@@ -273,9 +299,9 @@ public class UIHelper {
             opts.inJustDecodeBounds = true;
             BitmapFactory.decodeFile(tempFile.toString(), opts);
             int max;
-            if ((opts.outWidth > 400) || (opts.outHeight > 400) ) {
+            if ((opts.outWidth > width) || (opts.outHeight > width) ) {
                 max = (opts.outWidth > opts.outHeight)?opts.outWidth:opts.outHeight;
-                opts.inSampleSize = (max/400);
+                opts.inSampleSize = (max/width);
             }
             opts.inJustDecodeBounds = false;
             resizeBitmap = BitmapFactory.decodeFile(tempFile.toString(), opts);
@@ -291,6 +317,7 @@ public class UIHelper {
             return resizeBitmap;
         }
     }
+
 
     private static void copyStream(InputStream is, OutputStream os) {
         byte[] buffer = new byte[1024];
