@@ -231,9 +231,9 @@ public class StringUtils {
         return result;
     }
 
-    public static boolean isCorrectMovName(String str) {
+    public static boolean isCorrectMov3GPName(String str) {
         boolean result = false;
-        result = ((str != null) && (str.toLowerCase().contains(".mov")));
+        result = ((str != null) && (str.toLowerCase().contains(".3gp")));
         return result;
     }
 

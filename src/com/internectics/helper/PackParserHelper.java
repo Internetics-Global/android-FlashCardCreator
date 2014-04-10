@@ -73,7 +73,7 @@ public class PackParserHelper {
 
         newFile = FileOperationHelper.copyImageVideoToImagesFolder(getPackImageFullPath(resultPack.coverImageUriFormatStr));
         resultPack.coverImageUriFormatStr = FileOperationHelper.convertToUriFormatFile(newFile);
-        newFile = FileOperationHelper.copyImageVideoToImagesFolder(getLogoImageFullPath(resultPack.logoImageUriFormatStr,resultPack.cards.size()-1));//be careful, we set logoImageUriFormatStr from last card in parseCardJsonFiles
+        newFile = FileOperationHelper.copyImageVideoToImagesFolder(getLogoImageFullPath(resultPack.logoImageUriFormatStr, resultPack.cards.size() - 1));//be careful, we set logoImageUriFormatStr from last card in parseCardJsonFiles
         resultPack.logoImageUriFormatStr = FileOperationHelper.convertToUriFormatFile(newFile);
         User.defaultUser(AppContext.getAppContext()).addPack(resultPack);
 
@@ -223,7 +223,7 @@ public class PackParserHelper {
             if (questionObj.containsKey("movie")) {
                 temp = (String) questionObj.get("movie");
             }
-            if (StringUtils.isCorrectMovName(temp)) {
+            if (StringUtils.isCorrectMov3GPName(temp)) {
                 card.question.movieUriFormatStr = temp;
             }
 
@@ -573,7 +573,7 @@ public class PackParserHelper {
             if (answerObj.containsKey("movie")) {
                 temp = (String) answerObj.get("movie");
             }
-            if (StringUtils.isCorrectMovName(temp)) {
+            if (StringUtils.isCorrectMov3GPName(temp)) {
                 card.answer.movieUriFormatStr = temp;
             }
 
