@@ -286,9 +286,9 @@ public class FileOperationHelper {
     }
 
 
-    public static File copyImageToImagesFolder(File imageFile) {
-        File targetFile = new File(imagesDirectory(), imageFile.getName());
-        copyFile(imageFile, targetFile);
+    public static File copyImageVideoToImagesFolder(File file) {
+        File targetFile = new File(imagesDirectory(), file.getName());
+        copyFile(file, targetFile);
         return targetFile;
     }
 

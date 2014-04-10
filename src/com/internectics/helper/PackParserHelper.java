@@ -43,14 +43,27 @@ public class PackParserHelper {
             Card resultCard = parseCardJsonFiles(cardDirectory, resultPack);
             resultCard.cardSN = i + 1;
 
+            //从json获取到的filepath，只有文件名，没有路径，所以需要做如下操作：1. 定位到下载的地方；2. 拷贝到Images folder；3.组成uri格式的完整路径
 
-            newFile = FileOperationHelper.copyImageToImagesFolder(getCardImageFullPath(resultCard.coverImageUriFormatStr, i));
+            newFile = FileOperationHelper.copyImageVideoToImagesFolder(getCardImageFullPath(resultCard.coverImageUriFormatStr, i));
             resultCard.coverImageUriFormatStr = FileOperationHelper.convertToUriFormatFile(newFile);
 
-            newFile = FileOperationHelper.copyImageToImagesFolder(getCardImageFullPath(resultCard.question.imageUriFormatStr, i));
+            newFile = FileOperationHelper.copyImageVideoToImagesFolder(getCardImageFullPath(resultCard.question.imageUriFormatStr, i));
             resultCard.question.imageUriFormatStr = FileOperationHelper.convertToUriFormatFile(newFile);
-            newFile = FileOperationHelper.copyImageToImagesFolder(getCardImageFullPath(resultCard.answer.imageUriFormatStr, i));
+            newFile = FileOperationHelper.copyImageVideoToImagesFolder(getCardImageFullPath(resultCard.answer.imageUriFormatStr, i));
             resultCard.answer.imageUriFormatStr = FileOperationHelper.convertToUriFormatFile(newFile);
+
+            newFile = FileOperationHelper.copyImageVideoToImagesFolder(getCardImageFullPath(resultCard.question.backgroundImageUriFormatStr, i));
+            resultCard.question.backgroundImageUriFormatStr = FileOperationHelper.convertToUriFormatFile(newFile);
+
+            newFile = FileOperationHelper.copyImageVideoToImagesFolder(getCardImageFullPath(resultCard.question.movieUriFormatStr, i));
+            resultCard.question.movieUriFormatStr = FileOperationHelper.convertToUriFormatFile(newFile);
+
+            newFile = FileOperationHelper.copyImageVideoToImagesFolder(getCardImageFullPath(resultCard.answer.backgroundImageUriFormatStr, i));
+            resultCard.answer.backgroundImageUriFormatStr = FileOperationHelper.convertToUriFormatFile(newFile);
+
+            newFile = FileOperationHelper.copyImageVideoToImagesFolder(getCardImageFullPath(resultCard.answer.movieUriFormatStr, i));
+            resultCard.answer.movieUriFormatStr = FileOperationHelper.convertToUriFormatFile(newFile);
 
             resultCard.packID = resultPack.packID; //this is necessary
 
@@ -58,9 +71,9 @@ public class PackParserHelper {
 
         }
 
-        newFile = FileOperationHelper.copyImageToImagesFolder(getPackImageFullPath(resultPack.coverImageUriFormatStr));
+        newFile = FileOperationHelper.copyImageVideoToImagesFolder(getPackImageFullPath(resultPack.coverImageUriFormatStr));
         resultPack.coverImageUriFormatStr = FileOperationHelper.convertToUriFormatFile(newFile);
-        newFile = FileOperationHelper.copyImageToImagesFolder(getLogoImageFullPath(resultPack.logoImageUriFormatStr,resultPack.cards.size()-1));//be careful, we set logoImageUriFormatStr from last card in parseCardJsonFiles
+        newFile = FileOperationHelper.copyImageVideoToImagesFolder(getLogoImageFullPath(resultPack.logoImageUriFormatStr,resultPack.cards.size()-1));//be careful, we set logoImageUriFormatStr from last card in parseCardJsonFiles
         resultPack.logoImageUriFormatStr = FileOperationHelper.convertToUriFormatFile(newFile);
         User.defaultUser(AppContext.getAppContext()).addPack(resultPack);
 
