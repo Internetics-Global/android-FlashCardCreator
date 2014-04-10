@@ -478,7 +478,7 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnKeyboa
                                     //此时我们希望获取的图片大一些
                                     View cardView = mContentView.findViewById(R.id.card);
                                     int width = cardView.getWidth();
-                                    resultBitmap = UIHelper.getResizedSizeBitmapFromPicasa(getActivity(), picasaUri,width);
+                                    resultBitmap = UIHelper.getResizedSizeBitmapFromPicasa(getActivity(), picasaUri,800);
                                 } else {
                                     resultBitmap = UIHelper.getResized400SizeBitmapFromPicasa(getActivity(), picasaUri);
                                 }
@@ -490,7 +490,7 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnKeyboa
                                 //此时我们希望获取的图片大一些
                                 View cardView = mContentView.findViewById(R.id.card);
                                 int width = cardView.getWidth();
-                                resultBitmap = UIHelper.resizeImageTo(getActivity(), selectedURI,width);
+                                resultBitmap = UIHelper.resizeImageTo(getActivity(), selectedURI,800);
 
                             } else {
                                 resultBitmap = UIHelper.resizeImageTo400(getActivity(), selectedURI);
