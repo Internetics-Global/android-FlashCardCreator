@@ -89,6 +89,12 @@ public class CreateSoundFragment extends DialogFragment {
         return mContentView;
     }
 
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        AudioHelper.releaseRecord();
+    }
+
     private void recordButtonClicked() {
 
         mPlayButton.setEnabled(false);
@@ -189,7 +195,6 @@ public class CreateSoundFragment extends DialogFragment {
             mDescriptionTextView.setText("When you click Start you will have five seconds in which to record your alarm. You can then Play it back for review or Save it for use in the app.");
 
             AudioHelper.stopRecord();
-            AudioHelper.releaseRecord();
         }
 
     }
