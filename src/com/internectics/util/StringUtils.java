@@ -237,6 +237,12 @@ public class StringUtils {
         return result;
     }
 
+    public static boolean isCorrectAACName(String str) {
+        boolean result = false;
+        result = ((str != null) && (str.toLowerCase().contains(".aac")));
+        return result;
+    }
+
 
     public static String deleteEndLinesSpace(String str) {
         String splitStr =  System.getProperty ("line.separator");

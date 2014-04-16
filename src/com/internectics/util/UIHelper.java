@@ -76,6 +76,9 @@ public class UIHelper {
         return resizeBitmap;
     }
 
+    /*
+    所有的图片，视频，音频资源都保存在这个目录下面。
+     */
     public static File saveImageToCaches(Bitmap savedBitmap) {
         File toSaveFile = FileOperationHelper.generateUniqueImageFilePath();
 
@@ -97,9 +100,15 @@ public class UIHelper {
 
     public static Bitmap getVideoThumbnail(Context context,Uri uri) {
 
-        String path = getRealPathFromURI(context,uri);
+        Bitmap bMap;
+        if (uri.toString().contains("http://")) {
+            //我们暂时没有更好的方法获取来自http://的thumbnail图片，比如youtube。期待更加的解决方案
+            bMap = BitmapFactory.decodeResource(context.getResources(), R.drawable.video_placeholder);
+        } else {
+            String path = getRealPathFromURI(context,uri);
 
-        Bitmap bMap = ThumbnailUtils.createVideoThumbnail(path, MediaStore.Video.Thumbnails.MINI_KIND);
+            bMap = ThumbnailUtils.createVideoThumbnail(path, MediaStore.Video.Thumbnails.MINI_KIND);
+        }
 
         Bitmap bmOverlay = Bitmap.createBitmap(bMap.getWidth(), bMap.getHeight(), bMap.getConfig());
         Canvas canvas = new Canvas(bmOverlay);

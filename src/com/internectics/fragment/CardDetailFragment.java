@@ -7,7 +7,6 @@ import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.graphics.Typeface;
-import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.*;
@@ -30,6 +29,7 @@ import com.internectics.android_flashcardcreator.WebViewActivity;
 import com.internectics.data.CSS;
 import com.internectics.data.Card;
 import com.internectics.data.Pack;
+import com.internectics.helper.AudioHelper;
 import com.internectics.helper.FileOperationHelper;
 import com.internectics.helper.PackRecordHelper;
 import com.internectics.helper.SymbolHelper;
@@ -70,6 +70,7 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnKeyboa
 
     private ImageView mChangeTemplateImage;
     private ImageView mChangeBackgroundImage;
+    private ImageView mPlayRecordImage;
 
     private ImageView mLogoURLImage;
     private RadioButton mQuestionRadioButton;
@@ -160,69 +161,14 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnKeyboa
         if (!mIsPlayingCard) {
             configureSegmentView();
             configureChangeTemplateView();
+            configureBackgroundChangeImageView();
+
         }
-        configureLogoURLView();
+        configureLogoURLView();  // open email or web during play ode
+        configureImageVideoSelectView(); // play video during play mode
+        configureSoundRecordPlayImageView(); //play sound during play mode
+        configureLogoImageView();
 
-        mLogoImage.setOnClickListener(new View.OnClickListener() {
-
-            @Override
-            public void onClick(View v) {
-
-                if (mIsPlayingCard == false) {
-                    if (isEditableMode()) {
-                        startActivityForResult(
-                                new Intent(
-                                        Intent.ACTION_PICK,
-                                        android.provider.MediaStore.Images.Media.INTERNAL_CONTENT_URI),
-                                CODE_REQUEST_IMAGE_SOURCE_IS_LOGO);
-                    } else {
-                        Intent intent = new Intent(getActivity(), WebViewActivity.class);
-                        intent.putExtra("url", mCurrentPack.logoURL);
-                        startActivity(intent);
-                    }
-                } else {
-                    if (mCurrentPack.logoURL.contains("@") && (mCurrentPack.logoURL.contains("http") == false)) {
-                        Intent intent = new Intent(Intent.ACTION_SEND);
-                        intent.setType("message/rfc822");
-                        intent.putExtra(Intent.EXTRA_EMAIL, "mCurrentPack.logoURL");
-                        intent.putExtra(Intent.EXTRA_SUBJECT, "Subject");
-                        intent.putExtra(Intent.EXTRA_TEXT, "");
-                        startActivity(Intent.createChooser(intent, "Send Email"));
-                    } else if (mCurrentPack.logoURL.contains("http") == true) {
-                        startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(mCurrentPack.logoURL)));
-                    } else {
-                        new AlertDialog.Builder(getActivity())
-                                .setTitle("Alert")
-                                .setMessage("Uncorrect website or mail address")
-                                .setPositiveButton("OK", null)
-                                .show();
-                    }
-                }
-
-            }
-        });
-
-
-        mImage.setOnClickListener(new View.OnClickListener() {
-
-            @Override
-            public void onClick(View v) {
-
-                didClickImageView();
-
-
-            }
-        });
-
-        mImage2.setOnClickListener(new View.OnClickListener() {
-
-            @Override
-            public void onClick(View v) {
-
-                didClickImageView();
-
-            }
-        });
 
 
         if (mIsSnapShotNotCurrent == true) {
@@ -243,6 +189,7 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnKeyboa
         return mContentView;
     }
 
+
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
@@ -262,6 +209,7 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnKeyboa
         if (mIsCreatingCard) {
             mSidebarTitle.setEnabled(false);
             mTitle.setEnabled(false);
+            mPlayRecordImage.setVisibility(View.INVISIBLE);
         }
 
         if (mIsPlayingCard) {
@@ -326,36 +274,101 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnKeyboa
     }
 
 
-    private void didClickImageView() {
-        if (mIsPlayingCard) {
+    private void playAudio(String path) {
 
-            if (mIsQuestionShowing) {
-                if  (mCurrentCard.question.movieUriFormatStr.length() >0) {
-                    String videoPath =  FileOperationHelper.deleteUriSchemeHeader(mCurrentCard.question.movieUriFormatStr);
-                    Intent intent = new Intent(getActivity(), VideoViewActivity.class);
-                    intent.putExtra("videoPath", videoPath);
-                    startActivity(intent);
-                }
-            } else {
-                if  (mCurrentCard.answer.movieUriFormatStr.length() >0) {
-                    String videoPath =  FileOperationHelper.deleteUriSchemeHeader(mCurrentCard.answer.movieUriFormatStr);
-                    Intent intent = new Intent(getActivity(), VideoViewActivity.class);
-                    intent.putExtra("videoPath", videoPath);
-                    startActivity(intent);
+        AudioHelper.playAudio(path);
 
-                }
+    }
+
+    private void playVideo() {
+        String targetStr =  "";
+        if (mIsQuestionShowing) {
+            if  (mCurrentCard.question.movieUriFormatStr.length() >0) {
+                targetStr = mCurrentCard.question.movieUriFormatStr;
             }
-
         } else {
+            if  (mCurrentCard.answer.movieUriFormatStr.length() >0) {
+                targetStr = mCurrentCard.answer.movieUriFormatStr;
 
-            if (mCurrentPack.creatorID.equals(OpenUDID_manager.getOpenUDID())) {
-                Intent intent = new Intent(Intent.ACTION_PICK, null);
-                intent.setType("video/*, images/*");
-                startActivityForResult(intent, CODE_REQUEST_IMAGE_SOURCE_IS_IMAGE);
+            }
+        }
+
+        if (targetStr.length() > 0) {
+
+            if (targetStr.contains("http://")) {
+                Intent intent = new Intent(getActivity(), WebViewActivity.class);
+                intent.putExtra("url", targetStr);
+                startActivity(intent);
+
+            } else {
+                String videoPath =  FileOperationHelper.deleteUriSchemeHeader(targetStr);
+                Intent intent = new Intent(getActivity(), VideoViewActivity.class);
+                intent.putExtra("videoPath", videoPath);
+                startActivity(intent);
             }
 
         }
+
+
     }
+
+
+    private void showYoutbueLinkageInputDialog() {
+        final EditText textInput = new EditText(getActivity());
+        new AlertDialog.Builder(getActivity())
+                .setTitle("Input a valid youtube url")
+                .setIcon(android.R.drawable.ic_dialog_info)
+                .setView(textInput)
+                .setPositiveButton("Done", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        String youtubeURLStr = textInput.getText().toString();
+                        if (youtubeURLStr.contains("http://www.youtube.com/watch")) {
+                            if (mIsQuestionShowing) {
+                                mCurrentCard.question.movieUriFormatStr = youtubeURLStr;
+                            } else {
+                                mCurrentCard.answer.movieUriFormatStr = youtubeURLStr;
+                            }
+
+                            thumbnailImageFromURL(Uri.parse(youtubeURLStr));
+
+                            if (!mIsCreatingCard) {
+                                mCurrentCard.save(AppContext.getAppContext());
+                            }
+                        }
+
+                    }
+                })
+                .setNegativeButton("Cancel", null)
+                .show();
+
+    }
+
+    private void selectImageOrVideoFromLibrary() {
+        if (mCurrentPack.creatorID.equals(OpenUDID_manager.getOpenUDID())) {
+            Intent intent = new Intent(Intent.ACTION_PICK, null);
+            intent.setType("video/*, images/*");
+            startActivityForResult(intent, CODE_REQUEST_IMAGE_SOURCE_IS_IMAGE);
+        } else {
+            if (mIsQuestionShowing) {
+                if  (mCurrentCard.question.movieUriFormatStr.length() >0) {
+                    AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+                    builder.setMessage("Play video in play mode");
+                    builder.setTitle("Alert");
+                    builder.create().show();
+                }
+            } else {
+                if  (mCurrentCard.answer.movieUriFormatStr.length() >0) {
+                    AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+                    builder.setMessage("Play video in play mode");
+                    builder.setTitle("Alert");
+                    builder.create().show();
+
+                }
+            }
+        }
+    }
+
 
 
     /**
@@ -413,36 +426,13 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnKeyboa
             if (selectedURI.toString().contains("/video/")) { //video
 
                 //step1: get image
-                final String[] filePathColumn = { MediaStore.MediaColumns.DATA, MediaStore.MediaColumns.DISPLAY_NAME };
-                Cursor cursor = getActivity().getContentResolver().query(selectedURI, filePathColumn, null, null, null);
-                if (cursor != null) {
-                    cursor.moveToFirst();
-                    int columnIndex;
-                    // if it is a picasa image on newer devices with OS 3.0 and up
-                    if (selectedURI.toString().startsWith("content://com.google.android.gallery3d")){
-                        columnIndex = cursor.getColumnIndex(MediaStore.MediaColumns.DISPLAY_NAME);
-                        if (columnIndex != -1) {
-                            final Uri picasaUri = selectedURI;
-                            //resultBitmap = UIHelper.getResized400SizeBitmapFromPicasa(getActivity(), picasaUri);
-                        }
-                    } else { // it is a regular local image file
-                        //resultBitmap = UIHelper.resizeImageTo400(getActivity(), selectedURI);
-                    }
-                    cursor.close();
-                }
+                thumbnailImageFromURL(selectedURI);
 
+                //step2: get video
                 File toSaveVideoFile = UIHelper.saveVideoToCaches(AppContext.getAppContext(),selectedURI);
-                Bitmap resultBitmap = UIHelper.getVideoThumbnail(AppContext.getAppContext(),selectedURI);
-                mImage.setImageBitmap(resultBitmap);
-                mImage2.setImageBitmap(resultBitmap);
-
-                File toSaveImageFile = UIHelper.saveImageToCaches(resultBitmap);
-
                 if (mIsQuestionShowing) {
-                    mCurrentCard.question.imageUriFormatStr = FileOperationHelper.convertToUriFormatFile(toSaveImageFile);
                     mCurrentCard.question.movieUriFormatStr = FileOperationHelper.convertToUriFormatFile(toSaveVideoFile);
                 } else {
-                    mCurrentCard.answer.imageUriFormatStr = FileOperationHelper.convertToUriFormatFile(toSaveImageFile);
                     mCurrentCard.answer.movieUriFormatStr = FileOperationHelper.convertToUriFormatFile(toSaveVideoFile);
                 }
 
@@ -562,6 +552,26 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnKeyboa
         }
     }
 
+    /*
+    通过uri，获取video的thumbnail
+     */
+    private void thumbnailImageFromURL (Uri selectedURI) {
+
+        Bitmap resultBitmap = UIHelper.getVideoThumbnail(AppContext.getAppContext(),selectedURI);
+        mImage.setImageBitmap(resultBitmap);
+        mImage2.setImageBitmap(resultBitmap);
+
+        File toSaveImageFile = UIHelper.saveImageToCaches(resultBitmap);
+
+        if (mIsQuestionShowing) {
+            mCurrentCard.question.imageUriFormatStr = FileOperationHelper.convertToUriFormatFile(toSaveImageFile);
+        } else {
+            mCurrentCard.answer.imageUriFormatStr = FileOperationHelper.convertToUriFormatFile(toSaveImageFile);
+        }
+    }
+
+
+
     /**
      * Confugure segment view in onCreateView
      */
@@ -586,8 +596,166 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnKeyboa
         });
     }
 
+
+    private void showImageVideoSourceDialog() {
+        new AlertDialog.Builder(getActivity())
+                .setTitle("Select")
+                .setMessage("Select source")
+                .setPositiveButton("Input youtube linkage", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        showYoutbueLinkageInputDialog();
+                    }
+                })
+                .setNegativeButton("Select from library", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        selectImageOrVideoFromLibrary();
+                    }
+                })
+                .show();
+    }
+
+
+    /*
+    配置logo imageview的click listner
+     */
+    private void configureLogoImageView() {
+
+        mLogoImage.setOnClickListener(new View.OnClickListener() {
+
+            @Override
+            public void onClick(View v) {
+
+                if (mIsPlayingCard == false) {
+                    if (isEditableMode()) {
+                        startActivityForResult(
+                                new Intent(
+                                        Intent.ACTION_PICK,
+                                        android.provider.MediaStore.Images.Media.INTERNAL_CONTENT_URI),
+                                CODE_REQUEST_IMAGE_SOURCE_IS_LOGO);
+                    } else {
+                        Intent intent = new Intent(getActivity(), WebViewActivity.class);
+                        intent.putExtra("url", mCurrentPack.logoURL);
+                        startActivity(intent);
+                    }
+                } else {
+                    if (mCurrentPack.logoURL.contains("@") && (mCurrentPack.logoURL.contains("http") == false)) {
+                        Intent intent = new Intent(Intent.ACTION_SEND);
+                        intent.setType("message/rfc822");
+                        intent.putExtra(Intent.EXTRA_EMAIL, "mCurrentPack.logoURL");
+                        intent.putExtra(Intent.EXTRA_SUBJECT, "Subject");
+                        intent.putExtra(Intent.EXTRA_TEXT, "");
+                        startActivity(Intent.createChooser(intent, "Send Email"));
+                    } else if (mCurrentPack.logoURL.contains("http") == true) {
+                        startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(mCurrentPack.logoURL)));
+                    } else {
+                        new AlertDialog.Builder(getActivity())
+                                .setTitle("Alert")
+                                .setMessage("Uncorrect website or mail address")
+                                .setPositiveButton("OK", null)
+                                .show();
+                    }
+                }
+
+            }
+        });
+    }
+
+    /*
+        配置sound record&play imageview的click listner
+         */
+    private void configureSoundRecordPlayImageView() {
+
+        mPlayRecordImage.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //TODO
+                String targetStr;
+                if (mIsQuestionShowing) {
+                    targetStr = mCurrentCard.question.audioUriFormatStr;
+                } else {
+                    targetStr = mCurrentCard.answer.audioUriFormatStr;
+                }
+
+                if (mIsPlayingCard) {
+                    if (targetStr.length() >0) {
+                        playAudio(FileOperationHelper.deleteUriSchemeHeader(targetStr));
+                    }
+                } else {
+                    showCreateSoundView();
+                }
+            }
+        });
+    }
+
     /**
-     * Confugure template view view in onCreateView
+    配置background change imageview的click listner
+     */
+    private void configureBackgroundChangeImageView() {
+        mChangeBackgroundImage.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivityForResult(
+                        new Intent(
+                                Intent.ACTION_PICK,
+                                android.provider.MediaStore.Images.Media.INTERNAL_CONTENT_URI),
+                        CODE_REQUEST_IMAGE_SOURCE_IS_BACKGROUND);
+            }
+        });
+    }
+
+
+    /**
+     * 配置image view的click listner
+     * two choice
+     * 1. input a youtube linkage
+     * 2. select image/video from library
+     */
+    private void configureImageVideoSelectView() {
+
+
+        if ((!mIsPlayingCard)&&(isEditableMode())) {  // popup a choice dialog: youtube linkage or library
+            mImage.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    showImageVideoSourceDialog();
+
+                }
+            });
+
+            mImage2.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    showImageVideoSourceDialog();
+
+                }
+            });
+
+        } else {
+            if (mIsPlayingCard) {
+                mImage.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        playVideo();
+
+                    }
+                });
+
+                mImage2.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        playVideo();
+
+                    }
+                });
+            }
+        }
+
+    }
+
+    /**
+     配置template change imageview的click listner
      */
     private void configureChangeTemplateView() {
         ActionItem questionActionItem0 = new ActionItem(0, null, getResources().getDrawable(R.drawable.question_templatescreenshot0));
@@ -654,21 +822,12 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnKeyboa
             }
         });
 
-        mChangeBackgroundImage.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                startActivityForResult(
-                        new Intent(
-                                Intent.ACTION_PICK,
-                                android.provider.MediaStore.Images.Media.INTERNAL_CONTENT_URI),
-                        CODE_REQUEST_IMAGE_SOURCE_IS_BACKGROUND);
-            }
-        });
+
 
     }
 
     /**
-     * Confugure logo url view in onCreateView
+     配置logo url view的click listner
      */
     private void configureLogoURLView() {
         mLogoURLImage.setOnClickListener(new View.OnClickListener() {
@@ -703,6 +862,16 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnKeyboa
             }
         });
 
+    }
+
+    /**
+     *打开录制声音的view
+     */
+    private void showCreateSoundView() {
+        CreateSoundFragment dialogFragment = new CreateSoundFragment();
+        dialogFragment.mCurrentCard = mCurrentCard;
+        dialogFragment.mIsQuestionShowing = mIsQuestionShowing;
+        dialogFragment.show(getActivity().getFragmentManager(), "create_sound_fragment");
     }
 
     private void changeTemplateNotification(int index) {
@@ -836,6 +1005,7 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnKeyboa
 
         mChangeTemplateImage = (ImageView) mContentView.findViewById(R.id.change_template_button);
         mChangeBackgroundImage = (ImageView) mContentView.findViewById(R.id.change_background_button);
+        mPlayRecordImage = (ImageView) mContentView.findViewById(R.id.play_record_button);
         mLogoImage = (ImageView) mContentView.findViewById(R.id.logo_image);
         mLogoURLImage = (ImageView) mContentView.findViewById(R.id.logo_url_btn);
 

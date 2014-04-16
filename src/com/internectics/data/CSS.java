@@ -13,12 +13,15 @@ public class CSS {
     public int cssID;
     public String subheadingAlign;
     public String subheadingColor;
+    public String subheadingFont;
     public int subheadingSize;
     public String mainAlign;
     public String mainColor;
+    public String mainFont;
     public int mainSize;
     public String subAlign;
     public String subColor;
+    public String subFont;
     public int subSize;
 
     public CSS(boolean isForQuestion) {
@@ -30,6 +33,10 @@ public class CSS {
         mainColor = "Black";
         subAlign = "Center";
         subColor = "Black";
+
+        subheadingFont = "";
+        mainFont = "";
+        subFont = "";
 
         int[] sizeArray = AppContext.getAppContext().getResources().getIntArray(R.array.css_size_int);
 
@@ -56,6 +63,10 @@ public class CSS {
         subAlign = (String) dataDict.get("sub_align");
         subColor = (String) dataDict.get("sub_color");
 
+        subheadingFont = (String) dataDict.get("subheading_font");
+        mainFont = (String) dataDict.get("main_font");
+        subFont = (String) dataDict.get("sub_font");
+
         return this;
     }
 
@@ -75,6 +86,11 @@ public class CSS {
                 cssDict.put("sub_size", cur.getInt(7));
                 cssDict.put("sub_align", cur.getString(8));
                 cssDict.put("sub_color", cur.getString(9));
+
+                cssDict.put("subheading_font", cur.getString(10));
+                cssDict.put("main_font", cur.getString(11));
+                cssDict.put("sub_font", cur.getString(12));
+
                 break;
             }
         } finally {
@@ -96,7 +112,7 @@ public class CSS {
     }
 
     private void update(Context context) {
-        String query = String.format("UPDATE CSS_Tables SET subheading_size=%d, subheading_align=\"%s\", subheading_color=\"%s\", main_size=%d, main_align=\"%s\", main_color=\"%s\",sub_size=%d, sub_align=\"%s\", sub_color=\"%s\" WHERE css_id=%d", subheadingSize, subheadingAlign, subheadingColor, mainSize, mainAlign, mainColor, subSize, subAlign, subColor, cssID);
+        String query = String.format("UPDATE CSS_Tables SET subheading_size=%d, subheading_align=\"%s\", subheading_color=\"%s\", main_size=%d, main_align=\"%s\", main_color=\"%s\",sub_size=%d, sub_align=\"%s\", sub_color=\"%s\", subheading_font=\"%s\", main_font=\"%s\", sub_font=\"%s\" WHERE css_id=%d", subheadingSize, subheadingAlign, subheadingColor, mainSize, mainAlign, mainColor, subSize, subAlign, subColor, subheadingFont,mainFont,subFont, cssID);
         SQLiteHelper.defaultDatabase(context).execSQL(query);
     }
 
@@ -106,7 +122,7 @@ public class CSS {
             cssID = SQLiteHelper.getMaxValueForColumn(context, "css_id", "CSS_Tables") + 1;
         }
 
-        String query = String.format("INSERT INTO CSS_Tables(css_id, subheading_size, subheading_align, subheading_color, main_size, main_align, main_color, sub_size, sub_align, sub_color) VALUES (%d,%d, \"%s\", \"%s\", %d, \"%s\", \"%s\", %d, \"%s\", \"%s\")", cssID, subheadingSize, subheadingAlign, subheadingColor, mainSize, mainAlign, mainColor, subSize, subAlign, subColor);
+        String query = String.format("INSERT INTO CSS_Tables(css_id, subheading_size, subheading_align, subheading_color, main_size, main_align, main_color, sub_size, sub_align, sub_color,subheading_font,main_font,sub_font) VALUES (%d,%d, \"%s\", \"%s\", %d, \"%s\", \"%s\", %d, \"%s\", \"%s\", \"%s\", \"%s\", \"%s\")", cssID, subheadingSize, subheadingAlign, subheadingColor, mainSize, mainAlign, mainColor, subSize, subAlign, subColor,subheadingFont,mainFont,subFont);
         SQLiteHelper.defaultDatabase(context).execSQL(query);
 
     }

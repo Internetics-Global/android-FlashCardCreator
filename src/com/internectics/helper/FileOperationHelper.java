@@ -11,6 +11,8 @@ import com.internectics.util.AppConfig;
 import com.internectics.util.AppContext;
 import com.internectics.util.Global;
 
+import junit.framework.Assert;
+
 import java.io.*;
 import java.util.ArrayList;
 import java.util.UUID;
@@ -89,6 +91,16 @@ public class FileOperationHelper {
      */
     public static File generateUniqueVideoFilePath() {
         String string = String.format("%s.3gp", UUID.randomUUID().toString());
+        File tempFile = new File(imagesDirectory(), string);
+        return tempFile;
+    }
+
+    /**
+     * All the audio resouces in pack/card will be  format of .aac Everytime you call
+     * this method, the file path will be unique
+     */
+    public static File generateUniqueAudioACCFilePath() {
+        String string = String.format("%s.acc", UUID.randomUUID().toString());
         File tempFile = new File(imagesDirectory(), string);
         return tempFile;
     }
@@ -370,6 +382,18 @@ public class FileOperationHelper {
         }
 
         return zippedCardFileArray;
+    }
+
+
+    public static boolean moveFile(String srcFileName, String destFileName) {
+
+        File srcFile = new File(srcFileName);
+        if(!srcFile.exists() || !srcFile.isFile())
+            return false;
+
+        File destFile = new File(destFileName);
+
+        return srcFile.renameTo(destFile);
     }
 
 }

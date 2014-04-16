@@ -6,6 +6,8 @@
               android:layout_height="match_parent"
               android:background="@drawable/shape_card_bg"
               android:orientation="horizontal">
+
+
     <ImageView
         android:id="@+id/card_background_image"
         android:layout_width="match_parent"
@@ -64,6 +66,16 @@
                 android:layout_height= "@dimen/button_change_template_size"
                 android:layout_width="@dimen/button_change_template_size"
                 android:src="@drawable/button_change_background"/>
+
+
+            <ImageView
+                android:id="@+id/play_record_button"
+                android:layout_gravity="left|bottom"
+                android:layout_marginBottom="50dp"
+                android:layout_marginLeft="2dp"
+                android:layout_height= "30dp"
+                android:layout_width="60dp"
+                android:src="@drawable/play_record_button"/>
 
 
         </FrameLayout>
@@ -379,6 +391,9 @@
         android:layout_height="match_parent"
         android:background="@drawable/mask_gray"
         ></FrameLayout>
+
+
+
 
 
 

@@ -97,7 +97,7 @@ public class SQLiteHelper {
                     + " INTEGER PRIMARY KEY," + "card_id" + " INTEGER,"
                     + "subheading" + " TEXT," + "main" + " TEXT," + "sub"
                     + " TEXT," + "image" + " TEXT," + "css_id" + " INTEGER,"
-                    + "template_id" + " INTEGER," + "background_image" + " TEXT," + "movie" + " TEXT)");
+                    + "template_id" + " INTEGER," + "background_image" + " TEXT," + "movie" + " TEXT," + "audio" + " TEXT)");
             db.execSQL("CREATE INDEX IF NOT EXISTS IA on Question_Tables(question_id)");
 
             // compared with iOS version, we made changes:
@@ -106,7 +106,7 @@ public class SQLiteHelper {
                     + " INTEGER PRIMARY KEY," + "card_id" + " INTEGER,"
                     + "subheading" + " TEXT," + "main" + " TEXT," + "sub"
                     + " TEXT," + "image" + " TEXT," + "css_id" + " INTEGER,"
-                    + "template_id" + " INTEGER," + "background_image" + " TEXT," + "movie" + " TEXT)");
+                    + "template_id" + " INTEGER," + "background_image" + " TEXT," + "movie" + " TEXT," + "audio" + " TEXT)");
             db.execSQL("CREATE INDEX IF NOT EXISTS IA on Answer_Tables(answer_id)");
 
             // compared with iOS version, we made changes:
@@ -116,7 +116,7 @@ public class SQLiteHelper {
                     + "subheading_align" + " TEXT," + "subheading_color" + " TEXT,"
                     + "main_size" + " INTEGER," + "main_align" + " TEXT,"
                     + "main_color" + " TEXT," + "sub_size" + " INTEGER,"
-                    + "sub_align" + " TEXT," + "sub_color" + " TEXT)");
+                    + "sub_align" + " TEXT," + "sub_color" + " TEXT," + "subheading_font" + " TEXT," + "main_font" + " TEXT," + "sub_font" + " TEXT)");
             db.execSQL("CREATE INDEX IF NOT EXISTS IA on CSS_Tables(css_id)");
 
 

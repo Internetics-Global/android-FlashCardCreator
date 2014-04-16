@@ -24,6 +24,7 @@ public class Answer {
 
     public String backgroundImageUriFormatStr;
     public String movieUriFormatStr;
+    public String audioUriFormatStr;
 
     public CSS css;
 
@@ -41,6 +42,7 @@ public class Answer {
 
         backgroundImageUriFormatStr = "";
         movieUriFormatStr = "";
+        audioUriFormatStr = "";
     }
 
     public Answer initWithDictionary(HashMap<String, Object> dataDict) {
@@ -55,6 +57,7 @@ public class Answer {
 
         backgroundImageUriFormatStr = (String) dataDict.get("background_image");
         movieUriFormatStr = (String) dataDict.get("movie");
+        audioUriFormatStr = (String) dataDict.get("audio");
 
         HashMap<String, Object> cssArray = (HashMap<String, Object>) dataDict.get("css");
         this.css = (new CSS(false)).initWithDictionary(cssArray);
@@ -80,6 +83,7 @@ public class Answer {
 
                 answerDict.put("background_image", cur.getString(8));
                 answerDict.put("movie", cur.getString(9));
+                answerDict.put("audio", cur.getString(10));
 
                 answerDict.put("css", CSS.cssForCSSID(context, cur.getInt(6)));
                 break;
@@ -114,7 +118,7 @@ public class Answer {
         String decodedMain = StringUtils.stringDecodeForSQlite(main);
         String decodedSub = StringUtils.stringDecodeForSQlite(sub);
 
-        String query = String.format("UPDATE Answer_Tables SET answer_id=%d, subheading=?, main=?, sub=?, image=\"%s\",css_id=%d, template_id=%d,background_image=\"%s\",movie=\"%s\" WHERE card_id=%d", answerID, imageUriFormatStr, cssID, templateID,backgroundImageUriFormatStr,movieUriFormatStr, cardID);
+        String query = String.format("UPDATE Answer_Tables SET answer_id=%d, subheading=?, main=?, sub=?, image=\"%s\",css_id=%d, template_id=%d,background_image=\"%s\",movie=\"%s\",audio=\"%s\" WHERE card_id=%d", answerID, imageUriFormatStr, cssID, templateID,backgroundImageUriFormatStr,movieUriFormatStr,audioUriFormatStr, cardID);
         SQLiteHelper.defaultDatabase(context).execSQL(query, new Object[]{decodedSubheading, decodedMain, decodedSub});
     }
 
@@ -128,7 +132,7 @@ public class Answer {
         String decodedMain = StringUtils.stringDecodeForSQlite(main);
         String decodedSub = StringUtils.stringDecodeForSQlite(sub);
 
-        String query = String.format("INSERT INTO Answer_Tables(answer_id, card_id, subheading, main, sub, image, css_id, template_id,background_image,movie) VALUES (%d,%d, ?, ?, ?, \"%s\", %d, %d,\"%s\",\"%s\")", answerID, cardID, imageUriFormatStr, cssID, templateID,backgroundImageUriFormatStr,movieUriFormatStr);
+        String query = String.format("INSERT INTO Answer_Tables(answer_id, card_id, subheading, main, sub, image, css_id, template_id,background_image,movie,audio) VALUES (%d,%d, ?, ?, ?, \"%s\", %d, %d,\"%s\",\"%s\",\"%s\")", answerID, cardID, imageUriFormatStr, cssID, templateID,backgroundImageUriFormatStr,movieUriFormatStr,audioUriFormatStr);
         SQLiteHelper.defaultDatabase(context).execSQL(query, new Object[]{decodedSubheading, decodedMain, decodedSub});
 
     }
@@ -161,6 +165,15 @@ public class Answer {
                 Log.d(Global.debugTag, "Successful to delete movieUriFormatStr file in Question");
             } else {
                 Log.w(Global.debugTag, "Fail to delete movieUriFormatStr file in Question");
+            }
+        }
+
+        if ((audioUriFormatStr != null) && (!StringUtils.isNumeric(audioUriFormatStr))) {
+            File file = new File(FileOperationHelper.deleteUriSchemeHeader(this.audioUriFormatStr));
+            if (file.delete()) {
+                Log.d(Global.debugTag, "Successful to delete audioUriFormatStr file in Question");
+            } else {
+                Log.w(Global.debugTag, "Fail to delete audioUriFormatStr file in Question");
             }
         }
 

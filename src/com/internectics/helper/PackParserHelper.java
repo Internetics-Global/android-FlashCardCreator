@@ -227,6 +227,15 @@ public class PackParserHelper {
                 card.question.movieUriFormatStr = temp;
             }
 
+
+            temp = "";
+            if (questionObj.containsKey("audio")) {
+                temp = (String) questionObj.get("audio");
+            }
+            if (StringUtils.isCorrectAACName(temp)) {
+                card.question.audioUriFormatStr = temp;
+            }
+
             temp = "";
             if (questionObj.containsKey("template_background")) {
                 temp = (String) questionObj.get("template_background");
@@ -289,6 +298,18 @@ public class PackParserHelper {
 
             if (questionObj.containsKey("sub_color")) {
                 card.question.css.subColor = (String) questionObj.get("sub_color");
+            }
+
+            if (questionObj.containsKey("subheading_font")) {
+                card.question.css.subheadingFont = (String) questionObj.get("subheading_font");
+            }
+
+            if (questionObj.containsKey("main_font")) {
+                card.question.css.mainFont = (String) questionObj.get("main_font");
+            }
+
+            if (questionObj.containsKey("sub_font")) {
+                card.question.css.subFont = (String) questionObj.get("sub_font");
             }
 
             int subheadingSize;
@@ -561,6 +582,18 @@ public class PackParserHelper {
                 card.answer.css.subColor = (String) answerObj.get("sub_color");
             }
 
+            if (answerObj.containsKey("subheading_font")) {
+                card.answer.css.subheadingFont = (String) answerObj.get("subheading_font");
+            }
+
+            if (answerObj.containsKey("main_font")) {
+                card.answer.css.mainFont = (String) answerObj.get("main_font");
+            }
+
+            if (answerObj.containsKey("sub_font")) {
+                card.answer.css.subFont = (String) answerObj.get("sub_font");
+            }
+
             temp = "";
             if (answerObj.containsKey("background_image")) {
                 temp = (String) answerObj.get("background_image");
@@ -575,6 +608,14 @@ public class PackParserHelper {
             }
             if (StringUtils.isCorrectMov3GPName(temp)) {
                 card.answer.movieUriFormatStr = temp;
+            }
+
+            temp = "";
+            if (answerObj.containsKey("audio")) {
+                temp = (String) answerObj.get("audio");
+            }
+            if (StringUtils.isCorrectAACName(temp)) {
+                card.answer.audioUriFormatStr = temp;
             }
 
             int subheadingSize;

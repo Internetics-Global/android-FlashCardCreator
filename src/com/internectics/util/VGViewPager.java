@@ -57,7 +57,8 @@ public class VGViewPager extends ViewPager {
         image.getHitRect(outRect);
         outRect.offset(marginValLeft + sidebarWidth,marginValTop);
         if (outRect.contains(x, y)) {
-            Log.d(Global.debugTag, "touch location in image");
+            Boolean bool = image.isEnabled();
+            Log.d(Global.debugTag, "touch location in image "+bool);
             return false;
         }
 
@@ -65,7 +66,17 @@ public class VGViewPager extends ViewPager {
         image2.getHitRect(outRect);
         outRect.offset(marginValLeft + sidebarWidth,marginValTop);
         if (outRect.contains(x, y)) {
-            Log.d(Global.debugTag, "touch location in image2");
+            Boolean bool = image2.isEnabled();
+            Log.d(Global.debugTag, "touch location in image2 "+bool);
+            return false;
+        }
+
+        ImageView recordPlayImageView = (ImageView)findViewById(R.id.play_record_button);
+        recordPlayImageView.getHitRect(outRect);
+        outRect.offset(marginValLeft,marginValTop);
+        if (outRect.contains(x, y)) {
+            Boolean bool = recordPlayImageView.isEnabled();
+            Log.d(Global.debugTag, "touch location in recordPlayImageView " + bool);
             return false;
         }
 

@@ -178,6 +178,7 @@ public class PackBuildHelper {
 
         obj.put("background_image", StringUtils.lastComponentOfPath(card.question.backgroundImageUriFormatStr));
         obj.put("movie", StringUtils.lastComponentOfPath(card.question.movieUriFormatStr));
+        obj.put("auido", card.question.audioUriFormatStr);
 
         obj.put("image", StringUtils.lastComponentOfPath(card.question.imageUriFormatStr));
         obj.put("template_id", String.format("%d", card.question.templateID));
@@ -193,6 +194,10 @@ public class PackBuildHelper {
         obj.put("sub_align", card.question.css.subAlign);
         obj.put("sub_color", card.question.css.subColor);
         obj.put("sub_size", String.format("%d",card.question.css.subSize));
+
+        obj.put("subheading_font", card.question.css.subheadingFont);
+        obj.put("main_font", card.question.css.mainFont);
+        obj.put("sub_font", card.question.css.subFont);
 
         File savedPath = FileOperationHelper.getUploadCardQuestionJsonFile();
         FileWriter file;
@@ -238,6 +243,11 @@ public class PackBuildHelper {
 
         obj.put("background_image", StringUtils.lastComponentOfPath(card.answer.backgroundImageUriFormatStr));
         obj.put("movie", StringUtils.lastComponentOfPath(card.answer.movieUriFormatStr));
+        obj.put("audio", StringUtils.lastComponentOfPath(card.answer.audioUriFormatStr));
+
+        obj.put("subheading_font", card.answer.css.subheadingFont);
+        obj.put("main_font", card.answer.css.mainFont);
+        obj.put("sub_font", card.answer.css.subFont);
 
         File savedPath = FileOperationHelper.getUploadCardAnswerJsonFile();
         FileWriter file;
