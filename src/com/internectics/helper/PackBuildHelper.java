@@ -48,33 +48,46 @@ public class PackBuildHelper {
                 cardFiles.add(FileOperationHelper.deleteUriSchemeHeader(card.coverImageUriFormatStr));
             }
 
-            if (card.question.imageUriFormatStr.length() >0) {
-                cardFiles.add(FileOperationHelper.deleteUriSchemeHeader(card.question.imageUriFormatStr));
-            }
-
-            if (!(card.question.imageUriFormatStr.equals(card.answer.imageUriFormatStr))) {
-                //for history reason, in iOS version, this data could be same (answer_placeholder_content.jpg)
-                cardFiles.add(FileOperationHelper.deleteUriSchemeHeader(card.answer.imageUriFormatStr));
-            }
-
             if (currentPack.logoImageUriFormatStr.length() > 0) {
                 cardFiles.add(FileOperationHelper.deleteUriSchemeHeader(currentPack.logoImageUriFormatStr));
+            }
+
+
+
+            if (card.question.imageUriFormatStr.length() >0) {
+                cardFiles.add(FileOperationHelper.deleteUriSchemeHeader(card.question.imageUriFormatStr));
             }
 
             if (card.question.backgroundImageUriFormatStr.length() >0) {
                 cardFiles.add(FileOperationHelper.deleteUriSchemeHeader(card.question.backgroundImageUriFormatStr));
             }
 
-            if (card.question.movieUriFormatStr.length() >0) {
+            if ((card.question.movieUriFormatStr.length() >0) && (card.question.movieUriFormatStr.contains("http://") == false)) {
                 cardFiles.add(FileOperationHelper.deleteUriSchemeHeader(card.question.movieUriFormatStr));
+            }
+
+            if (card.question.audioUriFormatStr.length() >0) {
+                cardFiles.add(FileOperationHelper.deleteUriSchemeHeader(card.question.audioUriFormatStr));
+            }
+
+
+
+
+            if (!(card.question.imageUriFormatStr.equals(card.answer.imageUriFormatStr))) {
+                //for history reason, in iOS version, this data could be same (answer_placeholder_content.jpg)
+                cardFiles.add(FileOperationHelper.deleteUriSchemeHeader(card.answer.imageUriFormatStr));
             }
 
             if (card.answer.backgroundImageUriFormatStr.length() >0) {
                 cardFiles.add(FileOperationHelper.deleteUriSchemeHeader(card.answer.backgroundImageUriFormatStr));
             }
 
-            if (card.answer.movieUriFormatStr.length() >0) {
+            if ((card.answer.movieUriFormatStr.length() >0) && (card.answer.movieUriFormatStr.contains("http://") == false)) {  //有可能只是类似youtube的链接，而不是本地文件
                 cardFiles.add(FileOperationHelper.deleteUriSchemeHeader(card.answer.movieUriFormatStr));
+            }
+
+            if (card.answer.audioUriFormatStr.length() >0) {
+                cardFiles.add(FileOperationHelper.deleteUriSchemeHeader(card.answer.audioUriFormatStr));
             }
 
 
@@ -84,6 +97,7 @@ public class PackBuildHelper {
                 i++;
             } catch (Exception e) {
                 e.printStackTrace();
+                return null;
             }
 
             //step2: add this new zip file to packFiles
@@ -127,6 +141,7 @@ public class PackBuildHelper {
         } catch (ZipException e) {
             e.printStackTrace();
             Log.d(Global.debugTag,"zip pack file failure");
+            return null;
         }
         return packZipFile;
     }

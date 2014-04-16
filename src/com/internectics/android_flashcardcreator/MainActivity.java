@@ -786,25 +786,35 @@ public class MainActivity extends FragmentActivity implements
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
 
-                        InputMethodManager imm =(InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
-                        imm.hideSoftInputFromWindow(passwordEditText.getWindowToken(),0);
+                        InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+                        imm.hideSoftInputFromWindow(passwordEditText.getWindowToken(), 0);
 
                         String password = passwordEditText.getText().toString();
-                        File file = PackBuildHelper.createPackZipFile(MainActivity.this,mCurrentPack,password);
-                        PackUploadHelper upload = new PackUploadHelper(MainActivity.this, "/FlashCardCreator/", file, mCurrentPack);
-                        upload.execute();
+                        File file = PackBuildHelper.createPackZipFile(MainActivity.this, mCurrentPack, password);
+                        if (file == null) {
+                            Toast.makeText(MainActivity.this, "createPackZipFile failure", Toast.LENGTH_LONG).show();
+                        } else {
+                            PackUploadHelper upload = new PackUploadHelper(MainActivity.this, "/FlashCardCreator/", file, mCurrentPack);
+                            upload.execute();
+                        }
+
                     }
                 })
                 .setNegativeButton("Not needed", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
 
-                        InputMethodManager imm =(InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
-                        imm.hideSoftInputFromWindow(passwordEditText.getWindowToken(),0);
+                        InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+                        imm.hideSoftInputFromWindow(passwordEditText.getWindowToken(), 0);
 
-                        File file = PackBuildHelper.createPackZipFile(MainActivity.this,mCurrentPack,"");
-                        PackUploadHelper upload = new PackUploadHelper(MainActivity.this, "/FlashCardCreator/", file, mCurrentPack);
-                        upload.execute();
+                        File file = PackBuildHelper.createPackZipFile(MainActivity.this, mCurrentPack, "");
+                        if (file == null) {
+                            Toast.makeText(MainActivity.this, "createPackZipFile failure", Toast.LENGTH_LONG).show();
+                        } else {
+                            PackUploadHelper upload = new PackUploadHelper(MainActivity.this, "/FlashCardCreator/", file, mCurrentPack);
+                            upload.execute();
+                        }
+
                     }
                 })
                 .show();
@@ -973,7 +983,7 @@ public class MainActivity extends FragmentActivity implements
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 if (position > 0) //this is necessary, since default will be automatically executed
-                    mCardDetailFragment.updateCSS(3, position - 1);
+                    mCardDetailFragment.updateCSS(2, position - 1);
             }
 
             @Override

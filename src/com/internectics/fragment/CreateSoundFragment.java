@@ -1,8 +1,6 @@
 package com.internectics.fragment;
 
 import android.app.DialogFragment;
-import android.content.Context;
-import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -10,22 +8,16 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
-import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
-import android.widget.EditText;
-import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.internectics.android_flashcardcreator.R;
 import com.internectics.data.Card;
-import com.internectics.data.User;
 import com.internectics.helper.AudioHelper;
 import com.internectics.helper.FileOperationHelper;
 import com.internectics.util.AppContext;
 
 import java.io.File;
-import java.util.TimerTask;
-import java.util.UUID;
 
 /**
  * Created by bournewang on 4/16/14.
@@ -128,7 +120,7 @@ public class CreateSoundFragment extends DialogFragment {
         }
 
         if (saveToPath.length() == 0) {
-            File saveToFile = FileOperationHelper.generateUniqueAudioACCFilePath();
+            File saveToFile = FileOperationHelper.generateUniqueAudioAACFilePath();
             saveToPath = saveToFile.toString();
 
             if (mIsQuestionShowing) {

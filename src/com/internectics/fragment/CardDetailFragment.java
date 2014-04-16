@@ -248,7 +248,7 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnKeyboa
             mPlayRecordImage.setVisibility(View.INVISIBLE);
         }
 
-        if (mIsPlayingCard) {
+        if (mIsPlayingCard || mIsCreatingCard) {
             setCardBackgroundMaskBlack();
         } else {
             setCardBackgroundMaskGray();
@@ -2838,13 +2838,13 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnKeyboa
 
     }
 
-    //used in non-play mode
+    //used in edit card mode
     private void setCardBackgroundMaskGray () {
         View card = mContentView.findViewById(R.id.card_mask);
         card.setBackgroundDrawable(getResources().getDrawable(R.drawable.mask_gray));
     }
 
-    //used in play mode
+    //used in play mode and create card mode
     private void setCardBackgroundMaskBlack () {
         View card = mContentView.findViewById(R.id.card_mask);
         card.setBackgroundDrawable(getResources().getDrawable(R.drawable.mask_black));
