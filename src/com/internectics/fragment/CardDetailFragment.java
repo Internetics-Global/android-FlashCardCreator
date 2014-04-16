@@ -373,6 +373,8 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnKeyboa
                             if (!mIsCreatingCard) {
                                 mCurrentCard.save(AppContext.getAppContext());
                             }
+                        } else {
+                            Toast.makeText(getActivity(), "Unrecoginized youtube url format", Toast.LENGTH_LONG).show();
                         }
 
                     }
