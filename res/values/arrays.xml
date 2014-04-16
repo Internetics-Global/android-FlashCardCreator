@@ -23,13 +23,23 @@
     </string-array>
 
     <string-array
-            name="css_color">
-        <item>Color</item>
-        <item>Red</item>
-        <item>Blue</item>
-        <item>Black</item>
-        <item>Yellow</item>
-        <item>Green</item>
+        name="css_font">
+        <item>Font</item>
+        <item>Default</item>
+        <item>san_serif</item>
+        <item>serif</item>
+        <item>monospace</item>
+        <item>bold_italic</item>
+    </string-array>
+
+    <string-array
+    name="css_color">
+    <item>Color</item>
+    <item>Red</item>
+    <item>Blue</item>
+    <item>Black</item>
+    <item>Yellow</item>
+    <item>Green</item>
     </string-array>
 
     <!--sp unit, spinner range-->

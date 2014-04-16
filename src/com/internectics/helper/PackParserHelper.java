@@ -7,6 +7,7 @@ import com.internectics.data.Card;
 import com.internectics.data.Pack;
 import com.internectics.data.User;
 import com.internectics.util.AppContext;
+import com.internectics.util.FontHelper;
 import com.internectics.util.Global;
 import com.internectics.util.StringUtils;
 import com.internectics.util.UIHelper;
@@ -301,15 +302,30 @@ public class PackParserHelper {
             }
 
             if (questionObj.containsKey("subheading_font")) {
-                card.question.css.subheadingFont = (String) questionObj.get("subheading_font");
+
+                String str = (String) questionObj.get("subheading_font");
+                if (StringUtils.isIOSRelated(str)) {
+                    str = FontHelper.convertFromiOS(str);
+                }
+                card.question.css.subheadingFont = str;
             }
 
             if (questionObj.containsKey("main_font")) {
-                card.question.css.mainFont = (String) questionObj.get("main_font");
+
+                String str = (String) questionObj.get("main_font");
+                if (StringUtils.isIOSRelated(str)) {
+                    str = FontHelper.convertFromiOS(str);
+                }
+                card.question.css.mainFont = str;
             }
 
             if (questionObj.containsKey("sub_font")) {
-                card.question.css.subFont = (String) questionObj.get("sub_font");
+
+                String str = (String) questionObj.get("sub_font");
+                if (StringUtils.isIOSRelated(str)) {
+                    str = FontHelper.convertFromiOS(str);
+                }
+                card.question.css.subFont = str;
             }
 
             int subheadingSize;
@@ -583,15 +599,30 @@ public class PackParserHelper {
             }
 
             if (answerObj.containsKey("subheading_font")) {
-                card.answer.css.subheadingFont = (String) answerObj.get("subheading_font");
+
+                String str = (String) answerObj.get("subheading_font");
+                if (StringUtils.isIOSRelated(str)) {
+                    str = FontHelper.convertFromiOS(str);
+                }
+                card.answer.css.subheadingFont = str;
             }
 
             if (answerObj.containsKey("main_font")) {
-                card.answer.css.mainFont = (String) answerObj.get("main_font");
+
+                String str = (String) answerObj.get("main_font");
+                if (StringUtils.isIOSRelated(str)) {
+                    str = FontHelper.convertFromiOS(str);
+                }
+                card.answer.css.mainFont = str;
             }
 
             if (answerObj.containsKey("sub_font")) {
-                card.answer.css.subFont = (String) answerObj.get("sub_font");
+
+                String str = (String) answerObj.get("sub_font");
+                if (StringUtils.isIOSRelated(str)) {
+                    str = FontHelper.convertFromiOS(str);
+                }
+                card.answer.css.subFont = str;
             }
 
             temp = "";

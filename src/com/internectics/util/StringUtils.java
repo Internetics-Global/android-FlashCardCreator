@@ -262,5 +262,24 @@ public class StringUtils {
         return result;
     }
 
+    public static boolean isIOSRelated(String str) {
+
+        if (str == null) return false;
+
+        if (str.toLowerCase().contains("iOS")) {
+            return true;
+        }
+
+        if (str.toLowerCase().contains("iphone")) {
+            return true;
+        }
+
+        if (str.toLowerCase().contains("ipad")) {
+            return true;
+        }
+
+        return false;
+    }
+
 
 }

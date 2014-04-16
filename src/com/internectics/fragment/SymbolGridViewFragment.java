@@ -11,7 +11,7 @@ import android.widget.*;
 import com.internectics.android_flashcardcreator.MainActivity;
 import com.internectics.android_flashcardcreator.R;
 import com.internectics.helper.SymbolHelper;
-import com.internectics.util.FontCache;
+import com.internectics.util.DejaVuSansFontCache;
 import com.internectics.util.Global;
 
 /**
@@ -43,7 +43,7 @@ public class SymbolGridViewFragment extends Fragment {
             }
         });
 
-        mTypeFace = FontCache.get(Global.customFontType, getActivity());
+        mTypeFace = DejaVuSansFontCache.get(Global.defaultFontType, getActivity());
 
         return mContentView;
 

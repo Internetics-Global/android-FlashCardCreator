@@ -843,9 +843,15 @@ public class MainActivity extends FragmentActivity implements
         wm.addView(mCSSToolbar, params);
         mCSSToolbar.setVisibility(View.GONE);
 
+        Spinner spinnerFont = (Spinner) mCSSToolbar.findViewById(R.id.spinner_font);
         Spinner spinnerAlign = (Spinner) mCSSToolbar.findViewById(R.id.spinner_align);
         Spinner spinnerColor = (Spinner) mCSSToolbar.findViewById(R.id.spinner_color);
         Spinner spinnerSize = (Spinner) mCSSToolbar.findViewById(R.id.spinner_size);
+
+        ArrayAdapter<CharSequence> adapterFont = ArrayAdapter.createFromResource(this,
+                R.array.css_font, R.layout.spinner);
+        adapterFont.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        spinnerFont.setAdapter(adapterFont);
 
         ArrayAdapter<CharSequence> adapterAlign = ArrayAdapter.createFromResource(this,
                 R.array.css_align, R.layout.spinner);
@@ -862,6 +868,7 @@ public class MainActivity extends FragmentActivity implements
         adapterSize.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinnerSize.setAdapter(adapterSize);
 
+        spinnerFont.setSelection(0);
         spinnerAlign.setSelection(0);
         spinnerColor.setSelection(0);
         spinnerSize.setSelection(0);
@@ -932,12 +939,24 @@ public class MainActivity extends FragmentActivity implements
             }
         });
 
+        spinnerFont.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                if (position > 0) //this is necessary, since default will be automatically executed
+                    mCardDetailFragment.updateCSS(3, position - 1);
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+            }
+        });
+
 
         spinnerAlign.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 if (position > 0) //this is necessary, since default will be automatically executed
-                    mCardDetailFragment.updateCSS(0, position - 1);
+                    mCardDetailFragment.updateCSS(3, position - 1);
             }
 
             @Override
@@ -997,6 +1016,7 @@ public class MainActivity extends FragmentActivity implements
             mCSSToolbar.setVisibility(View.VISIBLE);
 
             //Rest spinner title when touch another textfield
+            Spinner spinnerFont = (Spinner) mCSSToolbar.findViewById(R.id.spinner_font);
             Spinner spinnerAlign = (Spinner) mCSSToolbar.findViewById(R.id.spinner_align);
             Spinner spinnerColor = (Spinner) mCSSToolbar.findViewById(R.id.spinner_color);
             Spinner spinnerSize = (Spinner) mCSSToolbar.findViewById(R.id.spinner_size);
@@ -1004,6 +1024,7 @@ public class MainActivity extends FragmentActivity implements
             Button saveButton = (Button)mCSSToolbar.findViewById(R.id.csstoolbar_save_btn);
             Button cancelButton = (Button)mCSSToolbar.findViewById(R.id.csstoolbar_close_btn);
 
+            spinnerFont.setSelection(0);
             spinnerAlign.setSelection(0);
             spinnerColor.setSelection(0);
             spinnerSize.setSelection(0);

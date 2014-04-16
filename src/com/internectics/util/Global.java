@@ -15,7 +15,7 @@ public class Global {
     public static final int USER_ID = 314;
     public static final String defaultUserStr = "Default_User";
 
-    public static final String customFontType = "DejaVuSans.ttf";
+    public static final String defaultFontType = "DejaVuSans.ttf";
 
     //Broadcast action name
     public static final String BROADCAST_ACTION_UPDATE_MASTER_VIEW = "com.internectics.update_master_view";

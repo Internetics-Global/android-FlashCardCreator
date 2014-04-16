@@ -178,13 +178,13 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnKeyboa
             dTask.execute(100);
         }
 
-        Typeface typeFace = FontCache.get(Global.customFontType,getActivity());
-        mSubheading.setTypeface(typeFace,Typeface.BOLD);
-        mMain.setTypeface(typeFace,Typeface.BOLD);
-        mSub.setTypeface(typeFace,Typeface.BOLD);
-        mSubheading2.setTypeface(typeFace,Typeface.BOLD);
-        mMain2.setTypeface(typeFace,Typeface.BOLD);
-        mSub2.setTypeface(typeFace,Typeface.BOLD);
+//        Typeface typeFace = DejaVuSansFontCache.get(Global.defaultFontType, getActivity());
+//        mSubheading.setTypeface(typeFace,Typeface.BOLD);
+//        mMain.setTypeface(typeFace,Typeface.BOLD);
+//        mSub.setTypeface(typeFace,Typeface.BOLD);
+//        mSubheading2.setTypeface(typeFace,Typeface.BOLD);
+//        mMain2.setTypeface(typeFace,Typeface.BOLD);
+//        mSub2.setTypeface(typeFace,Typeface.BOLD);
 
         return mContentView;
     }
@@ -2334,6 +2334,13 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnKeyboa
         mSubheading2.setTextColor(StringUtils.convertColorStringToInt(mCurrentCard.question.css.subheadingColor));
         mMain2.setTextColor(StringUtils.convertColorStringToInt(mCurrentCard.question.css.mainColor));
         mSub2.setTextColor(StringUtils.convertColorStringToInt(mCurrentCard.question.css.subColor));
+
+        mSubheading.setTypeface(FontHelper.fontFromArrayIndexString(getActivity(), mCurrentCard.question.css.subheadingFont),Typeface.BOLD);
+        mMain.setTypeface(FontHelper.fontFromArrayIndexString(getActivity(), mCurrentCard.question.css.mainFont),Typeface.BOLD);
+        mSub.setTypeface(FontHelper.fontFromArrayIndexString(getActivity(), mCurrentCard.question.css.subFont),Typeface.BOLD);
+        mSubheading2.setTypeface(FontHelper.fontFromArrayIndexString(getActivity(), mCurrentCard.question.css.subheadingFont),Typeface.BOLD);
+        mMain2.setTypeface(FontHelper.fontFromArrayIndexString(getActivity(), mCurrentCard.question.css.mainFont),Typeface.BOLD);
+        mSub2.setTypeface(FontHelper.fontFromArrayIndexString(getActivity(), mCurrentCard.question.css.subFont),Typeface.BOLD);
     }
 
     private void updateAnswerCSS() {
@@ -2376,6 +2383,13 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnKeyboa
         mSubheading2.setTextColor(StringUtils.convertColorStringToInt(mCurrentCard.answer.css.subheadingColor));
         mMain2.setTextColor(StringUtils.convertColorStringToInt(mCurrentCard.answer.css.mainColor));
         mSub2.setTextColor(StringUtils.convertColorStringToInt(mCurrentCard.answer.css.subColor));
+
+        mSubheading.setTypeface(FontHelper.fontFromArrayIndexString(getActivity(),mCurrentCard.answer.css.subheadingFont),Typeface.BOLD);
+        mMain.setTypeface(FontHelper.fontFromArrayIndexString(getActivity(),mCurrentCard.answer.css.mainFont),Typeface.BOLD);
+        mSub.setTypeface(FontHelper.fontFromArrayIndexString(getActivity(),mCurrentCard.answer.css.subFont),Typeface.BOLD);
+        mSubheading2.setTypeface(FontHelper.fontFromArrayIndexString(getActivity(),mCurrentCard.answer.css.subheadingFont),Typeface.BOLD);
+        mMain2.setTypeface(FontHelper.fontFromArrayIndexString(getActivity(),mCurrentCard.answer.css.mainFont),Typeface.BOLD);
+        mSub2.setTypeface(FontHelper.fontFromArrayIndexString(getActivity(),mCurrentCard.answer.css.subFont),Typeface.BOLD);
     }
 
     /**
@@ -2393,6 +2407,7 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnKeyboa
         ((MainActivity) getActivity()).prepareSnapShotAllExceptOne(mCurrentPack, mCurrentCard);
     }
 
+
     public void updateCSS(int menuID, int subMenuID) {
         CSS currentCSS;
 
@@ -2408,6 +2423,9 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnKeyboa
         } else {
             currentCSS = mCurrentCard.answer.css;
         }
+
+
+
 
         //Step3: fill values
         String[] sizeArray = getResources().getStringArray(R.array.css_size);
@@ -2460,6 +2478,8 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnKeyboa
                 }
 
 
+
+
                 mCurrentFocusedCardContentText.setTextSize((int)(size *scaleVal));
 
                 break;
@@ -2492,6 +2512,19 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnKeyboa
                     default:
                         Log.w(Global.debugTag, "Out of range of subMenuID");
                 }
+                break;
+            case 3:   //font
+
+                if (editTextTag == 1001) {
+                    currentCSS.subheadingFont = String.format("%d",subMenuID);
+                } else if (editTextTag == 1002) {
+                    currentCSS.mainFont = String.format("%d",subMenuID);
+                } else if (editTextTag == 1003) {
+                    currentCSS.subFont = String.format("%d",subMenuID);
+                }
+
+                mCurrentFocusedCardContentText.setTypeface(FontHelper.fontFromArrayIndex(AppContext.getAppContext(),subMenuID));
+
                 break;
             default:
                 Log.w(Global.debugTag, "Out of range of menuID");
@@ -2564,6 +2597,7 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnKeyboa
     public void onKeyboardClose(EditText editText) {
         ((MainActivity) getActivity()).removeCSSToolbar();
     }
+
 
 
     /**

@@ -18,7 +18,7 @@
         android:gravity="bottom"
         android:textAlignment="center"
         android:text="When you click Start you will have five seconds in which to record your alarm. You can then Play it back for review or Save it for use in the app."
-        android:layout_below="@+id/record_button"
+        android:layout_below="@id/record_button"
         android:layout_centerHorizontal="true"
         android:id="@+id/descripton_textview"/>
 

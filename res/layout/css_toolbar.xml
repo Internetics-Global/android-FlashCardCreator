@@ -31,11 +31,21 @@
             android:text="@string/button_cancel"/>
 
     <Spinner
+        android:id="@+id/spinner_font"
+        android:gravity="center"
+        android:layout_width="@dimen/csstoolbar_button_width"
+        android:layout_height="match_parent"
+        android:layout_alignParentRight="true"
+        android:entries="@array/css_font"
+        android:background="@drawable/selector_csstoolbar_button"
+        android:layout_margin="5dp"/>
+
+    <Spinner
             android:id="@+id/spinner_align"
             android:gravity="center"
             android:layout_width="@dimen/csstoolbar_button_width"
             android:layout_height="match_parent"
-            android:layout_alignParentRight="true"
+            android:layout_toLeftOf="@id/spinner_font"
             android:entries="@array/css_align"
             android:background="@drawable/selector_csstoolbar_button"
             android:layout_margin="5dp"/>
