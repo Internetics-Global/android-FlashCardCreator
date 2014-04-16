@@ -343,6 +343,8 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnKeyboa
                 startActivity(intent);
             }
 
+        } else {
+            Toast.makeText(getActivity(),"Not available video file",Toast.LENGTH_LONG).show();
         }
 
 
@@ -717,6 +719,8 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnKeyboa
                 if (mIsPlayingCard) {
                     if (targetStr.length() >0) {
                         playAudio(FileOperationHelper.deleteUriSchemeHeader(targetStr));
+                    } else {
+                        Toast.makeText(getActivity(),"Not available audio file",Toast.LENGTH_LONG).show();
                     }
                 } else {
                     showCreateSoundView();
