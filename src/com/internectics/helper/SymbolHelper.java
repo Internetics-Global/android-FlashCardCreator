@@ -33,6 +33,22 @@ public class SymbolHelper {
     };
 
 
+    public static boolean isSymbolIncluded (String str) {
+
+        if ((str == null) || str.length() ==0) {
+            return false;
+        }
+
+        for (int i = 0; i < mUnicodeArray.length; i++) {
+            if (str.contains(mUnicodeArray[i])) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+
     public static int getSymbolCount() {
         int count = mUnicodeArray.length;
         return count;

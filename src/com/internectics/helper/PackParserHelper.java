@@ -304,27 +304,18 @@ public class PackParserHelper {
             if (questionObj.containsKey("subheading_font")) {
 
                 String str = (String) questionObj.get("subheading_font");
-                if (StringUtils.isIOSRelated(str)) {
-                    str = FontHelper.convertFromiOS(str);
-                }
                 card.question.css.subheadingFont = str;
             }
 
             if (questionObj.containsKey("main_font")) {
 
                 String str = (String) questionObj.get("main_font");
-                if (StringUtils.isIOSRelated(str)) {
-                    str = FontHelper.convertFromiOS(str);
-                }
                 card.question.css.mainFont = str;
             }
 
             if (questionObj.containsKey("sub_font")) {
 
                 String str = (String) questionObj.get("sub_font");
-                if (StringUtils.isIOSRelated(str)) {
-                    str = FontHelper.convertFromiOS(str);
-                }
                 card.question.css.subFont = str;
             }
 
@@ -601,27 +592,18 @@ public class PackParserHelper {
             if (answerObj.containsKey("subheading_font")) {
 
                 String str = (String) answerObj.get("subheading_font");
-                if (StringUtils.isIOSRelated(str)) {
-                    str = FontHelper.convertFromiOS(str);
-                }
                 card.answer.css.subheadingFont = str;
             }
 
             if (answerObj.containsKey("main_font")) {
 
                 String str = (String) answerObj.get("main_font");
-                if (StringUtils.isIOSRelated(str)) {
-                    str = FontHelper.convertFromiOS(str);
-                }
                 card.answer.css.mainFont = str;
             }
 
             if (answerObj.containsKey("sub_font")) {
 
                 String str = (String) answerObj.get("sub_font");
-                if (StringUtils.isIOSRelated(str)) {
-                    str = FontHelper.convertFromiOS(str);
-                }
                 card.answer.css.subFont = str;
             }
 

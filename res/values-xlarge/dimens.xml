@@ -43,7 +43,7 @@
 
     <!--css toolbar related-->
     <dimen name="csstoolbar_text_size">16sp</dimen>
-    <dimen name="csstoolbar_button_width">90dp</dimen>
+    <dimen name="csstoolbar_button_width">100dp</dimen>
 
     <!-- add card related -->
     <dimen name="add_card_button_size">60dp</dimen>

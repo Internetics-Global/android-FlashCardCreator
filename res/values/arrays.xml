@@ -26,10 +26,10 @@
         name="css_font">
         <item>Font</item>
         <item>Default</item>
-        <item>san_serif</item>
-        <item>serif</item>
-        <item>monospace</item>
-        <item>bold_italic</item>
+        <item>Helvetica-Bold</item>
+        <item>Courier-Bold</item>
+        <item>Chalkduster</item>
+        <item>Arial-BoldMT</item>
     </string-array>
 
     <string-array

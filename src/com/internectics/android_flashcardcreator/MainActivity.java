@@ -929,8 +929,16 @@ public class MainActivity extends FragmentActivity implements
                 InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
                 imm.toggleSoftInput(InputMethodManager.SHOW_IMPLICIT, InputMethodManager.HIDE_NOT_ALWAYS);
                 if (mIsKeyboardVisible) {
-                    setAsSymbolStatus();
-                    mIsKeyboardVisible = false;
+
+                    if (mCardDetailFragment.isCurrentFocusedCardContentTextUsingDefaultFont() == false){
+                        Toast.makeText(getApplicationContext(),"Symbol is not supported by selected font",Toast.LENGTH_LONG).show();
+                    } else {
+                        setAsSymbolStatus();
+                        mIsKeyboardVisible = false;
+                    }
+
+
+
                 } else {
                     setAsKeyboardStatus();
                     mIsKeyboardVisible = true;
@@ -943,7 +951,16 @@ public class MainActivity extends FragmentActivity implements
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 if (position > 0) //this is necessary, since default will be automatically executed
-                    mCardDetailFragment.updateCSS(3, position - 1);
+                {
+                    if (SymbolHelper.isSymbolIncluded(mCardDetailFragment.mCurrentFocusedCardContentText.getText().toString())) {
+                        Toast.makeText(getApplicationContext(),"You can not change font once text includes symbol",Toast.LENGTH_LONG).show();
+
+                    } else {
+                        mCardDetailFragment.updateCSS(3, position - 1);
+                    }
+                }
+
+
             }
 
             @Override

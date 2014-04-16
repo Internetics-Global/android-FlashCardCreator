@@ -78,7 +78,7 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnKeyboa
     private RadioGroup mRadioGroup;
 
     private InputMethodManager mIMM;
-    private EditText mCurrentFocusedCardContentText;  // only applicable to subheading, main and sub text
+    public EditText mCurrentFocusedCardContentText;  // only applicable to subheading, main and sub text
 
     private int CODE_REQUEST_IMAGE_SOURCE_IS_LOGO = 1001; //when user click on the logo img
     private int CODE_REQUEST_IMAGE_SOURCE_IS_IMAGE = 1002;//when user click on the image img
@@ -109,6 +109,42 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnKeyboa
     private ViewTreeObserver.OnGlobalLayoutListener mVtoMain2Listener;
     private ViewTreeObserver.OnGlobalLayoutListener mVtoSubListener;
     private ViewTreeObserver.OnGlobalLayoutListener mVtoSub2Listener;
+
+
+    public boolean isCurrentFocusedCardContentTextUsingDefaultFont() {
+
+        if (mCurrentFocusedCardContentText == null) {
+            return true;
+        }
+
+        String fontStr = "";
+        int editTextTag = Integer.parseInt((String) mCurrentFocusedCardContentText.getTag());
+        if (editTextTag == 1001) {
+            if (mIsQuestionShowing) {
+                fontStr = mCurrentCard.question.css.subheadingFont;
+            } else {
+                fontStr = mCurrentCard.answer.css.subheadingFont;
+            }
+        } else if (editTextTag == 1002) {
+            if (mIsQuestionShowing) {
+                fontStr = mCurrentCard.question.css.mainFont;
+            } else {
+                fontStr = mCurrentCard.answer.css.mainFont;
+            }
+        } else if (editTextTag == 1003) {
+            if (mIsQuestionShowing) {
+                fontStr = mCurrentCard.question.css.subFont;
+            } else {
+                fontStr = mCurrentCard.answer.css.subFont;
+            }
+        }
+
+        if ((fontStr == null) || (fontStr.length() == 0)|| (fontStr.toLowerCase().contains("default"))) {
+            return true;
+        } else {
+            return false;
+        }
+    }
 
 
     /**
@@ -178,7 +214,7 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnKeyboa
             dTask.execute(100);
         }
 
-//        Typeface typeFace = DejaVuSansFontCache.get(Global.defaultFontType, getActivity());
+//        Typeface typeFace = FontCache.get(Global.fontName_Default, getActivity());
 //        mSubheading.setTypeface(typeFace,Typeface.BOLD);
 //        mMain.setTypeface(typeFace,Typeface.BOLD);
 //        mSub.setTypeface(typeFace,Typeface.BOLD);
@@ -2335,12 +2371,12 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnKeyboa
         mMain2.setTextColor(StringUtils.convertColorStringToInt(mCurrentCard.question.css.mainColor));
         mSub2.setTextColor(StringUtils.convertColorStringToInt(mCurrentCard.question.css.subColor));
 
-        mSubheading.setTypeface(FontHelper.fontFromArrayIndexString(getActivity(), mCurrentCard.question.css.subheadingFont),Typeface.BOLD);
-        mMain.setTypeface(FontHelper.fontFromArrayIndexString(getActivity(), mCurrentCard.question.css.mainFont),Typeface.BOLD);
-        mSub.setTypeface(FontHelper.fontFromArrayIndexString(getActivity(), mCurrentCard.question.css.subFont),Typeface.BOLD);
-        mSubheading2.setTypeface(FontHelper.fontFromArrayIndexString(getActivity(), mCurrentCard.question.css.subheadingFont),Typeface.BOLD);
-        mMain2.setTypeface(FontHelper.fontFromArrayIndexString(getActivity(), mCurrentCard.question.css.mainFont),Typeface.BOLD);
-        mSub2.setTypeface(FontHelper.fontFromArrayIndexString(getActivity(), mCurrentCard.question.css.subFont),Typeface.BOLD);
+        mSubheading.setTypeface(FontHelper.fontFromName(getActivity(), mCurrentCard.question.css.subheadingFont),Typeface.BOLD);
+        mMain.setTypeface(FontHelper.fontFromName(getActivity(), mCurrentCard.question.css.mainFont),Typeface.BOLD);
+        mSub.setTypeface(FontHelper.fontFromName(getActivity(), mCurrentCard.question.css.subFont),Typeface.BOLD);
+        mSubheading2.setTypeface(FontHelper.fontFromName(getActivity(), mCurrentCard.question.css.subheadingFont),Typeface.BOLD);
+        mMain2.setTypeface(FontHelper.fontFromName(getActivity(), mCurrentCard.question.css.mainFont),Typeface.BOLD);
+        mSub2.setTypeface(FontHelper.fontFromName(getActivity(), mCurrentCard.question.css.subFont),Typeface.BOLD);
     }
 
     private void updateAnswerCSS() {
@@ -2384,12 +2420,12 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnKeyboa
         mMain2.setTextColor(StringUtils.convertColorStringToInt(mCurrentCard.answer.css.mainColor));
         mSub2.setTextColor(StringUtils.convertColorStringToInt(mCurrentCard.answer.css.subColor));
 
-        mSubheading.setTypeface(FontHelper.fontFromArrayIndexString(getActivity(),mCurrentCard.answer.css.subheadingFont),Typeface.BOLD);
-        mMain.setTypeface(FontHelper.fontFromArrayIndexString(getActivity(),mCurrentCard.answer.css.mainFont),Typeface.BOLD);
-        mSub.setTypeface(FontHelper.fontFromArrayIndexString(getActivity(),mCurrentCard.answer.css.subFont),Typeface.BOLD);
-        mSubheading2.setTypeface(FontHelper.fontFromArrayIndexString(getActivity(),mCurrentCard.answer.css.subheadingFont),Typeface.BOLD);
-        mMain2.setTypeface(FontHelper.fontFromArrayIndexString(getActivity(),mCurrentCard.answer.css.mainFont),Typeface.BOLD);
-        mSub2.setTypeface(FontHelper.fontFromArrayIndexString(getActivity(),mCurrentCard.answer.css.subFont),Typeface.BOLD);
+        mSubheading.setTypeface(FontHelper.fontFromName(getActivity(),mCurrentCard.answer.css.subheadingFont),Typeface.BOLD);
+        mMain.setTypeface(FontHelper.fontFromName(getActivity(),mCurrentCard.answer.css.mainFont),Typeface.BOLD);
+        mSub.setTypeface(FontHelper.fontFromName(getActivity(),mCurrentCard.answer.css.subFont),Typeface.BOLD);
+        mSubheading2.setTypeface(FontHelper.fontFromName(getActivity(),mCurrentCard.answer.css.subheadingFont),Typeface.BOLD);
+        mMain2.setTypeface(FontHelper.fontFromName(getActivity(),mCurrentCard.answer.css.mainFont),Typeface.BOLD);
+        mSub2.setTypeface(FontHelper.fontFromName(getActivity(),mCurrentCard.answer.css.subFont),Typeface.BOLD);
     }
 
     /**
@@ -2416,6 +2452,7 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnKeyboa
             return;
         }
 
+
         //Step2: determine operaton target
         int editTextTag = Integer.parseInt((String) mCurrentFocusedCardContentText.getTag());
         if (mIsQuestionShowing) {
@@ -2431,6 +2468,7 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnKeyboa
         String[] sizeArray = getResources().getStringArray(R.array.css_size);
         String[] alignArray = getResources().getStringArray(R.array.css_align);
         String[] colorArray = getResources().getStringArray(R.array.css_color);
+        String[] fontArray = getResources().getStringArray(R.array.css_font);
         switch (menuID) {
             case 0:   //stand for align
 
@@ -2515,12 +2553,14 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnKeyboa
                 break;
             case 3:   //font
 
+
+
                 if (editTextTag == 1001) {
-                    currentCSS.subheadingFont = String.format("%d",subMenuID);
+                    currentCSS.subheadingFont = fontArray[subMenuID +1];
                 } else if (editTextTag == 1002) {
-                    currentCSS.mainFont = String.format("%d",subMenuID);
+                    currentCSS.mainFont = fontArray[subMenuID +1];
                 } else if (editTextTag == 1003) {
-                    currentCSS.subFont = String.format("%d",subMenuID);
+                    currentCSS.subFont = fontArray[subMenuID +1];
                 }
 
                 mCurrentFocusedCardContentText.setTypeface(FontHelper.fontFromArrayIndex(AppContext.getAppContext(),subMenuID));

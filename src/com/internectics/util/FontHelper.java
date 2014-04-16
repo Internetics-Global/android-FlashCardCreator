@@ -13,62 +13,54 @@ public class FontHelper {
      */
     public static Typeface fontFromArrayIndex(Context context,int index) {
 
-        Typeface val;
-
         switch (index) {
+            case 0:
+                return (FontCache.get(Global.fontName_Default, context));
 
-            case 0:{
-                val = DejaVuSansFontCache.get(Global.defaultFontType, context);
-                break;
-            }
+            case 1:
+                return (FontCache.get(Global.fontName_HelveticaBold, context));
 
-            case 1:{
-                val = Typeface.SANS_SERIF;
-                break;
-            }
+            case 2:
+                return (FontCache.get(Global.fontName_CourierBold, context));
 
-            case 2:{
-                val = Typeface.SERIF;
-                break;
-            }
+            case 3:
+                return (FontCache.get(Global.fontName_Chalkduster, context));
 
-            case 3:{
-                val = Typeface.MONOSPACE;
-                break;
-            }
-
-            case 4:{
-                val = Typeface.DEFAULT_BOLD;
-                break;
-            }
+            case 4:
+                return (FontCache.get(Global.fontName_ArialBoldMT, context));
 
             default:
-                val = DejaVuSansFontCache.get(Global.defaultFontType, context);
-                break;
-
-
+                return (FontCache.get(Global.fontName_Default, context));
         }
 
-        return val;
-
     }
 
 
-    public static Typeface fontFromArrayIndexString(Context context,String indexStr) {
-        int index = 0;
-        if ((indexStr == null) || (indexStr.length() == 0)||(StringUtils.isNumeric(indexStr) == false)) {
-            index = 0;
-        } else {
-            index = Integer.parseInt(indexStr);
+    public static Typeface fontFromName(Context context,String fontStr) {
+
+        if ((fontStr == null) || (fontStr.length() == 0)) {
+            return (FontCache.get(Global.fontName_Default, context));
+        }
+        else if (fontStr.equalsIgnoreCase("Helvetica-Bold")) {
+            return (FontCache.get(Global.fontName_HelveticaBold, context));
+        }
+        else if (fontStr.equalsIgnoreCase("Courier-Bold")) {
+            return (FontCache.get(Global.fontName_CourierBold, context));
+        }
+        else if (fontStr.equalsIgnoreCase("Chalkduster")) {
+            return (FontCache.get(Global.fontName_Chalkduster, context));
+        }
+        else if (fontStr.equalsIgnoreCase("Arial-BoldMT")) {
+            return (FontCache.get(Global.fontName_ArialBoldMT, context));
+        }
+        else {
+            return (FontCache.get(Global.fontName_Default, context));
         }
 
-        Typeface  typeface = fontFromArrayIndex(context,index);
-        return typeface;
     }
 
-    public static String convertFromiOS(String iosFont) {
-        return "";
-    }
+
+
 
 
 }
