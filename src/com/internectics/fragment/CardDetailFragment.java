@@ -332,9 +332,9 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnKeyboa
         if (targetStr.length() > 0) {
 
             if (targetStr.contains("http://")) {
-                Intent intent = new Intent(getActivity(), WebViewActivity.class);
-                intent.putExtra("url", targetStr);
-                startActivity(intent);
+                Intent i = new Intent(Intent.ACTION_VIEW);
+                i.setData(Uri.parse(targetStr));
+                startActivity(i);
 
             } else {
                 String videoPath =  FileOperationHelper.deleteUriSchemeHeader(targetStr);

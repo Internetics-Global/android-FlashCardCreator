@@ -12,15 +12,6 @@
         android:text="Record Now"
         android:id="@+id/record_button" />
 
-    <TextView
-        android:layout_width="450dp"
-        android:layout_height="50dp"
-        android:gravity="bottom"
-        android:textAlignment="center"
-        android:text="When you click Start you will have five seconds in which to record your alarm. You can then Play it back for review or Save it for use in the app."
-        android:layout_below="@id/record_button"
-        android:layout_centerHorizontal="true"
-        android:id="@+id/descripton_textview"/>
 
     <RelativeLayout
         android:orientation="horizontal"
@@ -50,6 +41,18 @@
 
 
         </RelativeLayout>
+
+
+    <TextView
+        android:layout_width="450dp"
+        android:layout_height="50dp"
+        android:gravity="bottom|center_horizontal"
+        android:textAlignment="center"
+
+        android:text="When you click Start you will have five seconds in which to record your alarm. You can then Play it back for review or Save it for use in the app."
+        android:layout_below="@id/record_button"
+        android:layout_centerHorizontal="true"
+        android:id="@+id/descripton_textview"/>
 
 
 </RelativeLayout>
