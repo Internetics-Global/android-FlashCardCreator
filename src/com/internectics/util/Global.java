@@ -19,8 +19,8 @@ public class Global {
     public static final String fontName_Default = "DejaVuSans.ttf";
     public static final String fontName_ArialBoldMT = "Arial-BoldMT.ttf";
     public static final String fontName_Chalkduster = "Chalkduster.ttf";
-    public static final String fontName_CourierBold = "Courier-Bold.ttf";
-    public static final String fontName_HelveticaBold = "Helvetica-Bold.ttf";
+    public static final String fontName_Courier = "Courier.ttf";
+    public static final String fontName_Papyrus = "Papyrus.ttf";
 
     //Broadcast action name
     public static final String BROADCAST_ACTION_UPDATE_MASTER_VIEW = "com.internectics.update_master_view";

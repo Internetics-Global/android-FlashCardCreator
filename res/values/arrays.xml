@@ -26,8 +26,8 @@
         name="css_font">
         <item>Font</item>
         <item>Default</item>
-        <item>Helvetica-Bold</item>
-        <item>Courier-Bold</item>
+        <item>Papyrus</item>
+        <item>Courier</item>
         <item>Chalkduster</item>
         <item>Arial-BoldMT</item>
     </string-array>

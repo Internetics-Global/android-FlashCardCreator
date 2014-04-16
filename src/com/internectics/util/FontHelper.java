@@ -18,10 +18,10 @@ public class FontHelper {
                 return (FontCache.get(Global.fontName_Default, context));
 
             case 1:
-                return (FontCache.get(Global.fontName_HelveticaBold, context));
+                return (FontCache.get(Global.fontName_Papyrus, context));
 
             case 2:
-                return (FontCache.get(Global.fontName_CourierBold, context));
+                return (FontCache.get(Global.fontName_Courier, context));
 
             case 3:
                 return (FontCache.get(Global.fontName_Chalkduster, context));
@@ -42,10 +42,10 @@ public class FontHelper {
             return (FontCache.get(Global.fontName_Default, context));
         }
         else if (fontStr.equalsIgnoreCase("Helvetica-Bold")) {
-            return (FontCache.get(Global.fontName_HelveticaBold, context));
+            return (FontCache.get(Global.fontName_Papyrus, context));
         }
         else if (fontStr.equalsIgnoreCase("Courier-Bold")) {
-            return (FontCache.get(Global.fontName_CourierBold, context));
+            return (FontCache.get(Global.fontName_Courier, context));
         }
         else if (fontStr.equalsIgnoreCase("Chalkduster")) {
             return (FontCache.get(Global.fontName_Chalkduster, context));

@@ -931,7 +931,7 @@ public class MainActivity extends FragmentActivity implements
                 if (mIsKeyboardVisible) {
 
                     if (mCardDetailFragment.isCurrentFocusedCardContentTextUsingDefaultFont() == false){
-                        Toast.makeText(getApplicationContext(),"Symbol is not supported by selected font",Toast.LENGTH_LONG).show();
+                        Toast.makeText(getApplicationContext(),"ymbol could possibly not be supported by selected font, please check",Toast.LENGTH_LONG).show();
                     } else {
                         setAsSymbolStatus();
                         mIsKeyboardVisible = false;
