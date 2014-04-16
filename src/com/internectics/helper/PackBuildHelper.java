@@ -193,7 +193,7 @@ public class PackBuildHelper {
 
         obj.put("background_image", StringUtils.lastComponentOfPath(card.question.backgroundImageUriFormatStr));
         obj.put("movie", StringUtils.lastComponentOfPath(card.question.movieUriFormatStr));
-        obj.put("auido", card.question.audioUriFormatStr);
+        obj.put("audio", card.question.audioUriFormatStr);
 
         obj.put("image", StringUtils.lastComponentOfPath(card.question.imageUriFormatStr));
         obj.put("template_id", String.format("%d", card.question.templateID));
