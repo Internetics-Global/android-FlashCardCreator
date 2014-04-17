@@ -71,13 +71,22 @@ public class StringUtils {
         return pattern.matcher(str).matches();
     }
 
-
+    /**
+     * 在写入到json文件中，我们不再关心它的目录，因为在不同平台(android,ios)，这个目录是不一样的
+     * @param stringUri
+     * @return
+     */
     public static String lastComponentOfPath(Uri uri) {
         String path = uri.getPath();
         String last = path.substring(path.lastIndexOf("/") + 1);
         return last;
     }
 
+    /**
+     * 在写入到json文件中，我们不再关心它的目录，因为在不同平台(android,ios)，这个目录是不一样的
+     * @param stringUri
+     * @return
+     */
     public static String lastComponentOfPath(String stringUri) {
         String path = Uri.parse(stringUri).getPath();
         String last = path.substring(path.lastIndexOf("/") + 1);
