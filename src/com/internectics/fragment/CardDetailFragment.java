@@ -725,7 +725,12 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnKeyboa
                         Toast.makeText(getActivity(),"Not available audio file",Toast.LENGTH_LONG).show();
                     }
                 } else {
-                    showCreateSoundView();
+                    if (isEditableMode()) {
+                        showCreateSoundView();
+                    } else {
+                        Toast.makeText(getActivity(),"Audio play is only available in play mode",Toast.LENGTH_LONG).show();
+                    }
+
                 }
             }
         });
@@ -791,6 +796,24 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnKeyboa
 
                     }
                 });
+            } else {
+                //不在play mode下，但是同时又不是自己创建的卡
+                mImage.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        Toast.makeText(getActivity(),"Video play is only available in play mode",Toast.LENGTH_LONG).show();
+
+                    }
+                });
+
+                mImage2.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        Toast.makeText(getActivity(),"Video play is only available in play mode",Toast.LENGTH_LONG).show();
+
+                    }
+                });
+
             }
         }
 
