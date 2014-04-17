@@ -290,5 +290,18 @@ public class StringUtils {
         return false;
     }
 
+    public static boolean isYoutubeLinkage(String str) {
+        boolean b;
+
+        if ((str.contains("http://www.youtube.com/"))
+                || (str.contains("http://m.youtube.com/"))
+                      || (str.contains("https://www.youtube.com/"))
+                             || (str.contains("https://m.youtube.com/"))) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
 
 }

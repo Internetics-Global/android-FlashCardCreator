@@ -361,7 +361,7 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnKeyboa
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         String youtubeURLStr = textInput.getText().toString();
-                        if (youtubeURLStr.contains("http://www.youtube.com/watch")) {
+                        if (StringUtils.isYoutubeLinkage(youtubeURLStr)) {
                             if (mIsQuestionShowing) {
                                 mCurrentCard.question.movieUriFormatStr = youtubeURLStr;
                             } else {

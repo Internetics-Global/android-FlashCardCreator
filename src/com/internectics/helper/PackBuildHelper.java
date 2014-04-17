@@ -192,7 +192,14 @@ public class PackBuildHelper {
         obj.put("cover_image", StringUtils.lastComponentOfPath(card.coverImageUriFormatStr));
 
         obj.put("background_image", StringUtils.lastComponentOfPath(card.question.backgroundImageUriFormatStr));
-        obj.put("movie", StringUtils.lastComponentOfPath(card.question.movieUriFormatStr));
+
+        if (StringUtils.isYoutubeLinkage(card.question.movieUriFormatStr)) {
+            obj.put("movie", card.question.movieUriFormatStr);
+        } else {
+            obj.put("movie", StringUtils.lastComponentOfPath(card.question.movieUriFormatStr));
+        }
+
+
         obj.put("audio", StringUtils.lastComponentOfPath(card.question.audioUriFormatStr));
 
         obj.put("image", StringUtils.lastComponentOfPath(card.question.imageUriFormatStr));
@@ -257,7 +264,13 @@ public class PackBuildHelper {
         obj.put("sub_size", String.format("%d",card.answer.css.subSize));
 
         obj.put("background_image", StringUtils.lastComponentOfPath(card.answer.backgroundImageUriFormatStr));
-        obj.put("movie", StringUtils.lastComponentOfPath(card.answer.movieUriFormatStr));
+        
+        if (StringUtils.isYoutubeLinkage(card.answer.movieUriFormatStr)) {
+            obj.put("movie", card.answer.movieUriFormatStr);
+        } else {
+            obj.put("movie", StringUtils.lastComponentOfPath(card.answer.movieUriFormatStr));
+        }
+
         obj.put("audio", StringUtils.lastComponentOfPath(card.answer.audioUriFormatStr));
 
         obj.put("subheading_font", card.answer.css.subheadingFont);
