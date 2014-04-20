@@ -22,19 +22,19 @@ public class AudioHelper {
     private static MediaRecorder mRecorder;
 
     /*
-    outputPathString must be a .aac format, othervise, execption will be thrown
+    outputPathString must be a .3gp format, othervise, execption will be thrown
      */
     public static void setupAudioRecord(String outputPathString) {
 
-        Assert.assertTrue("outputPathString is null or is not file with .aac extension",
-                ((outputPathString != null) && (outputPathString.toLowerCase().contains(".aac") == true)));
+        Assert.assertTrue("outputPathString is null or is not file with .3gp extension",
+                ((outputPathString != null) && (outputPathString.toLowerCase().contains(".3gp") == true)));
 
 
         if (mRecorder == null) {
             mRecorder = new MediaRecorder();
 
             mRecorder.setAudioSource(MediaRecorder.AudioSource.DEFAULT);
-            mRecorder.setOutputFormat(MediaRecorder.OutputFormat.MPEG_4);
+            mRecorder.setOutputFormat(MediaRecorder.OutputFormat.THREE_GPP);
             mRecorder.setAudioEncoder(MediaRecorder.AudioEncoder.AAC);
             mRecorder.setOutputFile(outputPathString);
 
@@ -88,7 +88,8 @@ public class AudioHelper {
 
 
     /*
-    Just play a sound, no UI
+      Just play a sound, no UI
+      Support two formats: AAC (iOS), 3GP(android)
      */
     public static void playAudio(String pathString){
 

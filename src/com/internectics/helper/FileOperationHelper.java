@@ -96,11 +96,11 @@ public class FileOperationHelper {
     }
 
     /**
-     * All the audio resouces in pack/card will be  format of .aac Everytime you call
+     * All the audio resouces in pack/card will be  format of .3gp Everytime you call
      * this method, the file path will be unique
      */
-    public static File generateUniqueAudioAACFilePath() {
-        String string = String.format("%s.aac", UUID.randomUUID().toString());
+    public static File generateUniqueAudio3GPFilePath() {
+        String string = String.format("%s.3gp", UUID.randomUUID().toString());
         File tempFile = new File(imagesDirectory(), string);
         return tempFile;
     }

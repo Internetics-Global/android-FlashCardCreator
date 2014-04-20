@@ -126,7 +126,7 @@ public class CreateSoundFragment extends DialogFragment {
         }
 
         if (saveToPath.length() == 0) {
-            File saveToFile = FileOperationHelper.generateUniqueAudioAACFilePath();
+            File saveToFile = FileOperationHelper.generateUniqueAudio3GPFilePath();
             saveToPath = saveToFile.toString();
 
             if (mIsQuestionShowing) {
@@ -148,7 +148,7 @@ public class CreateSoundFragment extends DialogFragment {
 
 
     public static File temporaryRecordedSoundPath() {
-        File tempFile = new File(FileOperationHelper.cacheDirectory(), "temp.aac");
+        File tempFile = new File(FileOperationHelper.cacheDirectory(), "temp.3gp");
         return tempFile;
     }
 

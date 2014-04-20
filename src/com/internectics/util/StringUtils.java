@@ -246,9 +246,15 @@ public class StringUtils {
         return result;
     }
 
-    public static boolean isCorrectAACName(String str) {
+    public static boolean isCorrect3GPName(String str) {
         boolean result = false;
-        result = ((str != null) && (str.toLowerCase().contains(".aac")));
+        result = ((str != null) && (str.toLowerCase().contains(".3gp")));
+        return result;
+    }
+
+    public static boolean isCorrect3GPOrAACName(String str) {
+        boolean result = false;
+        result = ((str != null) && ((str.toLowerCase().contains(".3gp"))||(str.toLowerCase().contains(".aac"))));
         return result;
     }
 

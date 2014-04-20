@@ -7,7 +7,6 @@ import com.internectics.data.Card;
 import com.internectics.data.Pack;
 import com.internectics.data.User;
 import com.internectics.util.AppContext;
-import com.internectics.util.FontHelper;
 import com.internectics.util.Global;
 import com.internectics.util.StringUtils;
 import com.internectics.util.UIHelper;
@@ -233,7 +232,7 @@ public class PackParserHelper {
             if (questionObj.containsKey("audio")) {
                 temp = (String) questionObj.get("audio");
             }
-            if (StringUtils.isCorrectAACName(temp)) {
+            if (StringUtils.isCorrect3GPOrAACName(temp)) {
                 card.question.audioUriFormatStr = temp;
             }
 
@@ -627,7 +626,7 @@ public class PackParserHelper {
             if (answerObj.containsKey("audio")) {
                 temp = (String) answerObj.get("audio");
             }
-            if (StringUtils.isCorrectAACName(temp)) {
+            if (StringUtils.isCorrect3GPOrAACName(temp)) {
                 card.answer.audioUriFormatStr = temp;
             }
 
