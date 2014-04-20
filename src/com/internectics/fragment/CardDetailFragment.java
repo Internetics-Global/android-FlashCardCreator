@@ -935,6 +935,7 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnKeyboa
     private void showCreateSoundView() {
         CreateSoundFragment dialogFragment = new CreateSoundFragment();
         dialogFragment.mCurrentCard = mCurrentCard;
+        dialogFragment.mCurrentPack = mCurrentPack;
         dialogFragment.mIsQuestionShowing = mIsQuestionShowing;
         dialogFragment.show(getActivity().getFragmentManager(), "create_sound_fragment");
     }

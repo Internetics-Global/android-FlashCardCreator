@@ -13,8 +13,10 @@ import android.widget.TextView;
 
 import com.internectics.android_flashcardcreator.R;
 import com.internectics.data.Card;
+import com.internectics.data.Pack;
 import com.internectics.helper.AudioHelper;
 import com.internectics.helper.FileOperationHelper;
+import com.internectics.helper.PackRecordHelper;
 import com.internectics.util.AppContext;
 
 import java.io.File;
@@ -32,6 +34,7 @@ public class CreateSoundFragment extends DialogFragment {
     private Button   mSaveButton;
 
     public Card      mCurrentCard;
+    public Pack      mCurrentPack;
     public Boolean   mIsQuestionShowing;
 
 
@@ -143,6 +146,8 @@ public class CreateSoundFragment extends DialogFragment {
         FileOperationHelper.moveFile(sourceFile.toString(),saveToPath);
 
         mCurrentCard.save(AppContext.getAppContext());
+
+        PackRecordHelper.savePackUpdateRecord(AppContext.getAppContext(), mCurrentPack);
 
     }
 
