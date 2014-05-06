@@ -71,9 +71,15 @@ public class AudioHelper {
 
     public static void stopRecord() {
 
-        if (mRecorder != null) {
-            mRecorder.stop();
+        try {
+            if (mRecorder != null)  {
+                mRecorder.stop();
+            }
+        } catch (IllegalStateException e) {
+            e.printStackTrace();
         }
+
+
 
 
     }
