@@ -19,6 +19,7 @@
         android:layout_alignParentBottom="true"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:id="@+id/playsavebackground_layout"
         >
 
         <Button
@@ -49,10 +50,12 @@
         android:gravity="bottom|center_horizontal"
         android:textAlignment="center"
 
-        android:text="When you click Start you will have five seconds in which to record your alarm. You can then Play it back for review or Save it for use in the app."
-        android:layout_below="@id/record_button"
+        android:text="When you click Start you will have 10 seconds in which to record your alarm. You can then Play it back for review or Save it for use in the app."
+        android:layout_above="@id/playsavebackground_layout"
+        android:layout_marginBottom="30dp"
         android:layout_centerHorizontal="true"
-        android:id="@+id/descripton_textview"/>
+        android:id="@+id/descripton_textview"></TextView>
+
 
 
 </RelativeLayout>
