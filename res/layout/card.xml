@@ -58,26 +58,6 @@
                 />
 
 
-            <ImageView
-                android:id="@+id/change_background_button"
-                android:layout_gravity="left|bottom"
-                android:layout_marginBottom="5dp"
-                android:layout_marginLeft="5dp"
-                android:layout_height= "@dimen/button_change_template_size"
-                android:layout_width="@dimen/button_change_template_size"
-                android:src="@drawable/button_change_background"/>
-
-
-            <ImageView
-                android:id="@+id/play_record_button"
-                android:layout_gravity="left|bottom"
-                android:layout_marginBottom="50dp"
-                android:layout_marginLeft="2dp"
-                android:layout_height= "30dp"
-                android:layout_width="60dp"
-                android:src="@drawable/play_record_button"/>
-
-
         </FrameLayout>
 
         <FrameLayout
@@ -161,7 +141,7 @@
                         android:id="@+id/logo_url_btn"
                         android:layout_width="0dp"
                         android:layout_weight="80"
-                        android:layout_height="@dimen/logo_url_btn_size"
+                        android:layout_height="24dp"
                         android:layout_gravity="bottom"
                         android:src="@drawable/button_edit_link"/>
 
@@ -369,15 +349,6 @@
                 </FrameLayout>
 
             </LinearLayout>
-
-            <ImageView
-                android:id="@+id/change_template_button"
-                android:layout_gravity="right|bottom"
-                android:layout_marginBottom="5dp"
-                android:layout_marginRight="5dp"
-                android:layout_height= "@dimen/button_change_template_size"
-                android:layout_width="@dimen/button_change_template_size"
-                android:src="@drawable/button_change_template"/>
 
 
         </FrameLayout>

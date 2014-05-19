@@ -72,6 +72,8 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnKeyboa
     private ImageView mChangeBackgroundImage;
     private ImageView mPlayRecordImage;
 
+    private LinearLayout mFunctionAreaLayout;
+
     private ImageView mLogoURLImage;
     private RadioButton mQuestionRadioButton;
     private RadioButton mAnswerRadioButton;
@@ -89,7 +91,7 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnKeyboa
 
     private boolean mIsSnapShotNotCurrent = false;//as to snapshot,we have different stragegy on current showing card and other cards
 
-    private boolean mIsQuestionShowing = true;
+    public boolean mIsQuestionShowing = true;
 
     private boolean mIsTakeSnapshotAllNeeded = false; //when fields that belong to current pack(like title) changes, it will be set true
 
@@ -245,7 +247,7 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnKeyboa
         if (mIsCreatingCard) {
             mSidebarTitle.setEnabled(false);
             mTitle.setEnabled(false);
-            mPlayRecordImage.setVisibility(View.INVISIBLE);
+            mFunctionAreaLayout.setVisibility(View.INVISIBLE);
         }
 
         if (mIsPlayingCard || mIsCreatingCard) {
@@ -707,30 +709,18 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnKeyboa
          */
     private void configureSoundRecordPlayImageView() {
 
+        if (mPlayRecordImage == null) {
+            return;
+        }
+
         mPlayRecordImage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //TODO
-                String targetStr;
-                if (mIsQuestionShowing) {
-                    targetStr = mCurrentCard.question.audioUriFormatStr;
-                } else {
-                    targetStr = mCurrentCard.answer.audioUriFormatStr;
-                }
 
-                if (mIsPlayingCard) {
-                    if (targetStr.length() >0) {
-                        playAudio(FileOperationHelper.deleteUriSchemeHeader(targetStr));
-                    } else {
-                        Toast.makeText(getActivity(),"Not available audio file",Toast.LENGTH_LONG).show();
-                    }
+                if (isEditableMode()) {
+                    showCreateSoundView();
                 } else {
-                    if (isEditableMode()) {
-                        showCreateSoundView();
-                    } else {
-                        Toast.makeText(getActivity(),"Audio play is only available in play mode",Toast.LENGTH_LONG).show();
-                    }
-
+                    Toast.makeText(getActivity(),"You can only edit card that you have created it.",Toast.LENGTH_LONG).show();
                 }
             }
         });
@@ -740,14 +730,22 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnKeyboa
     配置background change imageview的click listner
      */
     private void configureBackgroundChangeImageView() {
+        if (mChangeBackgroundImage == null) {
+          return;
+        }
+
         mChangeBackgroundImage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivityForResult(
-                        new Intent(
-                                Intent.ACTION_PICK,
-                                android.provider.MediaStore.Images.Media.INTERNAL_CONTENT_URI),
-                        CODE_REQUEST_IMAGE_SOURCE_IS_BACKGROUND);
+                if (isEditableMode()) {
+                    startActivityForResult(
+                            new Intent(
+                                    Intent.ACTION_PICK,
+                                    android.provider.MediaStore.Images.Media.INTERNAL_CONTENT_URI),
+                            CODE_REQUEST_IMAGE_SOURCE_IS_BACKGROUND);
+                } else {
+                    Toast.makeText(getActivity(),"You can only edit card that you have created it.",Toast.LENGTH_LONG).show();
+                }
             }
         });
     }
@@ -875,17 +873,23 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnKeyboa
         });
 
 
-        mChangeTemplateImage.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (mIsQuestionShowing) {
-                    questionQuickAction.show(mChangeTemplateImage);
-                } else {
-                    answerQuickAction.show(mChangeTemplateImage);
-                }
+        if (mChangeTemplateImage != null) {
+            mChangeTemplateImage.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if (isEditableMode()) {
+                        if (mIsQuestionShowing) {
+                            questionQuickAction.show(mChangeTemplateImage);
+                        } else {
+                            answerQuickAction.show(mChangeTemplateImage);
+                        }
+                    } else {
+                        Toast.makeText(getActivity(),"You can only edit card that you have created it.",Toast.LENGTH_LONG).show();
+                    }
 
-            }
-        });
+                }
+            });
+        }
 
 
 
@@ -1069,9 +1073,16 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnKeyboa
         mSub2 = (FCCEditText) mContentView.findViewById(R.id.sub2);
         mImage2 = (ImageView) mContentView.findViewById(R.id.image2);
 
-        mChangeTemplateImage = (ImageView) mContentView.findViewById(R.id.change_template_button);
-        mChangeBackgroundImage = (ImageView) mContentView.findViewById(R.id.change_background_button);
-        mPlayRecordImage = (ImageView) mContentView.findViewById(R.id.play_record_button);
+        if (mIsPlayingCard) {
+
+        } else {
+            mChangeTemplateImage = (ImageView) mContentView.findViewById(R.id.change_template_button);
+            mChangeBackgroundImage = (ImageView) mContentView.findViewById(R.id.change_background_button);
+            mPlayRecordImage = (ImageView) mContentView.findViewById(R.id.play_record_button);
+            mFunctionAreaLayout = (LinearLayout) mContentView.findViewById(R.id.functionarea);
+        }
+
+
         mLogoImage = (ImageView) mContentView.findViewById(R.id.logo_image);
         mLogoURLImage = (ImageView) mContentView.findViewById(R.id.logo_url_btn);
 
@@ -1080,6 +1091,7 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnKeyboa
             mQuestionRadioButton = (RadioButton) mContentView.findViewById(R.id.radio_segment_question);
             mAnswerRadioButton = (RadioButton) mContentView.findViewById(R.id.radio_segment_answer);
             mRadioGroup = (RadioGroup) mContentView.findViewById(R.id.radio_segment);
+
         }
 
 
@@ -1600,8 +1612,6 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnKeyboa
 
     private void enableCardEditable() {
         mLogoURLImage.setVisibility(View.VISIBLE);
-        mChangeTemplateImage.setVisibility(View.VISIBLE);
-        mChangeBackgroundImage.setVisibility(View.VISIBLE);
 
         mTitle.setEnabled(true);
         mSidebarTitle.setEnabled(true);
@@ -1628,8 +1638,6 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnKeyboa
     private void disableCardEditable() {
 
         mLogoURLImage.setVisibility(View.INVISIBLE);
-        mChangeTemplateImage.setVisibility(View.INVISIBLE);
-        mChangeBackgroundImage.setVisibility(View.INVISIBLE);
 
         mTitle.setEnabled(false);
         mSidebarTitle.setEnabled(false);

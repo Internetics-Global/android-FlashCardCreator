@@ -16,13 +16,13 @@
     <item
             android:id="@+id/actionbar_add_pack"
             android:icon="@drawable/actionbar_add_pack_button"
-            android:title="@string/actionbar_item_add" android:showAsAction="always|withText">
+            android:title="@string/actionbar_item_add" android:showAsAction="always">
     </item>
 
     <item
             android:id="@+id/actionbar_play"
             android:icon="@drawable/actionbar_play_button"
-            android:title="@string/actionbar_item_play" android:showAsAction="always|withText">
+            android:title="@string/actionbar_item_play" android:showAsAction="always">
     </item>
 
     <item

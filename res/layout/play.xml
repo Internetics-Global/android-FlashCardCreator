@@ -25,4 +25,14 @@
             android:layout_height="fill_parent" />
 
 
+    <ImageView
+        android:id="@+id/play_record_button"
+        android:layout_marginBottom="5dp"
+        android:layout_marginRight="5dp"
+        android:layout_height= "24dp"
+        android:layout_width="24dp"
+        android:layout_gravity="right|bottom"
+        android:src="@drawable/play_record_button"/>
+
+
 </FrameLayout>

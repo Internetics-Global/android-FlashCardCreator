@@ -71,15 +71,6 @@ public class VGViewPager extends ViewPager {
             return false;
         }
 
-        ImageView recordPlayImageView = (ImageView)findViewById(R.id.play_record_button);
-        recordPlayImageView.getHitRect(outRect);
-        outRect.offset(marginValLeft,marginValTop);
-        if (outRect.contains(x, y)) {
-            Boolean bool = recordPlayImageView.isEnabled();
-            Log.d(Global.debugTag, "touch location in recordPlayImageView " + bool);
-            return false;
-        }
-
 
         LinearLayout creatorLayout = (LinearLayout) findViewById(R.id.creator_layout);
         creatorLayout.getHitRect(outRect);

@@ -8,9 +8,14 @@ import android.support.v4.app.*;
 import android.support.v4.view.ViewPager;
 import android.util.Log;
 import android.view.*;
+import android.widget.ImageView;
+import android.widget.Toast;
+
 import com.internectics.data.Card;
 import com.internectics.data.Pack;
 import com.internectics.fragment.CardDetailFragment;
+import com.internectics.helper.AudioHelper;
+import com.internectics.helper.FileOperationHelper;
 import com.internectics.model.CardListModel;
 import com.internectics.util.AppConfig;
 import com.internectics.util.Global;
@@ -41,6 +46,8 @@ public class PlayActivity extends FragmentActivity implements SensorEventListene
 
     private boolean mIsScrollStop = true;
 
+    private ImageView mPlayRecordImage;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -52,6 +59,31 @@ public class PlayActivity extends FragmentActivity implements SensorEventListene
 
         setContentView(R.layout.play);
         getActionBar().hide();
+
+        mPlayRecordImage = (ImageView) findViewById(R.id.play_record_button);
+        mPlayRecordImage.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                CardDetailFragment cardDetailFragment = (CardDetailFragment) (mFragments.get(mPosition));
+
+
+
+                String targetStr;
+                if (cardDetailFragment.mIsQuestionShowing) {
+                    targetStr = cardDetailFragment.mCurrentCard.question.audioUriFormatStr;
+                } else {
+                    targetStr = cardDetailFragment.mCurrentCard.answer.audioUriFormatStr;
+                }
+
+                if (targetStr.length() >0) {
+                    AudioHelper.playAudio(FileOperationHelper.deleteUriSchemeHeader(targetStr));
+                } else {
+                    Toast.makeText(PlayActivity.this,"Not available audio file", Toast.LENGTH_LONG).show();
+                }
+            }
+        });
+
 
         mFragments = getFragments();
         FCCPageAdapter pageAdapter = new FCCPageAdapter(getSupportFragmentManager(), mFragments);
@@ -112,6 +144,12 @@ public class PlayActivity extends FragmentActivity implements SensorEventListene
                     Log.i(Global.debugTag, "onPageScrolled, page index=" + i + " .mPosition=" + mPosition);
 
                     ((CardDetailFragment) (mFragments.get(i))).switchToQuestionView(false);
+
+                    //hide or show play recorded voice
+                    String soundFile = ((CardDetailFragment) (mFragments.get(i))).mCurrentCard.question.audioUriFormatStr;
+                    if (soundFile.length() == 0) {
+                        mPlayRecordImage.setVisibility(View.INVISIBLE);
+                    }
 
                     //Restore previous card to question view
                     ((CardDetailFragment) (mFragments.get(mPosition))).switchToQuestionView(false);

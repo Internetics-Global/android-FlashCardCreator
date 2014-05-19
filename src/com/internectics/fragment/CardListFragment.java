@@ -251,7 +251,7 @@ public class CardListFragment extends Fragment {
 
             //highlight clor
             if (selectedPosition == position) {
-                background.setBackgroundColor(Color.rgb(47, 102, 167));
+                background.setBackgroundColor(Color.rgb(67, 67, 67));
                 coverImageMask.setImageDrawable(getResources().getDrawable(R.drawable.card_cover_image_mask_blue));
             } else {
                 background.setBackgroundColor(Color.TRANSPARENT);
