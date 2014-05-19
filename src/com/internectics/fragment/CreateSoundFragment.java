@@ -81,7 +81,7 @@ public class CreateSoundFragment extends DialogFragment {
                     mPlayButton.setEnabled(true);
                     mSaveButton.setVisibility(View.VISIBLE);
                     mPlayButton.setVisibility(View.VISIBLE);
-                    mDescriptionTextView.setText("When you click Start you will have 10 seconds in which to record your alarm. You can then Play it back for review or Save it for use in the app.");
+                    mDescriptionTextView.setText("When you click Start you will have five seconds in which to record your alarm. You can then Play it back for review or Save it for use in the app.");
 
                     try {
                         Thread.sleep(200);
@@ -226,7 +226,7 @@ public class CreateSoundFragment extends DialogFragment {
             mPlayButton.setEnabled(true);
             mSaveButton.setVisibility(View.VISIBLE);
             mPlayButton.setVisibility(View.VISIBLE);
-            mDescriptionTextView.setText("When you click Start you will have 10 seconds in which to record your alarm. You can then Play it back for review or Save it for use in the app.");
+            mDescriptionTextView.setText("When you click Start you will have five seconds in which to record your alarm. You can then Play it back for review or Save it for use in the app.");
 
             if (mRecordStatus == Record_Status.Record_Status_Recording) {
                 AudioHelper.stopRecord();

@@ -32,7 +32,7 @@
         android:layout_height= "24dp"
         android:layout_width="24dp"
         android:layout_gravity="right|bottom"
-        android:src="@drawable/play_record_button"/>
+        android:src="@drawable/play_recorded_sound_button"/>
 
 
 </FrameLayout>

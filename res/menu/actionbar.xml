@@ -15,13 +15,13 @@
     </item>
     <item
             android:id="@+id/actionbar_add_pack"
-            android:icon="@drawable/actionbar_add_pack_button"
+            android:icon="@drawable/add_pack_button"
             android:title="@string/actionbar_item_add" android:showAsAction="always">
     </item>
 
     <item
             android:id="@+id/actionbar_play"
-            android:icon="@drawable/actionbar_play_button"
+            android:icon="@drawable/play_button"
             android:title="@string/actionbar_item_play" android:showAsAction="always">
     </item>
 
@@ -33,18 +33,18 @@
 
     <item
             android:id="@+id/actionbar_help"
-            android:icon="@drawable/actionbar_helping_button"
+            android:icon="@drawable/helping_button"
             android:title="@string/actionbar_item_help" android:showAsAction="ifRoom">
     </item>
 
     <item
             android:id="@+id/actionbar_more"
-            android:icon="@drawable/actionbar_more_button"
+            android:icon="@drawable/setting_button"
             android:title="@string/actionbar_item_more" android:showAsAction="ifRoom">
     </item>
 
     <item
-            android:icon="@drawable/actionbar_share_button"
+            android:icon="@drawable/share_button"
             android:title="@string/actionbar_item_share" android:showAsAction="always">
 
         <menu>

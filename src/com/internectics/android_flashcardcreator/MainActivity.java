@@ -186,6 +186,10 @@ public class MainActivity extends FragmentActivity implements
             }
             case R.id.actionbar_edit:
 
+                if (mCurrentPack == null) {
+                    break;
+                }
+
                 if (!mCurrentPack.creatorID.equals(OpenUDID_manager.getOpenUDID())) {
                     Toast.makeText(this, "You can only make changes to cards you have created yourself", Toast.LENGTH_LONG).show();
 

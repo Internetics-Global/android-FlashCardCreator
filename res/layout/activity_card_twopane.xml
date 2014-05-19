@@ -41,8 +41,8 @@
 
                 <Button
                         android:id="@+id/add_card_button"
-                        android:layout_width= "@dimen/add_card_button_size"
-                        android:layout_height= "@dimen/add_card_button_size"
+                        android:layout_width= "40dp"
+                        android:layout_height= "40dp"
                         android:layout_gravity="center"
                         android:background="@drawable/selector_add_card"/>
 
