@@ -33,6 +33,7 @@ import com.internectics.helper.AudioHelper;
 import com.internectics.helper.FileOperationHelper;
 import com.internectics.helper.PackRecordHelper;
 import com.internectics.helper.SymbolHelper;
+import com.internectics.model.CardListModel;
 import com.internectics.util.*;
 
 import net.londatiga.android.ActionItem;
@@ -292,22 +293,14 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnKeyboa
         mVtoSub.removeGlobalOnLayoutListener(mVtoSubListener);
         mVtoSub2.removeGlobalOnLayoutListener(mVtoSub2Listener);
 
-        new Thread()
-        {
-            @Override
-            public void run() {
-                //when non-edible mode, we need to save it after triggerResizeTextToFitFrame
-                //it's a little strange to put this logic in onStop, but that's it.
-                if (((mCurrentPack.creatorID.equals(OpenUDID_manager.getOpenUDID())) == false) && (mIsSaveNeededAfterResize)) {
-                    mIsSaveNeededAfterResize = false;
+        //当当前card移除时，比如进入下一卡片，如果进行过resize操作，则保存一下
+        if (((mCurrentPack.creatorID.equals(OpenUDID_manager.getOpenUDID())) == false) && (mIsSaveNeededAfterResize)) {
+            mIsSaveNeededAfterResize = false;
+            //prepareToSavingTextFontSizeInfo,由于resize后，会主动执行一下，所以这里没有必要了
+            mCurrentCard.save(AppContext.getAppContext());
+            Log.d(Global.debugTag2, "Saving to database after triggerResizeTextToFitFrame in onStop");
+        }
 
-                    prepareToSavingTextFontSizeInfo();
-
-                    mCurrentCard.save(AppContext.getAppContext());
-                    Log.d(Global.debugTag2, "Saving to database after triggerResizeTextToFitFrame in onStop");
-                }
-            }
-        }.start();
 
     }
 
@@ -937,6 +930,7 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnKeyboa
      *打开录制声音的view
      */
     private void showCreateSoundView() {
+
         CreateSoundFragment dialogFragment = new CreateSoundFragment();
         dialogFragment.mCurrentCard = mCurrentCard;
         dialogFragment.mCurrentPack = mCurrentPack;
@@ -985,7 +979,6 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnKeyboa
             prepareToSavingTextFontSizeInfo(); // do this before reset mIsQuestionShowing
         }
 
-
         if (mIsQuestionShowing) {
             switchToAnswerView(false);
             mIsQuestionShowing = false;
@@ -997,6 +990,8 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnKeyboa
         if (mIsPlayingCard) {
             disableCardEditable();
         }
+
+
     }
 
     /**
@@ -1143,71 +1138,99 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnKeyboa
 
     private void triggerResizeTextToFitFrame(final EditText v) {
 
-        if (v.getText().length() == 0) {
-            return;
-        }
+        synchronized (v) {
+            if (v.getText().length() == 0) {
+                return;
+            }
 
-        int noOfLines = v.getLineCount(); //this is very important, when setTextSize execute, getLineCount could possibly be zero
-        int textHeight = noOfLines * v.getLineHeight();
-        int viewHeight = v.getHeight();
-        int lineHeight = v.getLineHeight();
-        if ((textHeight > viewHeight) && (viewHeight > 1) && (noOfLines > 0)) {
+            int noOfLines = v.getLineCount(); //this is very important, when setTextSize execute, getLineCount could possibly be zero
+            int textHeight = noOfLines * v.getLineHeight();
+            int viewHeight = v.getHeight();
+            int lineHeight = v.getLineHeight();
+            if ((textHeight > viewHeight) && (viewHeight > 1) && (noOfLines > 0)) {
 
-            int cursorPosition = v.getSelectionStart();
+                int cursorPosition = v.getSelectionStart();
 
-            if ((mCurrentPack.creatorID.equals(OpenUDID_manager.getOpenUDID())) == false) {
-                // resize action
-                float textSize = v.getTextSize();
-                float newTextSize = 0;
+                if ((mCurrentPack.creatorID.equals(OpenUDID_manager.getOpenUDID())) == false) {
+                    // resize action
+                    float textSize = v.getTextSize();
+                    float newTextSize = 0;
 
-                if (textSize >200) {
-                    newTextSize =  v.getTextSize() - 30;
-                    v.setTextSize(TypedValue.COMPLEX_UNIT_PX,newTextSize);
+                    if (textSize >200) {
+                        newTextSize =  v.getTextSize() - 30;
+                        v.setTextSize(TypedValue.COMPLEX_UNIT_PX,newTextSize);
 
-                } else if ((textSize >100) && (textSize <= 200)){
-                    newTextSize =  v.getTextSize() - 20;
-                    v.setTextSize(TypedValue.COMPLEX_UNIT_PX,newTextSize);
-                } else if ((textSize >50) && (textSize <= 100)) {
-                    newTextSize =  v.getTextSize() - 5;
-                    v.setTextSize(TypedValue.COMPLEX_UNIT_PX,newTextSize);
-                } else if ((textSize >30) && (textSize <= 50)) {
-                    newTextSize =  v.getTextSize() - 2;
-                    v.setTextSize(TypedValue.COMPLEX_UNIT_PX,newTextSize);
-                } else if (textSize <= 30) {
-                    newTextSize =  v.getTextSize() - 1;
-                    v.setTextSize(TypedValue.COMPLEX_UNIT_PX,newTextSize);
+                    } else if ((textSize >100) && (textSize <= 200)){
+                        newTextSize =  v.getTextSize() - 20;
+                        v.setTextSize(TypedValue.COMPLEX_UNIT_PX,newTextSize);
+                    } else if ((textSize >50) && (textSize <= 100)) {
+                        newTextSize =  v.getTextSize() - 5;
+                        v.setTextSize(TypedValue.COMPLEX_UNIT_PX,newTextSize);
+                    } else if ((textSize >30) && (textSize <= 50)) {
+                        newTextSize =  v.getTextSize() - 2;
+                        v.setTextSize(TypedValue.COMPLEX_UNIT_PX,newTextSize);
+                    } else if (textSize <= 30) {
+                        newTextSize =  v.getTextSize() - 1;
+                        v.setTextSize(TypedValue.COMPLEX_UNIT_PX,newTextSize);
+                    } else {
+                        newTextSize =  v.getTextSize();
+                    }
+
+                    Log.d(Global.debugTag2, "Reading to resize" + v.getText().toString());
+
+                    mIsSaveNeededAfterResize = true;
+
+
                 } else {
-                    newTextSize =  v.getTextSize();
-                }
 
-                mIsSaveNeededAfterResize = true;
+                    if (textHeight < viewHeight + lineHeight) {
+                        //we only do this during editable mode
+                        String text = v.getText().toString();
+                        int index = text.length() - 1;
+                        Log.d(Global.debugTag, text + index);
+                        if (index > 0) {
+                            v.setText(text.substring(0, index));
+                            if (cursorPosition == index + 1) {
+                                v.setSelection(index);
+                            } else {
+                                v.setSelection(cursorPosition);
+                            }
+                        }
+                    }
+                }
 
 
             } else {
 
-                if (textHeight < viewHeight + lineHeight) {
-                    //we only do this during editable mode
-                    String text = v.getText().toString();
-                    int index = text.length() - 1;
-                    Log.d(Global.debugTag, text + index);
-                    if (index > 0) {
-                        v.setText(text.substring(0, index));
-                        if (cursorPosition == index + 1) {
-                            v.setSelection(index);
-                        } else {
-                            v.setSelection(cursorPosition);
-                        }
-                    }
+                //恢复可见性
+                v.setVisibility(View.VISIBLE);
+
+                if (((mCurrentPack.creatorID.equals(OpenUDID_manager.getOpenUDID())) == false) && (mIsSaveNeededAfterResize)) {
+                    //mIsSaveNeededAfterResize = false;，不能置false，因为我们在onstop时需要写入数据库
+
+                    prepareToSavingTextFontSizeInfo();
+
+                    Log.d(Global.debugTag2, "keep data after triggerResizeTextToFitFrame in onStop.CardSN=" + mCurrentCard.cardSN);
                 }
+
+
             }
-
-
         }
 
     }
 
 
     private void setEditTextListener() {
+
+        Log.d(Global.debugTag, "setEditTextListener in CardDetailFragment is called, cardSN=" + mCurrentCard.cardSN);
+
+        //由于需要字体自适应，自适应的过程会在界面显示出（字体变大或变小），这种体验不好，所以先hide
+        mMain.setVisibility(View.INVISIBLE);
+        mMain2.setVisibility(View.INVISIBLE);
+        mSubheading.setVisibility(View.INVISIBLE);
+        mSubheading2.setVisibility(View.INVISIBLE);
+        mSub.setVisibility(View.INVISIBLE);
+        mSub2.setVisibility(View.INVISIBLE);
 
         if (mIsPlayingCard == false) {
             mSidebarTitle.setOnEditorActionListener(new TextView.OnEditorActionListener() {

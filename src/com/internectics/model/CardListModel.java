@@ -94,6 +94,28 @@ public class CardListModel {
         return returnPack;
     }
 
+    public static Card updateCurrentCard(Card currentCard) {
+        Card returnCard = null;
+        ArrayList<Pack> packs = User.defaultUser(AppContext.getAppContext()).packs;
+
+        for (int i = 0; i < packs.size(); i++) {
+
+            Pack pack = packs.get(i);
+
+            for (int j = 0; j < pack.cards.size(); j++) {
+              Card card =  pack.cards.get(j);
+              if (card.cardID == currentCard.cardID) {
+                  returnCard = card;
+                  return returnCard;
+              }
+            }
+
+
+        }
+
+        return returnCard;
+    }
+
     public static Pack getPack(int packID) {
         Pack returnPack = null;
         ArrayList<Pack> packs = User.defaultUser(AppContext.getAppContext()).packs;
