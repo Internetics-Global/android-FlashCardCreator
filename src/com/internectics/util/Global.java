@@ -68,7 +68,7 @@ public class Global {
 
     //ratio of height and width;
     public static double   widthOfCardInEditMode = 0;
-    public static double   scaleInPlayMode = 1; //scale in play mode compared with in edit mode
+    public static float   scaleInPlayMode = 1; //scale in play mode compared with in edit mode
 
 
     /**

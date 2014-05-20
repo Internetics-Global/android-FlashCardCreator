@@ -123,10 +123,10 @@ public class PlayActivity extends FragmentActivity implements SensorEventListene
             marginHorizontal = (screenWidth - widthOfCard)/2;
         }
 
-        Global.scaleInPlayMode = widthOfCard/Global.widthOfCardInEditMode;
+        Global.scaleInPlayMode = (float)(widthOfCard/Global.widthOfCardInEditMode);
         if ((Global.scaleInPlayMode >2) || (Global.scaleInPlayMode <0.5)) {
             Log.e(Global.debugTag,"the value of scaleInPlayMode is out of normal value");
-            Global.scaleInPlayMode = 1.2; //default value
+            Global.scaleInPlayMode = (float)1.2; //default value
         }
 
         marginLayoutParams.leftMargin = (int)marginHorizontal;
@@ -393,7 +393,7 @@ public class PlayActivity extends FragmentActivity implements SensorEventListene
         Log.d(Global.debugTag3, "OnFlying");
 
         if ((e1 == null) || (e2 == null)) {
-            Log.d(Global.debugTag3, "MotionEvente1 or/and e2 is null");
+            Log.d(Global.debugTag3, "e1 or e2 is null");
           return true;
         }
 

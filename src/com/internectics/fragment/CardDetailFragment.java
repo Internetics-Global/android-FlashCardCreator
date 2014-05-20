@@ -2401,16 +2401,16 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnKeyboa
         mSub.setGravity(StringUtils.convertGravityStringToInt(mCurrentCard.question.css.subAlign) | Gravity.TOP);
 
         //step2: size
-        double scaleVal;
+        float scaleVal;
         if (mIsPlayingCard) {
           scaleVal = Global.scaleInPlayMode;
         } else {
-            scaleVal = 1.0;
+            scaleVal = (float)1.0;
         }
 
-        mSubheading.setTextSize((int)(mCurrentCard.question.css.subheadingSize *scaleVal));
-        mMain.setTextSize((int)(mCurrentCard.question.css.mainSize *scaleVal));
-        mSub.setTextSize((int)(mCurrentCard.question.css.subSize * scaleVal));
+        mSubheading.setTextSize((mCurrentCard.question.css.subheadingSize *scaleVal));
+        mMain.setTextSize((mCurrentCard.question.css.mainSize *scaleVal));
+        mSub.setTextSize((mCurrentCard.question.css.subSize * scaleVal));
 
         //step3: color
         mSubheading.setTextColor(StringUtils.convertColorStringToInt(mCurrentCard.question.css.subheadingColor));
@@ -2423,9 +2423,9 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnKeyboa
         mSub2.setGravity(StringUtils.convertGravityStringToInt(mCurrentCard.question.css.subAlign) | Gravity.TOP);
 
         //step2: size
-        mSubheading2.setTextSize((int)(mCurrentCard.question.css.subheadingSize *scaleVal));
-        mMain2.setTextSize((int)(mCurrentCard.question.css.mainSize *scaleVal));
-        mSub2.setTextSize((int)(mCurrentCard.question.css.subSize *scaleVal));
+        mSubheading2.setTextSize((mCurrentCard.question.css.subheadingSize *scaleVal));
+        mMain2.setTextSize((mCurrentCard.question.css.mainSize *scaleVal));
+        mSub2.setTextSize((mCurrentCard.question.css.subSize *scaleVal));
 
         //step3: color
         mSubheading2.setTextColor(StringUtils.convertColorStringToInt(mCurrentCard.question.css.subheadingColor));
@@ -2442,11 +2442,11 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnKeyboa
 
     private void updateAnswerCSS() {
 
-        double scaleVal;
+        float scaleVal;
         if (mIsPlayingCard) {
             scaleVal = Global.scaleInPlayMode;
         } else {
-            scaleVal = 1.0;
+            scaleVal = (float)1.0;
         }
 
         mTitle.setTextColor(Color.RED);
@@ -2457,9 +2457,9 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnKeyboa
         mSub.setGravity(StringUtils.convertGravityStringToInt(mCurrentCard.answer.css.subAlign) | Gravity.TOP);
 
         //step2: size
-        mSubheading.setTextSize((int)(mCurrentCard.answer.css.subheadingSize *scaleVal));
-        mMain.setTextSize((int)(mCurrentCard.answer.css.mainSize *scaleVal));
-        mSub.setTextSize((int)(mCurrentCard.answer.css.subSize *scaleVal));
+        mSubheading.setTextSize((mCurrentCard.answer.css.subheadingSize *scaleVal));
+        mMain.setTextSize((mCurrentCard.answer.css.mainSize *scaleVal));
+        mSub.setTextSize((mCurrentCard.answer.css.subSize *scaleVal));
 
         //step3: color
         mSubheading.setTextColor(StringUtils.convertColorStringToInt(mCurrentCard.answer.css.subheadingColor));
@@ -2472,9 +2472,9 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnKeyboa
         mSub2.setGravity(StringUtils.convertGravityStringToInt(mCurrentCard.answer.css.subAlign) | Gravity.TOP);
 
         //step2: size
-        mSubheading2.setTextSize((int)(mCurrentCard.answer.css.subheadingSize *scaleVal));
-        mMain2.setTextSize((int)(mCurrentCard.answer.css.mainSize *scaleVal));
-        mSub2.setTextSize((int)(mCurrentCard.answer.css.subSize *scaleVal));
+        mSubheading2.setTextSize((mCurrentCard.answer.css.subheadingSize *scaleVal));
+        mMain2.setTextSize((mCurrentCard.answer.css.mainSize *scaleVal));
+        mSub2.setTextSize((mCurrentCard.answer.css.subSize *scaleVal));
 
         //step3: color
         mSubheading2.setTextColor(StringUtils.convertColorStringToInt(mCurrentCard.answer.css.subheadingColor));

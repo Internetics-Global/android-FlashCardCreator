@@ -35,10 +35,10 @@ public class UIHelper {
         return px;
     }
 
-    public static int pixelsToSp(Float px) {
+    public static float pixelsToSp(float px) {
         Resources r = AppContext.getAppContext().getResources();
         float scaledDensity = r.getDisplayMetrics().scaledDensity;
-        return (int)(px/scaledDensity);
+        return (px/scaledDensity);
     }
 
 
