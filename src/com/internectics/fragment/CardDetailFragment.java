@@ -98,6 +98,9 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnKeyboa
 
     private static int mSemaphore = 0; //used to indicate all snapshots are done
 
+    //切换过程中
+    private boolean mIsSwitchingQuestionAnswerView = false;
+
     //用于
     // 1. onStop时，是否需要进行写入到数据库；
     // 2. resize完毕后，是否需要暂存prepareToSavingTextFontSizeInfo
@@ -1003,6 +1006,7 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnKeyboa
      * @param excludeTitle,mTitle will trigger takeSnapAll function is it is set
      */
     public void switchToQuestionView(boolean excludeTitle) {
+        mIsSwitchingQuestionAnswerView = true;
         mIsQuestionShowing = true;
         if (!excludeTitle) {
             mTitle.setText(mCurrentPack.questionTitle);
@@ -1019,6 +1023,8 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnKeyboa
                 mImage2.setVisibility(View.INVISIBLE);
             }
         }
+
+        mIsSwitchingQuestionAnswerView = false;
     }
 
 
@@ -1026,6 +1032,8 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnKeyboa
      * @param excludeTitle,mTitle will trigger takeSnapAll function is it is set
      */
     private void switchToAnswerView(boolean excludeTitle) {
+
+        mIsSwitchingQuestionAnswerView = true;
         mIsQuestionShowing = false;
         if (!excludeTitle) {
             mTitle.setText(mCurrentPack.answerTitle);
@@ -1042,6 +1050,8 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnKeyboa
                 mImage2.setVisibility(View.INVISIBLE);
             }
         }
+
+        mIsSwitchingQuestionAnswerView = false;
     }
 
 
@@ -1209,7 +1219,11 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnKeyboa
                 //恢复可见性
                 v.setVisibility(View.VISIBLE);
 
-                if (((mCurrentPack.creatorID.equals(OpenUDID_manager.getOpenUDID())) == false) && (mIsSaveNeededAfterResize)) {
+                //仅在如下情况起作用：
+                //1. read only
+                //2. mIsSaveNeededAfterResize
+                //3. 不再question/answer切换中
+                if (((mCurrentPack.creatorID.equals(OpenUDID_manager.getOpenUDID())) == false) && (mIsSaveNeededAfterResize) && (mIsSwitchingQuestionAnswerView == false)) {
                     //mIsSaveNeededAfterResize = false;，不能置false，因为我们在onstop时需要写入数据库
 
                     prepareToSavingTextFontSizeInfo();
@@ -2700,7 +2714,9 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnKeyboa
      */
     @Override
     public void onKeyboardClose(EditText editText) {
-        ((MainActivity) getActivity()).removeCSSToolbar();
+        if (mIsPlayingCard == false) {
+            ((MainActivity) getActivity()).removeCSSToolbar();
+        }
     }
 
 
