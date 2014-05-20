@@ -56,14 +56,28 @@ public class PackParserHelper {
             newFile = FileOperationHelper.copyImageVideoToImagesFolder(getCardImageFullPath(resultCard.question.backgroundImageUriFormatStr, i));
             resultCard.question.backgroundImageUriFormatStr = FileOperationHelper.convertToUriFormatFile(newFile);
 
-            newFile = FileOperationHelper.copyImageVideoToImagesFolder(getCardImageFullPath(resultCard.question.movieUriFormatStr, i));
-            resultCard.question.movieUriFormatStr = FileOperationHelper.convertToUriFormatFile(newFile);
+            if (resultCard.question.movieUriFormatStr.contains("http")) {
+                //do nothing
+            } else if ((resultCard.question.movieUriFormatStr == null) || (resultCard.question.movieUriFormatStr.length() == 0)) {
+                resultCard.question.movieUriFormatStr = "";
+
+            } else {
+                newFile = FileOperationHelper.copyImageVideoToImagesFolder(getCardImageFullPath(resultCard.question.movieUriFormatStr, i));
+                resultCard.question.movieUriFormatStr = FileOperationHelper.convertToUriFormatFile(newFile);
+            }
 
             newFile = FileOperationHelper.copyImageVideoToImagesFolder(getCardImageFullPath(resultCard.answer.backgroundImageUriFormatStr, i));
             resultCard.answer.backgroundImageUriFormatStr = FileOperationHelper.convertToUriFormatFile(newFile);
 
-            newFile = FileOperationHelper.copyImageVideoToImagesFolder(getCardImageFullPath(resultCard.answer.movieUriFormatStr, i));
-            resultCard.answer.movieUriFormatStr = FileOperationHelper.convertToUriFormatFile(newFile);
+            if (resultCard.answer.movieUriFormatStr.contains("http")) {
+                //do nothing
+            } else if ((resultCard.answer.movieUriFormatStr == null) || (resultCard.answer.movieUriFormatStr.length() == 0)) {
+                resultCard.answer.movieUriFormatStr = "";
+
+            } else {
+                newFile = FileOperationHelper.copyImageVideoToImagesFolder(getCardImageFullPath(resultCard.answer.movieUriFormatStr, i));
+                resultCard.answer.movieUriFormatStr = FileOperationHelper.convertToUriFormatFile(newFile);
+            }
 
             resultCard.packID = resultPack.packID; //this is necessary
 
