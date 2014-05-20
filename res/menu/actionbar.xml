@@ -27,7 +27,7 @@
 
     <item
             android:id="@+id/actionbar_change_template_color"
-            android:icon="@drawable/actionbar_change_template_button"
+            android:icon="@drawable/template_background_change_button"
             android:title="@string/actionbar_item_change" android:showAsAction="ifRoom">
     </item>
 
