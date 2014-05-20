@@ -392,6 +392,11 @@ public class PlayActivity extends FragmentActivity implements SensorEventListene
 
         Log.d(Global.debugTag3, "OnFlying");
 
+        if ((e1 == null) || (e2 == null)) {
+            Log.d(Global.debugTag3, "MotionEvente1 or/and e2 is null");
+          return true;
+        }
+
         final float xDistance = Math.abs(e1.getX() - e2.getX());
 
         final float yDistance = Math.abs(e1.getY() - e2.getY());
