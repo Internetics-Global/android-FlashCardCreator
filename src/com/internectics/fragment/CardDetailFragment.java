@@ -49,8 +49,8 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnKeyboa
     public View mContentView;
 
 
-    private LinearLayout mContentBodyType1;  //第一种布局 （这是同ios非常不同的一点）
-    private LinearLayout mContentBodyType2;  //第二种布局  （这是同ios非常不同的一点）
+    private LinearLayout mContentBodyType1;  //第一种布局 （这是同ios非常不同的一点），通过此对象，控制subheading,main,sub的显示与否，而不用每个单独控制
+    private LinearLayout mContentBodyType2;  //第二种布局  （这是同ios非常不同的一点），通过此对象，控制subheading,main,sub的显示与否，而不用每个单独控制
 
     private LinearLayout mContentBodyLeft;
     private FCCEditText mSidebarTitle;
@@ -98,8 +98,12 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnKeyboa
 
     private static int mSemaphore = 0; //used to indicate all snapshots are done
 
+    //用于
+    // 1. onStop时，是否需要进行写入到数据库；
+    // 2. resize完毕后，是否需要暂存prepareToSavingTextFontSizeInfo
     private static boolean mIsSaveNeededAfterResize = false;
 
+    //用于autoresize 逻辑
     private ViewTreeObserver mVtoSubheading;
     private ViewTreeObserver mVtoSubheading2;
     private ViewTreeObserver mVtoMain;
@@ -1069,7 +1073,7 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnKeyboa
         mImage2 = (ImageView) mContentView.findViewById(R.id.image2);
 
         if (mIsPlayingCard) {
-
+            //在play mode中，我们只有play sound button，且独立
         } else {
             mChangeTemplateImage = (ImageView) mContentView.findViewById(R.id.change_template_button);
             mChangeBackgroundImage = (ImageView) mContentView.findViewById(R.id.change_background_button);
