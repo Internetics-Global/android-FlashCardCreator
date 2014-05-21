@@ -92,7 +92,7 @@ public class CreateSoundFragment extends DialogFragment {
                     AudioHelper.stopRecord();
                     AudioHelper.releaseRecord();
                     mRecordStatus = Record_Status.Record_Status_Normal;
-                    mRecordButton.setText("Record Now");
+                    mRecordButton.setText("Record");
                 }
             }
         });
@@ -231,7 +231,7 @@ public class CreateSoundFragment extends DialogFragment {
             if (mRecordStatus == Record_Status.Record_Status_Recording) {
                 AudioHelper.stopRecord();
                 AudioHelper.releaseRecord();
-                mRecordButton.setText("Record Now");
+                mRecordButton.setText("Record");
             }
 
             mRecordStatus = Record_Status.Record_Status_Normal;
