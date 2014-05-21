@@ -10,6 +10,7 @@
                   android:divider="?android:attr/dividerHorizontal"
                   android:orientation="horizontal"
                   android:showDividers="none"
+                  android:background="@drawable/w2048"
                   tools:context=".MainActivity">
 
         <FrameLayout
@@ -17,7 +18,7 @@
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
-                android:background="@android:color/black">
+                android:background="@null">
 
             <fragment
                     android:id="@+id/fragment_card_list"
@@ -34,6 +35,7 @@
                 <Button
                         android:enabled="false"
                         android:layout_height="match_parent"
+                        android:visibility="invisible"
                         android:layout_width="match_parent"
                         android:background="@drawable/image_add_card_button_bg">
 
@@ -104,7 +106,7 @@
                 android:id="@+id/detail"
                 android:layout_height="match_parent"
                 android:layout_weight="3"
-                android:background="@color/card_detail_background">
+                android:background="@null">
 
             <FrameLayout
                     android:id="@+id/card_detail_container"
@@ -118,7 +120,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:visibility="invisible"
-                    android:background="#000000">
+                    android:background="@drawable/w1648">
 
             </FrameLayout>
 
@@ -133,7 +135,8 @@
             android:layout_gravity="bottom"
             android:layout_marginBottom="0dp"
             android:layout_width="match_parent"
-            android:layout_height="@dimen/symbol_box_height"/>
+            android:layout_height="@dimen/symbol_box_height"
+        tools:layout="@layout/fragment_symbol_box" />
 
 
 

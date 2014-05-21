@@ -623,15 +623,15 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnKeyboa
             public void onCheckedChanged(RadioGroup group, int checkedId) {
                 if (checkedId == mQuestionRadioButton.getId()) {
                     mQuestionRadioButton.setBackgroundResource(R.drawable.button_segment_selected);
-                    mQuestionRadioButton.setTextColor(Color.WHITE);
+                    mQuestionRadioButton.setTextColor(Color.BLACK);
                     mAnswerRadioButton.setBackgroundResource(R.drawable.button_segment_unselected);
-                    mAnswerRadioButton.setTextColor(Color.BLACK);
+                    mAnswerRadioButton.setTextColor(Color.WHITE);
                     switchToQuestionView(false);
                 } else {
                     mQuestionRadioButton.setBackgroundResource(R.drawable.button_segment_unselected);
-                    mQuestionRadioButton.setTextColor(Color.BLACK);
+                    mQuestionRadioButton.setTextColor(Color.WHITE);
                     mAnswerRadioButton.setBackgroundResource(R.drawable.button_segment_selected);
-                    mAnswerRadioButton.setTextColor(Color.WHITE);
+                    mAnswerRadioButton.setTextColor(Color.BLACK);
                     switchToAnswerView(false);
                 }
             }
@@ -841,6 +841,10 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnKeyboa
 
         final QuickAction questionQuickAction = new QuickAction(getActivity(), QuickAction.VERTICAL);
         final QuickAction answerQuickAction = new QuickAction(getActivity(), QuickAction.VERTICAL);
+
+//        questionQuickAction.setBackgroundDrawable(getResources().getDrawable(R.drawable.shape_darkgray_no_corner));
+//        answerQuickAction.setBackgroundDrawable(getResources().getDrawable(R.drawable.shape_darkgray_no_corner));
+
 
         questionQuickAction.addActionItem(questionActionItem0);
         questionQuickAction.addActionItem(questionActionItem1);

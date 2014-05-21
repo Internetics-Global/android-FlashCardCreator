@@ -23,6 +23,7 @@ public class MoreActivity extends PreferenceActivity {
 
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
 
+
         addPreferencesFromResource(R.xml.more);
 
         final CheckBoxPreference dropboxPreference = (CheckBoxPreference) findPreference("dropbox_preference");

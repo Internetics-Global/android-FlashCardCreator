@@ -95,7 +95,7 @@
                         android:imeOptions="actionDone"
                         android:layout_gravity="left"
                         android:paddingLeft="10dp"
-                        android:gravity="left|center_vertical"
+                        android:gravity="bottom|left"
                         android:textColor="#0910FF"
                         android:textSize="@dimen/title_text_size"/>
 
@@ -105,7 +105,8 @@
                         android:layout_width="0dp"
                         android:layout_gravity="center"
                         android:orientation="vertical"
-                        android:layout_weight="160">
+                        android:layout_weight="160"
+                        android:gravity="bottom">
                         <TextView
                             android:layout_height="0dp"
                             android:layout_gravity="bottom"
@@ -143,7 +144,7 @@
                         android:layout_weight="80"
                         android:layout_height="24dp"
                         android:layout_gravity="bottom"
-                        android:src="@drawable/button_edit_link"/>
+                        android:src="@drawable/edit_link_button"/>
 
                     <ImageView
                         android:id="@+id/logo_image"
@@ -358,6 +359,7 @@
 
     <FrameLayout
         android:id="@+id/card_mask"
+        android:visibility="gone"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="@drawable/mask_gray"

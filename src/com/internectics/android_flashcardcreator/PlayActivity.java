@@ -89,6 +89,9 @@ public class PlayActivity extends FragmentActivity implements SensorEventListene
         FCCPageAdapter pageAdapter = new FCCPageAdapter(getSupportFragmentManager(), mFragments);
         mPager = (VGViewPager) findViewById(R.id.viewpager);
 
+
+
+
         //used to get rid of interrupt during scroll
         View playMask = findViewById(R.id.play_mask);
         playMask.setOnTouchListener(new View.OnTouchListener() {
@@ -149,6 +152,8 @@ public class PlayActivity extends FragmentActivity implements SensorEventListene
                     String soundFile = ((CardDetailFragment) (mFragments.get(i))).mCurrentCard.question.audioUriFormatStr;
                     if (soundFile.length() == 0) {
                         mPlayRecordImage.setVisibility(View.INVISIBLE);
+                    } else {
+                        mPlayRecordImage.setVisibility(View.VISIBLE);
                     }
 
                     //Restore previous card to question view
@@ -177,6 +182,15 @@ public class PlayActivity extends FragmentActivity implements SensorEventListene
         mSensorManager = (SensorManager) getSystemService(Context.SENSOR_SERVICE);
 
         mGestureDetector = new GestureDetector(this);
+
+        //check first card to determine whether to hide play sound button
+        CardDetailFragment firstDetailFragment = ((CardDetailFragment) (mFragments.get(0)));
+        String soundFile = firstDetailFragment.mCurrentCard.question.audioUriFormatStr;
+        if (soundFile.length() == 0) {
+            mPlayRecordImage.setVisibility(View.INVISIBLE);
+        } else {
+            mPlayRecordImage.setVisibility(View.VISIBLE);
+        }
 
     }
 
@@ -339,11 +353,32 @@ public class PlayActivity extends FragmentActivity implements SensorEventListene
     }
 
 
+    private void switchQuestionAnswerView() {
+
+        CardDetailFragment targetDetailFragment = ((CardDetailFragment) (mFragments.get(mPosition)));
+
+        targetDetailFragment.switchQuestionAnswerView();
+
+        //hide or show play recorded voice
+        String soundFile;
+        if (targetDetailFragment.mIsQuestionShowing) {
+            soundFile = targetDetailFragment.mCurrentCard.question.audioUriFormatStr;
+        } else {
+            soundFile = targetDetailFragment.mCurrentCard.answer.audioUriFormatStr;
+        }
+        if (soundFile.length() == 0) {
+            mPlayRecordImage.setVisibility(View.INVISIBLE);
+        } else {
+            mPlayRecordImage.setVisibility(View.VISIBLE);
+        }
+    }
+
+
 
     @Override
     public boolean onSingleTapConfirmed(MotionEvent e) {
         Log.d(Global.debugTag3, "onSingleTapConfirmed");
-        ((CardDetailFragment) (mFragments.get(mPosition))).switchQuestionAnswerView();
+        switchQuestionAnswerView();
         return false;
     }
 
@@ -404,10 +439,10 @@ public class PlayActivity extends FragmentActivity implements SensorEventListene
         if (Math.abs(xDistance) < 100) {
             if (e1.getRawY() < e2.getRawY() - 30) {
                 Log.d(Global.debugTag, "Down swipe");
-                ((CardDetailFragment) (mFragments.get(mPosition))).switchQuestionAnswerView();
+                switchQuestionAnswerView();
             } else if (e1.getRawY() > e2.getRawY() + 10) {
                 Log.d(Global.debugTag, "Up swipe");
-                ((CardDetailFragment) (mFragments.get(mPosition))).switchQuestionAnswerView();
+                switchQuestionAnswerView();
             }
 
         }

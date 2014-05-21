@@ -61,6 +61,7 @@
                 android:id="@+id/card_list_item_cover_image_mask"
                 android:layout_width="fill_parent"
                 android:adjustViewBounds="true"
+                android:visibility="invisible"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
                 android:src="@drawable/card_cover_image_mask_black"
