@@ -52,10 +52,10 @@
 
     <TextView
         android:layout_width="450dp"
-        android:layout_height="50dp"
+        android:layout_height="60dp"
         android:gravity="bottom|center_horizontal"
         android:textAlignment="center"
-
+        android:textSize="12sp"
         android:text="When you click ‘Record’ you have a maximum of ten seconds to record your message. \nClick 'Stop' when ready to stop recording. \nYou can then click 'Play' to hear it, or 'Save' to save it to the card."
         android:layout_above="@id/playsavebackground_layout"
         android:layout_marginBottom="30dp"
