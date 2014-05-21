@@ -1247,12 +1247,24 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnKeyboa
         Log.d(Global.debugTag, "setEditTextListener in CardDetailFragment is called, cardSN=" + mCurrentCard.cardSN);
 
         //由于需要字体自适应，自适应的过程会在界面显示出（字体变大或变小），这种体验不好，所以先hide
-        mMain.setVisibility(View.INVISIBLE);
-        mMain2.setVisibility(View.INVISIBLE);
-        mSubheading.setVisibility(View.INVISIBLE);
-        mSubheading2.setVisibility(View.INVISIBLE);
-        mSub.setVisibility(View.INVISIBLE);
-        mSub2.setVisibility(View.INVISIBLE);
+        if (mMain.getText().toString().length() >0) {
+            mMain.setVisibility(View.INVISIBLE);
+        }
+        if (mMain2.getText().toString().length() >0) {
+            mMain2.setVisibility(View.INVISIBLE);
+        }
+        if (mSubheading.getText().toString().length() >0) {
+            mSubheading.setVisibility(View.INVISIBLE);
+        }
+        if (mSubheading2.getText().toString().length() >0) {
+            mSubheading2.setVisibility(View.INVISIBLE);
+        }
+        if (mSub.getText().toString().length() >0) {
+            mSub.setVisibility(View.INVISIBLE);
+        }
+        if (mSub2.getText().toString().length() >0) {
+            mSub2.setVisibility(View.INVISIBLE);
+        }
 
         if (mIsPlayingCard == false) {
             mSidebarTitle.setOnEditorActionListener(new TextView.OnEditorActionListener() {
