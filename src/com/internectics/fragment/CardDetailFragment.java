@@ -356,7 +356,7 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnKeyboa
     private void showYoutbueLinkageInputDialog() {
         final EditText textInput = new EditText(getActivity());
         new AlertDialog.Builder(getActivity())
-                .setTitle("Input a valid youtube url")
+                .setTitle("Input a valid YouTube url")
                 .setIcon(android.R.drawable.ic_dialog_info)
                 .setView(textInput)
                 .setPositiveButton("Done", new DialogInterface.OnClickListener() {
@@ -376,7 +376,7 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnKeyboa
                                 mCurrentCard.save(AppContext.getAppContext());
                             }
                         } else {
-                            Toast.makeText(getActivity(), "Unrecoginized youtube url format", Toast.LENGTH_LONG).show();
+                            Toast.makeText(getActivity(), "Invalid YouTube url, it must be a full url - for example: http://www.youtube.com/watch?v=3-EaGGPGiJY", Toast.LENGTH_LONG).show();
                         }
 
                     }
@@ -643,7 +643,7 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnKeyboa
         new AlertDialog.Builder(getActivity())
                 .setTitle("Select")
                 .setMessage("Image/video selection")
-                .setPositiveButton("Insert Youtube url", new DialogInterface.OnClickListener() {
+                .setPositiveButton("Insert a YouTube url", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         showYoutbueLinkageInputDialog();
