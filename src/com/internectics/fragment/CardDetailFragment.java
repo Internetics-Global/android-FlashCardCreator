@@ -642,8 +642,8 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnKeyboa
     private void showImageVideoSourceDialog() {
         new AlertDialog.Builder(getActivity())
                 .setTitle("Select")
-                .setMessage("Select source")
-                .setPositiveButton("Enter your Youtube url", new DialogInterface.OnClickListener() {
+                .setMessage("Image/video selection")
+                .setPositiveButton("Insert Youtube url", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         showYoutbueLinkageInputDialog();
