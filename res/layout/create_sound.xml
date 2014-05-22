@@ -11,7 +11,7 @@
         android:layout_centerInParent="true"
         android:text="Record"
         android:textSize="14sp"
-        android:background="@drawable/button_simple_line_round"
+        android:background="@drawable/selector_button_simple_line_round"
         android:id="@+id/record_button" />
 
 
@@ -32,7 +32,7 @@
             android:layout_marginLeft="10dp"
             android:text="Play"
             android:layout_marginBottom="10dp"
-            android:background="@drawable/button_simple_line"
+            android:background="@drawable/selector_button_simple_line"
             android:id="@+id/play_button" />
 
         <Button
@@ -43,7 +43,7 @@
             android:layout_marginRight="10dp"
             android:text="Save"
             android:layout_marginBottom="10dp"
-            android:background="@drawable/button_simple_line"
+            android:background="@drawable/selector_button_simple_line"
             android:id="@+id/save_button" />
 
 

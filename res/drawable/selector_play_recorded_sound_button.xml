@@ -4,12 +4,12 @@
 
     <item
         android:state_pressed="false"
-        android:drawable="@drawable/plus_button">
+        android:drawable="@drawable/play_recorded_sound_button">
     </item>
 
     <item
             android:state_pressed="true"
-            android:drawable="@drawable/plus_button_highlighted">
+            android:drawable="@drawable/play_recorded_sound_button_highlighted">
     </item>
 
 </selector>

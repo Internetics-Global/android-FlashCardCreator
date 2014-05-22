@@ -144,7 +144,7 @@
                         android:layout_weight="80"
                         android:layout_height="24dp"
                         android:layout_gravity="bottom"
-                        android:src="@drawable/edit_link_button"/>
+                        android:src="@drawable/selector_edit_link_button"/>
 
                     <ImageView
                         android:id="@+id/logo_image"

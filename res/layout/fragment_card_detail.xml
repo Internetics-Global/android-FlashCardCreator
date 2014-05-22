@@ -68,7 +68,7 @@
                 android:layout_height= "24dp"
                 android:layout_width="24dp"
                 android:layout_gravity="center_vertical"
-                android:src="@drawable/change_card_background_image_button"/>
+                android:src="@drawable/selector_change_card_background_image_button"/>
 
 
 
@@ -79,7 +79,7 @@
                 android:layout_height= "24dp"
                 android:layout_width="24dp"
                 android:layout_gravity="center_vertical"
-                android:src="@drawable/change_card_layout_template"/>
+                android:src="@drawable/selector_change_card_layout_template"/>
 
             <ImageView
                 android:id="@+id/play_record_button"
@@ -87,7 +87,7 @@
                 android:layout_height= "24dp"
                 android:layout_width="24dp"
                 android:layout_gravity="center_vertical"
-                android:src="@drawable/record_button"/>
+                android:src="@drawable/selector_record_button"/>
 
             </LinearLayout>
 

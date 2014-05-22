@@ -4,12 +4,12 @@
 
     <item
         android:state_pressed="false"
-        android:drawable="@drawable/plus_button">
+        android:drawable="@drawable/shape_button_simple_line">
     </item>
 
     <item
             android:state_pressed="true"
-            android:drawable="@drawable/plus_button_highlighted">
+            android:drawable="@drawable/shape_button_simple_line_highlight">
     </item>
 
 </selector>

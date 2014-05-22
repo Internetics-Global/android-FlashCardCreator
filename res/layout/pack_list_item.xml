@@ -76,7 +76,7 @@
                 android:gravity="center"
                 android:layout_width="0dp"
                 android:layout_height="fill_parent"
-                android:background="@drawable/button_red"
+                android:background="@drawable/selector_button_simple_line_red_background"
                 android:text="@string/packlist_delete"
                 android:textSize="@dimen/pack_list_text_size"
                 android:layout_weight="50">
@@ -88,9 +88,9 @@
                 android:gravity="center"
                 android:layout_width="0dp"
                 android:layout_height="fill_parent"
-                android:background="@drawable/button_gray"
+                android:background="@drawable/selector_button_simple_line"
                 android:text="@string/packlist_change"
-                android:textColor="#000000"
+                android:textColor="#FFFFFF"
                 android:textSize="@dimen/pack_list_text_size"
                 android:layout_weight="50">
 
