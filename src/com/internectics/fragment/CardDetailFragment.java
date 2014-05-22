@@ -643,7 +643,7 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnKeyboa
         new AlertDialog.Builder(getActivity())
                 .setTitle("Select")
                 .setMessage("Select source")
-                .setPositiveButton("Input youtube linkage", new DialogInterface.OnClickListener() {
+                .setPositiveButton("Enter your Youtube url", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         showYoutbueLinkageInputDialog();
