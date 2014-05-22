@@ -337,7 +337,7 @@ public class PackListFragment extends Fragment {
                     public void onClick(View v) {
 
                         new AlertDialog.Builder(mContext)
-                                .setTitle("Are you sure to delete?")
+                                .setTitle("Are you sure you want to delete?")
                                 .setPositiveButton("Delete",new DialogInterface.OnClickListener() {
                                     @Override
                                     public void onClick(DialogInterface dialog, int which) {

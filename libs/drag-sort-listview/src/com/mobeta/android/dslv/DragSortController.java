@@ -432,7 +432,7 @@ public class DragSortController extends SimpleFloatViewManager implements View.O
         if (mRemoveEnabled && mRemoveMode == CLICK_REMOVE) {
             if (mClickRemoveHitPos != MISS) {
                 new AlertDialog.Builder(mContext)
-                    .setTitle("Are you sure to delete?")
+                    .setTitle("Are you sure you want to delete?")
                     .setPositiveButton("Delete",new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
