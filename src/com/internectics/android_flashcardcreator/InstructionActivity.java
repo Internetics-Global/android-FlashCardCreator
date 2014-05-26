@@ -33,8 +33,7 @@ public class InstructionActivity extends Activity {
     private class ImageAdapter extends BaseAdapter {
 
         private LayoutInflater mInflater;
-        private final int[] ids = {R.drawable.help1, R.drawable.help2, R.drawable.help3, R.drawable.help4,
-                R.drawable.help5, R.drawable.help6, R.drawable.help7};
+        private final int[] ids = {R.drawable.help1, R.drawable.help2, R.drawable.help3};
 
         public ImageAdapter(Context context) {
             mInflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
