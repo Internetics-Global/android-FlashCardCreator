@@ -25,13 +25,13 @@
         <RadioGroup
                 android:id="@+id/radio_segment"
                 android:orientation="horizontal"
-                android:layout_width="300dp"
+                android:layout_width="330dp"
                 android:layout_alignParentLeft="true"
                 android:layout_height="wrap_content">
             <RadioButton
                     android:id="@+id/radio_segment_question"
                     android:layout_width="0dp"
-                    android:layout_weight="150"
+                    android:layout_weight="165"
                     android:layout_height="wrap_content"
                     android:button="@null"
                     android:checked="true"
@@ -43,7 +43,7 @@
             <RadioButton
                     android:id="@+id/radio_segment_answer"
                     android:layout_width="0dp"
-                    android:layout_weight="150"
+                    android:layout_weight="165"
                     android:layout_height="wrap_content"
                     android:button="@null"
                     android:text="@string/segment_answer"

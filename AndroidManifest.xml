@@ -5,7 +5,7 @@
           android:versionName="1.0.0">
 
     <supports-screens
-        android:requiresSmallestWidthDp="480" />
+        android:requiresSmallestWidthDp="510" />
 
     <uses-feature android:name="android.hardware.screen.portrait"/>
 

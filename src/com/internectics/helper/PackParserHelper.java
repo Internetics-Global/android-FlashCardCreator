@@ -43,18 +43,30 @@ public class PackParserHelper {
             Card resultCard = parseCardJsonFiles(cardDirectory, resultPack);
             resultCard.cardSN = i + 1;
 
+            //***************再次加工,重要
             //从json获取到的filepath，只有文件名，没有路径，所以需要做如下操作：1. 定位到下载的地方；2. 拷贝到Images folder；3.组成uri格式的完整路径
+
+            //coverImageUriFormatStr
 
             newFile = FileOperationHelper.copyImageVideoToImagesFolder(getCardImageFullPath(resultCard.coverImageUriFormatStr, i));
             resultCard.coverImageUriFormatStr = FileOperationHelper.convertToUriFormatFile(newFile);
+
+            //imageUriFormatStr
 
             newFile = FileOperationHelper.copyImageVideoToImagesFolder(getCardImageFullPath(resultCard.question.imageUriFormatStr, i));
             resultCard.question.imageUriFormatStr = FileOperationHelper.convertToUriFormatFile(newFile);
             newFile = FileOperationHelper.copyImageVideoToImagesFolder(getCardImageFullPath(resultCard.answer.imageUriFormatStr, i));
             resultCard.answer.imageUriFormatStr = FileOperationHelper.convertToUriFormatFile(newFile);
 
+            //backgroundImageUriFormatStr
+
             newFile = FileOperationHelper.copyImageVideoToImagesFolder(getCardImageFullPath(resultCard.question.backgroundImageUriFormatStr, i));
             resultCard.question.backgroundImageUriFormatStr = FileOperationHelper.convertToUriFormatFile(newFile);
+
+            newFile = FileOperationHelper.copyImageVideoToImagesFolder(getCardImageFullPath(resultCard.answer.backgroundImageUriFormatStr, i));
+            resultCard.answer.backgroundImageUriFormatStr = FileOperationHelper.convertToUriFormatFile(newFile);
+
+            //movieUriFormatStr
 
             if (resultCard.question.movieUriFormatStr.contains("http")) {
                 //do nothing
@@ -66,8 +78,6 @@ public class PackParserHelper {
                 resultCard.question.movieUriFormatStr = FileOperationHelper.convertToUriFormatFile(newFile);
             }
 
-            newFile = FileOperationHelper.copyImageVideoToImagesFolder(getCardImageFullPath(resultCard.answer.backgroundImageUriFormatStr, i));
-            resultCard.answer.backgroundImageUriFormatStr = FileOperationHelper.convertToUriFormatFile(newFile);
 
             if (resultCard.answer.movieUriFormatStr.contains("http")) {
                 //do nothing
@@ -78,6 +88,24 @@ public class PackParserHelper {
                 newFile = FileOperationHelper.copyImageVideoToImagesFolder(getCardImageFullPath(resultCard.answer.movieUriFormatStr, i));
                 resultCard.answer.movieUriFormatStr = FileOperationHelper.convertToUriFormatFile(newFile);
             }
+
+            //audioUriFormatStr
+
+            if (resultCard.question.audioUriFormatStr.length() >0) {
+                newFile = FileOperationHelper.copyImageVideoToImagesFolder(getCardImageFullPath(resultCard.question.audioUriFormatStr, i));
+                resultCard.question.audioUriFormatStr = FileOperationHelper.convertToUriFormatFile(newFile);
+            } else {
+                Log.w(Global.debugTag, "resultCard.question.audioUriFormatStr is empty");
+            }
+
+            if (resultCard.answer.audioUriFormatStr.length() >0) {
+                newFile = FileOperationHelper.copyImageVideoToImagesFolder(getCardImageFullPath(resultCard.answer.audioUriFormatStr, i));
+                resultCard.answer.audioUriFormatStr = FileOperationHelper.convertToUriFormatFile(newFile);
+                Log.w(Global.debugTag, "resultCard.answer.audioUriFormatStr is empty");
+            }
+
+            //***************再次加工,结束
+
 
             resultCard.packID = resultPack.packID; //this is necessary
 
