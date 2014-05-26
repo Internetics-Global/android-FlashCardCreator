@@ -470,6 +470,7 @@ public class PackListFragment extends Fragment {
     @Override
     public void onStop() {
         super.onStop();
+        mGallery.setAdapter(null);
         Log.d("ccaa","onStop in PackListFragment");
     }
 
