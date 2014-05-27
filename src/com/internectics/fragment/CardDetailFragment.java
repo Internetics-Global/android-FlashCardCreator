@@ -333,6 +333,11 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnKeyboa
 
         if (targetStr.length() > 0) {
 
+            if (Build.FINGERPRINT.startsWith("generic")) {
+                Toast.makeText(getActivity(),"Don't support to play on simulator",Toast.LENGTH_LONG).show();
+                return;
+            }
+
             if (targetStr.contains("http://")) {
                 Intent i = new Intent(Intent.ACTION_VIEW);
                 i.setData(Uri.parse(targetStr));
