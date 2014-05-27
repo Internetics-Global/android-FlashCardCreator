@@ -58,7 +58,7 @@ public class VGViewPager extends ViewPager {
         outRect.offset(marginValLeft + sidebarWidth,marginValTop);
         if (outRect.contains(x, y)) {
             Boolean bool = image.isEnabled();
-            Log.d(Global.debugTag, "touch location in image "+bool);
+            Log.d(Global.debugTag, "touch location in image，enable=  "+bool);
             return false;
         }
 
@@ -67,7 +67,7 @@ public class VGViewPager extends ViewPager {
         outRect.offset(marginValLeft + sidebarWidth,marginValTop);
         if (outRect.contains(x, y)) {
             Boolean bool = image2.isEnabled();
-            Log.d(Global.debugTag, "touch location in image2 "+bool);
+            Log.d(Global.debugTag, "touch location in image2, enable =  "+bool);
             return false;
         }
 

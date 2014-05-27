@@ -265,7 +265,7 @@ public class PackParserHelper {
             if (questionObj.containsKey("movie")) {
                 temp = (String) questionObj.get("movie");
             }
-            if (StringUtils.isCorrectMov3GPName(temp)) {
+            if ((StringUtils.isCorrectMov3GPName(temp)) || (temp.contains("http"))) {   //video or video linkage
                 card.question.movieUriFormatStr = temp;
             }
 
@@ -660,7 +660,7 @@ public class PackParserHelper {
             if (answerObj.containsKey("movie")) {
                 temp = (String) answerObj.get("movie");
             }
-            if (StringUtils.isCorrectMov3GPName(temp)) {
+            if ((StringUtils.isCorrectMov3GPName(temp)) || (temp.contains("http"))) { //video or video linkage
                 card.answer.movieUriFormatStr = temp;
             }
 
