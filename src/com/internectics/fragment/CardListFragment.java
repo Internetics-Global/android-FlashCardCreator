@@ -93,6 +93,8 @@ public class CardListFragment extends Fragment {
         mDSLVListView = (DragSortListView) mContentView.findViewById(android.R.id.list);
         mDSLVListView.setAdapter(adapter);
 
+        mDSLVListView.setDividerHeight(0);
+
         mDSLVListView.setRemoveListener(new DragSortListView.RemoveListener() {
             @Override
             public void remove(int which) {
