@@ -484,9 +484,14 @@ public class UIHelper {
      * 仅是CardBackgroundImage的大小，不包括sidebar和title部分
      * 我们不能直接去获取R.id.card_background_image，因为这时view有可能还没有inflater
      */
-    public static int getCardBackgroundWidth(Activity activity) {
-        FrameLayout cardLayout = (FrameLayout) activity.findViewById(R.id.detail);
-        int width = (cardLayout.getWidth()  - UIHelper.getPixels(20)) * 740 / (62 +740);
+    public static int getCardBackgroundWidth(Activity activity,Boolean isPlayCard) {
+        int width;
+        if (isPlayCard) {
+            width = (UIHelper.getScreenWidth(activity) - UIHelper.getPixels(20)) * 740 / (62 +740);
+        } else {
+            FrameLayout cardLayout = (FrameLayout) activity.findViewById(R.id.detail);
+            width = (cardLayout.getWidth()  - UIHelper.getPixels(20)) * 740 / (62 +740);
+        }
         return width;
     }
 
@@ -494,9 +499,14 @@ public class UIHelper {
      * 仅是CardBackgroundImage的大小，不包括sidebar和title部分
      * 我们不能直接去获取R.id.card_background_image，因为这时view有可能还没有inflater
      */
-    public static int getCardBackgroundHeight(Activity activity) {
-        FrameLayout cardLayout = (FrameLayout) activity.findViewById(R.id.detail);
-        int height = (cardLayout.getHeight() * 550 / (550 + 40) - UIHelper.getPixels(30)) * 440 / (112 +440);;
+    public static int getCardBackgroundHeight(Activity activity,Boolean isPlayCard) {
+        int height;
+        if (isPlayCard) {
+            height = (UIHelper.getScreenHeight(activity)) * 440 / (112 +440);;
+        } else {
+            FrameLayout cardLayout = (FrameLayout) activity.findViewById(R.id.detail);
+            height = (cardLayout.getHeight() * 550 / (550 + 40) - UIHelper.getPixels(30)) * 440 / (112 +440);;
+        }
         return height;
     }
 

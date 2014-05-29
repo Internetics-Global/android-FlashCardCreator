@@ -2995,8 +2995,8 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnKeyboa
     private void setCardBackgroundImageWithBitmap(Bitmap bitmap) {
         //set background image
 
-        int width = UIHelper.getCardBackgroundWidth(getActivity());
-        int height = UIHelper.getCardBackgroundHeight(getActivity());
+        int width = UIHelper.getCardBackgroundWidth(getActivity(),mIsPlayingCard);
+        int height = UIHelper.getCardBackgroundHeight(getActivity(),mIsPlayingCard);
 
         Bitmap resizedBitmap = UIHelper.resizedBitmapWithScaleToFit(bitmap,width,height);
 
