@@ -199,17 +199,19 @@ public class StringUtils {
      * Used to convert iOS style("Red",etc) to android style(Color.RED)
      */
     public static int convertColorStringToInt(String color) {
-        if (color.equals("Red")) {
+        if (color.toLowerCase().equals("red")) {
             return Color.RED;
-        } else if (color.equals("Blue")) {
+        } else if (color.toLowerCase().toLowerCase().equals("blue")) {
             return Color.BLUE;
-        } else if (color.equals("Black")) {
+        } else if (color.toLowerCase().equals("black")) {
             return Color.BLACK;
-        } else if (color.equals("Yellow")) {
+        } else if (color.toLowerCase().equals("yellow")) {
             return Color.YELLOW;
-        } else if (color.equals("Green")) {
+        } else if (color.toLowerCase().equals("green")) {
             return Color.GREEN;
-        } else {
+        } else if (color.toLowerCase().equals("white")) {
+            return Color.WHITE;
+        }else {
             return Color.BLACK;
         }
     }
@@ -229,7 +231,9 @@ public class StringUtils {
             return "Yellow";
         } else if (color == Color.GREEN) {
             return "Green";
-        } else {
+        } else if (color == Color.WHITE) {
+            return "White";
+        }else {
             return "Black";
         }
     }

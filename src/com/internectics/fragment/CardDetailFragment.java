@@ -744,11 +744,48 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnKeyboa
             @Override
             public void onClick(View v) {
                 if (isEditableMode()) {
-                    startActivityForResult(
-                            new Intent(
-                                    Intent.ACTION_PICK,
-                                    android.provider.MediaStore.Images.Media.INTERNAL_CONTENT_URI),
-                            CODE_REQUEST_IMAGE_SOURCE_IS_BACKGROUND);
+
+                    String string;
+                    if (mIsQuestionShowing) {
+                        string = mCurrentCard.question.backgroundImageUriFormatStr;
+                    } else {
+                        string = mCurrentCard.answer.backgroundImageUriFormatStr;
+                    }
+
+                    if (string.length() >0) {
+                        new AlertDialog.Builder(getActivity())
+                                .setTitle("Edit/Remove")
+                                .setPositiveButton("Remove background image", new DialogInterface.OnClickListener() {
+                                    @Override
+                                    public void onClick(DialogInterface dialog, int which) {
+                                        if (mIsQuestionShowing) {
+                                            mCurrentCard.question.backgroundImageUriFormatStr = "";
+                                        } else {
+                                            mCurrentCard.answer.backgroundImageUriFormatStr = "";
+                                        }
+                                        ImageView backgroundImageView = (ImageView) mContentView.findViewById(R.id.card_background_image);
+                                        backgroundImageView.setImageDrawable(null);
+                                    }
+                                })
+                                .setNegativeButton("Change background image", new DialogInterface.OnClickListener() {
+                                    @Override
+                                    public void onClick(DialogInterface dialog, int which) {
+                                        startActivityForResult(
+                                                new Intent(
+                                                        Intent.ACTION_PICK,
+                                                        android.provider.MediaStore.Images.Media.INTERNAL_CONTENT_URI),
+                                                CODE_REQUEST_IMAGE_SOURCE_IS_BACKGROUND);
+                                    }
+                                })
+                                .show();
+                    } else {
+                        startActivityForResult(
+                                new Intent(
+                                        Intent.ACTION_PICK,
+                                        android.provider.MediaStore.Images.Media.INTERNAL_CONTENT_URI),
+                                CODE_REQUEST_IMAGE_SOURCE_IS_BACKGROUND);
+                    }
+
                 } else {
                     Toast.makeText(getActivity(),"You can only edit card that you have created it.",Toast.LENGTH_LONG).show();
                 }
@@ -2691,6 +2728,9 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnKeyboa
                         break;
                     case 4:
                         mCurrentFocusedCardContentText.setTextColor(Color.GREEN);
+                        break;
+                    case 5:
+                        mCurrentFocusedCardContentText.setTextColor(Color.WHITE);
                         break;
                     default:
                         Log.w(Global.debugTag, "Out of range of subMenuID");

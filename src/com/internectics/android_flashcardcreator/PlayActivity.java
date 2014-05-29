@@ -3,6 +3,7 @@ package com.internectics.android_flashcardcreator;
 import android.content.Context;
 import android.content.res.Configuration;
 import android.hardware.*;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.*;
 import android.support.v4.view.ViewPager;
@@ -65,22 +66,7 @@ public class PlayActivity extends FragmentActivity implements SensorEventListene
             @Override
             public void onClick(View v) {
 
-                CardDetailFragment cardDetailFragment = (CardDetailFragment) (mFragments.get(mPosition));
-
-
-
-                String targetStr;
-                if (cardDetailFragment.mIsQuestionShowing) {
-                    targetStr = cardDetailFragment.mCurrentCard.question.audioUriFormatStr;
-                } else {
-                    targetStr = cardDetailFragment.mCurrentCard.answer.audioUriFormatStr;
-                }
-
-                if (targetStr.length() >0) {
-                    AudioHelper.playAudio(FileOperationHelper.deleteUriSchemeHeader(targetStr));
-                } else {
-                    Toast.makeText(PlayActivity.this,"Not available audio file", Toast.LENGTH_LONG).show();
-                }
+                playAudio();
             }
         });
 
@@ -164,6 +150,8 @@ public class PlayActivity extends FragmentActivity implements SensorEventListene
                     mIsScrollStop = true;
                     Log.d(Global.debugTag, "Stopped");
 
+                    playAudio();
+
                 }
             }
 
@@ -194,6 +182,33 @@ public class PlayActivity extends FragmentActivity implements SensorEventListene
 
     }
 
+    private void playAudio() {
+
+        Boolean isSimulator = Build.FINGERPRINT.startsWith("generic");
+        if (isSimulator) {
+            Toast.makeText(PlayActivity.this,"Audio possily could not be supported on simulator",Toast.LENGTH_LONG).show();
+            return;
+        }
+
+
+        CardDetailFragment cardDetailFragment = (CardDetailFragment) (mFragments.get(mPosition));
+
+
+
+        String targetStr;
+        if (cardDetailFragment.mIsQuestionShowing) {
+            targetStr = cardDetailFragment.mCurrentCard.question.audioUriFormatStr;
+        } else {
+            targetStr = cardDetailFragment.mCurrentCard.answer.audioUriFormatStr;
+        }
+
+        if (targetStr.length() >0) {
+            AudioHelper.playAudio(FileOperationHelper.deleteUriSchemeHeader(targetStr));
+        } else {
+            //Toast.makeText(PlayActivity.this,"Not available audio file", Toast.LENGTH_LONG).show();
+        }
+    }
+
     @Override
     protected void onResume() {
         super.onResume();
@@ -209,6 +224,8 @@ public class PlayActivity extends FragmentActivity implements SensorEventListene
 
 
         mIsResetRoll = true;
+
+        playAudio();
     }
 
     @Override
@@ -298,6 +315,7 @@ public class PlayActivity extends FragmentActivity implements SensorEventListene
         if (orientation == 0) {
             if ((roll - mOrigalRoll > 15.0) && (mEnableA)) {
                 cardDetailFragment.switchQuestionAnswerView();
+                playAudio();
                 mEnableA = false;
             }
             if (roll - mOrigalRoll < 0) {
@@ -307,6 +325,7 @@ public class PlayActivity extends FragmentActivity implements SensorEventListene
         } else if ((orientation == 1) && (mEnableB)) {
             if (roll - mOrigalRoll < -15.0) {
                 cardDetailFragment.switchQuestionAnswerView();
+                playAudio();
                 mEnableB = false;
             }
 
@@ -371,6 +390,8 @@ public class PlayActivity extends FragmentActivity implements SensorEventListene
         } else {
             mPlayRecordImage.setVisibility(View.VISIBLE);
         }
+
+        playAudio();
     }
 
 

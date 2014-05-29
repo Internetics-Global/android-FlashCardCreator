@@ -43,6 +43,7 @@ public class Pack {
         userID = -1;
         creatorID = "";
         creatorNickName = "";
+        jobTitle = "Job title";
         platform = "";
         cards = new ArrayList<Card>();
         questionTitle = "Question";

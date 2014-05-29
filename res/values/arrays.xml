@@ -37,6 +37,7 @@
     <item>Black</item>
     <item>Yellow</item>
     <item>Green</item>
+    <item>White</item>
     </string-array>
 
     <!--sp unit, spinner range-->
