@@ -59,6 +59,7 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnKeyboa
     private FCCEditText mTitle;
     private LinearLayout mTitleBackground;
     private FCCEditText mCreator;
+    private FCCEditText mJobTitle;
     private FCCEditText mSubheading;
     private FCCEditText mMain;
     private FCCEditText mSub;
@@ -1073,6 +1074,7 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnKeyboa
         mTitle = (FCCEditText) mContentView.findViewById(R.id.title);
         mTitleBackground = (LinearLayout) mContentView.findViewById(R.id.title_background_linearlayout);
         mCreator = (FCCEditText) mContentView.findViewById(R.id.creator);
+        mJobTitle = (FCCEditText) mContentView.findViewById(R.id.job_title);
 
         LinearLayout creatorLayout = (LinearLayout) mContentView.findViewById(R.id.creator_layout);
 
@@ -1129,10 +1131,17 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnKeyboa
             mMain2.setOnTouchListener(this);
             mSub2.setOnTouchListener(this);
             mCreator.setOnTouchListener(this);
+            mJobTitle.setOnTouchListener(this);
             mSidebarTitle.setOnTouchListener(this);
             mTitle.setOnTouchListener(this);
         } else {
             mCreator.setOnTouchListener(new View.OnTouchListener() {
+                @Override
+                public boolean onTouch(View v, MotionEvent event) {
+                    return false;
+                }
+            });
+            mJobTitle.setOnTouchListener(new View.OnTouchListener() {
                 @Override
                 public boolean onTouch(View v, MotionEvent event) {
                     return false;
@@ -1290,6 +1299,15 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnKeyboa
                     return false;
                 }
             });
+            mJobTitle.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+                @Override
+                public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+                    if (actionId == EditorInfo.IME_ACTION_DONE) {
+                        saveEdittedCard();
+                    }
+                    return false;
+                }
+            });
 
             mTitle.setOnEditorActionListener(new TextView.OnEditorActionListener() {
                 @Override
@@ -1342,6 +1360,27 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnKeyboa
                     }
 
                     Log.d(Global.debugTag, "mCreator has changed");
+
+                }
+            });
+
+            mJobTitle.addTextChangedListener(new TextWatcher() {
+                @Override
+                public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+                }
+
+                @Override
+                public void onTextChanged(CharSequence s, int start, int before, int count) {
+                }
+
+                @Override
+                public void afterTextChanged(Editable s) {
+                    mCurrentPack.jobTitle = mJobTitle.getText().toString();
+                    if ((!mIsPlayingCard)) {
+                        mIsTakeSnapshotAllNeeded = true;
+                    }
+
+                    Log.d(Global.debugTag, "mJobTitle has changed");
 
                 }
             });
@@ -1597,6 +1636,7 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnKeyboa
 
         mLogoImage.setImageURI(Uri.parse(mCurrentPack.logoImageUriFormatStr));
         mCreator.setText(mCurrentPack.creatorNickName);
+        mJobTitle.setText(mCurrentPack.jobTitle);
 
         int sidebarBGResourceID = (StringUtils.convertTemplateBackgroundStringToResourceID(mCurrentCard.templateBackground))[1];
         mSidebarBackground.setBackgroundResource(sidebarBGResourceID);
@@ -1684,10 +1724,12 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnKeyboa
         mMain2.setEnabled(true);
         mSub2.setEnabled(true);
         mCreator.setEnabled(true);
+        mJobTitle.setEnabled(true);
         mImage.setEnabled(true);
         mImage2.setEnabled(true);
 
         mCreator.setBackgroundResource(R.drawable.shape_edittext_editable);
+        mJobTitle.setBackgroundResource(R.drawable.shape_edittext_editable);
         mSubheading.setBackgroundResource(R.drawable.shape_edittext_editable);
         mMain.setBackgroundResource(R.drawable.shape_edittext_editable);
         mSub.setBackgroundResource(R.drawable.shape_edittext_editable);
@@ -1710,6 +1752,7 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnKeyboa
         mMain2.setEnabled(false);
         mSub2.setEnabled(false);
         mCreator.setEnabled(false);
+        mJobTitle.setEnabled(false);
 
         if (mIsQuestionShowing) {
             if (mCurrentCard.question.movieUriFormatStr.length() > 0) {
@@ -1732,6 +1775,7 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnKeyboa
         }
 
         mCreator.setBackgroundResource(R.drawable.shape_edittext_no_editable);
+        mJobTitle.setBackgroundResource(R.drawable.shape_edittext_no_editable);
         mSubheading.setBackgroundResource(R.drawable.shape_edittext_no_editable);
         mMain.setBackgroundResource(R.drawable.shape_edittext_no_editable);
         mSub.setBackgroundResource(R.drawable.shape_edittext_no_editable);
@@ -2902,21 +2946,23 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnKeyboa
     }
 
 
-    private void setCardBackgroundImageWithDrawable(Drawable drawable) {
-        //set background image
-        ImageView backgroundImageView = (ImageView) mContentView.findViewById(R.id.card_background_image);
-        backgroundImageView.setImageDrawable(drawable);
-    }
-
 
     /*
       Be sure to have exact size of bitamp with card, othervise, the rounded size could vary;
      */
     private void setCardBackgroundImageWithBitmap(Bitmap bitmap) {
         //set background image
+
         ImageView backgroundImageView = (ImageView) mContentView.findViewById(R.id.card_background_image);
+
         backgroundImageView.setImageBitmap(bitmap);
 
+    }
+
+    private void setCardBackgroundImageWithDrawable(Drawable drawable) {
+        //set background image
+        ImageView backgroundImageView = (ImageView) mContentView.findViewById(R.id.card_background_image);
+        backgroundImageView.setImageDrawable(drawable);
     }
 
 

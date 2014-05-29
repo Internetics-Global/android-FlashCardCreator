@@ -170,6 +170,12 @@ public class PackParserHelper {
             pack.coverImageUriFormatStr = (String) obj.get("cover_image");
             pack.creatorID = (String) obj.get("creator");
             pack.creatorNickName = (String) obj.get("creator_nick_name");
+            if (obj.containsKey("job_title")) {
+                pack.jobTitle = (String) obj.get("job_title");
+            } else {
+                pack.jobTitle = "Job title";
+            }
+
             pack.platform = (String) obj.get("platform");
             pack.userID = Global.USER_ID; // there's no this information in json file, so we have to add manually
             pack.packID = Global.generateNoRepeatInt();

@@ -156,6 +156,7 @@ public class PackBuildHelper {
         summary.put("cover_image", StringUtils.lastComponentOfPath(pack.coverImageUriFormatStr));
         summary.put("creator", pack.creatorID);
         summary.put("creator_nick_name", pack.creatorNickName);
+        summary.put("job_title", pack.jobTitle);
         summary.put("platform", pack.platform);
         summary.put("logo_image", StringUtils.lastComponentOfPath(pack.logoImageUriFormatStr));
         summary.put("platform", "Android");

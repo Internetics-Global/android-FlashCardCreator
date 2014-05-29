@@ -12,7 +12,7 @@
         android:id="@+id/card_background_image"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:scaleType="centerCrop"
+        android:scaleType="fitXY"
         android:src="@null" />
 
     <LinearLayout
@@ -124,6 +124,25 @@
                             android:textCursorDrawable="@null"
                             android:layout_height="0dp"
                             android:layout_gravity="bottom"
+                            android:layout_width="fill_parent"
+                            android:layout_weight="160"
+                            android:tag = "2003"
+                            android:gravity="bottom"
+                            android:text=""
+                            android:layout_marginTop="5dp"
+                            android:textSize="@dimen/creator_text_size"
+                            android:inputType="textNoSuggestions"
+                            android:singleLine="true"
+                            android:imeOptions="actionDone"
+                            android:background="@drawable/shape_edittext_editable"
+                            android:textColor="#ff4a4a4a"
+                            />
+                        <com.internectics.UI.FCCEditText
+                            android:id="@+id/job_title"
+                            android:textCursorDrawable="@null"
+                            android:layout_height="0dp"
+                            android:layout_gravity="bottom"
+                            android:layout_marginTop="5dp"
                             android:layout_width="fill_parent"
                             android:layout_weight="160"
                             android:tag = "2003"
