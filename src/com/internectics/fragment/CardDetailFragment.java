@@ -256,7 +256,7 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnKeyboa
         if (mIsCreatingCard) {
             mSidebarTitle.setEnabled(false);
             mTitle.setEnabled(false);
-            mFunctionAreaLayout.setVisibility(View.INVISIBLE);
+            //mFunctionAreaLayout.setVisibility(View.INVISIBLE);
         }
 
         if (mIsPlayingCard || mIsCreatingCard) {
@@ -949,6 +949,7 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnKeyboa
     private void showCreateSoundView() {
 
         CreateSoundFragment dialogFragment = new CreateSoundFragment();
+        dialogFragment.mIsCreatingCard = mIsCreatingCard;
         dialogFragment.mCurrentCard = mCurrentCard;
         dialogFragment.mCurrentPack = mCurrentPack;
         dialogFragment.mIsQuestionShowing = mIsQuestionShowing;

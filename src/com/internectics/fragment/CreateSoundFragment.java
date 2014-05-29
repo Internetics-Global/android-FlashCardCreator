@@ -37,6 +37,8 @@ public class CreateSoundFragment extends DialogFragment {
     public Pack      mCurrentPack;
     public Boolean   mIsQuestionShowing;
 
+    public boolean mIsCreatingCard = false;
+
     public enum Record_Status {
         Record_Status_Unkown, Record_Status_Recording, Record_Status_Stop, Record_Status_Normal
     }
@@ -174,7 +176,12 @@ public class CreateSoundFragment extends DialogFragment {
         File sourceFile = temporaryRecordedSoundPath();
         FileOperationHelper.moveFile(sourceFile.toString(),saveToPath);
 
-        mCurrentCard.save(AppContext.getAppContext());
+        if (mIsCreatingCard) {
+          //我们在这里不做处理，而是在create card上处理
+        } else {
+            mCurrentCard.save(AppContext.getAppContext());
+        }
+
 
         PackRecordHelper.savePackUpdateRecord(AppContext.getAppContext(), mCurrentPack);
 
