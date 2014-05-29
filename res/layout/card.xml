@@ -8,12 +8,7 @@
               android:orientation="horizontal">
 
 
-    <ImageView
-        android:id="@+id/card_background_image"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:scaleType="fitXY"
-        android:src="@null" />
+
 
     <LinearLayout
         android:background="@null"
@@ -181,6 +176,13 @@
                     android:layout_width="match_parent"
                     android:layout_height="0dp"
                     android:layout_weight="440">
+
+                    <ImageView
+                        android:id="@+id/card_background_image"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:scaleType="fitXY"
+                        android:src="@null" />
 
                     <LinearLayout
                         android:id="@+id/content_body_type1"
