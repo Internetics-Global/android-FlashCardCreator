@@ -18,6 +18,7 @@ import android.util.TypedValue;
 import android.view.Display;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.FrameLayout;
 
 import com.internectics.android_flashcardcreator.R;
 import com.internectics.helper.FileOperationHelper;
@@ -39,6 +40,13 @@ public class UIHelper {
         Resources r = AppContext.getAppContext().getResources();
         float scaledDensity = r.getDisplayMetrics().scaledDensity;
         return (px/scaledDensity);
+    }
+
+    public static Bitmap resizeImageTo800(Context context, Uri localImageUri) {
+
+        Bitmap resizeBitmap = resizeImageTo(context,localImageUri,800);
+
+        return resizeBitmap;
     }
 
 
@@ -74,6 +82,41 @@ public class UIHelper {
         }
 
         return resizeBitmap;
+    }
+
+
+
+    public static Bitmap resizedBitmapWithScaleToFit(Bitmap bm, int newWidth,int newHeight) {
+        int width = bm.getWidth();
+        int height = bm.getHeight();
+        float scaleWidth = ((float) newWidth) / width;
+        float scaleHeight = ((float) newHeight) / height;
+
+        // CREATE A MATRIX FOR THE MANIPULATION
+        Matrix matrix = new Matrix();
+
+        Bitmap resizedBitmap;
+
+        if (scaleWidth > scaleHeight) {
+            float originalScaleHeight  =  scaleHeight;
+            scaleHeight = scaleWidth;
+
+            // RESIZE THE BIT MAP
+            matrix.postScale(scaleWidth, scaleHeight);
+
+            resizedBitmap = Bitmap.createBitmap(bm, 0, 0, width,(int)(height * originalScaleHeight /scaleWidth), matrix, false);
+
+        } else {
+            float originalScaleWidth  =  scaleWidth;
+            scaleWidth = scaleHeight;
+
+            // RESIZE THE BIT MAP
+            matrix.postScale(scaleWidth, scaleHeight);
+
+            resizedBitmap = Bitmap.createBitmap(bm, 0, 0, (int)(width * originalScaleWidth/scaleHeight), height, matrix, false);
+        }
+
+        return resizedBitmap;
     }
 
     /*
@@ -404,6 +447,26 @@ public class UIHelper {
         canvas.drawBitmap(bitmap, rect, rect, paint);
 
         return output;
+    }
+
+    /*
+     * 仅是CardBackgroundImage的大小，不包括sidebar和title部分
+     * 我们不能直接去获取R.id.card_background_image，因为这时view有可能还没有inflater
+     */
+    public static int getCardBackgroundWidth(Activity activity) {
+        FrameLayout cardLayout = (FrameLayout) activity.findViewById(R.id.detail);
+        int width = (cardLayout.getWidth()  - UIHelper.getPixels(20)) * 740 / (62 +740);
+        return width;
+    }
+
+    /*
+     * 仅是CardBackgroundImage的大小，不包括sidebar和title部分
+     * 我们不能直接去获取R.id.card_background_image，因为这时view有可能还没有inflater
+     */
+    public static int getCardBackgroundHeight(Activity activity) {
+        FrameLayout cardLayout = (FrameLayout) activity.findViewById(R.id.detail);
+        int height = (cardLayout.getHeight() * 550 / (550 + 40) - UIHelper.getPixels(30)) * 440 / (112 +440);;
+        return height;
     }
 
 }

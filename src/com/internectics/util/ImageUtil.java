@@ -44,9 +44,10 @@ public class ImageUtil {
 
     }
 
-    //获得圆角图片的方法
-    public static Bitmap getRoundedCornerBitmap(Bitmap bitmap,int roundDp){
-
+    /*
+     * 单位是pixel
+     */
+    public static Bitmap getRoundedBottomRightCornerBitmap(Bitmap bitmap, int pixels) {
         Bitmap output = Bitmap.createBitmap(bitmap.getWidth(), bitmap
                 .getHeight(), Config.ARGB_8888);
         Canvas canvas = new Canvas(output);
@@ -55,17 +56,26 @@ public class ImageUtil {
         final Paint paint = new Paint();
         final Rect rect = new Rect(0, 0, bitmap.getWidth(), bitmap.getHeight());
         final RectF rectF = new RectF(rect);
+        final float roundPx = pixels;
+        final Rect topRightRect = new Rect(bitmap.getWidth()/2, 0, bitmap.getWidth(), bitmap.getHeight()/2);
+        final Rect leftRect = new Rect(0, 0, bitmap.getHeight()/2, bitmap.getHeight());
 
         paint.setAntiAlias(true);
         canvas.drawARGB(0, 0, 0, 0);
         paint.setColor(color);
-        canvas.drawRoundRect(rectF, roundDp, roundDp, paint);
+        canvas.drawRoundRect(rectF, roundPx, roundPx, paint);
+        // Fill in upper right corner
+        canvas.drawRect(topRightRect, paint);
+        // Fill in bottom corners
+        canvas.drawRect(leftRect, paint);
 
         paint.setXfermode(new PorterDuffXfermode(Mode.SRC_IN));
         canvas.drawBitmap(bitmap, rect, rect, paint);
 
         return output;
     }
+
+
     //获得带倒影的图片方法
     public static Bitmap createReflectionImageWithOrigin(Bitmap bitmap){
         final int reflectionGap = 4;

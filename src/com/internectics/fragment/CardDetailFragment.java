@@ -5,8 +5,10 @@ import android.app.AlertDialog;
 import android.content.*;
 import android.database.Cursor;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.graphics.Typeface;
+import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.*;
@@ -525,10 +527,8 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnKeyboa
                         } else { // it is a regular local image file
 
                             if (requestCode == CODE_REQUEST_IMAGE_SOURCE_IS_BACKGROUND) {
-                                //此时我们希望获取的图片大一些
-                                View cardView = mContentView.findViewById(R.id.card);
-                                int width = cardView.getWidth();
-                                resultBitmap = UIHelper.resizeImageTo(getActivity(), selectedURI,800);
+                                //此时我们希望获的图片大一些
+                                resultBitmap = UIHelper.resizeImageTo800(getActivity(), selectedURI);
 
                             } else {
                                 resultBitmap = UIHelper.resizeImageTo400(getActivity(), selectedURI);
@@ -763,8 +763,7 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnKeyboa
                                         } else {
                                             mCurrentCard.answer.backgroundImageUriFormatStr = "";
                                         }
-                                        ImageView backgroundImageView = (ImageView) mContentView.findViewById(R.id.card_background_image);
-                                        backgroundImageView.setImageDrawable(null);
+                                        setCardBackgroundImageDefault();
                                     }
                                 })
                                 .setNegativeButton("Change background image", new DialogInterface.OnClickListener() {
@@ -2988,29 +2987,39 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnKeyboa
 
 
 
+
+
     /*
       Be sure to have exact size of bitamp with card, othervise, the rounded size could vary;
      */
     private void setCardBackgroundImageWithBitmap(Bitmap bitmap) {
         //set background image
 
-        ImageView backgroundImageView = (ImageView) mContentView.findViewById(R.id.card_background_image);
+        int width = UIHelper.getCardBackgroundWidth(getActivity());
+        int height = UIHelper.getCardBackgroundHeight(getActivity());
 
-        backgroundImageView.setImageBitmap(bitmap);
+        Bitmap resizedBitmap = UIHelper.resizedBitmapWithScaleToFit(bitmap,width,height);
+
+        width = resizedBitmap.getWidth();
+        height = resizedBitmap.getHeight();
+
+        int pixel = getResources().getDimensionPixelSize(R.dimen.card_round_corner);
+        Bitmap bottomRightCornerBitmap = ImageUtil.getRoundedBottomRightCornerBitmap(resizedBitmap,pixel);
+
+        ImageView backgroundImageView = (ImageView) mContentView.findViewById(R.id.card_background_image);
+        backgroundImageView.setImageBitmap(bottomRightCornerBitmap);
 
     }
 
-    private void setCardBackgroundImageWithDrawable(Drawable drawable) {
-        //set background image
-        ImageView backgroundImageView = (ImageView) mContentView.findViewById(R.id.card_background_image);
-        backgroundImageView.setImageDrawable(drawable);
-    }
 
 
     private void setCardBackgroundImageWithUri(String uriString) {
         File f = new File(FileOperationHelper.deleteUriSchemeHeader(uriString));
         Drawable drawable = Drawable.createFromPath(f.getAbsolutePath());
-        setCardBackgroundImageWithDrawable(drawable);
+
+        Bitmap bitmap = ((BitmapDrawable)drawable).getBitmap();
+
+        setCardBackgroundImageWithBitmap(bitmap);
 
     }
 
