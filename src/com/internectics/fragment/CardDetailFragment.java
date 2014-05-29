@@ -3004,7 +3004,7 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnKeyboa
         height = resizedBitmap.getHeight();
 
         int pixel = getResources().getDimensionPixelSize(R.dimen.card_round_corner);
-        Bitmap bottomRightCornerBitmap = ImageUtil.getRoundedBottomRightCornerBitmap(resizedBitmap,pixel);
+        Bitmap bottomRightCornerBitmap = UIHelper.getRoundedBottomRightCornerBitmap(resizedBitmap,pixel);
 
         ImageView backgroundImageView = (ImageView) mContentView.findViewById(R.id.card_background_image);
         backgroundImageView.setImageBitmap(bottomRightCornerBitmap);

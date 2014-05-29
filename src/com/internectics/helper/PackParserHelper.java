@@ -30,6 +30,7 @@ public class PackParserHelper {
 
         File newFile;
 
+
         //step1: save pack
         File packJsonFile = new File(FileOperationHelper.downloadedPackDirectory(), "packInformation.json");
         Pack resultPack = parsePackJsonFile(packJsonFile.toString());
@@ -47,24 +48,45 @@ public class PackParserHelper {
             //从json获取到的filepath，只有文件名，没有路径，所以需要做如下操作：1. 定位到下载的地方；2. 拷贝到Images folder；3.组成uri格式的完整路径
 
             //coverImageUriFormatStr
+            if (StringUtils.isCorrectImageName(resultCard.coverImageUriFormatStr)) {
+                newFile = FileOperationHelper.copyImageVideoToImagesFolder(getCardImageFullPath(resultCard.coverImageUriFormatStr, i));
+                resultCard.coverImageUriFormatStr = FileOperationHelper.convertToUriFormatFile(newFile);
+            } else {
+                resultCard.coverImageUriFormatStr = "";
+            }
 
-            newFile = FileOperationHelper.copyImageVideoToImagesFolder(getCardImageFullPath(resultCard.coverImageUriFormatStr, i));
-            resultCard.coverImageUriFormatStr = FileOperationHelper.convertToUriFormatFile(newFile);
 
             //imageUriFormatStr
+            if (StringUtils.isCorrectImageName(resultCard.question.imageUriFormatStr)) {
+                newFile = FileOperationHelper.copyImageVideoToImagesFolder(getCardImageFullPath(resultCard.question.imageUriFormatStr, i));
+                resultCard.question.imageUriFormatStr = FileOperationHelper.convertToUriFormatFile(newFile);
+            } else {
+                resultCard.question.imageUriFormatStr = "";
+            }
+            if (StringUtils.isCorrectImageName(resultCard.answer.imageUriFormatStr)) {
+                newFile = FileOperationHelper.copyImageVideoToImagesFolder(getCardImageFullPath(resultCard.answer.imageUriFormatStr, i));
+                resultCard.answer.imageUriFormatStr = FileOperationHelper.convertToUriFormatFile(newFile);
+            } else {
+                resultCard.answer.imageUriFormatStr = "";
+            }
 
-            newFile = FileOperationHelper.copyImageVideoToImagesFolder(getCardImageFullPath(resultCard.question.imageUriFormatStr, i));
-            resultCard.question.imageUriFormatStr = FileOperationHelper.convertToUriFormatFile(newFile);
-            newFile = FileOperationHelper.copyImageVideoToImagesFolder(getCardImageFullPath(resultCard.answer.imageUriFormatStr, i));
-            resultCard.answer.imageUriFormatStr = FileOperationHelper.convertToUriFormatFile(newFile);
 
             //backgroundImageUriFormatStr
+            if (StringUtils.isCorrectImageName(resultCard.question.backgroundImageUriFormatStr)) {
+                newFile = FileOperationHelper.copyImageVideoToImagesFolder(getCardImageFullPath(resultCard.question.backgroundImageUriFormatStr, i));
+                resultCard.question.backgroundImageUriFormatStr = FileOperationHelper.convertToUriFormatFile(newFile);
+            } else {
+                resultCard.question.backgroundImageUriFormatStr = "";
 
-            newFile = FileOperationHelper.copyImageVideoToImagesFolder(getCardImageFullPath(resultCard.question.backgroundImageUriFormatStr, i));
-            resultCard.question.backgroundImageUriFormatStr = FileOperationHelper.convertToUriFormatFile(newFile);
+            }
+            if (StringUtils.isCorrectImageName(resultCard.answer.backgroundImageUriFormatStr)) {
+                newFile = FileOperationHelper.copyImageVideoToImagesFolder(getCardImageFullPath(resultCard.answer.backgroundImageUriFormatStr, i));
+                resultCard.answer.backgroundImageUriFormatStr = FileOperationHelper.convertToUriFormatFile(newFile);
+            } else {
+                resultCard.answer.backgroundImageUriFormatStr = "";
+            }
 
-            newFile = FileOperationHelper.copyImageVideoToImagesFolder(getCardImageFullPath(resultCard.answer.backgroundImageUriFormatStr, i));
-            resultCard.answer.backgroundImageUriFormatStr = FileOperationHelper.convertToUriFormatFile(newFile);
+
 
             //movieUriFormatStr
 

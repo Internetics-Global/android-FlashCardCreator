@@ -84,6 +84,37 @@ public class UIHelper {
         return resizeBitmap;
     }
 
+    /*
+     * 单位是pixel
+     */
+    public static Bitmap getRoundedBottomRightCornerBitmap(Bitmap bitmap, int pixels) {
+        Bitmap output = Bitmap.createBitmap(bitmap.getWidth(), bitmap
+                .getHeight(), Bitmap.Config.ARGB_8888);
+        Canvas canvas = new Canvas(output);
+
+        final int color = 0xff424242;
+        final Paint paint = new Paint();
+        final Rect rect = new Rect(0, 0, bitmap.getWidth(), bitmap.getHeight());
+        final RectF rectF = new RectF(rect);
+        final float roundPx = pixels;
+        final Rect topRightRect = new Rect(bitmap.getWidth()/2, 0, bitmap.getWidth(), bitmap.getHeight()/2);
+        final Rect leftRect = new Rect(0, 0, bitmap.getHeight()/2, bitmap.getHeight());
+
+        paint.setAntiAlias(true);
+        canvas.drawARGB(0, 0, 0, 0);
+        paint.setColor(color);
+        canvas.drawRoundRect(rectF, roundPx, roundPx, paint);
+        // Fill in upper right corner
+        canvas.drawRect(topRightRect, paint);
+        // Fill in bottom corners
+        canvas.drawRect(leftRect, paint);
+
+        paint.setXfermode(new PorterDuffXfermode(PorterDuff.Mode.SRC_IN));
+        canvas.drawBitmap(bitmap, rect, rect, paint);
+
+        return output;
+    }
+
 
 
     public static Bitmap resizedBitmapWithScaleToFit(Bitmap bm, int newWidth,int newHeight) {
