@@ -177,11 +177,12 @@
                     android:layout_height="0dp"
                     android:layout_weight="440">
 
-                    <ImageView
+                    <com.internectics.UI.RoundedBottomRightImageView
                         android:id="@+id/card_background_image"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
-                        android:scaleType="fitXY"
+                        android:scaleType="centerCrop"
+                        android:adjustViewBounds="true"
                         android:src="@null" />
 
                     <LinearLayout

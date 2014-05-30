@@ -24,6 +24,7 @@ import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.*;
 import com.internectics.UI.FCCEditText;
+import com.internectics.UI.RoundedBottomRightImageView;
 import com.internectics.android_flashcardcreator.MainActivity;
 import com.internectics.android_flashcardcreator.R;
 import com.internectics.android_flashcardcreator.VideoViewActivity;
@@ -195,6 +196,12 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnKeyboa
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+
+        if (Build.VERSION.SDK_INT >=18) {
+            getActivity().getWindow().setFlags(WindowManager.LayoutParams.FLAG_HARDWARE_ACCELERATED, WindowManager.LayoutParams.FLAG_HARDWARE_ACCELERATED);
+        } else {
+
+        }
 
         mIMM = (InputMethodManager) (getActivity().getSystemService(Context.INPUT_METHOD_SERVICE));
 
@@ -2995,19 +3002,20 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnKeyboa
     private void setCardBackgroundImageWithBitmap(Bitmap bitmap) {
         //set background image
 
-        int width = UIHelper.getCardBackgroundWidth(getActivity(),mIsPlayingCard);
-        int height = UIHelper.getCardBackgroundHeight(getActivity(),mIsPlayingCard);
+// 我们comment掉，因为有一种更好的解决方法（注释掉的方法执行效率较低）
+//        int width = UIHelper.getCardBackgroundWidth(getActivity(),mIsPlayingCard);
+//        int height = UIHelper.getCardBackgroundHeight(getActivity(),mIsPlayingCard);
+//
+//        Bitmap resizedBitmap = UIHelper.resizedBitmapWithScaleToFit(bitmap,width,height);
+//
+//        width = resizedBitmap.getWidth();
+//        height = resizedBitmap.getHeight();
+//
+//        int pixel = getResources().getDimensionPixelSize(R.dimen.card_round_corner);
+//        Bitmap bottomRightCornerBitmap = UIHelper.getRoundedBottomRightCornerBitmap(resizedBitmap,pixel);
 
-        Bitmap resizedBitmap = UIHelper.resizedBitmapWithScaleToFit(bitmap,width,height);
-
-        width = resizedBitmap.getWidth();
-        height = resizedBitmap.getHeight();
-
-        int pixel = getResources().getDimensionPixelSize(R.dimen.card_round_corner);
-        Bitmap bottomRightCornerBitmap = UIHelper.getRoundedBottomRightCornerBitmap(resizedBitmap,pixel);
-
-        ImageView backgroundImageView = (ImageView) mContentView.findViewById(R.id.card_background_image);
-        backgroundImageView.setImageBitmap(bottomRightCornerBitmap);
+        RoundedBottomRightImageView backgroundImageView = (RoundedBottomRightImageView) mContentView.findViewById(R.id.card_background_image);
+        backgroundImageView.setImageBitmap(bitmap);
 
     }
 
@@ -3025,7 +3033,7 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnKeyboa
 
 
     private void setCardBackgroundImageDefault () {
-        ImageView backgroundImageView = (ImageView) mContentView.findViewById(R.id.card_background_image);
+        RoundedBottomRightImageView backgroundImageView = (RoundedBottomRightImageView) mContentView.findViewById(R.id.card_background_image);
         backgroundImageView.setImageBitmap(null);
 
     }
