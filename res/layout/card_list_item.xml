@@ -48,7 +48,7 @@
             android:layout_height="wrap_content"
             android:layout_width="0dp">
 
-        <com.internectics.UI.FCCImageView
+        <com.internectics.UI.RoundedImageView
                 android:id="@+id/card_list_item_cover_image"
                 android:layout_width="fill_parent"
                 android:adjustViewBounds="true"

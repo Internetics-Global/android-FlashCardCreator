@@ -17,6 +17,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
+import com.internectics.UI.RoundedImageView;
 import com.internectics.android_flashcardcreator.MainActivity;
 import com.internectics.android_flashcardcreator.R;
 import com.internectics.data.Card;
@@ -211,7 +212,7 @@ public class CardListFragment extends Fragment {
         public View getView(final int position, View convertView, ViewGroup parent) {
             View v = super.getView(position, convertView, parent);
 
-            ImageView coverImage = (ImageView) v.findViewById(R.id.card_list_item_cover_image);
+            ImageView coverImage = (RoundedImageView) v.findViewById(R.id.card_list_item_cover_image);
 
             ImageView coverImageMask = (ImageView) v.findViewById(R.id.card_list_item_cover_image_mask);
 
