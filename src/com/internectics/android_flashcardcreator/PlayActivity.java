@@ -184,16 +184,7 @@ public class PlayActivity extends FragmentActivity implements SensorEventListene
 
     private void playAudio() {
 
-        Boolean isSimulator = Build.FINGERPRINT.startsWith("generic");
-        if (isSimulator) {
-            Toast.makeText(PlayActivity.this,"Audio possily could not be supported on simulator",Toast.LENGTH_LONG).show();
-            return;
-        }
-
-
         CardDetailFragment cardDetailFragment = (CardDetailFragment) (mFragments.get(mPosition));
-
-
 
         String targetStr;
         if (cardDetailFragment.mIsQuestionShowing) {
@@ -203,7 +194,13 @@ public class PlayActivity extends FragmentActivity implements SensorEventListene
         }
 
         if (targetStr.length() >0) {
-            AudioHelper.playAudio(FileOperationHelper.deleteUriSchemeHeader(targetStr));
+            Boolean isSimulator = Build.FINGERPRINT.startsWith("generic");
+            if (isSimulator) {
+                Toast.makeText(PlayActivity.this,"Audio possily could not be supported on simulator",Toast.LENGTH_LONG).show();
+            } else {
+                AudioHelper.playAudio(FileOperationHelper.deleteUriSchemeHeader(targetStr));
+            }
+
         } else {
             //Toast.makeText(PlayActivity.this,"Not available audio file", Toast.LENGTH_LONG).show();
         }
