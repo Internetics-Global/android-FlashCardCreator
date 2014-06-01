@@ -1,0 +1,486 @@
+ECLIPSE ANDROID PROJECT IMPORT SUMMARY
+======================================
+
+Manifest Merging:
+-----------------
+Your project uses libraries that provide manifests, and your Eclipse
+project did not explicitly turn on manifest merging. In Android Gradle
+projects, manifests are always merged (meaning that contents from your
+libraries' manifests will be merged into the app manifest. If you had
+manually copied contents from library manifests into your app manifest
+you may need to remove these for the app to build correctly.
+
+Ignored Files:
+--------------
+The following files were *not* copied into the new Gradle project; you
+should evaluate whether these are still needed in your project and if
+so manually move them:
+
+From Android-FlashCardCreator:
+* .DS_Store
+* .gitignore
+* .idea/
+* .idea/.DS_Store
+* .idea/.name
+* .idea/ant.xml
+* .idea/codeStyleSettings.xml
+* .idea/compiler.xml
+* .idea/copyright/
+* .idea/copyright/profiles_settings.xml
+* .idea/dictionaries/
+* .idea/dictionaries/BourneWang.xml
+* .idea/encodings.xml
+* .idea/inspectionProfiles/
+* .idea/inspectionProfiles/Project_Default.xml
+* .idea/inspectionProfiles/profiles_settings.xml
+* .idea/libraries/
+* .idea/libraries/.DS_Store
+* .idea/libraries/android_support_v43.xml
+* .idea/libraries/libs.xml
+* .idea/misc.xml
+* .idea/modules.xml
+* .idea/scopes/
+* .idea/scopes/scope_settings.xml
+* .idea/uiDesigner.xml
+* .idea/vcs.xml
+* .idea/workspace.xml
+* android-FlashCardCreator.iml
+* ic_launcher-web.png
+* out/
+* out/production/
+* out/production/NewQuickAction3D/
+* out/production/NewQuickAction3D/net/
+* out/production/NewQuickAction3D/net/londatiga/
+* out/production/NewQuickAction3D/net/londatiga/android/
+* out/production/NewQuickAction3D/net/londatiga/android/ActionItem.class
+* out/production/NewQuickAction3D/net/londatiga/android/BuildConfig.class
+* out/production/NewQuickAction3D/net/londatiga/android/ExampleActivity$1.class
+* out/production/NewQuickAction3D/net/londatiga/android/ExampleActivity$2.class
+* out/production/NewQuickAction3D/net/londatiga/android/ExampleActivity$3.class
+* out/production/NewQuickAction3D/net/londatiga/android/ExampleActivity$4.class
+* out/production/NewQuickAction3D/net/londatiga/android/ExampleActivity$5.class
+* out/production/NewQuickAction3D/net/londatiga/android/ExampleActivity.class
+* out/production/NewQuickAction3D/net/londatiga/android/PopupWindows$1.class
+* out/production/NewQuickAction3D/net/londatiga/android/PopupWindows.class
+* out/production/NewQuickAction3D/net/londatiga/android/QuickAction$1.class
+* out/production/NewQuickAction3D/net/londatiga/android/QuickAction$OnActionItemClickListener.class
+* out/production/NewQuickAction3D/net/londatiga/android/QuickAction$OnDismissListener.class
+* out/production/NewQuickAction3D/net/londatiga/android/QuickAction.class
+* out/production/NewQuickAction3D/net/londatiga/android/R$anim.class
+* out/production/NewQuickAction3D/net/londatiga/android/R$attr.class
+* out/production/NewQuickAction3D/net/londatiga/android/R$drawable.class
+* out/production/NewQuickAction3D/net/londatiga/android/R$id.class
+* out/production/NewQuickAction3D/net/londatiga/android/R$layout.class
+* out/production/NewQuickAction3D/net/londatiga/android/R$string.class
+* out/production/NewQuickAction3D/net/londatiga/android/R$style.class
+* out/production/NewQuickAction3D/net/londatiga/android/R.class
+* out/production/android-FlashCardCreator/
+* out/production/android-FlashCardCreator/android-FlashCardCreator.apk
+* out/production/android-FlashCardCreator/android-FlashCardCreator.unaligned.apk
+* out/production/android-FlashCardCreator/com/
+* out/production/android-FlashCardCreator/com/internectics/
+* out/production/android-FlashCardCreator/com/internectics/UI/
+* out/production/android-FlashCardCreator/com/internectics/UI/FCCEditText$OnKeyboardCloseListener.class
+* out/production/android-FlashCardCreator/com/internectics/UI/FCCEditText.class
+* out/production/android-FlashCardCreator/com/internectics/UI/FCCImageView.class
+* out/production/android-FlashCardCreator/com/internectics/UI/RoundedBottomRightImageView.class
+* out/production/android-FlashCardCreator/com/internectics/UI/RoundedImageView.class
+* out/production/android-FlashCardCreator/com/internectics/UI/SmoothGallery.class
+* out/production/android-FlashCardCreator/com/internectics/android_flashcardcreator/
+* out/production/android-FlashCardCreator/com/internectics/android_flashcardcreator/AboutActivity.class
+* out/production/android-FlashCardCreator/com/internectics/android_flashcardcreator/AppStart$1.class
+* out/production/android-FlashCardCreator/com/internectics/android_flashcardcreator/AppStart.class
+* out/production/android-FlashCardCreator/com/internectics/android_flashcardcreator/BuildConfig.class
+* out/production/android-FlashCardCreator/com/internectics/android_flashcardcreator/InstructionActivity$ImageAdapter.class
+* out/production/android-FlashCardCreator/com/internectics/android_flashcardcreator/InstructionActivity.class
+* out/production/android-FlashCardCreator/com/internectics/android_flashcardcreator/MainActivity$1.class
+* out/production/android-FlashCardCreator/com/internectics/android_flashcardcreator/MainActivity$10.class
+* out/production/android-FlashCardCreator/com/internectics/android_flashcardcreator/MainActivity$11$1$1.class
+* out/production/android-FlashCardCreator/com/internectics/android_flashcardcreator/MainActivity$11$1.class
+* out/production/android-FlashCardCreator/com/internectics/android_flashcardcreator/MainActivity$11.class
+* out/production/android-FlashCardCreator/com/internectics/android_flashcardcreator/MainActivity$12.class
+* out/production/android-FlashCardCreator/com/internectics/android_flashcardcreator/MainActivity$13.class
+* out/production/android-FlashCardCreator/com/internectics/android_flashcardcreator/MainActivity$14.class
+* out/production/android-FlashCardCreator/com/internectics/android_flashcardcreator/MainActivity$15.class
+* out/production/android-FlashCardCreator/com/internectics/android_flashcardcreator/MainActivity$16.class
+* out/production/android-FlashCardCreator/com/internectics/android_flashcardcreator/MainActivity$17.class
+* out/production/android-FlashCardCreator/com/internectics/android_flashcardcreator/MainActivity$18.class
+* out/production/android-FlashCardCreator/com/internectics/android_flashcardcreator/MainActivity$19.class
+* out/production/android-FlashCardCreator/com/internectics/android_flashcardcreator/MainActivity$2.class
+* out/production/android-FlashCardCreator/com/internectics/android_flashcardcreator/MainActivity$3.class
+* out/production/android-FlashCardCreator/com/internectics/android_flashcardcreator/MainActivity$4.class
+* out/production/android-FlashCardCreator/com/internectics/android_flashcardcreator/MainActivity$5.class
+* out/production/android-FlashCardCreator/com/internectics/android_flashcardcreator/MainActivity$6.class
+* out/production/android-FlashCardCreator/com/internectics/android_flashcardcreator/MainActivity$7.class
+* out/production/android-FlashCardCreator/com/internectics/android_flashcardcreator/MainActivity$8.class
+* out/production/android-FlashCardCreator/com/internectics/android_flashcardcreator/MainActivity$9.class
+* out/production/android-FlashCardCreator/com/internectics/android_flashcardcreator/MainActivity$ShowPacklistAfterViewDidAppearTask.class
+* out/production/android-FlashCardCreator/com/internectics/android_flashcardcreator/MainActivity.class
+* out/production/android-FlashCardCreator/com/internectics/android_flashcardcreator/MoreActivity$1.class
+* out/production/android-FlashCardCreator/com/internectics/android_flashcardcreator/MoreActivity$2.class
+* out/production/android-FlashCardCreator/com/internectics/android_flashcardcreator/MoreActivity$3.class
+* out/production/android-FlashCardCreator/com/internectics/android_flashcardcreator/MoreActivity$4.class
+* out/production/android-FlashCardCreator/com/internectics/android_flashcardcreator/MoreActivity.class
+* out/production/android-FlashCardCreator/com/internectics/android_flashcardcreator/PlayActivity$1.class
+* out/production/android-FlashCardCreator/com/internectics/android_flashcardcreator/PlayActivity$2.class
+* out/production/android-FlashCardCreator/com/internectics/android_flashcardcreator/PlayActivity$3.class
+* out/production/android-FlashCardCreator/com/internectics/android_flashcardcreator/PlayActivity$FCCPageAdapter.class
+* out/production/android-FlashCardCreator/com/internectics/android_flashcardcreator/PlayActivity.class
+* out/production/android-FlashCardCreator/com/internectics/android_flashcardcreator/R$anim.class
+* out/production/android-FlashCardCreator/com/internectics/android_flashcardcreator/R$array.class
+* out/production/android-FlashCardCreator/com/internectics/android_flashcardcreator/R$attr.class
+* out/production/android-FlashCardCreator/com/internectics/android_flashcardcreator/R$bool.class
+* out/production/android-FlashCardCreator/com/internectics/android_flashcardcreator/R$color.class
+* out/production/android-FlashCardCreator/com/internectics/android_flashcardcreator/R$dimen.class
+* out/production/android-FlashCardCreator/com/internectics/android_flashcardcreator/R$drawable.class
+* out/production/android-FlashCardCreator/com/internectics/android_flashcardcreator/R$id.class
+* out/production/android-FlashCardCreator/com/internectics/android_flashcardcreator/R$integer.class
+* out/production/android-FlashCardCreator/com/internectics/android_flashcardcreator/R$layout.class
+* out/production/android-FlashCardCreator/com/internectics/android_flashcardcreator/R$menu.class
+* out/production/android-FlashCardCreator/com/internectics/android_flashcardcreator/R$string.class
+* out/production/android-FlashCardCreator/com/internectics/android_flashcardcreator/R$style.class
+* out/production/android-FlashCardCreator/com/internectics/android_flashcardcreator/R$styleable.class
+* out/production/android-FlashCardCreator/com/internectics/android_flashcardcreator/R$xml.class
+* out/production/android-FlashCardCreator/com/internectics/android_flashcardcreator/R.class
+* out/production/android-FlashCardCreator/com/internectics/android_flashcardcreator/VideoViewActivity.class
+* out/production/android-FlashCardCreator/com/internectics/android_flashcardcreator/WebViewActivity$1.class
+* out/production/android-FlashCardCreator/com/internectics/android_flashcardcreator/WebViewActivity$2.class
+* out/production/android-FlashCardCreator/com/internectics/android_flashcardcreator/WebViewActivity.class
+* out/production/android-FlashCardCreator/com/internectics/data/
+* out/production/android-FlashCardCreator/com/internectics/data/Answer.class
+* out/production/android-FlashCardCreator/com/internectics/data/CSS.class
+* out/production/android-FlashCardCreator/com/internectics/data/Card.class
+* out/production/android-FlashCardCreator/com/internectics/data/Pack$1.class
+* out/production/android-FlashCardCreator/com/internectics/data/Pack.class
+* out/production/android-FlashCardCreator/com/internectics/data/Question.class
+* out/production/android-FlashCardCreator/com/internectics/data/User$1.class
+* out/production/android-FlashCardCreator/com/internectics/data/User$2.class
+* out/production/android-FlashCardCreator/com/internectics/data/User$3.class
+* out/production/android-FlashCardCreator/com/internectics/data/User$4.class
+* out/production/android-FlashCardCreator/com/internectics/data/User.class
+* out/production/android-FlashCardCreator/com/internectics/fragment/
+* out/production/android-FlashCardCreator/com/internectics/fragment/AddPackFragment$1.class
+* out/production/android-FlashCardCreator/com/internectics/fragment/AddPackFragment$2.class
+* out/production/android-FlashCardCreator/com/internectics/fragment/AddPackFragment$3.class
+* out/production/android-FlashCardCreator/com/internectics/fragment/AddPackFragment$4.class
+* out/production/android-FlashCardCreator/com/internectics/fragment/AddPackFragment$5.class
+* out/production/android-FlashCardCreator/com/internectics/fragment/AddPackFragment$6$1.class
+* out/production/android-FlashCardCreator/com/internectics/fragment/AddPackFragment$6.class
+* out/production/android-FlashCardCreator/com/internectics/fragment/AddPackFragment.class
+* out/production/android-FlashCardCreator/com/internectics/fragment/CardDetailFragment$1.class
+* out/production/android-FlashCardCreator/com/internectics/fragment/CardDetailFragment$10.class
+* out/production/android-FlashCardCreator/com/internectics/fragment/CardDetailFragment$11.class
+* out/production/android-FlashCardCreator/com/internectics/fragment/CardDetailFragment$12.class
+* out/production/android-FlashCardCreator/com/internectics/fragment/CardDetailFragment$13.class
+* out/production/android-FlashCardCreator/com/internectics/fragment/CardDetailFragment$14.class
+* out/production/android-FlashCardCreator/com/internectics/fragment/CardDetailFragment$15.class
+* out/production/android-FlashCardCreator/com/internectics/fragment/CardDetailFragment$16.class
+* out/production/android-FlashCardCreator/com/internectics/fragment/CardDetailFragment$17$1.class
+* out/production/android-FlashCardCreator/com/internectics/fragment/CardDetailFragment$17.class
+* out/production/android-FlashCardCreator/com/internectics/fragment/CardDetailFragment$18$1.class
+* out/production/android-FlashCardCreator/com/internectics/fragment/CardDetailFragment$18.class
+* out/production/android-FlashCardCreator/com/internectics/fragment/CardDetailFragment$19.class
+* out/production/android-FlashCardCreator/com/internectics/fragment/CardDetailFragment$2.class
+* out/production/android-FlashCardCreator/com/internectics/fragment/CardDetailFragment$20.class
+* out/production/android-FlashCardCreator/com/internectics/fragment/CardDetailFragment$21.class
+* out/production/android-FlashCardCreator/com/internectics/fragment/CardDetailFragment$22.class
+* out/production/android-FlashCardCreator/com/internectics/fragment/CardDetailFragment$23.class
+* out/production/android-FlashCardCreator/com/internectics/fragment/CardDetailFragment$24.class
+* out/production/android-FlashCardCreator/com/internectics/fragment/CardDetailFragment$25.class
+* out/production/android-FlashCardCreator/com/internectics/fragment/CardDetailFragment$26.class
+* out/production/android-FlashCardCreator/com/internectics/fragment/CardDetailFragment$27.class
+* out/production/android-FlashCardCreator/com/internectics/fragment/CardDetailFragment$28.class
+* out/production/android-FlashCardCreator/com/internectics/fragment/CardDetailFragment$29.class
+* out/production/android-FlashCardCreator/com/internectics/fragment/CardDetailFragment$3.class
+* out/production/android-FlashCardCreator/com/internectics/fragment/CardDetailFragment$30.class
+* out/production/android-FlashCardCreator/com/internectics/fragment/CardDetailFragment$31.class
+* out/production/android-FlashCardCreator/com/internectics/fragment/CardDetailFragment$32.class
+* out/production/android-FlashCardCreator/com/internectics/fragment/CardDetailFragment$33.class
+* out/production/android-FlashCardCreator/com/internectics/fragment/CardDetailFragment$34.class
+* out/production/android-FlashCardCreator/com/internectics/fragment/CardDetailFragment$35.class
+* out/production/android-FlashCardCreator/com/internectics/fragment/CardDetailFragment$36.class
+* out/production/android-FlashCardCreator/com/internectics/fragment/CardDetailFragment$37.class
+* out/production/android-FlashCardCreator/com/internectics/fragment/CardDetailFragment$38.class
+* out/production/android-FlashCardCreator/com/internectics/fragment/CardDetailFragment$39.class
+* out/production/android-FlashCardCreator/com/internectics/fragment/CardDetailFragment$4.class
+* out/production/android-FlashCardCreator/com/internectics/fragment/CardDetailFragment$40.class
+* out/production/android-FlashCardCreator/com/internectics/fragment/CardDetailFragment$41.class
+* out/production/android-FlashCardCreator/com/internectics/fragment/CardDetailFragment$5.class
+* out/production/android-FlashCardCreator/com/internectics/fragment/CardDetailFragment$6.class
+* out/production/android-FlashCardCreator/com/internectics/fragment/CardDetailFragment$7$1.class
+* out/production/android-FlashCardCreator/com/internectics/fragment/CardDetailFragment$7$2.class
+* out/production/android-FlashCardCreator/com/internectics/fragment/CardDetailFragment$7.class
+* out/production/android-FlashCardCreator/com/internectics/fragment/CardDetailFragment$8.class
+* out/production/android-FlashCardCreator/com/internectics/fragment/CardDetailFragment$9.class
+* out/production/android-FlashCardCreator/com/internectics/fragment/CardDetailFragment$ViewDidAppearTask.class
+* out/production/android-FlashCardCreator/com/internectics/fragment/CardDetailFragment.class
+* out/production/android-FlashCardCreator/com/internectics/fragment/CardListFragment$1.class
+* out/production/android-FlashCardCreator/com/internectics/fragment/CardListFragment$2.class
+* out/production/android-FlashCardCreator/com/internectics/fragment/CardListFragment$3.class
+* out/production/android-FlashCardCreator/com/internectics/fragment/CardListFragment$Callbacks.class
+* out/production/android-FlashCardCreator/com/internectics/fragment/CardListFragment$FCCdapter$1.class
+* out/production/android-FlashCardCreator/com/internectics/fragment/CardListFragment$FCCdapter.class
+* out/production/android-FlashCardCreator/com/internectics/fragment/CardListFragment$MasterFragmentReceiver.class
+* out/production/android-FlashCardCreator/com/internectics/fragment/CardListFragment.class
+* out/production/android-FlashCardCreator/com/internectics/fragment/CreateSoundFragment$1.class
+* out/production/android-FlashCardCreator/com/internectics/fragment/CreateSoundFragment$2.class
+* out/production/android-FlashCardCreator/com/internectics/fragment/CreateSoundFragment$3.class
+* out/production/android-FlashCardCreator/com/internectics/fragment/CreateSoundFragment$Record_Status.class
+* out/production/android-FlashCardCreator/com/internectics/fragment/CreateSoundFragment$TimerAysncTask.class
+* out/production/android-FlashCardCreator/com/internectics/fragment/CreateSoundFragment.class
+* out/production/android-FlashCardCreator/com/internectics/fragment/PackListFragment$1.class
+* out/production/android-FlashCardCreator/com/internectics/fragment/PackListFragment$2.class
+* out/production/android-FlashCardCreator/com/internectics/fragment/PackListFragment$3.class
+* out/production/android-FlashCardCreator/com/internectics/fragment/PackListFragment$4.class
+* out/production/android-FlashCardCreator/com/internectics/fragment/PackListFragment$5.class
+* out/production/android-FlashCardCreator/com/internectics/fragment/PackListFragment$ImageAdapter$1.class
+* out/production/android-FlashCardCreator/com/internectics/fragment/PackListFragment$ImageAdapter$2.class
+* out/production/android-FlashCardCreator/com/internectics/fragment/PackListFragment$ImageAdapter$3.class
+* out/production/android-FlashCardCreator/com/internectics/fragment/PackListFragment$ImageAdapter$4$1.class
+* out/production/android-FlashCardCreator/com/internectics/fragment/PackListFragment$ImageAdapter$4.class
+* out/production/android-FlashCardCreator/com/internectics/fragment/PackListFragment$ImageAdapter.class
+* out/production/android-FlashCardCreator/com/internectics/fragment/PackListFragment.class
+* out/production/android-FlashCardCreator/com/internectics/fragment/SymbolBoxFragment$SymbolPageAdapter.class
+* out/production/android-FlashCardCreator/com/internectics/fragment/SymbolBoxFragment.class
+* out/production/android-FlashCardCreator/com/internectics/fragment/SymbolGridViewFragment$1.class
+* out/production/android-FlashCardCreator/com/internectics/fragment/SymbolGridViewFragment$SymbolAdapter.class
+* out/production/android-FlashCardCreator/com/internectics/fragment/SymbolGridViewFragment.class
+* out/production/android-FlashCardCreator/com/internectics/helper/
+* out/production/android-FlashCardCreator/com/internectics/helper/AmazonSDB/
+* out/production/android-FlashCardCreator/com/internectics/helper/AmazonSDB/AmazonClientManager.class
+* out/production/android-FlashCardCreator/com/internectics/helper/AmazonSDB/SimpleDBHelper.class
+* out/production/android-FlashCardCreator/com/internectics/helper/AudioHelper$1.class
+* out/production/android-FlashCardCreator/com/internectics/helper/AudioHelper$2.class
+* out/production/android-FlashCardCreator/com/internectics/helper/AudioHelper$3.class
+* out/production/android-FlashCardCreator/com/internectics/helper/AudioHelper$4.class
+* out/production/android-FlashCardCreator/com/internectics/helper/AudioHelper.class
+* out/production/android-FlashCardCreator/com/internectics/helper/DropboxHelper.class
+* out/production/android-FlashCardCreator/com/internectics/helper/FileOperationHelper.class
+* out/production/android-FlashCardCreator/com/internectics/helper/PackBuildHelper.class
+* out/production/android-FlashCardCreator/com/internectics/helper/PackDownloadHelper$1.class
+* out/production/android-FlashCardCreator/com/internectics/helper/PackDownloadHelper$2.class
+* out/production/android-FlashCardCreator/com/internectics/helper/PackDownloadHelper$3.class
+* out/production/android-FlashCardCreator/com/internectics/helper/PackDownloadHelper.class
+* out/production/android-FlashCardCreator/com/internectics/helper/PackParserHelper.class
+* out/production/android-FlashCardCreator/com/internectics/helper/PackRecordHelper.class
+* out/production/android-FlashCardCreator/com/internectics/helper/PackUploadHelper$1.class
+* out/production/android-FlashCardCreator/com/internectics/helper/PackUploadHelper.class
+* out/production/android-FlashCardCreator/com/internectics/helper/SQLiteHelper$DBOpenHelper.class
+* out/production/android-FlashCardCreator/com/internectics/helper/SQLiteHelper.class
+* out/production/android-FlashCardCreator/com/internectics/helper/ShareLinkHelper$1.class
+* out/production/android-FlashCardCreator/com/internectics/helper/ShareLinkHelper$2.class
+* out/production/android-FlashCardCreator/com/internectics/helper/ShareLinkHelper$3.class
+* out/production/android-FlashCardCreator/com/internectics/helper/ShareLinkHelper$4.class
+* out/production/android-FlashCardCreator/com/internectics/helper/ShareLinkHelper$5.class
+* out/production/android-FlashCardCreator/com/internectics/helper/ShareLinkHelper$6.class
+* out/production/android-FlashCardCreator/com/internectics/helper/ShareLinkHelper$7.class
+* out/production/android-FlashCardCreator/com/internectics/helper/ShareLinkHelper$8.class
+* out/production/android-FlashCardCreator/com/internectics/helper/ShareLinkHelper.class
+* out/production/android-FlashCardCreator/com/internectics/helper/SymbolHelper.class
+* out/production/android-FlashCardCreator/com/internectics/helper/ZipFileHelper.class
+* out/production/android-FlashCardCreator/com/internectics/model/
+* out/production/android-FlashCardCreator/com/internectics/model/CardListModel$1.class
+* out/production/android-FlashCardCreator/com/internectics/model/CardListModel.class
+* out/production/android-FlashCardCreator/com/internectics/util/
+* out/production/android-FlashCardCreator/com/internectics/util/AppConfig.class
+* out/production/android-FlashCardCreator/com/internectics/util/AppContext.class
+* out/production/android-FlashCardCreator/com/internectics/util/FontCache.class
+* out/production/android-FlashCardCreator/com/internectics/util/FontHelper.class
+* out/production/android-FlashCardCreator/com/internectics/util/Global.class
+* out/production/android-FlashCardCreator/com/internectics/util/OpenUDID_manager$ValueComparator.class
+* out/production/android-FlashCardCreator/com/internectics/util/OpenUDID_manager.class
+* out/production/android-FlashCardCreator/com/internectics/util/OpenUDID_service$1.class
+* out/production/android-FlashCardCreator/com/internectics/util/OpenUDID_service.class
+* out/production/android-FlashCardCreator/com/internectics/util/StringUtils.class
+* out/production/android-FlashCardCreator/com/internectics/util/UIHelper.class
+* out/production/android-FlashCardCreator/com/internectics/util/VGViewPager$MyScroller.class
+* out/production/android-FlashCardCreator/com/internectics/util/VGViewPager.class
+* out/production/android-FlashCardCreator/com/mobeta/
+* out/production/android-FlashCardCreator/com/mobeta/android/
+* out/production/android-FlashCardCreator/com/mobeta/android/dslv/
+* out/production/android-FlashCardCreator/com/mobeta/android/dslv/BuildConfig.class
+* out/production/android-FlashCardCreator/com/mobeta/android/dslv/R$attr.class
+* out/production/android-FlashCardCreator/com/mobeta/android/dslv/R$id.class
+* out/production/android-FlashCardCreator/com/mobeta/android/dslv/R$styleable.class
+* out/production/android-FlashCardCreator/com/mobeta/android/dslv/R.class
+* out/production/android-FlashCardCreator/net/
+* out/production/android-FlashCardCreator/net/londatiga/
+* out/production/android-FlashCardCreator/net/londatiga/android/
+* out/production/android-FlashCardCreator/net/londatiga/android/BuildConfig.class
+* out/production/android-FlashCardCreator/net/londatiga/android/R$anim.class
+* out/production/android-FlashCardCreator/net/londatiga/android/R$drawable.class
+* out/production/android-FlashCardCreator/net/londatiga/android/R$id.class
+* out/production/android-FlashCardCreator/net/londatiga/android/R$layout.class
+* out/production/android-FlashCardCreator/net/londatiga/android/R$string.class
+* out/production/android-FlashCardCreator/net/londatiga/android/R$style.class
+* out/production/android-FlashCardCreator/net/londatiga/android/R.class
+* out/production/android-FlashCardCreator/org/
+* out/production/android-FlashCardCreator/org/taptwo/
+* out/production/android-FlashCardCreator/org/taptwo/android/
+* out/production/android-FlashCardCreator/org/taptwo/android/widget/
+* out/production/android-FlashCardCreator/org/taptwo/android/widget/viewflow/
+* out/production/android-FlashCardCreator/org/taptwo/android/widget/viewflow/BuildConfig.class
+* out/production/android-FlashCardCreator/org/taptwo/android/widget/viewflow/R$attr.class
+* out/production/android-FlashCardCreator/org/taptwo/android/widget/viewflow/R$drawable.class
+* out/production/android-FlashCardCreator/org/taptwo/android/widget/viewflow/R$id.class
+* out/production/android-FlashCardCreator/org/taptwo/android/widget/viewflow/R$string.class
+* out/production/android-FlashCardCreator/org/taptwo/android/widget/viewflow/R$styleable.class
+* out/production/android-FlashCardCreator/org/taptwo/android/widget/viewflow/R.class
+* out/production/drag-sort-listview/
+* out/production/drag-sort-listview/com/
+* out/production/drag-sort-listview/com/mobeta/
+* out/production/drag-sort-listview/com/mobeta/android/
+* out/production/drag-sort-listview/com/mobeta/android/dslv/
+* out/production/drag-sort-listview/com/mobeta/android/dslv/BuildConfig.class
+* out/production/drag-sort-listview/com/mobeta/android/dslv/DragSortController$1.class
+* out/production/drag-sort-listview/com/mobeta/android/dslv/DragSortController$2.class
+* out/production/drag-sort-listview/com/mobeta/android/dslv/DragSortController.class
+* out/production/drag-sort-listview/com/mobeta/android/dslv/DragSortCursorAdapter.class
+* out/production/drag-sort-listview/com/mobeta/android/dslv/DragSortItemView.class
+* out/production/drag-sort-listview/com/mobeta/android/dslv/DragSortItemViewCheckable.class
+* out/production/drag-sort-listview/com/mobeta/android/dslv/DragSortListView$1.class
+* out/production/drag-sort-listview/com/mobeta/android/dslv/DragSortListView$2.class
+* out/production/drag-sort-listview/com/mobeta/android/dslv/DragSortListView$AdapterWrapper$1.class
+* out/production/drag-sort-listview/com/mobeta/android/dslv/DragSortListView$AdapterWrapper.class
+* out/production/drag-sort-listview/com/mobeta/android/dslv/DragSortListView$DragListener.class
+* out/production/drag-sort-listview/com/mobeta/android/dslv/DragSortListView$DragScrollProfile.class
+* out/production/drag-sort-listview/com/mobeta/android/dslv/DragSortListView$DragScroller.class
+* out/production/drag-sort-listview/com/mobeta/android/dslv/DragSortListView$DragSortListener.class
+* out/production/drag-sort-listview/com/mobeta/android/dslv/DragSortListView$DragSortTracker.class
+* out/production/drag-sort-listview/com/mobeta/android/dslv/DragSortListView$DropAnimator.class
+* out/production/drag-sort-listview/com/mobeta/android/dslv/DragSortListView$DropListener.class
+* out/production/drag-sort-listview/com/mobeta/android/dslv/DragSortListView$FloatViewManager.class
+* out/production/drag-sort-listview/com/mobeta/android/dslv/DragSortListView$HeightCache.class
+* out/production/drag-sort-listview/com/mobeta/android/dslv/DragSortListView$LiftAnimator.class
+* out/production/drag-sort-listview/com/mobeta/android/dslv/DragSortListView$RemoveAnimator.class
+* out/production/drag-sort-listview/com/mobeta/android/dslv/DragSortListView$RemoveListener.class
+* out/production/drag-sort-listview/com/mobeta/android/dslv/DragSortListView$SmoothAnimator.class
+* out/production/drag-sort-listview/com/mobeta/android/dslv/DragSortListView.class
+* out/production/drag-sort-listview/com/mobeta/android/dslv/R$attr.class
+* out/production/drag-sort-listview/com/mobeta/android/dslv/R$id.class
+* out/production/drag-sort-listview/com/mobeta/android/dslv/R$styleable.class
+* out/production/drag-sort-listview/com/mobeta/android/dslv/R.class
+* out/production/drag-sort-listview/com/mobeta/android/dslv/ResourceDragSortCursorAdapter.class
+* out/production/drag-sort-listview/com/mobeta/android/dslv/SimpleDragSortCursorAdapter$CursorToStringConverter.class
+* out/production/drag-sort-listview/com/mobeta/android/dslv/SimpleDragSortCursorAdapter$ViewBinder.class
+* out/production/drag-sort-listview/com/mobeta/android/dslv/SimpleDragSortCursorAdapter.class
+* out/production/drag-sort-listview/com/mobeta/android/dslv/SimpleFloatViewManager.class
+* out/production/viewflow/
+* out/production/viewflow/org/
+* out/production/viewflow/org/taptwo/
+* out/production/viewflow/org/taptwo/android/
+* out/production/viewflow/org/taptwo/android/widget/
+* out/production/viewflow/org/taptwo/android/widget/CircleFlowIndicator$FadeTimer.class
+* out/production/viewflow/org/taptwo/android/widget/CircleFlowIndicator.class
+* out/production/viewflow/org/taptwo/android/widget/FlowIndicator.class
+* out/production/viewflow/org/taptwo/android/widget/TitleFlowIndicator.class
+* out/production/viewflow/org/taptwo/android/widget/TitleProvider.class
+* out/production/viewflow/org/taptwo/android/widget/ViewFlow$1.class
+* out/production/viewflow/org/taptwo/android/widget/ViewFlow$AdapterDataSetObserver.class
+* out/production/viewflow/org/taptwo/android/widget/ViewFlow$LazyInit.class
+* out/production/viewflow/org/taptwo/android/widget/ViewFlow$ViewLazyInitializeListener.class
+* out/production/viewflow/org/taptwo/android/widget/ViewFlow$ViewSwitchListener.class
+* out/production/viewflow/org/taptwo/android/widget/ViewFlow.class
+* out/production/viewflow/org/taptwo/android/widget/viewflow/
+* out/production/viewflow/org/taptwo/android/widget/viewflow/BuildConfig.class
+* out/production/viewflow/org/taptwo/android/widget/viewflow/R$attr.class
+* out/production/viewflow/org/taptwo/android/widget/viewflow/R$drawable.class
+* out/production/viewflow/org/taptwo/android/widget/viewflow/R$id.class
+* out/production/viewflow/org/taptwo/android/widget/viewflow/R$string.class
+* out/production/viewflow/org/taptwo/android/widget/viewflow/R$styleable.class
+* out/production/viewflow/org/taptwo/android/widget/viewflow/R.class
+* proguard-project.txt
+* tempfile.txt
+From NewQuickAction3D:
+* .gitignore
+* CHANGELOG.md
+* LICENSE.txt
+* NewQuickAction3D.iml
+* default.properties
+* proguard.cfg
+* readme.md
+From drag-sort-listview:
+* .gitignore
+* .idea/
+* .idea/.name
+* .idea/compiler.xml
+* .idea/copyright/
+* .idea/copyright/profiles_settings.xml
+* .idea/encodings.xml
+* .idea/libraries/
+* .idea/libraries/android_support_v4.xml
+* .idea/misc.xml
+* .idea/modules.xml
+* .idea/scopes/
+* .idea/scopes/scope_settings.xml
+* .idea/uiDesigner.xml
+* .idea/vcs.xml
+* .idea/workspace.xml
+* ant.properties
+* build.xml
+* drag-sort-listview.iml
+* pom.xml
+* proguard-project.txt
+From viewflow:
+* build.xml
+* default.properties
+* viewflow.iml
+
+Replaced Jars with Dependencies:
+--------------------------------
+The importer recognized the following .jar files as third party
+libraries and replaced them with Gradle dependencies instead. This has
+the advantage that more explicit version information is known, and the
+libraries can be updated automatically. However, it is possible that
+the .jar file in your project was of an older version than the
+dependency we picked, which could render the project not compileable.
+You can disable the jar replacement in the import wizard and try again:
+
+android-support-v4.jar => com.android.support:support-v4:+
+
+Moved Files:
+------------
+Android Gradle projects use a different directory structure than ADT
+Eclipse projects. Here's how the projects were restructured:
+
+In NewQuickAction3D:
+* AndroidManifest.xml => newQuickAction3D/src/main/AndroidManifest.xml
+* res/ => newQuickAction3D/src/main/res/
+* src/ => newQuickAction3D/src/main/java/
+In drag-sort-listview:
+* AndroidManifest.xml => dragsortlistview/src/main/AndroidManifest.xml
+* res/ => dragsortlistview/src/main/res/
+* src/ => dragsortlistview/src/main/java/
+In viewflow:
+* AndroidManifest.xml => viewflow/src/main/AndroidManifest.xml
+* res/ => viewflow/src/main/res/
+* src/ => viewflow/src/main/java/
+In Android-FlashCardCreator:
+* AndroidManifest.xml => androidFlashCardCreator/src/main/AndroidManifest.xml
+* assets/ => androidFlashCardCreator/src/main/assets/
+* libs/TestFlightLib.jar => androidFlashCardCreator/libs/TestFlightLib.jar
+* libs/aws-android-sdk-1.6.0-debug.jar => androidFlashCardCreator/libs/aws-android-sdk-1.6.0-debug.jar
+* libs/dropbox-android-sdk-1.5.4.jar => androidFlashCardCreator/libs/dropbox-android-sdk-1.5.4.jar
+* libs/httpmime-4.0.3.jar => androidFlashCardCreator/libs/httpmime-4.0.3.jar
+* libs/json_simple-1.1.jar => androidFlashCardCreator/libs/json_simple-1.1.jar
+* libs/libGoogleAnalyticsV2.jar => androidFlashCardCreator/libs/libGoogleAnalyticsV2.jar
+* libs/simple-social-sharing-1.0.1.jar => androidFlashCardCreator/libs/simple-social-sharing-1.0.1.jar
+* libs/zip4j_1.3.1 2.jar => androidFlashCardCreator/libs/zip4j_1.3.1 2.jar
+* lint.xml => androidFlashCardCreator/lint.xml
+* res/ => androidFlashCardCreator/src/main/res/
+* src/ => androidFlashCardCreator/src/main/java/
+
+Next Steps:
+-----------
+You can now build the project. The Gradle project needs network
+connectivity to download dependencies.
+
+Bugs:
+-----
+If for some reason your project does not build, and you determine that
+it is due to a bug or limitation of the Eclipse to Gradle importer,
+please file a bug at http://b.android.com with category
+Component-Tools.
+
+(This import summary is for your information only, and can be deleted
+after import once you are satisfied with the results.)

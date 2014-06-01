@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<LinearLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:orientation="vertical"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent">
+
+    <View
+            android:layout_width="fill_parent"
+            android:layout_height="2dip"
+            android:background="#666666"
+            />
+
+    <android.support.v4.view.ViewPager
+            android:id="@+id/symbol_pager"
+            android:layout_height="fill_parent"
+            android:layout_width="fill_parent"
+            />
+</LinearLayout><!-- From: file:/Users/bournewang/Documents/Project/gradle/android-FlashCardCreator/androidFlashCardCreator/src/main/res/layout/fragment_symbol_box.xml -->

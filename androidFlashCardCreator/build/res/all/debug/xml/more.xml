@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <PreferenceCategory
+            android:title="@string/more_dropbox_preference">
+        <CheckBoxPreference
+                android:key="dropbox_preference"
+                android:title="@string/more_dropbox"/>
+    </PreferenceCategory>
+
+    <PreferenceCategory
+            android:title="@string/more_play_preference">
+        <CheckBoxPreference
+                android:key="play_preference"
+                android:title="@string/more_random_play"/>
+    </PreferenceCategory>
+
+    <PreferenceCategory
+            android:title="@string/more_others">
+        <PreferenceScreen
+                android:key="help_preference"
+                android:title="@string/more_help"/>
+        <PreferenceScreen
+                android:key="about_preference"
+                android:title="@string/more_about"/>
+    </PreferenceCategory>
+
+</PreferenceScreen><!-- From: file:/Users/bournewang/Documents/Project/gradle/android-FlashCardCreator/androidFlashCardCreator/src/main/res/xml/more.xml -->

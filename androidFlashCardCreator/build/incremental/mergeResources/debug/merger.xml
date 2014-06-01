@@ -1,0 +1,2446 @@
+<?xml version="1.0" encoding="utf-8"?>
+<merger>
+
+    <dataSet config="unspecified" >
+        <source path="/Users/bournewang/Documents/Project/gradle/android-FlashCardCreator/build/exploded-aar/android-FlashCardCreator/newQuickAction3D/unspecified/res" >
+            <file
+                name="disappear"
+                path="/Users/bournewang/Documents/Project/gradle/android-FlashCardCreator/build/exploded-aar/android-FlashCardCreator/newQuickAction3D/unspecified/res/anim/disappear.xml"
+                qualifiers=""
+                type="anim" />
+            <file
+                name="grow_from_bottom"
+                path="/Users/bournewang/Documents/Project/gradle/android-FlashCardCreator/build/exploded-aar/android-FlashCardCreator/newQuickAction3D/unspecified/res/anim/grow_from_bottom.xml"
+                qualifiers=""
+                type="anim" />
+            <file
+                name="grow_from_bottomleft_to_topright"
+                path="/Users/bournewang/Documents/Project/gradle/android-FlashCardCreator/build/exploded-aar/android-FlashCardCreator/newQuickAction3D/unspecified/res/anim/grow_from_bottomleft_to_topright.xml"
+                qualifiers=""
+                type="anim" />
+            <file
+                name="grow_from_bottomright_to_topleft"
+                path="/Users/bournewang/Documents/Project/gradle/android-FlashCardCreator/build/exploded-aar/android-FlashCardCreator/newQuickAction3D/unspecified/res/anim/grow_from_bottomright_to_topleft.xml"
+                qualifiers=""
+                type="anim" />
+            <file
+                name="grow_from_top"
+                path="/Users/bournewang/Documents/Project/gradle/android-FlashCardCreator/build/exploded-aar/android-FlashCardCreator/newQuickAction3D/unspecified/res/anim/grow_from_top.xml"
+                qualifiers=""
+                type="anim" />
+            <file
+                name="grow_from_topleft_to_bottomright"
+                path="/Users/bournewang/Documents/Project/gradle/android-FlashCardCreator/build/exploded-aar/android-FlashCardCreator/newQuickAction3D/unspecified/res/anim/grow_from_topleft_to_bottomright.xml"
+                qualifiers=""
+                type="anim" />
+            <file
+                name="grow_from_topright_to_bottomleft"
+                path="/Users/bournewang/Documents/Project/gradle/android-FlashCardCreator/build/exploded-aar/android-FlashCardCreator/newQuickAction3D/unspecified/res/anim/grow_from_topright_to_bottomleft.xml"
+                qualifiers=""
+                type="anim" />
+            <file
+                name="pump_bottom"
+                path="/Users/bournewang/Documents/Project/gradle/android-FlashCardCreator/build/exploded-aar/android-FlashCardCreator/newQuickAction3D/unspecified/res/anim/pump_bottom.xml"
+                qualifiers=""
+                type="anim" />
+            <file
+                name="pump_top"
+                path="/Users/bournewang/Documents/Project/gradle/android-FlashCardCreator/build/exploded-aar/android-FlashCardCreator/newQuickAction3D/unspecified/res/anim/pump_top.xml"
+                qualifiers=""
+                type="anim" />
+            <file
+                name="rail"
+                path="/Users/bournewang/Documents/Project/gradle/android-FlashCardCreator/build/exploded-aar/android-FlashCardCreator/newQuickAction3D/unspecified/res/anim/rail.xml"
+                qualifiers=""
+                type="anim" />
+            <file
+                name="shrink_from_bottom"
+                path="/Users/bournewang/Documents/Project/gradle/android-FlashCardCreator/build/exploded-aar/android-FlashCardCreator/newQuickAction3D/unspecified/res/anim/shrink_from_bottom.xml"
+                qualifiers=""
+                type="anim" />
+            <file
+                name="shrink_from_bottomleft_to_topright"
+                path="/Users/bournewang/Documents/Project/gradle/android-FlashCardCreator/build/exploded-aar/android-FlashCardCreator/newQuickAction3D/unspecified/res/anim/shrink_from_bottomleft_to_topright.xml"
+                qualifiers=""
+                type="anim" />
+            <file
+                name="shrink_from_bottomright_to_topleft"
+                path="/Users/bournewang/Documents/Project/gradle/android-FlashCardCreator/build/exploded-aar/android-FlashCardCreator/newQuickAction3D/unspecified/res/anim/shrink_from_bottomright_to_topleft.xml"
+                qualifiers=""
+                type="anim" />
+            <file
+                name="shrink_from_top"
+                path="/Users/bournewang/Documents/Project/gradle/android-FlashCardCreator/build/exploded-aar/android-FlashCardCreator/newQuickAction3D/unspecified/res/anim/shrink_from_top.xml"
+                qualifiers=""
+                type="anim" />
+            <file
+                name="shrink_from_topleft_to_bottomright"
+                path="/Users/bournewang/Documents/Project/gradle/android-FlashCardCreator/build/exploded-aar/android-FlashCardCreator/newQuickAction3D/unspecified/res/anim/shrink_from_topleft_to_bottomright.xml"
+                qualifiers=""
+                type="anim" />
+            <file
+                name="shrink_from_topright_to_bottomleft"
+                path="/Users/bournewang/Documents/Project/gradle/android-FlashCardCreator/build/exploded-aar/android-FlashCardCreator/newQuickAction3D/unspecified/res/anim/shrink_from_topright_to_bottomleft.xml"
+                qualifiers=""
+                type="anim" />
+            <file
+                name="action_item_btn"
+                path="/Users/bournewang/Documents/Project/gradle/android-FlashCardCreator/build/exploded-aar/android-FlashCardCreator/newQuickAction3D/unspecified/res/drawable/action_item_btn.xml"
+                qualifiers=""
+                type="drawable" />
+            <file
+                name="action_item_selected"
+                path="/Users/bournewang/Documents/Project/gradle/android-FlashCardCreator/build/exploded-aar/android-FlashCardCreator/newQuickAction3D/unspecified/res/drawable/action_item_selected.9.png"
+                qualifiers=""
+                type="drawable" />
+            <file
+                name="arrow_down"
+                path="/Users/bournewang/Documents/Project/gradle/android-FlashCardCreator/build/exploded-aar/android-FlashCardCreator/newQuickAction3D/unspecified/res/drawable/arrow_down.png"
+                qualifiers=""
+                type="drawable" />
+            <file
+                name="arrow_up"
+                path="/Users/bournewang/Documents/Project/gradle/android-FlashCardCreator/build/exploded-aar/android-FlashCardCreator/newQuickAction3D/unspecified/res/drawable/arrow_up.png"
+                qualifiers=""
+                type="drawable" />
+            <file
+                name="icon"
+                path="/Users/bournewang/Documents/Project/gradle/android-FlashCardCreator/build/exploded-aar/android-FlashCardCreator/newQuickAction3D/unspecified/res/drawable/icon.png"
+                qualifiers=""
+                type="drawable" />
+            <file
+                name="menu_cancel"
+                path="/Users/bournewang/Documents/Project/gradle/android-FlashCardCreator/build/exploded-aar/android-FlashCardCreator/newQuickAction3D/unspecified/res/drawable/menu_cancel.png"
+                qualifiers=""
+                type="drawable" />
+            <file
+                name="menu_down_arrow"
+                path="/Users/bournewang/Documents/Project/gradle/android-FlashCardCreator/build/exploded-aar/android-FlashCardCreator/newQuickAction3D/unspecified/res/drawable/menu_down_arrow.png"
+                qualifiers=""
+                type="drawable" />
+            <file
+                name="menu_eraser"
+                path="/Users/bournewang/Documents/Project/gradle/android-FlashCardCreator/build/exploded-aar/android-FlashCardCreator/newQuickAction3D/unspecified/res/drawable/menu_eraser.png"
+                qualifiers=""
+                type="drawable" />
+            <file
+                name="menu_info"
+                path="/Users/bournewang/Documents/Project/gradle/android-FlashCardCreator/build/exploded-aar/android-FlashCardCreator/newQuickAction3D/unspecified/res/drawable/menu_info.png"
+                qualifiers=""
+                type="drawable" />
+            <file
+                name="menu_ok"
+                path="/Users/bournewang/Documents/Project/gradle/android-FlashCardCreator/build/exploded-aar/android-FlashCardCreator/newQuickAction3D/unspecified/res/drawable/menu_ok.png"
+                qualifiers=""
+                type="drawable" />
+            <file
+                name="menu_search"
+                path="/Users/bournewang/Documents/Project/gradle/android-FlashCardCreator/build/exploded-aar/android-FlashCardCreator/newQuickAction3D/unspecified/res/drawable/menu_search.png"
+                qualifiers=""
+                type="drawable" />
+            <file
+                name="menu_up_arrow"
+                path="/Users/bournewang/Documents/Project/gradle/android-FlashCardCreator/build/exploded-aar/android-FlashCardCreator/newQuickAction3D/unspecified/res/drawable/menu_up_arrow.png"
+                qualifiers=""
+                type="drawable" />
+            <file
+                name="popup"
+                path="/Users/bournewang/Documents/Project/gradle/android-FlashCardCreator/build/exploded-aar/android-FlashCardCreator/newQuickAction3D/unspecified/res/drawable/popup.9.png"
+                qualifiers=""
+                type="drawable" />
+            <file
+                name="icon"
+                path="/Users/bournewang/Documents/Project/gradle/android-FlashCardCreator/build/exploded-aar/android-FlashCardCreator/newQuickAction3D/unspecified/res/drawable-hdpi/icon.png"
+                qualifiers="hdpi"
+                type="drawable" />
+            <file
+                name="icon"
+                path="/Users/bournewang/Documents/Project/gradle/android-FlashCardCreator/build/exploded-aar/android-FlashCardCreator/newQuickAction3D/unspecified/res/drawable-ldpi/icon.png"
+                qualifiers="ldpi"
+                type="drawable" />
+            <file
+                name="icon"
+                path="/Users/bournewang/Documents/Project/gradle/android-FlashCardCreator/build/exploded-aar/android-FlashCardCreator/newQuickAction3D/unspecified/res/drawable-mdpi/icon.png"
+                qualifiers="mdpi"
+                type="drawable" />
+            <file
+                name="action_item_horizontal"
+                path="/Users/bournewang/Documents/Project/gradle/android-FlashCardCreator/build/exploded-aar/android-FlashCardCreator/newQuickAction3D/unspecified/res/layout/action_item_horizontal.xml"
+                qualifiers=""
+                type="layout" />
+            <file
+                name="action_item_vertical"
+                path="/Users/bournewang/Documents/Project/gradle/android-FlashCardCreator/build/exploded-aar/android-FlashCardCreator/newQuickAction3D/unspecified/res/layout/action_item_vertical.xml"
+                qualifiers=""
+                type="layout" />
+            <file
+                name="horiz_separator"
+                path="/Users/bournewang/Documents/Project/gradle/android-FlashCardCreator/build/exploded-aar/android-FlashCardCreator/newQuickAction3D/unspecified/res/layout/horiz_separator.xml"
+                qualifiers=""
+                type="layout" />
+            <file
+                name="main"
+                path="/Users/bournewang/Documents/Project/gradle/android-FlashCardCreator/build/exploded-aar/android-FlashCardCreator/newQuickAction3D/unspecified/res/layout/main.xml"
+                qualifiers=""
+                type="layout" />
+            <file
+                name="popup_horizontal"
+                path="/Users/bournewang/Documents/Project/gradle/android-FlashCardCreator/build/exploded-aar/android-FlashCardCreator/newQuickAction3D/unspecified/res/layout/popup_horizontal.xml"
+                qualifiers=""
+                type="layout" />
+            <file
+                name="popup_vertical"
+                path="/Users/bournewang/Documents/Project/gradle/android-FlashCardCreator/build/exploded-aar/android-FlashCardCreator/newQuickAction3D/unspecified/res/layout/popup_vertical.xml"
+                qualifiers=""
+                type="layout" />
+            <file
+                path="/Users/bournewang/Documents/Project/gradle/android-FlashCardCreator/build/exploded-aar/android-FlashCardCreator/newQuickAction3D/unspecified/res/values/values.xml"
+                qualifiers="" >
+
+                <style name="Animations.PopUpMenu.Reflect" >
+                    <item name="@android:windowEnterAnimation">
+@anim/pump_bottom
+                    </item>
+                    <item name="@android:windowExitAnimation">
+@anim/disappear
+                    </item>
+                </style>
+
+                <style name="Animations.PopUpMenu.Center" >
+                    <item name="@android:windowEnterAnimation">
+@anim/grow_from_bottom
+                    </item>
+                    <item name="@android:windowExitAnimation">
+@anim/shrink_from_top
+                    </item>
+                </style>
+
+                <style name="Animations.PopUpMenu" />
+
+                <style name="Animations" />
+
+                <string name="app_name" >Gallery3D Like QuickAction Demo
+                </string>
+
+                <style name="Animations.PopDownMenu" />
+
+                <style name="Animations.PopUpMenu.Left" >
+                    <item name="@android:windowEnterAnimation">
+@anim/grow_from_bottomleft_to_topright
+                    </item>
+                    <item name="@android:windowExitAnimation">
+@anim/shrink_from_topright_to_bottomleft
+                    </item>
+                </style>
+
+                <style name="Animations.PopDownMenu.Left" >
+                    <item name="@android:windowEnterAnimation">
+@anim/grow_from_topleft_to_bottomright
+                    </item>
+                    <item name="@android:windowExitAnimation">
+@anim/shrink_from_bottomright_to_topleft
+                    </item>
+                </style>
+
+                <style name="Animations.PopDownMenu.Center" >
+                    <item name="@android:windowEnterAnimation">
+@anim/grow_from_top
+                    </item>
+                    <item name="@android:windowExitAnimation">
+@anim/shrink_from_bottom
+                    </item>
+                </style>
+
+                <style name="Animations.PopUpMenu.Right" >
+                    <item name="@android:windowEnterAnimation">
+@anim/grow_from_bottomright_to_topleft
+                    </item>
+                    <item name="@android:windowExitAnimation">
+@anim/shrink_from_topleft_to_bottomright
+                    </item>
+                </style>
+
+                <style name="Animations.PopDownMenu.Right" >
+                    <item name="@android:windowEnterAnimation">
+@anim/grow_from_topright_to_bottomleft
+                    </item>
+                    <item name="@android:windowExitAnimation">
+@anim/shrink_from_bottomleft_to_topright
+                    </item>
+                </style>
+
+                <string name="hello" >Hello World, NewQA!
+                </string>
+
+                <style name="Animations.PopDownMenu.Reflect" >
+                    <item name="@android:windowEnterAnimation">
+@anim/pump_top
+                    </item>
+                    <item name="@android:windowExitAnimation">
+@anim/disappear
+                    </item>
+                </style>
+            </file>
+        </source>
+    </dataSet>
+    <dataSet config="unspecified" >
+        <source path="/Users/bournewang/Documents/Project/gradle/android-FlashCardCreator/build/exploded-aar/android-FlashCardCreator/viewflow/unspecified/res" >
+            <file
+                name="icon"
+                path="/Users/bournewang/Documents/Project/gradle/android-FlashCardCreator/build/exploded-aar/android-FlashCardCreator/viewflow/unspecified/res/drawable/icon.png"
+                qualifiers=""
+                type="drawable" />
+            <file
+                path="/Users/bournewang/Documents/Project/gradle/android-FlashCardCreator/build/exploded-aar/android-FlashCardCreator/viewflow/unspecified/res/values/values.xml"
+                qualifiers="" >
+                <declare-styleable name="CircleFlowIndicator" >
+                    <attr
+                        name="activeColor"
+                        format="color" />
+                    <attr
+                        name="inactiveColor"
+                        format="color" />
+                    <attr
+                        name="radius"
+                        format="dimension" />
+                    <attr
+                        name="spacing"
+                        format="dimension" />
+                    <attr
+                        name="centered"
+                        format="boolean" />
+                    <attr
+                        name="fadeOut"
+                        format="integer" />
+                    <attr name="inactiveType" >
+                        <flag
+                            name="stroke"
+                            value="0" />
+                        <flag
+                            name="fill"
+                            value="1" />
+                    </attr>
+                    <attr name="activeType" >
+                        <flag
+                            name="stroke"
+                            value="0" />
+                        <flag
+                            name="fill"
+                            value="1" />
+                    </attr>
+                    <attr
+                        name="snap"
+                        format="boolean" />
+                </declare-styleable>
+                <declare-styleable name="ViewFlow" >
+                    <attr
+                        name="sidebuffer"
+                        format="integer" />
+                </declare-styleable>
+
+                <string name="hello" >Hello World!
+                </string>
+                <string name="app_name" >ViewFlow
+                </string>
+
+                <declare-styleable name="TitleFlowIndicator" >
+                    <attr
+                        name="titlePadding"
+                        format="dimension" />
+                    <!-- Left/right padding of not active view titles. -->
+                    <attr
+                        name="clipPadding"
+                        format="dimension" />
+                    <attr
+                        name="selectedColor"
+                        format="color" />
+                    <attr
+                        name="selectedBold"
+                        format="boolean" />
+                    <attr
+                        name="selectedSize"
+                        format="dimension" />
+                    <attr
+                        name="textColor"
+                        format="color" />
+                    <attr
+                        name="textSize"
+                        format="dimension" />
+                    <attr
+                        name="footerLineHeight"
+                        format="dimension" />
+                    <attr
+                        name="footerColor"
+                        format="color" />
+                    <attr
+                        name="footerTriangleHeight"
+                        format="dimension" />
+                    <attr
+                        name="customTypeface"
+                        format="string" />
+                </declare-styleable>
+            </file>
+        </source>
+    </dataSet>
+    <dataSet config="1.0" >
+        <source path="/Users/bournewang/Documents/Project/gradle/android-FlashCardCreator/build/exploded-aar/asia.ivity.android/drag-sort-listview/1.0/res" >
+            <file
+                path="/Users/bournewang/Documents/Project/gradle/android-FlashCardCreator/build/exploded-aar/asia.ivity.android/drag-sort-listview/1.0/res/values/values.xml"
+                qualifiers="" >
+                <declare-styleable name="DragSortListView" >
+                    <attr
+                        name="collapsed_height"
+                        format="dimension" />
+                    <attr
+                        name="drag_scroll_start"
+                        format="float" />
+                    <attr
+                        name="max_drag_scroll_speed"
+                        format="float" />
+                    <attr
+                        name="float_background_color"
+                        format="color" />
+                    <attr name="remove_mode" >
+                        <enum
+                            name="clickRemove"
+                            value="0" />
+                        <enum
+                            name="flingRemove"
+                            value="1" />
+                    </attr>
+                    <attr
+                        name="track_drag_sort"
+                        format="boolean" />
+                    <attr
+                        name="float_alpha"
+                        format="float" />
+                    <attr
+                        name="slide_shuffle_speed"
+                        format="float" />
+                    <attr
+                        name="remove_animation_duration"
+                        format="integer" />
+                    <attr
+                        name="drop_animation_duration"
+                        format="integer" />
+                    <attr
+                        name="drag_enabled"
+                        format="boolean" />
+                    <attr
+                        name="sort_enabled"
+                        format="boolean" />
+                    <attr
+                        name="remove_enabled"
+                        format="boolean" />
+                    <attr name="drag_start_mode" >
+                        <enum
+                            name="onDown"
+                            value="0" />
+                        <enum
+                            name="onMove"
+                            value="1" />
+                        <enum
+                            name="onLongPress"
+                            value="2" />
+                    </attr>
+                    <attr
+                        name="drag_handle_id"
+                        format="integer" />
+                    <attr
+                        name="fling_handle_id"
+                        format="integer" />
+                    <attr
+                        name="click_remove_id"
+                        format="integer" />
+                    <attr
+                        name="use_default_controller"
+                        format="boolean" />
+                </declare-styleable>
+            </file>
+        </source>
+    </dataSet>
+    <dataSet config="main" >
+        <source path="/Users/bournewang/Documents/Project/gradle/android-FlashCardCreator/androidFlashCardCreator/src/main/res" >
+            <file
+                name="fade_in"
+                path="/Users/bournewang/Documents/Project/gradle/android-FlashCardCreator/androidFlashCardCreator/src/main/res/anim/fade_in.xml"
+                qualifiers=""
+                type="anim" />
+            <file
+                name="fade_out"
+                path="/Users/bournewang/Documents/Project/gradle/android-FlashCardCreator/androidFlashCardCreator/src/main/res/anim/fade_out.xml"
+                qualifiers=""
+                type="anim" />
+            <file
+                name="in_from_bottom"
+                path="/Users/bournewang/Documents/Project/gradle/android-FlashCardCreator/androidFlashCardCreator/src/main/res/anim/in_from_bottom.xml"
+                qualifiers=""
+                type="anim" />
+            <file
+                name="in_from_right"
+                path="/Users/bournewang/Documents/Project/gradle/android-FlashCardCreator/androidFlashCardCreator/src/main/res/anim/in_from_right.xml"
+                qualifiers=""
+                type="anim" />
+            <file
+                name="out_to_above"
+                path="/Users/bournewang/Documents/Project/gradle/android-FlashCardCreator/androidFlashCardCreator/src/main/res/anim/out_to_above.xml"
+                qualifiers=""
+                type="anim" />
+            <file
+                name="out_to_right"
+                path="/Users/bournewang/Documents/Project/gradle/android-FlashCardCreator/androidFlashCardCreator/src/main/res/anim/out_to_right.xml"
+                qualifiers=""
+                type="anim" />
+            <file
+                name="add_pack_button"
+                path="/Users/bournewang/Documents/Project/gradle/android-FlashCardCreator/androidFlashCardCreator/src/main/res/drawable/add_pack_button.png"
+                qualifiers=""
+                type="drawable" />
+            <file
+                name="answer_placeholder_content"
+                path="/Users/bournewang/Documents/Project/gradle/android-FlashCardCreator/androidFlashCardCreator/src/main/res/drawable/answer_placeholder_content.jpg"
+                qualifiers=""
+                type="drawable" />
+            <file
+                name="answer_templatescreenshot0"
+                path="/Users/bournewang/Documents/Project/gradle/android-FlashCardCreator/androidFlashCardCreator/src/main/res/drawable/answer_templatescreenshot0.png"
+                qualifiers=""
+                type="drawable" />
+            <file
+                name="answer_templatescreenshot1"
+                path="/Users/bournewang/Documents/Project/gradle/android-FlashCardCreator/androidFlashCardCreator/src/main/res/drawable/answer_templatescreenshot1.png"
+                qualifiers=""
+                type="drawable" />
+            <file
+                name="answer_templatescreenshot2"
+                path="/Users/bournewang/Documents/Project/gradle/android-FlashCardCreator/androidFlashCardCreator/src/main/res/drawable/answer_templatescreenshot2.png"
+                qualifiers=""
+                type="drawable" />
+            <file
+                name="answer_templatescreenshot3"
+                path="/Users/bournewang/Documents/Project/gradle/android-FlashCardCreator/androidFlashCardCreator/src/main/res/drawable/answer_templatescreenshot3.png"
+                qualifiers=""
+                type="drawable" />
+            <file
+                name="answer_templatescreenshot4"
+                path="/Users/bournewang/Documents/Project/gradle/android-FlashCardCreator/androidFlashCardCreator/src/main/res/drawable/answer_templatescreenshot4.png"
+                qualifiers=""
+                type="drawable" />
+            <file
+                name="answer_templatescreenshot5"
+                path="/Users/bournewang/Documents/Project/gradle/android-FlashCardCreator/androidFlashCardCreator/src/main/res/drawable/answer_templatescreenshot5.png"
+                qualifiers=""
+                type="drawable" />
+            <file
+                name="answer_templatescreenshot6"
+                path="/Users/bournewang/Documents/Project/gradle/android-FlashCardCreator/androidFlashCardCreator/src/main/res/drawable/answer_templatescreenshot6.png"
+                qualifiers=""
+                type="drawable" />
+            <file
+                name="answer_templatescreenshot7"
+                path="/Users/bournewang/Documents/Project/gradle/android-FlashCardCreator/androidFlashCardCreator/src/main/res/drawable/answer_templatescreenshot7.png"
+                qualifiers=""
+                type="drawable" />
+            <file
+                name="button_gray"
+                path="/Users/bournewang/Documents/Project/gradle/android-FlashCardCreator/androidFlashCardCreator/src/main/res/drawable/button_gray.png"
+                qualifiers=""
+                type="drawable" />
+            <file
+                name="button_play_close"
+                path="/Users/bournewang/Documents/Project/gradle/android-FlashCardCreator/androidFlashCardCreator/src/main/res/drawable/button_play_close.png"
+                qualifiers=""
+                type="drawable" />
+            <file
+                name="button_red"
+                path="/Users/bournewang/Documents/Project/gradle/android-FlashCardCreator/androidFlashCardCreator/src/main/res/drawable/button_red.png"
+                qualifiers=""
+                type="drawable" />
+            <file
+                name="button_segment_selected"
+                path="/Users/bournewang/Documents/Project/gradle/android-FlashCardCreator/androidFlashCardCreator/src/main/res/drawable/button_segment_selected.png"
+                qualifiers=""
+                type="drawable" />
+            <file
+                name="button_segment_unselected"
+                path="/Users/bournewang/Documents/Project/gradle/android-FlashCardCreator/androidFlashCardCreator/src/main/res/drawable/button_segment_unselected.png"
+                qualifiers=""
+                type="drawable" />
+            <file
+                name="button_updating_background"
+                path="/Users/bournewang/Documents/Project/gradle/android-FlashCardCreator/androidFlashCardCreator/src/main/res/drawable/button_updating_background.9.png"
+                qualifiers=""
+                type="drawable" />
+            <file
+                name="card_cover_image_mask_black"
+                path="/Users/bournewang/Documents/Project/gradle/android-FlashCardCreator/androidFlashCardCreator/src/main/res/drawable/card_cover_image_mask_black.png"
+                qualifiers=""
+                type="drawable" />
+            <file
+                name="card_cover_image_mask_blue"
+                path="/Users/bournewang/Documents/Project/gradle/android-FlashCardCreator/androidFlashCardCreator/src/main/res/drawable/card_cover_image_mask_blue.png"
+                qualifiers=""
+                type="drawable" />
+            <file
+                name="card_cover_image_placeholder"
+                path="/Users/bournewang/Documents/Project/gradle/android-FlashCardCreator/androidFlashCardCreator/src/main/res/drawable/card_cover_image_placeholder.png"
+                qualifiers=""
+                type="drawable" />
+            <file
+                name="card_title_bg_blue"
+                path="/Users/bournewang/Documents/Project/gradle/android-FlashCardCreator/androidFlashCardCreator/src/main/res/drawable/card_title_bg_blue.9.png"
+                qualifiers=""
+                type="drawable" />
+            <file
+                name="card_title_bg_coffee"
+                path="/Users/bournewang/Documents/Project/gradle/android-FlashCardCreator/androidFlashCardCreator/src/main/res/drawable/card_title_bg_coffee.9.png"
+                qualifiers=""
+                type="drawable" />
+            <file
+                name="card_title_bg_gray"
+                path="/Users/bournewang/Documents/Project/gradle/android-FlashCardCreator/androidFlashCardCreator/src/main/res/drawable/card_title_bg_gray.9.png"
+                qualifiers=""
+                type="drawable" />
+            <file
+                name="card_title_bg_purple"
+                path="/Users/bournewang/Documents/Project/gradle/android-FlashCardCreator/androidFlashCardCreator/src/main/res/drawable/card_title_bg_purple.9.png"
+                qualifiers=""
+                type="drawable" />
+            <file
+                name="card_title_bg_red"
+                path="/Users/bournewang/Documents/Project/gradle/android-FlashCardCreator/androidFlashCardCreator/src/main/res/drawable/card_title_bg_red.9.png"
+                qualifiers=""
+                type="drawable" />
+            <file
+                name="cardsn_bg"
+                path="/Users/bournewang/Documents/Project/gradle/android-FlashCardCreator/androidFlashCardCreator/src/main/res/drawable/cardsn_bg.png"
+                qualifiers=""
+                type="drawable" />
+            <file
+                name="change_card_background_image_button"
+                path="/Users/bournewang/Documents/Project/gradle/android-FlashCardCreator/androidFlashCardCreator/src/main/res/drawable/change_card_background_image_button.png"
+                qualifiers=""
+                type="drawable" />
+            <file
+                name="change_card_background_image_button_highlighted"
+                path="/Users/bournewang/Documents/Project/gradle/android-FlashCardCreator/androidFlashCardCreator/src/main/res/drawable/change_card_background_image_button_highlighted.png"
+                qualifiers=""
+                type="drawable" />
+            <file
+                name="change_card_layout_template"
+                path="/Users/bournewang/Documents/Project/gradle/android-FlashCardCreator/androidFlashCardCreator/src/main/res/drawable/change_card_layout_template.png"
+                qualifiers=""
+                type="drawable" />
+            <file
+                name="change_card_layout_template_highlighted"
+                path="/Users/bournewang/Documents/Project/gradle/android-FlashCardCreator/androidFlashCardCreator/src/main/res/drawable/change_card_layout_template_highlighted.png"
+                qualifiers=""
+                type="drawable" />
+            <file
+                name="close2_button"
+                path="/Users/bournewang/Documents/Project/gradle/android-FlashCardCreator/androidFlashCardCreator/src/main/res/drawable/close2_button.png"
+                qualifiers=""
+                type="drawable" />
+            <file
+                name="create_new_pack"
+                path="/Users/bournewang/Documents/Project/gradle/android-FlashCardCreator/androidFlashCardCreator/src/main/res/drawable/create_new_pack.png"
+                qualifiers=""
+                type="drawable" />
+            <file
+                name="default_pack_cover_image"
+                path="/Users/bournewang/Documents/Project/gradle/android-FlashCardCreator/androidFlashCardCreator/src/main/res/drawable/default_pack_cover_image.png"
+                qualifiers=""
+                type="drawable" />
+            <file
+                name="demo"
+                path="/Users/bournewang/Documents/Project/gradle/android-FlashCardCreator/androidFlashCardCreator/src/main/res/drawable/demo.jpg"
+                qualifiers=""
+                type="drawable" />
+            <file
+                name="done_button"
+                path="/Users/bournewang/Documents/Project/gradle/android-FlashCardCreator/androidFlashCardCreator/src/main/res/drawable/done_button.png"
+                qualifiers=""
+                type="drawable" />
+            <file
+                name="edit_button"
+                path="/Users/bournewang/Documents/Project/gradle/android-FlashCardCreator/androidFlashCardCreator/src/main/res/drawable/edit_button.png"
+                qualifiers=""
+                type="drawable" />
+            <file
+                name="edit_link_button"
+                path="/Users/bournewang/Documents/Project/gradle/android-FlashCardCreator/androidFlashCardCreator/src/main/res/drawable/edit_link_button.png"
+                qualifiers=""
+                type="drawable" />
+            <file
+                name="edit_link_button_highlighted"
+                path="/Users/bournewang/Documents/Project/gradle/android-FlashCardCreator/androidFlashCardCreator/src/main/res/drawable/edit_link_button_highlighted.png"
+                qualifiers=""
+                type="drawable" />
+            <file
+                name="grid_pressed"
+                path="/Users/bournewang/Documents/Project/gradle/android-FlashCardCreator/androidFlashCardCreator/src/main/res/drawable/grid_pressed.png"
+                qualifiers=""
+                type="drawable" />
+            <file
+                name="grid_selector"
+                path="/Users/bournewang/Documents/Project/gradle/android-FlashCardCreator/androidFlashCardCreator/src/main/res/drawable/grid_selector.xml"
+                qualifiers=""
+                type="drawable" />
+            <file
+                name="help1"
+                path="/Users/bournewang/Documents/Project/gradle/android-FlashCardCreator/androidFlashCardCreator/src/main/res/drawable/help1.jpg"
+                qualifiers=""
+                type="drawable" />
+            <file
+                name="help2"
+                path="/Users/bournewang/Documents/Project/gradle/android-FlashCardCreator/androidFlashCardCreator/src/main/res/drawable/help2.jpg"
+                qualifiers=""
+                type="drawable" />
+            <file
+                name="help3"
+                path="/Users/bournewang/Documents/Project/gradle/android-FlashCardCreator/androidFlashCardCreator/src/main/res/drawable/help3.jpg"
+                qualifiers=""
+                type="drawable" />
+            <file
+                name="help4"
+                path="/Users/bournewang/Documents/Project/gradle/android-FlashCardCreator/androidFlashCardCreator/src/main/res/drawable/help4.jpg"
+                qualifiers=""
+                type="drawable" />
+            <file
+                name="helping_button"
+                path="/Users/bournewang/Documents/Project/gradle/android-FlashCardCreator/androidFlashCardCreator/src/main/res/drawable/helping_button.png"
+                qualifiers=""
+                type="drawable" />
+            <file
+                name="image_add_card_button_bg"
+                path="/Users/bournewang/Documents/Project/gradle/android-FlashCardCreator/androidFlashCardCreator/src/main/res/drawable/image_add_card_button_bg.png"
+                qualifiers=""
+                type="drawable" />
+            <file
+                name="image_card_list_item_delete"
+                path="/Users/bournewang/Documents/Project/gradle/android-FlashCardCreator/androidFlashCardCreator/src/main/res/drawable/image_card_list_item_delete.png"
+                qualifiers=""
+                type="drawable" />
+            <file
+                name="image_card_list_item_drag"
+                path="/Users/bournewang/Documents/Project/gradle/android-FlashCardCreator/androidFlashCardCreator/src/main/res/drawable/image_card_list_item_drag.9.png"
+                qualifiers=""
+                type="drawable" />
+            <file
+                name="image_dialog_body_bg"
+                path="/Users/bournewang/Documents/Project/gradle/android-FlashCardCreator/androidFlashCardCreator/src/main/res/drawable/image_dialog_body_bg.9.png"
+                qualifiers=""
+                type="drawable" />
+            <file
+                name="image_dialog_head_bg"
+                path="/Users/bournewang/Documents/Project/gradle/android-FlashCardCreator/androidFlashCardCreator/src/main/res/drawable/image_dialog_head_bg.9.png"
+                qualifiers=""
+                type="drawable" />
+            <file
+                name="imagevideo_library"
+                path="/Users/bournewang/Documents/Project/gradle/android-FlashCardCreator/androidFlashCardCreator/src/main/res/drawable/imagevideo_library.png"
+                qualifiers=""
+                type="drawable" />
+            <file
+                name="key"
+                path="/Users/bournewang/Documents/Project/gradle/android-FlashCardCreator/androidFlashCardCreator/src/main/res/drawable/key.png"
+                qualifiers=""
+                type="drawable" />
+            <file
+                name="mask_black"
+                path="/Users/bournewang/Documents/Project/gradle/android-FlashCardCreator/androidFlashCardCreator/src/main/res/drawable/mask_black.png"
+                qualifiers=""
+                type="drawable" />
+            <file
+                name="mask_gray"
+                path="/Users/bournewang/Documents/Project/gradle/android-FlashCardCreator/androidFlashCardCreator/src/main/res/drawable/mask_gray.png"
+                qualifiers=""
+                type="drawable" />
+            <file
+                name="packs_button"
+                path="/Users/bournewang/Documents/Project/gradle/android-FlashCardCreator/androidFlashCardCreator/src/main/res/drawable/packs_button.png"
+                qualifiers=""
+                type="drawable" />
+            <file
+                name="play"
+                path="/Users/bournewang/Documents/Project/gradle/android-FlashCardCreator/androidFlashCardCreator/src/main/res/drawable/play.png"
+                qualifiers=""
+                type="drawable" />
+            <file
+                name="play_big"
+                path="/Users/bournewang/Documents/Project/gradle/android-FlashCardCreator/androidFlashCardCreator/src/main/res/drawable/play_big.png"
+                qualifiers=""
+                type="drawable" />
+            <file
+                name="play_button"
+                path="/Users/bournewang/Documents/Project/gradle/android-FlashCardCreator/androidFlashCardCreator/src/main/res/drawable/play_button.png"
+                qualifiers=""
+                type="drawable" />
+            <file
+                name="play_recorded_sound_button"
+                path="/Users/bournewang/Documents/Project/gradle/android-FlashCardCreator/androidFlashCardCreator/src/main/res/drawable/play_recorded_sound_button.png"
+                qualifiers=""
+                type="drawable" />
+            <file
+                name="play_recorded_sound_button_highlighted"
+                path="/Users/bournewang/Documents/Project/gradle/android-FlashCardCreator/androidFlashCardCreator/src/main/res/drawable/play_recorded_sound_button_highlighted.png"
+                qualifiers=""
+                type="drawable" />
+            <file
+                name="plus_button"
+                path="/Users/bournewang/Documents/Project/gradle/android-FlashCardCreator/androidFlashCardCreator/src/main/res/drawable/plus_button.png"
+                qualifiers=""
+                type="drawable" />
+            <file
+                name="plus_button_highlighted"
+                path="/Users/bournewang/Documents/Project/gradle/android-FlashCardCreator/androidFlashCardCreator/src/main/res/drawable/plus_button_highlighted.png"
+                qualifiers=""
+                type="drawable" />
+            <file
+                name="question_placeholder_content"
+                path="/Users/bournewang/Documents/Project/gradle/android-FlashCardCreator/androidFlashCardCreator/src/main/res/drawable/question_placeholder_content.jpg"
+                qualifiers=""
+                type="drawable" />
+            <file
+                name="question_placeholder_logo"
+                path="/Users/bournewang/Documents/Project/gradle/android-FlashCardCreator/androidFlashCardCreator/src/main/res/drawable/question_placeholder_logo.jpg"
+                qualifiers=""
+                type="drawable" />
+            <file
+                name="question_templatescreenshot0"
+                path="/Users/bournewang/Documents/Project/gradle/android-FlashCardCreator/androidFlashCardCreator/src/main/res/drawable/question_templatescreenshot0.png"
+                qualifiers=""
+                type="drawable" />
+            <file
+                name="question_templatescreenshot1"
+                path="/Users/bournewang/Documents/Project/gradle/android-FlashCardCreator/androidFlashCardCreator/src/main/res/drawable/question_templatescreenshot1.png"
+                qualifiers=""
+                type="drawable" />
+            <file
+                name="question_templatescreenshot2"
+                path="/Users/bournewang/Documents/Project/gradle/android-FlashCardCreator/androidFlashCardCreator/src/main/res/drawable/question_templatescreenshot2.png"
+                qualifiers=""
+                type="drawable" />
+            <file
+                name="question_templatescreenshot3"
+                path="/Users/bournewang/Documents/Project/gradle/android-FlashCardCreator/androidFlashCardCreator/src/main/res/drawable/question_templatescreenshot3.png"
+                qualifiers=""
+                type="drawable" />
+            <file
+                name="question_templatescreenshot4"
+                path="/Users/bournewang/Documents/Project/gradle/android-FlashCardCreator/androidFlashCardCreator/src/main/res/drawable/question_templatescreenshot4.png"
+                qualifiers=""
+                type="drawable" />
+            <file
+                name="question_templatescreenshot5"
+                path="/Users/bournewang/Documents/Project/gradle/android-FlashCardCreator/androidFlashCardCreator/src/main/res/drawable/question_templatescreenshot5.png"
+                qualifiers=""
+                type="drawable" />
+            <file
+                name="question_templatescreenshot6"
+                path="/Users/bournewang/Documents/Project/gradle/android-FlashCardCreator/androidFlashCardCreator/src/main/res/drawable/question_templatescreenshot6.png"
+                qualifiers=""
+                type="drawable" />
+            <file
+                name="question_templatescreenshot7"
+                path="/Users/bournewang/Documents/Project/gradle/android-FlashCardCreator/androidFlashCardCreator/src/main/res/drawable/question_templatescreenshot7.png"
+                qualifiers=""
+                type="drawable" />
+            <file
+                name="record_button"
+                path="/Users/bournewang/Documents/Project/gradle/android-FlashCardCreator/androidFlashCardCreator/src/main/res/drawable/record_button.png"
+                qualifiers=""
+                type="drawable" />
+            <file
+                name="record_button_highlighted"
+                path="/Users/bournewang/Documents/Project/gradle/android-FlashCardCreator/androidFlashCardCreator/src/main/res/drawable/record_button_highlighted.png"
+                qualifiers=""
+                type="drawable" />
+            <file
+                name="refresh2"
+                path="/Users/bournewang/Documents/Project/gradle/android-FlashCardCreator/androidFlashCardCreator/src/main/res/drawable/refresh2.png"
+                qualifiers=""
+                type="drawable" />
+            <file
+                name="save_button"
+                path="/Users/bournewang/Documents/Project/gradle/android-FlashCardCreator/androidFlashCardCreator/src/main/res/drawable/save_button.png"
+                qualifiers=""
+                type="drawable" />
+            <file
+                name="scrollbar_track"
+                path="/Users/bournewang/Documents/Project/gradle/android-FlashCardCreator/androidFlashCardCreator/src/main/res/drawable/scrollbar_track.9.png"
+                qualifiers=""
+                type="drawable" />
+            <file
+                name="selector_add_card"
+                path="/Users/bournewang/Documents/Project/gradle/android-FlashCardCreator/androidFlashCardCreator/src/main/res/drawable/selector_add_card.xml"
+                qualifiers=""
+                type="drawable" />
+            <file
+                name="selector_black_button"
+                path="/Users/bournewang/Documents/Project/gradle/android-FlashCardCreator/androidFlashCardCreator/src/main/res/drawable/selector_black_button.xml"
+                qualifiers=""
+                type="drawable" />
+            <file
+                name="selector_black_spinner"
+                path="/Users/bournewang/Documents/Project/gradle/android-FlashCardCreator/androidFlashCardCreator/src/main/res/drawable/selector_black_spinner.xml"
+                qualifiers=""
+                type="drawable" />
+            <file
+                name="selector_button_simple_line"
+                path="/Users/bournewang/Documents/Project/gradle/android-FlashCardCreator/androidFlashCardCreator/src/main/res/drawable/selector_button_simple_line.xml"
+                qualifiers=""
+                type="drawable" />
+            <file
+                name="selector_button_simple_line_red_background"
+                path="/Users/bournewang/Documents/Project/gradle/android-FlashCardCreator/androidFlashCardCreator/src/main/res/drawable/selector_button_simple_line_red_background.xml"
+                qualifiers=""
+                type="drawable" />
+            <file
+                name="selector_button_simple_line_round"
+                path="/Users/bournewang/Documents/Project/gradle/android-FlashCardCreator/androidFlashCardCreator/src/main/res/drawable/selector_button_simple_line_round.xml"
+                qualifiers=""
+                type="drawable" />
+            <file
+                name="selector_card_list_item"
+                path="/Users/bournewang/Documents/Project/gradle/android-FlashCardCreator/androidFlashCardCreator/src/main/res/drawable/selector_card_list_item.xml"
+                qualifiers=""
+                type="drawable" />
+            <file
+                name="selector_change_card_background_image_button"
+                path="/Users/bournewang/Documents/Project/gradle/android-FlashCardCreator/androidFlashCardCreator/src/main/res/drawable/selector_change_card_background_image_button.xml"
+                qualifiers=""
+                type="drawable" />
+            <file
+                name="selector_change_card_layout_template"
+                path="/Users/bournewang/Documents/Project/gradle/android-FlashCardCreator/androidFlashCardCreator/src/main/res/drawable/selector_change_card_layout_template.xml"
+                qualifiers=""
+                type="drawable" />
+            <file
+                name="selector_csstoolbar_button"
+                path="/Users/bournewang/Documents/Project/gradle/android-FlashCardCreator/androidFlashCardCreator/src/main/res/drawable/selector_csstoolbar_button.xml"
+                qualifiers=""
+                type="drawable" />
+            <file
+                name="selector_csstoolbar_button_highligh"
+                path="/Users/bournewang/Documents/Project/gradle/android-FlashCardCreator/androidFlashCardCreator/src/main/res/drawable/selector_csstoolbar_button_highligh.xml"
+                qualifiers=""
+                type="drawable" />
+            <file
+                name="selector_edit_link_button"
+                path="/Users/bournewang/Documents/Project/gradle/android-FlashCardCreator/androidFlashCardCreator/src/main/res/drawable/selector_edit_link_button.xml"
+                qualifiers=""
+                type="drawable" />
+            <file
+                name="selector_play_recorded_sound_button"
+                path="/Users/bournewang/Documents/Project/gradle/android-FlashCardCreator/androidFlashCardCreator/src/main/res/drawable/selector_play_recorded_sound_button.xml"
+                qualifiers=""
+                type="drawable" />
+            <file
+                name="selector_record_button"
+                path="/Users/bournewang/Documents/Project/gradle/android-FlashCardCreator/androidFlashCardCreator/src/main/res/drawable/selector_record_button.xml"
+                qualifiers=""
+                type="drawable" />
+            <file
+                name="setting_button"
+                path="/Users/bournewang/Documents/Project/gradle/android-FlashCardCreator/androidFlashCardCreator/src/main/res/drawable/setting_button.png"
+                qualifiers=""
+                type="drawable" />
+            <file
+                name="shape_black"
+                path="/Users/bournewang/Documents/Project/gradle/android-FlashCardCreator/androidFlashCardCreator/src/main/res/drawable/shape_black.xml"
+                qualifiers=""
+                type="drawable" />
+            <file
+                name="shape_blue"
+                path="/Users/bournewang/Documents/Project/gradle/android-FlashCardCreator/androidFlashCardCreator/src/main/res/drawable/shape_blue.xml"
+                qualifiers=""
+                type="drawable" />
+            <file
+                name="shape_button_simple_line"
+                path="/Users/bournewang/Documents/Project/gradle/android-FlashCardCreator/androidFlashCardCreator/src/main/res/drawable/shape_button_simple_line.xml"
+                qualifiers=""
+                type="drawable" />
+            <file
+                name="shape_button_simple_line_highlight"
+                path="/Users/bournewang/Documents/Project/gradle/android-FlashCardCreator/androidFlashCardCreator/src/main/res/drawable/shape_button_simple_line_highlight.xml"
+                qualifiers=""
+                type="drawable" />
+            <file
+                name="shape_button_simple_line_red_background"
+                path="/Users/bournewang/Documents/Project/gradle/android-FlashCardCreator/androidFlashCardCreator/src/main/res/drawable/shape_button_simple_line_red_background.xml"
+                qualifiers=""
+                type="drawable" />
+            <file
+                name="shape_button_simple_line_red_background_highlighted"
+                path="/Users/bournewang/Documents/Project/gradle/android-FlashCardCreator/androidFlashCardCreator/src/main/res/drawable/shape_button_simple_line_red_background_highlighted.xml"
+                qualifiers=""
+                type="drawable" />
+            <file
+                name="shape_button_simple_line_round"
+                path="/Users/bournewang/Documents/Project/gradle/android-FlashCardCreator/androidFlashCardCreator/src/main/res/drawable/shape_button_simple_line_round.xml"
+                qualifiers=""
+                type="drawable" />
+            <file
+                name="shape_button_simple_line_round_highlighted"
+                path="/Users/bournewang/Documents/Project/gradle/android-FlashCardCreator/androidFlashCardCreator/src/main/res/drawable/shape_button_simple_line_round_highlighted.xml"
+                qualifiers=""
+                type="drawable" />
+            <file
+                name="shape_card_bg"
+                path="/Users/bournewang/Documents/Project/gradle/android-FlashCardCreator/androidFlashCardCreator/src/main/res/drawable/shape_card_bg.xml"
+                qualifiers=""
+                type="drawable" />
+            <file
+                name="shape_card_blue_left_corner"
+                path="/Users/bournewang/Documents/Project/gradle/android-FlashCardCreator/androidFlashCardCreator/src/main/res/drawable/shape_card_blue_left_corner.xml"
+                qualifiers=""
+                type="drawable" />
+            <file
+                name="shape_card_coffee_left_corner"
+                path="/Users/bournewang/Documents/Project/gradle/android-FlashCardCreator/androidFlashCardCreator/src/main/res/drawable/shape_card_coffee_left_corner.xml"
+                qualifiers=""
+                type="drawable" />
+            <file
+                name="shape_card_cover_image_mask_highlight"
+                path="/Users/bournewang/Documents/Project/gradle/android-FlashCardCreator/androidFlashCardCreator/src/main/res/drawable/shape_card_cover_image_mask_highlight.xml"
+                qualifiers=""
+                type="drawable" />
+            <file
+                name="shape_card_cover_image_mask_normal"
+                path="/Users/bournewang/Documents/Project/gradle/android-FlashCardCreator/androidFlashCardCreator/src/main/res/drawable/shape_card_cover_image_mask_normal.xml"
+                qualifiers=""
+                type="drawable" />
+            <file
+                name="shape_card_gray_left_corner"
+                path="/Users/bournewang/Documents/Project/gradle/android-FlashCardCreator/androidFlashCardCreator/src/main/res/drawable/shape_card_gray_left_corner.xml"
+                qualifiers=""
+                type="drawable" />
+            <file
+                name="shape_card_list_item"
+                path="/Users/bournewang/Documents/Project/gradle/android-FlashCardCreator/androidFlashCardCreator/src/main/res/drawable/shape_card_list_item.xml"
+                qualifiers=""
+                type="drawable" />
+            <file
+                name="shape_card_list_item_background"
+                path="/Users/bournewang/Documents/Project/gradle/android-FlashCardCreator/androidFlashCardCreator/src/main/res/drawable/shape_card_list_item_background.xml"
+                qualifiers=""
+                type="drawable" />
+            <file
+                name="shape_card_list_item_highlighted_background"
+                path="/Users/bournewang/Documents/Project/gradle/android-FlashCardCreator/androidFlashCardCreator/src/main/res/drawable/shape_card_list_item_highlighted_background.xml"
+                qualifiers=""
+                type="drawable" />
+            <file
+                name="shape_card_purple_left_corner"
+                path="/Users/bournewang/Documents/Project/gradle/android-FlashCardCreator/androidFlashCardCreator/src/main/res/drawable/shape_card_purple_left_corner.xml"
+                qualifiers=""
+                type="drawable" />
+            <file
+                name="shape_card_red_left_corner"
+                path="/Users/bournewang/Documents/Project/gradle/android-FlashCardCreator/androidFlashCardCreator/src/main/res/drawable/shape_card_red_left_corner.xml"
+                qualifiers=""
+                type="drawable" />
+            <file
+                name="shape_darkgray"
+                path="/Users/bournewang/Documents/Project/gradle/android-FlashCardCreator/androidFlashCardCreator/src/main/res/drawable/shape_darkgray.xml"
+                qualifiers=""
+                type="drawable" />
+            <file
+                name="shape_darkgray_no_corner"
+                path="/Users/bournewang/Documents/Project/gradle/android-FlashCardCreator/androidFlashCardCreator/src/main/res/drawable/shape_darkgray_no_corner.xml"
+                qualifiers=""
+                type="drawable" />
+            <file
+                name="shape_dialog_background"
+                path="/Users/bournewang/Documents/Project/gradle/android-FlashCardCreator/androidFlashCardCreator/src/main/res/drawable/shape_dialog_background.xml"
+                qualifiers=""
+                type="drawable" />
+            <file
+                name="shape_edittext_editable"
+                path="/Users/bournewang/Documents/Project/gradle/android-FlashCardCreator/androidFlashCardCreator/src/main/res/drawable/shape_edittext_editable.xml"
+                qualifiers=""
+                type="drawable" />
+            <file
+                name="shape_edittext_no_editable"
+                path="/Users/bournewang/Documents/Project/gradle/android-FlashCardCreator/androidFlashCardCreator/src/main/res/drawable/shape_edittext_no_editable.xml"
+                qualifiers=""
+                type="drawable" />
+            <file
+                name="shape_edittext_rounded_corner"
+                path="/Users/bournewang/Documents/Project/gradle/android-FlashCardCreator/androidFlashCardCreator/src/main/res/drawable/shape_edittext_rounded_corner.xml"
+                qualifiers=""
+                type="drawable" />
+            <file
+                name="shape_green"
+                path="/Users/bournewang/Documents/Project/gradle/android-FlashCardCreator/androidFlashCardCreator/src/main/res/drawable/shape_green.xml"
+                qualifiers=""
+                type="drawable" />
+            <file
+                name="shape_image_round_corner"
+                path="/Users/bournewang/Documents/Project/gradle/android-FlashCardCreator/androidFlashCardCreator/src/main/res/drawable/shape_image_round_corner.xml"
+                qualifiers=""
+                type="drawable" />
+            <file
+                name="shape_popupwindow_background"
+                path="/Users/bournewang/Documents/Project/gradle/android-FlashCardCreator/androidFlashCardCreator/src/main/res/drawable/shape_popupwindow_background.xml"
+                qualifiers=""
+                type="drawable" />
+            <file
+                name="shape_red"
+                path="/Users/bournewang/Documents/Project/gradle/android-FlashCardCreator/androidFlashCardCreator/src/main/res/drawable/shape_red.xml"
+                qualifiers=""
+                type="drawable" />
+            <file
+                name="shape_yellow"
+                path="/Users/bournewang/Documents/Project/gradle/android-FlashCardCreator/androidFlashCardCreator/src/main/res/drawable/shape_yellow.xml"
+                qualifiers=""
+                type="drawable" />
+            <file
+                name="share_button"
+                path="/Users/bournewang/Documents/Project/gradle/android-FlashCardCreator/androidFlashCardCreator/src/main/res/drawable/share_button.png"
+                qualifiers=""
+                type="drawable" />
+            <file
+                name="splash"
+                path="/Users/bournewang/Documents/Project/gradle/android-FlashCardCreator/androidFlashCardCreator/src/main/res/drawable/splash.png"
+                qualifiers=""
+                type="drawable" />
+            <file
+                name="template_background_change_button"
+                path="/Users/bournewang/Documents/Project/gradle/android-FlashCardCreator/androidFlashCardCreator/src/main/res/drawable/template_background_change_button.png"
+                qualifiers=""
+                type="drawable" />
+            <file
+                name="video_placeholder"
+                path="/Users/bournewang/Documents/Project/gradle/android-FlashCardCreator/androidFlashCardCreator/src/main/res/drawable/video_placeholder.png"
+                qualifiers=""
+                type="drawable" />
+            <file
+                name="w2048"
+                path="/Users/bournewang/Documents/Project/gradle/android-FlashCardCreator/androidFlashCardCreator/src/main/res/drawable/w2048.png"
+                qualifiers=""
+                type="drawable" />
+            <file
+                name="youtube_link"
+                path="/Users/bournewang/Documents/Project/gradle/android-FlashCardCreator/androidFlashCardCreator/src/main/res/drawable/youtube_link.png"
+                qualifiers=""
+                type="drawable" />
+            <file
+                name="ic_launcher"
+                path="/Users/bournewang/Documents/Project/gradle/android-FlashCardCreator/androidFlashCardCreator/src/main/res/drawable-hdpi/ic_launcher.png"
+                qualifiers="hdpi"
+                type="drawable" />
+            <file
+                name="ic_launcher"
+                path="/Users/bournewang/Documents/Project/gradle/android-FlashCardCreator/androidFlashCardCreator/src/main/res/drawable-mdpi/ic_launcher.png"
+                qualifiers="mdpi"
+                type="drawable" />
+            <file
+                name="w2048"
+                path="/Users/bournewang/Documents/Project/gradle/android-FlashCardCreator/androidFlashCardCreator/src/main/res/drawable-w1000dp/w2048.png"
+                qualifiers="w1000dp"
+                type="drawable" />
+            <file
+                name="w2048"
+                path="/Users/bournewang/Documents/Project/gradle/android-FlashCardCreator/androidFlashCardCreator/src/main/res/drawable-w1400dp/w2048.png"
+                qualifiers="w1400dp"
+                type="drawable" />
+            <file
+                name="w2048"
+                path="/Users/bournewang/Documents/Project/gradle/android-FlashCardCreator/androidFlashCardCreator/src/main/res/drawable-w600dp/w2048.png"
+                qualifiers="w600dp"
+                type="drawable" />
+            <file
+                name="ic_launcher"
+                path="/Users/bournewang/Documents/Project/gradle/android-FlashCardCreator/androidFlashCardCreator/src/main/res/drawable-xhdpi/ic_launcher.png"
+                qualifiers="xhdpi"
+                type="drawable" />
+            <file
+                name="add_pack_button"
+                path="/Users/bournewang/Documents/Project/gradle/android-FlashCardCreator/androidFlashCardCreator/src/main/res/drawable-xxhdpi/add_pack_button.png"
+                qualifiers="xxhdpi"
+                type="drawable" />
+            <file
+                name="helping_button"
+                path="/Users/bournewang/Documents/Project/gradle/android-FlashCardCreator/androidFlashCardCreator/src/main/res/drawable-xxhdpi/helping_button.png"
+                qualifiers="xxhdpi"
+                type="drawable" />
+            <file
+                name="ic_launcher"
+                path="/Users/bournewang/Documents/Project/gradle/android-FlashCardCreator/androidFlashCardCreator/src/main/res/drawable-xxhdpi/ic_launcher.png"
+                qualifiers="xxhdpi"
+                type="drawable" />
+            <file
+                name="play_button"
+                path="/Users/bournewang/Documents/Project/gradle/android-FlashCardCreator/androidFlashCardCreator/src/main/res/drawable-xxhdpi/play_button.png"
+                qualifiers="xxhdpi"
+                type="drawable" />
+            <file
+                name="template_background_change_button"
+                path="/Users/bournewang/Documents/Project/gradle/android-FlashCardCreator/androidFlashCardCreator/src/main/res/drawable-xxhdpi/template_background_change_button.png"
+                qualifiers="xxhdpi"
+                type="drawable" />
+            <file
+                name="about"
+                path="/Users/bournewang/Documents/Project/gradle/android-FlashCardCreator/androidFlashCardCreator/src/main/res/layout/about.xml"
+                qualifiers=""
+                type="layout" />
+            <file
+                name="activity_card_twopane"
+                path="/Users/bournewang/Documents/Project/gradle/android-FlashCardCreator/androidFlashCardCreator/src/main/res/layout/activity_card_twopane.xml"
+                qualifiers=""
+                type="layout" />
+            <file
+                name="card"
+                path="/Users/bournewang/Documents/Project/gradle/android-FlashCardCreator/androidFlashCardCreator/src/main/res/layout/card.xml"
+                qualifiers=""
+                type="layout" />
+            <file
+                name="card_list_item"
+                path="/Users/bournewang/Documents/Project/gradle/android-FlashCardCreator/androidFlashCardCreator/src/main/res/layout/card_list_item.xml"
+                qualifiers=""
+                type="layout" />
+            <file
+                name="create_sound"
+                path="/Users/bournewang/Documents/Project/gradle/android-FlashCardCreator/androidFlashCardCreator/src/main/res/layout/create_sound.xml"
+                qualifiers=""
+                type="layout" />
+            <file
+                name="css_toolbar"
+                path="/Users/bournewang/Documents/Project/gradle/android-FlashCardCreator/androidFlashCardCreator/src/main/res/layout/css_toolbar.xml"
+                qualifiers=""
+                type="layout" />
+            <file
+                name="dialog_header"
+                path="/Users/bournewang/Documents/Project/gradle/android-FlashCardCreator/androidFlashCardCreator/src/main/res/layout/dialog_header.xml"
+                qualifiers=""
+                type="layout" />
+            <file
+                name="dragsortlistview"
+                path="/Users/bournewang/Documents/Project/gradle/android-FlashCardCreator/androidFlashCardCreator/src/main/res/layout/dragsortlistview.xml"
+                qualifiers=""
+                type="layout" />
+            <file
+                name="fragment_add_pack"
+                path="/Users/bournewang/Documents/Project/gradle/android-FlashCardCreator/androidFlashCardCreator/src/main/res/layout/fragment_add_pack.xml"
+                qualifiers=""
+                type="layout" />
+            <file
+                name="fragment_card_detail"
+                path="/Users/bournewang/Documents/Project/gradle/android-FlashCardCreator/androidFlashCardCreator/src/main/res/layout/fragment_card_detail.xml"
+                qualifiers=""
+                type="layout" />
+            <file
+                name="fragment_pack_list"
+                path="/Users/bournewang/Documents/Project/gradle/android-FlashCardCreator/androidFlashCardCreator/src/main/res/layout/fragment_pack_list.xml"
+                qualifiers=""
+                type="layout" />
+            <file
+                name="fragment_symbol_box"
+                path="/Users/bournewang/Documents/Project/gradle/android-FlashCardCreator/androidFlashCardCreator/src/main/res/layout/fragment_symbol_box.xml"
+                qualifiers=""
+                type="layout" />
+            <file
+                name="instruction"
+                path="/Users/bournewang/Documents/Project/gradle/android-FlashCardCreator/androidFlashCardCreator/src/main/res/layout/instruction.xml"
+                qualifiers=""
+                type="layout" />
+            <file
+                name="instruction_image_item"
+                path="/Users/bournewang/Documents/Project/gradle/android-FlashCardCreator/androidFlashCardCreator/src/main/res/layout/instruction_image_item.xml"
+                qualifiers=""
+                type="layout" />
+            <file
+                name="pack_list"
+                path="/Users/bournewang/Documents/Project/gradle/android-FlashCardCreator/androidFlashCardCreator/src/main/res/layout/pack_list.xml"
+                qualifiers=""
+                type="layout" />
+            <file
+                name="pack_list_item"
+                path="/Users/bournewang/Documents/Project/gradle/android-FlashCardCreator/androidFlashCardCreator/src/main/res/layout/pack_list_item.xml"
+                qualifiers=""
+                type="layout" />
+            <file
+                name="pack_list_item_add_pack"
+                path="/Users/bournewang/Documents/Project/gradle/android-FlashCardCreator/androidFlashCardCreator/src/main/res/layout/pack_list_item_add_pack.xml"
+                qualifiers=""
+                type="layout" />
+            <file
+                name="play"
+                path="/Users/bournewang/Documents/Project/gradle/android-FlashCardCreator/androidFlashCardCreator/src/main/res/layout/play.xml"
+                qualifiers=""
+                type="layout" />
+            <file
+                name="spinner"
+                path="/Users/bournewang/Documents/Project/gradle/android-FlashCardCreator/androidFlashCardCreator/src/main/res/layout/spinner.xml"
+                qualifiers=""
+                type="layout" />
+            <file
+                name="start"
+                path="/Users/bournewang/Documents/Project/gradle/android-FlashCardCreator/androidFlashCardCreator/src/main/res/layout/start.xml"
+                qualifiers=""
+                type="layout" />
+            <file
+                name="symbol_gridview"
+                path="/Users/bournewang/Documents/Project/gradle/android-FlashCardCreator/androidFlashCardCreator/src/main/res/layout/symbol_gridview.xml"
+                qualifiers=""
+                type="layout" />
+            <file
+                name="symbol_view"
+                path="/Users/bournewang/Documents/Project/gradle/android-FlashCardCreator/androidFlashCardCreator/src/main/res/layout/symbol_view.xml"
+                qualifiers=""
+                type="layout" />
+            <file
+                name="video_play"
+                path="/Users/bournewang/Documents/Project/gradle/android-FlashCardCreator/androidFlashCardCreator/src/main/res/layout/video_play.xml"
+                qualifiers=""
+                type="layout" />
+            <file
+                name="actionbar"
+                path="/Users/bournewang/Documents/Project/gradle/android-FlashCardCreator/androidFlashCardCreator/src/main/res/menu/actionbar.xml"
+                qualifiers=""
+                type="menu" />
+            <file
+                name="actionbar_add_card"
+                path="/Users/bournewang/Documents/Project/gradle/android-FlashCardCreator/androidFlashCardCreator/src/main/res/menu/actionbar_add_card.xml"
+                qualifiers=""
+                type="menu" />
+            <file
+                path="/Users/bournewang/Documents/Project/gradle/android-FlashCardCreator/androidFlashCardCreator/src/main/res/values/analytics.xml"
+                qualifiers="" >
+                <bool name="ga_autoActivityTracking" >
+true
+                </bool>
+
+                <string name="ga_trackingId" >UA-42218173-1
+                </string>
+
+                <bool name="ga_reportUncaughtExceptions" >
+true
+                </bool>
+            </file>
+            <file
+                path="/Users/bournewang/Documents/Project/gradle/android-FlashCardCreator/androidFlashCardCreator/src/main/res/values/arrays.xml"
+                qualifiers="" >
+                <string-array name="css_size" >
+                    <item>
+Size
+                    </item>
+                    <item>
+12
+                    </item>
+                    <item>
+18
+                    </item>
+                    <item>
+24
+                    </item>
+                    <item>
+28
+                    </item>
+                    <item>
+32
+                    </item>
+                    <item>
+80
+                    </item>
+                </string-array>
+                <string-array name="css_color" >
+                    <item>
+Color
+                    </item>
+                    <item>
+Red
+                    </item>
+                    <item>
+Blue
+                    </item>
+                    <item>
+Black
+                    </item>
+                    <item>
+Yellow
+                    </item>
+                    <item>
+Green
+                    </item>
+                    <item>
+White
+                    </item>
+                </string-array>
+                <string-array name="css_align" >
+                    <item>
+Align
+                    </item>
+                    <item>
+Left
+                    </item>
+                    <item>
+Center
+                    </item>
+                    <item>
+Right
+                    </item>
+                </string-array>
+                <string-array name="share_spinner" >
+                    <item>
+Share
+                    </item>
+                    <item>
+Install from code
+                    </item>
+                    <item>
+Share the pack
+                    </item>
+                </string-array>
+                <string-array name="help_instruction" >
+                    <item>
+"1. Click the packs button to show the packs you've created or have access to\n2. Click the edit button to delete a card in the current pack\n3. Click the plus symbol to create a new pack\n4. Click the play button to play the card!;\n5. Click the paint brush to change the colour palette of your cards\n6. Click the information symbol to get to this screen\n7. Click the settings button to access the settings of the app\n8. Click the share button to upload your pack to Dropbox and share with others, or install a pack by code"
+                    </item>
+                    <item>
+"1. Click the card you want to edit\n2. Click anywhere in the card to edit the text\n3. Click the plus symbol to add a new card to your current pack"
+                    </item>
+                    <item>
+"1. You can set an background image for each question and answer in a card\n2. You can click on the template button to change the template\n3. You can record sounds for each card\n4. Click to select an image/video from library, or insert a YouTube video linkage\n5. Switch to question/answer part of a card"
+                    </item>
+                    <item>
+"When you are editing you can change the alignment, size, colour of the text and even insert symbols by clicking these buttons;"
+                    </item>
+                </string-array>
+                <string-array name="css_font" >
+                    <item>
+Font
+                    </item>
+                    <item>
+Default
+                    </item>
+                    <item>
+Papyrus
+                    </item>
+                    <item>
+Courier
+                    </item>
+                    <item>
+Chalkduster
+                    </item>
+                    <item>
+Arial-BoldMT
+                    </item>
+                </string-array>
+            </file>
+            <file
+                path="/Users/bournewang/Documents/Project/gradle/android-FlashCardCreator/androidFlashCardCreator/src/main/res/values/colors.xml"
+                qualifiers="" >
+                <color name="card_detail_background" >#ff9091a0
+                </color>
+                <color name="card_list_background" >#000000
+                </color>
+                <color name="dialog_head_text" >#FFFFFF
+                </color>
+            </file>
+            <file
+                path="/Users/bournewang/Documents/Project/gradle/android-FlashCardCreator/androidFlashCardCreator/src/main/res/values/dimens.xml"
+                qualifiers="" >
+                <dimen name="card_round_corner" >15dp
+                </dimen>
+                <dimen name="cardsn_top_margin" >12dp
+                </dimen>
+                <dimen name="sidebar_text_size" >12sp
+                </dimen>
+                <dimen name="button_change_template_size" >32dp
+                </dimen>
+                <dimen name="add_card_button_size" >20dp
+                </dimen>
+                <dimen name="logo_url_btn_size" >15dp
+                </dimen>
+                <dimen name="add_pack_edit_text_size" >12sp
+                </dimen>
+                <dimen name="symbol_box_height" >162dp
+                </dimen>
+                <dimen name="pack_list_text_size" >10sp
+                </dimen>
+                <dimen name="csstoolbar_button_width" >65dp
+                </dimen>
+                <dimen name="creator_text_size" >8sp
+                </dimen>
+                <dimen name="title_text_size" >20sp
+                </dimen>
+                <dimen name="pack_list_item_width" >150dp
+                </dimen>
+                <dimen name="cardsn_text_size" >8sp
+                </dimen>
+                <dimen name="add_pack_window_width" >400dp
+                </dimen>
+                <dimen name="question_template_1_margin_right" >300dp
+                </dimen>
+                <dimen name="csstoolbar_text_size" >10sp
+                </dimen>
+                <dimen name="segment_text_size" >12sp
+                </dimen>
+                <dimen name="pack_list_height" >210dp
+                </dimen>
+                <dimen name="pack_list_window_height" >300dp
+                </dimen>
+                <dimen name="cardsn_size" >15dp
+                </dimen>
+                <dimen name="pack_list_width" >380dp
+                </dimen>
+                <dimen name="symbol__width" >30dp
+                </dimen>
+                <dimen name="symbol_text_size" >12sp
+                </dimen>
+            </file>
+            <file
+                path="/Users/bournewang/Documents/Project/gradle/android-FlashCardCreator/androidFlashCardCreator/src/main/res/values/ids.xml"
+                qualifiers="" >
+                <item
+                    name="card_list_item_click_remove"
+                    type="id"/>
+                <item
+                    name="card_list_item_drag_handle"
+                    type="id"/>
+            </file>
+            <file
+                path="/Users/bournewang/Documents/Project/gradle/android-FlashCardCreator/androidFlashCardCreator/src/main/res/values/integer.xml"
+                qualifiers="" >
+                <integer name="symbox_box_column_no" >
+10
+                </integer>
+            </file>
+            <file
+                path="/Users/bournewang/Documents/Project/gradle/android-FlashCardCreator/androidFlashCardCreator/src/main/res/values/strings.xml"
+                qualifiers="" >
+                <string name="actionbar_item_edit" >Edit
+                </string>
+                <string name="alert_check_network" >Check your network
+                </string>
+                <string name="packlist_done" >Done
+                </string>
+                <string name="more_title" >More
+                </string>
+                <string name="packlist_edit" >Edit
+                </string>
+                <string name="alert_downlod_sample" >Downloading sample pack
+                </string>
+                <string name="actionbar_item_more" >More
+                </string>
+                <string name="more_random_play" >Random Play
+                </string>
+                <string name="more_dropbox" >Dropbox
+                </string>
+                <string name="app_id" >430339350417672
+                </string>
+                <string name="more_help" >Help
+                </string>
+                <string name="actionbar_item_change" >Change
+                </string>
+                <string name="alert_existing_pack_name" >Existing pack name, please input a different one
+                </string>
+                <string name="more_play_preference" >Play Preference
+                </string>
+                <string name="packlist_title" >Pack List
+                </string>
+                <string name="more_others" >Others
+                </string>
+                <string name="addpack_title" >New Pack
+                </string>
+                <string name="actionbar_item_help" >Help
+                </string>
+                <string name="actionbar_item_play" >Play
+                </string>
+                <string name="create_new_pack" >Create New Pack
+                </string>
+                <string name="alert_can_not_change_template_bg" >You can only make changes to cards you have created yourself.
+                </string>
+                <string name="new_user" >New user?
+                </string>
+                <string name="help_title" >Help
+                </string>
+                <string name="addpack_Creator" >Creator Name
+                </string>
+                <string name="button_cancel" >Cancel
+                </string>
+                <string name="sorted_by_recently_created_first" >Sorted by recently created first
+                </string>
+                <string name="logourl_message" >Please input a valid URL or Email
+                </string>
+                <string name="more_about" >About
+                </string>
+                <string name="alert_dropbox_unlinked" >Your dropbox account has been unlinked
+                </string>
+                <string name="addpack_save" >Save
+                </string>
+                <string name="segment_answer" >Answer
+                </string>
+                <string name="logourl_title" >Set URL/Email
+                </string>
+                <string name="actionbar_item_packs" >Packs
+                </string>
+                <string name="sorted_by_recently_viewed_first" >Sorted by recently viewed first
+                </string>
+                <string name="change_purple" >Purple
+                </string>
+                <string name="button_symbol" >Symbol
+                </string>
+                <string name="more_register" >Register
+                </string>
+                <string name="more_dropbox_preference" >Dropbox Preference
+                </string>
+                <string name="alert_can_not_create_card" >You cannot create a card in pack you have not created yourself.
+                </string>
+                <string name="change_gray" >Gray
+                </string>
+                <string name="alert_fail_to_log_dropbox" >Dropbox login failure. Please try again.
+                </string>
+                <string name="addpack_sidebar" >Sidebar Title
+                </string>
+                <string name="addpack_packname" >Pack Name
+                </string>
+                <string name="actionbar_item_add" >Add
+                </string>
+                <string name="packlist_change" >Change
+                </string>
+                <string name="change_coffee" >Coffee
+                </string>
+                <string name="more_submit" >Submit new listing
+                </string>
+                <string name="addpack_close" >Close
+                </string>
+                <string name="change_blue" >Blue
+                </string>
+                <string name="packlist_delete" >Delete
+                </string>
+                <string name="alert_create_pack_first" >Create a pack first before creating a new card
+                </string>
+                <string name="change_title" >Select a template background
+                </string>
+                <string name="alert_applying_to_all_cards" >Applying to all cards
+                </string>
+                <string name="app_name" >FlashCardCreator
+                </string>
+                <string name="button_save" >Save
+                </string>
+                <string name="segment_question" >Question
+                </string>
+                <string name="alert_downlod_pack" >Downloading…
+                </string>
+                <string name="actionbar_item_share" >Share
+                </string>
+                <string name="button_done" >Done
+                </string>
+                <string name="change_red" >Red
+                </string>
+            </file>
+            <file
+                path="/Users/bournewang/Documents/Project/gradle/android-FlashCardCreator/androidFlashCardCreator/src/main/res/values/styles.xml"
+                qualifiers="" >
+
+                <style name="BlackButtonText" >
+                    <item name="android:layout_width">
+fill_parent
+                    </item>
+                    <item name="android:layout_height">
+wrap_content
+                    </item>
+                    <item name="android:textColor">
+#ffffff
+                    </item>
+                    <item name="android:gravity">
+center
+                    </item>
+                    <item name="android:layout_margin">
+3dp
+                    </item>
+                    <item name="android:textSize">
+18sp
+                    </item>
+                    <item name="android:textStyle">
+normal
+                    </item>
+                    <item name="android:shadowColor">
+#000000
+                    </item>
+                    <item name="android:shadowDx">
+1
+                    </item>
+                    <item name="android:shadowDy">
+1
+                    </item>
+                    <item name="android:shadowRadius">
+2
+                    </item>
+                </style>
+
+                <style name="dialog_head_title" >
+                    <item name="android:layout_width">
+wrap_content
+                    </item>
+                    <item name="android:layout_height">
+wrap_content
+                    </item>
+                    <item name="android:textSize">
+19sp
+                    </item>
+                    <item name="android:textColor">
+@color/dialog_head_text
+                    </item>
+                    <item name="android:textStyle">
+normal
+                    </item>
+                    <item name="android:shadowColor">
+#ffffffff
+                    </item>
+                    <item name="android:shadowDx">
+1
+                    </item>
+                    <item name="android:shadowDy">
+1
+                    </item>
+                    <item name="android:shadowRadius">
+1
+                    </item>
+                </style>
+
+                <style
+                    name="AppBaseTheme"
+                    parent="android:Theme.Holo" >
+
+                    <!--
+            Theme customizations available in newer API levels can go in
+            res/values-vXX/styles.xml, while customizations related to
+            backward-compatibility can go here.
+                    -->
+                </style>
+
+                <style
+                    name="AppTheme"
+                    parent="android:Theme.Holo" >
+
+                    <!-- All customizations that are NOT specific to a particular API-level can go here. -->
+                </style>
+            </file>
+            <file
+                path="/Users/bournewang/Documents/Project/gradle/android-FlashCardCreator/androidFlashCardCreator/src/main/res/values-fr/strings.xml"
+                qualifiers="fr" >
+                <string name="change_coffee" >Café
+                </string>
+                <string name="alert_fail_to_log_dropbox" >Connectez-vous compte Dropbox ne
+                </string>
+                <string name="alert_dropbox_unlinked" >Deconnect Dropbox lien
+                </string>
+                <string name="more_dropbox" >Dropbox
+                </string>
+                <string name="button_save" >Save
+                </string>
+                <string name="actionbar_item_more" >Plus
+                </string>
+                <string name="alert_create_pack_first" >Créé est nécessaire avant la mise en place d\'un groupe
+                </string>
+                <string name="more_title" >Plus
+                </string>
+                <string name="more_dropbox_preference" >Dropbox Préférence
+                </string>
+                <string name="button_symbol" >Symbol
+                </string>
+                <string name="button_done" >Terminé
+                </string>
+                <string name="alert_can_not_create_card" >YVous navez pas à créer le groupe, donc je ne peux pas créer une nouvelle
+        carte
+                </string>
+                <string name="actionbar_item_help" >Aide
+                </string>
+                <string name="alert_existing_pack_name" >Existant nom du paquet, sil vous plaît entrez un autre
+                </string>
+                <string name="addpack_title" >Add Pack
+                </string>
+                <string name="actionbar_item_share" >Partager
+                </string>
+                <string name="alert_downlod_sample" >Téléchargement de pack d\'échantillons
+                </string>
+                <string name="addpack_sidebar" >Sidebar Titre
+                </string>
+                <string name="packlist_edit" >Modifier
+                </string>
+                <string name="change_title" >Sélectionnez un modèle
+                </string>
+                <string name="actionbar_item_add" >Ajouter
+                </string>
+                <string name="more_random_play" >Lecture aléatoire
+                </string>
+                <string name="more_about" >A propos
+                </string>
+                <string name="change_blue" >Bleu
+                </string>
+                <string name="packlist_change" >Changer
+                </string>
+                <string name="addpack_save" >Save
+                </string>
+                <string name="more_submit" >Soumettre nouvelle liste
+                </string>
+                <string name="actionbar_item_packs" >Packs
+                </string>
+                <string name="more_help" >Aide
+                </string>
+                <string name="alert_check_network" >Sil vous plaît vérifier votre réseau
+                </string>
+                <string name="addpack_close" >Fermez
+                </string>
+                <string name="packlist_delete" >Effacer
+                </string>
+                <string name="packlist_title" >Pack liste
+                </string>
+                <string name="change_purple" >Pourpre
+                </string>
+                <string name="addpack_Creator" >Nom du Créateur
+                </string>
+                <string name="change_red" >Rouge
+                </string>
+                <string name="button_cancel" >Annuler
+                </string>
+                <string name="addpack_packname" >Pack nom
+                </string>
+                <string name="logourl_message" >Sil vous plaît entrer une URL/Email valide
+                </string>
+                <string name="segment_question" >Question
+                </string>
+                <string name="alert_applying_to_all_cards" >Appliquer à toutes les cartes
+                </string>
+                <string name="more_register" >Enregistrez-vous
+                </string>
+                <string name="segment_answer" >Répondre
+                </string>
+                <string name="actionbar_item_edit" >Modifier
+                </string>
+                <string name="change_gray" >Gris
+                </string>
+                <string name="more_others" >Others
+                </string>
+                <string name="logourl_title" >Set URL/Email
+                </string>
+                <string name="help_title" >Aide
+                </string>
+                <string name="alert_downlod_pack" >Le téléchargement de paquet
+                </string>
+                <string name="actionbar_item_change" >Changer
+                </string>
+                <string name="packlist_done" >Done
+                </string>
+                <string name="actionbar_item_play" >Play
+                </string>
+                <string name="app_name" >FlashCardCreator
+                </string>
+                <string name="more_play_preference" >Play Préférence
+                </string>
+            </file>
+            <file
+                path="/Users/bournewang/Documents/Project/gradle/android-FlashCardCreator/androidFlashCardCreator/src/main/res/values-large/arrays.xml"
+                qualifiers="large" >
+                <string-array name="css_size" >
+                    <item>
+Size
+                    </item>
+                    <item>
+12
+                    </item>
+                    <item>
+18
+                    </item>
+                    <item>
+24
+                    </item>
+                    <item>
+28
+                    </item>
+                    <item>
+32
+                    </item>
+                    <item>
+36
+                    </item>
+                    <item>
+40
+                    </item>
+                    <item>
+45
+                    </item>
+                    <item>
+50
+                    </item>
+                    <item>
+55
+                    </item>
+                    <item>
+60
+                    </item>
+                    <item>
+80
+                    </item>
+                    <item>
+100
+                    </item>
+                    <item>
+160
+                    </item>
+                    <item>
+230
+                    </item>
+                </string-array>
+            </file>
+            <file
+                path="/Users/bournewang/Documents/Project/gradle/android-FlashCardCreator/androidFlashCardCreator/src/main/res/values-large/dimens.xml"
+                qualifiers="large" >
+                <dimen name="add_card_button_size" >40dp
+                </dimen>
+                <dimen name="add_pack_window_width" >580dp
+                </dimen>
+                <dimen name="csstoolbar_button_width" >80dp
+                </dimen>
+                <dimen name="segment_text_size" >16sp
+                </dimen>
+                <dimen name="card_round_corner" >30dp
+                </dimen>
+                <dimen name="pack_list_height" >250dp
+                </dimen>
+                <dimen name="symbol_text_size" >16sp
+                </dimen>
+                <dimen name="logo_url_btn_size" >30dp
+                </dimen>
+                <dimen name="cardsn_text_size" >16sp
+                </dimen>
+                <dimen name="csstoolbar_text_size" >12sp
+                </dimen>
+                <dimen name="sidebar_text_size" >16sp
+                </dimen>
+                <dimen name="pack_list_width" >480dp
+                </dimen>
+                <dimen name="symbol_box_height" >250dp
+                </dimen>
+                <dimen name="title_text_size" >28sp
+                </dimen>
+                <dimen name="cardsn_top_margin" >22dp
+                </dimen>
+                <dimen name="pack_list_window_height" >340dp
+                </dimen>
+                <dimen name="question_template_1_margin_right" >250dp
+                </dimen>
+                <dimen name="pack_list_item_width" >180dp
+                </dimen>
+                <dimen name="button_change_template_size" >48dp
+                </dimen>
+                <dimen name="creator_text_size" >10sp
+                </dimen>
+                <dimen name="cardsn_size" >30dp
+                </dimen>
+                <dimen name="symbol__width" >40dp
+                </dimen>
+                <dimen name="pack_list_text_size" >12sp
+                </dimen>
+                <dimen name="add_pack_edit_text_size" >16sp
+                </dimen>
+            </file>
+            <file
+                path="/Users/bournewang/Documents/Project/gradle/android-FlashCardCreator/androidFlashCardCreator/src/main/res/values-large/integer.xml"
+                qualifiers="large" >
+                <integer name="symbox_box_column_no" >
+14
+                </integer>
+            </file>
+            <file
+                path="/Users/bournewang/Documents/Project/gradle/android-FlashCardCreator/androidFlashCardCreator/src/main/res/values-normal/arrays.xml"
+                qualifiers="normal" >
+                <string-array name="css_size" >
+                    <item>
+Size
+                    </item>
+                    <item>
+12
+                    </item>
+                    <item>
+18
+                    </item>
+                    <item>
+24
+                    </item>
+                    <item>
+28
+                    </item>
+                    <item>
+32
+                    </item>
+                    <item>
+36
+                    </item>
+                    <item>
+40
+                    </item>
+                    <item>
+45
+                    </item>
+                    <item>
+50
+                    </item>
+                    <item>
+55
+                    </item>
+                    <item>
+80
+                    </item>
+                </string-array>
+            </file>
+            <file
+                path="/Users/bournewang/Documents/Project/gradle/android-FlashCardCreator/androidFlashCardCreator/src/main/res/values-normal/dimens.xml"
+                qualifiers="normal" >
+                <dimen name="sidebar_text_size" >12sp
+                </dimen>
+                <dimen name="title_text_size" >20sp
+                </dimen>
+                <dimen name="pack_list_width" >380dp
+                </dimen>
+                <dimen name="pack_list_item_width" >160dp
+                </dimen>
+                <dimen name="csstoolbar_text_size" >9sp
+                </dimen>
+                <dimen name="cardsn_text_size" >8sp
+                </dimen>
+                <dimen name="symbol__width" >30dp
+                </dimen>
+                <dimen name="symbol_box_height" >162dp
+                </dimen>
+                <dimen name="question_template_1_margin_right" >120dp
+                </dimen>
+                <dimen name="creator_text_size" >8sp
+                </dimen>
+                <dimen name="symbol_text_size" >10sp
+                </dimen>
+                <dimen name="pack_list_window_height" >300dp
+                </dimen>
+                <dimen name="card_round_corner" >15dp
+                </dimen>
+                <dimen name="pack_list_height" >200dp
+                </dimen>
+                <dimen name="csstoolbar_button_width" >60dp
+                </dimen>
+                <dimen name="add_pack_edit_text_size" >12sp
+                </dimen>
+                <dimen name="cardsn_size" >18dp
+                </dimen>
+                <dimen name="pack_list_text_size" >10sp
+                </dimen>
+                <dimen name="add_card_button_size" >30dp
+                </dimen>
+                <dimen name="add_pack_window_width" >400dp
+                </dimen>
+                <dimen name="button_change_template_size" >32dp
+                </dimen>
+                <dimen name="segment_text_size" >10sp
+                </dimen>
+                <dimen name="cardsn_top_margin" >12dp
+                </dimen>
+                <dimen name="logo_url_btn_size" >15dp
+                </dimen>
+            </file>
+            <file
+                path="/Users/bournewang/Documents/Project/gradle/android-FlashCardCreator/androidFlashCardCreator/src/main/res/values-normal/integer.xml"
+                qualifiers="normal" >
+                <integer name="symbox_box_column_no" >
+10
+                </integer>
+            </file>
+            <file
+                path="/Users/bournewang/Documents/Project/gradle/android-FlashCardCreator/androidFlashCardCreator/src/main/res/values-w1000dp/arrays.xml"
+                qualifiers="w1000dp" >
+                <integer-array name="css_size_int" >
+                    <item>
+29
+                    </item>
+                    <item>
+33
+                    </item>
+                    <item>
+29
+                    </item>
+                    <item>
+29
+                    </item>
+                    <item>
+33
+                    </item>
+                    <item>
+29
+                    </item>
+                    <item>
+90
+                    </item>
+                </integer-array>
+            </file>
+            <file
+                path="/Users/bournewang/Documents/Project/gradle/android-FlashCardCreator/androidFlashCardCreator/src/main/res/values-w1200dp/arrays.xml"
+                qualifiers="w1200dp" >
+                <integer-array name="css_size_int" >
+                    <item>
+39
+                    </item>
+                    <item>
+42
+                    </item>
+                    <item>
+39
+                    </item>
+                    <item>
+39
+                    </item>
+                    <item>
+42
+                    </item>
+                    <item>
+39
+                    </item>
+                    <item>
+100
+                    </item>
+                </integer-array>
+            </file>
+            <file
+                path="/Users/bournewang/Documents/Project/gradle/android-FlashCardCreator/androidFlashCardCreator/src/main/res/values-w1400dp/arrays.xml"
+                qualifiers="w1400dp" >
+                <integer-array name="css_size_int" >
+                    <item>
+45
+                    </item>
+                    <item>
+48
+                    </item>
+                    <item>
+45
+                    </item>
+                    <item>
+45
+                    </item>
+                    <item>
+48
+                    </item>
+                    <item>
+45
+                    </item>
+                    <item>
+110
+                    </item>
+                </integer-array>
+            </file>
+            <file
+                path="/Users/bournewang/Documents/Project/gradle/android-FlashCardCreator/androidFlashCardCreator/src/main/res/values-w1500dp/arrays.xml"
+                qualifiers="w1500dp" >
+                <integer-array name="css_size_int" >
+                    <item>
+47
+                    </item>
+                    <item>
+50
+                    </item>
+                    <item>
+47
+                    </item>
+                    <item>
+47
+                    </item>
+                    <item>
+50
+                    </item>
+                    <item>
+47
+                    </item>
+                    <item>
+110
+                    </item>
+                </integer-array>
+            </file>
+            <file
+                path="/Users/bournewang/Documents/Project/gradle/android-FlashCardCreator/androidFlashCardCreator/src/main/res/values-w320dp/arrays.xml"
+                qualifiers="w320dp" >
+                <integer-array name="css_size_int" >
+                    <item>
+10
+                    </item>
+                    <item>
+13
+                    </item>
+                    <item>
+10
+                    </item>
+                    <item>
+10
+                    </item>
+                    <item>
+13
+                    </item>
+                    <item>
+10
+                    </item>
+                    <item>
+40
+                    </item>
+                </integer-array>
+            </file>
+            <file
+                path="/Users/bournewang/Documents/Project/gradle/android-FlashCardCreator/androidFlashCardCreator/src/main/res/values-w480dp/arrays.xml"
+                qualifiers="w480dp" >
+                <integer-array name="css_size_int" >
+                    <item>
+12
+                    </item>
+                    <item>
+15
+                    </item>
+                    <item>
+12
+                    </item>
+                    <item>
+12
+                    </item>
+                    <item>
+15
+                    </item>
+                    <item>
+12
+                    </item>
+                    <item>
+45
+                    </item>
+                </integer-array>
+            </file>
+            <file
+                path="/Users/bournewang/Documents/Project/gradle/android-FlashCardCreator/androidFlashCardCreator/src/main/res/values-w500dp/arrays.xml"
+                qualifiers="w500dp" >
+                <integer-array name="css_size_int" >
+                    <item>
+13
+                    </item>
+                    <item>
+17
+                    </item>
+                    <item>
+13
+                    </item>
+                    <item>
+13
+                    </item>
+                    <item>
+17
+                    </item>
+                    <item>
+13
+                    </item>
+                    <item>
+40
+                    </item>
+                </integer-array>
+            </file>
+            <file
+                path="/Users/bournewang/Documents/Project/gradle/android-FlashCardCreator/androidFlashCardCreator/src/main/res/values-w600dp/arrays.xml"
+                qualifiers="w600dp" >
+                <integer-array name="css_size_int" >
+                    <item>
+16
+                    </item>
+                    <item>
+19
+                    </item>
+                    <item>
+16
+                    </item>
+                    <item>
+16
+                    </item>
+                    <item>
+19
+                    </item>
+                    <item>
+16
+                    </item>
+                    <item>
+40
+                    </item>
+                </integer-array>
+            </file>
+            <file
+                path="/Users/bournewang/Documents/Project/gradle/android-FlashCardCreator/androidFlashCardCreator/src/main/res/values-w800dp/arrays.xml"
+                qualifiers="w800dp" >
+                <integer-array name="css_size_int" >
+                    <item>
+23
+                    </item>
+                    <item>
+26
+                    </item>
+                    <item>
+23
+                    </item>
+                    <item>
+23
+                    </item>
+                    <item>
+26
+                    </item>
+                    <item>
+23
+                    </item>
+                    <item>
+70
+                    </item>
+                </integer-array>
+            </file>
+            <file
+                path="/Users/bournewang/Documents/Project/gradle/android-FlashCardCreator/androidFlashCardCreator/src/main/res/values-w900dp/arrays.xml"
+                qualifiers="w900dp" >
+                <integer-array name="css_size_int" >
+                    <item>
+28
+                    </item>
+                    <item>
+32
+                    </item>
+                    <item>
+28
+                    </item>
+                    <item>
+28
+                    </item>
+                    <item>
+32
+                    </item>
+                    <item>
+28
+                    </item>
+                    <item>
+80
+                    </item>
+                </integer-array>
+            </file>
+            <file
+                path="/Users/bournewang/Documents/Project/gradle/android-FlashCardCreator/androidFlashCardCreator/src/main/res/values-xlarge/arrays.xml"
+                qualifiers="xlarge" >
+                <string-array name="css_size" >
+                    <item>
+Size
+                    </item>
+                    <item>
+12
+                    </item>
+                    <item>
+18
+                    </item>
+                    <item>
+24
+                    </item>
+                    <item>
+28
+                    </item>
+                    <item>
+32
+                    </item>
+                    <item>
+36
+                    </item>
+                    <item>
+40
+                    </item>
+                    <item>
+45
+                    </item>
+                    <item>
+50
+                    </item>
+                    <item>
+55
+                    </item>
+                    <item>
+60
+                    </item>
+                    <item>
+80
+                    </item>
+                    <item>
+100
+                    </item>
+                    <item>
+160
+                    </item>
+                    <item>
+260
+                    </item>
+                </string-array>
+            </file>
+            <file
+                path="/Users/bournewang/Documents/Project/gradle/android-FlashCardCreator/androidFlashCardCreator/src/main/res/values-xlarge/dimens.xml"
+                qualifiers="xlarge" >
+                <dimen name="creator_text_size" >18sp
+                </dimen>
+                <dimen name="cardsn_size" >40dp
+                </dimen>
+                <dimen name="pack_list_window_height" >380dp
+                </dimen>
+                <dimen name="symbol_box_height" >285dp
+                </dimen>
+                <dimen name="segment_text_size" >20sp
+                </dimen>
+                <dimen name="pack_list_height" >290dp
+                </dimen>
+                <dimen name="title_text_size" >36sp
+                </dimen>
+                <dimen name="question_template_1_margin_right" >400dp
+                </dimen>
+                <dimen name="sidebar_text_size" >20sp
+                </dimen>
+                <dimen name="logo_url_btn_size" >30dp
+                </dimen>
+                <dimen name="button_change_template_size" >60dp
+                </dimen>
+                <dimen name="csstoolbar_text_size" >16sp
+                </dimen>
+                <dimen name="card_round_corner" >40dp
+                </dimen>
+                <dimen name="symbol_text_size" >32sp
+                </dimen>
+                <dimen name="add_pack_window_width" >580dp
+                </dimen>
+                <dimen name="csstoolbar_button_width" >100dp
+                </dimen>
+                <dimen name="add_pack_edit_text_size" >20sp
+                </dimen>
+                <dimen name="cardsn_top_margin" >30dp
+                </dimen>
+                <dimen name="add_card_button_size" >60dp
+                </dimen>
+                <dimen name="cardsn_text_size" >18sp
+                </dimen>
+                <dimen name="symbol__width" >40dp
+                </dimen>
+                <dimen name="pack_list_width" >624dp
+                </dimen>
+                <dimen name="pack_list_item_width" >230dp
+                </dimen>
+                <dimen name="pack_list_text_size" >15sp
+                </dimen>
+            </file>
+            <file
+                path="/Users/bournewang/Documents/Project/gradle/android-FlashCardCreator/androidFlashCardCreator/src/main/res/values-xlarge/integer.xml"
+                qualifiers="xlarge" >
+                <integer name="symbox_box_column_no" >
+16
+                </integer>
+            </file>
+            <file
+                name="more"
+                path="/Users/bournewang/Documents/Project/gradle/android-FlashCardCreator/androidFlashCardCreator/src/main/res/xml/more.xml"
+                qualifiers=""
+                type="xml" />
+        </source>
+        <source path="/Users/bournewang/Documents/Project/gradle/android-FlashCardCreator/androidFlashCardCreator/build/res/rs/debug" />
+        <source path="/Users/bournewang/Documents/Project/gradle/android-FlashCardCreator/androidFlashCardCreator/build/res/generated/debug" />
+    </dataSet>
+    <dataSet config="debug" >
+        <source path="/Users/bournewang/Documents/Project/gradle/android-FlashCardCreator/androidFlashCardCreator/src/debug/res" />
+    </dataSet>
+
+</merger>

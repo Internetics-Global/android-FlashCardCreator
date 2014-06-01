@@ -1,0 +1,96 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:layout_width="fill_parent"
+              android:layout_height="fill_parent"
+              android:orientation="vertical">
+
+    <include
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginBottom="10dp"
+            android:layout_width="fill_parent"
+            android:layout_height="0dp"
+            android:layout_weight="550"
+
+            layout="@layout/card"/>
+
+    <RelativeLayout
+            android:layout_width="fill_parent"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="5dp"
+            android:layout_marginBottom="10dp"
+            android:layout_height="0dp"
+            android:layout_weight="45">
+
+        <RadioGroup
+                android:id="@+id/radio_segment"
+                android:orientation="horizontal"
+                android:layout_width="300dp"
+                android:layout_alignParentLeft="true"
+                android:layout_height="wrap_content">
+            <RadioButton
+                    android:id="@+id/radio_segment_question"
+                    android:layout_width="0dp"
+                    android:layout_weight="150"
+                    android:layout_height="wrap_content"
+                    android:button="@null"
+                    android:checked="true"
+                    android:text="@string/segment_question"
+                    android:textSize="@dimen/segment_text_size"
+                    android:textColor="@android:color/black"
+                    android:gravity="center"
+                    android:background="@drawable/button_segment_selected"/>
+            <RadioButton
+                    android:id="@+id/radio_segment_answer"
+                    android:layout_width="0dp"
+                    android:layout_weight="150"
+                    android:layout_height="wrap_content"
+                    android:button="@null"
+                    android:text="@string/segment_answer"
+                    android:textColor="@android:color/white"
+                    android:textSize="@dimen/segment_text_size"
+                    android:gravity="center"
+                    android:checked="false"
+                    android:background="@drawable/button_segment_unselected"/>
+        </RadioGroup>
+
+        <LinearLayout
+            android:id="@+id/functionarea"
+            android:layout_width="120dp"
+            android:layout_marginRight="5dp"
+            android:background="@drawable/shape_darkgray"
+            android:layout_alignParentRight="true"
+            android:layout_height="fill_parent">
+
+            <ImageView
+                android:id="@+id/change_background_button"
+                android:layout_marginLeft="15dp"
+                android:layout_height= "24dp"
+                android:layout_width="24dp"
+                android:layout_gravity="center_vertical"
+                android:src="@drawable/selector_change_card_background_image_button"/>
+
+
+
+            <ImageView
+                android:id="@+id/change_template_button"
+                android:layout_marginLeft="15dp"
+                android:layout_height= "24dp"
+                android:layout_width="24dp"
+                android:layout_gravity="center_vertical"
+                android:src="@drawable/selector_change_card_layout_template"/>
+
+            <ImageView
+                android:id="@+id/play_record_button"
+                android:layout_marginLeft="15dp"
+                android:layout_height= "24dp"
+                android:layout_width="24dp"
+                android:layout_gravity="center_vertical"
+                android:src="@drawable/selector_record_button"/>
+
+            </LinearLayout>
+
+
+    </RelativeLayout>
+
+</LinearLayout><!-- From: file:/Users/bournewang/Documents/Project/gradle/android-FlashCardCreator/androidFlashCardCreator/src/main/res/layout/fragment_card_detail.xml -->

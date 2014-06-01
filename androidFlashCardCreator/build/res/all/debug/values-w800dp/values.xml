@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <!-- From: file:/Users/bournewang/Documents/Project/gradle/android-FlashCardCreator/androidFlashCardCreator/src/main/res/values-w800dp/arrays.xml -->
+    <eat-comment />
+
+    <integer-array name="css_size_int">
+        <item>23</item>
+        <item>26</item>
+        <item>23</item>
+        <item>23</item>
+        <item>26</item>
+        <item>23</item>
+        <item>70</item>
+    </integer-array>
+
+</resources>
