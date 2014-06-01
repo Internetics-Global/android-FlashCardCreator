@@ -236,17 +236,18 @@ public class PackListFragment extends Fragment {
 
         public View getView(final int position, View convertView, ViewGroup parent) {
 
-            LayoutInflater inflater = (LayoutInflater) getActivity().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-            View contentView;
-            if (position == 0) {
-                contentView = inflater.inflate(R.layout.pack_list_item_add_pack, parent, false);
-            } else {
-                contentView = inflater.inflate(R.layout.pack_list_item, parent, false);
+            if (convertView == null) {
+                LayoutInflater inflater = (LayoutInflater) getActivity().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+                if (position == 0) {
+                    convertView = inflater.inflate(R.layout.pack_list_item_add_pack, parent, false);
+                } else {
+                    convertView = inflater.inflate(R.layout.pack_list_item, parent, false);
+                }
             }
 
 
             //also share add pack function
-            ImageView coverImageView = (ImageView) contentView.findViewById(R.id.pack_cover_image);
+            ImageView coverImageView = (ImageView) convertView.findViewById(R.id.pack_cover_image);
 
 
             if ((position != 0)&&(mUser.packs.size() > 0)) {
@@ -254,11 +255,11 @@ public class PackListFragment extends Fragment {
                 final Pack currentPack = mUser.packs.get(position -1);
 
                 //also share the edit cards function
-                Button changeCoverImageButton = (Button) contentView.findViewById(R.id.button_change_cover_image);
+                Button changeCoverImageButton = (Button) convertView.findViewById(R.id.button_change_cover_image);
 
-                final Button deleteButton = (Button) contentView.findViewById(R.id.button_delete_pack);
+                final Button deleteButton = (Button) convertView.findViewById(R.id.button_delete_pack);
 
-                ImageView playImageView = (ImageView) contentView.findViewById(R.id.pack_play);
+                ImageView playImageView = (ImageView) convertView.findViewById(R.id.pack_play);
                 playImageView.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
@@ -290,7 +291,7 @@ public class PackListFragment extends Fragment {
                     }
                 }
 
-                final EditText packNameView = (EditText) contentView.findViewById(R.id.pack_name_text);
+                final EditText packNameView = (EditText) convertView.findViewById(R.id.pack_name_text);
                 packNameView.setOnEditorActionListener(new TextView.OnEditorActionListener() {
                     @Override
                     public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
@@ -415,7 +416,7 @@ public class PackListFragment extends Fragment {
             }
 
 
-            return contentView;
+            return convertView;
         }
 
         private void deleteCurrentPack() {

@@ -73,7 +73,9 @@ public class SymbolGridViewFragment extends Fragment {
         // Create a new ImageView for each item referenced by the Adapter
         public View getView(int position, View convertView, ViewGroup parent) {
 
-            convertView = mInflater.inflate(R.layout.symbol_view, null);
+            if (convertView == null) {
+                convertView = mInflater.inflate(R.layout.symbol_view, null);
+            }
 
             TextView summaryTextView = (TextView) convertView.findViewById(R.id.symbol_summary);
             summaryTextView.setTypeface(mTypeFace,Typeface.NORMAL);
