@@ -6,7 +6,6 @@ import android.hardware.*;
 import android.os.Build;
 import android.os.Bundle;
 import android.speech.tts.TextToSpeech;
-import android.speech.tts.UtteranceProgressListener;
 import android.support.v4.app.*;
 import android.support.v4.view.ViewPager;
 import android.util.Log;
@@ -52,6 +51,8 @@ public class PlayActivity extends FragmentActivity implements SensorEventListene
 
     private ImageView mPlayRecordImage;
 
+    private ImageView mMuteImage;
+
     //Text to speech related
     private int          mTextToSpeechContentArrayIndex;
     private TextToSpeech mTTS;
@@ -72,10 +73,29 @@ public class PlayActivity extends FragmentActivity implements SensorEventListene
         mPlayRecordImage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
-                playAudio();
+              playAudio();
             }
         });
+
+        mMuteImage = (ImageView) findViewById(R.id.mute_button);
+        if (AppConfig.sharedInstance().isMute()) {
+          mMuteImage.setImageDrawable(getResources().getDrawable(R.drawable.mute_button));
+        } else {
+            mMuteImage.setImageDrawable(getResources().getDrawable(R.drawable.un_mute_button));
+        }
+        mMuteImage.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (AppConfig.sharedInstance().isMute()) {
+                    mMuteImage.setImageDrawable(getResources().getDrawable(R.drawable.un_mute_button));
+                    AppConfig.sharedInstance().setMute(false);
+                } else {
+                    mMuteImage.setImageDrawable(getResources().getDrawable(R.drawable.mute_button));
+                    AppConfig.sharedInstance().setMute(true);
+                }
+            }
+        });
+
 
 
         mFragments = getFragments();
@@ -194,6 +214,12 @@ public class PlayActivity extends FragmentActivity implements SensorEventListene
     }
 
     private void exeuteTextToSpeechOrPlayAudio(CardDetailFragment cardDetailFragment) {
+
+        if (AppConfig.sharedInstance().isMute()) {
+            Log.i(Global.debugTag,"Can not playAudio because of mute");
+            return;
+        }
+
         if (AppConfig.sharedInstance().isTextToSpeech()) {
             textToSpeechAllContentNow(cardDetailFragment);//先text-to-speech，然后再播放audio
         } else {
@@ -202,6 +228,7 @@ public class PlayActivity extends FragmentActivity implements SensorEventListene
     }
 
     private void playAudio() {
+
 
         CardDetailFragment cardDetailFragment = (CardDetailFragment) (mFragments.get(mPosition));
 
@@ -255,9 +282,13 @@ public class PlayActivity extends FragmentActivity implements SensorEventListene
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        if (mTTS.isSpeaking()) {
-            mTTS.stop();
+        if(mTTS != null) {
+            if (mTTS.isSpeaking()) {
+                mTTS.stop();
+            }
+            mTTS.shutdown();
         }
+
         mFragments.clear();
         mFragments = null;
     }
