@@ -28,6 +28,10 @@ public class MoreActivity extends PreferenceActivity {
 
         final CheckBoxPreference dropboxPreference = (CheckBoxPreference) findPreference("dropbox_preference");
         final CheckBoxPreference playPreference = (CheckBoxPreference) findPreference("play_preference");
+
+        final CheckBoxPreference mutePreference = (CheckBoxPreference) findPreference("mute_preference");
+        final CheckBoxPreference textToSpeechPreference = (CheckBoxPreference) findPreference("text_to_speech_preference");
+
 //        PreferenceScreen registerPreference = (PreferenceScreen) findPreference("register_preference");
 //        PreferenceScreen submitPreference = (PreferenceScreen) findPreference("submit_preference");
         PreferenceScreen helpPreference = (PreferenceScreen) findPreference("help_preference");
@@ -98,6 +102,31 @@ public class MoreActivity extends PreferenceActivity {
                 Intent intent = new Intent(MoreActivity.this, WebViewActivity.class);
                 intent.putExtra("url", "http://www.flipflashcards.com.au");
                 startActivity(intent);
+                return false;
+            }
+        });
+
+
+        mutePreference.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
+            @Override
+            public boolean onPreferenceClick(Preference preference) {
+                if (!mutePreference.isChecked()) {
+                    AppConfig.sharedInstance().setMute(false);
+                } else {
+                    AppConfig.sharedInstance().setMute(true);
+                }
+                return false;
+            }
+        });
+
+        textToSpeechPreference.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
+            @Override
+            public boolean onPreferenceClick(Preference preference) {
+                if (!textToSpeechPreference.isChecked()) {
+                    AppConfig.sharedInstance().setTextToSpeech(false);
+                } else {
+                    AppConfig.sharedInstance().setTextToSpeech(true);
+                }
                 return false;
             }
         });

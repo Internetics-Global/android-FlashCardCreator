@@ -5,6 +5,8 @@ import android.content.res.Configuration;
 import android.hardware.*;
 import android.os.Build;
 import android.os.Bundle;
+import android.speech.tts.TextToSpeech;
+import android.speech.tts.UtteranceProgressListener;
 import android.support.v4.app.*;
 import android.support.v4.view.ViewPager;
 import android.util.Log;
@@ -24,6 +26,7 @@ import com.internectics.util.UIHelper;
 import com.internectics.util.VGViewPager;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
 
 
@@ -48,6 +51,10 @@ public class PlayActivity extends FragmentActivity implements SensorEventListene
     private boolean mIsScrollStop = true;
 
     private ImageView mPlayRecordImage;
+
+    //Text to speech related
+    private int          mTextToSpeechContentArrayIndex;
+    private TextToSpeech mTTS;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -150,7 +157,9 @@ public class PlayActivity extends FragmentActivity implements SensorEventListene
                     mIsScrollStop = true;
                     Log.d(Global.debugTag, "Stopped");
 
-                    playAudio();
+                    exeuteTextToSpeechOrPlayAudio((CardDetailFragment) (mFragments.get(i)));
+
+
 
                 }
             }
@@ -180,6 +189,16 @@ public class PlayActivity extends FragmentActivity implements SensorEventListene
             mPlayRecordImage.setVisibility(View.VISIBLE);
         }
 
+        setupTextToSpeech((CardDetailFragment) (mFragments.get(mPosition)));
+
+    }
+
+    private void exeuteTextToSpeechOrPlayAudio(CardDetailFragment cardDetailFragment) {
+        if (AppConfig.sharedInstance().isTextToSpeech()) {
+            textToSpeechAllContentNow(cardDetailFragment);//先text-to-speech，然后再播放audio
+        } else {
+            playAudio();
+        }
     }
 
     private void playAudio() {
@@ -222,7 +241,7 @@ public class PlayActivity extends FragmentActivity implements SensorEventListene
 
         mIsResetRoll = true;
 
-        playAudio();
+
     }
 
     @Override
@@ -236,6 +255,9 @@ public class PlayActivity extends FragmentActivity implements SensorEventListene
     @Override
     protected void onDestroy() {
         super.onDestroy();
+        if (mTTS.isSpeaking()) {
+            mTTS.stop();
+        }
         mFragments.clear();
         mFragments = null;
     }
@@ -312,7 +334,7 @@ public class PlayActivity extends FragmentActivity implements SensorEventListene
         if (orientation == 0) {
             if ((roll - mOrigalRoll > 15.0) && (mEnableA)) {
                 cardDetailFragment.switchQuestionAnswerView();
-                playAudio();
+                exeuteTextToSpeechOrPlayAudio(cardDetailFragment);
                 mEnableA = false;
             }
             if (roll - mOrigalRoll < 0) {
@@ -322,7 +344,7 @@ public class PlayActivity extends FragmentActivity implements SensorEventListene
         } else if ((orientation == 1) && (mEnableB)) {
             if (roll - mOrigalRoll < -15.0) {
                 cardDetailFragment.switchQuestionAnswerView();
-                playAudio();
+                exeuteTextToSpeechOrPlayAudio(cardDetailFragment);
                 mEnableB = false;
             }
 
@@ -388,7 +410,7 @@ public class PlayActivity extends FragmentActivity implements SensorEventListene
             mPlayRecordImage.setVisibility(View.VISIBLE);
         }
 
-        playAudio();
+        exeuteTextToSpeechOrPlayAudio(targetDetailFragment);
     }
 
 
@@ -505,4 +527,90 @@ public class PlayActivity extends FragmentActivity implements SensorEventListene
         }
         return super.onKeyDown(keyCode, event);  // need to use super to exit current activity
     }
+
+
+    private void setupTextToSpeech(final CardDetailFragment cardDetailFragment) {
+
+        if (mTTS == null) {
+            mTTS = new TextToSpeech(this,new TextToSpeech.OnInitListener() {
+                @Override
+                public void onInit(int status) {
+                    if (status == TextToSpeech.SUCCESS) {
+                        Log.i("TTS", "Initilization Success");
+
+
+                        mTTS.setOnUtteranceCompletedListener(new TextToSpeech.OnUtteranceCompletedListener() {
+                            @Override
+                            public void onUtteranceCompleted(String utteranceId) {
+
+                                mTextToSpeechContentArrayIndex ++;
+
+                                CardDetailFragment cardDetailFragment = ((CardDetailFragment) (mFragments.get(mPosition)));
+
+                                ArrayList<String> textToSpeechArray = cardDetailFragment.textToSpeechContentArray();
+                                if (textToSpeechArray.size() > mTextToSpeechContentArrayIndex) {
+
+                                    try {
+                                        Thread.sleep(500);
+                                        HashMap<String, String> params = new HashMap<String, String>();
+                                        params.put(TextToSpeech.Engine.KEY_PARAM_UTTERANCE_ID,"stringId");//必不可少
+                                        mTTS.speak(textToSpeechArray.get(mTextToSpeechContentArrayIndex),TextToSpeech.QUEUE_FLUSH,params);
+                                        Log.d(Global.debugTag,"speak" + textToSpeechArray.get(mTextToSpeechContentArrayIndex));
+                                    } catch (InterruptedException e) {
+                                        e.printStackTrace();
+                                    }
+
+                                } else {
+                                    playAudio();
+                                }
+
+                            }
+                        });
+
+                        exeuteTextToSpeechOrPlayAudio(cardDetailFragment); //once setup is finished, automatically playback
+
+
+                    } else {
+                        Log.e("TTS", "Initilization Failed!");
+                    }
+                }
+            });
+
+
+
+
+        }
+
+    }
+
+
+    private void textToSpeechAllContentNow(CardDetailFragment cardDetailFragment) {
+
+        if (AppConfig.sharedInstance().isMute()) {
+            return;
+        }
+
+        ArrayList<String> textToSpeechArray = cardDetailFragment.textToSpeechContentArray();
+        if (textToSpeechArray.size() >0) {
+
+            if (mTTS.isSpeaking()) {
+                mTTS.stop();
+            }
+
+            mTextToSpeechContentArrayIndex = 0;
+            HashMap<String, String> params = new HashMap<String, String>();
+            params.put(TextToSpeech.Engine.KEY_PARAM_UTTERANCE_ID,"stringId");//必不可少
+            mTTS.speak(textToSpeechArray.get(0),TextToSpeech.QUEUE_FLUSH,params);
+            Log.d(Global.debugTag,"speak" + textToSpeechArray.get(mTextToSpeechContentArrayIndex));
+
+        }  else {
+            playAudio();
+        }
+
+
+
+    }
+
+
+
 }

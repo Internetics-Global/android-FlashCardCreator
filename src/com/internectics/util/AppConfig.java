@@ -127,4 +127,40 @@ public class AppConfig {
     }
 
 
+    public boolean isMute() {
+        String str = appConfig.get(Global.isMute);
+        if ((str != null) && (str.equals("true")))
+            return true;
+        else
+            return false;
+    }
+
+    public void setMute(boolean b) {
+        if (b) {
+            appConfig.set(Global.isMute, "true");
+        } else {
+            appConfig.set(Global.isMute, "false");
+        }
+
+    }
+
+
+    public boolean isTextToSpeech() {
+        String str = appConfig.get(Global.isTextToSpeech);
+        if ((str != null) && (str.equals("true")))
+            return true;
+        else
+            return false;
+    }
+
+    public void setTextToSpeech(boolean b) {
+        if (b) {
+            appConfig.set(Global.isTextToSpeech, "true");
+        } else {
+            appConfig.set(Global.isTextToSpeech, "false");
+        }
+
+    }
+
+
 }

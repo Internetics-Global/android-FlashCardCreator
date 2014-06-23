@@ -29,9 +29,11 @@ import com.internectics.android_flashcardcreator.MainActivity;
 import com.internectics.android_flashcardcreator.R;
 import com.internectics.android_flashcardcreator.VideoViewActivity;
 import com.internectics.android_flashcardcreator.WebViewActivity;
+import com.internectics.data.Answer;
 import com.internectics.data.CSS;
 import com.internectics.data.Card;
 import com.internectics.data.Pack;
+import com.internectics.data.Question;
 import com.internectics.helper.AudioHelper;
 import com.internectics.helper.FileOperationHelper;
 import com.internectics.helper.PackRecordHelper;
@@ -43,6 +45,7 @@ import net.londatiga.android.ActionItem;
 import net.londatiga.android.QuickAction;
 
 import java.io.File;
+import java.util.ArrayList;
 
 public class CardDetailFragment extends Fragment implements FCCEditText.OnKeyboardCloseListener, FCCEditText.OnTouchListener {
 
@@ -740,11 +743,11 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnKeyboa
     }
 
     /**
-    配置background change imageview的click listner
+     配置background change imageview的click listner
      */
     private void configureBackgroundChangeImageView() {
         if (mChangeBackgroundImage == null) {
-          return;
+            return;
         }
 
         mChangeBackgroundImage.setOnClickListener(new View.OnClickListener() {
@@ -2530,7 +2533,7 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnKeyboa
         //step2: size
         float scaleVal;
         if (mIsPlayingCard) {
-          scaleVal = Global.scaleInPlayMode;
+            scaleVal = Global.scaleInPlayMode;
         } else {
             scaleVal = (float)1.0;
         }
@@ -3051,7 +3054,39 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnKeyboa
     }
 
 
-}
+    public ArrayList textToSpeechContentArray() {
+        ArrayList<String> arrayList = new ArrayList<String>();
 
+        if (mIsQuestionShowing) {
+
+            Question question = mCurrentCard.question;
+            if (question.subheading.length() >0) {
+                arrayList.add(question.subheading);
+            }
+            if (question.main.length() >0) {
+                arrayList.add(question.main);
+            }
+            if (question.sub.length() >0) {
+                arrayList.add(question.sub);
+            }
+
+        } else {
+            Answer answer = mCurrentCard.answer;
+            if (answer.subheading.length() >0) {
+                arrayList.add(answer.subheading);
+            }
+            if (answer.main.length() >0) {
+                arrayList.add(answer.main);
+            }
+            if (answer.sub.length() >0) {
+                arrayList.add(answer.sub);
+            }
+        }
+
+        return arrayList;
+    }
+
+
+}
 
 
