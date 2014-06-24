@@ -62,6 +62,7 @@ public class PlayActivity extends FragmentActivity implements SensorEventListene
         super.onCreate(savedInstanceState);
 
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
+        requestWindowFeature(Window.FEATURE_ACTION_BAR);
 
         int packID = getIntent().getIntExtra("packID", -1);
         mCurrentPack = CardListModel.getPack(packID);
@@ -251,6 +252,7 @@ public class PlayActivity extends FragmentActivity implements SensorEventListene
             //Toast.makeText(PlayActivity.this,"Not available audio file", Toast.LENGTH_LONG).show();
         }
     }
+
 
     @Override
     protected void onResume() {
