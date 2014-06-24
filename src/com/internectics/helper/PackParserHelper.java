@@ -350,6 +350,10 @@ public class PackParserHelper {
                 card.question.css.subheadingAlign = (String) questionObj.get("subheading_align");
             }
 
+            if (questionObj.containsKey("subheading_align_vertical"))  {
+                card.question.css.subheadingAlignVertical = (String) questionObj.get("subheading_align_vertical");
+            }
+
             if (questionObj.containsKey("subheading_color")) {
                 card.question.css.subheadingColor = (String) questionObj.get("subheading_color");
             }
@@ -358,12 +362,20 @@ public class PackParserHelper {
                 card.question.css.mainAlign = (String) questionObj.get("main_align");
             }
 
+            if (questionObj.containsKey("main_align_vertical"))  {
+                card.question.css.mainAlignVertical = (String) questionObj.get("main_align_vertical");
+            }
+
             if (questionObj.containsKey("main_color")) {
                 card.question.css.mainColor = (String) questionObj.get("main_color");
             }
 
             if (questionObj.containsKey("sub_align"))  {
                 card.question.css.subAlign = (String) questionObj.get("sub_align");
+            }
+
+            if (questionObj.containsKey("sub_align_vertical"))  {
+                card.question.css.subAlignVertical = (String) questionObj.get("sub_align_vertical");
             }
 
             if (questionObj.containsKey("sub_color")) {
@@ -638,6 +650,10 @@ public class PackParserHelper {
                 card.answer.css.subheadingAlign = (String) answerObj.get("subheading_align");
             }
 
+            if (answerObj.containsKey("subheading_align_vertical")) {
+                card.answer.css.subheadingAlignVertical = (String) answerObj.get("subheading_align_vertical");
+            }
+
             if (answerObj.containsKey("subheading_color")) {
                 card.answer.css.subheadingColor = (String) answerObj.get("subheading_color");
             }
@@ -646,12 +662,20 @@ public class PackParserHelper {
                 card.answer.css.mainAlign = (String) answerObj.get("main_align");
             }
 
+            if (answerObj.containsKey("main_align_vertical")) {
+                card.answer.css.mainAlignVertical = (String) answerObj.get("main_align_vertical");
+            }
+
             if (answerObj.containsKey("main_color")) {
                 card.answer.css.mainColor = (String) answerObj.get("main_color");
             }
 
             if (answerObj.containsKey("sub_align")) {
                 card.answer.css.subAlign = (String) answerObj.get("sub_align");
+            }
+
+            if (answerObj.containsKey("sub_align_vertical")) {
+                card.answer.css.subAlignVertical = (String) answerObj.get("sub_align_vertical");
             }
 
             if (answerObj.containsKey("sub_color")) {

@@ -117,7 +117,7 @@ public class SQLiteHelper {
                     + "subheading_align" + " TEXT," + "subheading_color" + " TEXT,"
                     + "main_size" + " INTEGER," + "main_align" + " TEXT,"
                     + "main_color" + " TEXT," + "sub_size" + " INTEGER,"
-                    + "sub_align" + " TEXT," + "sub_color" + " TEXT," + "subheading_font" + " TEXT," + "main_font" + " TEXT," + "sub_font" + " TEXT)");
+                    + "sub_align" + " TEXT," + "sub_color" + " TEXT," + "subheading_font" + " TEXT," + "main_font" + " TEXT,"+ "sub_font" + " TEXT,"+ "subheading_align_vertical" + " TEXT,"+ "main_align_vertical" + " TEXT," + "sub_align_vertical" + " TEXT)");
             db.execSQL("CREATE INDEX IF NOT EXISTS IA on CSS_Tables(css_id)");
 
 

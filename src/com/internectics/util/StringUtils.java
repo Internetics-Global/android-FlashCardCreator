@@ -166,7 +166,7 @@ public class StringUtils {
 
 
     /**
-     * Used to convert iOS style("Left", "Center","Right" to android style(Gravity.Center...)
+     * Horizontal alignment conversion
      */
     public static int convertGravityStringToInt(String gravity) {
         if (gravity.equals("Left")) {
@@ -175,8 +175,19 @@ public class StringUtils {
             return Gravity.CENTER;
         } else if (gravity.equals("Right")) {
             return Gravity.RIGHT;
-        } else {
+        } else  {
             return Gravity.LEFT;
+        }
+    }
+
+    /**
+     * Vertical alignment conversion
+     */
+    public static int convertVerticalGravityStringToInt(String gravity) {
+        if (gravity.equals("Vertical")) {
+            return Gravity.CENTER_VERTICAL;
+        } else  {
+            return Gravity.TOP;
         }
     }
 

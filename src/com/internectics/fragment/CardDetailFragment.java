@@ -2526,9 +2526,9 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnKeyboa
         mTitle.setTextColor(Color.parseColor("#0910FF"));
 
         //step1: alignment
-        mSubheading.setGravity(StringUtils.convertGravityStringToInt(mCurrentCard.question.css.subheadingAlign) | Gravity.CENTER_VERTICAL);
-        mMain.setGravity(StringUtils.convertGravityStringToInt(mCurrentCard.question.css.mainAlign) | Gravity.TOP);
-        mSub.setGravity(StringUtils.convertGravityStringToInt(mCurrentCard.question.css.subAlign) | Gravity.TOP);
+        mSubheading.setGravity(StringUtils.convertGravityStringToInt(mCurrentCard.question.css.subheadingAlign) | StringUtils.convertVerticalGravityStringToInt(mCurrentCard.question.css.subheadingAlignVertical));
+        mMain.setGravity(StringUtils.convertGravityStringToInt(mCurrentCard.question.css.mainAlign) | StringUtils.convertVerticalGravityStringToInt(mCurrentCard.question.css.mainAlignVertical));
+        mSub.setGravity(StringUtils.convertGravityStringToInt(mCurrentCard.question.css.subAlign) | StringUtils.convertVerticalGravityStringToInt(mCurrentCard.question.css.subAlignVertical));
 
         //step2: size
         float scaleVal;
@@ -2548,9 +2548,9 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnKeyboa
         mSub.setTextColor(StringUtils.convertColorStringToInt(mCurrentCard.question.css.subColor));
 
         //step1: alignment
-        mSubheading2.setGravity(StringUtils.convertGravityStringToInt(mCurrentCard.question.css.subheadingAlign) | Gravity.CENTER_VERTICAL);
-        mMain2.setGravity(StringUtils.convertGravityStringToInt(mCurrentCard.question.css.mainAlign) | Gravity.TOP);
-        mSub2.setGravity(StringUtils.convertGravityStringToInt(mCurrentCard.question.css.subAlign) | Gravity.TOP);
+        mSubheading2.setGravity(StringUtils.convertGravityStringToInt(mCurrentCard.question.css.subheadingAlign) | StringUtils.convertVerticalGravityStringToInt(mCurrentCard.question.css.subheadingAlignVertical));
+        mMain2.setGravity(StringUtils.convertGravityStringToInt(mCurrentCard.question.css.mainAlign) | StringUtils.convertVerticalGravityStringToInt(mCurrentCard.question.css.mainAlignVertical));
+        mSub2.setGravity(StringUtils.convertGravityStringToInt(mCurrentCard.question.css.subAlign) | StringUtils.convertVerticalGravityStringToInt(mCurrentCard.question.css.subAlignVertical));
 
         //step2: size
         mSubheading2.setTextSize((mCurrentCard.question.css.subheadingSize *scaleVal));
@@ -2582,9 +2582,9 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnKeyboa
         mTitle.setTextColor(Color.RED);
 
         //step1: alignment
-        mSubheading.setGravity(StringUtils.convertGravityStringToInt(mCurrentCard.answer.css.subheadingAlign ) | Gravity.CENTER_VERTICAL);
-        mMain.setGravity(StringUtils.convertGravityStringToInt(mCurrentCard.answer.css.mainAlign) | Gravity.TOP);
-        mSub.setGravity(StringUtils.convertGravityStringToInt(mCurrentCard.answer.css.subAlign) | Gravity.TOP);
+        mSubheading.setGravity(StringUtils.convertGravityStringToInt(mCurrentCard.answer.css.subheadingAlign ) | StringUtils.convertVerticalGravityStringToInt(mCurrentCard.answer.css.subheadingAlignVertical));
+        mMain.setGravity(StringUtils.convertGravityStringToInt(mCurrentCard.answer.css.mainAlign) | StringUtils.convertVerticalGravityStringToInt(mCurrentCard.answer.css.mainAlignVertical));
+        mSub.setGravity(StringUtils.convertGravityStringToInt(mCurrentCard.answer.css.subAlign) | StringUtils.convertVerticalGravityStringToInt(mCurrentCard.answer.css.subAlignVertical));
 
         //step2: size
         mSubheading.setTextSize((mCurrentCard.answer.css.subheadingSize *scaleVal));
@@ -2597,9 +2597,9 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnKeyboa
         mSub.setTextColor(StringUtils.convertColorStringToInt(mCurrentCard.answer.css.subColor));
 
         //step1: alignment
-        mSubheading2.setGravity(StringUtils.convertGravityStringToInt(mCurrentCard.answer.css.subheadingAlign ) | Gravity.CENTER_VERTICAL);
-        mMain2.setGravity(StringUtils.convertGravityStringToInt(mCurrentCard.answer.css.mainAlign) | Gravity.TOP);
-        mSub2.setGravity(StringUtils.convertGravityStringToInt(mCurrentCard.answer.css.subAlign) | Gravity.TOP);
+        mSubheading2.setGravity(StringUtils.convertGravityStringToInt(mCurrentCard.answer.css.subheadingAlign ) | StringUtils.convertVerticalGravityStringToInt(mCurrentCard.answer.css.subheadingAlignVertical));
+        mMain2.setGravity(StringUtils.convertGravityStringToInt(mCurrentCard.answer.css.mainAlign) | StringUtils.convertVerticalGravityStringToInt(mCurrentCard.answer.css.mainAlignVertical));
+        mSub2.setGravity(StringUtils.convertGravityStringToInt(mCurrentCard.answer.css.subAlign) | StringUtils.convertVerticalGravityStringToInt(mCurrentCard.answer.css.subAlignVertical));
 
         //step2: size
         mSubheading2.setTextSize((mCurrentCard.answer.css.subheadingSize *scaleVal));
@@ -2663,27 +2663,55 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnKeyboa
         switch (menuID) {
             case 0:   //stand for align
 
-                if (editTextTag == 1001) {
-                    currentCSS.subheadingAlign = alignArray[subMenuID +1];
-                } else if (editTextTag == 1002) {
-                    currentCSS.mainAlign = alignArray[subMenuID +1];
-                } else if (editTextTag == 1003) {
-                    currentCSS.subAlign = alignArray[subMenuID + 1];
+                //由于CSS存储时，只有两个值Vertical或者空，所以对于Vertical Alignment，我们需要特殊化一下（兼容ios）
+                boolean isVerticalAlign = false;
+                if (subMenuID == 3) {
+                    isVerticalAlign = true;
+                    alignArray[subMenuID +1] = "Vertical";
+                } else if (subMenuID == 4) {
+                    isVerticalAlign = true;
+                    alignArray[subMenuID +1] = "";
                 }
 
-                switch (subMenuID) {
-                    case 0:
-                        mCurrentFocusedCardContentText.setGravity(Gravity.LEFT);
-                        break;
-                    case 1:
-                        mCurrentFocusedCardContentText.setGravity(Gravity.CENTER_HORIZONTAL);
-                        break;
-                    case 2:
-                        mCurrentFocusedCardContentText.setGravity(Gravity.RIGHT);
-                        break;
-                    default:
-                        Log.w(Global.debugTag, "Out of range of subMenuID");
+                int horizontalGravity;
+                int verticallGravity;
+
+                if (editTextTag == 1001) {
+                    if (isVerticalAlign) {
+                        currentCSS.subheadingAlignVertical = alignArray[subMenuID +1];
+                    } else {
+                        currentCSS.subheadingAlign = alignArray[subMenuID +1];
+                    }
+
+                    horizontalGravity = StringUtils.convertGravityStringToInt(currentCSS.subheadingAlign);
+                    verticallGravity = StringUtils.convertVerticalGravityStringToInt(currentCSS.subheadingAlignVertical);
+
+                } else if (editTextTag == 1002) {
+                    if (isVerticalAlign) {
+                        currentCSS.mainAlignVertical = alignArray[subMenuID +1];
+                    } else {
+                        currentCSS.mainAlign = alignArray[subMenuID +1];
+                    }
+
+                    horizontalGravity = StringUtils.convertGravityStringToInt(currentCSS.mainAlign);
+                    verticallGravity = StringUtils.convertVerticalGravityStringToInt(currentCSS.mainAlignVertical);
+
+                } else if (editTextTag == 1003) {
+                    if (isVerticalAlign) {
+                        currentCSS.subAlignVertical = alignArray[subMenuID +1];
+                    } else {
+                        currentCSS.subAlign = alignArray[subMenuID +1];
+                    }
+
+                    horizontalGravity = StringUtils.convertGravityStringToInt(currentCSS.subAlign);
+                    verticallGravity = StringUtils.convertVerticalGravityStringToInt(currentCSS.subAlignVertical);
+                } else {
+                    horizontalGravity = StringUtils.convertGravityStringToInt("");
+                    verticallGravity = StringUtils.convertVerticalGravityStringToInt("");
                 }
+
+                mCurrentFocusedCardContentText.setGravity(horizontalGravity|verticallGravity);
+
                 break;
 
             case 1:   //stand for size

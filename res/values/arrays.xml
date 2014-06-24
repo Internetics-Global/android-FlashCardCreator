@@ -17,6 +17,8 @@
         <item>Left</item>
         <item>Center</item>
         <item>Right</item>
+        <item>Vertical Center</item>
+        <item>Vertical Top</item>
     </string-array>
 
     <string-array

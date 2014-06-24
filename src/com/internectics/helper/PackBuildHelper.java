@@ -209,14 +209,17 @@ public class PackBuildHelper {
         obj.put("main", card.question.main);
         obj.put("sub", card.question.sub);
         obj.put("subheading_align", card.question.css.subheadingAlign);
+        obj.put("subheading_align_vertical", card.question.css.subheadingAlignVertical);
         obj.put("subheading_color", card.question.css.subheadingColor);
-        obj.put("subheading_size", String.format("%d",card.question.css.subheadingSize));
+        obj.put("subheading_size", String.format("%d",(int)card.question.css.subheadingSize));
         obj.put("main_align", card.question.css.mainAlign);
+        obj.put("main_align_vertical", card.question.css.mainAlignVertical);
         obj.put("main_color", card.question.css.mainColor);
-        obj.put("main_size", String.format("%d",card.question.css.mainSize));
+        obj.put("main_size", String.format("%d",(int)card.question.css.mainSize));
         obj.put("sub_align", card.question.css.subAlign);
+        obj.put("sub_align_vertical", card.question.css.subAlignVertical);
         obj.put("sub_color", card.question.css.subColor);
-        obj.put("sub_size", String.format("%d",card.question.css.subSize));
+        obj.put("sub_size", String.format("%d",(int)card.question.css.subSize));
 
         obj.put("subheading_font", card.question.css.subheadingFont);
         obj.put("main_font", card.question.css.mainFont);
@@ -255,14 +258,17 @@ public class PackBuildHelper {
         obj.put("main", card.answer.main);
         obj.put("sub", card.answer.sub);
         obj.put("subheading_align", card.answer.css.subheadingAlign);
+        obj.put("subheading_align_vertical", card.answer.css.subheadingAlignVertical);
         obj.put("subheading_color", card.answer.css.subheadingColor);
-        obj.put("subheading_size", String.format("%d",card.answer.css.subheadingSize));
+        obj.put("subheading_size", String.format("%d",(int)card.answer.css.subheadingSize));
         obj.put("main_align", card.answer.css.mainAlign);
+        obj.put("main_align_vertical", card.answer.css.mainAlignVertical);
         obj.put("main_color", card.answer.css.mainColor);
-        obj.put("main_size", String.format("%d",card.answer.css.mainSize));
+        obj.put("main_size", String.format("%d",(int)card.answer.css.mainSize));
         obj.put("sub_align", card.answer.css.subAlign);
+        obj.put("sub_align_vertical", card.answer.css.subAlignVertical);
         obj.put("sub_color", card.answer.css.subColor);
-        obj.put("sub_size", String.format("%d",card.answer.css.subSize));
+        obj.put("sub_size", String.format("%d",(int)card.answer.css.subSize));
 
         obj.put("background_image", StringUtils.lastComponentOfPath(card.answer.backgroundImageUriFormatStr));
         
