@@ -240,7 +240,11 @@ public class UIHelper {
             Log.e(Global.debugTag, "Exception occurred " + e.getMessage());
 
         } finally{
-
+            try {
+                outputStream.close();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
         }
 
         return toSaveFile;
