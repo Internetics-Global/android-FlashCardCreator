@@ -164,12 +164,8 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnKeyboa
     }
 
 
-    /**
-     * @param currentPack
-     * @param currentCard
-     * @param source:     1, create new card; 2, playing card; 3.
-     */
-    public CardDetailFragment(Pack currentPack, Card currentCard, int source) {
+    public void configureParameters(Pack currentPack, Card currentCard, int source)
+    {
 
         if (source == 1) {
             mIsCreatingCard = true;
@@ -193,7 +189,6 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnKeyboa
             mCurrentCard = currentCard;
             mCurrentPack = currentPack;
         }
-
     }
 
     @Override

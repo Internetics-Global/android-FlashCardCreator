@@ -513,7 +513,8 @@ public class MainActivity extends FragmentActivity implements
             mCurrentCardIndex = index;
             if (mCurrentPack.cards.size() > mCurrentCardIndex) {
                 mCurrentCard = mCurrentPack.cards.get(mCurrentCardIndex);
-                mCardDetailFragment = new CardDetailFragment(mCurrentPack, mCurrentCard, 0);
+                mCardDetailFragment = new CardDetailFragment();
+                mCardDetailFragment.configureParameters(mCurrentPack, mCurrentCard, 0);
                 getSupportFragmentManager().beginTransaction()
                         .replace(R.id.card_detail_container, mCardDetailFragment).commitAllowingStateLoss();
             }  else {
@@ -536,7 +537,8 @@ public class MainActivity extends FragmentActivity implements
      * @param card
      */
     private void prepareSnapShotSelectedCard(Pack pack, Card card) {
-        CardDetailFragment snapshotCardDetailFragment = new CardDetailFragment(pack, card, 3);
+        CardDetailFragment snapshotCardDetailFragment = new CardDetailFragment();
+        snapshotCardDetailFragment.configureParameters(pack, card, 3);
         getSupportFragmentManager().beginTransaction()
                 .add(R.id.detail, snapshotCardDetailFragment).commitAllowingStateLoss();
 
@@ -627,7 +629,8 @@ public class MainActivity extends FragmentActivity implements
         });
 
 
-        mCardDetailFragment = new CardDetailFragment(mCurrentPack, null, 1);
+        mCardDetailFragment = new CardDetailFragment();
+        mCardDetailFragment.configureParameters(mCurrentPack, null, 1);
         if (mCurrentPack.cards.size() >0) {
             //History of reason, we put templateBackground in Card, rather than Pack. It's not a good design practce anyway.
             mCardDetailFragment.mCurrentCard.templateBackground =  mCurrentPack.cards.get(0).templateBackground;

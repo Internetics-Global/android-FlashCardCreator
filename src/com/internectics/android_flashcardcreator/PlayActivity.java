@@ -327,8 +327,9 @@ public class PlayActivity extends FragmentActivity implements SensorEventListene
         }
 
         for (int i = 0; i < size; i++) {
-
-            fList.add(i, new CardDetailFragment(mCurrentPack, cardsArray.get(i), 2));
+            CardDetailFragment cardDetailFragment = new CardDetailFragment();
+            cardDetailFragment.configureParameters(mCurrentPack, cardsArray.get(i), 2);
+            fList.add(i, cardDetailFragment);
             Log.d(Global.debugTag, String.format("new CardDetailFragment %d", i));
 
         }
