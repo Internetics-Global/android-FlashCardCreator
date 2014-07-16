@@ -95,8 +95,8 @@ public class Global {
         boolean result = apiReachable(context);
         if (!result) {
             new AlertDialog.Builder(context)
-                    .setTitle("NO Internet")
-                    .setMessage("Please check your network")
+                    .setTitle("No internet connection")
+                    .setMessage("Please check your internet settings.")
                     .setPositiveButton("OK", null)
                     .show();
         }
