@@ -3084,29 +3084,49 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnKeyboa
 
             Question question = mCurrentCard.question;
             if (question.subheading.length() >0) {
-                arrayList.add(question.subheading);
+
+                arrayList.add(replaceBasicSymbol(question.subheading));
             }
             if (question.main.length() >0) {
-                arrayList.add(question.main);
+                arrayList.add(replaceBasicSymbol(question.main));
             }
             if (question.sub.length() >0) {
-                arrayList.add(question.sub);
+                arrayList.add(replaceBasicSymbol(question.sub));
             }
 
         } else {
             Answer answer = mCurrentCard.answer;
             if (answer.subheading.length() >0) {
-                arrayList.add(answer.subheading);
+                arrayList.add(replaceBasicSymbol(answer.subheading));
             }
             if (answer.main.length() >0) {
-                arrayList.add(answer.main);
+                arrayList.add(replaceBasicSymbol(answer.main));
             }
             if (answer.sub.length() >0) {
-                arrayList.add(answer.sub);
+                arrayList.add(replaceBasicSymbol(answer.sub));
             }
         }
 
         return arrayList;
+    }
+
+
+
+    private String replaceBasicSymbol (String str) {
+        String resultStr;
+
+        String plusStr = " plus ";
+        String minusStr = " minus ";
+        String multiplyStr = " times ";
+        String divideStr = " divide ";
+
+        resultStr = str.replace("+",plusStr);
+        resultStr = resultStr.replace("−",minusStr);
+        resultStr = resultStr.replace("∗",multiplyStr);
+        resultStr = resultStr.replace("÷",divideStr);
+
+        return resultStr;
+
     }
 
 
