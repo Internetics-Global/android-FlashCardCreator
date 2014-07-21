@@ -25,6 +25,7 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.*;
 import com.internectics.UI.FCCEditText;
 import com.internectics.UI.RoundedBottomRightImageView;
+import com.internectics.UI.ScaleHelper;
 import com.internectics.android_flashcardcreator.MainActivity;
 import com.internectics.android_flashcardcreator.R;
 import com.internectics.android_flashcardcreator.VideoViewActivity;
@@ -2651,7 +2652,9 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnKeyboa
 
 
         //Step3: fill values
-        String[] sizeArray = getResources().getStringArray(R.array.css_size);
+        String[] sizeArray = ScaleHelper.realSizeArray(getActivity()); //我们不能从R.array.css_size获取，因为它仅仅是名义值，而不是真实的值
+
+
         String[] alignArray = getResources().getStringArray(R.array.css_align);
         String[] colorArray = getResources().getStringArray(R.array.css_color);
         String[] fontArray = getResources().getStringArray(R.array.css_font);
@@ -2711,7 +2714,7 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnKeyboa
 
             case 1:   //stand for size
 
-                int size = Integer.parseInt(sizeArray[subMenuID +1]);
+                float size = Float.parseFloat(sizeArray[subMenuID]);  //是个纯font size的数组，不带Size描述
 
                 //you can find the tag definition(1001,1002,1003) in card.xml
                 if (editTextTag == 1001) {

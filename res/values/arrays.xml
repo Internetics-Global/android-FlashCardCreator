@@ -42,17 +42,6 @@
     <item>White</item>
     </string-array>
 
-    <!--sp unit, spinner range-->
-    <string-array
-            name="css_size">
-        <item>Size</item>
-        <item>12</item>
-        <item>18</item>
-        <item>24</item>
-        <item>28</item>
-        <item>32</item>
-        <item>80</item>
-    </string-array>
 
 
     <string-array
@@ -60,6 +49,27 @@
         <item>Share</item>
         <item>Install from code</item>
         <item>Share the pack</item>
+    </string-array>
+
+
+    <string-array
+        name="css_size">
+        <item>Size</item>
+        <item>12</item>
+        <item>14</item>
+        <item>18</item>
+        <item>24</item>
+        <item>28</item>
+        <item>32</item>
+        <item>36</item>
+        <item>40</item>
+        <item>45</item>
+        <item>50</item>
+        <item>55</item>
+        <item>60</item>
+        <item>80</item>
+        <item>100</item>
+        <item>130</item>
     </string-array>
 
 

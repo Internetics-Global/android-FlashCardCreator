@@ -45,16 +45,16 @@ public class CSS {
         mainAlignVertical = "";
         subAlignVertical = "";
 
-        int[] sizeArray = AppContext.getAppContext().getResources().getIntArray(R.array.css_size_int);
+        int[] defaultSizeArray = AppContext.getAppContext().getResources().getIntArray(R.array.css_size_int);
 
         if (isForQuestion) {
-            subheadingSize = sizeArray[0];
-            mainSize = sizeArray[1];
-            subSize = sizeArray[2];
+            subheadingSize = defaultSizeArray[0];
+            mainSize = defaultSizeArray[1];
+            subSize = defaultSizeArray[2];
         } else {
-            subheadingSize = sizeArray[3];
-            mainSize = sizeArray[4];
-            subSize = sizeArray[5];
+            subheadingSize = defaultSizeArray[3];
+            mainSize = defaultSizeArray[4];
+            subSize = defaultSizeArray[5];
         }
     }
 
