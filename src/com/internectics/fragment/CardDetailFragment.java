@@ -3121,11 +3121,11 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnKeyboa
         String plusStr = " plus ";
         String minusStr = " minus ";
         String multiplyStr = " times ";
-        String divideStr = " divide ";
+        String divideStr = " divid by ";
 
         resultStr = str.replace("+",plusStr);
         resultStr = resultStr.replace("−",minusStr);
-        resultStr = resultStr.replace("∗",multiplyStr);
+        resultStr = resultStr.replace("⨯",multiplyStr);
         resultStr = resultStr.replace("÷",divideStr);
 
         return resultStr;
