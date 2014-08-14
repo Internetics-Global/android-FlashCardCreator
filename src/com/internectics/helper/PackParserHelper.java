@@ -195,7 +195,7 @@ public class PackParserHelper {
             if (obj.containsKey("job_title")) {
                 pack.jobTitle = (String) obj.get("job_title");
             } else {
-                pack.jobTitle = "Job title";
+                pack.jobTitle = "";
             }
 
             pack.platform = (String) obj.get("platform");

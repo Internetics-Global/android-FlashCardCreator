@@ -5,7 +5,7 @@
     <!--galaxy note 10.1 (1280*800, 149dpi, 1374dp)-->
 
     <!--sp unit-->
-    <!--we only use index 1 and 4-->
+    <!--we only use index 1 and 4，,用于默认大小的设置-->
     <integer-array
             name="css_size_int">
         <item>39</item>
