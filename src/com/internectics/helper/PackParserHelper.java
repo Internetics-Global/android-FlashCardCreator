@@ -70,6 +70,20 @@ public class PackParserHelper {
                 resultCard.answer.imageUriFormatStr = "";
             }
 
+            //imageUriFormatStr2
+            if (StringUtils.isCorrectImageName(resultCard.question.imageUriFormatStr2)) {
+                newFile = FileOperationHelper.copyImageVideoToImagesFolder(getCardImageFullPath(resultCard.question.imageUriFormatStr2, i));
+                resultCard.question.imageUriFormatStr2 = FileOperationHelper.convertToUriFormatFile(newFile);
+            } else {
+                resultCard.question.imageUriFormatStr2 = "";
+            }
+            if (StringUtils.isCorrectImageName(resultCard.answer.imageUriFormatStr2)) {
+                newFile = FileOperationHelper.copyImageVideoToImagesFolder(getCardImageFullPath(resultCard.answer.imageUriFormatStr2, i));
+                resultCard.answer.imageUriFormatStr2 = FileOperationHelper.convertToUriFormatFile(newFile);
+            } else {
+                resultCard.answer.imageUriFormatStr2 = "";
+            }
+
 
             //backgroundImageUriFormatStr
             if (StringUtils.isCorrectImageName(resultCard.question.backgroundImageUriFormatStr)) {
@@ -100,6 +114,18 @@ public class PackParserHelper {
                 resultCard.question.movieUriFormatStr = FileOperationHelper.convertToUriFormatFile(newFile);
             }
 
+            //movieUriFormatStr2
+
+            if (resultCard.question.movieUriFormatStr2.contains("http")) {
+                //do nothing
+            } else if ((resultCard.question.movieUriFormatStr2 == null) || (resultCard.question.movieUriFormatStr2.length() == 0)) {
+                resultCard.question.movieUriFormatStr2 = "";
+
+            } else {
+                newFile = FileOperationHelper.copyImageVideoToImagesFolder(getCardImageFullPath(resultCard.question.movieUriFormatStr2, i));
+                resultCard.question.movieUriFormatStr2 = FileOperationHelper.convertToUriFormatFile(newFile);
+            }
+
 
             if (resultCard.answer.movieUriFormatStr.contains("http")) {
                 //do nothing
@@ -109,6 +135,16 @@ public class PackParserHelper {
             } else {
                 newFile = FileOperationHelper.copyImageVideoToImagesFolder(getCardImageFullPath(resultCard.answer.movieUriFormatStr, i));
                 resultCard.answer.movieUriFormatStr = FileOperationHelper.convertToUriFormatFile(newFile);
+            }
+
+            if (resultCard.answer.movieUriFormatStr2.contains("http")) {
+                //do nothing
+            } else if ((resultCard.answer.movieUriFormatStr2 == null) || (resultCard.answer.movieUriFormatStr2.length() == 0)) {
+                resultCard.answer.movieUriFormatStr2 = "";
+
+            } else {
+                newFile = FileOperationHelper.copyImageVideoToImagesFolder(getCardImageFullPath(resultCard.answer.movieUriFormatStr2, i));
+                resultCard.answer.movieUriFormatStr2 = FileOperationHelper.convertToUriFormatFile(newFile);
             }
 
             //audioUriFormatStr
@@ -297,6 +333,14 @@ public class PackParserHelper {
                 card.question.movieUriFormatStr = temp;
             }
 
+            temp = "";
+            if (questionObj.containsKey("movie2")) {
+                temp = (String) questionObj.get("movie2");
+            }
+            if ((StringUtils.isCorrectMov3GPName(temp)) || (temp.contains("http"))) {   //video or video linkage
+                card.question.movieUriFormatStr2 = temp;
+            }
+
 
             temp = "";
             if (questionObj.containsKey("audio")) {
@@ -330,6 +374,14 @@ public class PackParserHelper {
             }
             if (StringUtils.isCorrectImageName(temp)) {
                 card.question.imageUriFormatStr = temp;
+            }
+
+            temp = "";
+            if (questionObj.containsKey("image2")) {
+                temp = (String) questionObj.get("image2");
+            }
+            if (StringUtils.isCorrectImageName(temp)) {
+                card.question.imageUriFormatStr2 = temp;
             }
 
             if (questionObj.containsKey("subheading")) {
@@ -634,6 +686,14 @@ public class PackParserHelper {
                 card.answer.imageUriFormatStr = temp;
             }
 
+            temp = "";
+            if (answerObj.containsKey("image2")) {
+                temp = (String) answerObj.get("image2");
+            }
+            if (StringUtils.isCorrectImageName(temp)) {
+                card.answer.imageUriFormatStr2 = temp;
+            }
+
             if (answerObj.containsKey("subheading"))  {
                 card.answer.subheading = ((String) answerObj.get("subheading")).replace("\\s+$", ""); //delete trailing space
             }
@@ -714,6 +774,14 @@ public class PackParserHelper {
             }
             if ((StringUtils.isCorrectMov3GPName(temp)) || (temp.contains("http"))) { //video or video linkage
                 card.answer.movieUriFormatStr = temp;
+            }
+
+            temp = "";
+            if (answerObj.containsKey("movie2")) {
+                temp = (String) answerObj.get("movie2");
+            }
+            if ((StringUtils.isCorrectMov3GPName(temp)) || (temp.contains("http"))) { //video or video linkage
+                card.answer.movieUriFormatStr2 = temp;
             }
 
             temp = "";

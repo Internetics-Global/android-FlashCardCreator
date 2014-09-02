@@ -97,8 +97,8 @@ public class SQLiteHelper {
             db.execSQL("CREATE TABLE " + "Question_Tables" + " (" + "question_id"
                     + " INTEGER PRIMARY KEY," + "card_id" + " INTEGER,"
                     + "subheading" + " TEXT," + "main" + " TEXT," + "sub"
-                    + " TEXT," + "image" + " TEXT," + "css_id" + " INTEGER,"
-                    + "template_id" + " INTEGER," + "background_image" + " TEXT," + "movie" + " TEXT," + "audio" + " TEXT)");
+                    + " TEXT," + "image" + " TEXT," + "image2" + " TEXT," + "css_id" + " INTEGER,"
+                    + "template_id" + " INTEGER," + "background_image" + " TEXT," + "movie" + " TEXT," + "movie2" + " TEXT," + "audio" + " TEXT)");
             db.execSQL("CREATE INDEX IF NOT EXISTS IA on Question_Tables(question_id)");
 
             // compared with iOS version, we made changes:
@@ -106,8 +106,8 @@ public class SQLiteHelper {
             db.execSQL("CREATE TABLE " + "Answer_Tables" + " (" + "answer_id"
                     + " INTEGER PRIMARY KEY," + "card_id" + " INTEGER,"
                     + "subheading" + " TEXT," + "main" + " TEXT," + "sub"
-                    + " TEXT," + "image" + " TEXT," + "css_id" + " INTEGER,"
-                    + "template_id" + " INTEGER," + "background_image" + " TEXT," + "movie" + " TEXT," + "audio" + " TEXT)");
+                    + " TEXT," + "image" + " TEXT," + "image2" + " TEXT," + "css_id" + " INTEGER,"
+                    + "template_id" + " INTEGER," + "background_image" + " TEXT," + "movie" + " TEXT," + "movie2" + " TEXT," + "audio" + " TEXT)");
             db.execSQL("CREATE INDEX IF NOT EXISTS IA on Answer_Tables(answer_id)");
 
             // compared with iOS version, we made changes:

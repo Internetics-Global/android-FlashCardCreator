@@ -62,7 +62,7 @@ public class VGViewPager extends ViewPager {
             return false;
         }
 
-        ImageView image2 = (ImageView)findViewById(R.id.image2);
+        ImageView image2 = (ImageView)findViewById(R.id.image_BodyType2);
         image2.getHitRect(outRect);
         outRect.offset(marginValLeft + sidebarWidth,marginValTop);
         if (outRect.contains(x, y)) {

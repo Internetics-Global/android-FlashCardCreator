@@ -58,12 +58,20 @@ public class PackBuildHelper {
                 cardFiles.add(FileOperationHelper.deleteUriSchemeHeader(card.question.imageUriFormatStr));
             }
 
+            if (card.question.imageUriFormatStr2.length() >0) {
+                cardFiles.add(FileOperationHelper.deleteUriSchemeHeader(card.question.imageUriFormatStr2));
+            }
+
             if (card.question.backgroundImageUriFormatStr.length() >0) {
                 cardFiles.add(FileOperationHelper.deleteUriSchemeHeader(card.question.backgroundImageUriFormatStr));
             }
 
             if ((card.question.movieUriFormatStr.length() >0) && (card.question.movieUriFormatStr.contains("http://") == false)) {
                 cardFiles.add(FileOperationHelper.deleteUriSchemeHeader(card.question.movieUriFormatStr));
+            }
+
+            if ((card.question.movieUriFormatStr2.length() >0) && (card.question.movieUriFormatStr2.contains("http://") == false)) {
+                cardFiles.add(FileOperationHelper.deleteUriSchemeHeader(card.question.movieUriFormatStr2));
             }
 
             if (card.question.audioUriFormatStr.length() >0) {
@@ -78,12 +86,21 @@ public class PackBuildHelper {
                 cardFiles.add(FileOperationHelper.deleteUriSchemeHeader(card.answer.imageUriFormatStr));
             }
 
+            if (!(card.question.imageUriFormatStr2.equals(card.answer.imageUriFormatStr2))) {
+                //for history reason, in iOS version, this data could be same (answer_placeholder_content.jpg)
+                cardFiles.add(FileOperationHelper.deleteUriSchemeHeader(card.answer.imageUriFormatStr2));
+            }
+
             if (card.answer.backgroundImageUriFormatStr.length() >0) {
                 cardFiles.add(FileOperationHelper.deleteUriSchemeHeader(card.answer.backgroundImageUriFormatStr));
             }
 
             if ((card.answer.movieUriFormatStr.length() >0) && (card.answer.movieUriFormatStr.contains("http://") == false)) {  //有可能只是类似youtube的链接，而不是本地文件
                 cardFiles.add(FileOperationHelper.deleteUriSchemeHeader(card.answer.movieUriFormatStr));
+            }
+
+            if ((card.answer.movieUriFormatStr2.length() >0) && (card.answer.movieUriFormatStr2.contains("http://") == false)) {  //有可能只是类似youtube的链接，而不是本地文件
+                cardFiles.add(FileOperationHelper.deleteUriSchemeHeader(card.answer.movieUriFormatStr2));
             }
 
             if (card.answer.audioUriFormatStr.length() >0) {
@@ -200,10 +217,17 @@ public class PackBuildHelper {
             obj.put("movie", StringUtils.lastComponentOfPath(card.question.movieUriFormatStr));
         }
 
+        if (StringUtils.isYoutubeLinkage(card.question.movieUriFormatStr2)) {
+            obj.put("movie2", card.question.movieUriFormatStr2);
+        } else {
+            obj.put("movie2", StringUtils.lastComponentOfPath(card.question.movieUriFormatStr2));
+        }
+
 
         obj.put("audio", StringUtils.lastComponentOfPath(card.question.audioUriFormatStr));
 
         obj.put("image", StringUtils.lastComponentOfPath(card.question.imageUriFormatStr));
+        obj.put("image2", StringUtils.lastComponentOfPath(card.question.imageUriFormatStr2));
         obj.put("template_id", String.format("%d", card.question.templateID));
         obj.put("subheading", card.question.subheading);
         obj.put("main", card.question.main);
@@ -254,6 +278,7 @@ public class PackBuildHelper {
         obj.put("template_id", String.format("%d", card.answer.templateID));
 
         obj.put("image", StringUtils.lastComponentOfPath(card.answer.imageUriFormatStr));
+        obj.put("image2", StringUtils.lastComponentOfPath(card.answer.imageUriFormatStr2));
         obj.put("subheading", card.answer.subheading);
         obj.put("main", card.answer.main);
         obj.put("sub", card.answer.sub);
@@ -276,6 +301,12 @@ public class PackBuildHelper {
             obj.put("movie", card.answer.movieUriFormatStr);
         } else {
             obj.put("movie", StringUtils.lastComponentOfPath(card.answer.movieUriFormatStr));
+        }
+
+        if (StringUtils.isYoutubeLinkage(card.answer.movieUriFormatStr2)) {
+            obj.put("movie2", card.answer.movieUriFormatStr2);
+        } else {
+            obj.put("movie2", StringUtils.lastComponentOfPath(card.answer.movieUriFormatStr2));
         }
 
         obj.put("audio", StringUtils.lastComponentOfPath(card.answer.audioUriFormatStr));
