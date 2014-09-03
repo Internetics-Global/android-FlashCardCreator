@@ -115,6 +115,8 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnKeyboa
     //切换过程中
     private boolean mIsSwitchingQuestionAnswerView = false;
 
+    private boolean mIsImage2Active = false; //我们有两个image(image和image2),这个变量用于区分
+
     //用于
     // 1. onStop时，是否需要进行写入到数据库；
     // 2. resize完毕后，是否需要暂存prepareToSavingTextFontSizeInfo
@@ -327,13 +329,26 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnKeyboa
     private void playVideo() {
         String targetStr =  "";
         if (mIsQuestionShowing) {
-            if  (mCurrentCard.question.movieUriFormatStr.length() >0) {
-                targetStr = mCurrentCard.question.movieUriFormatStr;
+            if (mIsImage2Active) {
+                if  (mCurrentCard.question.movieUriFormatStr2.length() >0) {
+                    targetStr = mCurrentCard.question.movieUriFormatStr2;
+                }
+            } else {
+                if  (mCurrentCard.question.movieUriFormatStr.length() >0) {
+                    targetStr = mCurrentCard.question.movieUriFormatStr;
+                }
             }
         } else {
-            if  (mCurrentCard.answer.movieUriFormatStr.length() >0) {
-                targetStr = mCurrentCard.answer.movieUriFormatStr;
+            if (mIsImage2Active) {
+                if  (mCurrentCard.answer.movieUriFormatStr2.length() >0) {
+                    targetStr = mCurrentCard.answer.movieUriFormatStr2;
 
+                }
+            } else {
+                if  (mCurrentCard.answer.movieUriFormatStr.length() >0) {
+                    targetStr = mCurrentCard.answer.movieUriFormatStr;
+
+                }
             }
         }
 
@@ -375,10 +390,19 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnKeyboa
                     public void onClick(DialogInterface dialog, int which) {
                         String youtubeURLStr = textInput.getText().toString();
                         if (StringUtils.isYoutubeLinkage(youtubeURLStr)) {
-                            if (mIsQuestionShowing) {
-                                mCurrentCard.question.movieUriFormatStr = youtubeURLStr;
+
+                            if (mIsImage2Active) {
+                                if (mIsQuestionShowing) {
+                                    mCurrentCard.question.movieUriFormatStr2 = youtubeURLStr;
+                                } else {
+                                    mCurrentCard.answer.movieUriFormatStr2 = youtubeURLStr;
+                                }
                             } else {
-                                mCurrentCard.answer.movieUriFormatStr = youtubeURLStr;
+                                if (mIsQuestionShowing) {
+                                    mCurrentCard.question.movieUriFormatStr = youtubeURLStr;
+                                } else {
+                                    mCurrentCard.answer.movieUriFormatStr = youtubeURLStr;
+                                }
                             }
 
                             thumbnailImageFromURL(Uri.parse(youtubeURLStr));
@@ -404,19 +428,38 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnKeyboa
             startActivityForResult(intent, CODE_REQUEST_IMAGE_SOURCE_IS_IMAGE);
         } else {
             if (mIsQuestionShowing) {
-                if  (mCurrentCard.question.movieUriFormatStr.length() >0) {
-                    AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-                    builder.setMessage("Play video in play mode");
-                    builder.setTitle("Alert");
-                    builder.create().show();
+                if (mIsImage2Active) {
+                    if  (mCurrentCard.question.movieUriFormatStr2.length() >0) {
+                        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+                        builder.setMessage("Play video in play mode");
+                        builder.setTitle("Alert");
+                        builder.create().show();
+                    }
+                } else {
+                    if  (mCurrentCard.question.movieUriFormatStr.length() >0) {
+                        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+                        builder.setMessage("Play video in play mode");
+                        builder.setTitle("Alert");
+                        builder.create().show();
+                    }
                 }
             } else {
-                if  (mCurrentCard.answer.movieUriFormatStr.length() >0) {
-                    AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-                    builder.setMessage("Play video in play mode");
-                    builder.setTitle("Alert");
-                    builder.create().show();
+                if (mIsImage2Active) {
+                    if  (mCurrentCard.answer.movieUriFormatStr2.length() >0) {
+                        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+                        builder.setMessage("Play video in play mode");
+                        builder.setTitle("Alert");
+                        builder.create().show();
 
+                    }
+                } else {
+                    if  (mCurrentCard.answer.movieUriFormatStr.length() >0) {
+                        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+                        builder.setMessage("Play video in play mode");
+                        builder.setTitle("Alert");
+                        builder.create().show();
+
+                    }
                 }
             }
         }
@@ -471,10 +514,19 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnKeyboa
 
                 //step2: get video
                 File toSaveVideoFile = UIHelper.saveVideoToCaches(AppContext.getAppContext(),selectedURI);
-                if (mIsQuestionShowing) {
-                    mCurrentCard.question.movieUriFormatStr = FileOperationHelper.convertToUriFormatFile(toSaveVideoFile);
+
+                if (mIsImage2Active) {
+                    if (mIsQuestionShowing) {
+                        mCurrentCard.question.movieUriFormatStr2 = FileOperationHelper.convertToUriFormatFile(toSaveVideoFile);
+                    } else {
+                        mCurrentCard.answer.movieUriFormatStr2 = FileOperationHelper.convertToUriFormatFile(toSaveVideoFile);
+                    }
                 } else {
-                    mCurrentCard.answer.movieUriFormatStr = FileOperationHelper.convertToUriFormatFile(toSaveVideoFile);
+                    if (mIsQuestionShowing) {
+                        mCurrentCard.question.movieUriFormatStr = FileOperationHelper.convertToUriFormatFile(toSaveVideoFile);
+                    } else {
+                        mCurrentCard.answer.movieUriFormatStr = FileOperationHelper.convertToUriFormatFile(toSaveVideoFile);
+                    }
                 }
 
                 if (mIsCreatingCard == false) {
@@ -547,11 +599,21 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnKeyboa
                             }
 
                         } else if (requestCode == CODE_REQUEST_IMAGE_SOURCE_IS_IMAGE) {
-                            mImage.setImageBitmap(resultBitmap);
-                            if (mIsQuestionShowing) {
-                                mCurrentCard.question.imageUriFormatStr = FileOperationHelper.convertToUriFormatFile(toSaveFile);
+
+                            if (mIsImage2Active) {
+                                mImage2.setImageBitmap(resultBitmap);
+                                if (mIsQuestionShowing) {
+                                    mCurrentCard.question.imageUriFormatStr2 = FileOperationHelper.convertToUriFormatFile(toSaveFile);
+                                } else {
+                                    mCurrentCard.answer.imageUriFormatStr2 = FileOperationHelper.convertToUriFormatFile(toSaveFile);
+                                }
                             } else {
-                                mCurrentCard.answer.imageUriFormatStr = FileOperationHelper.convertToUriFormatFile(toSaveFile);
+                                mImage.setImageBitmap(resultBitmap);
+                                if (mIsQuestionShowing) {
+                                    mCurrentCard.question.imageUriFormatStr = FileOperationHelper.convertToUriFormatFile(toSaveFile);
+                                } else {
+                                    mCurrentCard.answer.imageUriFormatStr = FileOperationHelper.convertToUriFormatFile(toSaveFile);
+                                }
                             }
 
                             if (mIsCreatingCard == false) {
@@ -596,14 +658,28 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnKeyboa
     private void thumbnailImageFromURL (Uri selectedURI) {
 
         Bitmap resultBitmap = UIHelper.getVideoThumbnail(AppContext.getAppContext(),selectedURI);
-        mImage.setImageBitmap(resultBitmap);
+
+        if (mIsImage2Active) {
+            mImage2.setImageBitmap(resultBitmap);
+        } else {
+            mImage.setImageBitmap(resultBitmap);
+        }
+
 
         File toSaveImageFile = UIHelper.saveImageToCaches(resultBitmap);
 
-        if (mIsQuestionShowing) {
-            mCurrentCard.question.imageUriFormatStr = FileOperationHelper.convertToUriFormatFile(toSaveImageFile);
+        if (mIsImage2Active) {
+            if (mIsQuestionShowing) {
+                mCurrentCard.question.imageUriFormatStr2 = FileOperationHelper.convertToUriFormatFile(toSaveImageFile);
+            } else {
+                mCurrentCard.answer.imageUriFormatStr2 = FileOperationHelper.convertToUriFormatFile(toSaveImageFile);
+            }
         } else {
-            mCurrentCard.answer.imageUriFormatStr = FileOperationHelper.convertToUriFormatFile(toSaveImageFile);
+            if (mIsQuestionShowing) {
+                mCurrentCard.question.imageUriFormatStr = FileOperationHelper.convertToUriFormatFile(toSaveImageFile);
+            } else {
+                mCurrentCard.answer.imageUriFormatStr = FileOperationHelper.convertToUriFormatFile(toSaveImageFile);
+            }
         }
     }
 
@@ -790,11 +866,13 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnKeyboa
      */
     private void configureImageVideoSelectView() {
 
+        //step1: configure image
 
         if ((!mIsPlayingCard)&&(isEditableMode())) {  // popup a choice dialog: youtube linkage or library
             mImage.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
+                    mIsImage2Active = false;
                     showImageVideoSourceDialog();
 
                 }
@@ -805,6 +883,7 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnKeyboa
                 mImage.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
+                        mIsImage2Active = false;
                         playVideo();
 
                     }
@@ -815,6 +894,44 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnKeyboa
                 mImage.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
+                        mIsImage2Active = false;
+                        Toast.makeText(getActivity(),"Video play is only available in play mode",Toast.LENGTH_LONG).show();
+
+                    }
+                });
+
+            }
+        }
+
+        //step2: configure image2
+
+        if ((!mIsPlayingCard)&&(isEditableMode())) {  // popup a choice dialog: youtube linkage or library
+            mImage2.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    mIsImage2Active = true;
+                    showImageVideoSourceDialog();
+
+                }
+            });
+
+        } else {
+            if (mIsPlayingCard) {
+                mImage2.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        mIsImage2Active = true;
+                        playVideo();
+
+                    }
+                });
+
+            } else {
+                //不在play mode下，但是同时又不是自己创建的卡
+                mImage2.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        mIsImage2Active = true;
                         Toast.makeText(getActivity(),"Video play is only available in play mode",Toast.LENGTH_LONG).show();
 
                     }
@@ -1050,6 +1167,10 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnKeyboa
             if (mCurrentCard.question.imageUriFormatStr.contains("placeholder")) {
                 mImage.setVisibility(View.INVISIBLE);
             }
+
+            if (mCurrentCard.question.imageUriFormatStr2.contains("placeholder")) {
+                mImage2.setVisibility(View.INVISIBLE);
+            }
         }
 
         mIsSwitchingQuestionAnswerView = false;
@@ -1075,6 +1196,10 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnKeyboa
         if (mIsPlayingCard) {
             if (mCurrentCard.answer.imageUriFormatStr.contains("placeholder")) {
                 mImage.setVisibility(View.INVISIBLE);
+            }
+
+            if (mCurrentCard.answer.imageUriFormatStr2.contains("placeholder")) {
+                mImage2.setVisibility(View.INVISIBLE);
             }
         }
 
@@ -1594,6 +1719,7 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnKeyboa
         mMain.setText(mCurrentCard.question.main);
         mSub.setText(mCurrentCard.question.sub);
         mImage.setImageURI(Uri.parse(mCurrentCard.question.imageUriFormatStr));
+        mImage2.setImageURI(Uri.parse(mCurrentCard.question.imageUriFormatStr2));
 
         if (mCurrentCard.question.backgroundImageUriFormatStr.length() >0) {
             setCardBackgroundImageWithUri(mCurrentCard.question.backgroundImageUriFormatStr);
@@ -1608,6 +1734,7 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnKeyboa
         mMain.setText(mCurrentCard.answer.main);
         mSub.setText(mCurrentCard.answer.sub);
         mImage.setImageURI(Uri.parse(mCurrentCard.answer.imageUriFormatStr));
+        mImage2.setImageURI(Uri.parse(mCurrentCard.answer.imageUriFormatStr2));
 
         if (mCurrentCard.answer.backgroundImageUriFormatStr.length() > 0) {
             setCardBackgroundImageWithUri(mCurrentCard.answer.backgroundImageUriFormatStr);
@@ -1642,6 +1769,7 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnKeyboa
         mCreator.setEnabled(true);
         mJobTitle.setEnabled(true);
         mImage.setEnabled(true);
+        mImage2.setEnabled(true);
 
         mCreator.setBackgroundResource(R.drawable.shape_edittext_editable);
         mJobTitle.setBackgroundResource(R.drawable.shape_edittext_editable);
@@ -1674,6 +1802,16 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnKeyboa
                 mImage.setEnabled(false);
 
             }
+
+            if (mCurrentCard.question.movieUriFormatStr2.length() > 0) {
+                //allow to play movie
+                mImage2.setEnabled(true);
+
+            } else {
+                mImage2.setEnabled(false);
+
+            }
+
         } else {
             if (mCurrentCard.answer.movieUriFormatStr.length() > 0) {
                 //allow to play movie
@@ -1681,6 +1819,15 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnKeyboa
 
             } else {
                 mImage.setEnabled(false);
+
+            }
+
+            if (mCurrentCard.answer.movieUriFormatStr2.length() > 0) {
+                //allow to play movie
+                mImage2.setEnabled(true);
+
+            } else {
+                mImage2.setEnabled(false);
 
             }
         }
