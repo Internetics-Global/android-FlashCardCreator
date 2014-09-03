@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:orientation="vertical"
+              android:layout_width="@dimen/pack_list_item_width"
+              android:layout_height="@dimen/pack_list_height">
+
+    <EditText
+            android:id="@+id/pack_name_text"
+            android:layout_width="@dimen/pack_list_item_width"
+            android:layout_height="0dp"
+            android:layout_weight="25"
+            android:text="default"
+            android:enabled="true"
+            android:textSize="@dimen/pack_list_text_size"
+            android:textColor="#FFFFFF"
+            android:gravity="center"
+            android:singleLine="true"
+            android:imeOptions="actionDone"
+            android:background="@null"
+            android:visibility="invisible"
+            android:inputType="textNoSuggestions"
+            android:layout_marginTop="10dp">
+
+    </EditText>
+
+
+    <FrameLayout
+        android:layout_width="fill_parent"
+        android:layout_marginTop="5dp"
+        android:layout_height="0dp"
+        android:layout_weight="100">
+
+
+        <ImageView
+            android:id="@+id/pack_cover_image"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:scaleType="fitCenter"
+            android:src="@drawable/create_new_pack"
+            android:background="@drawable/shape_image_round_corner">
+
+        </ImageView>
+
+        <TextView
+            android:layout_height="fill_parent"
+            android:layout_width="fill_parent"
+            android:textColor="@android:color/white"
+            android:textSize="14sp"
+            android:gravity="center_horizontal|bottom"
+            android:layout_marginBottom="15dp"
+            android:text="Create a new Pack"/>
+
+
+        </FrameLayout>
+
+
+    <LinearLayout
+            android:id="@+id/pack_list_edit_layout"
+            android:layout_width="fill_parent"
+            android:layout_height="0dp"
+            android:layout_weight="20"
+            android:layout_marginTop="5dp"
+            android:layout_marginBottom="10dp"
+            android:orientation="horizontal"
+            >
+
+        <Button
+                android:id="@+id/button_delete_pack"
+                android:layout_marginRight="10dp"
+                android:gravity="center"
+                android:layout_width="0dp"
+                android:layout_height="fill_parent"
+                android:background="@drawable/button_red"
+                android:text="@string/packlist_delete"
+                android:textSize="@dimen/pack_list_text_size"
+            android:visibility="invisible"
+                android:layout_weight="50">
+
+        </Button>
+
+        <Button
+                android:id="@+id/button_change_cover_image"
+                android:gravity="center"
+                android:layout_width="0dp"
+                android:layout_height="fill_parent"
+                android:background="@drawable/button_gray"
+                android:text="@string/packlist_change"
+                android:textColor="#000000"
+            android:visibility="invisible"
+                android:textSize="@dimen/pack_list_text_size"
+                android:layout_weight="50">
+
+        </Button>
+
+    </LinearLayout>
+
+</LinearLayout><!-- From: file:/Users/bournewang/Documents/Project/android-FlashCardCreator/androidFlashCardCreator/src/main/res/layout/pack_list_item_add_pack.xml -->

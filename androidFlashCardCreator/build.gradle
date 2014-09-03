@@ -1,0 +1,51 @@
+
+buildscript {
+    repositories {
+        mavenCentral()
+    }
+    dependencies {
+        classpath 'com.android.tools.build:gradle:0.12.2'
+    }
+}
+
+apply plugin: 'com.android.application'
+
+android {
+
+    useOldManifestMerger true
+
+    compileSdkVersion 18
+    buildToolsVersion '20.0.0'
+
+    defaultConfig {
+        applicationId "com.internectics.android_flashcardcreator"
+        minSdkVersion 14
+        targetSdkVersion 18
+        versionCode 1
+        versionName '1.0'
+    }
+
+    buildTypes {
+        release {
+            runProguard false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.txt'
+        }
+    }
+}
+
+
+dependencies {
+    compile 'com.android.support:support-v4:20.0.0'
+    compile files('libs/aws-android-sdk-1.6.0-debug.jar')
+    compile files('libs/dropbox-android-sdk-1.5.4.jar')
+    compile files('libs/httpmime-4.0.3.jar')
+    compile files('libs/json_simple-1.1.jar')
+    compile files('libs/libGoogleAnalyticsV2.jar')
+    compile files('libs/simple-social-sharing-1.0.1.jar')
+    compile files('libs/TestFlightLib.jar')
+    compile files('libs/zip4j_1.3.2.jar')
+    compile 'asia.ivity.android:drag-sort-listview:1.0@aar'
+    compile project(':Viewflow')
+    compile project(':NewQuickAction3D')
+}
+

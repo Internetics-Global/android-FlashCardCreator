@@ -1,0 +1,284 @@
+<?xml version="1.0" encoding="utf-8"?>
+<merger version="2" >
+
+    <dataSet config="main" >
+        <source path="/Users/bournewang/Documents/Project/android-FlashCardCreator/NewQuickAction3D/res" >
+            <file
+                name="disappear"
+                path="/Users/bournewang/Documents/Project/android-FlashCardCreator/NewQuickAction3D/res/anim/disappear.xml"
+                qualifiers=""
+                type="anim" />
+            <file
+                name="grow_from_bottom"
+                path="/Users/bournewang/Documents/Project/android-FlashCardCreator/NewQuickAction3D/res/anim/grow_from_bottom.xml"
+                qualifiers=""
+                type="anim" />
+            <file
+                name="grow_from_bottomleft_to_topright"
+                path="/Users/bournewang/Documents/Project/android-FlashCardCreator/NewQuickAction3D/res/anim/grow_from_bottomleft_to_topright.xml"
+                qualifiers=""
+                type="anim" />
+            <file
+                name="grow_from_bottomright_to_topleft"
+                path="/Users/bournewang/Documents/Project/android-FlashCardCreator/NewQuickAction3D/res/anim/grow_from_bottomright_to_topleft.xml"
+                qualifiers=""
+                type="anim" />
+            <file
+                name="grow_from_top"
+                path="/Users/bournewang/Documents/Project/android-FlashCardCreator/NewQuickAction3D/res/anim/grow_from_top.xml"
+                qualifiers=""
+                type="anim" />
+            <file
+                name="grow_from_topleft_to_bottomright"
+                path="/Users/bournewang/Documents/Project/android-FlashCardCreator/NewQuickAction3D/res/anim/grow_from_topleft_to_bottomright.xml"
+                qualifiers=""
+                type="anim" />
+            <file
+                name="grow_from_topright_to_bottomleft"
+                path="/Users/bournewang/Documents/Project/android-FlashCardCreator/NewQuickAction3D/res/anim/grow_from_topright_to_bottomleft.xml"
+                qualifiers=""
+                type="anim" />
+            <file
+                name="pump_bottom"
+                path="/Users/bournewang/Documents/Project/android-FlashCardCreator/NewQuickAction3D/res/anim/pump_bottom.xml"
+                qualifiers=""
+                type="anim" />
+            <file
+                name="pump_top"
+                path="/Users/bournewang/Documents/Project/android-FlashCardCreator/NewQuickAction3D/res/anim/pump_top.xml"
+                qualifiers=""
+                type="anim" />
+            <file
+                name="rail"
+                path="/Users/bournewang/Documents/Project/android-FlashCardCreator/NewQuickAction3D/res/anim/rail.xml"
+                qualifiers=""
+                type="anim" />
+            <file
+                name="shrink_from_bottom"
+                path="/Users/bournewang/Documents/Project/android-FlashCardCreator/NewQuickAction3D/res/anim/shrink_from_bottom.xml"
+                qualifiers=""
+                type="anim" />
+            <file
+                name="shrink_from_bottomleft_to_topright"
+                path="/Users/bournewang/Documents/Project/android-FlashCardCreator/NewQuickAction3D/res/anim/shrink_from_bottomleft_to_topright.xml"
+                qualifiers=""
+                type="anim" />
+            <file
+                name="shrink_from_bottomright_to_topleft"
+                path="/Users/bournewang/Documents/Project/android-FlashCardCreator/NewQuickAction3D/res/anim/shrink_from_bottomright_to_topleft.xml"
+                qualifiers=""
+                type="anim" />
+            <file
+                name="shrink_from_top"
+                path="/Users/bournewang/Documents/Project/android-FlashCardCreator/NewQuickAction3D/res/anim/shrink_from_top.xml"
+                qualifiers=""
+                type="anim" />
+            <file
+                name="shrink_from_topleft_to_bottomright"
+                path="/Users/bournewang/Documents/Project/android-FlashCardCreator/NewQuickAction3D/res/anim/shrink_from_topleft_to_bottomright.xml"
+                qualifiers=""
+                type="anim" />
+            <file
+                name="shrink_from_topright_to_bottomleft"
+                path="/Users/bournewang/Documents/Project/android-FlashCardCreator/NewQuickAction3D/res/anim/shrink_from_topright_to_bottomleft.xml"
+                qualifiers=""
+                type="anim" />
+            <file
+                name="action_item_btn"
+                path="/Users/bournewang/Documents/Project/android-FlashCardCreator/NewQuickAction3D/res/drawable/action_item_btn.xml"
+                qualifiers=""
+                type="drawable" />
+            <file
+                name="action_item_selected"
+                path="/Users/bournewang/Documents/Project/android-FlashCardCreator/NewQuickAction3D/res/drawable/action_item_selected.9.png"
+                qualifiers=""
+                type="drawable" />
+            <file
+                name="arrow_down"
+                path="/Users/bournewang/Documents/Project/android-FlashCardCreator/NewQuickAction3D/res/drawable/arrow_down.png"
+                qualifiers=""
+                type="drawable" />
+            <file
+                name="arrow_up"
+                path="/Users/bournewang/Documents/Project/android-FlashCardCreator/NewQuickAction3D/res/drawable/arrow_up.png"
+                qualifiers=""
+                type="drawable" />
+            <file
+                name="icon"
+                path="/Users/bournewang/Documents/Project/android-FlashCardCreator/NewQuickAction3D/res/drawable/icon.png"
+                qualifiers=""
+                type="drawable" />
+            <file
+                name="menu_cancel"
+                path="/Users/bournewang/Documents/Project/android-FlashCardCreator/NewQuickAction3D/res/drawable/menu_cancel.png"
+                qualifiers=""
+                type="drawable" />
+            <file
+                name="menu_eraser"
+                path="/Users/bournewang/Documents/Project/android-FlashCardCreator/NewQuickAction3D/res/drawable/menu_eraser.png"
+                qualifiers=""
+                type="drawable" />
+            <file
+                name="menu_info"
+                path="/Users/bournewang/Documents/Project/android-FlashCardCreator/NewQuickAction3D/res/drawable/menu_info.png"
+                qualifiers=""
+                type="drawable" />
+            <file
+                name="menu_ok"
+                path="/Users/bournewang/Documents/Project/android-FlashCardCreator/NewQuickAction3D/res/drawable/menu_ok.png"
+                qualifiers=""
+                type="drawable" />
+            <file
+                name="menu_search"
+                path="/Users/bournewang/Documents/Project/android-FlashCardCreator/NewQuickAction3D/res/drawable/menu_search.png"
+                qualifiers=""
+                type="drawable" />
+            <file
+                name="popup"
+                path="/Users/bournewang/Documents/Project/android-FlashCardCreator/NewQuickAction3D/res/drawable/popup.9.png"
+                qualifiers=""
+                type="drawable" />
+            <file
+                name="icon"
+                path="/Users/bournewang/Documents/Project/android-FlashCardCreator/NewQuickAction3D/res/drawable-hdpi/icon.png"
+                qualifiers="hdpi-v4"
+                type="drawable" />
+            <file
+                name="icon"
+                path="/Users/bournewang/Documents/Project/android-FlashCardCreator/NewQuickAction3D/res/drawable-ldpi/icon.png"
+                qualifiers="ldpi-v4"
+                type="drawable" />
+            <file
+                name="icon"
+                path="/Users/bournewang/Documents/Project/android-FlashCardCreator/NewQuickAction3D/res/drawable-mdpi/icon.png"
+                qualifiers="mdpi-v4"
+                type="drawable" />
+            <file
+                name="action_item_horizontal"
+                path="/Users/bournewang/Documents/Project/android-FlashCardCreator/NewQuickAction3D/res/layout/action_item_horizontal.xml"
+                qualifiers=""
+                type="layout" />
+            <file
+                name="action_item_vertical"
+                path="/Users/bournewang/Documents/Project/android-FlashCardCreator/NewQuickAction3D/res/layout/action_item_vertical.xml"
+                qualifiers=""
+                type="layout" />
+            <file
+                name="horiz_separator"
+                path="/Users/bournewang/Documents/Project/android-FlashCardCreator/NewQuickAction3D/res/layout/horiz_separator.xml"
+                qualifiers=""
+                type="layout" />
+            <file
+                name="main"
+                path="/Users/bournewang/Documents/Project/android-FlashCardCreator/NewQuickAction3D/res/layout/main.xml"
+                qualifiers=""
+                type="layout" />
+            <file
+                name="popup_horizontal"
+                path="/Users/bournewang/Documents/Project/android-FlashCardCreator/NewQuickAction3D/res/layout/popup_horizontal.xml"
+                qualifiers=""
+                type="layout" />
+            <file
+                name="popup_vertical"
+                path="/Users/bournewang/Documents/Project/android-FlashCardCreator/NewQuickAction3D/res/layout/popup_vertical.xml"
+                qualifiers=""
+                type="layout" />
+            <file
+                path="/Users/bournewang/Documents/Project/android-FlashCardCreator/NewQuickAction3D/res/values/strings.xml"
+                qualifiers="" >
+                <string name="app_name" >Gallery3D Like QuickAction Demo
+                </string>
+                <string name="hello" >Hello World, NewQA!
+                </string>
+            </file>
+            <file
+                path="/Users/bournewang/Documents/Project/android-FlashCardCreator/NewQuickAction3D/res/values/styles.xml"
+                qualifiers="" >
+
+                <style name="Animations.PopUpMenu.Reflect" >
+                    <item name="@android:windowEnterAnimation">
+@anim/pump_bottom
+                    </item>
+                    <item name="@android:windowExitAnimation">
+@anim/disappear
+                    </item>
+                </style>
+
+                <style name="Animations.PopUpMenu.Center" >
+                    <item name="@android:windowEnterAnimation">
+@anim/grow_from_bottom
+                    </item>
+                    <item name="@android:windowExitAnimation">
+@anim/shrink_from_top
+                    </item>
+                </style>
+
+                <style name="Animations.PopUpMenu" />
+
+                <style name="Animations" />
+
+                <style name="Animations.PopDownMenu" />
+
+                <style name="Animations.PopUpMenu.Left" >
+                    <item name="@android:windowEnterAnimation">
+@anim/grow_from_bottomleft_to_topright
+                    </item>
+                    <item name="@android:windowExitAnimation">
+@anim/shrink_from_topright_to_bottomleft
+                    </item>
+                </style>
+
+                <style name="Animations.PopDownMenu.Left" >
+                    <item name="@android:windowEnterAnimation">
+@anim/grow_from_topleft_to_bottomright
+                    </item>
+                    <item name="@android:windowExitAnimation">
+@anim/shrink_from_bottomright_to_topleft
+                    </item>
+                </style>
+
+                <style name="Animations.PopDownMenu.Center" >
+                    <item name="@android:windowEnterAnimation">
+@anim/grow_from_top
+                    </item>
+                    <item name="@android:windowExitAnimation">
+@anim/shrink_from_bottom
+                    </item>
+                </style>
+
+                <style name="Animations.PopUpMenu.Right" >
+                    <item name="@android:windowEnterAnimation">
+@anim/grow_from_bottomright_to_topleft
+                    </item>
+                    <item name="@android:windowExitAnimation">
+@anim/shrink_from_topleft_to_bottomright
+                    </item>
+                </style>
+
+                <style name="Animations.PopDownMenu.Right" >
+                    <item name="@android:windowEnterAnimation">
+@anim/grow_from_topright_to_bottomleft
+                    </item>
+                    <item name="@android:windowExitAnimation">
+@anim/shrink_from_bottomleft_to_topright
+                    </item>
+                </style>
+
+                <style name="Animations.PopDownMenu.Reflect" >
+                    <item name="@android:windowEnterAnimation">
+@anim/pump_top
+                    </item>
+                    <item name="@android:windowExitAnimation">
+@anim/disappear
+                    </item>
+                </style>
+            </file>
+        </source>
+        <source path="/Users/bournewang/Documents/Project/android-FlashCardCreator/NewQuickAction3D/build/generated/res/rs/release" />
+        <source path="/Users/bournewang/Documents/Project/android-FlashCardCreator/NewQuickAction3D/build/generated/res/generated/release" />
+    </dataSet>
+    <dataSet config="release" >
+        <source path="/Users/bournewang/Documents/Project/android-FlashCardCreator/NewQuickAction3D/src/release/res" />
+    </dataSet>
+
+</merger>
