@@ -59,7 +59,7 @@
         android:layout_centerInParent="true"
         android:text="Record"
         android:textSize="14sp"
-        android:layout_marginBottom="40dp"
+        android:layout_marginBottom="150dp"
         android:layout_above="@id/descripton_textview"
         android:background="@drawable/selector_button_simple_line_round"
         android:id="@+id/record_button" />
