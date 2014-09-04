@@ -416,8 +416,11 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnKeyboa
 
                             thumbnailImageFromURL(Uri.parse(youtubeURLStr));
 
+
+
                             if (!mIsCreatingCard) {
-                                mCurrentCard.save(AppContext.getAppContext());
+                                takeSnapshotCurrentCard();
+                                //mCurrentCard.save(AppContext.getAppContext());
                             }
                         } else {
                             Toast.makeText(getActivity(), "Invalid YouTube url, it must be a full url - for example: http://www.youtube.com/watch?v=3-EaGGPGiJY", Toast.LENGTH_LONG).show();
