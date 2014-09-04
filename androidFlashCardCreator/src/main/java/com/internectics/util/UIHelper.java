@@ -175,7 +175,7 @@ public class UIHelper {
     public static Bitmap getVideoThumbnail(Context context,Uri uri) {
 
         Bitmap bMap;
-        if (uri.toString().contains("http://")) {
+        if ((uri.toString().contains("http://")) || (uri.toString().contains("https://"))) {
             //我们暂时没有更好的方法获取来自http://的thumbnail图片，比如youtube。期待更加的解决方案
             bMap = BitmapFactory.decodeResource(context.getResources(), R.drawable.video_placeholder);
         } else {
