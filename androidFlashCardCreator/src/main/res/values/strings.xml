@@ -27,6 +27,7 @@
     <string name="addpack_packname">Pack Name</string>
     <string name="addpack_sidebar">Sidebar Title</string>
     <string name="addpack_Creator">Creator Name</string>
+    <string name="addpack_Job_Title">Job Title</string>
 
     <string name="change_title">Select a template background</string>
     <string name="change_blue">Blue</string>

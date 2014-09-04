@@ -38,6 +38,7 @@ public class AddPackFragment extends DialogFragment implements TextView.OnEditor
     private EditText mPackNameEditText;
     private EditText mSidebarTitleEditText;
     private EditText mCreatorEditText;
+    private EditText mJobTitleEditText;
 
     private InputMethodManager mIMM;
 
@@ -110,10 +111,13 @@ public class AddPackFragment extends DialogFragment implements TextView.OnEditor
                 .findViewById(R.id.fragment_add_pack_sidebar_title);
         mCreatorEditText = (EditText) mContentView
                 .findViewById(R.id.fragment_add_pack_creator);
+        mJobTitleEditText = (EditText) mContentView
+                .findViewById(R.id.fragment_add_pack_job_title);
 
         mPackNameEditText.setOnEditorActionListener(this);
         mSidebarTitleEditText.setOnEditorActionListener(this);
         mCreatorEditText.setOnEditorActionListener(this);
+        mJobTitleEditText.setOnEditorActionListener(this);
 
         //this get mPacks is a time-cost operation, we put in background
         new Thread()
@@ -157,6 +161,7 @@ public class AddPackFragment extends DialogFragment implements TextView.OnEditor
         pack.packName = mPackNameEditText.getText().toString();
         pack.sidebarTitle = mSidebarTitleEditText.getText().toString();
         pack.creatorNickName = mCreatorEditText.getText().toString();
+        pack.jobTitle = mJobTitleEditText.getText().toString();
         pack.platform = UIHelper.getCurrentPlatform();
         // we set pack.coverImageUriFormatStr in image select or by default
         pack.creatorID = OpenUDID_manager.getOpenUDID();
