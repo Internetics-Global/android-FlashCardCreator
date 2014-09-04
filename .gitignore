@@ -22,6 +22,7 @@ bin/
 gen/
 
 # Gradle files
+.gradle/
 build/
 NewQuickAction3D/build/
 NewQuickAction3D/gen/

@@ -18,13 +18,13 @@ android {
         }
     }
 
-    compileSdkVersion 18
+    compileSdkVersion 20
     buildToolsVersion '20.0.0'
 
     defaultConfig {
         applicationId "com.internectics.android_flashcardcreator"
         minSdkVersion 14
-        targetSdkVersion 18
+        targetSdkVersion 20
         versionCode 1
         versionName '1.0'
     }
