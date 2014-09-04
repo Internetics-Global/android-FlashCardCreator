@@ -471,12 +471,13 @@ public class PackListFragment extends Fragment {
     @Override
     public void onStop() {
         super.onStop();
-        //mGallery.setAdapter(null);
+
         Log.d("ccaa","onStop in PackListFragment");
     }
 
     @Override
     public void onDestroy() {
+        mGallery.setAdapter(null);
         super.onDestroy();
         Log.d("ccaa","onDestory in PackListFragment");
     }
