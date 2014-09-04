@@ -3,7 +3,6 @@ package com.internectics.fragment;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.*;
-import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
@@ -12,7 +11,6 @@ import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.*;
-import android.provider.MediaStore;
 import android.support.v4.app.Fragment;
 import android.text.Editable;
 import android.text.InputType;
@@ -138,7 +136,6 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnKeyboa
     private ViewTreeObserver.OnGlobalLayoutListener mVtoMainListener;
     private ViewTreeObserver.OnGlobalLayoutListener mVtoSubListener;
 
-
     public boolean isCurrentFocusedCardContentTextUsingDefaultFont() {
 
         if (mCurrentFocusedCardContentText == null) {
@@ -231,7 +228,7 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnKeyboa
 
         }
         configureLogoURLView();  // open email or web during play ode
-        configureImageVideoSelectView(); // play video during play mode
+        setImageVideoClickListener(); // play video during play mode
         configureSoundRecordPlayImageView(); //play sound during play mode
         configureLogoImageView();
 
@@ -876,7 +873,7 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnKeyboa
      * 1. input a youtube linkage
      * 2. select image/video from library
      */
-    private void configureImageVideoSelectView() {
+    private void setImageVideoClickListener() {
 
         //step1: configure image
 
@@ -1337,13 +1334,45 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnKeyboa
 
             mImage = (ImageView) mContentView.findViewById(R.id.image);
             mImage2 = (ImageView) mContentView.findViewById(R.id.image2);
+            mImage.setImageURI(Uri.parse(mCurrentCard.question.imageUriFormatStr));
+            mImage2.setImageURI(Uri.parse(mCurrentCard.question.imageUriFormatStr2));
 
         } else {
             mSubheading = (FCCEditText) mContentView.findViewById(R.id.subheading_BodyType2);
             mMain = (FCCEditText) mContentView.findViewById(R.id.main_BodyType2);
             mSub = (FCCEditText) mContentView.findViewById(R.id.sub_BodyType2);
             mImage = (ImageView) mContentView.findViewById(R.id.image_BodyType2);
+            mImage.setImageURI(Uri.parse(mCurrentCard.question.imageUriFormatStr));
         }
+
+        if (!mIsPlayingCard) {
+            mSubheading.setOnTouchListener(this);
+            mMain.setOnTouchListener(this);
+            mSub.setOnTouchListener(this);
+
+        }
+
+        setImageVideoClickListener();
+
+        setEditTextListener(); //TODO:这里有个糟糕的结果在于addTextChangedListener会被多次加入，需要后面修正
+
+        //TODO:由于重新指向，一些格式化数据比如size,font会丢失掉，所以需要后续修正
+
+        if (mIsQuestionShowing) {
+            mSubheading.setText(mCurrentCard.question.subheading);
+            mMain.setText(mCurrentCard.question.main);
+            mSub.setText(mCurrentCard.question.sub);
+
+        } else {
+            mSubheading.setText(mCurrentCard.answer.subheading);
+            mMain.setText(mCurrentCard.answer.main);
+            mSub.setText(mCurrentCard.answer.sub);
+        }
+
+        mSubheading.mCallbacks = this;
+        mMain.mCallbacks = this;
+        mSub.mCallbacks = this;
+
 
     }
 
@@ -1592,20 +1621,19 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnKeyboa
 
             @Override
             public void afterTextChanged(Editable s) {
-                if ((mContentBodyType1.getVisibility() == View.VISIBLE)) {
-                    if (mIsQuestionShowing) {
-                        mCurrentCard.question.subheading = mSubheading.getText().toString();
-                    } else {
-                        mCurrentCard.answer.subheading = mSubheading.getText().toString();
-                    }
+                if (mIsQuestionShowing) {
+                    mCurrentCard.question.subheading = mSubheading.getText().toString();
+                } else {
+                    mCurrentCard.answer.subheading = mSubheading.getText().toString();
+                }
 
-                    if (isEditableMode() == false) {
-                        triggerResizeTextToFitFrame(mSubheading);
-                    }
+                if (isEditableMode() == false) {
+                    triggerResizeTextToFitFrame(mSubheading);
                 }
 
             }
         });
+
 
         mMain.addTextChangedListener(new TextWatcher() {
             @Override
@@ -1618,16 +1646,14 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnKeyboa
 
             @Override
             public void afterTextChanged(Editable s) {
-                if ((mContentBodyType1.getVisibility() == View.VISIBLE)) {
-                    if (mIsQuestionShowing) {
-                        mCurrentCard.question.main = mMain.getText().toString();
-                    } else {
-                        mCurrentCard.answer.main = mMain.getText().toString();
-                    }
+                if (mIsQuestionShowing) {
+                    mCurrentCard.question.main = mMain.getText().toString();
+                } else {
+                    mCurrentCard.answer.main = mMain.getText().toString();
+                }
 
-                    if (isEditableMode() == false) {
-                        triggerResizeTextToFitFrame(mMain);
-                    }
+                if (isEditableMode() == false) {
+                    triggerResizeTextToFitFrame(mMain);
                 }
 
             }
@@ -1644,16 +1670,14 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnKeyboa
 
             @Override
             public void afterTextChanged(Editable s) {
-                if ((mContentBodyType1.getVisibility() == View.VISIBLE)) {
-                    if (mIsQuestionShowing) {
-                        mCurrentCard.question.sub = mSub.getText().toString();
-                    } else {
-                        mCurrentCard.answer.sub = mSub.getText().toString();
-                    }
+                if (mIsQuestionShowing) {
+                    mCurrentCard.question.sub = mSub.getText().toString();
+                } else {
+                    mCurrentCard.answer.sub = mSub.getText().toString();
+                }
 
-                    if (isEditableMode() == false) {
-                        triggerResizeTextToFitFrame(mSub);
-                    }
+                if (isEditableMode() == false) {
+                    triggerResizeTextToFitFrame(mSub);
                 }
 
             }
