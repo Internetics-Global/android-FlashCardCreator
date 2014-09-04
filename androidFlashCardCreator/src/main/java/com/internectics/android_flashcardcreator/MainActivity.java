@@ -387,7 +387,7 @@ public class MainActivity extends FragmentActivity implements
                     Toast.makeText(this, "Network timeout, please try again", Toast.LENGTH_LONG).show();
                 } else {
                     if (mIsAllowDownload) {
-                        String downloableShareLink = data.toString().replace("fcc", "http").replace("www", "dl");
+                        String downloableShareLink = data.toString().replace("fcc", "https").replace("www", "dl");
                         File downloadedZipFile = new File(FileOperationHelper.downloadedPackDirectory(), "downloadedPackZip.zip");
                         PackDownloadHelper packDownloadHelper = new PackDownloadHelper(MainActivity.this, downloableShareLink, downloadedZipFile.toString());
                         packDownloadHelper.execute();
