@@ -1,9 +1,0 @@
-<?xml version="1.0" encoding="utf-8"?>
-
-<TextView xmlns:android="http://schemas.android.com/apk/res/android"
-          android:id="@+id/spinnerTarget"
-          android:layout_width="fill_parent"
-          android:layout_height="wrap_content"
-          android:textSize="@dimen/csstoolbar_text_size"
-          android:textColor="@android:color/white"
-          android:gravity="center"/><!-- From: file:/Users/bournewang/Documents/Project/android-FlashCardCreator/androidFlashCardCreator/src/main/res/layout/spinner.xml -->
