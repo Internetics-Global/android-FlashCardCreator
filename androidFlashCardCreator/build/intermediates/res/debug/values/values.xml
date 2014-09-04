@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources>
+<resources xmlns:ns1="http://schemas.android.com/tools">
 
     <!-- From: file:/Users/bournewang/Documents/Project/android-FlashCardCreator/androidFlashCardCreator/src/main/res/values/arrays.xml -->
     <eat-comment />
@@ -58,6 +58,10 @@
         <item>Install from code</item>
         <item>Share the pack</item>
     </string-array>
+    <!-- From: file:/Users/bournewang/Documents/Project/android-FlashCardCreator/androidFlashCardCreator/build/intermediates/exploded-aar/android-crop-0.9.10/res/values/values.xml -->
+    <eat-comment />
+
+    <attr name="cropImageStyle" format="reference" />
     <!-- From: file:/Users/bournewang/Documents/Project/android-FlashCardCreator/androidFlashCardCreator/src/main/res/values/analytics.xml -->
     <eat-comment />
 
@@ -68,6 +72,16 @@
 
     <color name="card_detail_background">#ff9091a0</color>
     <color name="card_list_background">#000000</color>
+    <!-- From: file:/Users/bournewang/Documents/Project/android-FlashCardCreator/androidFlashCardCreator/build/intermediates/exploded-aar/android-crop-0.9.10/res/values/values.xml -->
+    <eat-comment />
+
+    <color name="crop__button_bar">#f3f3f3</color>
+    <color name="crop__button_text">#666666</color>
+    <color name="crop__selector_focused">#77000000</color>
+    <color name="crop__selector_pressed">#1a000000</color>
+    <!-- From: file:/Users/bournewang/Documents/Project/android-FlashCardCreator/androidFlashCardCreator/src/main/res/values/colors.xml -->
+    <eat-comment />
+
     <color name="dialog_head_text">#FFFFFF</color>
     <!-- From: file:/Users/bournewang/Documents/Project/android-FlashCardCreator/androidFlashCardCreator/build/intermediates/exploded-aar/android-FlashCardCreator/Viewflow/unspecified/res/values/values.xml -->
     <eat-comment />
@@ -86,6 +100,18 @@
         <attr name="activeType">
             <flag name="stroke" value="0" />
             <flag name="fill" value="1" />
+        </attr>
+    </declare-styleable>
+    <!-- From: file:/Users/bournewang/Documents/Project/android-FlashCardCreator/androidFlashCardCreator/build/intermediates/exploded-aar/android-crop-0.9.10/res/values/values.xml -->
+    <eat-comment />
+
+    <declare-styleable name="CropImageView">
+        <attr name="highlightColor" format="reference|color" />
+        <attr name="showThirds" format="boolean" />
+        <attr name="showHandles">
+            <enum name="changing" value="0" />
+            <enum name="always" value="1" />
+            <enum name="never" value="2" />
         </attr>
     </declare-styleable>
     <!-- From: file:/Users/bournewang/Documents/Project/android-FlashCardCreator/androidFlashCardCreator/build/intermediates/exploded-aar/asia.ivity.android/drag-sort-listview/1.0/res/values/values.xml -->
@@ -150,6 +176,13 @@
     <dimen name="cardsn_text_size">8sp</dimen>
     <dimen name="cardsn_top_margin">12dp</dimen>
     <dimen name="creator_text_size">8sp</dimen>
+    <!-- From: file:/Users/bournewang/Documents/Project/android-FlashCardCreator/androidFlashCardCreator/build/intermediates/exploded-aar/android-crop-0.9.10/res/values/values.xml -->
+    <eat-comment />
+
+    <dimen name="crop__bar_height">48dp</dimen>
+    <!-- From: file:/Users/bournewang/Documents/Project/android-FlashCardCreator/androidFlashCardCreator/src/main/res/values/dimens.xml -->
+    <eat-comment />
+
     <dimen name="csstoolbar_button_width">65dp</dimen>
     <dimen name="csstoolbar_text_size">10sp</dimen>
     <dimen name="logo_url_btn_size">15dp</dimen>
@@ -214,6 +247,14 @@
     <string name="change_red">Red</string>
     <string name="change_title">Select a template background</string>
     <string name="create_new_pack">Create New Pack</string>
+    <!-- From: file:/Users/bournewang/Documents/Project/android-FlashCardCreator/androidFlashCardCreator/build/intermediates/exploded-aar/android-crop-0.9.10/res/values/values.xml -->
+    <eat-comment />
+
+    <string name="crop__cancel" ns1:ignore="ButtonCase">CANCEL</string>
+    <string name="crop__done">DONE</string>
+    <string name="crop__pick_error">No image sources available</string>
+    <string name="crop__saving">Saving picture…</string>
+    <string name="crop__wait">Please wait…</string>
     <!-- From: file:/Users/bournewang/Documents/Project/android-FlashCardCreator/androidFlashCardCreator/src/main/res/values/analytics.xml -->
     <eat-comment />
 
@@ -326,6 +367,51 @@
         <item name="android:shadowDy">1</item>
         <item name="android:shadowRadius">2</item>
     </style>
+    <!-- From: file:/Users/bournewang/Documents/Project/android-FlashCardCreator/androidFlashCardCreator/build/intermediates/exploded-aar/android-crop-0.9.10/res/values/values.xml -->
+    <eat-comment />
+
+    <style name="Crop" />
+
+    <style name="Crop.ActionButton">
+        <item name="android:layout_width">0dp</item>
+        <item name="android:layout_height">match_parent</item>
+        <item name="android:layout_weight">1</item>
+        <item name="android:background">@drawable/crop__selectable_background</item>
+    </style>
+
+    <style name="Crop.ActionButtonText">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_gravity">center</item>
+        <item name="android:gravity">center_vertical</item>
+        <item name="android:paddingRight">20dp</item> <!-- Offsets left drawable -->
+        <item name="android:drawablePadding">8dp</item>
+        <item name="android:textColor">@color/crop__button_text</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:textSize">13sp</item>
+    </style>
+
+    <style name="Crop.ActionButtonText.Cancel">
+        <item name="android:drawableLeft">@drawable/crop__ic_cancel</item>
+        <item name="android:text">@string/crop__cancel</item>
+    </style>
+
+    <style name="Crop.ActionButtonText.Done">
+        <item name="android:drawableLeft">@drawable/crop__ic_done</item>
+        <item name="android:text">@string/crop__done</item>
+    </style>
+
+    <style name="Crop.DoneCancelBar">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">@dimen/crop__bar_height</item>
+        <item name="android:orientation">horizontal</item>
+        <item name="android:divider">@drawable/crop__divider</item>
+        <item name="android:showDividers" ns1:ignore="NewApi">middle</item>
+        <item name="android:dividerPadding" ns1:ignore="NewApi">12dp</item>
+        <item name="android:background">@color/crop__button_bar</item>
+    </style>
+    <!-- From: file:/Users/bournewang/Documents/Project/android-FlashCardCreator/androidFlashCardCreator/src/main/res/values/styles.xml -->
+    <eat-comment />
 
     <style name="dialog_head_title">
         <item name="android:layout_width">wrap_content</item>

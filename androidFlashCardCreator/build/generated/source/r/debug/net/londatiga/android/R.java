@@ -30,36 +30,36 @@ public final class R {
 		public static final int action_item_selected = 0x7f020001;
 		public static final int arrow_down = 0x7f020010;
 		public static final int arrow_up = 0x7f020011;
-		public static final int icon = 0x7f020035;
-		public static final int menu_cancel = 0x7f02003f;
-		public static final int menu_eraser = 0x7f020040;
-		public static final int menu_info = 0x7f020041;
-		public static final int menu_ok = 0x7f020042;
-		public static final int menu_search = 0x7f020043;
-		public static final int popup = 0x7f02004e;
+		public static final int icon = 0x7f02003b;
+		public static final int menu_cancel = 0x7f020045;
+		public static final int menu_eraser = 0x7f020046;
+		public static final int menu_info = 0x7f020047;
+		public static final int menu_ok = 0x7f020048;
+		public static final int menu_search = 0x7f020049;
+		public static final int popup = 0x7f020054;
 	}
 	public static final class id {
-		public static final int arrow_down = 0x7f09006e;
-		public static final int arrow_up = 0x7f09006d;
-		public static final int btn1 = 0x7f09005f;
-		public static final int btn2 = 0x7f090060;
-		public static final int btn3 = 0x7f090061;
-		public static final int iv_icon = 0x7f09000c;
-		public static final int scroller = 0x7f09006b;
-		public static final int tracks = 0x7f09006c;
-		public static final int tv_title = 0x7f09000d;
+		public static final int arrow_down = 0x7f090075;
+		public static final int arrow_up = 0x7f090074;
+		public static final int btn1 = 0x7f090066;
+		public static final int btn2 = 0x7f090067;
+		public static final int btn3 = 0x7f090068;
+		public static final int iv_icon = 0x7f09000f;
+		public static final int scroller = 0x7f090072;
+		public static final int tracks = 0x7f090073;
+		public static final int tv_title = 0x7f090010;
 	}
 	public static final class layout {
 		public static final int action_item_horizontal = 0x7f030001;
 		public static final int action_item_vertical = 0x7f030002;
-		public static final int horiz_separator = 0x7f03000e;
-		public static final int main = 0x7f030011;
-		public static final int popup_horizontal = 0x7f030016;
-		public static final int popup_vertical = 0x7f030017;
+		public static final int horiz_separator = 0x7f030010;
+		public static final int main = 0x7f030013;
+		public static final int popup_horizontal = 0x7f030018;
+		public static final int popup_vertical = 0x7f030019;
 	}
 	public static final class string {
 		public static final int app_name = 0x7f0c0019;
-		public static final int hello = 0x7f0c0026;
+		public static final int hello = 0x7f0c002b;
 	}
 	public static final class style {
 		public static final int Animations = 0x7f0d0000;

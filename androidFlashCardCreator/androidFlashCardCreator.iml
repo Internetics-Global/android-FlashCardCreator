@@ -80,6 +80,7 @@
     <orderEntry type="jdk" jdkName="Android API 18 Platform" jdkType="Android SDK" />
     <orderEntry type="sourceFolder" forTests="false" />
     <orderEntry type="library" exported="" name="httpmime-4.0.3" level="project" />
+    <orderEntry type="library" exported="" name="android-crop-0.9.10" level="project" />
     <orderEntry type="library" exported="" name="zip4j_1.3.2" level="project" />
     <orderEntry type="library" exported="" name="TestFlightLib" level="project" />
     <orderEntry type="library" exported="" name="json_simple-1.1" level="project" />

@@ -32,3 +32,7 @@
 *.apk
 
 .idea/workspace.xml
+
+androidFlashCardCreator/build/intermediates/exploded-aar/android-crop-0.9.10/classes.jar
+
+androidFlashCardCreator/build/intermediates/exploded-aar/android-crop-0.9.10/res/drawable-hdpi-v4/crop__ic_done.png

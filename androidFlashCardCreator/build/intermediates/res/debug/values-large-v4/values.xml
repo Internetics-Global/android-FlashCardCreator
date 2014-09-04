@@ -13,6 +13,13 @@
     <dimen name="cardsn_text_size">16sp</dimen>
     <dimen name="cardsn_top_margin">22dp</dimen>
     <dimen name="creator_text_size">10sp</dimen>
+    <!-- From: file:/Users/bournewang/Documents/Project/android-FlashCardCreator/androidFlashCardCreator/build/intermediates/exploded-aar/android-crop-0.9.10/res/values-large-v4/values.xml -->
+    <eat-comment />
+
+    <dimen name="crop__bar_height">56dp</dimen>
+    <!-- From: file:/Users/bournewang/Documents/Project/android-FlashCardCreator/androidFlashCardCreator/src/main/res/values-large/dimens.xml -->
+    <eat-comment />
+
     <dimen name="csstoolbar_button_width">80dp</dimen>
     <dimen name="csstoolbar_text_size">12sp</dimen>
     <dimen name="logo_url_btn_size">30dp</dimen>

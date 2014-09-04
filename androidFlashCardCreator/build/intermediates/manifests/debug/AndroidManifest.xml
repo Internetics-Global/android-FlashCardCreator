@@ -1,75 +1,111 @@
-<manifest xmlns:android="http://schemas.android.com/apk/res/android" android:versionCode="1" android:versionName="1.0" package="com.internectics.android_flashcardcreator">
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.internectics.android_flashcardcreator"
+    android:versionCode="1"
+    android:versionName="1.0" >
 
-    <supports-screens android:requiresSmallestWidthDp="510"/>
+    <uses-sdk
+        android:minSdkVersion="14"
+        android:targetSdkVersion="18" />
 
-    <uses-feature android:name="android.hardware.screen.portrait"/>
+    <supports-screens android:requiresSmallestWidthDp="510" />
 
-    <uses-permission android:name="android.permission.INTERNET">
+    <uses-feature android:name="android.hardware.screen.portrait" />
+
+    <uses-permission android:name="android.permission.INTERNET" >
     </uses-permission>
-
-    <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW"/>
-
-    <uses-permission android:name="com.google.android.gallery3d.permission.GALLERY_PROVIDER">
+    <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW" />
+    <uses-permission android:name="com.google.android.gallery3d.permission.GALLERY_PROVIDER" >
     </uses-permission>
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
-    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE">
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" >
     </uses-permission>
+    <uses-permission android:name="android.permission.RECORD_AUDIO" />
 
-    <uses-permission android:name="android.permission.RECORD_AUDIO"/>
+    <application
+        android:name="com.internectics.util.AppContext"
+        android:allowBackup="false"
+        android:hardwareAccelerated="false"
+        android:icon="@drawable/fcc_launcher"
+        android:label="@string/app_name"
+        android:largeHeap="true"
+        android:theme="@style/AppTheme" >
+        <meta-data
+            android:name="com.facebook.sdk.ApplicationId"
+            android:value="@string/app_id" />
 
-    <uses-sdk android:minSdkVersion="14" android:targetSdkVersion="18"/>
-
-    <application android:allowBackup="false" android:hardwareAccelerated="false" android:icon="@drawable/ic_launcher" android:label="@string/app_name" android:largeHeap="true" android:name="com.internectics.util.AppContext" android:theme="@style/AppTheme">
-
-        <meta-data android:name="com.facebook.sdk.ApplicationId" android:value="@string/app_id"/>
-
-        <activity android:configChanges="orientation" android:label="@string/app_name" android:name="com.internectics.android_flashcardcreator.MainActivity" android:screenOrientation="sensorLandscape" android:windowSoftInputMode="adjustPan">
+        <activity
+            android:name="com.internectics.android_flashcardcreator.MainActivity"
+            android:configChanges="orientation"
+            android:label="@string/app_name"
+            android:screenOrientation="sensorLandscape"
+            android:windowSoftInputMode="adjustPan" >
             <intent-filter>
-                <data android:scheme="fcc"/>
+                <data android:scheme="fcc" />
 
-                <action android:name="android.intent.action.VIEW"/>
+                <action android:name="android.intent.action.VIEW" />
 
-                <category android:name="android.intent.category.BROWSABLE"/>
-                <category android:name="android.intent.category.DEFAULT"/>
+                <category android:name="android.intent.category.BROWSABLE" />
+                <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </activity>
-        <activity android:configChanges="orientation|keyboard" android:launchMode="singleTask" android:name="com.dropbox.client2.android.AuthActivity">
+        <activity
+            android:name="com.dropbox.client2.android.AuthActivity"
+            android:configChanges="orientation|keyboard"
+            android:launchMode="singleTask" >
             <intent-filter>
+
                 <!-- Change this to be db- followed by your app key -->
-                <data android:scheme="db-rl7510fe1641dyl"/>
-                <action android:name="android.intent.action.VIEW"/>
-                <category android:name="android.intent.category.BROWSABLE"/>
-                <category android:name="android.intent.category.DEFAULT"/>
+                <data android:scheme="db-rl7510fe1641dyl" />
+
+                <action android:name="android.intent.action.VIEW" />
+
+                <category android:name="android.intent.category.BROWSABLE" />
+                <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </activity>
-        <activity android:name="com.internectics.android_flashcardcreator.PlayActivity" android:screenOrientation="landscape" android:windowSoftInputMode="stateAlwaysHidden">
+        <activity
+            android:name="com.internectics.android_flashcardcreator.PlayActivity"
+            android:screenOrientation="landscape"
+            android:windowSoftInputMode="stateAlwaysHidden" >
         </activity>
-        <activity android:name="com.internectics.android_flashcardcreator.VideoViewActivity" android:screenOrientation="landscape" android:windowSoftInputMode="stateAlwaysHidden">
+        <activity
+            android:name="com.internectics.android_flashcardcreator.VideoViewActivity"
+            android:screenOrientation="landscape"
+            android:windowSoftInputMode="stateAlwaysHidden" >
         </activity>
-        <activity android:name="com.internectics.android_flashcardcreator.InstructionActivity" android:screenOrientation="sensorLandscape"/>
-        <activity android:name="com.internectics.android_flashcardcreator.MoreActivity"/>
-        <activity android:name="com.internectics.android_flashcardcreator.WebViewActivity"/>
-        <activity android:name="com.internectics.android_flashcardcreator.AboutActivity"/>
-        <activity android:name="com.internectics.android_flashcardcreator.AppStart" android:screenOrientation="landscape" android:theme="@android:style/Theme.NoTitleBar.Fullscreen">
+        <activity
+            android:name="com.internectics.android_flashcardcreator.InstructionActivity"
+            android:screenOrientation="sensorLandscape" />
+        <activity android:name="com.internectics.android_flashcardcreator.MoreActivity" />
+        <activity android:name="com.internectics.android_flashcardcreator.WebViewActivity" />
+        <activity android:name="com.internectics.android_flashcardcreator.AboutActivity" />
+        <activity
+            android:name="com.internectics.android_flashcardcreator.AppStart"
+            android:screenOrientation="landscape"
+            android:theme="@android:style/Theme.NoTitleBar.Fullscreen" >
             <intent-filter>
-                <action android:name="android.intent.action.MAIN"/>
-                <category android:name="android.intent.category.LAUNCHER"/>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity android:name="com.soundcloud.android.crop.CropImageActivity" />
+        <activity android:name="com.facebook.LoginActivity" />
 
-        <activity android:name="com.facebook.LoginActivity"/>
-
-
-        <service android:name="org.openudid.OpenUDID_service">
+        <service android:name="org.openudid.OpenUDID_service" >
             <intent-filter>
-                <action android:name="org.openudid.GETUDID"/>
+                <action android:name="org.openudid.GETUDID" />
             </intent-filter>
         </service>
-        <activity android:label="@string/app_name" android:name="net.londatiga.android.ExampleActivity">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN"/>
 
-                <category android:name="android.intent.category.LAUNCHER"/>
+        <activity
+            android:name="net.londatiga.android.ExampleActivity"
+            android:label="@string/app_name" >
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
     </application>

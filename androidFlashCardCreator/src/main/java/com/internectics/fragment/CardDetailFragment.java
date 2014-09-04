@@ -5,6 +5,7 @@ import android.app.AlertDialog;
 import android.content.*;
 import android.database.Cursor;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.graphics.Typeface;
 import android.graphics.drawable.BitmapDrawable;
@@ -39,12 +40,21 @@ import com.internectics.helper.FileOperationHelper;
 import com.internectics.helper.PackRecordHelper;
 import com.internectics.helper.SymbolHelper;
 import com.internectics.util.*;
+import com.soundcloud.android.crop.Crop;
 
 import net.londatiga.android.ActionItem;
 import net.londatiga.android.QuickAction;
 
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.util.ArrayList;
+
+enum IMAGE_SOURCE {
+    IMAGE_SOURCE_IS_LOGO,
+    IMAGE_SOURCE_IS_IMAGE,
+    IMAGE_SOURCE_IS_BACKGROUND
+}
+
 
 public class CardDetailFragment extends Fragment implements FCCEditText.OnKeyboardCloseListener, FCCEditText.OnTouchListener {
 
@@ -97,9 +107,7 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnKeyboa
     private InputMethodManager mIMM;
     public EditText mCurrentFocusedCardContentText;  // only applicable to subheading, main and sub text
 
-    private int CODE_REQUEST_IMAGE_SOURCE_IS_LOGO = 1001; //when user click on the logo img
-    private int CODE_REQUEST_IMAGE_SOURCE_IS_IMAGE = 1002;//when user click on the image img
-    private int CODE_REQUEST_IMAGE_SOURCE_IS_BACKGROUND = 1003;//when user click on the changebackground img
+    private IMAGE_SOURCE  mActiveImageSouce;
 
     public boolean mIsCreatingCard = false;
     private boolean mIsPlayingCard = false;
@@ -164,6 +172,7 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnKeyboa
         } else {
             return false;
         }
+
     }
 
 
@@ -423,9 +432,10 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnKeyboa
 
     private void selectImageOrVideoFromLibrary() {
         if (mCurrentPack.creatorID.equals(OpenUDID_manager.getOpenUDID())) {
-            Intent intent = new Intent(Intent.ACTION_PICK, null);
-            intent.setType("video/*, images/*");
-            startActivityForResult(intent, CODE_REQUEST_IMAGE_SOURCE_IS_IMAGE);
+//            Intent intent = new Intent(Intent.ACTION_PICK, null);
+//            intent.setType("video/*, images/*");
+//            startActivityForResult(intent, CODE_REQUEST_IMAGE_SOURCE_IS_IMAGE);
+            Crop.pickImageWithFragment(CardDetailFragment.this, false);
         } else {
             if (mIsQuestionShowing) {
                 if (mIsImage2Active) {
@@ -498,34 +508,115 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnKeyboa
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
-        //it's better add CODE_REQUEST_IMAGE_FROM_IMAGE_LIBRARY later
-
         //whatever RESULT_OK or RESULT_CANCELED, we need to do this first
         ((MainActivity)getActivity()).mIsAllowedToShowPackList = false;
 
-        if (resultCode == Activity.RESULT_OK) {
+        if (requestCode == Crop.REQUEST_CROP) {
+            handleCrop(requestCode,resultCode, data);
+        } else {
 
-            Uri selectedURI = data.getData();
+            if (resultCode == Activity.RESULT_OK) {
 
-            if (selectedURI.toString().contains("/video/")) { //video
+                Uri selectedURI = data.getData();
 
-                //step1: get image
-                thumbnailImageFromURL(selectedURI);
+                if (selectedURI.toString().contains("/video")) { //video
 
-                //step2: get video
-                File toSaveVideoFile = UIHelper.saveVideoToCaches(AppContext.getAppContext(),selectedURI);
+                    //step1: get image
+                    thumbnailImageFromURL(selectedURI);
+
+                    //step2: get video
+                    File toSaveVideoFile = UIHelper.saveVideoToCaches(AppContext.getAppContext(),selectedURI);
+
+                    if (mIsImage2Active) {
+                        if (mIsQuestionShowing) {
+                            mCurrentCard.question.movieUriFormatStr2 = FileOperationHelper.convertToUriFormatFile(toSaveVideoFile);
+                        } else {
+                            mCurrentCard.answer.movieUriFormatStr2 = FileOperationHelper.convertToUriFormatFile(toSaveVideoFile);
+                        }
+                    } else {
+                        if (mIsQuestionShowing) {
+                            mCurrentCard.question.movieUriFormatStr = FileOperationHelper.convertToUriFormatFile(toSaveVideoFile);
+                        } else {
+                            mCurrentCard.answer.movieUriFormatStr = FileOperationHelper.convertToUriFormatFile(toSaveVideoFile);
+                        }
+                    }
+
+                    if (mIsCreatingCard == false) {
+                        mCurrentCard.save(AppContext.getAppContext());
+                        if (mIsQuestionShowing) {
+                            takeSnapshotCurrentCard();
+                            Intent intent = new Intent();
+                            intent.setAction(Global.BROADCAST_ACTION_UPDATE_MASTER_VIEW);
+                            intent.putExtra(Global.KEY_FROM, Global.BROADCAST_EXTRA_FROM_CURRENT_PACK_UPDATE);
+                            getActivity().sendBroadcast(intent);
+                        }
+                    }
+
+                } else {   //images
+
+                    beginCrop(data.getData());
+
+                }
+            } else {
+            }
+        }
+
+
+    }
+
+    private void beginCrop(Uri source) {
+        Uri outputUri = Uri.fromFile(new File(getActivity().getCacheDir(), "cropped"));
+        new Crop(source).output(outputUri).asSquare().start(getActivity(),CardDetailFragment.this);
+    }
+
+    private void handleCrop(int requestCode, int resultCode, Intent data) {
+
+        if (resultCode != Activity.RESULT_OK) {
+        }
+
+        Uri selectedURI = Crop.getOutput(data);
+
+        Bitmap resultBitmap = null;
+
+        //step1: get image
+        try {
+            resultBitmap = BitmapFactory.decodeStream(getActivity().getContentResolver().openInputStream(selectedURI));
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
+
+        //step2: do next
+        if (resultBitmap == null) {
+            Log.e(Global.debugTag, "resultBitmap is null");
+        } else {
+
+            File toSaveFile = UIHelper.saveImageToCaches(resultBitmap);
+
+            if (mActiveImageSouce == IMAGE_SOURCE.IMAGE_SOURCE_IS_LOGO) {
+                mLogoImage.setImageBitmap(resultBitmap);
+                mCurrentPack.logoImageUriFormatStr = FileOperationHelper.convertToUriFormatFile(toSaveFile);
+
+                if (mIsCreatingCard == false) {
+                    mCurrentPack.save(AppContext.getAppContext());
+                    ((MainActivity) getActivity()).setMaskButtonForContentUpdating();
+                    takeSnapshotAll();
+                }
+
+            } else if (mActiveImageSouce == IMAGE_SOURCE.IMAGE_SOURCE_IS_IMAGE) {
 
                 if (mIsImage2Active) {
+                    mImage2.setImageBitmap(resultBitmap);
                     if (mIsQuestionShowing) {
-                        mCurrentCard.question.movieUriFormatStr2 = FileOperationHelper.convertToUriFormatFile(toSaveVideoFile);
+                        mCurrentCard.question.imageUriFormatStr2 = FileOperationHelper.convertToUriFormatFile(toSaveFile);
                     } else {
-                        mCurrentCard.answer.movieUriFormatStr2 = FileOperationHelper.convertToUriFormatFile(toSaveVideoFile);
+                        mCurrentCard.answer.imageUriFormatStr2 = FileOperationHelper.convertToUriFormatFile(toSaveFile);
                     }
                 } else {
+                    mImage.setImageBitmap(resultBitmap);
                     if (mIsQuestionShowing) {
-                        mCurrentCard.question.movieUriFormatStr = FileOperationHelper.convertToUriFormatFile(toSaveVideoFile);
+                        mCurrentCard.question.imageUriFormatStr = FileOperationHelper.convertToUriFormatFile(toSaveFile);
                     } else {
-                        mCurrentCard.answer.movieUriFormatStr = FileOperationHelper.convertToUriFormatFile(toSaveVideoFile);
+                        mCurrentCard.answer.imageUriFormatStr = FileOperationHelper.convertToUriFormatFile(toSaveFile);
                     }
                 }
 
@@ -539,117 +630,27 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnKeyboa
                         getActivity().sendBroadcast(intent);
                     }
                 }
+            } else if (mActiveImageSouce == IMAGE_SOURCE.IMAGE_SOURCE_IS_BACKGROUND) {
+                setCardBackgroundImageWithBitmap(resultBitmap);
+                if (mIsQuestionShowing) {
+                    mCurrentCard.question.backgroundImageUriFormatStr = FileOperationHelper.convertToUriFormatFile(toSaveFile);
+                } else {
+                    mCurrentCard.answer.backgroundImageUriFormatStr = FileOperationHelper.convertToUriFormatFile(toSaveFile);
+                }
 
-            } else {   //images
-                {
-
-                    Bitmap resultBitmap = null;
-
-                    //step1: get image
-                    final String[] filePathColumn = { MediaStore.MediaColumns.DATA, MediaStore.MediaColumns.DISPLAY_NAME };
-                    Cursor cursor = getActivity().getContentResolver().query(selectedURI, filePathColumn, null, null, null);
-                    if (cursor != null) {
-                        cursor.moveToFirst();
-                        int columnIndex;
-                        // if it is a picasa image on newer devices with OS 3.0 and up
-                        if (selectedURI.toString().startsWith("content://com.google.android.gallery3d")){
-                            columnIndex = cursor.getColumnIndex(MediaStore.MediaColumns.DISPLAY_NAME);
-                            if (columnIndex != -1) {
-                                final Uri picasaUri = selectedURI;
-
-                                if (requestCode == CODE_REQUEST_IMAGE_SOURCE_IS_BACKGROUND) {
-                                    //此时我们希望获取的图片大一些
-                                    View cardView = mContentView.findViewById(R.id.card);
-                                    int width = cardView.getWidth();
-                                    resultBitmap = UIHelper.getResizedSizeBitmapFromPicasa(getActivity(), picasaUri,800);
-                                } else {
-                                    resultBitmap = UIHelper.getResized400SizeBitmapFromPicasa(getActivity(), picasaUri);
-                                }
-
-                            }
-                        } else { // it is a regular local image file
-
-                            if (requestCode == CODE_REQUEST_IMAGE_SOURCE_IS_BACKGROUND) {
-                                //此时我们希望获的图片大一些
-                                resultBitmap = UIHelper.resizeImageTo800(getActivity(), selectedURI);
-
-                            } else {
-                                resultBitmap = UIHelper.resizeImageTo400(getActivity(), selectedURI);
-                            }
-
-                        }
-                        cursor.close();
+                if (mIsCreatingCard == false) {
+                    mCurrentCard.save(AppContext.getAppContext());
+                    if (mIsQuestionShowing) {
+                        takeSnapshotCurrentCard();
+                        Intent intent = new Intent();
+                        intent.setAction(Global.BROADCAST_ACTION_UPDATE_MASTER_VIEW);
+                        intent.putExtra(Global.KEY_FROM, Global.BROADCAST_EXTRA_FROM_CURRENT_PACK_UPDATE);
+                        getActivity().sendBroadcast(intent);
                     }
-
-                    //step2: do next
-                    if (resultBitmap == null) {
-                        Log.e(Global.debugTag, "resultBitmap is null");
-                    } else {
-
-                        File toSaveFile = UIHelper.saveImageToCaches(resultBitmap);
-
-                        if (requestCode == CODE_REQUEST_IMAGE_SOURCE_IS_LOGO) {
-                            mLogoImage.setImageBitmap(resultBitmap);
-                            mCurrentPack.logoImageUriFormatStr = FileOperationHelper.convertToUriFormatFile(toSaveFile);
-
-                            if (mIsCreatingCard == false) {
-                                mCurrentPack.save(AppContext.getAppContext());
-                                ((MainActivity) getActivity()).setMaskButtonForContentUpdating();
-                                takeSnapshotAll();
-                            }
-
-                        } else if (requestCode == CODE_REQUEST_IMAGE_SOURCE_IS_IMAGE) {
-
-                            if (mIsImage2Active) {
-                                mImage2.setImageBitmap(resultBitmap);
-                                if (mIsQuestionShowing) {
-                                    mCurrentCard.question.imageUriFormatStr2 = FileOperationHelper.convertToUriFormatFile(toSaveFile);
-                                } else {
-                                    mCurrentCard.answer.imageUriFormatStr2 = FileOperationHelper.convertToUriFormatFile(toSaveFile);
-                                }
-                            } else {
-                                mImage.setImageBitmap(resultBitmap);
-                                if (mIsQuestionShowing) {
-                                    mCurrentCard.question.imageUriFormatStr = FileOperationHelper.convertToUriFormatFile(toSaveFile);
-                                } else {
-                                    mCurrentCard.answer.imageUriFormatStr = FileOperationHelper.convertToUriFormatFile(toSaveFile);
-                                }
-                            }
-
-                            if (mIsCreatingCard == false) {
-                                mCurrentCard.save(AppContext.getAppContext());
-                                if (mIsQuestionShowing) {
-                                    takeSnapshotCurrentCard();
-                                    Intent intent = new Intent();
-                                    intent.setAction(Global.BROADCAST_ACTION_UPDATE_MASTER_VIEW);
-                                    intent.putExtra(Global.KEY_FROM, Global.BROADCAST_EXTRA_FROM_CURRENT_PACK_UPDATE);
-                                    getActivity().sendBroadcast(intent);
-                                }
-                            }
-                        } else if (requestCode == CODE_REQUEST_IMAGE_SOURCE_IS_BACKGROUND) {
-                            setCardBackgroundImageWithBitmap(resultBitmap);
-                            if (mIsQuestionShowing) {
-                                mCurrentCard.question.backgroundImageUriFormatStr = FileOperationHelper.convertToUriFormatFile(toSaveFile);
-                            } else {
-                                mCurrentCard.answer.backgroundImageUriFormatStr = FileOperationHelper.convertToUriFormatFile(toSaveFile);
-                            }
-
-                            if (mIsCreatingCard == false) {
-                                mCurrentCard.save(AppContext.getAppContext());
-                                if (mIsQuestionShowing) {
-                                    takeSnapshotCurrentCard();
-                                    Intent intent = new Intent();
-                                    intent.setAction(Global.BROADCAST_ACTION_UPDATE_MASTER_VIEW);
-                                    intent.putExtra(Global.KEY_FROM, Global.BROADCAST_EXTRA_FROM_CURRENT_PACK_UPDATE);
-                                    getActivity().sendBroadcast(intent);
-                                }
-                            }
-                        }
-                    }
-
                 }
             }
         }
+
     }
 
     /*
@@ -723,6 +724,7 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnKeyboa
                 .setNegativeButton("Select from library", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
+                        mActiveImageSouce = IMAGE_SOURCE.IMAGE_SOURCE_IS_IMAGE;
                         selectImageOrVideoFromLibrary();
                     }
                 })
@@ -742,11 +744,14 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnKeyboa
 
                 if (mIsPlayingCard == false) {
                     if (isEditableMode()) {
-                        startActivityForResult(
-                                new Intent(
-                                        Intent.ACTION_PICK,
-                                        android.provider.MediaStore.Images.Media.INTERNAL_CONTENT_URI),
-                                CODE_REQUEST_IMAGE_SOURCE_IS_LOGO);
+                        mActiveImageSouce = IMAGE_SOURCE.IMAGE_SOURCE_IS_LOGO;
+                        Crop.pickImageWithFragment(CardDetailFragment.this, true);
+//                        startActivityForResult(
+//                                new Intent(
+//                                        Intent.ACTION_PICK,
+//                                        android.provider.MediaStore.Images.Media.INTERNAL_CONTENT_URI),
+//                                CODE_REQUEST_IMAGE_SOURCE_IS_LOGO);
+
                     } else {
                         Intent intent = new Intent(getActivity(), WebViewActivity.class);
                         intent.putExtra("url", mCurrentPack.logoURL);
@@ -834,20 +839,24 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnKeyboa
                                 .setNegativeButton("Change background image", new DialogInterface.OnClickListener() {
                                     @Override
                                     public void onClick(DialogInterface dialog, int which) {
-                                        startActivityForResult(
-                                                new Intent(
-                                                        Intent.ACTION_PICK,
-                                                        android.provider.MediaStore.Images.Media.INTERNAL_CONTENT_URI),
-                                                CODE_REQUEST_IMAGE_SOURCE_IS_BACKGROUND);
+                                        mActiveImageSouce = IMAGE_SOURCE.IMAGE_SOURCE_IS_BACKGROUND;
+                                        Crop.pickImageWithFragment(CardDetailFragment.this, true);
+//                                        startActivityForResult(
+//                                                new Intent(
+//                                                        Intent.ACTION_PICK,
+//                                                        android.provider.MediaStore.Images.Media.INTERNAL_CONTENT_URI),
+//                                                CODE_REQUEST_IMAGE_SOURCE_IS_BACKGROUND);
                                     }
                                 })
                                 .show();
                     } else {
-                        startActivityForResult(
-                                new Intent(
-                                        Intent.ACTION_PICK,
-                                        android.provider.MediaStore.Images.Media.INTERNAL_CONTENT_URI),
-                                CODE_REQUEST_IMAGE_SOURCE_IS_BACKGROUND);
+                        mActiveImageSouce = IMAGE_SOURCE.IMAGE_SOURCE_IS_BACKGROUND;
+                        Crop.pickImageWithFragment(CardDetailFragment.this, true);
+//                        startActivityForResult(
+//                                new Intent(
+//                                        Intent.ACTION_PICK,
+//                                        android.provider.MediaStore.Images.Media.INTERNAL_CONTENT_URI),
+//                                CODE_REQUEST_IMAGE_SOURCE_IS_BACKGROUND);
                     }
 
                 } else {
