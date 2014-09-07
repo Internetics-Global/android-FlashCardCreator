@@ -49,7 +49,7 @@ import java.util.ArrayList;
 
 enum IMAGE_SOURCE {
     IMAGE_SOURCE_IS_LOGO,
-    IMAGE_SOURCE_IS_IMAGE,
+    IMAGE_SOURCE_IS_IMAGE, //包括IMAGE1和IMAGE2,之间的区分用：mIsImage2Active
     IMAGE_SOURCE_IS_BACKGROUND
 }
 
@@ -87,15 +87,11 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnKeyboa
     private FCCEditText mMain;
     private FCCEditText mSub;
 
-
-
     private ImageView mLogoImage;
 
     private ImageView mChangeTemplateImage;
     private ImageView mChangeBackgroundImage;
     private ImageView mPlayRecordImage;
-
-    private LinearLayout mFunctionAreaLayout;
 
     private ImageView mLogoURLImage;
     private RadioButton mQuestionRadioButton;
@@ -105,7 +101,7 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnKeyboa
     private InputMethodManager mIMM;
     public EditText mCurrentFocusedCardContentText;  // only applicable to subheading, main and sub text
 
-    private IMAGE_SOURCE  mActiveImageSouce;
+    private IMAGE_SOURCE  mActiveImageSource;
 
     public boolean mIsCreatingCard = false;
     private boolean mIsPlayingCard = false;
@@ -128,13 +124,23 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnKeyboa
     // 2. resize完毕后，是否需要暂存prepareToSavingTextFontSizeInfo
     private static boolean mIsSaveNeededAfterResize = false;
 
-    //用于autoresize 逻辑
+    //用于auto resize 逻辑
     private ViewTreeObserver mVtoSubheading;
     private ViewTreeObserver mVtoMain;
     private ViewTreeObserver mVtoSub;
     private ViewTreeObserver.OnGlobalLayoutListener mVtoSubheadingListener;
     private ViewTreeObserver.OnGlobalLayoutListener mVtoMainListener;
     private ViewTreeObserver.OnGlobalLayoutListener mVtoSubListener;
+
+    //需要的理由：由于需要多次addTextChangedListener，而Android系统又不提供统一的remove的功能，
+    private TextWatcher mSubheadingTextWatcher;
+    private TextWatcher mMainTextWatcher;
+    private TextWatcher mSubTextWatcher;
+    private TextWatcher mTitleTextWatcher;
+    private TextWatcher mCreatorTextWatcher;
+    private TextWatcher mJobTitleTextWatcher;
+    private TextWatcher mSidebarTitleTextWatcher;
+
 
     public boolean isCurrentFocusedCardContentTextUsingDefaultFont() {
 
@@ -272,7 +278,6 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnKeyboa
         if (mIsCreatingCard) {
             mSidebarTitle.setEnabled(false);
             mTitle.setEnabled(false);
-            //mFunctionAreaLayout.setVisibility(View.INVISIBLE);
         }
 
         if (mIsPlayingCard || mIsCreatingCard) {
@@ -385,7 +390,7 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnKeyboa
     }
 
 
-    private void showYoutbueLinkageInputDialog() {
+    private void showYoutubeLinkageInputDialog() {
         final EditText textInput = new EditText(getActivity());
         new AlertDialog.Builder(getActivity())
                 .setTitle("Input a valid YouTube url")
@@ -592,7 +597,7 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnKeyboa
 
             File toSaveFile = UIHelper.saveImageToCaches(resultBitmap);
 
-            if (mActiveImageSouce == IMAGE_SOURCE.IMAGE_SOURCE_IS_LOGO) {
+            if (mActiveImageSource == IMAGE_SOURCE.IMAGE_SOURCE_IS_LOGO) {
                 mLogoImage.setImageBitmap(resultBitmap);
                 mCurrentPack.logoImageUriFormatStr = FileOperationHelper.convertToUriFormatFile(toSaveFile);
 
@@ -602,7 +607,7 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnKeyboa
                     takeSnapshotAll();
                 }
 
-            } else if (mActiveImageSouce == IMAGE_SOURCE.IMAGE_SOURCE_IS_IMAGE) {
+            } else if (mActiveImageSource == IMAGE_SOURCE.IMAGE_SOURCE_IS_IMAGE) {
 
                 if (mIsImage2Active) {
                     mImage2.setImageBitmap(resultBitmap);
@@ -630,7 +635,7 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnKeyboa
                         getActivity().sendBroadcast(intent);
                     }
                 }
-            } else if (mActiveImageSouce == IMAGE_SOURCE.IMAGE_SOURCE_IS_BACKGROUND) {
+            } else if (mActiveImageSource == IMAGE_SOURCE.IMAGE_SOURCE_IS_BACKGROUND) {
                 setCardBackgroundImageWithBitmap(resultBitmap);
                 if (mIsQuestionShowing) {
                     mCurrentCard.question.backgroundImageUriFormatStr = FileOperationHelper.convertToUriFormatFile(toSaveFile);
@@ -718,13 +723,13 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnKeyboa
                 .setPositiveButton("Insert a YouTube url", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        showYoutbueLinkageInputDialog();
+                        showYoutubeLinkageInputDialog();
                     }
                 })
                 .setNegativeButton("Select from library", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        mActiveImageSouce = IMAGE_SOURCE.IMAGE_SOURCE_IS_IMAGE;
+                        mActiveImageSource = IMAGE_SOURCE.IMAGE_SOURCE_IS_IMAGE;
                         selectImageOrVideoFromLibrary();
                     }
                 })
@@ -744,7 +749,7 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnKeyboa
 
                 if (mIsPlayingCard == false) {
                     if (isEditableMode()) {
-                        mActiveImageSouce = IMAGE_SOURCE.IMAGE_SOURCE_IS_LOGO;
+                        mActiveImageSource = IMAGE_SOURCE.IMAGE_SOURCE_IS_LOGO;
                         Crop.pickImageWithFragment(CardDetailFragment.this, true);
 //                        startActivityForResult(
 //                                new Intent(
@@ -839,7 +844,7 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnKeyboa
                                 .setNegativeButton("Change background image", new DialogInterface.OnClickListener() {
                                     @Override
                                     public void onClick(DialogInterface dialog, int which) {
-                                        mActiveImageSouce = IMAGE_SOURCE.IMAGE_SOURCE_IS_BACKGROUND;
+                                        mActiveImageSource = IMAGE_SOURCE.IMAGE_SOURCE_IS_BACKGROUND;
                                         Crop.pickImageWithFragment(CardDetailFragment.this, true);
 //                                        startActivityForResult(
 //                                                new Intent(
@@ -850,7 +855,7 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnKeyboa
                                 })
                                 .show();
                     } else {
-                        mActiveImageSouce = IMAGE_SOURCE.IMAGE_SOURCE_IS_BACKGROUND;
+                        mActiveImageSource = IMAGE_SOURCE.IMAGE_SOURCE_IS_BACKGROUND;
                         Crop.pickImageWithFragment(CardDetailFragment.this, true);
 //                        startActivityForResult(
 //                                new Intent(
@@ -1167,8 +1172,8 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnKeyboa
             mTitle.setText(mCurrentPack.questionTitle);
         }
 
+        updateQuestionViewTemplate();//updateQuestionContent，因为涉及到view的重定向
         updateQuestionContent();
-        updateQuestionViewTemplate();
         updateQuestionCSS();
 
         //hide placeholder image if play mode
@@ -1197,8 +1202,8 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnKeyboa
             mTitle.setText(mCurrentPack.answerTitle);
         }
 
+        updateAnswerViewTemplate(); //必须放在updateAnswerContent，因为涉及到view的重定向
         updateAnswerContent();
-        updateAnswerViewTemplate();
         updateAnswerCSS();
 
         //hide placeholder image if play mode
@@ -1248,7 +1253,6 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnKeyboa
             mChangeTemplateImage = (ImageView) mContentView.findViewById(R.id.change_template_button);
             mChangeBackgroundImage = (ImageView) mContentView.findViewById(R.id.change_background_button);
             mPlayRecordImage = (ImageView) mContentView.findViewById(R.id.play_record_button);
-            mFunctionAreaLayout = (LinearLayout) mContentView.findViewById(R.id.functionarea);
         }
 
 
@@ -1314,6 +1318,7 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnKeyboa
      */
     private void updateContentViewsPointers(int templateID) {
 
+        //1. 重新定向
         if ((mContentBodyType1.getVisibility() == View.VISIBLE)) {
             mSubheading = (FCCEditText) mContentView.findViewById(R.id.subheading);
             mMain = (FCCEditText) mContentView.findViewById(R.id.main);
@@ -1345,6 +1350,7 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnKeyboa
             mImage.setImageURI(Uri.parse(mCurrentCard.question.imageUriFormatStr));
         }
 
+        //2. text的重新OnTouchListener
         if (!mIsPlayingCard) {
             mSubheading.setOnTouchListener(this);
             mMain.setOnTouchListener(this);
@@ -1352,12 +1358,21 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnKeyboa
 
         }
 
+        //3. text的重新 EditorActionListener
+        setEditTextListener();
+
+        //4. text的重新 OnKeyboardCloseListener
+        mSubheading.mCallbacks = this;
+        mMain.mCallbacks = this;
+        mSub.mCallbacks = this;
+
+        //5. image的重新OnClickListener
         setImageVideoClickListener();
 
-        setEditTextListener(); //TODO:这里有个糟糕的结果在于addTextChangedListener会被多次加入，需要后面修正
 
         //TODO:由于重新指向，一些格式化数据比如size,font会丢失掉，所以需要后续修正
 
+        //6. 数据重新填充
         if (mIsQuestionShowing) {
             mSubheading.setText(mCurrentCard.question.subheading);
             mMain.setText(mCurrentCard.question.main);
@@ -1369,9 +1384,7 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnKeyboa
             mSub.setText(mCurrentCard.answer.sub);
         }
 
-        mSubheading.mCallbacks = this;
-        mMain.mCallbacks = this;
-        mSub.mCallbacks = this;
+
 
 
     }
@@ -1520,7 +1533,10 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnKeyboa
             });
 
 
-            mTitle.addTextChangedListener(new TextWatcher() {
+            if (mTitleTextWatcher != null) {
+                mTitle.removeTextChangedListener(mTitleTextWatcher);
+            }
+            mTitleTextWatcher = new TextWatcher() {
                 @Override
                 public void beforeTextChanged(CharSequence s, int start, int count, int after) {
                 }
@@ -1541,9 +1557,13 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnKeyboa
                     }
                     Log.d(Global.debugTag, "mTitle has changed");
                 }
-            });
+            };
+            mTitle.addTextChangedListener(mTitleTextWatcher);
 
-            mCreator.addTextChangedListener(new TextWatcher() {
+            if (mCreatorTextWatcher != null) {
+                mCreator.removeTextChangedListener(mCreatorTextWatcher);
+            }
+            mCreatorTextWatcher = new TextWatcher() {
                 @Override
                 public void beforeTextChanged(CharSequence s, int start, int count, int after) {
                 }
@@ -1562,9 +1582,13 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnKeyboa
                     Log.d(Global.debugTag, "mCreator has changed");
 
                 }
-            });
+            };
+            mCreator.addTextChangedListener(mCreatorTextWatcher);
 
-            mJobTitle.addTextChangedListener(new TextWatcher() {
+            if (mJobTitleTextWatcher != null) {
+                mJobTitle.removeTextChangedListener(mJobTitleTextWatcher);
+            }
+            mJobTitleTextWatcher = new TextWatcher() {
                 @Override
                 public void beforeTextChanged(CharSequence s, int start, int count, int after) {
                 }
@@ -1583,9 +1607,13 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnKeyboa
                     Log.d(Global.debugTag, "mJobTitle has changed");
 
                 }
-            });
+            };
+            mJobTitle.addTextChangedListener(mJobTitleTextWatcher);
 
-            mSidebarTitle.addTextChangedListener(new TextWatcher() {
+            if (mSidebarTitleTextWatcher != null) {
+                mSidebarTitle.removeTextChangedListener(mSidebarTitleTextWatcher);
+            }
+            mSidebarTitleTextWatcher = new TextWatcher() {
                 @Override
                 public void beforeTextChanged(CharSequence s, int start, int count, int after) {
                 }
@@ -1604,11 +1632,15 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnKeyboa
                     Log.d(Global.debugTag, "mSidebarTitle has changed");
 
                 }
-            });
+            };
+            mSidebarTitle.addTextChangedListener(mSidebarTitleTextWatcher);
         }
 
 
-        mSubheading.addTextChangedListener(new TextWatcher() {
+        if (mSubheadingTextWatcher != null) {
+            mSubheading.removeTextChangedListener(mSubheadingTextWatcher);
+        }
+        mSubheadingTextWatcher = new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
 
@@ -1632,10 +1664,13 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnKeyboa
                 }
 
             }
-        });
+        };
+        mSubheading.addTextChangedListener(mSubheadingTextWatcher);
 
-
-        mMain.addTextChangedListener(new TextWatcher() {
+        if (mMainTextWatcher != null) {
+            mMain.removeTextChangedListener(mMainTextWatcher);
+        }
+        mMainTextWatcher = new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
             }
@@ -1657,9 +1692,13 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnKeyboa
                 }
 
             }
-        });
+        };
+        mMain.addTextChangedListener(mMainTextWatcher);
 
-        mSub.addTextChangedListener(new TextWatcher() {
+        if (mSubTextWatcher != null) {
+            mSub.removeTextChangedListener(mSubTextWatcher);
+        }
+        mSubTextWatcher = new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
             }
@@ -1681,7 +1720,8 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnKeyboa
                 }
 
             }
-        });
+        };
+        mSub.addTextChangedListener(mSubTextWatcher);
 
 
         mVtoSubheadingListener = new ViewTreeObserver.OnGlobalLayoutListener() {

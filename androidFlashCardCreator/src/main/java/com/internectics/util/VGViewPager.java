@@ -5,6 +5,7 @@ import android.graphics.Rect;
 import android.support.v4.view.ViewPager;
 import android.util.AttributeSet;
 import android.view.MotionEvent;
+import android.view.View;
 import android.view.animation.DecelerateInterpolator;
 import android.widget.*;
 import com.internectics.android_flashcardcreator.R;
@@ -33,51 +34,75 @@ public class VGViewPager extends ViewPager {
     @Override
     public boolean onInterceptTouchEvent(MotionEvent event) {
         super.onInterceptTouchEvent(event);
-        //Log.d(Global.debugTag, "onInterceptTouchEvent for VGViewPager");
 
         Rect outRect = new Rect();
-        int marginValLeft = this.getPaddingLeft();
-        int marginValTop = this.getPaddingTop();
+        int[] location = new int[2];
 
-        int x =  (int) event.getX();
-        int y =  (int) event.getY();
+        this.getLocationOnScreen(location);
+        float hitXInScreen =  event.getX() + location[0];
+        float hitYInScreen =  event.getY() + location[1];
 
         FrameLayout sidebarLayout = (FrameLayout) findViewById(R.id.sidebar_background_linearlayout);
         int sidebarWidth = sidebarLayout.getWidth();
 
+        LinearLayout contentBodyType1 = (LinearLayout) findViewById(R.id.content_body_type1);
+        LinearLayout contentBodyType2 = (LinearLayout) findViewById(R.id.content_body_type2);
+
         ImageView logo_image = (ImageView)findViewById(R.id.logo_image);
-        logo_image.getHitRect(outRect);
-        outRect.offset(marginValLeft + sidebarWidth,marginValTop);
-        if (outRect.contains(x, y)) {
+        if (isViewContains(logo_image,hitXInScreen,hitYInScreen)) {
             Log.d(Global.debugTag, "touch location in logo_image");
             return false;
         }
 
         ImageView image = (ImageView)findViewById(R.id.image);
-        image.getHitRect(outRect);
-        outRect.offset(marginValLeft + sidebarWidth,marginValTop);
-        if (outRect.contains(x, y)) {
-            Boolean bool = image.isEnabled();
-            Log.d(Global.debugTag, "touch location in image，enable=  "+bool);
-            return false;
+        if ((image.getVisibility() == VISIBLE) && (contentBodyType1.getVisibility() == VISIBLE)) {
+            if (isViewContains(image,hitXInScreen,hitYInScreen)) {
+                Boolean bool = image.isEnabled();
+                Log.d(Global.debugTag, "touch location in image，enable=  "+bool);
+                return false;
+            }
         }
 
-        ImageView image2 = (ImageView)findViewById(R.id.image_BodyType2);
-        image2.getHitRect(outRect);
-        outRect.offset(marginValLeft + sidebarWidth,marginValTop);
-        if (outRect.contains(x, y)) {
-            Boolean bool = image2.isEnabled();
-            Log.d(Global.debugTag, "touch location in image2, enable =  "+bool);
-            return false;
+        ImageView image2 = (ImageView)findViewById(R.id.image2);
+        if ((image2.getVisibility() == VISIBLE) && (contentBodyType1.getVisibility() == VISIBLE)) {
+            if (isViewContains(image2,hitXInScreen,hitYInScreen)) {
+                Boolean bool = image2.isEnabled();
+                Log.d(Global.debugTag, "touch location in image2，enable=  "+bool);
+                return false;
+            }
+        }
+
+        ImageView image_BodyType2 = (ImageView)findViewById(R.id.image_BodyType2);
+        if ((image_BodyType2.getVisibility() == VISIBLE)&& (contentBodyType2.getVisibility() == VISIBLE)) {
+            if (isViewContains(image_BodyType2,hitXInScreen,hitYInScreen)) {
+                Boolean bool = image_BodyType2.isEnabled();
+                Log.d(Global.debugTag, "touch location in image_BodyType2, enable =  "+bool);
+                return false;
+            }
         }
 
 
         LinearLayout creatorLayout = (LinearLayout) findViewById(R.id.creator_layout);
-        creatorLayout.getHitRect(outRect);
-        outRect.offset(marginValLeft + sidebarWidth,marginValTop);
-        if (outRect.contains(x, y))
+        if (isViewContains(creatorLayout,hitXInScreen,hitYInScreen))
         {
             Log.d(Global.debugTag,"touch location in creatorLayout");
+            return false;
+        }
+        return true;
+    }
+
+    /*
+      rx, ry都是先对于屏幕的坐标
+     */
+    private boolean isViewContains(View view, float rx, float ry) {
+        int[] l = new int[2];
+        view.getLocationOnScreen(l);
+        int x = l[0];
+        int y = l[1];
+        int w = view.getWidth();
+        int h = view.getHeight();
+
+        if (rx < x || rx > x + w || ry < y || ry > y + h) {
             return false;
         }
         return true;
