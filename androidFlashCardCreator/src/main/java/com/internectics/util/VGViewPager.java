@@ -97,8 +97,8 @@ public class VGViewPager extends ViewPager {
     private boolean isViewContains(View view, float rx, float ry) {
         int[] l = new int[2];
         view.getLocationOnScreen(l);
-        int x = l[0];
-        int y = l[1];
+        int x = Math.abs(l[0]);
+        int y = Math.abs(l[1]);
         int w = view.getWidth();
         int h = view.getHeight();
 
