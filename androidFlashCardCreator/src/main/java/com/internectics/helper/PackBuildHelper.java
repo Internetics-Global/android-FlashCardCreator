@@ -67,11 +67,11 @@ public class PackBuildHelper {
                 cardFiles.add(FileOperationHelper.deleteUriSchemeHeader(card.question.backgroundImageUriFormatStr));
             }
 
-            if ((card.question.movieUriFormatStr.length() >0) && (card.question.movieUriFormatStr.contains("http://") == false)) {
+            if ((card.question.movieUriFormatStr.length() >0) && (card.question.movieUriFormatStr.contains("http://") == false) && (card.question.movieUriFormatStr.contains("https://") == false)) {
                 cardFiles.add(FileOperationHelper.deleteUriSchemeHeader(card.question.movieUriFormatStr));
             }
 
-            if ((card.question.movieUriFormatStr2.length() >0) && (card.question.movieUriFormatStr2.contains("http://") == false)) {
+            if ((card.question.movieUriFormatStr2.length() >0) && (card.question.movieUriFormatStr2.contains("http://") == false) && (card.question.movieUriFormatStr2.contains("https://") == false)) {
                 cardFiles.add(FileOperationHelper.deleteUriSchemeHeader(card.question.movieUriFormatStr2));
             }
 
@@ -96,11 +96,11 @@ public class PackBuildHelper {
                 cardFiles.add(FileOperationHelper.deleteUriSchemeHeader(card.answer.backgroundImageUriFormatStr));
             }
 
-            if ((card.answer.movieUriFormatStr.length() >0) && (card.answer.movieUriFormatStr.contains("http://") == false)) {  //有可能只是类似youtube的链接，而不是本地文件
+            if ((card.answer.movieUriFormatStr.length() >0) && (card.answer.movieUriFormatStr.contains("http://") == false) && (card.answer.movieUriFormatStr.contains("https://") == false)) {  //有可能只是类似youtube的链接，而不是本地文件
                 cardFiles.add(FileOperationHelper.deleteUriSchemeHeader(card.answer.movieUriFormatStr));
             }
 
-            if ((card.answer.movieUriFormatStr2.length() >0) && (card.answer.movieUriFormatStr2.contains("http://") == false)) {  //有可能只是类似youtube的链接，而不是本地文件
+            if ((card.answer.movieUriFormatStr2.length() >0) && (card.answer.movieUriFormatStr2.contains("http://") == false) && (card.answer.movieUriFormatStr2.contains("https://") == false)) {  //有可能只是类似youtube的链接，而不是本地文件
                 cardFiles.add(FileOperationHelper.deleteUriSchemeHeader(card.answer.movieUriFormatStr2));
             }
 

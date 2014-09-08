@@ -370,7 +370,7 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnKeyboa
                 return;
             }
 
-            if (targetStr.contains("http://")) {
+            if (targetStr.contains("http://") || targetStr.contains("https://")) {
                 Intent i = new Intent(Intent.ACTION_VIEW);
                 i.setData(Uri.parse(targetStr));
                 startActivity(i);
