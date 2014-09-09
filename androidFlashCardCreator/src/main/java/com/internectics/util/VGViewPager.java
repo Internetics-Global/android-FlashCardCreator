@@ -35,27 +35,22 @@ public class VGViewPager extends ViewPager {
     public boolean onInterceptTouchEvent(MotionEvent event) {
         super.onInterceptTouchEvent(event);
 
-        Rect outRect = new Rect();
         int[] location = new int[2];
 
         this.getLocationOnScreen(location);
         float hitXInScreen =  event.getX() + location[0];
         float hitYInScreen =  event.getY() + location[1];
 
-        FrameLayout sidebarLayout = (FrameLayout) findViewById(R.id.sidebar_background_linearlayout);
-        int sidebarWidth = sidebarLayout.getWidth();
 
-        LinearLayout contentBodyType1 = (LinearLayout) findViewById(R.id.content_body_type1);
-        LinearLayout contentBodyType2 = (LinearLayout) findViewById(R.id.content_body_type2);
-
-        ImageView logo_image = (ImageView)findViewById(R.id.logo_image);
-        if (isViewContains(logo_image,hitXInScreen,hitYInScreen)) {
+        //由于ViewPager包含多个card，而通过findViewById会只获取到第一个，这样就会出现问题（比如当前显示第二个卡片，但是这里就会获取到第一个）
+        ImageView logo_image = (ImageView)findViewWithTag(Global.mLogoImage_Showing);
+        if ((logo_image != null) && isViewContains(logo_image,hitXInScreen,hitYInScreen)) {
             Log.d(Global.debugTag, "touch location in logo_image");
             return false;
         }
 
-        ImageView image = (ImageView)findViewById(R.id.image);
-        if ((image.getVisibility() == VISIBLE) && (contentBodyType1.getVisibility() == VISIBLE)) {
+        ImageView image = (ImageView)findViewWithTag(Global.mImage_Showing);
+        if ((image != null) && (image.getVisibility() == VISIBLE)) {
             if (isViewContains(image,hitXInScreen,hitYInScreen)) {
                 Boolean bool = image.isEnabled();
                 Log.d(Global.debugTag, "touch location in image，enable=  "+bool);
@@ -63,20 +58,11 @@ public class VGViewPager extends ViewPager {
             }
         }
 
-        ImageView image2 = (ImageView)findViewById(R.id.image2);
-        if ((image2.getVisibility() == VISIBLE) && (contentBodyType1.getVisibility() == VISIBLE)) {
+        ImageView image2 = (ImageView)findViewWithTag(Global.mImage2_Showing);
+        if ((image2 != null) && (image2.getVisibility() == VISIBLE)) {
             if (isViewContains(image2,hitXInScreen,hitYInScreen)) {
                 Boolean bool = image2.isEnabled();
                 Log.d(Global.debugTag, "touch location in image2，enable=  "+bool);
-                return false;
-            }
-        }
-
-        ImageView image_BodyType2 = (ImageView)findViewById(R.id.image_BodyType2);
-        if ((image_BodyType2.getVisibility() == VISIBLE)&& (contentBodyType2.getVisibility() == VISIBLE)) {
-            if (isViewContains(image_BodyType2,hitXInScreen,hitYInScreen)) {
-                Boolean bool = image_BodyType2.isEnabled();
-                Log.d(Global.debugTag, "touch location in image_BodyType2, enable =  "+bool);
                 return false;
             }
         }
@@ -98,7 +84,7 @@ public class VGViewPager extends ViewPager {
         int[] l = new int[2];
         view.getLocationOnScreen(l);
         int x = Math.abs(l[0]);
-        int y = Math.abs(l[1]);
+        int y = l[1];
         int w = view.getWidth();
         int h = view.getHeight();
 

@@ -69,11 +69,11 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnKeyboa
     private LinearLayout mContentBodyLeftLayout;
     private LinearLayout mContentBodyLeftTextMainSubLayout;//包含main and sub
     private FrameLayout mContentBodyLeftMainSubFrameLayout;//包含了mContentBodyLeftTextMainSubLayout
-    private ImageView mImage2;
+    public ImageView mImage2;
 
     //右边，mContentBodyRightFrameLayout，包含mImage和sub_replace_image
     private FrameLayout mContentBodyRightFrameLayout;
-    private ImageView mImage;
+    public ImageView mImage;
 
 
     private FCCEditText mSidebarTitle;
@@ -87,7 +87,7 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnKeyboa
     private FCCEditText mMain;
     private FCCEditText mSub;
 
-    private ImageView mLogoImage;
+    public ImageView mLogoImage;
 
     private ImageView mChangeTemplateImage;
     private ImageView mChangeBackgroundImage;

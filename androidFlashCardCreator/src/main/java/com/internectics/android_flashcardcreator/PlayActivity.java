@@ -53,6 +53,8 @@ public class PlayActivity extends FragmentActivity implements SensorEventListene
 
     private ImageView mMuteImage;
 
+    private boolean   mRunOnceFlag; //only allow to run once
+
     //Text to speech related
     private int          mTextToSpeechContentArrayIndex;
     private TextToSpeech mTTS;
@@ -176,12 +178,19 @@ public class PlayActivity extends FragmentActivity implements SensorEventListene
                     mPosition = i;
 
                     mIsScrollStop = true;
-                    Log.d(Global.debugTag, "Stopped");
+
+                    setActiveFragmentTag(i);
 
                     exeuteTextToSpeechOrPlayAudio((CardDetailFragment) (mFragments.get(i)));
 
 
 
+                } else {
+                    //只会运行一次
+                    if (mRunOnceFlag == false) {
+                      setActiveFragmentTag(0);
+                      mRunOnceFlag = true;
+                    }
                 }
             }
 
@@ -444,6 +453,8 @@ public class PlayActivity extends FragmentActivity implements SensorEventListene
             mPlayRecordImage.setVisibility(View.VISIBLE);
         }
 
+        setActiveFragmentTag(mPosition);
+
         exeuteTextToSpeechOrPlayAudio(targetDetailFragment);
     }
 
@@ -643,6 +654,45 @@ public class PlayActivity extends FragmentActivity implements SensorEventListene
 
 
 
+    }
+
+    /*
+      在VGViewPager，我们需要获取到当前显示的card的image,image2（而不是前一个card），所以需要设置标志，以方便查找
+      需要在如下方法中调用
+      1. 默认显示第一张卡片
+      2. 卡片的切换（因为这时,mImage等的指向会发生变化）
+      3. scroll到下一张卡片
+     */
+    private void setActiveFragmentTag(int indexShowing) {
+       for (int i = 0; i < mFragments.size(); i ++) {
+           CardDetailFragment cardDetailFragment = (CardDetailFragment) mFragments.get(i);
+           if (i == indexShowing) {
+               if (cardDetailFragment.mImage != null) {
+                   cardDetailFragment.mImage.setTag(Global.mImage_Showing);
+               }
+
+               if (cardDetailFragment.mImage2 != null) {
+                   cardDetailFragment.mImage2.setTag(Global.mImage2_Showing);
+               }
+
+               if (cardDetailFragment.mLogoImage != null) {
+                   cardDetailFragment.mLogoImage.setTag(Global.mLogoImage_Showing);
+               }
+
+           } else {
+               if (cardDetailFragment.mImage != null) {
+                   cardDetailFragment.mImage.setTag(Global.mImages_Not_Showing);
+               }
+
+               if (cardDetailFragment.mImage2 != null) {
+                   cardDetailFragment.mImage2.setTag(Global.mImages_Not_Showing);
+               }
+
+               if (cardDetailFragment.mLogoImage != null) {
+                   cardDetailFragment.mLogoImage.setTag(Global.mImages_Not_Showing);
+               }
+           }
+       }
     }
 
 

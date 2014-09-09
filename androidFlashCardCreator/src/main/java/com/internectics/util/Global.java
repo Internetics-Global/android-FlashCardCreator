@@ -74,6 +74,12 @@ public class Global {
     public static double   widthOfCardInEditMode = 0;
     public static float   scaleInPlayMode = 1; //scale in play mode compared with in edit mode
 
+    //image, image2, logoImage的tag，用在VGViewPager
+    public static final String mImage_Showing = "mImage_Showing";
+    public static final String mImage2_Showing = "mImage2_Showing";
+    public static final String mLogoImage_Showing = "mLogoImage_Showing";
+    public static final String mImages_Not_Showing = "mImages_Not_Showing";
+
 
     /**
      * detect network
