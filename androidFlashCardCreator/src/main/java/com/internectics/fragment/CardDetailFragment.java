@@ -3736,7 +3736,7 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnKeyboa
 
         String OzoneStr = "  Ozone ";
         String perStr = " per ";
-        String millibarStr = " millibar equals ";
+        String millibarStr = " millibar equals";
         String percentStr = " percent ";
 
         String radiusStr = "  Radius equals ";
@@ -3750,8 +3750,6 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnKeyboa
         resultStr = resultStr.replace("⨯",timesStr);
         resultStr = resultStr.replace("÷",dividedByStr);
         resultStr = resultStr.replace("÷",minusStr);
-
-        resultStr = resultStr.replace("=",equalsStr);// , not unicode
 
         resultStr = resultStr.replace("m³",cubicMetresStr);
         resultStr = resultStr.replace("m²",squareMetresStr);
@@ -3792,6 +3790,8 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnKeyboa
         resultStr = resultStr.replace("<",lessThenStr);
 
         resultStr = resultStr.replace("√",squareRootStr);
+
+        resultStr = resultStr.replace("=",equalsStr);// , not unicode  //need to put the last
 
 
         return resultStr;
