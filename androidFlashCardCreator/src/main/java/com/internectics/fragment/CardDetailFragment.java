@@ -3704,15 +3704,95 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnKeyboa
     private String replaceBasicSymbol (String str) {
         String resultStr;
 
-        String plusStr = " plus ";
+        String plusStr = " Plus ";
+        String timesStr = " Times ";
+        String dividedByStr = " divided by ";
         String minusStr = " minus ";
-        String multiplyStr = " times ";
-        String divideStr = " divid by ";
+
+        String equalsStr = " equals ";
+        String cubicMetresStr = "  Cubic Metres ";
+        String squareMetresStr = " Square Metres ";
+        String squareFeetStr = " Square feet ";
+
+        String cubicFeetStr = "  Cubic Feet ";
+        String squareInchesStr = " Square Inches ";
+        String cubicInchesStr = " Cubic Inches ";
+        String cubicCentimetresStr = " Cubic Centimetres ";
+
+        String squareCentimetresStr = " Square Centimetres ";
+        String cubicMillimetresStr = " Cubic Millimetres ";
+        String squareMillimetresStr = " Square millimetres ";
+        String degreesCelsiusStr = " Degrees Celsius ";
+
+        String degreesFahrenheitStr = "  Degrees Fahrenheit ";
+        String degreesRankinStr = " Degrees Rankin ";
+        String degresssKelvinStr = " Degrees Kelvin ";
+        String carbonDioxideStr = " Carbon Dioxide ";
+
+        String nitrogenStr = " Nitrogen ";
+        String oxygenStr = " Oxygen ";
+        String pieStr = " Pie ";
+        String squareRdiusStr = " square radius ";
+
+        String OzoneStr = "  Ozone ";
+        String perStr = " per ";
+        String millibarStr = " millibar equals ";
+        String percentStr = " percent ";
+
+        String radiusStr = "  Radius equals ";
+        String diameterStr = " Diameter equals ";
+        String greaterThenStr = " Greater then ";
+        String lessThenStr = " Less then ";
+
+        String squareRootStr = " square root ";
 
         resultStr = str.replace("+",plusStr);
-        resultStr = resultStr.replace("−",minusStr);
-        resultStr = resultStr.replace("⨯",multiplyStr);
-        resultStr = resultStr.replace("÷",divideStr);
+        resultStr = resultStr.replace("⨯",timesStr);
+        resultStr = resultStr.replace("÷",dividedByStr);
+        resultStr = resultStr.replace("÷",minusStr);
+
+        resultStr = resultStr.replace("=",equalsStr);// , not unicode
+
+        resultStr = resultStr.replace("m³",cubicMetresStr);
+        resultStr = resultStr.replace("m²",squareMetresStr);
+        resultStr = resultStr.replace("ft²",squareFeetStr);
+
+        resultStr = resultStr.replace("ft³",cubicFeetStr);
+        resultStr = resultStr.replace("in²",squareInchesStr);
+        resultStr = resultStr.replace("in³",cubicInchesStr);
+        resultStr = resultStr.replace("cm³",cubicCentimetresStr);
+
+        resultStr = resultStr.replace("cm²",squareCentimetresStr);
+        resultStr = resultStr.replace("mm³",cubicMillimetresStr);
+        resultStr = resultStr.replace("mm²",squareMillimetresStr);
+        resultStr = resultStr.replace("°C",degreesCelsiusStr);
+
+        resultStr = resultStr.replace("°F",degreesFahrenheitStr);
+        resultStr = resultStr.replace("°R",degreesRankinStr);
+        resultStr = resultStr.replace("°K",degresssKelvinStr);
+        resultStr = resultStr.replace("CO₂",carbonDioxideStr);
+
+        resultStr = resultStr.replace("N₂",nitrogenStr);
+        resultStr = resultStr.replace("O₂",oxygenStr);
+        resultStr = resultStr.replace("π",pieStr);
+        resultStr = resultStr.replace("r²",squareRdiusStr);
+
+        resultStr = resultStr.replace("O₃",OzoneStr);
+        resultStr = resultStr.replace("∕",perStr);
+        resultStr = resultStr.replace("/",perStr);//not unicode
+        resultStr = resultStr.replace("mb=",millibarStr);//mb = millibar
+        resultStr = resultStr.replace("mb =",millibarStr);//mb = millibar
+        resultStr = resultStr.replace("%",percentStr); //not unicode
+
+        resultStr = resultStr.replace("r=",radiusStr);
+        resultStr = resultStr.replace("r =",radiusStr);
+        resultStr = resultStr.replace("d=",diameterStr);
+        resultStr = resultStr.replace("d =",diameterStr);
+        resultStr = resultStr.replace(">",greaterThenStr);
+        resultStr = resultStr.replace("<",lessThenStr);
+
+        resultStr = resultStr.replace("√",squareRootStr);
+
 
         return resultStr;
 
