@@ -3749,7 +3749,13 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnKeyboa
         resultStr = str.replace("+",plusStr);
         resultStr = resultStr.replace("⨯",timesStr);
         resultStr = resultStr.replace("÷",dividedByStr);
-        resultStr = resultStr.replace("÷",minusStr);
+        resultStr = resultStr.replace("-",minusStr);
+
+        resultStr = resultStr.replace("cm²",squareCentimetresStr);
+        resultStr = resultStr.replace("cm³",cubicCentimetresStr);
+        resultStr = resultStr.replace("mm²",squareMillimetresStr);
+        resultStr = resultStr.replace("mm³",cubicMillimetresStr);
+
 
         resultStr = resultStr.replace("m³",cubicMetresStr);
         resultStr = resultStr.replace("m²",squareMetresStr);
@@ -3758,11 +3764,7 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnKeyboa
         resultStr = resultStr.replace("ft³",cubicFeetStr);
         resultStr = resultStr.replace("in²",squareInchesStr);
         resultStr = resultStr.replace("in³",cubicInchesStr);
-        resultStr = resultStr.replace("cm³",cubicCentimetresStr);
 
-        resultStr = resultStr.replace("cm²",squareCentimetresStr);
-        resultStr = resultStr.replace("mm³",cubicMillimetresStr);
-        resultStr = resultStr.replace("mm²",squareMillimetresStr);
         resultStr = resultStr.replace("°C",degreesCelsiusStr);
 
         resultStr = resultStr.replace("°F",degreesFahrenheitStr);
@@ -3791,7 +3793,7 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnKeyboa
 
         resultStr = resultStr.replace("√",squareRootStr);
 
-        resultStr = resultStr.replace("=",equalsStr);// , not unicode  //need to put the last
+        resultStr = resultStr.replace(" = ",equalsStr);// , not unicode  //need to put the last
 
 
         return resultStr;
