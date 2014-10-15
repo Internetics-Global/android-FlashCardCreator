@@ -3717,11 +3717,11 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnKeyboa
         String cubicFeetStr = "  Cubic Feet ";
         String squareInchesStr = " Square Inches ";
         String cubicInchesStr = " Cubic Inches ";
-        String cubicCentimetresStr = " Cubic Centimetres ";
+        String cubicCentimetresStr = " Cubic Centi metres ";
 
-        String squareCentimetresStr = " Square Centimetres ";
-        String cubicMillimetresStr = " Cubic Millimetres ";
-        String squareMillimetresStr = " Square millimetres ";
+        String squareCentimetresStr = " Square Centi metres ";
+        String cubicMillimetresStr = " Cubic Milli metres ";
+        String squareMillimetresStr = " Square milli metres ";
         String degreesCelsiusStr = " Degrees Celsius ";
 
         String degreesFahrenheitStr = "  Degrees Fahrenheit ";
@@ -3736,7 +3736,7 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnKeyboa
 
         String OzoneStr = "  Ozone ";
         String perStr = " per ";
-        String millibarStr = " millibar equals";
+        String millibarStr = " milli bar equals";
         String percentStr = " percent ";
 
         String radiusStr = "  Radius equals ";
