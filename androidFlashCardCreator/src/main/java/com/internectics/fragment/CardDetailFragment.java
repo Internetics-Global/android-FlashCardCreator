@@ -47,6 +47,8 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
 
+import it.sephiroth.android.library.tooltip.TooltipManager;
+
 enum IMAGE_SOURCE {
     IMAGE_SOURCE_IS_LOGO,
     IMAGE_SOURCE_IS_IMAGE, //包括IMAGE1和IMAGE2,之间的区分用：mIsImage2Active
@@ -286,6 +288,131 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnKeyboa
             setCardBackgroundMaskGray();
         }
 
+        showTooltips();
+
+
+    }
+
+    public void showTooltips() {
+
+        if ((AppConfig.sharedInstance().isAllowToShowTooltip_PostionB())&& (isEditableMode())) {
+            Handler handler = new Handler();
+            handler.postDelayed(new Runnable() {
+
+                @Override
+                public void run() {
+                    TooltipManager.getInstance(getActivity())
+                            .create(1)
+                            .anchor(mLogoImage, TooltipManager.Gravity.BOTTOM)
+                            .closePolicy(TooltipManager.ClosePolicy.TouchInside, 10000)
+                            .withStyleId(R.style.ToolTipLayoutCustomStyle_orange)
+                            .text("Edit logo image")
+                            .toggleArrow(true)
+                            .maxWidth(500)
+                            .showDelay(200)
+                            .activateDelay(2000)
+                            .withCallback(new TooltipManager.onTooltipClosingCallback() {
+                                @Override
+                                public void onClosing(int i, boolean b) {
+                                    AppConfig.sharedInstance().setAllowToShowTooltip_PostionB(false);
+                                }
+                            })
+                            .show();
+
+                    TooltipManager.getInstance(getActivity())
+                            .create(2)
+                            .anchor(mChangeTemplateImage, TooltipManager.Gravity.TOP)
+                            .closePolicy(TooltipManager.ClosePolicy.TouchInside, 10000)
+                            .withStyleId(R.style.ToolTipLayoutCustomStyle_orange)
+                            .text("Toolbar to change template, background image and record sound")
+                            .toggleArrow(true)
+                            .maxWidth(500)
+                            .showDelay(200)
+                            .activateDelay(2000)
+                            .withCallback(new TooltipManager.onTooltipClosingCallback() {
+                                @Override
+                                public void onClosing(int i, boolean b) {
+                                    AppConfig.sharedInstance().setAllowToShowTooltip_PostionB(false);
+                                }
+                            })
+                            .show();
+
+
+                    TooltipManager.getInstance(getActivity())
+                            .create(3)
+                            .anchor(mRadioGroup, TooltipManager.Gravity.TOP)
+                            .closePolicy(TooltipManager.ClosePolicy.TouchInside, 10000)
+                            .withStyleId(R.style.ToolTipLayoutCustomStyle_orange)
+                            .text("Switch to question/answer part of a card")
+                            .toggleArrow(true)
+                            .maxWidth(500)
+                            .showDelay(200)
+                            .activateDelay(2000)
+                            .withCallback(new TooltipManager.onTooltipClosingCallback() {
+                                @Override
+                                public void onClosing(int i, boolean b) {
+                                    AppConfig.sharedInstance().setAllowToShowTooltip_PostionB(false);
+                                }
+                            })
+                            .show();
+
+                    TooltipManager.getInstance(getActivity())
+                            .create(4)
+                            .anchor(mSubheading, TooltipManager.Gravity.TOP)
+                            .closePolicy(TooltipManager.ClosePolicy.TouchInside, 10000)
+                            .withStyleId(R.style.ToolTipLayoutCustomStyle_orange)
+                            .text("Click anywhere in the card to edit the text")
+                            .toggleArrow(true)
+                            .maxWidth(500)
+                            .showDelay(200)
+                            .activateDelay(2000)
+                            .withCallback(null)
+                            .show();
+
+                    if (mImage.getVisibility() == View.VISIBLE) {
+                        TooltipManager.getInstance(getActivity())
+                                .create(5)
+                                .anchor(mImage, TooltipManager.Gravity.LEFT)
+                                .closePolicy(TooltipManager.ClosePolicy.TouchInside, 10000)
+                                .withStyleId(R.style.ToolTipLayoutCustomStyle_orange)
+                                .text("Click to select an image/video from library, or insert a YouTube video linkage")
+                                .toggleArrow(true)
+                                .maxWidth(500)
+                                .showDelay(200)
+                                .activateDelay(2000)
+                                .withCallback(new TooltipManager.onTooltipClosingCallback() {
+                                    @Override
+                                    public void onClosing(int i, boolean b) {
+                                        AppConfig.sharedInstance().setAllowToShowTooltip_PostionB(false);
+                                    }
+                                })
+                                .show();
+                    }
+
+
+                    Button tooltipPlaceHolderForActionbar = (Button) mContentView.findViewById(R.id.tooltip_placeholder_actionbar);
+                    TooltipManager.getInstance(getActivity())
+                            .create(6)
+                            .anchor(tooltipPlaceHolderForActionbar, TooltipManager.Gravity.BOTTOM)
+                            .closePolicy(TooltipManager.ClosePolicy.TouchInside, 10000)
+                            .withStyleId(R.style.ToolTipLayoutCustomStyle_orange)
+                            .text("Toolbar select/edit/create packs, play, share and change the colour palette of your cards")
+                            .toggleArrow(true)
+                            .maxWidth(500)
+                            .showDelay(200)
+                            .activateDelay(2000)
+                            .withCallback(new TooltipManager.onTooltipClosingCallback() {
+                                @Override
+                                public void onClosing(int i, boolean b) {
+                                    AppConfig.sharedInstance().setAllowToShowTooltip_PostionB(false);
+                                }
+                            })
+                            .show();
+
+                }
+
+            }, 600); // 5000ms delay
+        }
     }
 
 

@@ -7,10 +7,13 @@ import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.res.TypedArray;
 import android.graphics.PixelFormat;
 import android.net.Uri;
 import android.os.AsyncTask;
+import android.os.Build;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
@@ -39,6 +42,8 @@ import com.internectics.util.*;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.HashMap;
+
+import it.sephiroth.android.library.tooltip.TooltipManager;
 
 /**
  * MainActivity is the entry for whole app
@@ -316,8 +321,14 @@ public class MainActivity extends FragmentActivity implements
                 break;
 
             case R.id.actionbar_help:
-                startActivity(new Intent(MainActivity.this, InstructionActivity.class));
-                mIsAllowedToShowPackList = false;
+//                startActivity(new Intent(MainActivity.this, InstructionActivity.class));
+//                mIsAllowedToShowPackList = false;
+                AppConfig.sharedInstance().setAllowToShowTooltip_PostionA(true);
+                AppConfig.sharedInstance().setAllowToShowTooltip_PostionB(true);
+                showTooltips();
+                if (mCardDetailFragment != null) {
+                    mCardDetailFragment.showTooltips();
+                }
                 break;
 
             default:
@@ -421,6 +432,58 @@ public class MainActivity extends FragmentActivity implements
 
         mIsAllowedToShowPackList = true;
 
+        showTooltips();
+
+
+
+    }
+
+    private void showTooltips() {
+
+        if ((AppConfig.sharedInstance().isAllowToShowTooltip_PostionA()) && (mCurrentPack.creatorID.equals(OpenUDID_manager.getOpenUDID()) == true)) {
+            final Button addCardButton = (Button) this.findViewById(R.id.add_card_button);
+
+            Handler handler = new Handler();
+            handler.postDelayed(new Runnable() {
+
+                @Override
+                public void run() {
+                    TooltipManager.getInstance(MainActivity.this)
+                            .create(0)
+                            .anchor(addCardButton, TooltipManager.Gravity.TOP)
+                            .closePolicy(TooltipManager.ClosePolicy.TouchInside, 10000)
+                            .withStyleId(R.style.ToolTipLayoutCustomStyle_orange)
+                            .text("Create a new card")
+                            .toggleArrow(true)
+                            .maxWidth(500)
+                            .showDelay(200)
+                            .activateDelay(2000)
+                            .withCallback(new TooltipManager.onTooltipClosingCallback() {
+                                @Override
+                                public void onClosing(int i, boolean b) {
+                                    AppConfig.sharedInstance().setAllowToShowTooltip_PostionA(false);
+                                }
+                            })
+                            .show();
+                }
+
+            }, 1000);
+        }
+    }
+
+    public static int getActionBarSize(final Context context) {
+
+        final int[] attrs;
+
+        attrs = new int[]{android.R.attr.actionBarSize};
+
+
+        TypedArray values = context.getTheme().obtainStyledAttributes(attrs);
+        try {
+            return values.getDimensionPixelSize(0, 0);
+        } finally {
+            values.recycle();
+        }
     }
 
     public void showPackListView() {
@@ -1189,5 +1252,6 @@ public class MainActivity extends FragmentActivity implements
         }
 
     }
+
 
 }

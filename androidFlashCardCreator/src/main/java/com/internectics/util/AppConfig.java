@@ -162,5 +162,39 @@ public class AppConfig {
 
     }
 
+    public boolean isAllowToShowTooltip_PostionA() {
+        String str = appConfig.get(Global.isAllowToShowTooltip_PostiionA);
+        if ((str == null) || (str.equals("true")))
+            return true;
+        else
+            return false;
+    }
+
+    public void setAllowToShowTooltip_PostionA(boolean b) {
+        if (b) {
+            appConfig.set(Global.isAllowToShowTooltip_PostiionA, "true");
+        } else {
+            appConfig.set(Global.isAllowToShowTooltip_PostiionA, "false");
+        }
+
+    }
+
+    public boolean isAllowToShowTooltip_PostionB() {
+        String str = appConfig.get(Global.isAllowToShowTooltip_PostiionB);
+        if ((str == null) || (str.equals("true")))
+            return true;
+        else
+            return false;
+    }
+
+    public void setAllowToShowTooltip_PostionB(boolean b) {
+        if (b) {
+            appConfig.set(Global.isAllowToShowTooltip_PostiionB, "true");
+        } else {
+            appConfig.set(Global.isAllowToShowTooltip_PostiionB, "false");
+        }
+
+    }
+
 
 }

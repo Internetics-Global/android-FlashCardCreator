@@ -43,6 +43,33 @@
         <item name="android:shadowDx">1</item>
         <item name="android:shadowDy">1</item>
         <item name="android:shadowRadius">2</item>
+
+
+    </style>
+
+
+    <style name="ToolTipLayoutCustomStyle_orange">
+        <item name="ttlm_padding">15dip</item>
+        <item name="ttlm_strokeColor">#FF8000</item>
+        <item name="ttlm_backgroundColor">#FF8000</item>
+        <item name="ttlm_strokeWeight">0dip</item>
+        <item name="ttlm_cornerRadius">3dip</item>
+    </style>
+
+    <style name="ToolTipLayoutCustomStyle_purple">
+        <item name="ttlm_padding">15dip</item>
+        <item name="ttlm_strokeColor">#EE82EE</item>
+        <item name="ttlm_backgroundColor">#EE82EE</item>
+        <item name="ttlm_strokeWeight">0dip</item>
+        <item name="ttlm_cornerRadius">3dip</item>
+    </style>
+
+    <style name="ToolTipLayoutCustomStyle_yellow">
+        <item name="ttlm_padding">15dip</item>
+        <item name="ttlm_strokeColor">#FFFF00</item>
+        <item name="ttlm_backgroundColor">#FFFF00</item>
+        <item name="ttlm_strokeWeight">0dip</item>
+        <item name="ttlm_cornerRadius">3dip</item>
     </style>
 
 </resources>
