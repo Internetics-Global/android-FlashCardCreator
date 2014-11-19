@@ -295,7 +295,7 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnKeyboa
 
     public void showTooltips() {
 
-        if ((AppConfig.sharedInstance().isAllowToShowTooltip_PostionB())&& (isEditableMode())) {
+        if ((AppConfig.sharedInstance().isAllowToShowTooltip_PostionB())) {
             Handler handler = new Handler();
             handler.postDelayed(new Runnable() {
 

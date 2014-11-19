@@ -438,9 +438,9 @@ public class MainActivity extends FragmentActivity implements
 
     }
 
-    private void showTooltips() {
+    public void showTooltips() {
 
-        if ((AppConfig.sharedInstance().isAllowToShowTooltip_PostionA()) && (mCurrentPack.creatorID.equals(OpenUDID_manager.getOpenUDID()) == true)) {
+        if ((AppConfig.sharedInstance().isAllowToShowTooltip_PostionA())) {
             final Button addCardButton = (Button) this.findViewById(R.id.add_card_button);
 
             Handler handler = new Handler();
