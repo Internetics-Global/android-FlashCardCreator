@@ -138,7 +138,6 @@ public class PackListFragment extends Fragment {
                     selectPack.save(AppContext.getAppContext());
 
                     ((MainActivity) getActivity()).mPopupWindow.dismiss();
-                    ((MainActivity) getActivity()).showTooltips();
                 }
 
             }

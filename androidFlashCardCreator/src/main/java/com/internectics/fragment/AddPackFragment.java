@@ -193,7 +193,10 @@ public class AddPackFragment extends DialogFragment implements TextView.OnEditor
                         intent.putExtra(Global.KEY_FROM, Global.BROADCAST_EXTRA_FROM_NEW_PACK);
                         if (activity != null) {
                             activity.sendBroadcast(intent);
-                            ((MainActivity)activity).showTooltips();
+                            if (AppConfig.sharedInstance().isAllowToShowTooltip()) {
+                                ((MainActivity)activity).showTooltips();
+                            }
+
                         }
 
                     }

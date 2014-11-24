@@ -162,39 +162,23 @@ public class AppConfig {
 
     }
 
-    public boolean isAllowToShowTooltip_PostionA() {
-        String str = appConfig.get(Global.isAllowToShowTooltip_PostiionA);
+    public boolean isAllowToShowTooltip() {
+        String str = appConfig.get(Global.isAllowToShowTooltip);
         if ((str == null) || (str.equals("true")))
             return true;
         else
             return false;
     }
 
-    public void setAllowToShowTooltip_PostionA(boolean b) {
+    public void setAllowToShowTooltip(boolean b) {
         if (b) {
-            appConfig.set(Global.isAllowToShowTooltip_PostiionA, "true");
+            appConfig.set(Global.isAllowToShowTooltip, "true");
         } else {
-            appConfig.set(Global.isAllowToShowTooltip_PostiionA, "false");
+            appConfig.set(Global.isAllowToShowTooltip, "false");
         }
 
     }
 
-    public boolean isAllowToShowTooltip_PostionB() {
-        String str = appConfig.get(Global.isAllowToShowTooltip_PostiionB);
-        if ((str == null) || (str.equals("true")))
-            return true;
-        else
-            return false;
-    }
-
-    public void setAllowToShowTooltip_PostionB(boolean b) {
-        if (b) {
-            appConfig.set(Global.isAllowToShowTooltip_PostiionB, "true");
-        } else {
-            appConfig.set(Global.isAllowToShowTooltip_PostiionB, "false");
-        }
-
-    }
 
 
 }

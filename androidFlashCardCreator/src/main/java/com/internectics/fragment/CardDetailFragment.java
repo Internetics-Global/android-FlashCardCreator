@@ -38,6 +38,7 @@ import com.internectics.helper.FileOperationHelper;
 import com.internectics.helper.PackRecordHelper;
 import com.internectics.helper.SymbolHelper;
 import com.internectics.util.*;
+import com.nhaarman.supertooltips.ToolTipRelativeLayout;
 import com.soundcloud.android.crop.Crop;
 
 import net.londatiga.android.ActionItem;
@@ -288,131 +289,39 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnKeyboa
             setCardBackgroundMaskGray();
         }
 
-        showTooltips();
+        if (AppConfig.sharedInstance().isAllowToShowTooltip()) {
+            showTooltips();
+        }
 
 
     }
 
     public void showTooltips() {
 
-        if ((AppConfig.sharedInstance().isAllowToShowTooltip_PostionB())) {
-            Handler handler = new Handler();
-            handler.postDelayed(new Runnable() {
+        Handler handler = new Handler();
+        handler.postDelayed(new Runnable() {
 
-                @Override
-                public void run() {
-                    TooltipManager.getInstance(getActivity())
-                            .create(1)
-                            .anchor(mLogoImage, TooltipManager.Gravity.BOTTOM)
-                            .closePolicy(TooltipManager.ClosePolicy.TouchInside, 10000)
-                            .withStyleId(R.style.ToolTipLayoutCustomStyle_yellow)
-                            .text("Edit logo image")
-                            .toggleArrow(true)
-                            .maxWidth(500)
-                            .showDelay(200)
-                            .activateDelay(2000)
-                            .withCallback(new TooltipManager.onTooltipClosingCallback() {
-                                @Override
-                                public void onClosing(int i, boolean b) {
-                                    AppConfig.sharedInstance().setAllowToShowTooltip_PostionB(false);
-                                }
-                            })
-                            .show();
+            @Override
+            public void run() {
 
-                    TooltipManager.getInstance(getActivity())
-                            .create(2)
-                            .anchor(mChangeTemplateImage, TooltipManager.Gravity.TOP)
-                            .closePolicy(TooltipManager.ClosePolicy.TouchInside, 10000)
-                            .withStyleId(R.style.ToolTipLayoutCustomStyle_orange)
-                            .text("Toolbar to change template, background image and record sound")
-                            .toggleArrow(true)
-                            .maxWidth(500)
-                            .showDelay(200)
-                            .activateDelay(2000)
-                            .withCallback(new TooltipManager.onTooltipClosingCallback() {
-                                @Override
-                                public void onClosing(int i, boolean b) {
-                                    AppConfig.sharedInstance().setAllowToShowTooltip_PostionB(false);
-                                }
-                            })
-                            .show();
-
-
-                    TooltipManager.getInstance(getActivity())
-                            .create(3)
-                            .anchor(mRadioGroup, TooltipManager.Gravity.TOP)
-                            .closePolicy(TooltipManager.ClosePolicy.TouchInside, 10000)
-                            .withStyleId(R.style.ToolTipLayoutCustomStyle_purple)
-                            .text("Switch to question/answer part of a card")
-                            .toggleArrow(true)
-                            .maxWidth(500)
-                            .showDelay(200)
-                            .activateDelay(2000)
-                            .withCallback(new TooltipManager.onTooltipClosingCallback() {
-                                @Override
-                                public void onClosing(int i, boolean b) {
-                                    AppConfig.sharedInstance().setAllowToShowTooltip_PostionB(false);
-                                }
-                            })
-                            .show();
-
-                    TooltipManager.getInstance(getActivity())
-                            .create(4)
-                            .anchor(mMain, TooltipManager.Gravity.TOP)
-                            .closePolicy(TooltipManager.ClosePolicy.TouchInside, 10000)
-                            .withStyleId(R.style.ToolTipLayoutCustomStyle_purple)
-                            .text("Click anywhere in the card to edit the text")
-                            .toggleArrow(true)
-                            .maxWidth(500)
-                            .showDelay(200)
-                            .activateDelay(2000)
-                            .withCallback(null)
-                            .show();
-
-                    if (mImage.getVisibility() == View.VISIBLE) {
-                        TooltipManager.getInstance(getActivity())
-                                .create(5)
-                                .anchor(mImage, TooltipManager.Gravity.LEFT)
-                                .closePolicy(TooltipManager.ClosePolicy.TouchInside, 10000)
-                                .withStyleId(R.style.ToolTipLayoutCustomStyle_purple)
-                                .text("Click to select an image/video from library, or insert a YouTube video linkage")
-                                .toggleArrow(true)
-                                .maxWidth(500)
-                                .showDelay(200)
-                                .activateDelay(2000)
-                                .withCallback(new TooltipManager.onTooltipClosingCallback() {
-                                    @Override
-                                    public void onClosing(int i, boolean b) {
-                                        AppConfig.sharedInstance().setAllowToShowTooltip_PostionB(false);
-                                    }
-                                })
-                                .show();
-                    }
-
-
-                    Button tooltipPlaceHolderForActionbar = (Button) mContentView.findViewById(R.id.tooltip_placeholder_actionbar);
-                    TooltipManager.getInstance(getActivity())
-                            .create(6)
-                            .anchor(tooltipPlaceHolderForActionbar, TooltipManager.Gravity.BOTTOM)
-                            .closePolicy(TooltipManager.ClosePolicy.TouchInside, 10000)
-                            .withStyleId(R.style.ToolTipLayoutCustomStyle_orange)
-                            .text("Toolbar to select/edit/create packs, play, share and change the colour palette of your cards")
-                            .toggleArrow(true)
-                            .maxWidth(500)
-                            .showDelay(200)
-                            .activateDelay(2000)
-                            .withCallback(new TooltipManager.onTooltipClosingCallback() {
-                                @Override
-                                public void onClosing(int i, boolean b) {
-                                    AppConfig.sharedInstance().setAllowToShowTooltip_PostionB(false);
-                                }
-                            })
-                            .show();
-
+                TipHelper.showTipForLogo(getActivity(),mLogoImage);
+                TipHelper.showTipForRecordSound(getActivity(),mPlayRecordImage);
+                TipHelper.showTipForChangeBackground(getActivity(),mChangeBackgroundImage);
+                if (mImage.getVisibility() == View.VISIBLE) {
+                    TipHelper.showTipForImage(getActivity(),mImage);
                 }
+                TipHelper.showTipForSegmentQuestion(getActivity(),mQuestionRadioButton);
+                ToolTipRelativeLayout toolTipRelativeLayout = (ToolTipRelativeLayout) getActivity().findViewById(R.id.activity_main_tooltipRelativeLayout_detail);
 
-            }, 600); // 5000ms delay
-        }
+                Button fakeSegmentAnswer = (Button) getActivity().findViewById(R.id.tooltip_fake_segment_answer);
+                TipHelper.showTipForSegmentAnswer(getActivity(),toolTipRelativeLayout,fakeSegmentAnswer);
+
+                Button fakeChangeTemplate = (Button) getActivity().findViewById(R.id.tooltip_fake_change_template);
+                TipHelper.showTipForChangeTemplate(getActivity(),toolTipRelativeLayout,fakeChangeTemplate);
+
+            }
+
+        }, 300); // 300ms delay
     }
 
 

@@ -58,8 +58,7 @@ public class Global {
     public static final String URL_REDIRECT_API = "http://tinyurl.com/api-create.php?url=";
 
     //tooltip related
-    public static final String isAllowToShowTooltip_PostiionA = "is_Allow_To_Show_Tooltip_PostiionA";
-    public static final String isAllowToShowTooltip_PostiionB = "is_Allow_To_Show_Tooltip_PostiionB";
+    public static final String isAllowToShowTooltip = "isAllowToShowTooltip";
 
     //Amazon SimpleDB
     public static final String amazon_sdb_accessKey = "AKIAJTO4QTQX2BPPFNAQ";

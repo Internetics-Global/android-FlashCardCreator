@@ -52,6 +52,7 @@ dependencies {
     compile project(':Viewflow')
     compile project(':NewQuickAction3D')
     compile(name:'android-crop-0.9.10', ext:'aar')
+    compile(name:'com.nhaarman.supertooltips_ccaa_22112014', ext:'aar')
 
     compile('it.sephiroth.android.library.targettooltip:target-tooltip-library:1.2.2@aar'){
         transitive=true

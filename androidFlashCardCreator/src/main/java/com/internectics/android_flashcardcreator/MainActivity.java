@@ -39,6 +39,8 @@ import com.internectics.fragment.SymbolBoxFragment;
 import com.internectics.helper.*;
 import com.internectics.helper.AmazonSDB.SimpleDBHelper;
 import com.internectics.util.*;
+import com.nhaarman.supertooltips.ToolTipRelativeLayout;
+
 import java.io.File;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -321,14 +323,20 @@ public class MainActivity extends FragmentActivity implements
                 break;
 
             case R.id.actionbar_help:
-//                startActivity(new Intent(MainActivity.this, InstructionActivity.class));
-//                mIsAllowedToShowPackList = false;
-                AppConfig.sharedInstance().setAllowToShowTooltip_PostionA(true);
-                AppConfig.sharedInstance().setAllowToShowTooltip_PostionB(true);
-                showTooltips();
-                if (mCardDetailFragment != null) {
-                    mCardDetailFragment.showTooltips();
+
+                boolean isAllowToShowTooltip = AppConfig.sharedInstance().isAllowToShowTooltip();
+                if (isAllowToShowTooltip == false) {
+                    AppConfig.sharedInstance().setAllowToShowTooltip(true);
+                    showTooltips();
+                    if (mCardDetailFragment != null) {
+                        mCardDetailFragment.showTooltips();
+                    }
+                } else {
+                    AppConfig.sharedInstance().setAllowToShowTooltip(false);
+                    TipHelper.hideEverthing(MainActivity.this);
                 }
+
+
                 break;
 
             default:
@@ -432,43 +440,43 @@ public class MainActivity extends FragmentActivity implements
 
         mIsAllowedToShowPackList = true;
 
-        showTooltips();
-
 
 
     }
 
     public void showTooltips() {
 
-        if ((AppConfig.sharedInstance().isAllowToShowTooltip_PostionA())) {
-            final Button addCardButton = (Button) this.findViewById(R.id.add_card_button);
+        final Button addCardButton = (Button) this.findViewById(R.id.add_card_button);
+        final Button shareButton = (Button) this.findViewById(R.id.tooltip_fake_actionbar_share);
+        final Button settingButton = (Button) this.findViewById(R.id.tooltip_fake_actionbar_setting);
+        final Button helpButton = (Button) this.findViewById(R.id.tooltip_fake_actionbar_help);
+        final Button paletteButton = (Button) this.findViewById(R.id.tooltip_fake_actionbar_palette);
+        final Button playButton = (Button) this.findViewById(R.id.tooltip_fake_actionbar_play);
+        final Button createPackButton = (Button) this.findViewById(R.id.tooltip_fake_actionbar_create_pack);
+        final Button editPackButton = (Button) this.findViewById(R.id.tooltip_fake_actionbar_edit_pack);
+        final Button openPackButton = (Button) this.findViewById(R.id.tooltip_fake_actionbar_open_pack);
 
-            Handler handler = new Handler();
-            handler.postDelayed(new Runnable() {
+        Handler handler = new Handler();
+        handler.postDelayed(new Runnable() {
 
-                @Override
-                public void run() {
-                    TooltipManager.getInstance(MainActivity.this)
-                            .create(0)
-                            .anchor(addCardButton, TooltipManager.Gravity.TOP)
-                            .closePolicy(TooltipManager.ClosePolicy.TouchInside, 10000)
-                            .withStyleId(R.style.ToolTipLayoutCustomStyle_orange)
-                            .text("Create a new card")
-                            .toggleArrow(true)
-                            .maxWidth(500)
-                            .showDelay(200)
-                            .activateDelay(2000)
-                            .withCallback(new TooltipManager.onTooltipClosingCallback() {
-                                @Override
-                                public void onClosing(int i, boolean b) {
-                                    AppConfig.sharedInstance().setAllowToShowTooltip_PostionA(false);
-                                }
-                            })
-                            .show();
-                }
+            @Override
+            public void run() {
+                TipHelper.showTipForCreateCard(MainActivity.this,addCardButton);
 
-            }, 1000);
-        }
+                ToolTipRelativeLayout toolTipRelativeLayout = (ToolTipRelativeLayout) findViewById(R.id.activity_main_tooltipRelativeLayout);
+
+                TipHelper.showTipForOpenPack(MainActivity.this,toolTipRelativeLayout,openPackButton);
+                TipHelper.showTipForEditPack(MainActivity.this,toolTipRelativeLayout,editPackButton);
+                TipHelper.showTipForActionBarCreateNewPack(MainActivity.this,toolTipRelativeLayout,createPackButton);
+                TipHelper.showTipForActionBarPlay(MainActivity.this,toolTipRelativeLayout,playButton);
+                TipHelper.showTipForActionBarPalette(MainActivity.this,toolTipRelativeLayout,paletteButton);
+                TipHelper.showTipForActionBarHelp(MainActivity.this,toolTipRelativeLayout,helpButton);
+                TipHelper.showTipForActionBarSetting(MainActivity.this,toolTipRelativeLayout,settingButton);
+                TipHelper.showTipForActionBarShare(MainActivity.this,toolTipRelativeLayout,shareButton);
+
+            }
+
+        }, 200);
     }
 
     public static int getActionBarSize(final Context context) {
@@ -501,6 +509,10 @@ public class MainActivity extends FragmentActivity implements
                     FragmentManager fragmentManager = getSupportFragmentManager();
                     Fragment fm = fragmentManager.findFragmentByTag("tag_pack_list_fragment");
                     fragmentManager.beginTransaction().remove(fm).commit();
+
+                    if (AppConfig.sharedInstance().isAllowToShowTooltip()) {
+                        showTooltips();
+                    }
                 }
             });
 
