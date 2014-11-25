@@ -31,7 +31,6 @@ import com.dropbox.client2.session.TokenPair;
 import com.google.analytics.tracking.android.EasyTracker;
 import com.internectics.data.Card;
 import com.internectics.data.Pack;
-import com.internectics.data.User;
 import com.internectics.fragment.AddPackFragment;
 import com.internectics.fragment.CardDetailFragment;
 import com.internectics.fragment.CardListFragment;
@@ -39,13 +38,10 @@ import com.internectics.fragment.SymbolBoxFragment;
 import com.internectics.helper.*;
 import com.internectics.helper.AmazonSDB.SimpleDBHelper;
 import com.internectics.util.*;
-import com.nhaarman.supertooltips.ToolTipRelativeLayout;
 
 import java.io.File;
 import java.util.ArrayList;
 import java.util.HashMap;
-
-import it.sephiroth.android.library.tooltip.TooltipManager;
 
 /**
  * MainActivity is the entry for whole app
@@ -464,16 +460,14 @@ public class MainActivity extends FragmentActivity implements
             public void run() {
                 TipHelper.showTipForCreateCard(MainActivity.this,addCardButton);
 
-                ToolTipRelativeLayout toolTipRelativeLayout = (ToolTipRelativeLayout) findViewById(R.id.activity_main_tooltipRelativeLayout);
-
-                TipHelper.showTipForOpenPack(MainActivity.this,toolTipRelativeLayout,openPackButton);
-                TipHelper.showTipForEditPack(MainActivity.this,toolTipRelativeLayout,editPackButton);
-                TipHelper.showTipForActionBarCreateNewPack(MainActivity.this,toolTipRelativeLayout,createPackButton);
-                TipHelper.showTipForActionBarPlay(MainActivity.this,toolTipRelativeLayout,playButton);
-                TipHelper.showTipForActionBarPalette(MainActivity.this,toolTipRelativeLayout,paletteButton);
-                TipHelper.showTipForActionBarHelp(MainActivity.this,toolTipRelativeLayout,helpButton);
-                TipHelper.showTipForActionBarSetting(MainActivity.this,toolTipRelativeLayout,settingButton);
-                TipHelper.showTipForActionBarShare(MainActivity.this,toolTipRelativeLayout,shareButton);
+                TipHelper.showTipForOpenPack(MainActivity.this,openPackButton);
+                TipHelper.showTipForEditPack(MainActivity.this,editPackButton);
+                TipHelper.showTipForActionBarCreateNewPack(MainActivity.this,createPackButton);
+                TipHelper.showTipForActionBarPlay(MainActivity.this,playButton);
+                TipHelper.showTipForActionBarPalette(MainActivity.this,paletteButton);
+                TipHelper.showTipForActionBarHelp(MainActivity.this,helpButton);
+                TipHelper.showTipForActionBarSetting(MainActivity.this,settingButton);
+                TipHelper.showTipForActionBarShare(MainActivity.this,shareButton);
 
             }
 

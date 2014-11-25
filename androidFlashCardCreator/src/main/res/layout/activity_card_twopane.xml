@@ -148,7 +148,7 @@
                    android:layout_toLeftOf="@id/tooltip_fake_actionbar_setting"  />
 
                <Button
-                   android:layout_width="52dp"
+                   android:layout_width="55dp"
                    android:layout_height="wrap_content"
                    android:text="Palette"
                    android:background="@android:color/transparent"
@@ -159,7 +159,7 @@
                    android:layout_toLeftOf="@id/tooltip_fake_actionbar_help"  />
 
                <Button
-                   android:layout_width="52dp"
+                   android:layout_width="55dp"
                    android:layout_height="wrap_content"
                    android:text="Play"
                    android:background="@android:color/transparent"
@@ -170,7 +170,7 @@
                    android:layout_toLeftOf="@id/tooltip_fake_actionbar_palette"  />
 
                <Button
-                   android:layout_width="52dp"
+                   android:layout_width="55dp"
                    android:layout_height="wrap_content"
                    android:text="Create Pack"
                    android:background="@android:color/transparent"
@@ -181,7 +181,7 @@
                    android:layout_toLeftOf="@id/tooltip_fake_actionbar_play"  />
 
                <Button
-                   android:layout_width="52dp"
+                   android:layout_width="55dp"
                    android:layout_height="wrap_content"
                    android:text="Edit Pack"
                    android:background="@android:color/transparent"
@@ -192,7 +192,7 @@
                    android:layout_toLeftOf="@id/tooltip_fake_actionbar_create_pack"  />
 
                <Button
-                   android:layout_width="52dp"
+                   android:layout_width="55dp"
                    android:layout_height="wrap_content"
                    android:text="Open Pack"
                    android:background="@android:color/transparent"
@@ -221,67 +221,9 @@
 
             </FrameLayout>
 
-            <RelativeLayout
-                android:layout_width="fill_parent"
-                android:background="@android:color/transparent"
-                android:layout_gravity="bottom"
-                android:visibility="visible"
-                android:layout_height="150dp">
-
-                <Button
-                    android:layout_width="150dp"
-                    android:layout_height="wrap_content"
-                    android:text="Question"
-                    android:gravity="bottom"
-                    android:background="@android:color/transparent"
-                    android:layout_marginRight="10dp"
-                    android:visibility="invisible"
-                    android:textColor="@android:color/white"
-                    android:id="@+id/tooltip_fake_segment_question"
-                    android:layout_centerVertical="true"
-                    android:layout_alignParentLeft="true" />
-
-                <Button
-                    android:layout_width="150dp"
-                    android:layout_height="wrap_content"
-                    android:text="Answer"
-                    android:visibility="invisible"
-                    android:background="@android:color/transparent"
-                    android:layout_marginRight="10dp"
-                    android:textColor="@android:color/white"
-                    android:id="@+id/tooltip_fake_segment_answer"
-                    android:layout_centerVertical="true"
-                    android:layout_toRightOf="@id/tooltip_fake_segment_question" />
-
-                <Button
-                    android:layout_width="40dp"
-                    android:layout_marginEnd="40dp"
-                    android:layout_height="wrap_content"
-                    android:text="Answer"
-                    android:visibility="invisible"
-                    android:background="@android:color/transparent"
-                    android:layout_marginRight="10dp"
-                    android:textColor="@android:color/white"
-                    android:id="@+id/tooltip_fake_change_template"
-                    android:layout_centerVertical="true"
-                    android:layout_alignParentRight="true" />
-
-
-                <com.nhaarman.supertooltips.ToolTipRelativeLayout
-                    android:id="@+id/activity_main_tooltipRelativeLayout_detail"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent" />
-
-            </RelativeLayout>
-
         </FrameLayout>
 
     </LinearLayout>
-
-    <com.nhaarman.supertooltips.ToolTipRelativeLayout
-        android:id="@+id/activity_main_tooltipRelativeLayout"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent" />
 
     <fragment
             android:id="@+id/fragment_symbol_box"

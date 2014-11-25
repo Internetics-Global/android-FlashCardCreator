@@ -38,7 +38,6 @@ import com.internectics.helper.FileOperationHelper;
 import com.internectics.helper.PackRecordHelper;
 import com.internectics.helper.SymbolHelper;
 import com.internectics.util.*;
-import com.nhaarman.supertooltips.ToolTipRelativeLayout;
 import com.soundcloud.android.crop.Crop;
 
 import net.londatiga.android.ActionItem;
@@ -47,8 +46,6 @@ import net.londatiga.android.QuickAction;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
-
-import it.sephiroth.android.library.tooltip.TooltipManager;
 
 enum IMAGE_SOURCE {
     IMAGE_SOURCE_IS_LOGO,
@@ -305,19 +302,17 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnKeyboa
             public void run() {
 
                 TipHelper.showTipForLogo(getActivity(),mLogoImage);
+
+                TipHelper.showTipForChangeTemplate(getActivity(),mChangeTemplateImage);
                 TipHelper.showTipForRecordSound(getActivity(),mPlayRecordImage);
                 TipHelper.showTipForChangeBackground(getActivity(),mChangeBackgroundImage);
+
                 if (mImage.getVisibility() == View.VISIBLE) {
                     TipHelper.showTipForImage(getActivity(),mImage);
                 }
+
                 TipHelper.showTipForSegmentQuestion(getActivity(),mQuestionRadioButton);
-                ToolTipRelativeLayout toolTipRelativeLayout = (ToolTipRelativeLayout) getActivity().findViewById(R.id.activity_main_tooltipRelativeLayout_detail);
-
-                Button fakeSegmentAnswer = (Button) getActivity().findViewById(R.id.tooltip_fake_segment_answer);
-                TipHelper.showTipForSegmentAnswer(getActivity(),toolTipRelativeLayout,fakeSegmentAnswer);
-
-                Button fakeChangeTemplate = (Button) getActivity().findViewById(R.id.tooltip_fake_change_template);
-                TipHelper.showTipForChangeTemplate(getActivity(),toolTipRelativeLayout,fakeChangeTemplate);
+                TipHelper.showTipForSegmentAnswer(getActivity(),mAnswerRadioButton);
 
             }
 

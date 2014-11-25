@@ -50,26 +50,74 @@
 
     <style name="ToolTipLayoutCustomStyle_orange">
         <item name="ttlm_padding">15dip</item>
-        <item name="ttlm_strokeColor">#FF8000</item>
-        <item name="ttlm_backgroundColor">#FF8000</item>
+        <item name="ttlm_strokeColor">#fff46916</item>
+        <item name="ttlm_backgroundColor">#fff46916</item>
         <item name="ttlm_strokeWeight">0dip</item>
-        <item name="ttlm_cornerRadius">3dip</item>
+        <item name="ttlm_cornerRadius">2dip</item>
+    </style>
+
+    <style name="ToolTipLayoutCustomStyle_orange_light">
+        <item name="ttlm_padding">15dip</item>
+        <item name="ttlm_strokeColor">#ffe3911e</item>
+        <item name="ttlm_backgroundColor">#ffe3911e</item>
+        <item name="ttlm_strokeWeight">0dip</item>
+        <item name="ttlm_cornerRadius">2dip</item>
     </style>
 
     <style name="ToolTipLayoutCustomStyle_purple">
         <item name="ttlm_padding">15dip</item>
-        <item name="ttlm_strokeColor">#EE82EE</item>
-        <item name="ttlm_backgroundColor">#EE82EE</item>
+        <item name="ttlm_strokeColor">#ff69006c</item>
+        <item name="ttlm_backgroundColor">#ff69006c</item>
         <item name="ttlm_strokeWeight">0dip</item>
-        <item name="ttlm_cornerRadius">3dip</item>
+        <item name="ttlm_cornerRadius">2dip</item>
     </style>
 
-    <style name="ToolTipLayoutCustomStyle_yellow">
+    <style name="ToolTipLayoutCustomStyle_pink">
         <item name="ttlm_padding">15dip</item>
-        <item name="ttlm_strokeColor">#FFFF00</item>
-        <item name="ttlm_backgroundColor">#FFFF00</item>
+        <item name="ttlm_strokeColor">#fff371cf</item>
+        <item name="ttlm_backgroundColor">#fff371cf</item>
         <item name="ttlm_strokeWeight">0dip</item>
-        <item name="ttlm_cornerRadius">3dip</item>
+        <item name="ttlm_cornerRadius">2dip</item>
+    </style>
+
+    <style name="ToolTipLayoutCustomStyle_blue">
+        <item name="ttlm_padding">15dip</item>
+        <item name="ttlm_strokeColor">#ff3e77d1</item>
+        <item name="ttlm_backgroundColor">#ff3d77d1</item>
+        <item name="ttlm_strokeWeight">0dip</item>
+        <item name="ttlm_cornerRadius">2dip</item>
+    </style>
+
+    <style name="ToolTipLayoutCustomStyle_cyan">
+        <item name="ttlm_padding">15dip</item>
+        <item name="ttlm_strokeColor">#ff3d77d1</item>
+        <item name="ttlm_backgroundColor">#ff3d77d1</item>
+        <item name="ttlm_strokeWeight">0dip</item>
+        <item name="ttlm_cornerRadius">2dip</item>
+    </style>
+
+    <style name="ToolTipLayoutCustomStyle_green">
+        <item name="ttlm_padding">15dip</item>
+        <item name="ttlm_strokeColor">#ff086f1e</item>
+        <item name="ttlm_backgroundColor">#ff086f1e</item>
+        <item name="ttlm_strokeWeight">0dip</item>
+        <item name="ttlm_cornerRadius">2dip</item>
+    </style>
+
+    <style name="ToolTipLayoutCustomStyle_cyan_light">
+        <item name="ttlm_padding">15dip</item>
+        <item name="ttlm_strokeColor">#ff9ea215</item>
+        <item name="ttlm_backgroundColor">#ff9ea215</item>
+        <item name="ttlm_strokeWeight">0dip</item>
+        <item name="ttlm_cornerRadius">2dip</item>
+    </style>
+
+    <style name="ToolTipLayoutCustomStyle_cyan_dark">
+        <item name="ttlm_padding">15dip</item>
+        <item name="ttlm_strokeColor">#ff696b1c</item>
+        <item name="ttlm_backgroundColor">#ff696b1c</item>
+        <item name="ttlm_strokeWeight">0dip</item>
+        <item name="ttlm_cornerRadius">2dip</item>
     </style>
 
 </resources>

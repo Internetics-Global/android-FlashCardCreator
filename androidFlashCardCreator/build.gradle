@@ -23,7 +23,7 @@ android {
 
     defaultConfig {
         applicationId "com.internectics.android_flashcardcreator"
-        minSdkVersion 14
+        minSdkVersion 15
         targetSdkVersion 20
         versionCode 1
         versionName '1.0'
@@ -52,11 +52,9 @@ dependencies {
     compile project(':Viewflow')
     compile project(':NewQuickAction3D')
     compile(name:'android-crop-0.9.10', ext:'aar')
-    compile(name:'com.nhaarman.supertooltips_ccaa_22112014', ext:'aar')
+    compile(name:'android_target_tooltip_ccaa_22112014', ext:'aar')
 
-    compile('it.sephiroth.android.library.targettooltip:target-tooltip-library:1.2.2@aar'){
-        transitive=true
-    }
+    compile 'com.nineoldandroids:library:+'
 
 
 }
