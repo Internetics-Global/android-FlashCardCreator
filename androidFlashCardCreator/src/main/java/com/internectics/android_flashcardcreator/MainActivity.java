@@ -116,6 +116,7 @@ public class MainActivity extends FragmentActivity implements
             public void onClick(View view) {
                 Log.d(Global.debugTag, "add card button  is clicked");
                 startCreateCard();
+                TipHelper.hideEverthing(MainActivity.this);
 
             }
         });
@@ -757,6 +758,9 @@ public class MainActivity extends FragmentActivity implements
         if ( imm.isActive( ) ) {
             imm.hideSoftInputFromWindow(mMasterMaskButton.getApplicationWindowToken() , 0 );
         }
+
+        mCardDetailFragment = null;
+        TipHelper.hideEverthing(MainActivity.this);
 
     }
 

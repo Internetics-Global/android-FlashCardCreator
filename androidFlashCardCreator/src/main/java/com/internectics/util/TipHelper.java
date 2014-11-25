@@ -23,6 +23,11 @@ public class TipHelper {
     private static final int TOOLTIP_TYPE_A_NUMBER = 6;
 
     public static void showTipForLogo(final Activity activity, View anchorView) {
+
+        if ((activity == null) || (anchorView == null)) {
+            return;
+        }
+
         TooltipManager.getInstance(activity)
                 .create(1)
                 .anchor(anchorView, TooltipManager.Gravity.BOTTOM)
@@ -45,6 +50,10 @@ public class TipHelper {
 
 
     public static void showTipForImage(final Activity activity, View anchorView) {
+
+        if ((activity == null) || (anchorView == null)) {
+            return;
+        }
 
         TooltipManager.getInstance(activity)
                 .create(4)
@@ -70,6 +79,10 @@ public class TipHelper {
 
     public static void showTipForSegmentQuestion(final Activity activity, View anchorView) {
 
+        if ((activity == null) || (anchorView == null)) {
+            return;
+        }
+
         TooltipManager.getInstance(activity)
                 .create(5)
                 .anchor(anchorView, TooltipManager.Gravity.TOP)
@@ -92,6 +105,10 @@ public class TipHelper {
     }
 
     public static void showTipForChangeBackground(final Activity activity, View anchorView) {
+
+        if ((activity == null) || (anchorView == null)) {
+            return;
+        }
 
         TooltipManager.getInstance(activity)
                 .create(3)
@@ -116,6 +133,10 @@ public class TipHelper {
 
     public static void showTipForRecordSound(final Activity activity, View anchorView) {
 
+        if ((activity == null) || (anchorView == null)) {
+            return;
+        }
+
         TooltipManager.getInstance(activity)
                 .create(2)
                 .anchor(anchorView, TooltipManager.Gravity.TOP)
@@ -139,6 +160,10 @@ public class TipHelper {
     }
 
     public static void showTipForCreateCard(final Activity activity, View anchorView) {
+
+        if ((activity == null) || (anchorView == null)) {
+            return;
+        }
 
         TooltipManager.getInstance(activity)
                 .create(0)
@@ -165,6 +190,14 @@ public class TipHelper {
 
     public static void showTipForActionBarShare(final Activity activity,ToolTipRelativeLayout toolTipFrameLayout, View anchor) {
 
+        if ((activity == null) || (anchor == null)) {
+            return;
+        }
+
+        if (actionbarShare_ToolTipView != null) {
+            return;
+        }
+
         ToolTip toolTip = new ToolTip()
                 .withText("Share this pack")
                 .withTextColor(Color.WHITE)
@@ -188,6 +221,13 @@ public class TipHelper {
 
     public static void showTipForActionBarSetting(final Activity activity,ToolTipRelativeLayout toolTipFrameLayout, View anchor) {
 
+        if ((activity == null) || (anchor == null)) {
+            return;
+        }
+
+        if (actionbarSetting_ToolTipView != null) {
+            return;
+        }
 
         ToolTip toolTip = new ToolTip()
                 .withText("App setting")
@@ -213,6 +253,14 @@ public class TipHelper {
 
     public static void showTipForActionBarHelp(final Activity activity,ToolTipRelativeLayout toolTipFrameLayout, View anchor) {
 
+        if ((activity == null) || (anchor == null)) {
+            return;
+        }
+
+        if (actionbarHelp_ToolTipView != null) {
+            return;
+        }
+
         ToolTip toolTip = new ToolTip()
                 .withText("Toggle help tips on and off")
                 .withTextColor(Color.WHITE)
@@ -236,6 +284,15 @@ public class TipHelper {
     private static ToolTipView actionbarPalette_ToolTipView;
 
     public static void showTipForActionBarPalette(final Activity activity,ToolTipRelativeLayout toolTipFrameLayout, View anchor) {
+
+        if ((activity == null) || (anchor == null)) {
+            return;
+        }
+
+        if (actionbarPalette_ToolTipView != null) {
+            return;
+        }
+
 
         ToolTip toolTip = new ToolTip()
                 .withText("Change the color palette")
@@ -263,6 +320,14 @@ public class TipHelper {
 
     public static void showTipForActionBarPlay(final Activity activity,ToolTipRelativeLayout toolTipFrameLayout, View anchor) {
 
+        if ((activity == null) || (anchor == null)) {
+            return;
+        }
+
+        if (actionbarPlay_ToolTipView != null) {
+            return;
+        }
+
         ToolTip toolTip = new ToolTip()
                 .withText("Play these cards")
                 .withColor(Color.rgb(179, 179, 43))
@@ -288,6 +353,14 @@ public class TipHelper {
 
     public static void showTipForActionBarCreateNewPack(final Activity activity,ToolTipRelativeLayout toolTipFrameLayout, View anchor) {
 
+        if ((activity == null) || (anchor == null)) {
+            return;
+        }
+
+        if (actionbarCreatePack_ToolTipView != null) {
+            return;
+        }
+
         ToolTip toolTip = new ToolTip()
                 .withText("Create a new pack")
                 .withColor(Color.rgb(128, 0, 128))
@@ -310,6 +383,14 @@ public class TipHelper {
     private static ToolTipView actionbarEditPack_ToolTipView;
 
     public static void showTipForEditPack(final Activity activity,ToolTipRelativeLayout toolTipFrameLayout, View anchor) {
+
+        if ((activity == null) || (anchor == null)) {
+            return;
+        }
+
+        if (actionbarEditPack_ToolTipView != null) {
+            return;
+        }
 
         ToolTip toolTip = new ToolTip()
                 .withText("Edit a pack")
@@ -335,6 +416,14 @@ public class TipHelper {
 
     public static void showTipForOpenPack(final Activity activity,ToolTipRelativeLayout toolTipFrameLayout, View anchor) {
 
+        if ((activity == null) || (anchor == null)) {
+            return;
+        }
+
+        if (actionbarOpenPack_ToolTipView != null) {
+            return;
+        }
+
         ToolTip toolTip = new ToolTip()
                 .withText("Open pack viewer")
                 .withTextColor(Color.WHITE)
@@ -356,6 +445,14 @@ public class TipHelper {
     private static ToolTipView changeTemplate_ToolTipView;
 
     public static void showTipForChangeTemplate(final Activity activity,ToolTipRelativeLayout toolTipFrameLayout, View anchor) {
+
+        if ((activity == null) || (anchor == null)) {
+            return;
+        }
+
+        if (changeTemplate_ToolTipView != null) {
+            return;
+        }
 
         ToolTip toolTip = new ToolTip()
                 .withText("Change template")
@@ -383,11 +480,19 @@ public class TipHelper {
 
     public static void showTipForSegmentAnswer(final Activity activity,ToolTipRelativeLayout toolTipFrameLayout, View anchor) {
 
+        if ((activity == null) || (anchor == null)) {
+            return;
+        }
+
+        if (segmentAnswer_ToolTipView != null) {
+            return;
+        }
+
         ToolTip toolTip = new ToolTip()
                 .withText("Click here to see the answer  side of the card")
                 .withTextColor(Color.WHITE)
                 .withForceShowTop(true)
-                .withArrowHeight(UIHelper.getPixels(60))
+                .withArrowHeight(UIHelper.getPixels(40))
                 .withColor(Color.rgb(123, 125, 43))
                 ;
 
