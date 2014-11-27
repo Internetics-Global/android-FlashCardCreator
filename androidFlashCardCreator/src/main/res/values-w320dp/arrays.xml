@@ -13,5 +13,16 @@
         <item>40</item>
     </integer-array>
 
+    <!--tooltip fake action bar-->
+    <dimen name="tooltip_fake_actionitem_width">60dp</dimen>
+    <dimen name="tooltip_fake_actionitem_right_margin_1">-0dp</dimen>
+    <dimen name="tooltip_fake_actionitem_right_margin_2">-0dp</dimen>
+    <dimen name="tooltip_fake_actionitem_right_margin_3">-0dp</dimen>
+    <dimen name="tooltip_fake_actionitem_right_margin_4">-0dp</dimen>
+    <dimen name="tooltip_fake_actionitem_right_margin_5">50dp</dimen>
+    <dimen name="tooltip_fake_actionitem_right_margin_6">110dp</dimen>
+    <dimen name="tooltip_fake_actionitem_right_margin_7">170dp</dimen>
+    <dimen name="tooltip_fake_actionitem_right_margin_8">230dp</dimen>
+
 
 </resources>

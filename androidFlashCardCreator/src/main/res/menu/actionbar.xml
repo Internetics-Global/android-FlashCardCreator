@@ -28,19 +28,19 @@
     <item
             android:id="@+id/actionbar_change_template_color"
             android:icon="@drawable/template_background_change_button"
-            android:title="@string/actionbar_item_change" android:showAsAction="ifRoom">
+            android:title="@string/actionbar_item_change" android:showAsAction="always">
     </item>
 
     <item
             android:id="@+id/actionbar_help"
             android:icon="@drawable/helping_button"
-            android:title="@string/actionbar_item_help" android:showAsAction="ifRoom">
+            android:title="@string/actionbar_item_help" android:showAsAction="always">
     </item>
 
     <item
             android:id="@+id/actionbar_more"
             android:icon="@drawable/setting_button"
-            android:title="@string/actionbar_item_more" android:showAsAction="ifRoom">
+            android:title="@string/actionbar_item_more" android:showAsAction="always">
     </item>
 
     <item

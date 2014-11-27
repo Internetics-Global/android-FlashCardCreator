@@ -7,6 +7,7 @@ import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.res.Configuration;
 import android.content.res.TypedArray;
 import android.graphics.PixelFormat;
 import android.net.Uri;
@@ -18,6 +19,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 import android.text.InputType;
+import android.util.DisplayMetrics;
 import android.util.Log;
 import android.util.TypedValue;
 import android.view.*;
@@ -40,6 +42,7 @@ import com.internectics.helper.AmazonSDB.SimpleDBHelper;
 import com.internectics.util.*;
 
 import java.io.File;
+import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -138,6 +141,7 @@ public class MainActivity extends FragmentActivity implements
     @Override
     public boolean onPrepareOptionsMenu(Menu menu) {
         super.onPrepareOptionsMenu(menu);
+
         int menuID;
         if (mIsCreatingCard) {
             menuID = R.menu.actionbar_add_card;
@@ -324,9 +328,10 @@ public class MainActivity extends FragmentActivity implements
                 boolean isAllowToShowTooltip = AppConfig.sharedInstance().isAllowToShowTooltip();
                 if (isAllowToShowTooltip == false) {
                     AppConfig.sharedInstance().setAllowToShowTooltip(true);
-                    showTooltips();
                     if (mCardDetailFragment != null) {
                         mCardDetailFragment.showTooltips();
+                    } else {
+                        showTooltips();
                     }
                 } else {
                     AppConfig.sharedInstance().setAllowToShowTooltip(false);
@@ -453,12 +458,14 @@ public class MainActivity extends FragmentActivity implements
         final Button editPackButton = (Button) this.findViewById(R.id.tooltip_fake_actionbar_edit_pack);
         final Button openPackButton = (Button) this.findViewById(R.id.tooltip_fake_actionbar_open_pack);
 
+
         Handler handler = new Handler();
         handler.postDelayed(new Runnable() {
 
             @Override
             public void run() {
                 TipHelper.showTipForCreateCard(MainActivity.this,addCardButton);
+
 
                 TipHelper.showTipForOpenPack(MainActivity.this,openPackButton);
                 TipHelper.showTipForEditPack(MainActivity.this,editPackButton);
@@ -468,6 +475,8 @@ public class MainActivity extends FragmentActivity implements
                 TipHelper.showTipForActionBarHelp(MainActivity.this,helpButton);
                 TipHelper.showTipForActionBarSetting(MainActivity.this,settingButton);
                 TipHelper.showTipForActionBarShare(MainActivity.this,shareButton);
+
+
 
             }
 

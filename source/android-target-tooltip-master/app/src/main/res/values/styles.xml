@@ -1,0 +1,20 @@
+<resources>
+
+	<style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
+
+		<!-- set the default style to be used with all the tooltips -->
+		<!--
+		<item name="ttlm_defaultStyle">@style/ToolTipLayoutCustomStyle</item>
+		-->
+
+	</style>
+
+	<style name="ToolTipLayoutCustomStyle">
+		<item name="ttlm_padding">25dip</item>
+		<item name="ttlm_strokeColor">#ffe5da7d</item>
+		<item name="ttlm_backgroundColor">#ffe5da7d</item>
+		<item name="ttlm_strokeWeight">0dip</item>
+		<item name="ttlm_cornerRadius">8dip</item>
+	</style>
+
+</resources>

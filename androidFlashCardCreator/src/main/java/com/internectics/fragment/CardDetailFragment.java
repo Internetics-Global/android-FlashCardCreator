@@ -314,6 +314,8 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnKeyboa
                 TipHelper.showTipForSegmentQuestion(getActivity(),mQuestionRadioButton);
                 TipHelper.showTipForSegmentAnswer(getActivity(),mAnswerRadioButton);
 
+                TipHelper.showTipForLinkButton(getActivity(),mLogoURLImage);
+
             }
 
         }, 300); // 300ms delay

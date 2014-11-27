@@ -13,7 +13,7 @@ public class TipHelper {
 
     private static final int POINTER_SIZE = 10;
 
-    private static final int TOOLTIP_TYPE_A_NUMBER = 15;
+    private static final int TOOLTIP_TYPE_A_NUMBER = 16;
 
     public static void showTipForLogo(final Activity activity, View anchorView) {
 
@@ -244,7 +244,7 @@ public class TipHelper {
                 .anchor(anchorView, TooltipManager.Gravity.BOTTOM)
                 .closePolicy(TooltipManager.ClosePolicy.TouchInside, 0)
                 .withStyleId(R.style.ToolTipLayoutCustomStyle_cyan_light)
-                .withArrowLenghtWeight(22)
+                .withArrowLenghtWeight(16.8f)
                 .text("Share this pack")
                 .toggleArrow(true)
                 .maxWidth(500)
@@ -272,7 +272,7 @@ public class TipHelper {
                 .anchor(anchorView, TooltipManager.Gravity.BOTTOM)
                 .closePolicy(TooltipManager.ClosePolicy.TouchInside, 0)
                 .withStyleId(R.style.ToolTipLayoutCustomStyle_cyan_dark)
-                .withArrowLenghtWeight(19)
+                .withArrowLenghtWeight(14.5f)
                 .text("App setting")
                 .toggleArrow(true)
                 .maxWidth(500)
@@ -301,9 +301,9 @@ public class TipHelper {
                 .closePolicy(TooltipManager.ClosePolicy.TouchInside, 0)
                 .withStyleId(R.style.ToolTipLayoutCustomStyle_green)
                 .text("Toggle help tips on and off")
-                .withArrowLenghtWeight(16)
+                .withArrowLenghtWeight(12.2f)
                 .toggleArrow(true)
-                .maxWidth(500)
+                .maxWidth(1000)
                 .showDelay(200)
                 .activateDelay(300)
                 .withCallback(new TooltipManager.onTooltipClosingCallback() {
@@ -328,10 +328,10 @@ public class TipHelper {
                 .anchor(anchorView, TooltipManager.Gravity.BOTTOM)
                 .closePolicy(TooltipManager.ClosePolicy.TouchInside, 0)
                 .withStyleId(R.style.ToolTipLayoutCustomStyle_orange)
-                .withArrowLenghtWeight(13)
+                .withArrowLenghtWeight(9.9f)
                 .text("Change the color palette")
                 .toggleArrow(true)
-                .maxWidth(500)
+                .maxWidth(1000)
                 .showDelay(200)
                 .activateDelay(300)
                 .withCallback(new TooltipManager.onTooltipClosingCallback() {
@@ -358,7 +358,7 @@ public class TipHelper {
                 .anchor(anchorView, TooltipManager.Gravity.BOTTOM)
                 .closePolicy(TooltipManager.ClosePolicy.TouchInside, 0)
                 .withStyleId(R.style.ToolTipLayoutCustomStyle_cyan_light)
-                .withArrowLenghtWeight(10)
+                .withArrowLenghtWeight(7.6f)
                 .text("Play these cards")
                 .toggleArrow(true)
                 .maxWidth(500)
@@ -386,7 +386,7 @@ public class TipHelper {
                 .anchor(anchorView, TooltipManager.Gravity.BOTTOM)
                 .closePolicy(TooltipManager.ClosePolicy.TouchInside, 0)
                 .withStyleId(R.style.ToolTipLayoutCustomStyle_purple)
-                .withArrowLenghtWeight(7)
+                .withArrowLenghtWeight(5.3f)
                 .text("Create a new pack")
                 .toggleArrow(true)
                 .maxWidth(500)
@@ -414,7 +414,7 @@ public class TipHelper {
                 .anchor(anchorView, TooltipManager.Gravity.BOTTOM)
                 .closePolicy(TooltipManager.ClosePolicy.TouchInside, 0)
                 .withStyleId(R.style.ToolTipLayoutCustomStyle_cyan)
-                .withArrowLenghtWeight(4)
+                .withArrowLenghtWeight(3)
                 .text("Edit a pack")
                 .toggleArrow(true)
                 .maxWidth(500)
@@ -458,12 +458,36 @@ public class TipHelper {
     }
 
 
+    public static void showTipForLinkButton(final Activity activity, View anchorView) {
 
+        if ((activity == null) || (anchorView == null)) {
+            return;
+        }
+
+        TooltipManager.getInstance(activity)
+                .create(16)
+                .anchor(anchorView, TooltipManager.Gravity.LEFT)
+                .closePolicy(TooltipManager.ClosePolicy.TouchInside, 0)
+                .withStyleId(R.style.ToolTipLayoutCustomStyle_orange)
+                .text("Edit link")
+                .toggleArrow(true)
+                .maxWidth(500)
+                .showDelay(200)
+                .activateDelay(300)
+                .withCallback(new TooltipManager.onTooltipClosingCallback() {
+                    @Override
+                    public void onClosing(int i, boolean b,boolean b2) {
+                        TooltipManager.getInstance(activity).remove(i);
+                        setFlagIfMeetCondition(activity);
+                    }
+                })
+                .show();
+    }
 
 
 
     public static void hideEverthing(Activity activity) {
-        for (int i = 0; i < TOOLTIP_TYPE_A_NUMBER; i ++) {
+        for (int i = 0; i <= TOOLTIP_TYPE_A_NUMBER; i ++) {
             TooltipManager.getInstance(activity).hide(i);
         }
 
@@ -471,7 +495,7 @@ public class TipHelper {
 
     private static void setFlagIfMeetCondition (Activity activity)  {
 
-        for (int i = 0; i <TOOLTIP_TYPE_A_NUMBER; i ++) {
+        for (int i = 0; i <= TOOLTIP_TYPE_A_NUMBER; i ++) {
             if (TooltipManager.getInstance(activity).active(i) == true) {
               return;
             }
