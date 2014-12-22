@@ -4,7 +4,7 @@
           android:layout_width="fill_parent"
           android:layout_height="fill_parent"
           android:numColumns="@integer/symbox_box_column_no"
-          android:background="#7C7C85"
+          android:background="#ffcdcfd1"
           android:verticalSpacing="0dp"
           android:horizontalSpacing="0dp"
           android:stretchMode="columnWidth"
