@@ -2,6 +2,7 @@ package com.internectics.fragment;
 
 import android.content.Context;
 import android.graphics.Typeface;
+import android.media.Image;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
@@ -80,7 +81,18 @@ public class SymbolGridViewFragment extends Fragment {
             TextView summaryTextView = (TextView) convertView.findViewById(R.id.symbol_summary);
             summaryTextView.setTypeface(mTypeFace,Typeface.NORMAL);
 
-            summaryTextView.setText(SymbolHelper.mUnicodeArray[position]);
+            String symbolText = SymbolHelper.mUnicodeArray[position];
+            summaryTextView.setText(symbolText);
+
+            ImageView symbolBackgroundImageView = (ImageView) convertView.findViewById(R.id.symbol_background_image);
+
+            if (symbolText.equals("⨯") || symbolText.equals("+") || symbolText.equals("÷") ||
+                    symbolText.equals("−") || symbolText.equals("=")) {
+                symbolBackgroundImageView.setImageResource(R.drawable.key_orange);
+
+            } else {
+                symbolBackgroundImageView.setImageResource(R.drawable.key);
+            }
 
             return convertView;
         }

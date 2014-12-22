@@ -7,6 +7,7 @@
               android:layout_height="match_parent">
 
     <ImageView
+            android:id="@+id/symbol_background_image"
             android:layout_width="@dimen/symbol__width"
             android:layout_height="@dimen/symbol__width"
             android:gravity="center"
