@@ -168,8 +168,8 @@ public class AddPackFragment extends DialogFragment implements TextView.OnEditor
         pack.platform = UIHelper.getCurrentPlatform();
         pack.userID = Global.USER_ID;
         pack.packID = Global.generateNoRepeatInt();
-        pack.createDate = (int)System.currentTimeMillis();
-        pack.lastVistDate = (int)System.currentTimeMillis();
+        pack.createDate = Global.currentTimeSeconds();
+        pack.lastVistDate = Global.currentTimeSeconds();
 
         final Card defaultCard = new Card();
         defaultCard.cardSN = 1;

@@ -134,7 +134,7 @@ public class PackListFragment extends Fragment {
                     getActivity().sendBroadcast(intent);
 
                     Pack selectPack = mUser.packs.get(selectedIndex);
-                    selectPack.lastVistDate = (int)System.currentTimeMillis();
+                    selectPack.lastVistDate = Global.currentTimeSeconds();
                     selectPack.save(AppContext.getAppContext());
 
                     ((MainActivity) getActivity()).mPopupWindow.dismiss();
@@ -266,7 +266,9 @@ public class PackListFragment extends Fragment {
 
                         ((MainActivity)getActivity()).mIsAllowedToShowPackList = false;
 
-                        currentPack.lastVistDate = (int)System.currentTimeMillis();
+
+
+                        currentPack.lastVistDate = Global.currentTimeSeconds();
                         currentPack.save(AppContext.getAppContext());
 
                         ((MainActivity) getActivity()).mPopupWindow.dismiss();

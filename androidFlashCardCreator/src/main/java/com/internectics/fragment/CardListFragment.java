@@ -136,7 +136,7 @@ public class CardListFragment extends Fragment {
         adapter.changeCursor(cursor);
 
         //Step2: Finally, send back currenPack to activity
-        ((MainActivity) getActivity()).mCurrentPack = mCurrentPack;
+        ((MainActivity) getActivity()).setCurrentPack(mCurrentPack);
     }
 
     @Override
@@ -403,7 +403,7 @@ public class CardListFragment extends Fragment {
         adapter.changeCursor(cursor);
 
         //Step3: Send back currenPack to activity
-        ((MainActivity) getActivity()).mCurrentPack = mCurrentPack;
+        ((MainActivity) getActivity()).setCurrentPack(mCurrentPack);
 
         //Step4: Update detail view
         if ((mCardArrayList.size() > 0) && (selectedItemIndex >= 0)) {

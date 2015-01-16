@@ -213,6 +213,32 @@
             </FrameLayout>
 
             <FrameLayout
+                android:id="@+id/pack_info_layout"
+                android:visibility="visible"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <ImageView
+                    android:id="@+id/pack_info_cover_image"
+                    android:layout_width="300dp"
+                    android:layout_height="300dp"
+                    android:layout_gravity="center"/>
+
+                <TextView
+                    android:id="@+id/pack_info_title"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textStyle="bold"
+                    android:text="Default"
+                    android:layout_marginTop="170dp"
+                    android:gravity="center"
+                    android:layout_gravity="center"
+                    android:textColor="@android:color/white"
+                    android:textAppearance="?android:attr/textAppearanceSmall" />
+
+            </FrameLayout>
+
+            <FrameLayout
                     android:id="@+id/add_card_frame_layout"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
@@ -222,6 +248,8 @@
             </FrameLayout>
 
         </FrameLayout>
+
+
 
     </LinearLayout>
 

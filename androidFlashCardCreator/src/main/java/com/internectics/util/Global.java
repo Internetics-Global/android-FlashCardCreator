@@ -123,6 +123,14 @@ public class Global {
         return result;
     }
 
+    /*
+     * History reason: our table in sqlite is int format, so I have to do this
+     */
+    public static int currentTimeSeconds() {
+        long millSeconds = System.currentTimeMillis();
+        return (int)(millSeconds/1000);
+    }
+
 }
 
 

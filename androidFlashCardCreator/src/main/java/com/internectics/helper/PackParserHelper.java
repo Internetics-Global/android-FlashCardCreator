@@ -238,8 +238,8 @@ public class PackParserHelper {
             pack.userID = Global.USER_ID; // there's no this information in json file, so we have to add manually
             pack.packID = Global.generateNoRepeatInt();
 
-            pack.createDate = (int)System.currentTimeMillis();
-            pack.lastVistDate = (int)System.currentTimeMillis();
+            pack.createDate = Global.currentTimeSeconds();
+            pack.lastVistDate = Global.currentTimeSeconds();
 
             if (pack.platform.contains("iPhone") == true) {
                 mScreenWidthFromSharedDevice = 640;

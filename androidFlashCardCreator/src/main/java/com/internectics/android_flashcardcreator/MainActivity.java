@@ -62,8 +62,6 @@ public class MainActivity extends FragmentActivity implements
 
     public boolean mIsAllowedToShowPackList = true;
 
-
-
     public Pack mCurrentPack = new Pack();//mCurrentPack will be automatically refreshed after creating a new card, add a new pack and new pack selected
     public int mCurrentCardIndex = 0;
     public Card mCurrentCard = new Card();
@@ -87,6 +85,8 @@ public class MainActivity extends FragmentActivity implements
     private boolean mSemaphore;
 
     public int packIDForMasterViewPack;
+
+    private FrameLayout mPackInfoLayout;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -123,6 +123,9 @@ public class MainActivity extends FragmentActivity implements
 
         mMasterMaskButton = (Button) findViewById(R.id.master_view_mask);
         mMasterViewUpdatingLayout = findViewById(R.id.master_view_updating_layout);
+
+        mPackInfoLayout = (FrameLayout) findViewById(R.id.pack_info_layout);
+        showPackInfoView();
 
         mSymbolBoxFragment = (SymbolBoxFragment) getSupportFragmentManager().findFragmentById(R.id.fragment_symbol_box);
 
@@ -348,6 +351,10 @@ public class MainActivity extends FragmentActivity implements
         return super.onOptionsItemSelected(item);
     }
 
+    public void setCurrentPack(Pack mCurrentPack) {
+        this.mCurrentPack = mCurrentPack;
+        updatePackInfoView();
+    }
 
     @Override
     protected void onResume() {
@@ -608,6 +615,8 @@ public class MainActivity extends FragmentActivity implements
                         .remove(mCardDetailFragment).commitAllowingStateLoss();
             }
         }
+
+        hidePackInfoView();
     }
 
 
@@ -690,6 +699,8 @@ public class MainActivity extends FragmentActivity implements
         if (result == false) {
             return;
         }
+
+        hidePackInfoView();
 
         FrameLayout addCardLayout = (FrameLayout) findViewById(R.id.add_card_frame_layout);
         addCardLayout.setVisibility(View.VISIBLE);
@@ -1230,6 +1241,25 @@ public class MainActivity extends FragmentActivity implements
 
         builder.create().show();
     }
+
+    private void showPackInfoView() {
+        mPackInfoLayout.setVisibility(View.VISIBLE);
+    }
+
+    private void hidePackInfoView() {
+
+        mPackInfoLayout.setVisibility(View.INVISIBLE);
+
+    }
+
+    private void updatePackInfoView() {
+        ImageView packCoverImageView = (ImageView) findViewById(R.id.pack_info_cover_image);
+        packCoverImageView.setImageURI(Uri.parse(mCurrentPack.coverImageUriFormatStr));
+        TextView  packCoverTextView = (TextView) findViewById(R.id.pack_info_title);
+        packCoverTextView.setText(mCurrentPack.packName);
+    }
+
+
 
 
     /**
