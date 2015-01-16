@@ -16,7 +16,8 @@ public class AboutActivity extends Activity {
         TextView versionTextView = (TextView) findViewById(R.id.version);
         try {
             String versionName = getPackageManager().getPackageInfo(getPackageName(), 0).versionName;
-            versionTextView.setText("Version " + versionName);
+            int versionCode = getPackageManager().getPackageInfo(getPackageName(), 0).versionCode;
+            versionTextView.setText("Version " + versionName + "\n\n Build:" + versionCode);
         } catch (PackageManager.NameNotFoundException e) {
             e.printStackTrace();
         }
