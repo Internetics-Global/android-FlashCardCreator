@@ -78,7 +78,8 @@
             android:screenOrientation="landscape">
         </activity>
         <activity android:name=".MoreActivity"/>
-        <activity android:name=".WebViewActivity"/>
+        <activity android:name=".WebViewActivity"
+                  android:screenOrientation="sensorLandscape"/>
         <activity android:name=".AboutActivity"/>
         <activity android:name=".AppStart" android:theme="@android:style/Theme.NoTitleBar.Fullscreen" android:screenOrientation="landscape">
             <intent-filter>
