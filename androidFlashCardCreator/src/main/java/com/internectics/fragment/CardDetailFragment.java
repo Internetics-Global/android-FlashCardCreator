@@ -295,6 +295,10 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnKeyboa
 
     public void showTooltips() {
 
+        if (mIsPlayingCard) {
+            return;
+        }
+
         Handler handler = new Handler();
         handler.postDelayed(new Runnable() {
 

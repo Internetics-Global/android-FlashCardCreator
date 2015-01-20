@@ -333,6 +333,7 @@ public class MainActivity extends FragmentActivity implements
                     AppConfig.sharedInstance().setAllowToShowTooltip(true);
                     if (mCardDetailFragment != null) {
                         mCardDetailFragment.showTooltips();
+                        showTooltips();
                     } else {
                         showTooltips();
                     }
@@ -1253,6 +1254,12 @@ public class MainActivity extends FragmentActivity implements
     }
 
     private void updatePackInfoView() {
+
+        if (mCurrentPack == null) {
+            hidePackInfoView();
+            return;
+        }
+
         ImageView packCoverImageView = (ImageView) findViewById(R.id.pack_info_cover_image);
         packCoverImageView.setImageURI(Uri.parse(mCurrentPack.coverImageUriFormatStr));
         TextView  packCoverTextView = (TextView) findViewById(R.id.pack_info_title);
