@@ -122,7 +122,7 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnKeyboa
     //用于
     // 1. onStop时，是否需要进行写入到数据库；
     // 2. resize完毕后，是否需要暂存prepareToSavingTextFontSizeInfo
-    private static boolean mIsSaveNeededAfterResize = false;
+    private boolean mIsSaveNeededAfterResize = false;
 
     //用于auto resize 逻辑
     private ViewTreeObserver mVtoSubheading;
@@ -343,6 +343,8 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnKeyboa
     public void onDestroy() {
         Log.d(Global.debugTag, String.format("onDestroy in CardDetailFragment, cardSN = %d",mCurrentCard.cardSN));
         super.onDestroy();
+        //mCurrentPack = null;
+
 
 
     }
@@ -352,9 +354,26 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnKeyboa
         Log.d(Global.debugTag, String.format("onStop in CardDetailFragment, cardSN = %d",mCurrentCard.cardSN));
         super.onStop();
 
-        mVtoSubheading.removeGlobalOnLayoutListener(mVtoSubheadingListener);
-        mVtoMain.removeGlobalOnLayoutListener(mVtoMainListener);
-        mVtoSub.removeGlobalOnLayoutListener(mVtoSubListener);
+
+
+        if (Build.VERSION.SDK_INT < 16) {
+            mVtoSubheading.removeGlobalOnLayoutListener(mVtoSubheadingListener);
+            mVtoMain.removeGlobalOnLayoutListener(mVtoMainListener);
+            mVtoSub.removeGlobalOnLayoutListener(mVtoSubListener);
+        } else {
+            mVtoSubheading.removeOnGlobalLayoutListener(mVtoSubheadingListener);
+            mVtoMain.removeOnGlobalLayoutListener(mVtoMainListener);
+            mVtoSub.removeOnGlobalLayoutListener(mVtoSubListener);
+        }
+
+        mSubheading.removeTextChangedListener(mSubheadingTextWatcher);
+        mMain.removeTextChangedListener(mMainTextWatcher);
+        mSub.removeTextChangedListener(mSubTextWatcher);
+        mTitle.removeTextChangedListener(mTitleTextWatcher);
+        mCreator.removeTextChangedListener(mCreatorTextWatcher);
+        mJobTitle.removeTextChangedListener(mJobTitleTextWatcher);
+        mSidebarTitle.removeTextChangedListener(mSidebarTitleTextWatcher);
+
 
         //当当前card移除时，比如进入下一卡片，如果进行过resize操作，则保存一下
         if (((mCurrentPack.creatorID.equals(OpenUDID_manager.getOpenUDID())) == false) && (mIsSaveNeededAfterResize)) {
@@ -1434,6 +1453,10 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnKeyboa
      */
     private void triggerResizeTextToFitFrame(final EditText v) {
 
+//        if (mCurrentPack == null) {
+//            return;
+//        }
+
         synchronized (v) {
             if (v.getText().length() == 0) {
                 return;
@@ -1765,7 +1788,6 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnKeyboa
             }
         };
         mSub.addTextChangedListener(mSubTextWatcher);
-
 
         mVtoSubheadingListener = new ViewTreeObserver.OnGlobalLayoutListener() {
             @Override
@@ -3842,6 +3864,9 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnKeyboa
         return resultStr;
 
     }
+
+
+
 
 
 }
