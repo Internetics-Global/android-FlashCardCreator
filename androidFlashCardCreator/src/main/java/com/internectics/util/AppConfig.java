@@ -35,14 +35,15 @@ public class AppConfig {
             File dirConf = mContext.getDir(APP_CONFIG, Context.MODE_PRIVATE);
             fis = new FileInputStream(dirConf.getPath() + File.separator + APP_CONFIG);
 
+
             props.load(fis);
         } catch (Exception e) {
-            e.printStackTrace();
+            //e.printStackTrace();
         } finally {
             try {
                 fis.close();
             } catch (Exception e) {
-                e.printStackTrace();
+                //e.printStackTrace();
             }
         }
         return props;

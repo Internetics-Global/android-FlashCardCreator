@@ -1427,6 +1427,11 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnKeyboa
     }
 
 
+    /*
+    called automatically by
+    1. ViewTreeObserver.OnGlobalLayoutListener
+    2. addTextChangedListener
+     */
     private void triggerResizeTextToFitFrame(final EditText v) {
 
         synchronized (v) {
@@ -1434,6 +1439,7 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnKeyboa
                 return;
             }
 
+            //noOfLines有可能返回0： getLineCount() will give you the correct number of lines only after a layout pass. That means the TextView must have been drawn at least once.
             int noOfLines = v.getLineCount(); //this is very important, when setTextSize execute, getLineCount could possibly be zero
             int textHeight = noOfLines * v.getLineHeight();
             int viewHeight = v.getHeight();

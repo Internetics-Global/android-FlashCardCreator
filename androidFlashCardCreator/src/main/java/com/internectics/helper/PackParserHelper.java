@@ -21,6 +21,12 @@ import java.io.IOException;
 
 public class PackParserHelper {
 
+    /*
+      iPhone ＝ 640
+      iPad   = 1024
+      其他的，根据json数据screen_width进行获取
+      如果json中screen_width字段不存在，则 ＝ 0 （进行默认逻辑处理）
+     */
     private static float mScreenWidthFromSharedDevice; // the screen width whose device has shared the pack
 
     /**
@@ -153,13 +159,15 @@ public class PackParserHelper {
                 newFile = FileOperationHelper.copyImageVideoToImagesFolder(getCardImageFullPath(resultCard.question.audioUriFormatStr, i));
                 resultCard.question.audioUriFormatStr = FileOperationHelper.convertToUriFormatFile(newFile);
             } else {
-                Log.w(Global.debugTag, "resultCard.question.audioUriFormatStr is empty");
+                Log.d(Global.debugTag, "resultCard.question.audioUriFormatStr is empty");
             }
 
             if (resultCard.answer.audioUriFormatStr.length() >0) {
                 newFile = FileOperationHelper.copyImageVideoToImagesFolder(getCardImageFullPath(resultCard.answer.audioUriFormatStr, i));
                 resultCard.answer.audioUriFormatStr = FileOperationHelper.convertToUriFormatFile(newFile);
-                Log.w(Global.debugTag, "resultCard.answer.audioUriFormatStr is empty");
+
+            } else {
+                Log.d(Global.debugTag, "resultCard.answer.audioUriFormatStr is empty");
             }
 
             //***************再次加工,结束
@@ -186,6 +194,11 @@ public class PackParserHelper {
      * Images include: cover image of card, image of question card, image of answer card
      */
     private static File getCardImageFullPath(String uriFormatStr, int indexOfCard) {
+
+        if (Global.isEmpty(uriFormatStr)) {
+            return null;
+        }
+
         String fileName = StringUtils.lastComponentOfPath(Uri.parse(uriFormatStr));
         File fullFilePath = new File(FileOperationHelper.downloadedPackDirectory(), String.format("card%d/%s", indexOfCard, fileName));
         return fullFilePath;
@@ -250,6 +263,7 @@ public class PackParserHelper {
                 if ((temp != null) && (StringUtils.isNumeric(temp))) {
                     mScreenWidthFromSharedDevice =  Integer.parseInt(temp);
                 } else {
+                    Log.w(Global.debugTag,"mScreenWidthFromSharedDevice is 0");
                     mScreenWidthFromSharedDevice = 0;
                 }
             }
@@ -279,6 +293,9 @@ public class PackParserHelper {
 
         //Question
         try {
+
+            //step1: 获取原始数据
+
             FileReader fileReader = new FileReader(questionJsonFile);
             JSONObject questionObj = (JSONObject) parser.parse(fileReader);
 
@@ -484,6 +501,8 @@ public class PackParserHelper {
 
             int[] standardCSSArrary = AppContext.getAppContext().getResources().getIntArray(R.array.css_size_int);
 
+            //step2: 根据平台不同进行初次缩放
+
             if (currentPack.platform.equals(UIHelper.getCurrentPlatform()) == true) {
                 if (subheadingSize >0) {
                     card.question.css.subheadingSize = subheadingSize;
@@ -505,7 +524,7 @@ public class PackParserHelper {
 
 
             } else {
-                if (mScreenWidthFromSharedDevice == 0) { // mean no this field in pack json file
+                if (mScreenWidthFromSharedDevice == 0) { // mean no this field in pack json file  （兼容之前的版本）
 
                     //-----begin scale down policy with error protection
                     //step1: get which is trustable
@@ -629,6 +648,7 @@ public class PackParserHelper {
                     //-----end scale down policy with error protection
                 } else {
 
+                    //字体根据mScreenWidthFromSharedDevice和当前平台的width进行一定比例的缩放
                     float bestFontSizeFromSharedDevice = UIHelper.getBestFontSize(mScreenWidthFromSharedDevice);
                     int baseFontSizeOnCurrentDevice = standardCSSArrary[1];
                     float factor = baseFontSizeOnCurrentDevice/bestFontSizeFromSharedDevice;
@@ -700,6 +720,10 @@ public class PackParserHelper {
 
             if (answerObj.containsKey("main"))  {
                 card.answer.main = ((String) answerObj.get("main")).replace("\\s+$", "");
+            }
+
+            if (card.answer.main.toLowerCase().trim().equals("apple")) {
+                Log.d("ccaa","dfdfdf");
             }
 
             if (answerObj.containsKey("sub")) {
@@ -826,6 +850,8 @@ public class PackParserHelper {
             } else {
                 subSize = 0;
             }
+
+
 
             int[] standardCSSArrary = AppContext.getAppContext().getResources().getIntArray(R.array.css_size_int);
 

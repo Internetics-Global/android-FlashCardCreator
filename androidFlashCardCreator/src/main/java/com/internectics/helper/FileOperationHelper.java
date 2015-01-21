@@ -6,12 +6,11 @@ import android.graphics.Bitmap;
 import android.net.Uri;
 import android.provider.MediaStore;
 import android.support.v4.content.CursorLoader;
+
 import com.internectics.android_flashcardcreator.R;
 import com.internectics.util.AppConfig;
 import com.internectics.util.AppContext;
 import com.internectics.util.Global;
-
-import junit.framework.Assert;
 
 import java.io.*;
 import java.util.ArrayList;
@@ -29,7 +28,7 @@ public class FileOperationHelper {
             R.drawable.card_cover_image_placeholder};
     private static String output[] = {
             "question_placeholder_logo.jpg",
-            "question_placeholder_contentnt.jpg",
+            "question_placeholder_content.jpg",
             "answer_placeholder_content.jpg",
             "default_pack_cover_image.jpg",
             "card_cover_image_placeholder.jpg"};
@@ -299,6 +298,7 @@ public class FileOperationHelper {
 
 
     public static File copyImageVideoToImagesFolder(File file) {
+
         File targetFile = new File(imagesDirectory(), file.getName());
         copyFile(file, targetFile);
         return targetFile;
@@ -306,6 +306,7 @@ public class FileOperationHelper {
 
 
     private static void copyFile(File orginFile, File targetFile) {
+
         try {
             FileInputStream inStream = new FileInputStream(orginFile);
             FileOutputStream outStream = new FileOutputStream(targetFile);
@@ -324,7 +325,7 @@ public class FileOperationHelper {
             System.out.println("File is copied successful!");
 
         } catch (IOException e) {
-            e.printStackTrace();
+            //e.printStackTrace();
         }
     }
 
