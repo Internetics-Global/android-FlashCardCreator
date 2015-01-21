@@ -343,7 +343,10 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnKeyboa
     public void onDestroy() {
         Log.d(Global.debugTag, String.format("onDestroy in CardDetailFragment, cardSN = %d",mCurrentCard.cardSN));
         super.onDestroy();
-        //mCurrentPack = null;
+
+        mImage.setImageURI(null);
+        mImage2.setImageURI(null);
+        mLogoImage.setImageURI(null);
 
 
 
