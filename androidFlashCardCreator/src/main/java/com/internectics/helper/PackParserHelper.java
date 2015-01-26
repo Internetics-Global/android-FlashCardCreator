@@ -385,6 +385,36 @@ public class PackParserHelper {
                 card.question.templateID = 0;
             }
 
+            temp = null;
+            if (questionObj.containsKey("line_number_subheading")) {
+                temp = (String) questionObj.get("line_number_subheading");
+            }
+            if (temp != null) {
+                card.question.lineNoSubheading = Integer.parseInt(temp);
+            } else {
+                card.question.lineNoSubheading = 0;
+            }
+
+            temp = null;
+            if (questionObj.containsKey("line_number_main")) {
+                temp = (String) questionObj.get("line_number_main");
+            }
+            if (temp != null) {
+                card.question.lineNoMain = Integer.parseInt(temp);
+            } else {
+                card.question.lineNoMain = 0;
+            }
+
+            temp = null;
+            if (questionObj.containsKey("line_number_sub")) {
+                temp = (String) questionObj.get("line_number_sub");
+            }
+            if (temp != null) {
+                card.question.lineNoSub = Integer.parseInt(temp);
+            } else {
+                card.question.lineNoSub = 0;
+            }
+
             temp = "";
             if (questionObj.containsKey("image")) {
                 temp = (String) questionObj.get("image");
@@ -696,6 +726,36 @@ public class PackParserHelper {
                 card.answer.templateID = Integer.parseInt(temp);
             } else {
                 card.answer.templateID = 0;
+            }
+
+            temp = null;
+            if (answerObj.containsKey("line_number_subheading")) {
+                temp = (String) answerObj.get("line_number_subheading");
+            }
+            if (temp != null) {
+                card.answer.lineNoSubheading = Integer.parseInt(temp);
+            } else {
+                card.answer.lineNoSubheading = 0;
+            }
+
+            temp = null;
+            if (answerObj.containsKey("line_number_main")) {
+                temp = (String) answerObj.get("line_number_main");
+            }
+            if (temp != null) {
+                card.answer.lineNoMain = Integer.parseInt(temp);
+            } else {
+                card.answer.lineNoMain = 0;
+            }
+
+            temp = null;
+            if (answerObj.containsKey("line_number_sub")) {
+                temp = (String) answerObj.get("line_number_sub");
+            }
+            if (temp != null) {
+                card.answer.lineNoSub = Integer.parseInt(temp);
+            } else {
+                card.answer.lineNoSub = 0;
             }
 
             temp = "";

@@ -23,6 +23,10 @@ public class Answer {
     public int cssID;
     public int templateID;
 
+    public int lineNoSubheading;
+    public int lineNoMain;
+    public int lineNoSub;
+
     public String backgroundImageUriFormatStr;
     public String movieUriFormatStr;
     public String movieUriFormatStr2;
@@ -44,6 +48,10 @@ public class Answer {
         templateID = 0;
         css = new CSS(false);
 
+        lineNoSubheading = 0;
+        lineNoMain = 0;
+        lineNoSub = 0;
+
         backgroundImageUriFormatStr = "";
 
         movieUriFormatStr = "";
@@ -62,6 +70,10 @@ public class Answer {
         imageUriFormatStr2 = (String) dataDict.get("image2");
         cssID = (Integer) dataDict.get("css_id");
         templateID = (Integer) dataDict.get("template_id");
+
+        lineNoSubheading = (Integer) dataDict.get("line_number_subheading");
+        lineNoMain = (Integer) dataDict.get("line_number_main");
+        lineNoSub = (Integer) dataDict.get("line_number_sub");
 
         backgroundImageUriFormatStr = (String) dataDict.get("background_image");
         movieUriFormatStr = (String) dataDict.get("movie");
@@ -92,10 +104,14 @@ public class Answer {
                 answerDict.put("css_id", cur.getInt(7));
                 answerDict.put("template_id", cur.getInt(8));
 
-                answerDict.put("background_image", cur.getString(9));
-                answerDict.put("movie", cur.getString(10));
-                answerDict.put("movie2", cur.getString(11));
-                answerDict.put("audio", cur.getString(12));
+                answerDict.put("line_number_subheading", cur.getInt(9));
+                answerDict.put("line_number_main", cur.getInt(10));
+                answerDict.put("line_number_sub", cur.getInt(11));
+
+                answerDict.put("background_image", cur.getString(12));
+                answerDict.put("movie", cur.getString(13));
+                answerDict.put("movie2", cur.getString(14));
+                answerDict.put("audio", cur.getString(15));
 
                 answerDict.put("css", CSS.cssForCSSID(context, cur.getInt(7)));
                 break;
@@ -130,7 +146,7 @@ public class Answer {
         String decodedMain = StringUtils.stringDecodeForSQlite(main);
         String decodedSub = StringUtils.stringDecodeForSQlite(sub);
 
-        String query = String.format("UPDATE Answer_Tables SET answer_id=%d, subheading=?, main=?, sub=?, image=\"%s\",image2=\"%s\",css_id=%d, template_id=%d,background_image=\"%s\",movie=\"%s\",movie2=\"%s\",audio=\"%s\" WHERE card_id=%d", answerID, imageUriFormatStr,imageUriFormatStr2, cssID, templateID,backgroundImageUriFormatStr,movieUriFormatStr,movieUriFormatStr2,audioUriFormatStr, cardID);
+        String query = String.format("UPDATE Answer_Tables SET answer_id=%d, subheading=?, main=?, sub=?, image=\"%s\",image2=\"%s\",css_id=%d, template_id=%d, line_number_subheading=%d, line_number_main=%d, line_number_sub=%d, background_image=\"%s\",movie=\"%s\",movie2=\"%s\",audio=\"%s\" WHERE card_id=%d", answerID, imageUriFormatStr,imageUriFormatStr2, cssID, templateID,lineNoSubheading,lineNoMain,lineNoSub,backgroundImageUriFormatStr,movieUriFormatStr,movieUriFormatStr2,audioUriFormatStr, cardID);
         SQLiteHelper.defaultDatabase(context).execSQL(query, new Object[]{decodedSubheading, decodedMain, decodedSub});
     }
 
@@ -144,7 +160,7 @@ public class Answer {
         String decodedMain = StringUtils.stringDecodeForSQlite(main);
         String decodedSub = StringUtils.stringDecodeForSQlite(sub);
 
-        String query = String.format("INSERT INTO Answer_Tables(answer_id, card_id, subheading, main, sub, image, image2, css_id, template_id,background_image,movie, movie2, audio) VALUES (%d,%d, ?, ?, ?, \"%s\",\"%s\", %d, %d,\"%s\",\"%s\",\"%s\",\"%s\")", answerID, cardID, imageUriFormatStr, imageUriFormatStr2, cssID, templateID,backgroundImageUriFormatStr,movieUriFormatStr, movieUriFormatStr2, audioUriFormatStr);
+        String query = String.format("INSERT INTO Answer_Tables(answer_id, card_id, subheading, main, sub, image, image2, css_id, template_id,line_number_subheading,line_number_main,line_number_sub,background_image,movie, movie2, audio) VALUES (%d,%d, ?, ?, ?, \"%s\",\"%s\", %d, %d, %d, %d, %d,\"%s\",\"%s\",\"%s\",\"%s\")", answerID, cardID, imageUriFormatStr, imageUriFormatStr2, cssID, templateID,lineNoSubheading,lineNoMain,lineNoSub,backgroundImageUriFormatStr,movieUriFormatStr, movieUriFormatStr2, audioUriFormatStr);
         SQLiteHelper.defaultDatabase(context).execSQL(query, new Object[]{decodedSubheading, decodedMain, decodedSub});
 
     }

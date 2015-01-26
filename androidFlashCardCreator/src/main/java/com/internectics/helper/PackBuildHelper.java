@@ -233,6 +233,9 @@ public class PackBuildHelper {
         obj.put("subheading", card.question.subheading);
         obj.put("main", card.question.main);
         obj.put("sub", card.question.sub);
+        obj.put("line_number_subheading", card.question.lineNoSubheading);
+        obj.put("line_number_main", card.question.lineNoMain);
+        obj.put("line_number_sub", card.question.lineNoSub);
         obj.put("subheading_align", card.question.css.subheadingAlign);
         obj.put("subheading_align_vertical", card.question.css.subheadingAlignVertical);
         obj.put("subheading_color", card.question.css.subheadingColor);
@@ -283,6 +286,9 @@ public class PackBuildHelper {
         obj.put("subheading", card.answer.subheading);
         obj.put("main", card.answer.main);
         obj.put("sub", card.answer.sub);
+        obj.put("line_number_subheading", card.answer.lineNoSubheading);
+        obj.put("line_number_main", card.answer.lineNoMain);
+        obj.put("line_number_sub", card.answer.lineNoSub);
         obj.put("subheading_align", card.answer.css.subheadingAlign);
         obj.put("subheading_align_vertical", card.answer.css.subheadingAlignVertical);
         obj.put("subheading_color", card.answer.css.subheadingColor);
