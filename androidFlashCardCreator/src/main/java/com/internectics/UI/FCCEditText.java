@@ -2,9 +2,9 @@ package com.internectics.UI;
 
 import android.content.Context;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.view.KeyEvent;
 import android.widget.EditText;
+
 import com.internectics.util.Global;
 
 import timber.log.Timber;
@@ -32,7 +32,7 @@ public class FCCEditText extends EditText {
 
                 mCallbacks.onKeyboardClose(this);
             else
-                Timber.w(Global.debugTag, "mCallbacks for FCCEditText is null");
+                Timber.tag(Global.debugTag).w("mCallbacks for FCCEditText is null");
         }
         return super.onKeyPreIme(keyCode, event);
 

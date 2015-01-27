@@ -2,8 +2,8 @@ package com.internectics.util;
 
 import android.graphics.Color;
 import android.net.Uri;
-import android.util.Log;
 import android.view.Gravity;
+
 import com.internectics.android_flashcardcreator.R;
 
 import java.io.UnsupportedEncodingException;
@@ -41,7 +41,7 @@ public class StringUtils {
      */
     public static String getCurrentTimeDate() {
         String timeDateStr = dateFormater.format(new Date());
-        Timber.d(Global.debugTag, "current time/date is:" + timeDateStr);
+        Timber.tag(Global.debugTag).d( "current time/date is:" + timeDateStr);
         return timeDateStr;
     }
 

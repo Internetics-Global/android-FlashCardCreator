@@ -2,7 +2,9 @@ package com.internectics.fragment;
 
 import android.app.Activity;
 import android.app.AlertDialog;
-import android.content.*;
+import android.content.Context;
+import android.content.DialogInterface;
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
@@ -10,17 +12,33 @@ import android.graphics.Typeface;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
-import android.os.*;
+import android.os.AsyncTask;
+import android.os.Build;
+import android.os.Bundle;
+import android.os.Handler;
 import android.support.v4.app.Fragment;
 import android.text.Editable;
 import android.text.InputType;
 import android.text.TextWatcher;
-import android.util.Log;
 import android.util.TypedValue;
-import android.view.*;
+import android.view.KeyEvent;
+import android.view.LayoutInflater;
+import android.view.MotionEvent;
+import android.view.View;
+import android.view.ViewGroup;
+import android.view.ViewTreeObserver;
+import android.view.WindowManager;
 import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputMethodManager;
-import android.widget.*;
+import android.widget.EditText;
+import android.widget.FrameLayout;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
+import android.widget.TextView;
+import android.widget.Toast;
+
 import com.internectics.UI.FCCEditText;
 import com.internectics.UI.RoundedBottomRightImageView;
 import com.internectics.UI.ScaleHelper;
@@ -37,7 +55,14 @@ import com.internectics.helper.AudioHelper;
 import com.internectics.helper.FileOperationHelper;
 import com.internectics.helper.PackRecordHelper;
 import com.internectics.helper.SymbolHelper;
-import com.internectics.util.*;
+import com.internectics.util.AppConfig;
+import com.internectics.util.AppContext;
+import com.internectics.util.FontHelper;
+import com.internectics.util.Global;
+import com.internectics.util.OpenUDID_manager;
+import com.internectics.util.StringUtils;
+import com.internectics.util.TipHelper;
+import com.internectics.util.UIHelper;
 import com.soundcloud.android.crop.Crop;
 
 import net.londatiga.android.ActionItem;
@@ -198,7 +223,7 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnKeyboa
         }
 
         if (currentCard == null) {
-            Timber.i(Global.debugTag, "Creating a new card is going on");
+            Timber.tag(Global.debugTag).i( "Creating a new card is going on");
             mCurrentPack = currentPack;
             initilizeNewCard();
 
@@ -264,7 +289,7 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnKeyboa
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        Timber.d(Global.debugTag, "onViewCreated in CardDetailFragment is called, cardSN=" + mCurrentCard.cardSN);
+        Timber.tag(Global.debugTag).d( "onViewCreated in CardDetailFragment is called, cardSN=" + mCurrentCard.cardSN);
 
         updateCommonContent();
         switchToQuestionView(false);
@@ -337,13 +362,13 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnKeyboa
 
         setEditTextListener();
 
-        Timber.d(Global.debugTag, "onResume in CardDetailFragment");
+        Timber.tag(Global.debugTag).d( "onResume in CardDetailFragment");
     }
 
 
     @Override
     public void onDestroy() {
-        Timber.d(Global.debugTag, String.format("onDestroy in CardDetailFragment, cardSN = %d",mCurrentCard.cardSN));
+        Timber.tag(Global.debugTag).d( String.format("onDestroy in CardDetailFragment, cardSN = %d",mCurrentCard.cardSN));
         super.onDestroy();
 
         mImage.setImageURI(null);
@@ -356,7 +381,7 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnKeyboa
 
     @Override
     public void onStop() {
-        Timber.d(Global.debugTag, String.format("onStop in CardDetailFragment, cardSN = %d",mCurrentCard.cardSN));
+        Timber.tag(Global.debugTag).d( String.format("onStop in CardDetailFragment, cardSN = %d",mCurrentCard.cardSN));
         super.onStop();
 
 
@@ -385,7 +410,7 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnKeyboa
             mIsSaveNeededAfterResize = false;
             //prepareToSavingTextFontSizeInfo,由于resize后，会主动执行一下，所以这里没有必要了
             mCurrentCard.save(AppContext.getAppContext());
-            Timber.d(Global.debugTag2, "Saving to database after triggerResizeTextToFitFrame in onStop");
+            Timber.tag(Global.debugTag).d("Saving to database after triggerResizeTextToFitFrame in onStop");
         }
 
 
@@ -653,7 +678,7 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnKeyboa
 
         //step2: do next
         if (resultBitmap == null) {
-            Timber.e(Global.debugTag, "resultBitmap is null");
+            Timber.tag(Global.debugTag).e( "resultBitmap is null");
         } else {
 
             File toSaveFile = UIHelper.saveImageToCaches(resultBitmap);
@@ -832,7 +857,9 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnKeyboa
                         intent.putExtra(Intent.EXTRA_TEXT, "");
                         startActivity(Intent.createChooser(intent, "Send Email"));
                     } else if (mCurrentPack.logoURL.contains("http") == true) {
-                        startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(mCurrentPack.logoURL)));
+                        Intent intent = new Intent(getActivity(), WebViewActivity.class);
+                        intent.putExtra("url", mCurrentPack.logoURL);
+                        startActivity(intent);
                     } else {
                         new AlertDialog.Builder(getActivity())
                                 .setTitle("Alert")
@@ -1507,9 +1534,9 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnKeyboa
                     if ((maxLines > 0)&&(maxLines < noOfLines)) {
                         newTextSize =  v.getTextSize() - 1;
                         v.setTextSize(TypedValue.COMPLEX_UNIT_PX,newTextSize);
-                        Timber.d(Global.debugTag4, "maxLines < noOfLines*****triggerResizeTextToFitFrame and is resized on: " + v.getText().toString());
+                        Timber.tag(Global.debugTag4).d("maxLines < noOfLines*****triggerResizeTextToFitFrame and is resized on: " + v.getText().toString());
                     } else  {
-                        Timber.d(Global.debugTag2, "*****triggerResizeTextToFitFrame and is resized on: " + v.getText().toString() + " with text height:" + textHeight + " with textView height:" + viewHeight);
+                        Timber.tag(Global.debugTag2).d("*****triggerResizeTextToFitFrame and is resized on: " + v.getText().toString() + " with text height:" + textHeight + " with textView height:" + viewHeight);
                     }
 
 
@@ -1524,7 +1551,7 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnKeyboa
                         //we only do this during editable mode
                         String text = v.getText().toString();
                         int index = text.length() - 1;
-                        Timber.d(Global.debugTag, text + index);
+                        Timber.tag(Global.debugTag).d( text + index);
                         if (index > 0) {
                             v.setText(text.substring(0, index));
                             if (cursorPosition == index + 1) {
@@ -1551,7 +1578,7 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnKeyboa
 
                     prepareToSavingTextFontSizeInfo();
 
-                    Timber.d(Global.debugTag2, "prepareToSavingTextFontSizeInfo after triggerResizeTextToFitFrame in onStop.CardSN=" + mCurrentCard.cardSN + " on text:" + v.getText());
+                    Timber.tag(Global.debugTag).d("prepareToSavingTextFontSizeInfo after triggerResizeTextToFitFrame in onStop.CardSN=" + mCurrentCard.cardSN + " on text:" + v.getText());
                 }
 
 
@@ -1563,7 +1590,7 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnKeyboa
 
     private void setEditTextListener() {
 
-        Timber.d(Global.debugTag, "setEditTextListener in CardDetailFragment is called, cardSN=" + mCurrentCard.cardSN);
+        Timber.tag(Global.debugTag).d( "setEditTextListener in CardDetailFragment is called, cardSN=" + mCurrentCard.cardSN);
 
         //由于需要字体自适应，自适应的过程会在界面显示出（字体变大或变小），这种体验不好，所以先hide
         if (mMain.getText().toString().length() >0) {
@@ -1638,7 +1665,7 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnKeyboa
                     } else {
                         mCurrentPack.answerTitle = mTitle.getText().toString();
                     }
-                    Timber.d(Global.debugTag, "mTitle has changed");
+                    Timber.tag(Global.debugTag).d( "mTitle has changed");
                 }
             };
             mTitle.addTextChangedListener(mTitleTextWatcher);
@@ -1662,7 +1689,7 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnKeyboa
                         mIsTakeSnapshotAllNeeded = true;
                     }
 
-                    Timber.d(Global.debugTag, "mCreator has changed");
+                    Timber.tag(Global.debugTag).d( "mCreator has changed");
 
                 }
             };
@@ -1687,7 +1714,7 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnKeyboa
                         mIsTakeSnapshotAllNeeded = true;
                     }
 
-                    Timber.d(Global.debugTag, "mJobTitle has changed");
+                    Timber.tag(Global.debugTag).d( "mJobTitle has changed");
 
                 }
             };
@@ -1712,7 +1739,7 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnKeyboa
                         mIsTakeSnapshotAllNeeded = true;
                     }
 
-                    Timber.d(Global.debugTag, "mSidebarTitle has changed");
+                    Timber.tag(Global.debugTag).d( "mSidebarTitle has changed");
 
                 }
             };
@@ -2077,7 +2104,7 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnKeyboa
         }
 
         mCurrentPack.addCard(AppContext.getAppContext(),mCurrentCard);
-        Timber.d(Global.debugTag, "finish execution of saveNewCreatedCard");
+        Timber.tag(Global.debugTag).d( "finish execution of saveNewCreatedCard");
 
         mIsTakeSnapshotAllNeeded = false;
 
@@ -2169,7 +2196,7 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnKeyboa
                 mTitleBackground.setBackgroundResource(R.drawable.card_title_bg_red);
                 break;
             default:
-                Timber.w(Global.debugTag, "Out of range");
+                Timber.tag(Global.debugTag).w( "Out of range");
         }
 
         String templateBackground = StringUtils.convertTemplateBackgroundIndexToString(cardColorTemplateIndex);
@@ -2731,7 +2758,7 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnKeyboa
 
 
             default:
-                Timber.w(Global.debugTag, "mCurrentCard.question.templateID is out of scope");
+                Timber.tag(Global.debugTag).w( "mCurrentCard.question.templateID is out of scope");
         }
 
     }
@@ -3267,7 +3294,7 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnKeyboa
 
 
             default:
-                Timber.w(Global.debugTag, "mCurrentCard.answer.templateID is out of scope");
+                Timber.tag(Global.debugTag).w( "mCurrentCard.answer.templateID is out of scope");
         }
     }
 
@@ -3355,7 +3382,7 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnKeyboa
         CSS currentCSS;
 
         if ((mCurrentFocusedCardContentText == null) || (mCurrentFocusedCardContentText.getTag() == null)) {
-            Timber.e(Global.debugTag,"mCurrentFocusedCardContentText or mCurrentFocusedCardContentText.getTag()  is null during execution on updateCSS");
+            Timber.tag(Global.debugTag).e("mCurrentFocusedCardContentText or mCurrentFocusedCardContentText.getTag()  is null during execution on updateCSS");
             return;
         }
 
@@ -3488,7 +3515,7 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnKeyboa
                         mCurrentFocusedCardContentText.setTextColor(Color.WHITE);
                         break;
                     default:
-                        Timber.w(Global.debugTag, "Out of range of subMenuID");
+                        Timber.tag(Global.debugTag).w( "Out of range of subMenuID");
                 }
                 break;
             case 3:   //font
@@ -3507,7 +3534,7 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnKeyboa
 
                 break;
             default:
-                Timber.w(Global.debugTag, "Out of range of menuID");
+                Timber.tag(Global.debugTag).w( "Out of range of menuID");
         }
 
 
@@ -3523,7 +3550,7 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnKeyboa
     @Override
     public boolean onTouch(View v, MotionEvent event) {
 
-        Timber.d(Global.debugTag, "onTouch happened, event.getAction=" + event.getAction());
+        Timber.tag(Global.debugTag).d( "onTouch happened, event.getAction=" + event.getAction());
 
 
         if ((v.getTag() != null) && (event.getAction() == MotionEvent.ACTION_DOWN)) {
@@ -3632,7 +3659,7 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnKeyboa
         if (mCurrentFocusedCardContentText != null) {
             mIMM.hideSoftInputFromWindow(mCurrentFocusedCardContentText.getWindowToken(), 0);
         } else {
-            Timber.d(Global.debugTag, "mCurrentFocusedCardContentText is null");
+            Timber.tag(Global.debugTag).d( "mCurrentFocusedCardContentText is null");
         }
 
     }
@@ -3645,7 +3672,7 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnKeyboa
         if (mCurrentFocusedCardContentText != null) {
             mIMM.hideSoftInputFromInputMethod(mCurrentFocusedCardContentText.getWindowToken(), 0);
         } else {
-            Timber.d(Global.debugTag, "mCurrentFocusedCardContentText is null");
+            Timber.tag(Global.debugTag).d( "mCurrentFocusedCardContentText is null");
         }
 
     }
@@ -3703,7 +3730,7 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnKeyboa
     }
 
     public void onGridViewItemClicked(int index) {
-        Timber.d(Global.debugTag,"index of symobol/emotion is:" + index);
+        Timber.tag(Global.debugTag).d("index of symobol/emotion is:" + index);
         int start = mCurrentFocusedCardContentText.getSelectionStart();
 
         String beforeString = mCurrentFocusedCardContentText.getText().toString().substring(0,start);
@@ -3711,7 +3738,7 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnKeyboa
 
         mCurrentFocusedCardContentText.setText(beforeString + SymbolHelper.mUnicodeArray[index] + afterString);
 
-        Timber.d(Global.debugTag,"the result is:" + mCurrentFocusedCardContentText.getText().toString());
+        Timber.tag(Global.debugTag).d("the result is:" + mCurrentFocusedCardContentText.getText().toString());
 
         mCurrentFocusedCardContentText.setSelection(start +1);
 

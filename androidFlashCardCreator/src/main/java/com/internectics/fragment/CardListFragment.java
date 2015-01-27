@@ -17,6 +17,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
+
 import com.internectics.UI.RoundedImageView;
 import com.internectics.android_flashcardcreator.MainActivity;
 import com.internectics.android_flashcardcreator.R;
@@ -28,7 +29,13 @@ import com.internectics.util.Global;
 import com.mobeta.android.dslv.DragSortListView;
 import com.mobeta.android.dslv.SimpleDragSortCursorAdapter;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.HashMap;
+import java.util.List;
+
+import timber.log.Timber;
 
 
 /**
@@ -99,7 +106,7 @@ public class CardListFragment extends Fragment {
         mDSLVListView.setRemoveListener(new DragSortListView.RemoveListener() {
             @Override
             public void remove(int which) {
-                Log.d(Global.debugTag, "Card list item is removed" + which);
+                Timber.tag(Global.debugTag).d( "Card list item is removed" + which);
                 removeListItem(which);
             }
         });
@@ -107,7 +114,7 @@ public class CardListFragment extends Fragment {
         mDSLVListView.setDragListener(new DragSortListView.DragListener() {
             @Override
             public void drag(int from, int to) {
-                Log.d(Global.debugTag, String.format("Move card list item from %d to %d", from, to));
+                Timber.tag(Global.debugTag).d( String.format("Move card list item from %d to %d", from, to));
                 dragListItem(from, to);
             }
         });
@@ -244,7 +251,7 @@ public class CardListFragment extends Fragment {
             coverImage.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    Log.d(Global.debugTag, "card item is clicked:" + position);
+                    Timber.tag(Global.debugTag).d( "card item is clicked:" + position);
                     mCallbacks.onItemSelected(position);
                     ((FCCdapter) adapter).setSelectedPosition(position);
                     adapter.notifyDataSetChanged();
@@ -379,11 +386,11 @@ public class CardListFragment extends Fragment {
         //Step3: update list view
         updateListView(0);
 
-        Log.d(Global.debugTag, "test point 0");
+        Timber.tag(Global.debugTag).d("test point 0");
         //Step4: save change
         mCurrentPack.saveAllCards(AppContext.getAppContext());
 
-        Log.d(Global.debugTag, "test point 1");
+        Timber.tag(Global.debugTag).d( "test point 1");
 
     }
 

@@ -2,14 +2,26 @@ package com.internectics.android_flashcardcreator;
 
 import android.content.Context;
 import android.content.res.Configuration;
-import android.hardware.*;
+import android.hardware.Sensor;
+import android.hardware.SensorEvent;
+import android.hardware.SensorEventListener;
+import android.hardware.SensorManager;
 import android.os.Build;
 import android.os.Bundle;
 import android.speech.tts.TextToSpeech;
-import android.support.v4.app.*;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentActivity;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentStatePagerAdapter;
 import android.support.v4.view.ViewPager;
-import android.util.Log;
-import android.view.*;
+import android.view.GestureDetector;
+import android.view.KeyEvent;
+import android.view.MotionEvent;
+import android.view.Surface;
+import android.view.View;
+import android.view.ViewGroup;
+import android.view.Window;
+import android.view.WindowManager;
 import android.widget.ImageView;
 import android.widget.Toast;
 
@@ -23,6 +35,7 @@ import com.internectics.util.AppConfig;
 import com.internectics.util.Global;
 import com.internectics.util.UIHelper;
 import com.internectics.util.VGViewPager;
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
@@ -30,8 +43,7 @@ import java.util.List;
 
 import timber.log.Timber;
 
-
-public class PlayActivity extends FragmentActivity implements SensorEventListener,GestureDetector.OnDoubleTapListener,GestureDetector.OnGestureListener {
+public class PlayActivity extends FragmentActivity implements SensorEventListener,VGViewPager.OnViewPagerClickListener{
 
     private Pack mCurrentPack;
     private int mPosition = 0;
@@ -106,6 +118,9 @@ public class PlayActivity extends FragmentActivity implements SensorEventListene
         mFragments = getFragments();
         FCCPageAdapter pageAdapter = new FCCPageAdapter(getSupportFragmentManager(), mFragments);
         mPager = (VGViewPager) findViewById(R.id.viewpager);
+        mPager.setOnViewPagerClickListener(this);
+
+
 
 
 
@@ -146,7 +161,7 @@ public class PlayActivity extends FragmentActivity implements SensorEventListene
 
         Global.scaleInPlayMode = (float)(widthOfCard/Global.widthOfCardInEditMode);
         if ((Global.scaleInPlayMode >2) || (Global.scaleInPlayMode <0.5)) {
-            Timber.e(Global.debugTag,"the value of scaleInPlayMode is out of normal value");
+            Timber.tag(Global.debugTag).e("the value of scaleInPlayMode is out of normal value");
             Global.scaleInPlayMode = (float)1.2; //default value
         }
 
@@ -162,7 +177,7 @@ public class PlayActivity extends FragmentActivity implements SensorEventListene
             @Override
             public void onPageScrolled(int i, float v, int i2) {
                 if ((mPosition != i) && (i2 == 0)) {
-                    Timber.i(Global.debugTag, "onPageScrolled, page index=" + i + " .mPosition=" + mPosition);
+                    Timber.tag(Global.debugTag).i( "onPageScrolled, page index=" + i + " .mPosition=" + mPosition);
 
                     ((CardDetailFragment) (mFragments.get(i))).switchToQuestionView(false);
 
@@ -210,8 +225,6 @@ public class PlayActivity extends FragmentActivity implements SensorEventListene
 
         mSensorManager = (SensorManager) getSystemService(Context.SENSOR_SERVICE);
 
-        mGestureDetector = new GestureDetector(this);
-
         //check first card to determine whether to hide play sound button
         CardDetailFragment firstDetailFragment = ((CardDetailFragment) (mFragments.get(0)));
         String soundFile = firstDetailFragment.mCurrentCard.question.audioUriFormatStr;
@@ -228,7 +241,7 @@ public class PlayActivity extends FragmentActivity implements SensorEventListene
     private void exeuteTextToSpeechOrPlayAudio(CardDetailFragment cardDetailFragment) {
 
         if (AppConfig.sharedInstance().isMute()) {
-            Timber.i(Global.debugTag,"Can not playAudio because of mute");
+            Timber.tag(Global.debugTag).i("Can not playAudio because of mute");
             return;
         }
 
@@ -275,7 +288,7 @@ public class PlayActivity extends FragmentActivity implements SensorEventListene
             mIsSensorAvailable = true;
         } else {
             mIsSensorAvailable = false;
-            Timber.w(Global.debugTag, "No Sensor.TYPE_ORIENTATION exists");
+            Timber.tag(Global.debugTag).w( "No Sensor.TYPE_ORIENTATION exists");
         }
 
 
@@ -304,6 +317,11 @@ public class PlayActivity extends FragmentActivity implements SensorEventListene
 
         mFragments.clear();
         mFragments = null;
+    }
+
+    @Override
+    public void OnViewPagerClickListener() {
+        switchQuestionAnswerView();
     }
 
     public class FCCPageAdapter extends FragmentStatePagerAdapter {
@@ -335,7 +353,7 @@ public class PlayActivity extends FragmentActivity implements SensorEventListene
         List<Fragment> fList = new ArrayList<Fragment>();
 
         if (mCurrentPack == null) {
-            Timber.w(Global.debugTag, "mCurrentPack could not be null in PlayActictiy");
+            Timber.tag(Global.debugTag).w( "mCurrentPack could not be null in PlayActictiy");
             return fList;
         }
 
@@ -343,7 +361,7 @@ public class PlayActivity extends FragmentActivity implements SensorEventListene
             CardDetailFragment cardDetailFragment = new CardDetailFragment();
             cardDetailFragment.configureParameters(mCurrentPack, cardsArray.get(i), 2);
             fList.add(i, cardDetailFragment);
-            Timber.d(Global.debugTag, String.format("new CardDetailFragment %d", i));
+            Timber.tag(Global.debugTag).d( String.format("new CardDetailFragment %d", i));
 
         }
 
@@ -360,7 +378,7 @@ public class PlayActivity extends FragmentActivity implements SensorEventListene
         CardDetailFragment cardDetailFragment = ((CardDetailFragment) (mFragments.get(mPosition)));
         if ((cardDetailFragment == null) || (cardDetailFragment.mCardSN == null))  {
             //this could happen when cardDetailFragment is not full inflated
-            //Timber.w(Global.debugTag, "cardDetailFragment is not fully intialized during play mode");
+            //Timber.tag(Global.debugTag).w( "cardDetailFragment is not fully intialized during play mode");
             return;
         }
 
@@ -373,7 +391,7 @@ public class PlayActivity extends FragmentActivity implements SensorEventListene
 
         //range of values is 90 degrees to -90 degrees.
         float roll = event.values[2];
-        //Timber.i(Global.debugTag, "roll angle =" + roll);
+        //Timber.tag(Global.debugTag).i( "roll angle =" + roll);
 
         int orientation = getOrientation();
         if (orientation == 0) {
@@ -419,13 +437,13 @@ public class PlayActivity extends FragmentActivity implements SensorEventListene
         if (orientation == Configuration.ORIENTATION_LANDSCAPE) {
             if ((rotation == Surface.ROTATION_0)
                     || (rotation == Surface.ROTATION_90)) {
-                //Timber.d(Global.debugTag, "current rotation is landscape");
+                //Timber.tag(Global.debugTag).d( "current rotation is landscape");
                 return 0; //landscape (for nexus 7, camera is left side of screen)
             }
 
             if ((rotation == Surface.ROTATION_180)
                     || (rotation == Surface.ROTATION_270)) {
-                //Timber.d(Global.debugTag, "current rotation is reverselandscape");
+                //Timber.tag(Global.debugTag).d( "current rotation is reverselandscape");
                 return 1; //reverse landscape   (for nexus 7, camera is right side of screen)
             }
 
@@ -462,106 +480,7 @@ public class PlayActivity extends FragmentActivity implements SensorEventListene
 
 
 
-    @Override
-    public boolean onSingleTapConfirmed(MotionEvent e) {
-        Timber.d(Global.debugTag3, "onSingleTapConfirmed");
-        switchQuestionAnswerView();
-        return false;
-    }
 
-    @Override
-    public boolean onDoubleTap(MotionEvent e) {
-        Timber.d(Global.debugTag3, "onDoubleTap");
-        return false;
-    }
-
-    @Override
-    public boolean onDoubleTapEvent(MotionEvent e) {
-        Timber.d(Global.debugTag3, "onDoubleTapEvent");
-        return false;
-    }
-
-    @Override
-    public boolean onDown(MotionEvent e) {
-        Timber.d(Global.debugTag3, "onDown");
-        return false;
-    }
-
-    @Override
-    public void onShowPress(MotionEvent e) {
-        Timber.d(Global.debugTag3, "onShowPress");
-    }
-
-    @Override
-    public boolean onSingleTapUp(MotionEvent e) {
-        Timber.d(Global.debugTag3, "onSingleTapUp");
-        return false;
-    }
-
-    @Override
-    public boolean onScroll(MotionEvent e1, MotionEvent e2, float distanceX, float distanceY) {
-        Timber.d(Global.debugTag3, "onScroll");
-        return false;
-    }
-
-    @Override
-    public void onLongPress(MotionEvent e) {
-        Log.d(Global.debugTag3, "onLongPress");
-    }
-
-    @Override
-    public boolean onFling(MotionEvent e1, MotionEvent e2, float velocityX, float velocityY) {
-
-        Timber.d(Global.debugTag3, "OnFlying");
-
-        if ((e1 == null) || (e2 == null)) {
-            Timber.d(Global.debugTag3, "e1 or e2 is null");
-          return true;
-        }
-
-        final float xDistance = Math.abs(e1.getX() - e2.getX());
-
-        final float yDistance = Math.abs(e1.getY() - e2.getY());
-
-        if (Math.abs(xDistance) < 100) {
-            if (e1.getRawY() < e2.getRawY() - 30) {
-                Timber.d(Global.debugTag, "Down swipe");
-                switchQuestionAnswerView();
-            } else if (e1.getRawY() > e2.getRawY() + 10) {
-                Timber.d(Global.debugTag, "Up swipe");
-                switchQuestionAnswerView();
-            }
-
-        }
-
-        if (Math.abs(yDistance) < 100) {
-            if (e1.getRawX() > e2.getRawX() + 10) {
-                Timber.d(Global.debugTag, "swipe Left, mPosition is: " + mPosition);
-
-                if (mPosition < mFragments.size() - 1) {
-                    mIsScrollStop = false;
-                    mPager.setCurrentItem(mPosition + 1, true);
-                }
-
-            } else if (e1.getRawX() < e2.getRawX() - 10) {
-                Timber.d(Global.debugTag, "Swipe Right" + mPosition);
-
-                if (mPosition >= 1) {
-                    mIsScrollStop = false;
-                    mPager.setCurrentItem(mPosition - 1, true);
-                }
-            }
-        }
-
-        return true;
-
-    }
-
-    @Override
-    public boolean onTouchEvent(MotionEvent event) {
-        Timber.d(Global.debugTag3, "onTouchEvent");
-        return mGestureDetector.onTouchEvent(event);
-    }
 
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
@@ -583,7 +502,7 @@ public class PlayActivity extends FragmentActivity implements SensorEventListene
                 @Override
                 public void onInit(int status) {
                     if (status == TextToSpeech.SUCCESS) {
-                        Timber.i("TTS", "Initilization Success");
+                        Timber.tag(Global.debugTag).i("TTS", "Initilization Success");
 
 
                         mTTS.setOnUtteranceCompletedListener(new TextToSpeech.OnUtteranceCompletedListener() {
@@ -602,7 +521,7 @@ public class PlayActivity extends FragmentActivity implements SensorEventListene
                                         HashMap<String, String> params = new HashMap<String, String>();
                                         params.put(TextToSpeech.Engine.KEY_PARAM_UTTERANCE_ID,"stringId");//必不可少
                                         mTTS.speak(textToSpeechArray.get(mTextToSpeechContentArrayIndex),TextToSpeech.QUEUE_FLUSH,params);
-                                        Timber.d(Global.debugTag,"speak" + textToSpeechArray.get(mTextToSpeechContentArrayIndex));
+                                        Timber.tag(Global.debugTag).d("speak" + textToSpeechArray.get(mTextToSpeechContentArrayIndex));
                                     } catch (InterruptedException e) {
                                         e.printStackTrace();
                                     }
@@ -618,7 +537,7 @@ public class PlayActivity extends FragmentActivity implements SensorEventListene
 
 
                     } else {
-                        Timber.e("TTS", "Initilization Failed!");
+                        Timber.tag(Global.debugTag).e("TTS", "Initilization Failed!");
                     }
                 }
             });
@@ -649,7 +568,7 @@ public class PlayActivity extends FragmentActivity implements SensorEventListene
             HashMap<String, String> params = new HashMap<String, String>();
             params.put(TextToSpeech.Engine.KEY_PARAM_UTTERANCE_ID,"stringId");//必不可少
             mTTS.speak(textToSpeechArray.get(0),TextToSpeech.QUEUE_FLUSH,params);
-            Timber.d(Global.debugTag,"speak" + textToSpeechArray.get(mTextToSpeechContentArrayIndex));
+            Timber.tag(Global.debugTag).d("speak" + textToSpeechArray.get(mTextToSpeechContentArrayIndex));
 
         }  else {
             playAudio();

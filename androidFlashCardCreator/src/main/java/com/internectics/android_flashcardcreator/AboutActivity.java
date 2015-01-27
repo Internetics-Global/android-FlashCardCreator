@@ -13,6 +13,8 @@ public class AboutActivity extends Activity {
         setTitle(R.string.more_about);
         setContentView(R.layout.about);
 
+
+
         TextView versionTextView = (TextView) findViewById(R.id.version);
         try {
             String versionName = getPackageManager().getPackageInfo(getPackageName(), 0).versionName;

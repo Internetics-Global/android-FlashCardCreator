@@ -2,23 +2,24 @@ package com.internectics.helper;
 
 import android.app.Activity;
 import android.content.SharedPreferences;
-import android.util.Log;
+
 import com.internectics.data.Card;
 import com.internectics.data.Pack;
 import com.internectics.util.Global;
 import com.internectics.util.StringUtils;
 import com.internectics.util.UIHelper;
+
+import net.lingala.zip4j.core.ZipFile;
+import net.lingala.zip4j.exception.ZipException;
+import net.lingala.zip4j.model.ZipParameters;
+import net.lingala.zip4j.util.Zip4jConstants;
+
 import org.json.simple.JSONObject;
 
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
-
-import net.lingala.zip4j.core.ZipFile;
-import net.lingala.zip4j.exception.ZipException;
-import net.lingala.zip4j.model.ZipParameters;
-import net.lingala.zip4j.util.Zip4jConstants;
 
 import timber.log.Timber;
 
@@ -160,7 +161,7 @@ public class PackBuildHelper {
             zipFile.addFiles(packFiles, parameters);
         } catch (ZipException e) {
             e.printStackTrace();
-            Timber.d(Global.debugTag, "zip pack file failure");
+            Timber.tag(Global.debugTag).d( "zip pack file failure");
             return null;
         }
         return packZipFile;

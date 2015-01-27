@@ -7,12 +7,10 @@ import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.res.Configuration;
 import android.content.res.TypedArray;
 import android.graphics.PixelFormat;
 import android.net.Uri;
 import android.os.AsyncTask;
-import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v4.app.Fragment;
@@ -20,11 +18,28 @@ import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 import android.text.InputType;
 import android.util.TypedValue;
-import android.view.*;
+import android.view.Gravity;
+import android.view.KeyEvent;
+import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuItem;
+import android.view.MotionEvent;
+import android.view.View;
+import android.view.WindowManager;
 import android.view.animation.AlphaAnimation;
 import android.view.animation.Animation;
 import android.view.inputmethod.InputMethodManager;
-import android.widget.*;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.FrameLayout;
+import android.widget.ImageView;
+import android.widget.PopupWindow;
+import android.widget.Spinner;
+import android.widget.TextView;
+import android.widget.Toast;
+
 import com.dropbox.client2.DropboxAPI;
 import com.dropbox.client2.android.AndroidAuthSession;
 import com.dropbox.client2.session.TokenPair;
@@ -35,12 +50,25 @@ import com.internectics.fragment.AddPackFragment;
 import com.internectics.fragment.CardDetailFragment;
 import com.internectics.fragment.CardListFragment;
 import com.internectics.fragment.SymbolBoxFragment;
-import com.internectics.helper.*;
 import com.internectics.helper.AmazonSDB.SimpleDBHelper;
-import com.internectics.util.*;
+import com.internectics.helper.DropboxHelper;
+import com.internectics.helper.FileOperationHelper;
+import com.internectics.helper.PackBuildHelper;
+import com.internectics.helper.PackDownloadHelper;
+import com.internectics.helper.PackRecordHelper;
+import com.internectics.helper.PackUploadHelper;
+import com.internectics.helper.SQLiteHelper;
+import com.internectics.helper.ShareLinkHelper;
+import com.internectics.helper.SymbolHelper;
+import com.internectics.util.AppConfig;
+import com.internectics.util.AppContext;
+import com.internectics.util.Global;
+import com.internectics.util.OpenUDID_manager;
+import com.internectics.util.StringUtils;
+import com.internectics.util.TipHelper;
+import com.internectics.util.UIHelper;
 
 import java.io.File;
-import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -101,7 +129,7 @@ public class MainActivity extends FragmentActivity implements
         //Step2: OpenUDID
         OpenUDID_manager.sync(this);
         if (!OpenUDID_manager.isInitialized()) {
-            Timber.w(Global.debugTag, "OpenUDID_manager is not initialized");
+            Timber.tag(Global.debugTag).w("OpenUDID_manager is not initialized");
         }
 
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
@@ -113,7 +141,7 @@ public class MainActivity extends FragmentActivity implements
         addCardButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Timber.d(Global.debugTag, "add card button  is clicked");
+                Timber.tag(Global.debugTag).d("add card button  is clicked");
                 startCreateCard();
                 TipHelper.hideEverthing(MainActivity.this);
 
@@ -317,12 +345,12 @@ public class MainActivity extends FragmentActivity implements
                 break;
 
             case R.id.actionbar_add_card_cancel:
-                Timber.d(Global.debugTag, "Cancel button is clicked");
+                Timber.tag(Global.debugTag).d("Cancel button is clicked");
                 dismissCardCreateWindow();
                 break;
 
             case R.id.actionbar_add_card_save:
-                Timber.d(Global.debugTag, "Save button is clicked");
+                Timber.tag(Global.debugTag).d("Save button is clicked");
                 saveNewCreatedCard();
                 break;
 
@@ -546,7 +574,7 @@ public class MainActivity extends FragmentActivity implements
 
 
     private boolean checkDownloadable (String itemName) {
-        Timber.d(Global.debugTag, "Now begin to execute checkDownloadable");
+        Timber.tag(Global.debugTag).d("Now begin to execute checkDownloadable");
 
         boolean result = false;
 
@@ -605,7 +633,7 @@ public class MainActivity extends FragmentActivity implements
                 getSupportFragmentManager().beginTransaction()
                         .replace(R.id.card_detail_container, mCardDetailFragment).commitAllowingStateLoss();
             }  else {
-                Timber.e(Global.debugTag,"Out of index of array during executing onItemSelected");
+                Timber.tag(Global.debugTag).e("Out of index of array during executing onItemSelected");
             }
 
         } else {
@@ -689,7 +717,7 @@ public class MainActivity extends FragmentActivity implements
 
         getSupportFragmentManager().beginTransaction().remove(fragment).commitAllowingStateLoss();
 
-        Timber.w(Global.debugTag, String.format("FinishSnapShot on cardSN = %d",fragment.mCurrentCard.cardID));
+        Timber.tag(Global.debugTag).w(String.format("FinishSnapShot on cardSN = %d",fragment.mCurrentCard.cardID));
     }
 
 
@@ -932,7 +960,7 @@ public class MainActivity extends FragmentActivity implements
         int actionbarHeight = 0;
         if (getTheme().resolveAttribute(android.R.attr.actionBarSize, tv, true)) {
             actionbarHeight = TypedValue.complexToDimensionPixelSize(tv.data, getResources().getDisplayMetrics());
-            Timber.d(Global.debugTag, "actionbar height is:" + actionbarHeight);
+            Timber.tag(Global.debugTag).d("actionbar height is:" + actionbarHeight);
         }
 
         WindowManager.LayoutParams params = new WindowManager.LayoutParams(
@@ -947,7 +975,7 @@ public class MainActivity extends FragmentActivity implements
         mCSSToolbar.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View v, MotionEvent event) {
-                Timber.d(Global.debugTag, "touching mCSSToolbar");
+                Timber.tag(Global.debugTag).d("touching mCSSToolbar");
                 return false;
             }
         });
@@ -1134,7 +1162,7 @@ public class MainActivity extends FragmentActivity implements
     public void prepareCSSToolbar() {
         if ((mCSSToolbar == null) || (mCSSToolbar.getParent() == null)) {
             initializeCSSToolbar();
-            Timber.d(Global.debugTag, "initializeCSSToolbar is called");
+            Timber.tag(Global.debugTag).d("initializeCSSToolbar is called");
         }
     }
 
@@ -1157,7 +1185,7 @@ public class MainActivity extends FragmentActivity implements
             spinnerColor.setSelection(0);
             spinnerSize.setSelection(0);
 
-            Timber.d(Global.debugTag, "prepareCSSToolbar is called");
+            Timber.tag(Global.debugTag).d("prepareCSSToolbar is called");
 
             mIsKeyboardVisible = true;
 
@@ -1168,7 +1196,7 @@ public class MainActivity extends FragmentActivity implements
 
     public void removeCSSToolbar() {
         if (mCSSToolbar == null) {
-            Timber.w(Global.debugTag, "rmCSSToolbar is null when executing removeCSSToolbar");
+            Timber.tag(Global.debugTag).w("rmCSSToolbar is null when executing removeCSSToolbar");
             return;
         } else {
             WindowManager wm = (WindowManager) getSystemService(WINDOW_SERVICE);
@@ -1176,7 +1204,7 @@ public class MainActivity extends FragmentActivity implements
                 mCSSToolbar.setVisibility(View.GONE);
                 wm.removeView(mCSSToolbar);
                 mCSSToolbar = null;
-                Timber.d(Global.debugTag, "removeCSSToolbar is called");
+                Timber.tag(Global.debugTag).d("removeCSSToolbar is called");
             }
 
             mIsKeyboardVisible = false;

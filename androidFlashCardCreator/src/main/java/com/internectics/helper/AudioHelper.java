@@ -1,14 +1,7 @@
 package com.internectics.helper;
 
-import android.app.AlertDialog;
 import android.media.MediaPlayer;
 import android.media.MediaRecorder;
-import android.os.AsyncTask;
-import android.view.View;
-
-import com.internectics.android_flashcardcreator.R;
-import com.internectics.util.AppConfig;
-import com.internectics.util.AppContext;
 
 import junit.framework.Assert;
 

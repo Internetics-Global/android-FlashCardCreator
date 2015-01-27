@@ -19,16 +19,18 @@ import android.preference.PreferenceManager;
 import android.provider.MediaStore;
 import android.support.v4.app.Fragment;
 import android.text.InputType;
-import android.text.SpannableString;
-import android.text.style.UnderlineSpan;
-import android.util.Log;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.EditorInfo;
-import android.widget.*;
+import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
+import android.widget.BaseAdapter;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.ImageView;
+import android.widget.TextView;
 
 import com.internectics.UI.SmoothGallery;
 import com.internectics.android_flashcardcreator.MainActivity;
@@ -38,7 +40,11 @@ import com.internectics.android_flashcardcreator.WebViewActivity;
 import com.internectics.data.Pack;
 import com.internectics.data.User;
 import com.internectics.helper.FileOperationHelper;
-import com.internectics.util.*;
+import com.internectics.util.AppContext;
+import com.internectics.util.Global;
+import com.internectics.util.OpenUDID_manager;
+import com.internectics.util.StringUtils;
+import com.internectics.util.UIHelper;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -127,7 +133,7 @@ public class PackListFragment extends Fragment {
                     DialogFragment dialogFragment = new AddPackFragment();
                     dialogFragment.show(getActivity().getFragmentManager(), "add_pack_fragment");
                 } else {
-                    Timber.d(Global.debugTag, "Index of pack in pack list is:" + position);
+                    Timber.tag(Global.debugTag).d( "Index of pack in pack list is:" + position);
                     Intent intent = new Intent();
                     intent.setAction(Global.BROADCAST_ACTION_UPDATE_MASTER_VIEW);
                     intent.putExtra(Global.KEY_FROM, Global.BROADCAST_EXTRA_FROM_PACK_SELECTED);
@@ -409,7 +415,7 @@ public class PackListFragment extends Fragment {
 
                     changeCoverImageButton.setVisibility(View.INVISIBLE);
                 }
-                //Timber.d(Global.debugTag3,currentPack.creatorID + "====" + OpenUDID_manager.getOpenUDID() + "----" + position + "packID: " + currentPack.packID + "PackID2: " + ((MainActivity)getActivity()).packIDForMasterViewPack);
+                //Timber.tag(Global.debugTag3).d(currentPack.creatorID + "====" + OpenUDID_manager.getOpenUDID() + "----" + position + "packID: " + currentPack.packID + "PackID2: " + ((MainActivity)getActivity()).packIDForMasterViewPack);
 
                 packNameView.setText(mUser.packs.get(position -1).packName);
 
@@ -458,12 +464,12 @@ public class PackListFragment extends Fragment {
                 }
 
                 if (resultBitmap == null) {
-                    Timber.w(Global.debugTag, "resultBitmap is null");
+                    Timber.tag(Global.debugTag).w( "resultBitmap is null");
                 } else {
                     File toSaveFile = UIHelper.saveImageToCaches(resultBitmap);
                     Pack currentPack = mUser.packs.get(mIndexOfCurrentPack);
                     currentPack.coverImageUriFormatStr = FileOperationHelper.convertToUriFormatFile(toSaveFile);
-                    Timber.d(Global.debugTag, "currentPack.coverImageUriFormatStr is " + currentPack.coverImageUriFormatStr);
+                    Timber.tag(Global.debugTag).d( "currentPack.coverImageUriFormatStr is " + currentPack.coverImageUriFormatStr);
                     currentPack.save(AppContext.getAppContext());
                     mUser.sortPacks(mSortType);
                     ((ImageAdapter) mGallery.getAdapter()).notifyDataSetChanged();
@@ -476,13 +482,13 @@ public class PackListFragment extends Fragment {
     public void onStop() {
         super.onStop();
 
-        Timber.d("ccaa","onStop in PackListFragment");
+        Timber.tag(Global.debugTag).d("onStop in PackListFragment");
     }
 
     @Override
     public void onDestroy() {
         mGallery.setAdapter(null);
         super.onDestroy();
-        Timber.d("ccaa","onDestory in PackListFragment");
+        Timber.tag(Global.debugTag).d("onDestory in PackListFragment");
     }
 }

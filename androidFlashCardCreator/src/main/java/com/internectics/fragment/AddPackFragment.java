@@ -9,11 +9,19 @@ import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
-import android.util.Log;
-import android.view.*;
+import android.view.KeyEvent;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.view.Window;
+import android.view.WindowManager;
 import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputMethodManager;
-import android.widget.*;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.ImageView;
+import android.widget.TextView;
+import android.widget.Toast;
 
 import com.internectics.android_flashcardcreator.MainActivity;
 import com.internectics.android_flashcardcreator.R;
@@ -22,7 +30,11 @@ import com.internectics.data.Pack;
 import com.internectics.data.User;
 import com.internectics.helper.FileOperationHelper;
 import com.internectics.helper.PackRecordHelper;
-import com.internectics.util.*;
+import com.internectics.util.AppConfig;
+import com.internectics.util.AppContext;
+import com.internectics.util.Global;
+import com.internectics.util.OpenUDID_manager;
+import com.internectics.util.UIHelper;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -241,7 +253,7 @@ public class AddPackFragment extends DialogFragment implements TextView.OnEditor
                 }
 
                 if (resultBitmap == null) {
-                    Timber.w(Global.debugTag, "resultBitmap is null");
+                    Timber.tag(Global.debugTag).w( "resultBitmap is null");
                 } else {
                     File toSaveFile = UIHelper.saveImageToCaches(resultBitmap);
                     ImageView coverImageView = (ImageView) mContentView
@@ -249,7 +261,7 @@ public class AddPackFragment extends DialogFragment implements TextView.OnEditor
                     coverImageView.setImageBitmap(resultBitmap);
 
                     pack.coverImageUriFormatStr = FileOperationHelper.convertToUriFormatFile(toSaveFile);
-                    Timber.d(Global.debugTag, "pack.coverImageUriFormatStr = " + pack.coverImageUriFormatStr);
+                    Timber.tag(Global.debugTag).d( "pack.coverImageUriFormatStr = " + pack.coverImageUriFormatStr);
                 }
             }
         }

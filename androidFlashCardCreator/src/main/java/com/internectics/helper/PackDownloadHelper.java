@@ -15,9 +15,14 @@ import com.internectics.data.Pack;
 import com.internectics.helper.AmazonSDB.SimpleDBHelper;
 import com.internectics.util.AppConfig;
 import com.internectics.util.Global;
+
 import net.lingala.zip4j.core.ZipFile;
 
-import java.io.*;
+import java.io.BufferedInputStream;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.InputStream;
+import java.io.OutputStream;
 import java.net.URL;
 import java.net.URLConnection;
 import java.util.HashMap;
@@ -108,7 +113,7 @@ public class PackDownloadHelper extends AsyncTask<Void, Long, Boolean> {
             return true;
         } catch (Exception e) {
             e.printStackTrace();
-            Log.e(Global.debugTag,"Download failed:" + e.getCause() );
+            Timber.tag(Global.debugTag).e("Download failed:" + e.getCause() );
             mErrorMsg = "Download failed";
         }
         return false;
@@ -154,7 +159,7 @@ public class PackDownloadHelper extends AsyncTask<Void, Long, Boolean> {
 
 
             } catch (Exception e) {
-                Log.e(Global.debugTag,"Error:", e.getCause());
+                Timber.tag(Global.debugTag).e("Error:" + e.getCause());
                 e.printStackTrace();
             }
 
@@ -190,7 +195,7 @@ public class PackDownloadHelper extends AsyncTask<Void, Long, Boolean> {
         if (mDownloadedLinkage != null) {
             //我们的保存策略与share时不一样，请注意
             AppConfig.sharedInstance().set(Integer.toString(packID),mDownloadedLinkage);
-            Timber.d(Global.debugTag, "save downloaded link:" + mDownloadedLinkage + "with packID=" + packID);
+            Timber.tag(Global.debugTag).d( "save downloaded link:" + mDownloadedLinkage + "with packID=" + packID);
         }
 
 
@@ -202,7 +207,7 @@ public class PackDownloadHelper extends AsyncTask<Void, Long, Boolean> {
     }
 
     private static void updateDownloadLimitCount () {
-        Timber.d(Global.debugTag, "Now begin to execute updateDownloadLimitCount");
+        Timber.tag(Global.debugTag).d( "Now begin to execute updateDownloadLimitCount");
         final HashMap<String, String> rowData = new HashMap<String, String>();
         rowData.put("currentNo",String.format("%d",Global.currentAmazonSimpleDBItemDownloadCount + 1));
 

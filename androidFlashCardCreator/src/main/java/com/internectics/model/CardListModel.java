@@ -1,15 +1,17 @@
 package com.internectics.model;
 
 import android.net.Uri;
-import android.util.Log;
+
 import com.internectics.data.Card;
 import com.internectics.data.Pack;
 import com.internectics.data.User;
-import com.internectics.util.AppConfig;
 import com.internectics.util.AppContext;
-import com.internectics.util.Global;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.HashMap;
+import java.util.List;
 
 public class CardListModel {
 

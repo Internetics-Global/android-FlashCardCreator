@@ -3,7 +3,11 @@ package com.internectics.helper;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Service;
-import android.content.*;
+import android.content.ClipData;
+import android.content.ClipboardManager;
+import android.content.Context;
+import android.content.DialogInterface;
+import android.content.Intent;
 import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
@@ -15,11 +19,17 @@ import android.view.Gravity;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.Toast;
+
 import com.dropbox.client2.DropboxAPI;
 import com.dropbox.client2.exception.DropboxException;
 import com.internectics.data.Pack;
 import com.internectics.helper.AmazonSDB.SimpleDBHelper;
 import com.internectics.util.Global;
+import com.nostra13.socialsharing.common.AuthListener;
+import com.nostra13.socialsharing.common.PostListener;
+import com.nostra13.socialsharing.facebook.FacebookEvents;
+import com.nostra13.socialsharing.facebook.FacebookFacade;
+
 import org.apache.http.HttpResponse;
 import org.apache.http.HttpStatus;
 import org.apache.http.StatusLine;
@@ -35,11 +45,6 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.HashMap;
 import java.util.List;
-
-import com.nostra13.socialsharing.common.AuthListener;
-import com.nostra13.socialsharing.common.PostListener;
-import com.nostra13.socialsharing.facebook.FacebookEvents;
-import com.nostra13.socialsharing.facebook.FacebookFacade;
 
 import timber.log.Timber;
 
@@ -95,12 +100,12 @@ public class ShareLinkHelper extends AsyncTask<Void, Long, Boolean> {
                     return false;
                 }
                 mUnshortedFCCShareLink = shareLink.replace("https","fcc").replace("http","fcc");
-                Timber.d(Global.debugTag, "the fcc share linkage is: " + mUnshortedFCCShareLink);
+                Timber.tag(Global.debugTag).d( "the fcc share linkage is: " + mUnshortedFCCShareLink);
                 mRedirectedShareLink = getRidirectedURL(mUnshortedFCCShareLink);
                 if (mRedirectedShareLink.indexOf("http://") != 0) {
                     Toast.makeText(mActivity, "Redirect sevice is not available now, please try again", Toast.LENGTH_LONG).show();
                 } else {
-                    Timber.d(Global.debugTag, "the shareLink is: " + mRedirectedShareLink);
+                    Timber.tag(Global.debugTag).d( "the shareLink is: " + mRedirectedShareLink);
                     PackRecordHelper.savePackUploadRecord(mActivity, mCurentPack, mRedirectedShareLink,null);
 
                 }
@@ -179,7 +184,7 @@ public class ShareLinkHelper extends AsyncTask<Void, Long, Boolean> {
             final HttpURLConnection urlConnection = (HttpURLConnection) url.openConnection();
             urlConnection.setInstanceFollowRedirects(false); //this is very important
             location = urlConnection.getHeaderField("location");
-            Log.d(Global.debugTag,"unshortened url is: " + location);
+            Timber.tag(Global.debugTag).d("unshortened url is: " + location);
 
         } catch (MalformedURLException e) {
             e.printStackTrace();
@@ -220,17 +225,17 @@ public class ShareLinkHelper extends AsyncTask<Void, Long, Boolean> {
         }
 
         if (responseString.contains("http://") == false) {
-            Log.e(Global.debugTag,"The generated redirected URL from tinyurl.com is not correct:" + responseString);
+            Timber.tag(Global.debugTag).e("The generated redirected URL from tinyurl.com is not correct:" + responseString);
             responseString = "";
         } else {
-            Log.d(Global.debugTag,"The generated redirected URL from tinyurl.com is:" + responseString);
+            Timber.tag(Global.debugTag).d("The generated redirected URL from tinyurl.com is:" + responseString);
         }
 
         return responseString;
     }
 
     public boolean insertIntoAmazonSimpleDB(final String itemName, int maxNo) {
-        Log.d(Global.debugTag, "Now begin to execute insertIntoAmazonSimpleDB");
+        Timber.tag(Global.debugTag).d( "Now begin to execute insertIntoAmazonSimpleDB");
         boolean result = false;
         final HashMap<String, String> rowData = new HashMap<String, String>();
         rowData.put("currentNo","0");
@@ -323,7 +328,7 @@ public class ShareLinkHelper extends AsyncTask<Void, Long, Boolean> {
                 break;
             }
             case 2: {
-                Timber.d(Global.debugTag, "Email share");
+                Timber.tag(Global.debugTag).d( "Email share");
                 Intent emailIntent = new Intent(android.content.Intent.ACTION_SEND);
                 emailIntent.putExtra(android.content.Intent.EXTRA_SUBJECT, "Hi All");
                 emailIntent.setType("message/rfc822");
@@ -332,7 +337,7 @@ public class ShareLinkHelper extends AsyncTask<Void, Long, Boolean> {
                 break;
             }
             case 3: {
-                Timber.d(Global.debugTag, "Copy");
+                Timber.tag(Global.debugTag).d( "Copy");
                 ClipboardManager clipboard = (ClipboardManager) mActivity.getSystemService(Service.CLIPBOARD_SERVICE);
                 ClipData clip = ClipData.newPlainText( "share linkage",shareLink);
                 clipboard.setPrimaryClip(clip);

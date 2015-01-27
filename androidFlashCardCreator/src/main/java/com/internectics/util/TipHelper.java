@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.view.View;
 
 import com.internectics.android_flashcardcreator.R;
+
 import it.sephiroth.android.library.tooltip.TooltipManager;
 
 /**

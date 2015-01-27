@@ -2,7 +2,7 @@ package com.internectics.data;
 
 import android.content.Context;
 import android.database.Cursor;
-import android.util.Log;
+
 import com.internectics.helper.FileOperationHelper;
 import com.internectics.helper.SQLiteHelper;
 import com.internectics.util.Global;
@@ -45,14 +45,14 @@ public class Card {
 
         HashMap<String, Object> questionMap = (HashMap<String, Object>) dataDict.get("question");
         if (questionMap.size() == 0) {
-            Timber.d(Global.debugTag, "questionMap.size() is 0");
+            Timber.tag(Global.debugTag).d( "questionMap.size() is 0");
         } else {
             this.question = (new Question()).initWithDictionary(questionMap);
         }
 
         HashMap<String, Object> answerMap = (HashMap<String, Object>) dataDict.get("answer");
         if (answerMap.size() == 0) {
-            Timber.d(Global.debugTag, "answerMap.size() is 0");
+            Timber.tag(Global.debugTag).d( "answerMap.size() is 0");
         } else {
             this.answer = (new Answer()).initWithDictionary(answerMap);
         }
@@ -110,7 +110,7 @@ public class Card {
     private void insert(Context context) {
         if (cardID == -1) {
             cardID = Global.generateNoRepeatInt();
-            Timber.d(Global.debugTag, "Generated random but no-repeat cardID is:" + cardID);
+            Timber.tag(Global.debugTag).d( "Generated random but no-repeat cardID is:" + cardID);
         }
         String query = String.format("INSERT INTO Cards_Tables(card_id, pack_id, cover_image, template_background, card_sn) VALUES (%d, %d, \"%s\", \"%s\", %d)", cardID, packID, coverImageUriFormatStr, templateBackground, cardSN);
         SQLiteHelper.defaultDatabase(context).execSQL(query);
@@ -125,9 +125,9 @@ public class Card {
         if ((!StringUtils.isNumeric(coverImageUriFormatStr))&&(!coverImageUriFormatStr.contains("placeholder"))) {
             File file = new File(FileOperationHelper.deleteUriSchemeHeader(this.coverImageUriFormatStr));
             if (file.delete()) {
-                Timber.d(Global.debugTag, "Successful to delete coverImageUriFormatStr file");
+                Timber.tag(Global.debugTag).d( "Successful to delete coverImageUriFormatStr file");
             } else {
-                Timber.e(Global.debugTag, "Fail to delete coverImageUriFormatStr file");
+                Timber.tag(Global.debugTag).e( "Fail to delete coverImageUriFormatStr file");
             }
         }
 

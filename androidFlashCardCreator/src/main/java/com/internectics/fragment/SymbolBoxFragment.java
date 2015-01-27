@@ -10,6 +10,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.AlphaAnimation;
 import android.view.animation.Animation;
+
 import com.internectics.android_flashcardcreator.R;
 import com.internectics.helper.SymbolHelper;
 

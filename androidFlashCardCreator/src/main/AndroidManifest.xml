@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-          package="com.internectics.android_flashcardcreator"
-          xmlns:tools="http://schemas.android.com/tools"
-          android:versionCode="1"
-          android:versionName="1.0.0">
+    package="com.internectics.android_flashcardcreator"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:versionCode="1"
+    android:versionName="1.0.0">
 
     <supports-screens
         android:requiresSmallestWidthDp="510" />
@@ -24,30 +24,30 @@
     <uses-permission android:name="android.permission.RECORD_AUDIO" />
 
     <uses-sdk
-            android:minSdkVersion="15"
-            android:targetSdkVersion="20"/>
+        android:minSdkVersion="15"
+        android:targetSdkVersion="20"/>
 
     <application
-            android:name="com.internectics.util.AppContext"
-            android:allowBackup="false"
-            android:hardwareAccelerated="false"
-            android:largeHeap="true"
-            android:icon="@drawable/fcc_launcher"
-            tools:replace="icon, label,android:allowBackup"
-            android:label="@string/app_name"
-            android:theme="@style/AppTheme">
+        android:name="com.internectics.util.AppContext"
+        android:allowBackup="false"
+        android:hardwareAccelerated="false"
+        android:largeHeap="true"
+        android:icon="@drawable/fcc_launcher"
+        tools:replace="icon, label,android:allowBackup"
+        android:label="@string/app_name"
+        android:theme="@style/AppTheme">
 
         <meta-data android:name="com.facebook.sdk.ApplicationId" android:value="@string/app_id"/>
 
         <activity
-                android:name="com.internectics.android_flashcardcreator.MainActivity"
-                android:label="@string/app_name"
-                android:windowSoftInputMode="adjustPan"
-                android:configChanges="orientation"
-                android:screenOrientation="sensorLandscape">
+            android:name="com.internectics.android_flashcardcreator.MainActivity"
+            android:label="@string/app_name"
+            android:windowSoftInputMode="adjustPan"
+            android:configChanges="orientation"
+            android:screenOrientation="sensorLandscape">
             <intent-filter>
                 <data
-                        android:scheme="fcc"/>
+                    android:scheme="fcc"/>
 
                 <action android:name="android.intent.action.VIEW"/>
 
@@ -56,9 +56,9 @@
             </intent-filter>
         </activity>
         <activity
-                android:name="com.dropbox.client2.android.AuthActivity"
-                android:configChanges="orientation|keyboard"
-                android:launchMode="singleTask">
+            android:name="com.dropbox.client2.android.AuthActivity"
+            android:configChanges="orientation|keyboard"
+            android:launchMode="singleTask">
             <intent-filter>
                 <!-- Change this to be db- followed by your app key -->
                 <data android:scheme="db-rl7510fe1641dyl"/>
@@ -68,18 +68,19 @@
             </intent-filter>
         </activity>
         <activity
-                android:name="com.internectics.android_flashcardcreator.PlayActivity"
-                android:windowSoftInputMode="stateAlwaysHidden"
-                android:screenOrientation="landscape">
+            android:name="com.internectics.android_flashcardcreator.PlayActivity"
+            android:windowSoftInputMode="stateAlwaysHidden"
+            android:screenOrientation="landscape">
         </activity>
         <activity
             android:name="com.internectics.android_flashcardcreator.VideoViewActivity"
             android:windowSoftInputMode="stateAlwaysHidden"
             android:screenOrientation="landscape">
         </activity>
-        <activity android:name=".MoreActivity"/>
+        <activity android:name=".MoreActivity"
+            android:screenOrientation="sensorLandscape"/>
         <activity android:name=".WebViewActivity"
-                  android:screenOrientation="sensorLandscape"/>
+            android:screenOrientation="sensorLandscape"/>
         <activity android:name=".AboutActivity"/>
         <activity android:name=".AppStart" android:theme="@android:style/Theme.NoTitleBar.Fullscreen" android:screenOrientation="landscape">
             <intent-filter>

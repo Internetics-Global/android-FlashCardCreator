@@ -6,7 +6,6 @@ import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 
 import java.util.Collection;
-import java.util.Collections;
 import java.util.Map;
 
 public class Global {

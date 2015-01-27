@@ -2,6 +2,7 @@ package com.internectics.helper;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+
 import com.internectics.data.Pack;
 import com.internectics.util.AppContext;
 import com.internectics.util.Global;

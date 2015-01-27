@@ -1,9 +1,12 @@
 package com.internectics.helper;
 
 import android.content.Context;
-import android.util.Log;
 import android.widget.Toast;
+
 import com.internectics.util.Global;
+
+import net.lingala.zip4j.core.ZipFile;
+import net.lingala.zip4j.exception.ZipException;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -11,10 +14,6 @@ import java.io.FileOutputStream;
 import java.util.ArrayList;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipOutputStream;
-
-
-import net.lingala.zip4j.core.ZipFile;
-import net.lingala.zip4j.exception.ZipException;
 
 import timber.log.Timber;
 
@@ -76,7 +75,7 @@ public class ZipFileHelper {
 
         } catch (ZipException e) {
             e.printStackTrace();
-            Timber.d(Global.debugTag, "unzip failed:" + e.getCause());
+            Timber.tag(Global.debugTag).d(Global.debugTag, "unzip failed:" + e.getCause());
             Toast.makeText(context, "Wrong password", Toast.LENGTH_LONG).show();
         }
 

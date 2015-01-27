@@ -1,16 +1,14 @@
 package com.internectics.util;
 
 import android.content.Context;
-import android.graphics.Rect;
 import android.support.v4.view.ViewPager;
 import android.util.AttributeSet;
 import android.view.MotionEvent;
 import android.view.View;
-import android.view.animation.DecelerateInterpolator;
-import android.widget.*;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
+
 import com.internectics.android_flashcardcreator.R;
-import android.util.Log;
-import java.lang.reflect.Field;
 
 import timber.log.Timber;
 
@@ -23,19 +21,20 @@ import timber.log.Timber;
  */
 public class VGViewPager extends ViewPager {
 
+    protected OnViewPagerClickListener mOnViewPagerItemClickListener;
+
     public VGViewPager(Context context) {
         super(context);
-        setMyScroller();
     }
 
     public VGViewPager(Context context, AttributeSet attrs) {
         super(context, attrs);
-        setMyScroller();
     }
 
     @Override
     public boolean onInterceptTouchEvent(MotionEvent event) {
         super.onInterceptTouchEvent(event);
+        Timber.tag(Global.debugTag4).d("onInterceptTouchEvent for VGViewPager");
 
         int[] location = new int[2];
 
@@ -47,7 +46,7 @@ public class VGViewPager extends ViewPager {
         //由于ViewPager包含多个card，而通过findViewById会只获取到第一个，这样就会出现问题（比如当前显示第二个卡片，但是这里就会获取到第一个）
         ImageView logo_image = (ImageView)findViewWithTag(Global.mLogoImage_Showing);
         if ((logo_image != null) && isViewContains(logo_image,hitXInScreen,hitYInScreen)) {
-            Timber.d(Global.debugTag, "touch location in logo_image");
+            Timber.tag(Global.debugTag4).d( "touch location in logo_image");
             return false;
         }
 
@@ -55,7 +54,7 @@ public class VGViewPager extends ViewPager {
         if ((image != null) && (image.getVisibility() == VISIBLE)) {
             if (isViewContains(image,hitXInScreen,hitYInScreen)) {
                 Boolean bool = image.isEnabled();
-                Timber.d(Global.debugTag, "touch location in image，enable=  "+bool);
+                Timber.tag(Global.debugTag4).d( "touch location in image，enable=  "+bool);
                 return false;
             }
         }
@@ -64,7 +63,7 @@ public class VGViewPager extends ViewPager {
         if ((image2 != null) && (image2.getVisibility() == VISIBLE)) {
             if (isViewContains(image2,hitXInScreen,hitYInScreen)) {
                 Boolean bool = image2.isEnabled();
-                Timber.d(Global.debugTag, "touch location in image2，enable=  "+bool);
+                Timber.tag(Global.debugTag4).d( "touch location in image2，enable=  "+bool);
                 return false;
             }
         }
@@ -73,9 +72,10 @@ public class VGViewPager extends ViewPager {
         LinearLayout creatorLayout = (LinearLayout) findViewById(R.id.creator_layout);
         if (isViewContains(creatorLayout,hitXInScreen,hitYInScreen))
         {
-            Timber.d(Global.debugTag,"touch location in creatorLayout");
+            Timber.tag(Global.debugTag4).d("touch location in creatorLayout");
             return false;
         }
+
         return true;
     }
 
@@ -96,40 +96,54 @@ public class VGViewPager extends ViewPager {
         return true;
     }
 
+    private boolean isSwipeAction = false;
+
     @Override
     public boolean onTouchEvent(MotionEvent ev) {
         super.onTouchEvent(ev);
-        //Timber.d(Global.debugTag, "onTouchEvent for VGViewPager");
+
+        switch (ev.getAction()) {
+            case MotionEvent.ACTION_DOWN:
+                Timber.tag(Global.debugTag4).d("ACTION_DOWN");
+                isSwipeAction = false;
+                return true;
+            case MotionEvent.ACTION_MOVE:
+                Timber.tag(Global.debugTag4).d("ACTION_MOVE");
+                isSwipeAction = true;
+                requestDisallowInterceptTouchEvent(true);
+                break;
+            case MotionEvent.ACTION_UP:
+                Timber.d("ACTION_UP");
+                requestDisallowInterceptTouchEvent(false);
+                if (isSwipeAction == false) {
+                    if (mOnViewPagerItemClickListener != null) {
+                        mOnViewPagerItemClickListener.OnViewPagerClickListener();
+                    }
+                }
+                isSwipeAction = false;
+                break;
+            case MotionEvent.ACTION_CANCEL:
+                Timber.tag(Global.debugTag4).d("ACTION_CANCEL");
+                requestDisallowInterceptTouchEvent(false);
+                isSwipeAction =false;
+                break;
+            default:
+                Timber.tag(Global.debugTag).d("default");
+                break;
+        }
+
         return false;
+
     }
 
 
-    private void setMyScroller()
-    {
-        try
-        {
-            Class<?> viewpager = ViewPager.class;
-            Field scroller = viewpager.getDeclaredField("mScroller");
-            scroller.setAccessible(true);
-            scroller.set(this, new MyScroller(getContext()));
-        } catch (Exception e)
-        {
-            e.printStackTrace();
-        }
+    public static interface OnViewPagerClickListener {
+        public void OnViewPagerClickListener();
     }
 
-    public class MyScroller extends Scroller
+    public void setOnViewPagerClickListener(OnViewPagerClickListener listener)
     {
-        public MyScroller(Context context)
-        {
-            super(context, new DecelerateInterpolator());
-        }
-
-        @Override
-        public void startScroll(int startX, int startY, int dx, int dy, int duration)
-        {
-            super.startScroll(startX, startY, dx, dy, 500 /*1 secs*/);
-        }
+        mOnViewPagerItemClickListener = listener;
     }
 
 }

@@ -2,6 +2,7 @@ package com.internectics.data;
 
 import android.content.Context;
 import android.database.Cursor;
+
 import com.internectics.android_flashcardcreator.R;
 import com.internectics.helper.SQLiteHelper;
 import com.internectics.util.AppContext;

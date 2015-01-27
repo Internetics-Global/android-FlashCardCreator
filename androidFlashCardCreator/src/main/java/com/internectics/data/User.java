@@ -3,7 +3,7 @@ package com.internectics.data;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
-import android.util.Log;
+
 import com.internectics.helper.SQLiteHelper;
 import com.internectics.util.Global;
 
@@ -73,7 +73,7 @@ public class User {
         for (int i = 0; i < packs.size(); i++) {
             if (packs.get(i).packID == pack.packID) {
                 isExist = true;
-                Timber.w(Global.debugTag, "addPack failure because already existence");
+                Timber.tag(Global.debugTag).w( "addPack failure because already existence");
                 break;
             }
         }
@@ -133,11 +133,11 @@ public class User {
 
         if ((sortType == 0) || (sortType == 1)) {
             for (int i =0;i<packs.size();i++) {
-                Timber.d(Global.debugTag3,"Create date: " + packs.get(i).createDate );
+                Timber.tag(Global.debugTag3).d("Create date: " + packs.get(i).createDate );
             }
         } else {
             for (int i =0;i<packs.size();i++) {
-                Timber.d(Global.debugTag3,"Last Visit date: " + packs.get(i).lastVistDate );
+                Timber.tag(Global.debugTag3).d("Last Visit date: " + packs.get(i).lastVistDate );
             }
         }
 

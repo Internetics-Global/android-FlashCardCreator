@@ -3,10 +3,9 @@ package com.internectics.util;
 import android.app.Application;
 import android.content.Context;
 
-import java.util.UUID;
-
-import com.internectics.android_flashcardcreator.BuildConfig;
 import com.testflightapp.lib.TestFlight;
+
+import java.util.UUID;
 
 import timber.log.Timber;
 

@@ -6,7 +6,15 @@ import android.content.Context;
 import android.content.res.Resources;
 import android.content.res.TypedArray;
 import android.database.Cursor;
-import android.graphics.*;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.Canvas;
+import android.graphics.Matrix;
+import android.graphics.Paint;
+import android.graphics.PorterDuff;
+import android.graphics.PorterDuffXfermode;
+import android.graphics.Rect;
+import android.graphics.RectF;
 import android.media.ThumbnailUtils;
 import android.net.Uri;
 import android.provider.MediaStore;
@@ -23,7 +31,12 @@ import android.widget.FrameLayout;
 import com.internectics.android_flashcardcreator.R;
 import com.internectics.helper.FileOperationHelper;
 
-import java.io.*;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
 import java.net.URL;
 
 import timber.log.Timber;
@@ -168,7 +181,7 @@ public class UIHelper {
                 oException.printStackTrace();
             }
         } catch (FileNotFoundException e) {
-            Log.e("Exception", e.getMessage(), e);
+            Timber.tag(Global.debugTag).e("Exception: " + e.getMessage());
         }
 
         return toSaveFile;
@@ -229,7 +242,7 @@ public class UIHelper {
 
             outputStream = new FileOutputStream( toSaveFile);
             if(outputStream != null){
-                Log.e( Global.debugTag, "Output Stream Opened successfully");
+                Timber.tag(Global.debugTag).e(  "Output Stream Opened successfully");
             }
 
             byte[] buffer = new byte[1000];
@@ -239,7 +252,7 @@ public class UIHelper {
                 outputStream.write( buffer, 0, buffer.length );
             }
         } catch ( Exception e ){
-            Log.e(Global.debugTag, "Exception occurred " + e.getMessage());
+            Timber.tag(Global.debugTag).e( "Exception occurred " + e.getMessage());
 
         } finally{
             try {
@@ -328,7 +341,7 @@ public class UIHelper {
         int height = metric.heightPixels;
         int densityDpi = metric.densityDpi;
         String returnStr = String.format("android-%d-%d-%d", width, height, densityDpi);
-        Timber.d(Global.debugTag, "current platform is: " + returnStr);
+        Timber.tag(Global.debugTag).d( "current platform is: " + returnStr);
         return returnStr;
     }
 
@@ -401,7 +414,7 @@ public class UIHelper {
             return resizeBitmap;
 
         } catch (Exception ex) {
-            Log.e(Global.debugTag, "Exception: " + ex.getMessage());
+            Timber.tag(Global.debugTag).e( "Exception: " + ex.getMessage());
             ex.printStackTrace();
             return resizeBitmap;
         }

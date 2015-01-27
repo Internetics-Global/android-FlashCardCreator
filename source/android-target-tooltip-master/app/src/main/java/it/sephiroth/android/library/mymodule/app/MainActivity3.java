@@ -169,7 +169,7 @@ public class MainActivity3 extends ActionBarActivity
 	@Override
 	public boolean onPreDraw() {
 		if (null == mView || ! mView.isShown() || null == tooltipView) {
-			Log.e(TAG, "!isShown");
+            Timber.tag(Global.debugTag).e(TAG, "!isShown");
 			return true;
 		}
 
@@ -215,7 +215,7 @@ public class MainActivity3 extends ActionBarActivity
 					);
 				}
 				else {
-					Log.e(TAG, "handler is null!");
+                    Timber.tag(Global.debugTag).e(TAG, "handler is null!");
 				}
 			}
 
