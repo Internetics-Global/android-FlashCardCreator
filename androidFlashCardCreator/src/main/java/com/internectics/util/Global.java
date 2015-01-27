@@ -10,7 +10,7 @@ import java.util.Map;
 
 public class Global {
 
-    public static final boolean   isDebug =  true;
+    public static final boolean   isDebug =  false;
 
     public static final String debugTag = "ccaa";
     public static final String debugTag2 = "ccaa2";

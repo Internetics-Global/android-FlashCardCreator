@@ -313,6 +313,17 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnKeyboa
             setCardBackgroundMaskGray();
         }
 
+        //由于需要字体自适应，自适应的过程会在界面显示出（字体变大或变小），这种体验不好，所以先hide
+        if (mMain.getText().toString().length() >0) {
+            mMain.setVisibility(View.INVISIBLE);
+        }
+        if (mSubheading.getText().toString().length() >0) {
+            mSubheading.setVisibility(View.INVISIBLE);
+        }
+        if (mSub.getText().toString().length() >0) {
+            mSub.setVisibility(View.INVISIBLE);
+        }
+
         if (AppConfig.sharedInstance().isAllowToShowTooltip()) {
             showTooltips();
         }
@@ -1534,9 +1545,9 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnKeyboa
                     if ((maxLines > 0)&&(maxLines < noOfLines)) {
                         newTextSize =  v.getTextSize() - 1;
                         v.setTextSize(TypedValue.COMPLEX_UNIT_PX,newTextSize);
-                        Timber.tag(Global.debugTag4).d("maxLines < noOfLines*****triggerResizeTextToFitFrame and is resized on: " + v.getText().toString());
+                        Timber.tag(Global.debugTag).d(Global.debugTag4, "maxLines < noOfLines*****triggerResizeTextToFitFrame and is resized on: " + v.getText().toString());
                     } else  {
-                        Timber.tag(Global.debugTag2).d("*****triggerResizeTextToFitFrame and is resized on: " + v.getText().toString() + " with text height:" + textHeight + " with textView height:" + viewHeight);
+                        Timber.tag(Global.debugTag).d(Global.debugTag2, "*****triggerResizeTextToFitFrame and is resized on: " + v.getText().toString() + " with text height:" + textHeight + " with textView height:" + viewHeight);
                     }
 
 
@@ -1578,7 +1589,7 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnKeyboa
 
                     prepareToSavingTextFontSizeInfo();
 
-                    Timber.tag(Global.debugTag).d("prepareToSavingTextFontSizeInfo after triggerResizeTextToFitFrame in onStop.CardSN=" + mCurrentCard.cardSN + " on text:" + v.getText());
+                    Timber.tag(Global.debugTag).d(Global.debugTag2, "prepareToSavingTextFontSizeInfo after triggerResizeTextToFitFrame in onStop.CardSN=" + mCurrentCard.cardSN + " on text:" + v.getText());
                 }
 
 
@@ -1591,17 +1602,6 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnKeyboa
     private void setEditTextListener() {
 
         Timber.tag(Global.debugTag).d( "setEditTextListener in CardDetailFragment is called, cardSN=" + mCurrentCard.cardSN);
-
-        //由于需要字体自适应，自适应的过程会在界面显示出（字体变大或变小），这种体验不好，所以先hide
-        if (mMain.getText().toString().length() >0) {
-            mMain.setVisibility(View.INVISIBLE);
-        }
-        if (mSubheading.getText().toString().length() >0) {
-            mSubheading.setVisibility(View.INVISIBLE);
-        }
-        if (mSub.getText().toString().length() >0) {
-            mSub.setVisibility(View.INVISIBLE);
-        }
 
         if (mIsPlayingCard == false) {
             mSidebarTitle.setOnEditorActionListener(new TextView.OnEditorActionListener() {

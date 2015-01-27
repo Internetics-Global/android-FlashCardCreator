@@ -51,7 +51,7 @@ public class VGViewPager extends ViewPager {
         }
 
         ImageView image = (ImageView)findViewWithTag(Global.mImage_Showing);
-        if ((image != null) && (image.getVisibility() == VISIBLE)) {
+        if ((image != null) && (image.getVisibility() == VISIBLE) && (image.isEnabled() == true)) {
             if (isViewContains(image,hitXInScreen,hitYInScreen)) {
                 Boolean bool = image.isEnabled();
                 Timber.tag(Global.debugTag4).d( "touch location in image，enable=  "+bool);
@@ -60,7 +60,7 @@ public class VGViewPager extends ViewPager {
         }
 
         ImageView image2 = (ImageView)findViewWithTag(Global.mImage2_Showing);
-        if ((image2 != null) && (image2.getVisibility() == VISIBLE)) {
+        if ((image2 != null) && (image2.getVisibility() == VISIBLE) && (image2.isEnabled() == true)) {
             if (isViewContains(image2,hitXInScreen,hitYInScreen)) {
                 Boolean bool = image2.isEnabled();
                 Timber.tag(Global.debugTag4).d( "touch location in image2，enable=  "+bool);
@@ -75,6 +75,8 @@ public class VGViewPager extends ViewPager {
             Timber.tag(Global.debugTag4).d("touch location in creatorLayout");
             return false;
         }
+
+        Timber.tag(Global.debugTag4).d( "onInterceptTouchEvent finally return true");
 
         return true;
     }
