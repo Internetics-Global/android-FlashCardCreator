@@ -1454,7 +1454,7 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnKeyboa
     1. ViewTreeObserver.OnGlobalLayoutListener
     2. addTextChangedListener
      */
-    private void triggerResizeTextToFitFrame(final EditText v) {
+    private void triggerResizeTextToFitFrame(final EditText v, int maxLines) {
 
 //        if (mCurrentPack == null) {
 //            return;
@@ -1499,7 +1499,19 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnKeyboa
                         newTextSize =  v.getTextSize();
                     }
 
-                    Log.d(Global.debugTag2, "*****triggerResizeTextToFitFrame and is resized on: " + v.getText().toString());
+
+                    //in case the font size still too big
+                    noOfLines = v.getLineCount();
+                    if ((maxLines > 0)&&(maxLines < noOfLines)) {
+                        newTextSize =  v.getTextSize() - 1;
+                        v.setTextSize(TypedValue.COMPLEX_UNIT_PX,newTextSize);
+                        Log.d(Global.debugTag4, "maxLines < noOfLines*****triggerResizeTextToFitFrame and is resized on: " + v.getText().toString());
+                    } else  {
+                        Log.d(Global.debugTag2, "*****triggerResizeTextToFitFrame and is resized on: " + v.getText().toString() + " with text height:" + textHeight + " with textView height:" + viewHeight);
+                    }
+
+
+
 
                     mIsSaveNeededAfterResize = true;
 
@@ -1722,14 +1734,17 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnKeyboa
 
             @Override
             public void afterTextChanged(Editable s) {
+                int maxLines = 0;
                 if (mIsQuestionShowing) {
                     mCurrentCard.question.subheading = mSubheading.getText().toString();
+                    maxLines = mCurrentCard.question.lineNoSubheading;
                 } else {
                     mCurrentCard.answer.subheading = mSubheading.getText().toString();
+                    maxLines = mCurrentCard.answer.lineNoSubheading;
                 }
 
                 if (isEditableMode() == false) {
-                    triggerResizeTextToFitFrame(mSubheading);
+                    triggerResizeTextToFitFrame(mSubheading,maxLines);
                 }
 
             }
@@ -1750,14 +1765,17 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnKeyboa
 
             @Override
             public void afterTextChanged(Editable s) {
+                int maxLines;
                 if (mIsQuestionShowing) {
                     mCurrentCard.question.main = mMain.getText().toString();
+                    maxLines = mCurrentCard.question.lineNoMain;
                 } else {
                     mCurrentCard.answer.main = mMain.getText().toString();
+                    maxLines = mCurrentCard.answer.lineNoMain;
                 }
 
                 if (isEditableMode() == false) {
-                    triggerResizeTextToFitFrame(mMain);
+                    triggerResizeTextToFitFrame(mMain,maxLines);
                 }
 
             }
@@ -1778,14 +1796,17 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnKeyboa
 
             @Override
             public void afterTextChanged(Editable s) {
+                int maxLines;
                 if (mIsQuestionShowing) {
                     mCurrentCard.question.sub = mSub.getText().toString();
+                    maxLines = mCurrentCard.question.lineNoSub;
                 } else {
                     mCurrentCard.answer.sub = mSub.getText().toString();
+                    maxLines = mCurrentCard.answer.lineNoSub;
                 }
 
                 if (isEditableMode() == false) {
-                    triggerResizeTextToFitFrame(mSub);
+                    triggerResizeTextToFitFrame(mSub,maxLines);
                 }
 
             }
@@ -1803,7 +1824,13 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnKeyboa
         mVtoSubheadingListener = new ViewTreeObserver.OnGlobalLayoutListener() {
             @Override
             public void onGlobalLayout() {
-                triggerResizeTextToFitFrame(mSubheading);
+                int maxLines;
+                if (mIsQuestionShowing) {;
+                    maxLines = mCurrentCard.question.lineNoSubheading;
+                } else {
+                    maxLines = mCurrentCard.answer.lineNoSubheading;
+                }
+                triggerResizeTextToFitFrame(mSubheading,maxLines);
             }
         };
         mVtoSubheading = mSubheading.getViewTreeObserver();
@@ -1821,7 +1848,13 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnKeyboa
         mVtoMainListener = new ViewTreeObserver.OnGlobalLayoutListener() {
             @Override
             public void onGlobalLayout() {
-                triggerResizeTextToFitFrame(mMain);
+                int maxLines;
+                if (mIsQuestionShowing) {;
+                    maxLines = mCurrentCard.question.lineNoMain;
+                } else {
+                    maxLines = mCurrentCard.answer.lineNoMain;
+                }
+                triggerResizeTextToFitFrame(mMain,maxLines);
             }
         };
         mVtoMain = mMain.getViewTreeObserver();
@@ -1838,7 +1871,13 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnKeyboa
         mVtoSubListener = new ViewTreeObserver.OnGlobalLayoutListener() {
             @Override
             public void onGlobalLayout() {
-                triggerResizeTextToFitFrame(mSub);
+                int maxLines;
+                if (mIsQuestionShowing) {;
+                    maxLines = mCurrentCard.question.lineNoSub;
+                } else {
+                    maxLines = mCurrentCard.answer.lineNoSub;
+                }
+                triggerResizeTextToFitFrame(mSub,maxLines);
             }
         };
         mVtoSub = mSub.getViewTreeObserver();
