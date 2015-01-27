@@ -19,8 +19,6 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 import android.text.InputType;
-import android.util.DisplayMetrics;
-import android.util.Log;
 import android.util.TypedValue;
 import android.view.*;
 import android.view.animation.AlphaAnimation;
@@ -45,6 +43,8 @@ import java.io.File;
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 import java.util.HashMap;
+
+import timber.log.Timber;
 
 /**
  * MainActivity is the entry for whole app
@@ -101,7 +101,7 @@ public class MainActivity extends FragmentActivity implements
         //Step2: OpenUDID
         OpenUDID_manager.sync(this);
         if (!OpenUDID_manager.isInitialized()) {
-            Log.w(Global.debugTag, "OpenUDID_manager is not initialized");
+            Timber.w(Global.debugTag, "OpenUDID_manager is not initialized");
         }
 
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
@@ -113,7 +113,7 @@ public class MainActivity extends FragmentActivity implements
         addCardButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Log.d(Global.debugTag, "add card button  is clicked");
+                Timber.d(Global.debugTag, "add card button  is clicked");
                 startCreateCard();
                 TipHelper.hideEverthing(MainActivity.this);
 
@@ -317,12 +317,12 @@ public class MainActivity extends FragmentActivity implements
                 break;
 
             case R.id.actionbar_add_card_cancel:
-                Log.d(Global.debugTag, "Cancel button is clicked");
+                Timber.d(Global.debugTag, "Cancel button is clicked");
                 dismissCardCreateWindow();
                 break;
 
             case R.id.actionbar_add_card_save:
-                Log.d(Global.debugTag, "Save button is clicked");
+                Timber.d(Global.debugTag, "Save button is clicked");
                 saveNewCreatedCard();
                 break;
 
@@ -546,7 +546,7 @@ public class MainActivity extends FragmentActivity implements
 
 
     private boolean checkDownloadable (String itemName) {
-        Log.d(Global.debugTag, "Now begin to execute checkDownloadable");
+        Timber.d(Global.debugTag, "Now begin to execute checkDownloadable");
 
         boolean result = false;
 
@@ -605,7 +605,7 @@ public class MainActivity extends FragmentActivity implements
                 getSupportFragmentManager().beginTransaction()
                         .replace(R.id.card_detail_container, mCardDetailFragment).commitAllowingStateLoss();
             }  else {
-                Log.e(Global.debugTag,"Out of index of array during executing onItemSelected");
+                Timber.e(Global.debugTag,"Out of index of array during executing onItemSelected");
             }
 
         } else {
@@ -689,7 +689,7 @@ public class MainActivity extends FragmentActivity implements
 
         getSupportFragmentManager().beginTransaction().remove(fragment).commitAllowingStateLoss();
 
-        Log.w(Global.debugTag, String.format("FinishSnapShot on cardSN = %d",fragment.mCurrentCard.cardID));
+        Timber.w(Global.debugTag, String.format("FinishSnapShot on cardSN = %d",fragment.mCurrentCard.cardID));
     }
 
 
@@ -932,7 +932,7 @@ public class MainActivity extends FragmentActivity implements
         int actionbarHeight = 0;
         if (getTheme().resolveAttribute(android.R.attr.actionBarSize, tv, true)) {
             actionbarHeight = TypedValue.complexToDimensionPixelSize(tv.data, getResources().getDisplayMetrics());
-            Log.d(Global.debugTag, "actionbar height is:" + actionbarHeight);
+            Timber.d(Global.debugTag, "actionbar height is:" + actionbarHeight);
         }
 
         WindowManager.LayoutParams params = new WindowManager.LayoutParams(
@@ -947,7 +947,7 @@ public class MainActivity extends FragmentActivity implements
         mCSSToolbar.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View v, MotionEvent event) {
-                Log.d(Global.debugTag, "touching mCSSToolbar");
+                Timber.d(Global.debugTag, "touching mCSSToolbar");
                 return false;
             }
         });
@@ -1134,7 +1134,7 @@ public class MainActivity extends FragmentActivity implements
     public void prepareCSSToolbar() {
         if ((mCSSToolbar == null) || (mCSSToolbar.getParent() == null)) {
             initializeCSSToolbar();
-            Log.d(Global.debugTag, "initializeCSSToolbar is called");
+            Timber.d(Global.debugTag, "initializeCSSToolbar is called");
         }
     }
 
@@ -1157,7 +1157,7 @@ public class MainActivity extends FragmentActivity implements
             spinnerColor.setSelection(0);
             spinnerSize.setSelection(0);
 
-            Log.d(Global.debugTag, "prepareCSSToolbar is called");
+            Timber.d(Global.debugTag, "prepareCSSToolbar is called");
 
             mIsKeyboardVisible = true;
 
@@ -1168,7 +1168,7 @@ public class MainActivity extends FragmentActivity implements
 
     public void removeCSSToolbar() {
         if (mCSSToolbar == null) {
-            Log.w(Global.debugTag, "rmCSSToolbar is null when executing removeCSSToolbar");
+            Timber.w(Global.debugTag, "rmCSSToolbar is null when executing removeCSSToolbar");
             return;
         } else {
             WindowManager wm = (WindowManager) getSystemService(WINDOW_SERVICE);
@@ -1176,7 +1176,7 @@ public class MainActivity extends FragmentActivity implements
                 mCSSToolbar.setVisibility(View.GONE);
                 wm.removeView(mCSSToolbar);
                 mCSSToolbar = null;
-                Log.d(Global.debugTag, "removeCSSToolbar is called");
+                Timber.d(Global.debugTag, "removeCSSToolbar is called");
             }
 
             mIsKeyboardVisible = false;

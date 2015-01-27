@@ -22,6 +22,8 @@ import java.net.URL;
 import java.net.URLConnection;
 import java.util.HashMap;
 
+import timber.log.Timber;
+
 /*
  * Download Pack
  */
@@ -188,7 +190,7 @@ public class PackDownloadHelper extends AsyncTask<Void, Long, Boolean> {
         if (mDownloadedLinkage != null) {
             //我们的保存策略与share时不一样，请注意
             AppConfig.sharedInstance().set(Integer.toString(packID),mDownloadedLinkage);
-            Log.d(Global.debugTag, "save downloaded link:" + mDownloadedLinkage + "with packID=" + packID);
+            Timber.d(Global.debugTag, "save downloaded link:" + mDownloadedLinkage + "with packID=" + packID);
         }
 
 
@@ -200,7 +202,7 @@ public class PackDownloadHelper extends AsyncTask<Void, Long, Boolean> {
     }
 
     private static void updateDownloadLimitCount () {
-        Log.d(Global.debugTag, "Now begin to execute updateDownloadLimitCount");
+        Timber.d(Global.debugTag, "Now begin to execute updateDownloadLimitCount");
         final HashMap<String, String> rowData = new HashMap<String, String>();
         rowData.put("currentNo",String.format("%d",Global.currentAmazonSimpleDBItemDownloadCount + 1));
 

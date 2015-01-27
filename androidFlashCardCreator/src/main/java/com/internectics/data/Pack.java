@@ -15,6 +15,8 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashMap;
 
+import timber.log.Timber;
+
 public class Pack {
     public int packID;
     public String packName;
@@ -87,10 +89,10 @@ public class Pack {
             });
 
             if ((cards.size() > 0) && (cards.get(0).cardSN != 1)) {
-                Log.e(Global.debugTag, "Something is not right, cardSN should begin from 1");
+                Timber.e(Global.debugTag, "Something is not right, cardSN should begin from 1");
             }
         } else {
-            Log.d(Global.debugTag, "cardArray is null. You may have used the parameter of isSummary = true in User.defaultUser");
+            Timber.d(Global.debugTag, "cardArray is null. You may have used the parameter of isSummary = true in User.defaultUser");
         }
 
         return this;
@@ -191,18 +193,18 @@ No new card included
             if ((!StringUtils.isNumeric(logoImageUriFormatStr))&&(!logoImageUriFormatStr.contains("placeholder"))) {
                 File file = new File(FileOperationHelper.deleteUriSchemeHeader(this.logoImageUriFormatStr));
                 if (file.delete()) {
-                    Log.d(Global.debugTag, "Successful to delete logoImageUriFormatStr file");
+                    Timber.d(Global.debugTag, "Successful to delete logoImageUriFormatStr file");
                 } else {
-                    Log.w(Global.debugTag, "Fail to delete logoImageUriFormatStr file");
+                    Timber.w(Global.debugTag, "Fail to delete logoImageUriFormatStr file");
                 }
             }
 
             if ((!StringUtils.isNumeric(coverImageUriFormatStr))&&(!logoImageUriFormatStr.contains("placeholder"))) {
                 File file = new File(FileOperationHelper.deleteUriSchemeHeader(this.coverImageUriFormatStr));
                 if (file.delete()) {
-                    Log.d(Global.debugTag, "Successful to delete coverImageUriFormatStr file in Pack");
+                    Timber.d(Global.debugTag, "Successful to delete coverImageUriFormatStr file in Pack");
                 } else {
-                    Log.w(Global.debugTag, "Fail to delete coverImageUriFormatStr file in Pack");
+                    Timber.w(Global.debugTag, "Fail to delete coverImageUriFormatStr file in Pack");
                 }
             }
 

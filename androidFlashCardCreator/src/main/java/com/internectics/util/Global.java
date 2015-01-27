@@ -10,6 +10,9 @@ import java.util.Collections;
 import java.util.Map;
 
 public class Global {
+
+    public static final boolean   isDebug =  true;
+
     public static final String debugTag = "ccaa";
     public static final String debugTag2 = "ccaa2";
     public static final String debugTag3 = "ccaa3";

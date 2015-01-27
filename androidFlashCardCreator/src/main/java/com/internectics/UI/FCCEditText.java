@@ -7,6 +7,8 @@ import android.view.KeyEvent;
 import android.widget.EditText;
 import com.internectics.util.Global;
 
+import timber.log.Timber;
+
 public class FCCEditText extends EditText {
 
     public OnKeyboardCloseListener mCallbacks;
@@ -30,7 +32,7 @@ public class FCCEditText extends EditText {
 
                 mCallbacks.onKeyboardClose(this);
             else
-                Log.w(Global.debugTag, "mCallbacks for FCCEditText is null");
+                Timber.w(Global.debugTag, "mCallbacks for FCCEditText is null");
         }
         return super.onKeyPreIme(keyCode, event);
 

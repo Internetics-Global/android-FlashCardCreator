@@ -11,6 +11,8 @@ import com.internectics.util.StringUtils;
 import java.io.File;
 import java.util.HashMap;
 
+import timber.log.Timber;
+
 public class Answer {
 
     public int answerID;
@@ -172,54 +174,54 @@ public class Answer {
         if ((imageUriFormatStr != null) && (!StringUtils.isNumeric(imageUriFormatStr)) && (!imageUriFormatStr.contains("placeholder"))) {
             File file = new File(FileOperationHelper.deleteUriSchemeHeader(this.imageUriFormatStr));
             if (file.delete()) {
-                //Log.d(Global.debugTag, "Successful to delete imageUriFormatStr file in Answer");
+                //Timber.d(Global.debugTag, "Successful to delete imageUriFormatStr file in Answer");
             } else {
-                Log.e(Global.debugTag, "Fail to delete imageUriFormatStr file in Answer:" + file);
+                Timber.e(Global.debugTag, "Fail to delete imageUriFormatStr file in Answer:" + file);
             }
         }
 
         if ((imageUriFormatStr2 != null) && (!StringUtils.isNumeric(imageUriFormatStr2)) && (!imageUriFormatStr2.contains("placeholder"))) {
             File file = new File(FileOperationHelper.deleteUriSchemeHeader(this.imageUriFormatStr2));
             if (file.delete()) {
-                //Log.d(Global.debugTag, "Successful to delete imageUriFormatStr2 file in Answer");
+                //Timber.d(Global.debugTag, "Successful to delete imageUriFormatStr2 file in Answer");
             } else {
-                Log.e(Global.debugTag, "Fail to delete imageUriFormatStr2 file in Answer:" + file);
+                Timber.e(Global.debugTag, "Fail to delete imageUriFormatStr2 file in Answer:" + file);
             }
         }
 
         if ((backgroundImageUriFormatStr != null) && (!StringUtils.isNumeric(backgroundImageUriFormatStr))) {
             File file = new File(FileOperationHelper.deleteUriSchemeHeader(this.backgroundImageUriFormatStr));
             if (file.delete()) {
-                Log.d(Global.debugTag, "Successful to delete backgroundImageUriFormatStr file in Question");
+                Timber.d(Global.debugTag, "Successful to delete backgroundImageUriFormatStr file in Question");
             } else {
-                Log.w(Global.debugTag, "Fail to delete backgroundImageUriFormatStr file in Question");
+                Timber.w(Global.debugTag, "Fail to delete backgroundImageUriFormatStr file in Question");
             }
         }
 
         if ((movieUriFormatStr != null) && (!StringUtils.isNumeric(movieUriFormatStr))) {
             File file = new File(FileOperationHelper.deleteUriSchemeHeader(this.movieUriFormatStr));
             if (file.delete()) {
-                Log.d(Global.debugTag, "Successful to delete movieUriFormatStr file in Question");
+                Timber.d(Global.debugTag, "Successful to delete movieUriFormatStr file in Question");
             } else {
-                Log.w(Global.debugTag, "Fail to delete movieUriFormatStr file in Question");
+                Timber.w(Global.debugTag, "Fail to delete movieUriFormatStr file in Question");
             }
         }
 
         if ((movieUriFormatStr2 != null) && (!StringUtils.isNumeric(movieUriFormatStr2))) {
             File file = new File(FileOperationHelper.deleteUriSchemeHeader(this.movieUriFormatStr2));
             if (file.delete()) {
-                Log.d(Global.debugTag, "Successful to delete movieUriFormatStr2 file in Question");
+                Timber.d(Global.debugTag, "Successful to delete movieUriFormatStr2 file in Question");
             } else {
-                Log.w(Global.debugTag, "Fail to delete movieUriFormatStr2 file in Question");
+                Timber.w(Global.debugTag, "Fail to delete movieUriFormatStr2 file in Question");
             }
         }
 
         if ((audioUriFormatStr != null) && (!StringUtils.isNumeric(audioUriFormatStr))) {
             File file = new File(FileOperationHelper.deleteUriSchemeHeader(this.audioUriFormatStr));
             if (file.delete()) {
-                Log.d(Global.debugTag, "Successful to delete audioUriFormatStr file in Question");
+                Timber.d(Global.debugTag, "Successful to delete audioUriFormatStr file in Question");
             } else {
-                Log.w(Global.debugTag, "Fail to delete audioUriFormatStr file in Question");
+                Timber.w(Global.debugTag, "Fail to delete audioUriFormatStr file in Question");
             }
         }
 

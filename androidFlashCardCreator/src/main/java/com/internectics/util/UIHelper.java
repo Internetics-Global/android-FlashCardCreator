@@ -26,6 +26,8 @@ import com.internectics.helper.FileOperationHelper;
 import java.io.*;
 import java.net.URL;
 
+import timber.log.Timber;
+
 public class UIHelper {
 
     public static int getPixels(int dipValue) {
@@ -326,7 +328,7 @@ public class UIHelper {
         int height = metric.heightPixels;
         int densityDpi = metric.densityDpi;
         String returnStr = String.format("android-%d-%d-%d", width, height, densityDpi);
-        Log.d(Global.debugTag, "current platform is: " + returnStr);
+        Timber.d(Global.debugTag, "current platform is: " + returnStr);
         return returnStr;
     }
 

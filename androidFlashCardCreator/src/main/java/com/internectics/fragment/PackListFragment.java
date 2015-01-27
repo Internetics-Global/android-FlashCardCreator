@@ -43,6 +43,8 @@ import com.internectics.util.*;
 import java.io.File;
 import java.io.FileNotFoundException;
 
+import timber.log.Timber;
+
 public class PackListFragment extends Fragment {
 
     private boolean mIsEditStatus;
@@ -125,7 +127,7 @@ public class PackListFragment extends Fragment {
                     DialogFragment dialogFragment = new AddPackFragment();
                     dialogFragment.show(getActivity().getFragmentManager(), "add_pack_fragment");
                 } else {
-                    Log.d(Global.debugTag, "Index of pack in pack list is:" + position);
+                    Timber.d(Global.debugTag, "Index of pack in pack list is:" + position);
                     Intent intent = new Intent();
                     intent.setAction(Global.BROADCAST_ACTION_UPDATE_MASTER_VIEW);
                     intent.putExtra(Global.KEY_FROM, Global.BROADCAST_EXTRA_FROM_PACK_SELECTED);
@@ -407,7 +409,7 @@ public class PackListFragment extends Fragment {
 
                     changeCoverImageButton.setVisibility(View.INVISIBLE);
                 }
-                //Log.d(Global.debugTag3,currentPack.creatorID + "====" + OpenUDID_manager.getOpenUDID() + "----" + position + "packID: " + currentPack.packID + "PackID2: " + ((MainActivity)getActivity()).packIDForMasterViewPack);
+                //Timber.d(Global.debugTag3,currentPack.creatorID + "====" + OpenUDID_manager.getOpenUDID() + "----" + position + "packID: " + currentPack.packID + "PackID2: " + ((MainActivity)getActivity()).packIDForMasterViewPack);
 
                 packNameView.setText(mUser.packs.get(position -1).packName);
 
@@ -456,12 +458,12 @@ public class PackListFragment extends Fragment {
                 }
 
                 if (resultBitmap == null) {
-                    Log.w(Global.debugTag, "resultBitmap is null");
+                    Timber.w(Global.debugTag, "resultBitmap is null");
                 } else {
                     File toSaveFile = UIHelper.saveImageToCaches(resultBitmap);
                     Pack currentPack = mUser.packs.get(mIndexOfCurrentPack);
                     currentPack.coverImageUriFormatStr = FileOperationHelper.convertToUriFormatFile(toSaveFile);
-                    Log.d(Global.debugTag, "currentPack.coverImageUriFormatStr is " + currentPack.coverImageUriFormatStr);
+                    Timber.d(Global.debugTag, "currentPack.coverImageUriFormatStr is " + currentPack.coverImageUriFormatStr);
                     currentPack.save(AppContext.getAppContext());
                     mUser.sortPacks(mSortType);
                     ((ImageAdapter) mGallery.getAdapter()).notifyDataSetChanged();
@@ -474,13 +476,13 @@ public class PackListFragment extends Fragment {
     public void onStop() {
         super.onStop();
 
-        Log.d("ccaa","onStop in PackListFragment");
+        Timber.d("ccaa","onStop in PackListFragment");
     }
 
     @Override
     public void onDestroy() {
         mGallery.setAdapter(null);
         super.onDestroy();
-        Log.d("ccaa","onDestory in PackListFragment");
+        Timber.d("ccaa","onDestory in PackListFragment");
     }
 }

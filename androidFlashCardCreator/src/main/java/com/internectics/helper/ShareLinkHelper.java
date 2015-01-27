@@ -41,6 +41,8 @@ import com.nostra13.socialsharing.common.PostListener;
 import com.nostra13.socialsharing.facebook.FacebookEvents;
 import com.nostra13.socialsharing.facebook.FacebookFacade;
 
+import timber.log.Timber;
+
 /**
  * 1. create share linkage
  * 2. invoke share intent
@@ -93,12 +95,12 @@ public class ShareLinkHelper extends AsyncTask<Void, Long, Boolean> {
                     return false;
                 }
                 mUnshortedFCCShareLink = shareLink.replace("https","fcc").replace("http","fcc");
-                Log.d(Global.debugTag, "the fcc share linkage is: " + mUnshortedFCCShareLink);
+                Timber.d(Global.debugTag, "the fcc share linkage is: " + mUnshortedFCCShareLink);
                 mRedirectedShareLink = getRidirectedURL(mUnshortedFCCShareLink);
                 if (mRedirectedShareLink.indexOf("http://") != 0) {
                     Toast.makeText(mActivity, "Redirect sevice is not available now, please try again", Toast.LENGTH_LONG).show();
                 } else {
-                    Log.d(Global.debugTag, "the shareLink is: " + mRedirectedShareLink);
+                    Timber.d(Global.debugTag, "the shareLink is: " + mRedirectedShareLink);
                     PackRecordHelper.savePackUploadRecord(mActivity, mCurentPack, mRedirectedShareLink,null);
 
                 }
@@ -321,7 +323,7 @@ public class ShareLinkHelper extends AsyncTask<Void, Long, Boolean> {
                 break;
             }
             case 2: {
-                Log.d(Global.debugTag, "Email share");
+                Timber.d(Global.debugTag, "Email share");
                 Intent emailIntent = new Intent(android.content.Intent.ACTION_SEND);
                 emailIntent.putExtra(android.content.Intent.EXTRA_SUBJECT, "Hi All");
                 emailIntent.setType("message/rfc822");
@@ -330,7 +332,7 @@ public class ShareLinkHelper extends AsyncTask<Void, Long, Boolean> {
                 break;
             }
             case 3: {
-                Log.d(Global.debugTag, "Copy");
+                Timber.d(Global.debugTag, "Copy");
                 ClipboardManager clipboard = (ClipboardManager) mActivity.getSystemService(Service.CLIPBOARD_SERVICE);
                 ClipData clip = ClipData.newPlainText( "share linkage",shareLink);
                 clipboard.setPrimaryClip(clip);

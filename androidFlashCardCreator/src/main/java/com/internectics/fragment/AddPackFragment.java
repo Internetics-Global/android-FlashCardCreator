@@ -29,6 +29,8 @@ import java.util.ArrayList;
 import java.util.Timer;
 import java.util.TimerTask;
 
+import timber.log.Timber;
+
 public class AddPackFragment extends DialogFragment implements TextView.OnEditorActionListener {
 
     public View mContentView;
@@ -239,7 +241,7 @@ public class AddPackFragment extends DialogFragment implements TextView.OnEditor
                 }
 
                 if (resultBitmap == null) {
-                    Log.w(Global.debugTag, "resultBitmap is null");
+                    Timber.w(Global.debugTag, "resultBitmap is null");
                 } else {
                     File toSaveFile = UIHelper.saveImageToCaches(resultBitmap);
                     ImageView coverImageView = (ImageView) mContentView
@@ -247,7 +249,7 @@ public class AddPackFragment extends DialogFragment implements TextView.OnEditor
                     coverImageView.setImageBitmap(resultBitmap);
 
                     pack.coverImageUriFormatStr = FileOperationHelper.convertToUriFormatFile(toSaveFile);
-                    Log.d(Global.debugTag, "pack.coverImageUriFormatStr = " + pack.coverImageUriFormatStr);
+                    Timber.d(Global.debugTag, "pack.coverImageUriFormatStr = " + pack.coverImageUriFormatStr);
                 }
             }
         }

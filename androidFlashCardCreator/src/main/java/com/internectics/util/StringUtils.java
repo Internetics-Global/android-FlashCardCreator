@@ -13,6 +13,8 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.regex.Pattern;
 
+import timber.log.Timber;
+
 public class StringUtils {
 
     private final static SimpleDateFormat dateFormater = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
@@ -39,7 +41,7 @@ public class StringUtils {
      */
     public static String getCurrentTimeDate() {
         String timeDateStr = dateFormater.format(new Date());
-        Log.d(Global.debugTag, "current time/date is:" + timeDateStr);
+        Timber.d(Global.debugTag, "current time/date is:" + timeDateStr);
         return timeDateStr;
     }
 

@@ -74,6 +74,8 @@ dependencies {
 
     compile 'com.nineoldandroids:library:+'
 
+    compile 'com.jakewharton.timber:timber:2.5.1'
+
 
 }
 

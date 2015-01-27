@@ -28,6 +28,8 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 
+import timber.log.Timber;
+
 
 public class PlayActivity extends FragmentActivity implements SensorEventListener,GestureDetector.OnDoubleTapListener,GestureDetector.OnGestureListener {
 
@@ -144,7 +146,7 @@ public class PlayActivity extends FragmentActivity implements SensorEventListene
 
         Global.scaleInPlayMode = (float)(widthOfCard/Global.widthOfCardInEditMode);
         if ((Global.scaleInPlayMode >2) || (Global.scaleInPlayMode <0.5)) {
-            Log.e(Global.debugTag,"the value of scaleInPlayMode is out of normal value");
+            Timber.e(Global.debugTag,"the value of scaleInPlayMode is out of normal value");
             Global.scaleInPlayMode = (float)1.2; //default value
         }
 
@@ -160,7 +162,7 @@ public class PlayActivity extends FragmentActivity implements SensorEventListene
             @Override
             public void onPageScrolled(int i, float v, int i2) {
                 if ((mPosition != i) && (i2 == 0)) {
-                    Log.i(Global.debugTag, "onPageScrolled, page index=" + i + " .mPosition=" + mPosition);
+                    Timber.i(Global.debugTag, "onPageScrolled, page index=" + i + " .mPosition=" + mPosition);
 
                     ((CardDetailFragment) (mFragments.get(i))).switchToQuestionView(false);
 
@@ -226,7 +228,7 @@ public class PlayActivity extends FragmentActivity implements SensorEventListene
     private void exeuteTextToSpeechOrPlayAudio(CardDetailFragment cardDetailFragment) {
 
         if (AppConfig.sharedInstance().isMute()) {
-            Log.i(Global.debugTag,"Can not playAudio because of mute");
+            Timber.i(Global.debugTag,"Can not playAudio because of mute");
             return;
         }
 
@@ -273,7 +275,7 @@ public class PlayActivity extends FragmentActivity implements SensorEventListene
             mIsSensorAvailable = true;
         } else {
             mIsSensorAvailable = false;
-            Log.w(Global.debugTag, "No Sensor.TYPE_ORIENTATION exists");
+            Timber.w(Global.debugTag, "No Sensor.TYPE_ORIENTATION exists");
         }
 
 
@@ -333,7 +335,7 @@ public class PlayActivity extends FragmentActivity implements SensorEventListene
         List<Fragment> fList = new ArrayList<Fragment>();
 
         if (mCurrentPack == null) {
-            Log.w(Global.debugTag, "mCurrentPack could not be null in PlayActictiy");
+            Timber.w(Global.debugTag, "mCurrentPack could not be null in PlayActictiy");
             return fList;
         }
 
@@ -341,7 +343,7 @@ public class PlayActivity extends FragmentActivity implements SensorEventListene
             CardDetailFragment cardDetailFragment = new CardDetailFragment();
             cardDetailFragment.configureParameters(mCurrentPack, cardsArray.get(i), 2);
             fList.add(i, cardDetailFragment);
-            Log.d(Global.debugTag, String.format("new CardDetailFragment %d", i));
+            Timber.d(Global.debugTag, String.format("new CardDetailFragment %d", i));
 
         }
 
@@ -358,7 +360,7 @@ public class PlayActivity extends FragmentActivity implements SensorEventListene
         CardDetailFragment cardDetailFragment = ((CardDetailFragment) (mFragments.get(mPosition)));
         if ((cardDetailFragment == null) || (cardDetailFragment.mCardSN == null))  {
             //this could happen when cardDetailFragment is not full inflated
-            //Log.w(Global.debugTag, "cardDetailFragment is not fully intialized during play mode");
+            //Timber.w(Global.debugTag, "cardDetailFragment is not fully intialized during play mode");
             return;
         }
 
@@ -371,7 +373,7 @@ public class PlayActivity extends FragmentActivity implements SensorEventListene
 
         //range of values is 90 degrees to -90 degrees.
         float roll = event.values[2];
-        //Log.i(Global.debugTag, "roll angle =" + roll);
+        //Timber.i(Global.debugTag, "roll angle =" + roll);
 
         int orientation = getOrientation();
         if (orientation == 0) {
@@ -417,13 +419,13 @@ public class PlayActivity extends FragmentActivity implements SensorEventListene
         if (orientation == Configuration.ORIENTATION_LANDSCAPE) {
             if ((rotation == Surface.ROTATION_0)
                     || (rotation == Surface.ROTATION_90)) {
-                //Log.d(Global.debugTag, "current rotation is landscape");
+                //Timber.d(Global.debugTag, "current rotation is landscape");
                 return 0; //landscape (for nexus 7, camera is left side of screen)
             }
 
             if ((rotation == Surface.ROTATION_180)
                     || (rotation == Surface.ROTATION_270)) {
-                //Log.d(Global.debugTag, "current rotation is reverselandscape");
+                //Timber.d(Global.debugTag, "current rotation is reverselandscape");
                 return 1; //reverse landscape   (for nexus 7, camera is right side of screen)
             }
 
@@ -462,43 +464,43 @@ public class PlayActivity extends FragmentActivity implements SensorEventListene
 
     @Override
     public boolean onSingleTapConfirmed(MotionEvent e) {
-        Log.d(Global.debugTag3, "onSingleTapConfirmed");
+        Timber.d(Global.debugTag3, "onSingleTapConfirmed");
         switchQuestionAnswerView();
         return false;
     }
 
     @Override
     public boolean onDoubleTap(MotionEvent e) {
-        Log.d(Global.debugTag3, "onDoubleTap");
+        Timber.d(Global.debugTag3, "onDoubleTap");
         return false;
     }
 
     @Override
     public boolean onDoubleTapEvent(MotionEvent e) {
-        Log.d(Global.debugTag3, "onDoubleTapEvent");
+        Timber.d(Global.debugTag3, "onDoubleTapEvent");
         return false;
     }
 
     @Override
     public boolean onDown(MotionEvent e) {
-        Log.d(Global.debugTag3, "onDown");
+        Timber.d(Global.debugTag3, "onDown");
         return false;
     }
 
     @Override
     public void onShowPress(MotionEvent e) {
-        Log.d(Global.debugTag3, "onShowPress");
+        Timber.d(Global.debugTag3, "onShowPress");
     }
 
     @Override
     public boolean onSingleTapUp(MotionEvent e) {
-        Log.d(Global.debugTag3, "onSingleTapUp");
+        Timber.d(Global.debugTag3, "onSingleTapUp");
         return false;
     }
 
     @Override
     public boolean onScroll(MotionEvent e1, MotionEvent e2, float distanceX, float distanceY) {
-        Log.d(Global.debugTag3, "onScroll");
+        Timber.d(Global.debugTag3, "onScroll");
         return false;
     }
 
@@ -510,10 +512,10 @@ public class PlayActivity extends FragmentActivity implements SensorEventListene
     @Override
     public boolean onFling(MotionEvent e1, MotionEvent e2, float velocityX, float velocityY) {
 
-        Log.d(Global.debugTag3, "OnFlying");
+        Timber.d(Global.debugTag3, "OnFlying");
 
         if ((e1 == null) || (e2 == null)) {
-            Log.d(Global.debugTag3, "e1 or e2 is null");
+            Timber.d(Global.debugTag3, "e1 or e2 is null");
           return true;
         }
 
@@ -523,10 +525,10 @@ public class PlayActivity extends FragmentActivity implements SensorEventListene
 
         if (Math.abs(xDistance) < 100) {
             if (e1.getRawY() < e2.getRawY() - 30) {
-                Log.d(Global.debugTag, "Down swipe");
+                Timber.d(Global.debugTag, "Down swipe");
                 switchQuestionAnswerView();
             } else if (e1.getRawY() > e2.getRawY() + 10) {
-                Log.d(Global.debugTag, "Up swipe");
+                Timber.d(Global.debugTag, "Up swipe");
                 switchQuestionAnswerView();
             }
 
@@ -534,7 +536,7 @@ public class PlayActivity extends FragmentActivity implements SensorEventListene
 
         if (Math.abs(yDistance) < 100) {
             if (e1.getRawX() > e2.getRawX() + 10) {
-                Log.d(Global.debugTag, "swipe Left, mPosition is: " + mPosition);
+                Timber.d(Global.debugTag, "swipe Left, mPosition is: " + mPosition);
 
                 if (mPosition < mFragments.size() - 1) {
                     mIsScrollStop = false;
@@ -542,7 +544,7 @@ public class PlayActivity extends FragmentActivity implements SensorEventListene
                 }
 
             } else if (e1.getRawX() < e2.getRawX() - 10) {
-                Log.d(Global.debugTag, "Swipe Right" + mPosition);
+                Timber.d(Global.debugTag, "Swipe Right" + mPosition);
 
                 if (mPosition >= 1) {
                     mIsScrollStop = false;
@@ -557,7 +559,7 @@ public class PlayActivity extends FragmentActivity implements SensorEventListene
 
     @Override
     public boolean onTouchEvent(MotionEvent event) {
-        Log.d(Global.debugTag3, "onTouchEvent");
+        Timber.d(Global.debugTag3, "onTouchEvent");
         return mGestureDetector.onTouchEvent(event);
     }
 
@@ -581,7 +583,7 @@ public class PlayActivity extends FragmentActivity implements SensorEventListene
                 @Override
                 public void onInit(int status) {
                     if (status == TextToSpeech.SUCCESS) {
-                        Log.i("TTS", "Initilization Success");
+                        Timber.i("TTS", "Initilization Success");
 
 
                         mTTS.setOnUtteranceCompletedListener(new TextToSpeech.OnUtteranceCompletedListener() {
@@ -600,7 +602,7 @@ public class PlayActivity extends FragmentActivity implements SensorEventListene
                                         HashMap<String, String> params = new HashMap<String, String>();
                                         params.put(TextToSpeech.Engine.KEY_PARAM_UTTERANCE_ID,"stringId");//必不可少
                                         mTTS.speak(textToSpeechArray.get(mTextToSpeechContentArrayIndex),TextToSpeech.QUEUE_FLUSH,params);
-                                        Log.d(Global.debugTag,"speak" + textToSpeechArray.get(mTextToSpeechContentArrayIndex));
+                                        Timber.d(Global.debugTag,"speak" + textToSpeechArray.get(mTextToSpeechContentArrayIndex));
                                     } catch (InterruptedException e) {
                                         e.printStackTrace();
                                     }
@@ -616,7 +618,7 @@ public class PlayActivity extends FragmentActivity implements SensorEventListene
 
 
                     } else {
-                        Log.e("TTS", "Initilization Failed!");
+                        Timber.e("TTS", "Initilization Failed!");
                     }
                 }
             });
@@ -647,7 +649,7 @@ public class PlayActivity extends FragmentActivity implements SensorEventListene
             HashMap<String, String> params = new HashMap<String, String>();
             params.put(TextToSpeech.Engine.KEY_PARAM_UTTERANCE_ID,"stringId");//必不可少
             mTTS.speak(textToSpeechArray.get(0),TextToSpeech.QUEUE_FLUSH,params);
-            Log.d(Global.debugTag,"speak" + textToSpeechArray.get(mTextToSpeechContentArrayIndex));
+            Timber.d(Global.debugTag,"speak" + textToSpeechArray.get(mTextToSpeechContentArrayIndex));
 
         }  else {
             playAudio();

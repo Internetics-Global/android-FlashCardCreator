@@ -20,6 +20,8 @@ import net.lingala.zip4j.exception.ZipException;
 import net.lingala.zip4j.model.ZipParameters;
 import net.lingala.zip4j.util.Zip4jConstants;
 
+import timber.log.Timber;
+
 
 public class PackBuildHelper {
 
@@ -158,7 +160,7 @@ public class PackBuildHelper {
             zipFile.addFiles(packFiles, parameters);
         } catch (ZipException e) {
             e.printStackTrace();
-            Log.d(Global.debugTag,"zip pack file failure");
+            Timber.d(Global.debugTag, "zip pack file failure");
             return null;
         }
         return packZipFile;

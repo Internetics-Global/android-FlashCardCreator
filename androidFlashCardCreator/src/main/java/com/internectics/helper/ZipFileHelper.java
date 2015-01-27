@@ -16,6 +16,8 @@ import java.util.zip.ZipOutputStream;
 import net.lingala.zip4j.core.ZipFile;
 import net.lingala.zip4j.exception.ZipException;
 
+import timber.log.Timber;
+
 /**
  * Created with IntelliJ IDEA.
  * User: BourneWang
@@ -74,7 +76,7 @@ public class ZipFileHelper {
 
         } catch (ZipException e) {
             e.printStackTrace();
-            Log.d(Global.debugTag,"unzip failed:" + e.getCause());
+            Timber.d(Global.debugTag, "unzip failed:" + e.getCause());
             Toast.makeText(context, "Wrong password", Toast.LENGTH_LONG).show();
         }
 

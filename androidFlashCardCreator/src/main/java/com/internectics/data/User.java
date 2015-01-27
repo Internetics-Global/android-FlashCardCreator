@@ -12,6 +12,8 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashMap;
 
+import timber.log.Timber;
+
 public class User {
     public int userID;
     public String nickName;
@@ -71,7 +73,7 @@ public class User {
         for (int i = 0; i < packs.size(); i++) {
             if (packs.get(i).packID == pack.packID) {
                 isExist = true;
-                Log.w(Global.debugTag, "addPack failure because already existence");
+                Timber.w(Global.debugTag, "addPack failure because already existence");
                 break;
             }
         }
@@ -131,11 +133,11 @@ public class User {
 
         if ((sortType == 0) || (sortType == 1)) {
             for (int i =0;i<packs.size();i++) {
-                Log.d(Global.debugTag3,"Create date: " + packs.get(i).createDate );
+                Timber.d(Global.debugTag3,"Create date: " + packs.get(i).createDate );
             }
         } else {
             for (int i =0;i<packs.size();i++) {
-                Log.d(Global.debugTag3,"Last Visit date: " + packs.get(i).lastVistDate );
+                Timber.d(Global.debugTag3,"Last Visit date: " + packs.get(i).lastVistDate );
             }
         }
 

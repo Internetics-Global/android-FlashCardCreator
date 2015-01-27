@@ -12,6 +12,8 @@ import com.internectics.android_flashcardcreator.R;
 import android.util.Log;
 import java.lang.reflect.Field;
 
+import timber.log.Timber;
+
 /**
  * Created with IntelliJ IDEA.
  * User: bournewang
@@ -45,7 +47,7 @@ public class VGViewPager extends ViewPager {
         //由于ViewPager包含多个card，而通过findViewById会只获取到第一个，这样就会出现问题（比如当前显示第二个卡片，但是这里就会获取到第一个）
         ImageView logo_image = (ImageView)findViewWithTag(Global.mLogoImage_Showing);
         if ((logo_image != null) && isViewContains(logo_image,hitXInScreen,hitYInScreen)) {
-            Log.d(Global.debugTag, "touch location in logo_image");
+            Timber.d(Global.debugTag, "touch location in logo_image");
             return false;
         }
 
@@ -53,7 +55,7 @@ public class VGViewPager extends ViewPager {
         if ((image != null) && (image.getVisibility() == VISIBLE)) {
             if (isViewContains(image,hitXInScreen,hitYInScreen)) {
                 Boolean bool = image.isEnabled();
-                Log.d(Global.debugTag, "touch location in image，enable=  "+bool);
+                Timber.d(Global.debugTag, "touch location in image，enable=  "+bool);
                 return false;
             }
         }
@@ -62,7 +64,7 @@ public class VGViewPager extends ViewPager {
         if ((image2 != null) && (image2.getVisibility() == VISIBLE)) {
             if (isViewContains(image2,hitXInScreen,hitYInScreen)) {
                 Boolean bool = image2.isEnabled();
-                Log.d(Global.debugTag, "touch location in image2，enable=  "+bool);
+                Timber.d(Global.debugTag, "touch location in image2，enable=  "+bool);
                 return false;
             }
         }
@@ -71,7 +73,7 @@ public class VGViewPager extends ViewPager {
         LinearLayout creatorLayout = (LinearLayout) findViewById(R.id.creator_layout);
         if (isViewContains(creatorLayout,hitXInScreen,hitYInScreen))
         {
-            Log.d(Global.debugTag,"touch location in creatorLayout");
+            Timber.d(Global.debugTag,"touch location in creatorLayout");
             return false;
         }
         return true;
@@ -97,7 +99,7 @@ public class VGViewPager extends ViewPager {
     @Override
     public boolean onTouchEvent(MotionEvent ev) {
         super.onTouchEvent(ev);
-        //Log.d(Global.debugTag, "onTouchEvent for VGViewPager");
+        //Timber.d(Global.debugTag, "onTouchEvent for VGViewPager");
         return false;
     }
 

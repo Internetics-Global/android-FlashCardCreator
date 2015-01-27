@@ -6,13 +6,14 @@ import android.preference.CheckBoxPreference;
 import android.preference.Preference;
 import android.preference.PreferenceActivity;
 import android.preference.PreferenceScreen;
-import android.util.Log;
 import android.view.WindowManager;
 import com.dropbox.client2.DropboxAPI;
 import com.dropbox.client2.android.AndroidAuthSession;
 import com.dropbox.client2.session.TokenPair;
 import com.internectics.helper.DropboxHelper;
 import com.internectics.util.AppConfig;
+
+import timber.log.Timber;
 
 public class MoreActivity extends PreferenceActivity {
 
@@ -146,7 +147,7 @@ public class MoreActivity extends PreferenceActivity {
                     TokenPair tokens = mDBApi.getSession().getAccessTokenPair();
                     DropboxHelper.storeKeys(this, tokens.key, tokens.secret);
                 } catch (IllegalStateException e) {
-                    Log.i("DbAuthLog", "Error authenticating", e);
+                    Timber.i("DbAuthLog", "Error authenticating", e);
                 }
             }
 

@@ -19,6 +19,8 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 
+import timber.log.Timber;
+
 public class PackParserHelper {
 
     /*
@@ -159,7 +161,7 @@ public class PackParserHelper {
                 newFile = FileOperationHelper.copyImageVideoToImagesFolder(getCardImageFullPath(resultCard.question.audioUriFormatStr, i));
                 resultCard.question.audioUriFormatStr = FileOperationHelper.convertToUriFormatFile(newFile);
             } else {
-                Log.d(Global.debugTag, "resultCard.question.audioUriFormatStr is empty");
+                Timber.d(Global.debugTag, "resultCard.question.audioUriFormatStr is empty");
             }
 
             if (resultCard.answer.audioUriFormatStr.length() >0) {
@@ -167,7 +169,7 @@ public class PackParserHelper {
                 resultCard.answer.audioUriFormatStr = FileOperationHelper.convertToUriFormatFile(newFile);
 
             } else {
-                Log.d(Global.debugTag, "resultCard.answer.audioUriFormatStr is empty");
+                Timber.d(Global.debugTag, "resultCard.answer.audioUriFormatStr is empty");
             }
 
             //***************再次加工,结束
@@ -263,11 +265,11 @@ public class PackParserHelper {
                 if ((temp != null) && (StringUtils.isNumeric(temp))) {
                     mScreenWidthFromSharedDevice =  Integer.parseInt(temp);
                 } else {
-                    Log.w(Global.debugTag,"mScreenWidthFromSharedDevice is 0");
+                    Timber.w(Global.debugTag,"mScreenWidthFromSharedDevice is 0");
                     mScreenWidthFromSharedDevice = 0;
                 }
             }
-            Log.d(Global.debugTag2,"screenWith from shared device is:" + mScreenWidthFromSharedDevice);
+            Timber.d(Global.debugTag2,"screenWith from shared device is:" + mScreenWidthFromSharedDevice);
 
 
         } catch (FileNotFoundException e) {
@@ -783,7 +785,7 @@ public class PackParserHelper {
             }
 
             if (card.answer.main.toLowerCase().trim().equals("apple")) {
-                Log.d("ccaa","dfdfdf");
+                Timber.d("ccaa","dfdfdf");
             }
 
             if (answerObj.containsKey("sub")) {
