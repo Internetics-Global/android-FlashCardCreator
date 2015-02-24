@@ -152,6 +152,13 @@ public class PackListFragment extends Fragment {
         });
 
 
+        final Button visitStoreButton = (Button) mRootView.findViewById(R.id.visit_store_btn);
+        visitStoreButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+            }
+        });
+
         final Button newUserButton = (Button) mRootView.findViewById(R.id.new_user_btn);
         newUserButton.setOnClickListener(new View.OnClickListener() {
             @Override
