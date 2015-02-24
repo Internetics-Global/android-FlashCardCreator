@@ -168,6 +168,7 @@
                         android:layout_marginTop="10dp"
                         android:layout_marginRight="10dp"
                         android:scaleType="fitCenter"
+                        android:adjustViewBounds="true"
                         android:background="@drawable/shape_image_round_corner"
                         android:src="@drawable/question_placeholder_logo"/>
                 </LinearLayout>

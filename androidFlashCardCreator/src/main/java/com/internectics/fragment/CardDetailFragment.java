@@ -674,6 +674,12 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnKeyboa
     private void handleCrop(int requestCode, int resultCode, Intent data) {
 
         if (resultCode != Activity.RESULT_OK) {
+            Timber.tag(Global.debugTag).e( "resultCode != Activity.RESULT_OK");
+            return;
+        }
+
+        if (data == null) {
+            return;
         }
 
         Uri selectedURI = Crop.getOutput(data);
