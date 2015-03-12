@@ -3,7 +3,8 @@ package com.internectics.util;
 import android.app.Application;
 import android.content.Context;
 
-import com.testflightapp.lib.TestFlight;
+import com.parse.Parse;
+import com.parse.ParseCrashReporting;
 
 import java.util.UUID;
 
@@ -17,10 +18,12 @@ public class AppContext extends Application {
     @Override
     public void onCreate() {
         super.onCreate();
-        TestFlight.takeOff(this, Global.appToken);
 
         AppContext.mContext = getApplicationContext();
 
+        ParseCrashReporting.enable(this);
+        Parse.enableLocalDatastore(this);
+        Parse.initialize(this, "n6hQQEqaa52887A46KF3ThYgxG4dSmQBTHJMArkW", "VUDwIHOFGEkAe9ngdFgdBqVFDgOLEINdnd0DkF2i");
 
         if (Global.isDebug) {
             Timber.plant(new Timber.DebugTree());
