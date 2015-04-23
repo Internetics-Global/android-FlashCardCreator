@@ -84,7 +84,8 @@ public class SQLiteHelper {
                     + "create_date" + " INTEGER,"
                     + "last_visit_date" + " INTEGER,"
                     + "creator_nick_name" + " TEXT,"
-                    + "job_title" + " TEXT)");
+                    + "job_title" + " TEXT,"
+                    + "auto_play_speed" + " INTEGER)");
             db.execSQL("CREATE INDEX IF NOT EXISTS IA on Packs_Tables(pack_id)");
 
             // compared with iOS version, we made changes:

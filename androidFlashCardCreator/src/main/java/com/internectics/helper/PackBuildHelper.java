@@ -181,6 +181,7 @@ public class PackBuildHelper {
         summary.put("platform", pack.platform);
         summary.put("logo_image", StringUtils.lastComponentOfPath(pack.logoImageUriFormatStr));
         summary.put("platform", "Android");
+        summary.put("auto_play_speed",String.format("%d",pack.autoPlaySpeed));
         summary.put("screen_width",String.format("%d", (int)(UIHelper.getScreenWidthDPUnit(mActivity))));
 
         FileWriter file;

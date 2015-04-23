@@ -251,6 +251,15 @@ public class PackParserHelper {
                 pack.jobTitle = "";
             }
 
+
+            String temp = (String) obj.get("auto_play_speed");
+            if ((temp != null) && (StringUtils.isNumeric(temp))) {
+                pack.autoPlaySpeed =  Integer.parseInt(temp);
+            } else {
+                pack.autoPlaySpeed = Global.k_Default_Auto_Play_Speed;
+            }
+
+
             pack.platform = (String) obj.get("platform");
             pack.userID = Global.USER_ID; // there's no this information in json file, so we have to add manually
             pack.packID = Global.generateNoRepeatInt();
@@ -263,7 +272,7 @@ public class PackParserHelper {
             } else if (pack.platform.contains("iPad") == true) {
                 mScreenWidthFromSharedDevice = 1024;
             } else {
-                String temp = (String) obj.get("screen_width");
+                temp = (String) obj.get("screen_width");
                 if ((temp != null) && (StringUtils.isNumeric(temp))) {
                     mScreenWidthFromSharedDevice =  Integer.parseInt(temp);
                 } else {

@@ -157,6 +157,11 @@ public class Global {
         return o == null;
     }
 
+
+    public static int     k_Default_Auto_Play_Speed  = 10;
+    public static int     k_MAX_Auto_Play_Speed  = 60;
+    public static int     k_MIN_Auto_Play_Speed  = 4;
+
 }
 
 

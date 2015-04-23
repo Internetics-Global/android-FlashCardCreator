@@ -10,25 +10,33 @@
     <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:orientation="horizontal">
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="match_parent"
             android:orientation="vertical">
 
-        <EditText
+            <EditText
+                android:layout_marginTop="10dp"
                 android:id="@+id/fragment_add_pack_pack_name"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="30dp"
                 android:imeOptions="actionDone"
                 android:singleLine="true"
                 android:textColor="#FFFFFF"
                 android:hint="@string/addpack_packname"
                 android:textSize="@dimen/add_pack_edit_text_size"
                 android:ems="10">
-            <requestFocus/>
-        </EditText>
+                <requestFocus/>
+            </EditText>
 
-        <EditText
+            <EditText
+                android:layout_marginTop="10dp"
                 android:id="@+id/fragment_add_pack_sidebar_title"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="30dp"
                 android:imeOptions="actionDone"
                 android:singleLine="true"
                 android:textColor="#FFFFFF"
@@ -37,10 +45,11 @@
                 android:ems="10"/>
 
 
-        <EditText
+            <EditText
+                android:layout_marginTop="10dp"
                 android:id="@+id/fragment_add_pack_creator"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="30dp"
                 android:imeOptions="actionDone"
                 android:singleLine="true"
                 android:textColor="#FFFFFF"
@@ -48,20 +57,37 @@
                 android:hint="@string/addpack_Creator"
                 android:ems="10"/>
 
-        <EditText
-            android:id="@+id/fragment_add_pack_job_title"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:imeOptions="actionDone"
-            android:singleLine="true"
-            android:textColor="#FFFFFF"
-            android:textSize="@dimen/add_pack_edit_text_size"
-            android:hint="@string/addpack_Job_Title"
-            android:ems="10"/>
+            <EditText
+                android:layout_marginTop="10dp"
+                android:id="@+id/fragment_add_pack_job_title"
+                android:layout_width="match_parent"
+                android:layout_height="30dp"
+                android:imeOptions="actionDone"
+                android:singleLine="true"
+                android:textColor="#FFFFFF"
+                android:textSize="@dimen/add_pack_edit_text_size"
+                android:hint="@string/addpack_Job_Title"
+                android:ems="10"/>
+            
+            <SeekBar
+                android:id="@+id/auto_play_speed_seekbar"
+                android:max="60"
+                android:progress="10"
+                android:layout_marginTop="10dp"
+                android:layout_width="match_parent"
+                android:layout_height="30dp" />
 
-        <ImageView
+        </LinearLayout>
+
+        <RelativeLayout
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="match_parent">
+
+            <ImageView
                 android:id="@+id/fragment_add_pack_coverImage"
                 android:layout_height="160dp"
+                android:layout_alignParentTop="true"
                 android:layout_gravity="center"
                 android:layout_width="200dp"
                 android:layout_marginLeft="100dp"
@@ -71,6 +97,9 @@
                 android:scaleType="fitCenter"
                 android:background="@drawable/shape_image_round_corner"
                 android:src="@drawable/default_pack_cover_image"/>
+
+        </RelativeLayout>
+
     </LinearLayout>
 
 </LinearLayout>
