@@ -46,7 +46,7 @@ import com.dropbox.client2.session.TokenPair;
 import com.google.analytics.tracking.android.EasyTracker;
 import com.internectics.data.Card;
 import com.internectics.data.Pack;
-import com.internectics.fragment.AddPackFragment;
+import com.internectics.fragment.CreateEditFragment;
 import com.internectics.fragment.CardDetailFragment;
 import com.internectics.fragment.CardListFragment;
 import com.internectics.fragment.SymbolBoxFragment;
@@ -219,7 +219,7 @@ public class MainActivity extends FragmentActivity implements
 
         switch (item.getItemId()) {
             case R.id.actionbar_add_pack: {
-                DialogFragment dialogFragment = new AddPackFragment();
+                DialogFragment dialogFragment = new CreateEditFragment();
                 dialogFragment.show(getFragmentManager(), "add_pack_fragment");
                 break;
             }
@@ -1289,7 +1289,14 @@ public class MainActivity extends FragmentActivity implements
         }
 
         ImageView packCoverImageView = (ImageView) findViewById(R.id.pack_info_cover_image);
-        packCoverImageView.setImageURI(Uri.parse(mCurrentPack.coverImageUriFormatStr));
+        if (mCurrentPack.coverImageUriFormatStr.contains("default")
+                || mCurrentPack.coverImageUriFormatStr.contains("placeholder")
+                     || mCurrentPack.coverImageUriFormatStr.length() == 0) {
+            packCoverImageView.setImageDrawable(getResources().getDrawable(R.drawable.default_pack_cover_image_transparent));
+        } else {
+            packCoverImageView.setImageURI(Uri.parse(mCurrentPack.coverImageUriFormatStr));
+        }
+
         TextView  packCoverTextView = (TextView) findViewById(R.id.pack_info_title);
         packCoverTextView.setText(mCurrentPack.packName);
     }
