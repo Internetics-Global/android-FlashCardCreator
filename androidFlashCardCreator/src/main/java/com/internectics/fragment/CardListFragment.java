@@ -299,7 +299,9 @@ public class CardListFragment extends Fragment {
                 if (extraFrom.equals(Global.BROADCAST_EXTRA_FROM_NEW_PACK)) {
                     extraCardIndex = 0;
                     mCurrentPack = CardListModel.getLatestCreatedPack();
-                } else if (extraFrom.equals(Global.BROADCAST_EXTRA_FROM_NEW_CARD)) {
+                } else if (extraFrom.equals(Global.BROADCAST_EXTRA_FROM_EDIT_PACK)) {
+                    //still use current pack
+                }else if (extraFrom.equals(Global.BROADCAST_EXTRA_FROM_NEW_CARD)) {
                     extraCardIndex = intent.getExtras().getInt(Global.KEY_CARD_INDEX);
                     mCurrentPack = CardListModel.updateCurrentPack(mCurrentPack);
                 } else if (extraFrom.equals(Global.BROADCAST_EXTRA_FROM_CURRENT_PACK_UPDATE)) {

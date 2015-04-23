@@ -37,6 +37,7 @@ public class Global {
     public static final String KEY_CARD_INDEX = "card_index";
     public static final String BROADCAST_EXTRA_FROM_NEW_CARD = "from_new_card";
     public static final String BROADCAST_EXTRA_FROM_NEW_PACK = "from_new_pack";
+    public static final String BROADCAST_EXTRA_FROM_EDIT_PACK = "from_edit_pack";
     public static final String BROADCAST_EXTRA_FROM_CURRENT_PACK_UPDATE = "from_current_pack_update";
     public static final String BROADCAST_EXTRA_FROM_PACK_SELECTED = "from_pack_selected";
     public static final String BROADCAST_EXTRA_FROM_PACK_DOWNLOADED = "from_pack_downloaded";

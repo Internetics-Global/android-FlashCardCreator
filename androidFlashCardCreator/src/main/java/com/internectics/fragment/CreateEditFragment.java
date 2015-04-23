@@ -6,6 +6,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
@@ -20,6 +21,7 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.SeekBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -34,25 +36,32 @@ import com.internectics.util.AppConfig;
 import com.internectics.util.AppContext;
 import com.internectics.util.Global;
 import com.internectics.util.OpenUDID_manager;
+import com.internectics.util.StringUtils;
 import com.internectics.util.UIHelper;
 
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.Timer;
 import java.util.TimerTask;
 
 import timber.log.Timber;
 
-public class AddPackFragment extends DialogFragment implements TextView.OnEditorActionListener {
+public class CreateEditFragment extends DialogFragment implements TextView.OnEditorActionListener {
 
-    public View mContentView;
-    public Pack pack;
+    private View mContentView;
+    private Pack pack;
+
+    private boolean mIsEditPack = false ;
+
     private int CODE_REQUEST_IMAGE_FROM_IMAGE_LIBRARY = 1001;
 
     private EditText mPackNameEditText;
     private EditText mSidebarTitleEditText;
     private EditText mCreatorEditText;
     private EditText mJobTitleEditText;
+    private SeekBar  mAutoPlaySpeedSeekbar;
+    private ImageView mCoverImageView;
 
     private InputMethodManager mIMM;
 
@@ -60,7 +69,7 @@ public class AddPackFragment extends DialogFragment implements TextView.OnEditor
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
-        pack = new Pack();
+
         super.onCreate(savedInstanceState);
     }
 
@@ -76,7 +85,13 @@ public class AddPackFragment extends DialogFragment implements TextView.OnEditor
 
         TextView titleTextView = (TextView) mContentView
                 .findViewById(R.id.dialog_title);
-        titleTextView.setText(R.string.addpack_title);
+
+        if (mIsEditPack) {
+            titleTextView.setText(R.string.editpack_title);
+        } else {
+            titleTextView.setText(R.string.addpack_title);
+        }
+
         final Button closeButton = (Button) mContentView
                 .findViewById(R.id.dialog_head_close_btn);
         Button saveButton = (Button) mContentView
@@ -101,9 +116,9 @@ public class AddPackFragment extends DialogFragment implements TextView.OnEditor
             }
         });
 
-        ImageView coverImageView = (ImageView) mContentView
+        mCoverImageView = (ImageView) mContentView
                 .findViewById(R.id.fragment_add_pack_coverImage);
-        coverImageView.setOnClickListener(new View.OnClickListener() {
+        mCoverImageView.setOnClickListener(new View.OnClickListener() {
 
             @Override
             public void onClick(View v) {
@@ -127,6 +142,8 @@ public class AddPackFragment extends DialogFragment implements TextView.OnEditor
                 .findViewById(R.id.fragment_add_pack_creator);
         mJobTitleEditText = (EditText) mContentView
                 .findViewById(R.id.fragment_add_pack_job_title);
+        mAutoPlaySpeedSeekbar = (SeekBar) mContentView.findViewById(R.id.auto_play_speed_seekbar);
+
 
         mPackNameEditText.setOnEditorActionListener(this);
         mSidebarTitleEditText.setOnEditorActionListener(this);
@@ -142,7 +159,32 @@ public class AddPackFragment extends DialogFragment implements TextView.OnEditor
             }
         }.start();
 
+        if (mIsEditPack) {
+            mPackNameEditText.setText(pack.packName);
+            mSidebarTitleEditText.setText(pack.sidebarTitle);
+            mCreatorEditText.setText(pack.creatorNickName);
+            mJobTitleEditText.setText(pack.jobTitle);
+            if (pack.autoPlaySpeed == 0) {
+                mAutoPlaySpeedSeekbar.setProgress(Global.k_Default_Auto_Play_Speed);
+            } else {
+                mAutoPlaySpeedSeekbar.setProgress(pack.autoPlaySpeed);
+            }
+
+            String imagePath = pack.coverImageUriFormatStr;
+            mCoverImageView.setImageURI(Uri.parse(imagePath));
+        } else {
+            pack = new Pack();
+        }
+
         return mContentView;
+    }
+
+    public void setPack(Pack pack) {
+        this.pack = pack;
+    }
+
+    public void setIsEditPack(boolean mIsEditPack) {
+        this.mIsEditPack = mIsEditPack;
     }
 
     @Override
@@ -167,7 +209,13 @@ public class AddPackFragment extends DialogFragment implements TextView.OnEditor
     private void save() {
 
 
-        if (checkExistingPackName(mPackNameEditText.getText().toString())) {
+        if (mAutoPlaySpeedSeekbar.getProgress() > Global.k_MAX_Auto_Play_Speed
+                || mAutoPlaySpeedSeekbar.getProgress() < Global.k_MIN_Auto_Play_Speed) {
+            Toast.makeText(getActivity(), "The value of auto play speed should be between 4 and 60 seconds", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        if ((mIsEditPack == false) && (checkExistingPackName(mPackNameEditText.getText().toString()))) {
             Toast.makeText(getActivity(), "Existing pack name, please rename it", Toast.LENGTH_SHORT).show();
             return;
         }
@@ -177,17 +225,19 @@ public class AddPackFragment extends DialogFragment implements TextView.OnEditor
         pack.creatorNickName = mCreatorEditText.getText().toString();
         pack.jobTitle = mJobTitleEditText.getText().toString();
         pack.platform = UIHelper.getCurrentPlatform();
-        // we set pack.coverImageUriFormatStr in image select or by default
-        pack.creatorID = OpenUDID_manager.getOpenUDID();
         pack.platform = UIHelper.getCurrentPlatform();
         pack.userID = Global.USER_ID;
         pack.packID = Global.generateNoRepeatInt();
-        pack.createDate = Global.currentTimeSeconds();
         pack.lastVistDate = Global.currentTimeSeconds();
 
         final Card defaultCard = new Card();
-        defaultCard.cardSN = 1;
-        defaultCard.packID = pack.packID;
+        if (mIsEditPack) {
+        } else {
+            pack.creatorID = OpenUDID_manager.getOpenUDID();
+            pack.createDate = Global.currentTimeSeconds();
+            defaultCard.cardSN = 1;
+            defaultCard.packID = pack.packID;
+        }
 
         PackRecordHelper.savePackUpdateRecord(AppContext.getAppContext(), pack);
 
@@ -199,12 +249,17 @@ public class AddPackFragment extends DialogFragment implements TextView.OnEditor
                 activity.runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
-                        User.defaultUser(AppContext.getAppContext()).addPack(pack);
-                        pack.addCard(AppContext.getAppContext(),defaultCard);
 
                         Intent intent = new Intent();
                         intent.setAction(Global.BROADCAST_ACTION_UPDATE_MASTER_VIEW);
-                        intent.putExtra(Global.KEY_FROM, Global.BROADCAST_EXTRA_FROM_NEW_PACK);
+                        if (mIsEditPack) {
+                            pack.save(AppContext.getAppContext());
+                            intent.putExtra(Global.KEY_FROM, Global.BROADCAST_EXTRA_FROM_EDIT_PACK);
+                        } else {
+                            User.defaultUser(AppContext.getAppContext()).addPack(pack);
+                            pack.addCard(AppContext.getAppContext(),defaultCard);
+                            intent.putExtra(Global.KEY_FROM, Global.BROADCAST_EXTRA_FROM_NEW_PACK);
+                        }
                         if (activity != null) {
                             activity.sendBroadcast(intent);
                             if (AppConfig.sharedInstance().isAllowToShowTooltip()) {
@@ -256,9 +311,7 @@ public class AddPackFragment extends DialogFragment implements TextView.OnEditor
                     Timber.tag(Global.debugTag).w( "resultBitmap is null");
                 } else {
                     File toSaveFile = UIHelper.saveImageToCaches(resultBitmap);
-                    ImageView coverImageView = (ImageView) mContentView
-                            .findViewById(R.id.fragment_add_pack_coverImage);
-                    coverImageView.setImageBitmap(resultBitmap);
+                    mCoverImageView.setImageBitmap(resultBitmap);
 
                     pack.coverImageUriFormatStr = FileOperationHelper.convertToUriFormatFile(toSaveFile);
                     Timber.tag(Global.debugTag).d( "pack.coverImageUriFormatStr = " + pack.coverImageUriFormatStr);

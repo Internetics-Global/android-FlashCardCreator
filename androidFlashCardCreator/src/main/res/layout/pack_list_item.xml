@@ -1,26 +1,23 @@
 <?xml version="1.0" encoding="utf-8"?>
 
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-              android:orientation="vertical"
-              android:layout_width="@dimen/pack_list_item_width"
-              android:layout_height="@dimen/pack_list_height">
+    android:orientation="vertical"
+    android:layout_width="@dimen/pack_list_item_width"
+    android:layout_height="@dimen/pack_list_height">
 
     <EditText
-            android:id="@+id/pack_name_text"
-            android:layout_width="@dimen/pack_list_item_width"
-            android:layout_height="0dp"
-            android:layout_weight="25"
-            android:text="default"
-            android:enabled="true"
-            android:textSize="@dimen/pack_list_text_size"
-            android:textColor="#FFFFFF"
-            android:gravity="center"
-            android:singleLine="true"
-            android:textCursorDrawable="@null"
-            android:imeOptions="actionDone"
-            android:background="@drawable/shape_edittext_rounded_corner"
-            android:inputType="textNoSuggestions"
-            android:layout_marginTop="10dp">
+        android:id="@+id/pack_name_text"
+        android:layout_width="@dimen/pack_list_item_width"
+        android:layout_height="0dp"
+        android:layout_weight="25"
+        android:text="default"
+        android:enabled="false"
+        android:textSize="@dimen/pack_list_text_size"
+        android:textColor="#FFFFFF"
+        android:gravity="center"
+        android:singleLine="true"
+        android:background="@android:color/transparent"
+        android:layout_marginTop="10dp">
 
     </EditText>
 
@@ -43,7 +40,7 @@
         </ImageView>
 
         <ImageView
-            android:id="@+id/pack_play"
+            android:id="@+id/pack_play_image_view"
             android:layout_width="80dp"
             android:layout_height="80dp"
             android:layout_marginBottom="5dp"
@@ -61,40 +58,36 @@
 
 
     <LinearLayout
-            android:id="@+id/pack_list_edit_layout"
-            android:layout_width="fill_parent"
-            android:layout_height="0dp"
-            android:layout_weight="20"
-            android:layout_marginTop="5dp"
-            android:layout_marginBottom="10dp"
-            android:orientation="horizontal"
-            >
+        android:id="@+id/pack_list_edit_layout"
+        android:layout_width="fill_parent"
+        android:layout_height="25dp"
+        android:layout_marginTop="5dp"
+        android:layout_marginBottom="10dp"
+        android:orientation="horizontal"
+        >
 
-        <Button
-                android:id="@+id/button_delete_pack"
-                android:layout_marginRight="10dp"
-                android:gravity="center"
-                android:layout_width="0dp"
-                android:layout_height="fill_parent"
-                android:background="@drawable/selector_button_simple_line_red_background"
-                android:text="@string/packlist_delete"
-                android:textSize="@dimen/pack_list_text_size"
-                android:layout_weight="50">
+        <ImageButton
+            android:id="@+id/button_delete_pack"
+            android:layout_marginRight="10dp"
+            android:background="@android:color/transparent"
+            android:gravity="center"
+            android:layout_width="0dp"
+            android:layout_height="fill_parent"
+            android:src="@drawable/delete_button"
+            android:layout_weight="50">
 
-        </Button>
+        </ImageButton>
 
-        <Button
-                android:id="@+id/button_change_cover_image"
-                android:gravity="center"
-                android:layout_width="0dp"
-                android:layout_height="fill_parent"
-                android:background="@drawable/selector_button_simple_line"
-                android:text="@string/packlist_change"
-                android:textColor="#FFFFFF"
-                android:textSize="@dimen/pack_list_text_size"
-                android:layout_weight="50">
+        <ImageButton
+            android:id="@+id/button_change_cover_image"
+            android:gravity="center"
+            android:background="@android:color/transparent"
+            android:layout_width="0dp"
+            android:layout_height="fill_parent"
+            android:src="@drawable/edit_button"
+            android:layout_weight="50">
 
-        </Button>
+        </ImageButton>
 
     </LinearLayout>
 
