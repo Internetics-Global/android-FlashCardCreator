@@ -95,6 +95,7 @@
                 android:layout_marginTop="20dp"
                 android:layout_marginBottom="20dp"
                 android:scaleType="fitCenter"
+                android:adjustViewBounds="true"
                 android:background="@drawable/shape_image_round_corner"
                 android:src="@drawable/default_pack_cover_image"/>
 

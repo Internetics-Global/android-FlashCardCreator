@@ -24,24 +24,13 @@
             android:paddingBottom="0dp"
             android:layout_height="fill_parent" />
 
-
-    <ImageView
-        android:id="@+id/play_record_button"
-        android:layout_marginBottom="5dp"
-        android:layout_marginRight="5dp"
-        android:layout_height= "24dp"
-        android:layout_width="24dp"
-        android:layout_gravity="right|bottom"
-        android:src="@drawable/selector_play_recorded_sound_button"/>
-
-    <ImageView
-        android:id="@+id/mute_button"
-        android:layout_marginBottom="50dp"
-        android:layout_marginRight="2dp"
-        android:layout_height= "24dp"
-        android:layout_width="24dp"
-        android:layout_gravity="right|bottom"
-        android:src="@drawable/selector_mute_button"/>
+    <include
+        android:id="@+id/play_control_panel"
+        android:layout_marginBottom="15dp"
+        android:layout_gravity="center_horizontal|bottom"
+        layout="@layout/play_control_panel"
+        android:layout_width="400dp"
+        android:layout_height="30dp" />
 
 
 </FrameLayout>

@@ -22,6 +22,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.Toast;
 
@@ -63,9 +64,9 @@ public class PlayActivity extends FragmentActivity implements SensorEventListene
 
     private boolean mIsScrollStop = true;
 
-    private ImageView mPlayRecordImage;
+    private ImageButton mPlayRecordImage;
 
-    private ImageView mMuteImage;
+    private ImageButton mMuteImage;
 
     private boolean   mRunOnceFlag; //only allow to run once
 
@@ -86,7 +87,7 @@ public class PlayActivity extends FragmentActivity implements SensorEventListene
         setContentView(R.layout.play);
         getActionBar().hide();
 
-        mPlayRecordImage = (ImageView) findViewById(R.id.play_record_button);
+        mPlayRecordImage = (ImageButton) findViewById(R.id.play_sound_image_button);
         mPlayRecordImage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -94,20 +95,20 @@ public class PlayActivity extends FragmentActivity implements SensorEventListene
             }
         });
 
-        mMuteImage = (ImageView) findViewById(R.id.mute_button);
+        mMuteImage = (ImageButton) findViewById(R.id.play_mute_image_button);
         if (AppConfig.sharedInstance().isMute()) {
-          mMuteImage.setImageDrawable(getResources().getDrawable(R.drawable.mute_button));
+          mMuteImage.setImageDrawable(getResources().getDrawable(R.drawable.sound_off));
         } else {
-            mMuteImage.setImageDrawable(getResources().getDrawable(R.drawable.un_mute_button));
+            mMuteImage.setImageDrawable(getResources().getDrawable(R.drawable.sound_on));
         }
         mMuteImage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if (AppConfig.sharedInstance().isMute()) {
-                    mMuteImage.setImageDrawable(getResources().getDrawable(R.drawable.un_mute_button));
+                    mMuteImage.setImageDrawable(getResources().getDrawable(R.drawable.sound_off));
                     AppConfig.sharedInstance().setMute(false);
                 } else {
-                    mMuteImage.setImageDrawable(getResources().getDrawable(R.drawable.mute_button));
+                    mMuteImage.setImageDrawable(getResources().getDrawable(R.drawable.sound_on));
                     AppConfig.sharedInstance().setMute(true);
                 }
             }
@@ -184,9 +185,9 @@ public class PlayActivity extends FragmentActivity implements SensorEventListene
                     //hide or show play recorded voice
                     String soundFile = ((CardDetailFragment) (mFragments.get(i))).mCurrentCard.question.audioUriFormatStr;
                     if (soundFile.length() == 0) {
-                        mPlayRecordImage.setVisibility(View.INVISIBLE);
+                        mPlayRecordImage.setImageDrawable(getResources().getDrawable(R.drawable.sound_off));
                     } else {
-                        mPlayRecordImage.setVisibility(View.VISIBLE);
+                        mPlayRecordImage.getResources().getDrawable(R.drawable.sound_on);
                     }
 
                     //Restore previous card to question view
@@ -229,9 +230,9 @@ public class PlayActivity extends FragmentActivity implements SensorEventListene
         CardDetailFragment firstDetailFragment = ((CardDetailFragment) (mFragments.get(0)));
         String soundFile = firstDetailFragment.mCurrentCard.question.audioUriFormatStr;
         if (soundFile.length() == 0) {
-            mPlayRecordImage.setVisibility(View.INVISIBLE);
+            mPlayRecordImage.getResources().getDrawable(R.drawable.sound_off);
         } else {
-            mPlayRecordImage.setVisibility(View.VISIBLE);
+            mPlayRecordImage.getResources().getDrawable(R.drawable.sound_on);
         }
 
         setupTextToSpeech((CardDetailFragment) (mFragments.get(mPosition)));
@@ -468,9 +469,9 @@ public class PlayActivity extends FragmentActivity implements SensorEventListene
             soundFile = targetDetailFragment.mCurrentCard.answer.audioUriFormatStr;
         }
         if (soundFile.length() == 0) {
-            mPlayRecordImage.setVisibility(View.INVISIBLE);
+            mPlayRecordImage.getResources().getDrawable(R.drawable.sound_off);
         } else {
-            mPlayRecordImage.setVisibility(View.VISIBLE);
+            mPlayRecordImage.getResources().getDrawable(R.drawable.sound_on);
         }
 
         setActiveFragmentTag(mPosition);

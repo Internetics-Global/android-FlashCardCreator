@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="horizontal"
+    android:background="#ff5e5e5e"
+    android:layout_width="400dp"
+    android:layout_height="30dp">
+    
+    <ImageButton
+        android:id="@+id/cycle_play_image_button"
+        android:background="@android:color/transparent"
+        android:src="@drawable/repeat_unselected"
+        android:layout_marginLeft="10dp"
+        android:layout_marginTop="5dp"
+        android:layout_width="20dp"
+        android:layout_height="20dp" />
+
+    <ImageButton
+        android:id="@+id/auto_play_image_button"
+        android:background="@android:color/transparent"
+        android:src="@drawable/autoplay_off"
+        android:layout_marginLeft="20dp"
+        android:layout_marginTop="5dp"
+        android:layout_width="20dp"
+        android:layout_height="20dp" />
+
+    <TextView
+        android:layout_marginTop="5dp"
+        android:layout_marginLeft="20dp"
+        android:layout_width="90dp"
+        android:layout_height="20dp"
+        android:text="Auto Play Speed"
+        android:textSize="10sp"
+        android:lines="1"
+        android:textColor="@android:color/white"
+        android:gravity="center"
+        android:maxLines="1"/>
+
+    <SeekBar
+        android:id="@+id/auto_play_speed_seekbar"
+        android:layout_marginTop="0dp"
+        android:layout_marginLeft="20dp"
+        android:layout_width="90dp"
+        android:layout_gravity="center"
+        android:layout_height="30dp" />
+
+    <ImageButton
+        android:id="@+id/play_mute_image_button"
+        android:background="@android:color/transparent"
+        android:src="@drawable/sound_off"
+        android:layout_marginLeft="30dp"
+        android:layout_marginTop="5dp"
+        android:layout_width="20dp"
+        android:layout_height="20dp" />
+
+    <ImageButton
+        android:id="@+id/play_sound_image_button"
+        android:background="@android:color/transparent"
+        android:src="@drawable/play25_dimmed"
+        android:layout_marginLeft="20dp"
+        android:layout_marginTop="5dp"
+        android:layout_width="20dp"
+        android:layout_height="20dp" />
+
+</LinearLayout>
