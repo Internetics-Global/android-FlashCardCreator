@@ -16,7 +16,6 @@ import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
 import android.support.v4.view.ViewPager;
-import android.util.Log;
 import android.view.GestureDetector;
 import android.view.KeyEvent;
 import android.view.MotionEvent;
@@ -37,6 +36,7 @@ import com.internectics.helper.FileOperationHelper;
 import com.internectics.model.CardListModel;
 import com.internectics.util.AppConfig;
 import com.internectics.util.Global;
+import com.internectics.util.StringUtils;
 import com.internectics.util.UIHelper;
 import com.internectics.util.VGViewPager;
 
@@ -47,6 +47,7 @@ import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
 
+import cn.pedant.SweetAlert.SweetAlertDialog;
 import cn.trinea.android.view.autoscrollviewpager.AutoScrollViewPager;
 import timber.log.Timber;
 
@@ -239,9 +240,9 @@ public class PlayActivity extends FragmentActivity implements SensorEventListene
                     //hide or show play recorded voice
                     String soundFile = ((CardDetailFragment) (mFragments.get(i))).mCurrentCard.question.audioUriFormatStr;
                     if (soundFile.length() == 0) {
-                        mPlayRecordImageButton.setImageDrawable(getResources().getDrawable(R.drawable.sound_off));
+                        mPlayRecordImageButton.setImageDrawable(getResources().getDrawable(R.drawable.play25_dimmed));
                     } else {
-                        mPlayRecordImageButton.getResources().getDrawable(R.drawable.sound_on);
+                        mPlayRecordImageButton.setImageDrawable(getResources().getDrawable(R.drawable.play25_normal));
                     }
 
                     //Restore previous card to question view
@@ -294,9 +295,9 @@ public class PlayActivity extends FragmentActivity implements SensorEventListene
         CardDetailFragment firstDetailFragment = ((CardDetailFragment) (mFragments.get(0)));
         String soundFile = firstDetailFragment.mCurrentCard.question.audioUriFormatStr;
         if (soundFile.length() == 0) {
-            mPlayRecordImageButton.getResources().getDrawable(R.drawable.sound_off);
+            mPlayRecordImageButton.setImageDrawable(getResources().getDrawable(R.drawable.play25_dimmed));
         } else {
-            mPlayRecordImageButton.getResources().getDrawable(R.drawable.sound_on);
+            mPlayRecordImageButton.setImageDrawable(getResources().getDrawable(R.drawable.play25_normal));
         }
 
         setupTextToSpeech((CardDetailFragment) (mFragments.get(mPosition)));
@@ -312,7 +313,31 @@ public class PlayActivity extends FragmentActivity implements SensorEventListene
     }
 
     private void playRecordedSoundImageButtonClicked() {
-        playAudio();
+
+        boolean isEmpty = true;
+        CardDetailFragment cardDetailFragment = (CardDetailFragment) (mFragments.get(mPosition));
+        if (cardDetailFragment != null) {
+            if (cardDetailFragment.mIsQuestionShowing) {
+                isEmpty = StringUtils.isEmpty(cardDetailFragment.mCurrentCard.question.audioUriFormatStr);
+            } else {
+                isEmpty = StringUtils.isEmpty(cardDetailFragment.mCurrentCard.answer.audioUriFormatStr);
+            }
+        } else {
+            isEmpty = true;
+        }
+
+        if (isEmpty) {
+
+            new SweetAlertDialog(this)
+                .setTitleText("Alert")
+                .setContentText("There is no audio on the question card")
+                .show();
+
+        } else {
+            playAudio();
+        }
+
+
     }
 
     private void autoScrollImageButtonClicked() {
@@ -427,7 +452,7 @@ public class PlayActivity extends FragmentActivity implements SensorEventListene
             mIsSensorAvailable = true;
         } else {
             mIsSensorAvailable = false;
-            Timber.tag(Global.debugTag).w( "No Sensor.TYPE_ORIENTATION exists");
+            Timber.tag(Global.debugTag).w("No Sensor.TYPE_ORIENTATION exists");
         }
 
 
@@ -595,7 +620,10 @@ public class PlayActivity extends FragmentActivity implements SensorEventListene
 
     private void switchQuestionAnswerView() {
 
-        //TODO: auto switch qa timer
+        if (mAutoSwitchQATimer != null) {
+            mAutoSwitchQATimer.cancel();
+            mAutoSwitchQATimer = null;
+        }
 
         CardDetailFragment targetDetailFragment = ((CardDetailFragment) (mFragments.get(mPosition)));
 
@@ -609,9 +637,9 @@ public class PlayActivity extends FragmentActivity implements SensorEventListene
             soundFile = targetDetailFragment.mCurrentCard.answer.audioUriFormatStr;
         }
         if (soundFile.length() == 0) {
-            mPlayRecordImageButton.getResources().getDrawable(R.drawable.sound_off);
+            mPlayRecordImageButton.setImageDrawable(getResources().getDrawable(R.drawable.play25_dimmed));
         } else {
-            mPlayRecordImageButton.getResources().getDrawable(R.drawable.sound_on);
+            mPlayRecordImageButton.setImageDrawable(getResources().getDrawable(R.drawable.play25_normal));
         }
 
         setActiveFragmentTag(mPosition);
@@ -761,8 +789,6 @@ public class PlayActivity extends FragmentActivity implements SensorEventListene
 
     class SwitchQATimer extends TimerTask {
         public void run() {
-            mAutoSwitchQATimer.cancel();
-            mAutoSwitchQATimer = null;
             runOnUiThread(new Runnable() {
                 @Override
                 public void run() {

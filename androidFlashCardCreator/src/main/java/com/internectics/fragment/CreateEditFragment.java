@@ -45,6 +45,7 @@ import java.util.ArrayList;
 import java.util.Timer;
 import java.util.TimerTask;
 
+import cn.pedant.SweetAlert.SweetAlertDialog;
 import timber.log.Timber;
 
 public class CreateEditFragment extends DialogFragment implements TextView.OnEditorActionListener {
@@ -211,12 +212,19 @@ public class CreateEditFragment extends DialogFragment implements TextView.OnEdi
 
         if (mAutoPlaySpeedSeekbar.getProgress() > Global.k_MAX_Auto_Play_Speed
                 || mAutoPlaySpeedSeekbar.getProgress() < Global.k_MIN_Auto_Play_Speed) {
-            Toast.makeText(getActivity(), "The value of auto play speed should be between 4 and 60 seconds", Toast.LENGTH_SHORT).show();
+            new SweetAlertDialog(getActivity())
+                    .setTitleText("Alert")
+                    .setContentText(String.format("The value of auto play speed should be between %d and %d seconds",
+                            Global.k_MIN_Auto_Play_Speed,Global.k_MAX_Auto_Play_Speed))
+                    .show();
             return;
         }
 
         if ((mIsEditPack == false) && (checkExistingPackName(mPackNameEditText.getText().toString()))) {
-            Toast.makeText(getActivity(), "Existing pack name, please rename it", Toast.LENGTH_SHORT).show();
+            new SweetAlertDialog(getActivity())
+                .setTitleText("Alert")
+                .setContentText("Existing pack name, please rename it")
+                    .show();
             return;
         }
 

@@ -18,8 +18,8 @@ android {
         }
     }
 
-    compileSdkVersion 20
-    buildToolsVersion '20.0.0'
+    compileSdkVersion 21
+    buildToolsVersion '21.0.0'
 
     def versionPropsFile = file('version.properties')
 
@@ -84,6 +84,8 @@ dependencies {
     compile ('cn.trinea.android.view.autoscrollviewpager:android-auto-scroll-view-pager:1.1.2') {
         exclude module: 'support-v4'
     }
+
+    compile 'cn.pedant.sweetalert:library:1.3'
 
 
 }
