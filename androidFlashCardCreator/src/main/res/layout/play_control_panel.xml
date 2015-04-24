@@ -40,13 +40,14 @@
         android:layout_marginTop="0dp"
         android:layout_marginLeft="20dp"
         android:layout_width="90dp"
+        android:progressBackgroundTint="@android:color/white"
         android:layout_gravity="center"
         android:layout_height="30dp" />
 
     <ImageButton
         android:id="@+id/play_mute_image_button"
         android:background="@android:color/transparent"
-        android:src="@drawable/sound_off"
+        android:src="@drawable/sound_on"
         android:layout_marginLeft="30dp"
         android:layout_marginTop="5dp"
         android:layout_width="20dp"

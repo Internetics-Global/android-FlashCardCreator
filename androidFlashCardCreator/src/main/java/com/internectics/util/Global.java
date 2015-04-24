@@ -58,8 +58,6 @@ public class Global {
     //Used to judge whether to play random
     public static final String isRandomPlay = "is_random_play";
 
-
-    public static final String isMute = "is_Mute";
     public static final String isTextToSpeech = "is_Text_To_Speech";
 
     //used to generate a redirected URL

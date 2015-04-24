@@ -25,17 +25,13 @@ public class MoreActivity extends PreferenceActivity {
 
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
 
-
         addPreferencesFromResource(R.xml.more);
 
         final CheckBoxPreference dropboxPreference = (CheckBoxPreference) findPreference("dropbox_preference");
         final CheckBoxPreference playPreference = (CheckBoxPreference) findPreference("play_preference");
 
-        final CheckBoxPreference mutePreference = (CheckBoxPreference) findPreference("mute_preference");
         final CheckBoxPreference textToSpeechPreference = (CheckBoxPreference) findPreference("text_to_speech_preference");
 
-//        PreferenceScreen registerPreference = (PreferenceScreen) findPreference("register_preference");
-//        PreferenceScreen submitPreference = (PreferenceScreen) findPreference("submit_preference");
         PreferenceScreen helpPreference = (PreferenceScreen) findPreference("help_preference");
         PreferenceScreen aboutPreference = (PreferenceScreen) findPreference("about_preference");
 
@@ -70,26 +66,6 @@ public class MoreActivity extends PreferenceActivity {
             }
         });
 
-//        registerPreference.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
-//            @Override
-//            public boolean onPreferenceClick(Preference preference) {
-//                Intent intent = new Intent(MoreActivity.this, WebViewActivity.class);
-//                intent.putExtra("url", "http://internetics.net.au/fcc/register/");
-//                startActivity(intent);
-//                return false;
-//            }
-//        });
-//
-//        submitPreference.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
-//            @Override
-//            public boolean onPreferenceClick(Preference preference) {
-//                Intent intent = new Intent(MoreActivity.this, WebViewActivity.class);
-//                intent.putExtra("url", "http://internetics.net.au/fcc/add-new/");
-//                startActivity(intent);
-//                return false;
-//            }
-//        });
-
         aboutPreference.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
             @Override
             public boolean onPreferenceClick(Preference preference) {
@@ -108,18 +84,6 @@ public class MoreActivity extends PreferenceActivity {
             }
         });
 
-
-        mutePreference.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
-            @Override
-            public boolean onPreferenceClick(Preference preference) {
-                if (!mutePreference.isChecked()) {
-                    AppConfig.sharedInstance().setMute(false);
-                } else {
-                    AppConfig.sharedInstance().setMute(true);
-                }
-                return false;
-            }
-        });
 
         textToSpeechPreference.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
             @Override

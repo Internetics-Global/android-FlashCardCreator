@@ -51,25 +51,25 @@ import cn.pedant.SweetAlert.SweetAlertDialog;
 import cn.trinea.android.view.autoscrollviewpager.AutoScrollViewPager;
 import timber.log.Timber;
 
-public class PlayActivity extends FragmentActivity implements SensorEventListener,VGViewPager.OnViewPagerClickListener{
+public class PlayActivity extends FragmentActivity implements SensorEventListener,VGViewPager.OnViewPagerClickListener, ViewPager.OnPageChangeListener{
 
-    private Pack mCurrentPack;
-    private int mPosition = 0;
+    private Pack           mCurrentPack;
+    private int            mPosition = 0;
     private List<Fragment> mFragments;
 
-    private SensorManager mSensorManager;
-    private boolean       mIsSensorAvailable;
+    private SensorManager  mSensorManager;
+    private boolean        mIsSensorAvailable;
 
-    private float mOrigalRoll = 0;
-    private boolean mIsResetRoll = false;
-    private boolean mEnableA = true;
-    private boolean mEnableB = true;
+    private float          mOrignalRoll = 0;
+    private boolean        mIsResetRoll = false;
+    private boolean        mEnableA = true;
+    private boolean        mEnableB = true;
 
     private AutoScrollViewPager mPager;
 
-    private GestureDetector mGestureDetector;
+    private GestureDetector     mGestureDetector;
 
-    private boolean mIsScrollStop = true;
+    private boolean             mIsScrollStop = true;
 
     private ImageButton mCyclePlayImageButton;
     private ImageButton mAutoScrollImageButton;
@@ -79,13 +79,13 @@ public class PlayActivity extends FragmentActivity implements SensorEventListene
 
     private boolean     mIsAutoScroll;
     private boolean     mIsCyclePlay;
-    private boolean     mIsMute;
+    private boolean     mIsMute = false;
 
     private boolean     mIsAutoShowQuestionOnly = true;
     private Timer       mAutoSwitchQATimer;
 
 
-    private boolean   mRunOnceFlag; //only allow to run once
+    private boolean     mRunOnceFlag; //only allow to run once
 
     //Text to speech related
     private int          mTextToSpeechContentArrayIndex;
@@ -97,13 +97,11 @@ public class PlayActivity extends FragmentActivity implements SensorEventListene
 
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
         requestWindowFeature(Window.FEATURE_ACTION_BAR);
-
-        int packID = getIntent().getIntExtra("packID", -1);
-        mCurrentPack = CardListModel.getPack(packID);
-
         setContentView(R.layout.play);
         getActionBar().hide();
 
+        int packID = getIntent().getIntExtra("packID", -1);
+        mCurrentPack = CardListModel.getPack(packID);
 
         mCyclePlayImageButton = (ImageButton) findViewById(R.id.cycle_play_image_button);
         mCyclePlayImageButton.setOnClickListener(new View.OnClickListener() {
@@ -151,34 +149,17 @@ public class PlayActivity extends FragmentActivity implements SensorEventListene
         });
 
         mMuteImageButton = (ImageButton) findViewById(R.id.play_mute_image_button);
-        if (AppConfig.sharedInstance().isMute()) {
-          mMuteImageButton.setImageDrawable(getResources().getDrawable(R.drawable.sound_off));
-        } else {
-            mMuteImageButton.setImageDrawable(getResources().getDrawable(R.drawable.sound_on));
-        }
         mMuteImageButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (AppConfig.sharedInstance().isMute()) {
-                    mMuteImageButton.setImageDrawable(getResources().getDrawable(R.drawable.sound_off));
-                    AppConfig.sharedInstance().setMute(false);
-                } else {
-                    mMuteImageButton.setImageDrawable(getResources().getDrawable(R.drawable.sound_on));
-                    AppConfig.sharedInstance().setMute(true);
-                }
+                muteImageButtonClicked();
             }
         });
-
-
 
         mFragments = getFragments();
         FCCPageAdapter pageAdapter = new FCCPageAdapter(getSupportFragmentManager(), mFragments);
         mPager = (AutoScrollViewPager) findViewById(R.id.viewpager);
         //mPager.setOnViewPagerClickListener(this); TODO:XXX
-
-
-
-
 
 
         //used to get rid of interrupt during scroll
@@ -229,65 +210,7 @@ public class PlayActivity extends FragmentActivity implements SensorEventListene
 
         mPager.setOffscreenPageLimit(1);
         mPager.setAdapter(pageAdapter);
-        mPager.setOnPageChangeListener(new ViewPager.OnPageChangeListener() {
-            @Override
-            public void onPageScrolled(int i, float v, int i2) {
-                if ((mPosition != i) && (i2 == 0)) {
-                    Timber.tag(Global.debugTag).i( "onPageScrolled, page index=" + i + " .mPosition=" + mPosition);
-
-                    ((CardDetailFragment) (mFragments.get(i))).switchToQuestionView(false);
-
-                    //hide or show play recorded voice
-                    String soundFile = ((CardDetailFragment) (mFragments.get(i))).mCurrentCard.question.audioUriFormatStr;
-                    if (soundFile.length() == 0) {
-                        mPlayRecordImageButton.setImageDrawable(getResources().getDrawable(R.drawable.play25_dimmed));
-                    } else {
-                        mPlayRecordImageButton.setImageDrawable(getResources().getDrawable(R.drawable.play25_normal));
-                    }
-
-                    //Restore previous card to question view
-                    ((CardDetailFragment) (mFragments.get(mPosition))).switchToQuestionView(false);
-
-                    mPosition = i;
-
-                    mIsScrollStop = true;
-
-                    setActiveFragmentTag(i);
-
-                    exeuteTextToSpeechOrPlayAudio((CardDetailFragment) (mFragments.get(i)));
-
-                    if (mIsAutoScroll && mIsAutoShowQuestionOnly == false) {
-                        if (mAutoSwitchQATimer != null) {
-                            mAutoSwitchQATimer.cancel();
-                            mAutoSwitchQATimer = null;
-                        }
-                        mAutoSwitchQATimer = new Timer();
-                        TimerTask updateBall = new SwitchQATimer();
-                        mAutoSwitchQATimer.scheduleAtFixedRate(updateBall, getAutoPlaySpeedMilliSeconds() / 2 - 500, 3600*1000);
-                    }
-
-
-
-                } else {
-                    //只会运行一次
-                    if (mRunOnceFlag == false) {
-                      setActiveFragmentTag(0);
-                      mRunOnceFlag = true;
-                    }
-                }
-            }
-
-
-            @Override
-            public void onPageSelected(int i) {
-            }
-
-            @Override
-            public void onPageScrollStateChanged(int i) {
-            }
-
-        });
-
+        mPager.setOnPageChangeListener(this);
 
         mSensorManager = (SensorManager) getSystemService(Context.SENSOR_SERVICE);
 
@@ -304,17 +227,64 @@ public class PlayActivity extends FragmentActivity implements SensorEventListene
 
     }
 
-    private int getAutoPlaySpeedMilliSeconds () {
-        int interval = mAutoPlaySpeedSeekBar.getProgress();
-        if (interval == 0) {
-            interval = Global.k_Default_Auto_Play_Speed *1000;
+    @Override
+    protected void onResume() {
+        super.onResume();
+        Sensor accelerometer = mSensorManager.getDefaultSensor(Sensor.TYPE_ORIENTATION);
+
+        if (accelerometer != null) {
+            mSensorManager.registerListener(this, accelerometer, SensorManager.SENSOR_DELAY_GAME); //considering different hardware, we need to set the fastest value
+            mIsSensorAvailable = true;
+        } else {
+            mIsSensorAvailable = false;
+            Timber.tag(Global.debugTag).w("No Sensor.TYPE_ORIENTATION exists");
         }
-        return interval;
+
+
+        mIsResetRoll = true;
+
+
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        if (mIsSensorAvailable) {
+            mSensorManager.unregisterListener(this);
+        }
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        if(mTTS != null) {
+            if (mTTS.isSpeaking()) {
+                mTTS.stop();
+            }
+            mTTS.shutdown();
+        }
+
+        mFragments.clear();
+        mFragments = null;
+    }
+
+    private void muteImageButtonClicked() {
+        if (mIsMute) {
+            mMuteImageButton.setImageDrawable(getResources().getDrawable(R.drawable.sound_on));
+            mIsMute = false;
+        } else {
+            mMuteImageButton.setImageDrawable(getResources().getDrawable(R.drawable.sound_off));
+            mIsMute = true;
+        }
     }
 
     private void playRecordedSoundImageButtonClicked() {
 
-        boolean isEmpty = true;
+        if (mIsMute) {
+            return;
+        }
+
+        boolean isEmpty;
         CardDetailFragment cardDetailFragment = (CardDetailFragment) (mFragments.get(mPosition));
         if (cardDetailFragment != null) {
             if (cardDetailFragment.mIsQuestionShowing) {
@@ -402,139 +372,68 @@ public class PlayActivity extends FragmentActivity implements SensorEventListene
 
     }
 
-    private void exeuteTextToSpeechOrPlayAudio(CardDetailFragment cardDetailFragment) {
-
-        if (AppConfig.sharedInstance().isMute()) {
-            Timber.tag(Global.debugTag).i("Can not playAudio because of mute");
-            return;
-        }
-
-        if (AppConfig.sharedInstance().isTextToSpeech()) {
-            textToSpeechAllContentNow(cardDetailFragment);//先text-to-speech，然后再播放audio
-        } else {
-            playAudio();
-        }
-    }
-
-    private void playAudio() {
-
-
-        CardDetailFragment cardDetailFragment = (CardDetailFragment) (mFragments.get(mPosition));
-
-        String targetStr;
-        if (cardDetailFragment.mIsQuestionShowing) {
-            targetStr = cardDetailFragment.mCurrentCard.question.audioUriFormatStr;
-        } else {
-            targetStr = cardDetailFragment.mCurrentCard.answer.audioUriFormatStr;
-        }
-
-        if (targetStr.length() >0) {
-            Boolean isSimulator = Build.FINGERPRINT.startsWith("generic");
-            if (isSimulator) {
-                Toast.makeText(PlayActivity.this,"Audio possily could not be supported on simulator",Toast.LENGTH_LONG).show();
-            } else {
-                AudioHelper.playAudio(FileOperationHelper.deleteUriSchemeHeader(targetStr));
-            }
-
-        } else {
-            //Toast.makeText(PlayActivity.this,"Not available audio file", Toast.LENGTH_LONG).show();
-        }
-    }
-
-
-    @Override
-    protected void onResume() {
-        super.onResume();
-        Sensor accelerometer = mSensorManager.getDefaultSensor(Sensor.TYPE_ORIENTATION);
-
-        if (accelerometer != null) {
-            mSensorManager.registerListener(this, accelerometer, SensorManager.SENSOR_DELAY_GAME); //considering different hardware, we need to set the fastest value
-            mIsSensorAvailable = true;
-        } else {
-            mIsSensorAvailable = false;
-            Timber.tag(Global.debugTag).w("No Sensor.TYPE_ORIENTATION exists");
-        }
-
-
-        mIsResetRoll = true;
-
-
-    }
-
-    @Override
-    protected void onStop() {
-        super.onStop();
-        if (mIsSensorAvailable) {
-            mSensorManager.unregisterListener(this);
-        }
-    }
-
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        if(mTTS != null) {
-            if (mTTS.isSpeaking()) {
-                mTTS.stop();
-            }
-            mTTS.shutdown();
-        }
-
-        mFragments.clear();
-        mFragments = null;
-    }
-
     @Override
     public void OnViewPagerClickListener() {
         switchQuestionAnswerView();
     }
 
-    public class FCCPageAdapter extends FragmentStatePagerAdapter {
+    @Override
+    public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+        if ((mPosition != position) && (positionOffsetPixels == 0)) {
+            Timber.tag(Global.debugTag).i( "onPageScrolled, page index=" + position + " .mPosition=" + mPosition);
 
-        private List<Fragment> mFragments;
+            ((CardDetailFragment) (mFragments.get(position))).switchToQuestionView(false);
 
-        public FCCPageAdapter(FragmentManager fm, List<Fragment> fragments) {
-            super(fm);
-            this.mFragments = fragments;
-        }
+            //hide or show play recorded voice
+            String soundFile = ((CardDetailFragment) (mFragments.get(position))).mCurrentCard.question.audioUriFormatStr;
+            if (soundFile.length() == 0) {
+                mPlayRecordImageButton.setImageDrawable(getResources().getDrawable(R.drawable.play25_dimmed));
+            } else {
+                mPlayRecordImageButton.setImageDrawable(getResources().getDrawable(R.drawable.play25_normal));
+            }
 
-        @Override
-        public Fragment getItem(int position) {
-            return this.mFragments.get(position);
-        }
+            //Restore previous card to question view
+            ((CardDetailFragment) (mFragments.get(mPosition))).switchToQuestionView(false);
 
-        @Override
-        public int getCount() {
-            return this.mFragments.size();
+            mPosition = position;
+
+            mIsScrollStop = true;
+
+            setActiveFragmentTag(position);
+
+            executeTextToSpeechOrPlayAudio((CardDetailFragment) (mFragments.get(position)));
+
+            if (mIsAutoScroll && mIsAutoShowQuestionOnly == false) {
+                if (mAutoSwitchQATimer != null) {
+                    mAutoSwitchQATimer.cancel();
+                    mAutoSwitchQATimer = null;
+                }
+                mAutoSwitchQATimer = new Timer();
+                TimerTask updateBall = new SwitchQATimer();
+                mAutoSwitchQATimer.scheduleAtFixedRate(updateBall, getAutoPlaySpeedMilliSeconds() / 2 - 500, 3600*1000);
+            }
+
+
+
+        } else {
+            //只会运行一次
+            if (mRunOnceFlag == false) {
+                setActiveFragmentTag(0);
+                mRunOnceFlag = true;
+            }
         }
     }
 
+    @Override
+    public void onPageSelected(int position) {
 
-    private List<Fragment> getFragments() {
-
-        ArrayList<Card> cardsArray = mCurrentPack.cards;
-        int size = cardsArray.size();
-
-        List<Fragment> fList = new ArrayList<Fragment>();
-
-        if (mCurrentPack == null) {
-            Timber.tag(Global.debugTag).w( "mCurrentPack could not be null in PlayActictiy");
-            return fList;
-        }
-
-        for (int i = 0; i < size; i++) {
-            CardDetailFragment cardDetailFragment = new CardDetailFragment();
-            cardDetailFragment.configureParameters(mCurrentPack, cardsArray.get(i), 2);
-            fList.add(i, cardDetailFragment);
-            Timber.tag(Global.debugTag).d( String.format("new CardDetailFragment %d", i));
-
-        }
-
-        if (AppConfig.sharedInstance().isRandomPlay()) {
-            Collections.shuffle(fList);
-        }
-
-        return fList;
     }
+
+    @Override
+    public void onPageScrollStateChanged(int state) {
+
+    }
+
 
     @Override
     public void onSensorChanged(SensorEvent event) {
@@ -548,7 +447,7 @@ public class PlayActivity extends FragmentActivity implements SensorEventListene
 
 
         if (mIsResetRoll) {
-            mOrigalRoll = event.values[2];
+            mOrignalRoll = event.values[2];
             mIsResetRoll = false;
         }
 
@@ -559,23 +458,23 @@ public class PlayActivity extends FragmentActivity implements SensorEventListene
 
         int orientation = getOrientation();
         if (orientation == 0) {
-            if ((roll - mOrigalRoll > 15.0) && (mEnableA)) {
+            if ((roll - mOrignalRoll > 15.0) && (mEnableA)) {
                 cardDetailFragment.switchQuestionAnswerView();
-                exeuteTextToSpeechOrPlayAudio(cardDetailFragment);
+                executeTextToSpeechOrPlayAudio(cardDetailFragment);
                 mEnableA = false;
             }
-            if (roll - mOrigalRoll < 0) {
+            if (roll - mOrignalRoll < 0) {
                 mEnableA = true;
             }
 
         } else if ((orientation == 1) && (mEnableB)) {
-            if (roll - mOrigalRoll < -15.0) {
+            if (roll - mOrignalRoll < -15.0) {
                 cardDetailFragment.switchQuestionAnswerView();
-                exeuteTextToSpeechOrPlayAudio(cardDetailFragment);
+                executeTextToSpeechOrPlayAudio(cardDetailFragment);
                 mEnableB = false;
             }
 
-            if (roll - mOrigalRoll > 0) {
+            if (roll - mOrignalRoll > 0) {
                 mEnableB = true;
             }
         }
@@ -588,33 +487,6 @@ public class PlayActivity extends FragmentActivity implements SensorEventListene
     @Override
     public void onAccuracyChanged(Sensor sensor, int accuracy) {
         //do nothing
-    }
-
-
-    /**
-     * -1, other orientation; 0, landscape; 1. reverse landscape
-     */
-    private int getOrientation() {
-        int orientation = getResources().getConfiguration().orientation;
-        int rotation = getWindowManager().getDefaultDisplay().getRotation();
-
-        if (orientation == Configuration.ORIENTATION_LANDSCAPE) {
-            if ((rotation == Surface.ROTATION_0)
-                    || (rotation == Surface.ROTATION_90)) {
-                //Timber.tag(Global.debugTag).d( "current rotation is landscape");
-                return 0; //landscape (for nexus 7, camera is left side of screen)
-            }
-
-            if ((rotation == Surface.ROTATION_180)
-                    || (rotation == Surface.ROTATION_270)) {
-                //Timber.tag(Global.debugTag).d( "current rotation is reverselandscape");
-                return 1; //reverse landscape   (for nexus 7, camera is right side of screen)
-            }
-
-        }
-
-        return -1; //other rotation
-
     }
 
 
@@ -644,7 +516,7 @@ public class PlayActivity extends FragmentActivity implements SensorEventListene
 
         setActiveFragmentTag(mPosition);
 
-        exeuteTextToSpeechOrPlayAudio(targetDetailFragment);
+        executeTextToSpeechOrPlayAudio(targetDetailFragment);
     }
 
 
@@ -702,7 +574,7 @@ public class PlayActivity extends FragmentActivity implements SensorEventListene
                             }
                         });
 
-                        exeuteTextToSpeechOrPlayAudio(cardDetailFragment); //once setup is finished, automatically playback
+                        executeTextToSpeechOrPlayAudio(cardDetailFragment); //once setup is finished, automatically playback
 
 
                     } else {
@@ -719,12 +591,46 @@ public class PlayActivity extends FragmentActivity implements SensorEventListene
 
     }
 
+    private void executeTextToSpeechOrPlayAudio(CardDetailFragment cardDetailFragment) {
 
-    private void textToSpeechAllContentNow(CardDetailFragment cardDetailFragment) {
-
-        if (AppConfig.sharedInstance().isMute()) {
+        if (mIsMute) {
+            Timber.tag(Global.debugTag).i("Can not playAudio because of mute");
             return;
         }
+
+        if (AppConfig.sharedInstance().isTextToSpeech()) {
+            textToSpeechAllContentNow(cardDetailFragment);//先text-to-speech，然后再播放audio
+        } else {
+            playAudio();
+        }
+    }
+
+    private void playAudio() {
+
+        CardDetailFragment cardDetailFragment = (CardDetailFragment) (mFragments.get(mPosition));
+
+        String targetStr;
+        if (cardDetailFragment.mIsQuestionShowing) {
+            targetStr = cardDetailFragment.mCurrentCard.question.audioUriFormatStr;
+        } else {
+            targetStr = cardDetailFragment.mCurrentCard.answer.audioUriFormatStr;
+        }
+
+        if (targetStr.length() >0) {
+            Boolean isSimulator = Build.FINGERPRINT.startsWith("generic");
+            if (isSimulator) {
+                Toast.makeText(PlayActivity.this,"Audio possily could not be supported on simulator",Toast.LENGTH_LONG).show();
+            } else {
+                AudioHelper.playAudio(FileOperationHelper.deleteUriSchemeHeader(targetStr));
+            }
+
+        } else {
+            //Toast.makeText(PlayActivity.this,"Not available audio file", Toast.LENGTH_LONG).show();
+        }
+    }
+
+
+    private void textToSpeechAllContentNow(CardDetailFragment cardDetailFragment) {
 
         ArrayList<String> textToSpeechArray = cardDetailFragment.textToSpeechContentArray();
         if (textToSpeechArray.size() >0) {
@@ -786,6 +692,67 @@ public class PlayActivity extends FragmentActivity implements SensorEventListene
        }
     }
 
+    private List<Fragment> getFragments() {
+
+        ArrayList<Card> cardsArray = mCurrentPack.cards;
+        int size = cardsArray.size();
+
+        List<Fragment> fList = new ArrayList<Fragment>();
+
+        if (mCurrentPack == null) {
+            Timber.tag(Global.debugTag).w( "mCurrentPack could not be null in PlayActictiy");
+            return fList;
+        }
+
+        for (int i = 0; i < size; i++) {
+            CardDetailFragment cardDetailFragment = new CardDetailFragment();
+            cardDetailFragment.configureParameters(mCurrentPack, cardsArray.get(i), 2);
+            fList.add(i, cardDetailFragment);
+            Timber.tag(Global.debugTag).d( String.format("new CardDetailFragment %d", i));
+
+        }
+
+        if (AppConfig.sharedInstance().isRandomPlay()) {
+            Collections.shuffle(fList);
+        }
+
+        return fList;
+    }
+
+    /**
+     * -1, other orientation; 0, landscape; 1. reverse landscape
+     */
+    private int getOrientation() {
+        int orientation = getResources().getConfiguration().orientation;
+        int rotation = getWindowManager().getDefaultDisplay().getRotation();
+
+        if (orientation == Configuration.ORIENTATION_LANDSCAPE) {
+            if ((rotation == Surface.ROTATION_0)
+                    || (rotation == Surface.ROTATION_90)) {
+                //Timber.tag(Global.debugTag).d( "current rotation is landscape");
+                return 0; //landscape (for nexus 7, camera is left side of screen)
+            }
+
+            if ((rotation == Surface.ROTATION_180)
+                    || (rotation == Surface.ROTATION_270)) {
+                //Timber.tag(Global.debugTag).d( "current rotation is reverselandscape");
+                return 1; //reverse landscape   (for nexus 7, camera is right side of screen)
+            }
+
+        }
+
+        return -1; //other rotation
+
+    }
+
+    private int getAutoPlaySpeedMilliSeconds () {
+        int interval = mAutoPlaySpeedSeekBar.getProgress();
+        if (interval == 0) {
+            interval = Global.k_Default_Auto_Play_Speed *1000;
+        }
+        return interval;
+    }
+
 
     class SwitchQATimer extends TimerTask {
         public void run() {
@@ -795,6 +762,27 @@ public class PlayActivity extends FragmentActivity implements SensorEventListene
                     switchQuestionAnswerView();
                 }
             });
+        }
+    }
+
+
+    public class FCCPageAdapter extends FragmentStatePagerAdapter {
+
+        private List<Fragment> mFragments;
+
+        public FCCPageAdapter(FragmentManager fm, List<Fragment> fragments) {
+            super(fm);
+            this.mFragments = fragments;
+        }
+
+        @Override
+        public Fragment getItem(int position) {
+            return this.mFragments.get(position);
+        }
+
+        @Override
+        public int getCount() {
+            return this.mFragments.size();
         }
     }
 
