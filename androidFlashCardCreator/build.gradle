@@ -68,25 +68,18 @@ dependencies {
     compile 'asia.ivity.android:drag-sort-listview:1.0@aar'
     compile project(':Viewflow')
     compile project(':NewQuickAction3D')
-    compile(name:'android-crop-0.9.10', ext:'aar')
-    compile(name:'android_target_tooltip_ccaa_22112014', ext:'aar')
-
+    compile(name: 'android-crop-0.9.10', ext: 'aar')
+    compile(name: 'android_target_tooltip_ccaa_22112014', ext: 'aar')
     compile 'com.nineoldandroids:library:+'
-
     compile 'com.jakewharton.timber:timber:2.5.1'
-
     compile 'com.parse.bolts:bolts-android:1.+'
     compile files('libs/ParseCrashReporting-1.8.3.jar')
     compile files('libs/Parse-1.8.3.jar')
-
     compile 'com.makeramen:roundedimageview:2.0.1'
-
-    compile ('cn.trinea.android.view.autoscrollviewpager:android-auto-scroll-view-pager:1.1.2') {
+    compile('cn.trinea.android.view.autoscrollviewpager:android-auto-scroll-view-pager:1.1.2') {
         exclude module: 'support-v4'
     }
-
     compile 'cn.pedant.sweetalert:library:1.3'
-
-
+    compile project(':discreteSeekBar')
 }
 

@@ -40,6 +40,8 @@ import com.internectics.util.StringUtils;
 import com.internectics.util.UIHelper;
 import com.internectics.util.VGViewPager;
 
+import org.adw.library.widgets.discreteseekbar.DiscreteSeekBar;
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
@@ -71,11 +73,11 @@ public class PlayActivity extends FragmentActivity implements SensorEventListene
 
     private boolean             mIsScrollStop = true;
 
-    private ImageButton mCyclePlayImageButton;
-    private ImageButton mAutoScrollImageButton;
-    private SeekBar     mAutoPlaySpeedSeekBar;
-    private ImageButton mPlayRecordImageButton;
-    private ImageButton mMuteImageButton;
+    private ImageButton         mCyclePlayImageButton;
+    private ImageButton         mAutoScrollImageButton;
+    private DiscreteSeekBar     mAutoPlaySpeedSeekBar;
+    private ImageButton         mPlayRecordImageButton;
+    private ImageButton         mMuteImageButton;
 
     private boolean     mIsAutoScroll;
     private boolean     mIsCyclePlay;
@@ -119,23 +121,21 @@ public class PlayActivity extends FragmentActivity implements SensorEventListene
             }
         });
 
-        mAutoPlaySpeedSeekBar = (SeekBar) findViewById(R.id.auto_play_speed_seekbar);
-        mAutoPlaySpeedSeekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+        mAutoPlaySpeedSeekBar = (DiscreteSeekBar) findViewById(R.id.seekbar);
+        mAutoPlaySpeedSeekBar.setOnProgressChangeListener(new DiscreteSeekBar.OnProgressChangeListener() {
             @Override
-            public void onProgressChanged(SeekBar seekBar, int i, boolean b) {
-
+            public void onProgressChanged(DiscreteSeekBar seekBar, int value, boolean fromUser) {
                 //when auto scroll, mAutoPlaySpeedSeekBar is disabled, which is different with iOS version
-
                 //TODO: _currentPack.autoPlaySpeed = slider.value
             }
 
             @Override
-            public void onStartTrackingTouch(SeekBar seekBar) {
+            public void onStartTrackingTouch(DiscreteSeekBar seekBar) {
 
             }
 
             @Override
-            public void onStopTrackingTouch(SeekBar seekBar) {
+            public void onStopTrackingTouch(DiscreteSeekBar seekBar) {
 
             }
         });

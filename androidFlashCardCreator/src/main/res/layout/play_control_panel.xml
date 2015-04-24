@@ -35,13 +35,12 @@
         android:gravity="center"
         android:maxLines="1"/>
 
-    <SeekBar
-        android:id="@+id/auto_play_speed_seekbar"
+    <include
+        android:id="@+id/sidebar"
+        layout="@layout/auto_play_speed_seek_bar"
+        android:layout_marginLeft="0dp"
+        android:layout_width="120dp"
         android:layout_marginTop="0dp"
-        android:layout_marginLeft="20dp"
-        android:layout_width="90dp"
-        android:progressBackgroundTint="@android:color/white"
-        android:layout_gravity="center"
         android:layout_height="30dp" />
 
     <ImageButton

@@ -39,6 +39,8 @@ import com.internectics.util.OpenUDID_manager;
 import com.internectics.util.StringUtils;
 import com.internectics.util.UIHelper;
 
+import org.adw.library.widgets.discreteseekbar.DiscreteSeekBar;
+
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
@@ -57,12 +59,12 @@ public class CreateEditFragment extends DialogFragment implements TextView.OnEdi
 
     private int CODE_REQUEST_IMAGE_FROM_IMAGE_LIBRARY = 1001;
 
-    private EditText mPackNameEditText;
-    private EditText mSidebarTitleEditText;
-    private EditText mCreatorEditText;
-    private EditText mJobTitleEditText;
-    private SeekBar  mAutoPlaySpeedSeekbar;
-    private ImageView mCoverImageView;
+    private EditText           mPackNameEditText;
+    private EditText           mSidebarTitleEditText;
+    private EditText           mCreatorEditText;
+    private EditText           mJobTitleEditText;
+    private DiscreteSeekBar    mAutoPlaySpeedSeekbar;
+    private ImageView          mCoverImageView;
 
     private InputMethodManager mIMM;
 
@@ -143,7 +145,7 @@ public class CreateEditFragment extends DialogFragment implements TextView.OnEdi
                 .findViewById(R.id.fragment_add_pack_creator);
         mJobTitleEditText = (EditText) mContentView
                 .findViewById(R.id.fragment_add_pack_job_title);
-        mAutoPlaySpeedSeekbar = (SeekBar) mContentView.findViewById(R.id.auto_play_speed_seekbar);
+        mAutoPlaySpeedSeekbar = (DiscreteSeekBar) mContentView.findViewById(R.id.seekbar);
 
 
         mPackNameEditText.setOnEditorActionListener(this);
