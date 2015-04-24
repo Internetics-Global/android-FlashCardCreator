@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              xmlns:app="http://schemas.android.com/apk/res-auto"
               android:layout_height="fill_parent"
               android:layout_width="fill_parent"
               android:background="#252525"
@@ -84,7 +85,7 @@
             android:layout_weight="1"
             android:layout_height="match_parent">
 
-            <ImageView
+            <com.makeramen.roundedimageview.RoundedImageView
                 android:id="@+id/fragment_add_pack_coverImage"
                 android:layout_alignParentTop="true"
                 android:layout_gravity="center"
@@ -96,6 +97,7 @@
                 android:layout_marginBottom="20dp"
                 android:scaleType="fitCenter"
                 android:adjustViewBounds="true"
+                app:riv_corner_radius="15dp"
                 android:background="@drawable/shape_image_round_corner"
                 android:src="@drawable/default_pack_cover_image"/>
 

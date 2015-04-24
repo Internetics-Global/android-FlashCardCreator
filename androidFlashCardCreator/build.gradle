@@ -79,5 +79,8 @@ dependencies {
     compile files('libs/ParseCrashReporting-1.8.3.jar')
     compile files('libs/Parse-1.8.3.jar')
 
+    compile 'com.makeramen:roundedimageview:2.0.1'
+
+
 }
 
