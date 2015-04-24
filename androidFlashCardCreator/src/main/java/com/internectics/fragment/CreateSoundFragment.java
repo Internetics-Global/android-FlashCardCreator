@@ -196,7 +196,6 @@ public class CreateSoundFragment extends DialogFragment {
 
     class TimerAysncTask extends AsyncTask<Integer, Integer, String> {
 
-        int k_maxTime = 100; //10 seconds
         int i = 0;
 
         @Override
@@ -207,9 +206,9 @@ public class CreateSoundFragment extends DialogFragment {
         @Override
         protected String doInBackground(Integer... params) {
 
-            while ((i < 100) && (mRecordStatus == Record_Status.Record_Status_Recording)) {
+            while ((i < 600) && (mRecordStatus == Record_Status.Record_Status_Recording)) {
                 try {
-                    publishProgress(10- i/10); //剩余时间
+                    publishProgress(60- i/10); //剩余时间
                     i++;
                     Thread.sleep(100);
                 } catch (InterruptedException e) {
