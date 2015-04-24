@@ -30,10 +30,11 @@
         >
 
         <ImageView
+
             android:id="@+id/pack_cover_image"
             android:layout_width="fill_parent"
             android:layout_height="fill_parent"
-            android:scaleType="fitCenter"
+            android:scaleType="centerCrop"
             android:src="@drawable/default_pack_cover_image"
             android:background="@drawable/shape_image_round_corner">
 
@@ -41,21 +42,16 @@
 
         <ImageView
             android:id="@+id/pack_play_image_view"
-            android:layout_width="80dp"
-            android:layout_height="80dp"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
             android:layout_marginBottom="5dp"
             android:layout_marginRight="5dp"
             android:layout_gravity="bottom|right"
             android:scaleType="fitCenter"
             android:src="@drawable/play">
-
         </ImageView>
 
     </FrameLayout>
-
-
-
-
 
     <LinearLayout
         android:id="@+id/pack_list_edit_layout"
