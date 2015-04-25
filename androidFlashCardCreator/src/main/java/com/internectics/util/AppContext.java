@@ -3,6 +3,7 @@ package com.internectics.util;
 import android.app.Application;
 import android.content.Context;
 
+import com.facebook.stetho.Stetho;
 import com.parse.Parse;
 import com.parse.ParseCrashReporting;
 
@@ -30,6 +31,13 @@ public class AppContext extends Application {
         } else {
             Timber.plant(new CrashReportingTree());
         }
+
+        //facebook debug framework
+        Stetho.initialize(
+                Stetho.newInitializerBuilder(this)
+                        .enableDumpapp(Stetho.defaultDumperPluginsProvider(this))
+                        .enableWebKitInspector(Stetho.defaultInspectorModulesProvider(this))
+                        .build());
     }
 
     public static Context getAppContext() {
