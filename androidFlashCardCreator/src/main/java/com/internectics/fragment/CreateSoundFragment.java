@@ -92,7 +92,7 @@ public class CreateSoundFragment extends DialogFragment {
                     }
 
                     AudioHelper.stopRecord();
-                    AudioHelper.releaseRecord();
+                    AudioHelper.cleanupRecorderResource();
                     mRecordStatus = Record_Status.Record_Status_Normal;
                     mRecordButton.setText("Record");
                 }
@@ -124,7 +124,7 @@ public class CreateSoundFragment extends DialogFragment {
     @Override
     public void onDestroy() {
         super.onDestroy();
-        AudioHelper.releaseRecord();
+        AudioHelper.cleanupRecorderResource();
     }
 
     private void recordButtonClicked() {
@@ -236,7 +236,7 @@ public class CreateSoundFragment extends DialogFragment {
 
             if (mRecordStatus == Record_Status.Record_Status_Recording) {
                 AudioHelper.stopRecord();
-                AudioHelper.releaseRecord();
+                AudioHelper.cleanupRecorderResource();
                 mRecordButton.setText("Record");
             }
 

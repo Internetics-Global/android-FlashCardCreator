@@ -4,7 +4,7 @@
                 android:background="@drawable/w2048"
                 android:layout_height="match_parent">
 
-    <cn.trinea.android.view.autoscrollviewpager.AutoScrollViewPager
+    <com.internectics.util.VGViewPager
             android:id="@+id/viewpager"
             android:layout_width="fill_parent"
             android:paddingLeft="0dp"

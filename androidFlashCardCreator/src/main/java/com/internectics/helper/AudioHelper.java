@@ -13,9 +13,10 @@ import java.io.IOException;
 public class AudioHelper {
 
     private static MediaRecorder mRecorder;
+    private static MediaPlayer   mp;
 
     /*
-    outputPathString must be a .3gp format, othervise, execption will be thrown
+    outputPathString must be a .3gp format, otherwise exception will be thrown
      */
     public static void setupAudioRecord(String outputPathString) {
 
@@ -77,7 +78,10 @@ public class AudioHelper {
 
     }
 
-    public static void releaseRecord() {
+    /*
+     * Clean all Recorded related resources
+     */
+    public static void cleanupRecorderResource() {
         if (mRecorder != null) {
             mRecorder.reset();
             mRecorder.release();
@@ -92,9 +96,10 @@ public class AudioHelper {
      */
     public static void playAudio(String pathString){
 
-
         //set up MediaPlayer
-        MediaPlayer mp = new MediaPlayer();
+        if (mp == null) {
+            mp = new MediaPlayer();
+        }
 
         try {
             mp.setDataSource(pathString);
@@ -133,8 +138,22 @@ public class AudioHelper {
         });
     }
 
+    public static void stopAudio() {
+        if (mp != null) {
+            mp.stop();
+        }
+    }
 
-
+    /*
+     * Clean all Audio Play related resources
+     */
+    public static void cleanupAudioPlayResource() {
+        if (mp != null) {
+            mp.stop();
+            mp.release();
+            mp = null;
+        }
+    }
 
 
 }

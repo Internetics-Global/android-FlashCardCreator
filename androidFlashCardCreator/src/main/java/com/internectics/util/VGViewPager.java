@@ -10,6 +10,7 @@ import android.widget.LinearLayout;
 
 import com.internectics.android_flashcardcreator.R;
 
+import cn.trinea.android.view.autoscrollviewpager.AutoScrollViewPager;
 import timber.log.Timber;
 
 /**
@@ -19,7 +20,7 @@ import timber.log.Timber;
  * Time: 下午3:30
  * To change this template use File | Settings | File Templates.
  */
-public class VGViewPager extends ViewPager {
+public class VGViewPager extends AutoScrollViewPager {
 
     protected OnViewPagerClickListener mOnViewPagerItemClickListener;
 

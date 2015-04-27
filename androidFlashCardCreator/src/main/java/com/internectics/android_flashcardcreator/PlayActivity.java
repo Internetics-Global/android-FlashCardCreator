@@ -10,7 +10,9 @@ import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Handler;
 import android.speech.tts.TextToSpeech;
+import android.speech.tts.UtteranceProgressListener;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
@@ -25,7 +27,6 @@ import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.ImageButton;
-import android.widget.SeekBar;
 import android.widget.Toast;
 
 import com.internectics.data.Card;
@@ -50,24 +51,23 @@ import java.util.Timer;
 import java.util.TimerTask;
 
 import cn.pedant.SweetAlert.SweetAlertDialog;
-import cn.trinea.android.view.autoscrollviewpager.AutoScrollViewPager;
 import timber.log.Timber;
 
 public class PlayActivity extends FragmentActivity implements SensorEventListener,VGViewPager.OnViewPagerClickListener, ViewPager.OnPageChangeListener{
 
-    private Pack           mCurrentPack;
-    private int            mPosition = 0;
-    private List<Fragment> mFragments;
+    private Pack              mCurrentPack;
+    private int               mPosition = 0;
+    private List<Fragment>    mFragments;
 
-    private SensorManager  mSensorManager;
-    private boolean        mIsSensorAvailable;
+    private SensorManager     mSensorManager;
+    private boolean           mIsSensorAvailable;
 
-    private float          mOrignalRoll = 0;
-    private boolean        mIsResetRoll = false;
-    private boolean        mEnableA = true;
-    private boolean        mEnableB = true;
+    private float             mOriginalRoll = 0;
+    private boolean           mIsResetRoll = false;
+    private boolean           mEnableA = true;
+    private boolean           mEnableB = true;
 
-    private AutoScrollViewPager mPager;
+    private VGViewPager       mPager;
 
     private GestureDetector     mGestureDetector;
 
@@ -86,12 +86,13 @@ public class PlayActivity extends FragmentActivity implements SensorEventListene
     private boolean     mIsAutoShowQuestionOnly = true;
     private Timer       mAutoSwitchQATimer;
 
-
     private boolean     mRunOnceFlag; //only allow to run once
 
     //Text to speech related
-    private int          mTextToSpeechContentArrayIndex;
-    private TextToSpeech mTTS;
+    private int            mTextToSpeechContentArrayIndex;
+    private TextToSpeech   mTTS;
+
+    private Handler        mDelayHandler = new Handler();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -158,8 +159,9 @@ public class PlayActivity extends FragmentActivity implements SensorEventListene
 
         mFragments = getFragments();
         FCCPageAdapter pageAdapter = new FCCPageAdapter(getSupportFragmentManager(), mFragments);
-        mPager = (AutoScrollViewPager) findViewById(R.id.viewpager);
-        //mPager.setOnViewPagerClickListener(this); TODO:XXX
+        mPager = (VGViewPager) findViewById(R.id.viewpager);
+        mPager.setStopScrollWhenTouch(false);
+        mPager.setOnViewPagerClickListener(this);
 
 
         //used to get rid of interrupt during scroll
@@ -171,7 +173,7 @@ public class PlayActivity extends FragmentActivity implements SensorEventListene
             }
         });
 
-        //Keep same size with non-playmode
+        //Keep same size with non-play mode
         ViewGroup.MarginLayoutParams marginLayoutParams = (ViewGroup.MarginLayoutParams) mPager.getLayoutParams();
         double screenWidth = UIHelper.getScreenWidth(this);
         double screenHeight = UIHelper.getScreenHeight(this);
@@ -240,10 +242,7 @@ public class PlayActivity extends FragmentActivity implements SensorEventListene
             Timber.tag(Global.debugTag).w("No Sensor.TYPE_ORIENTATION exists");
         }
 
-
         mIsResetRoll = true;
-
-
     }
 
     @Override
@@ -257,12 +256,21 @@ public class PlayActivity extends FragmentActivity implements SensorEventListene
     @Override
     protected void onDestroy() {
         super.onDestroy();
+
         if(mTTS != null) {
             if (mTTS.isSpeaking()) {
                 mTTS.stop();
             }
             mTTS.shutdown();
         }
+
+        if (mDelayHandler !=null) {
+            mDelayHandler.removeCallbacksAndMessages(null);
+            mDelayHandler = null;
+        }
+
+        AudioHelper.cleanupAudioPlayResource();
+        AudioHelper.cleanupRecorderResource();
 
         mFragments.clear();
         mFragments = null;
@@ -275,6 +283,8 @@ public class PlayActivity extends FragmentActivity implements SensorEventListene
         } else {
             mMuteImageButton.setImageDrawable(getResources().getDrawable(R.drawable.sound_off));
             mIsMute = true;
+            stopAudio();
+            stopTextToSpeech();
         }
     }
 
@@ -306,8 +316,6 @@ public class PlayActivity extends FragmentActivity implements SensorEventListene
         } else {
             playAudio();
         }
-
-
     }
 
     private void autoScrollImageButtonClicked() {
@@ -354,8 +362,7 @@ public class PlayActivity extends FragmentActivity implements SensorEventListene
 
         mAutoSwitchQATimer = new Timer();
         TimerTask updateBall = new SwitchQATimer();
-        mAutoSwitchQATimer.scheduleAtFixedRate(updateBall, getAutoPlaySpeedMilliSeconds() / 2 - 500, 3600*1000);
-
+        mAutoSwitchQATimer.scheduleAtFixedRate(updateBall, getAutoPlaySpeedMilliSeconds() / 2 - 500, 3600 * 1000);
 
     }
 
@@ -369,7 +376,6 @@ public class PlayActivity extends FragmentActivity implements SensorEventListene
         }
 
         mPager.setCycle(mIsCyclePlay);
-
     }
 
     @Override
@@ -400,6 +406,7 @@ public class PlayActivity extends FragmentActivity implements SensorEventListene
             mIsScrollStop = true;
 
             setActiveFragmentTag(position);
+
 
             executeTextToSpeechOrPlayAudio((CardDetailFragment) (mFragments.get(position)));
 
@@ -447,7 +454,7 @@ public class PlayActivity extends FragmentActivity implements SensorEventListene
 
 
         if (mIsResetRoll) {
-            mOrignalRoll = event.values[2];
+            mOriginalRoll = event.values[2];
             mIsResetRoll = false;
         }
 
@@ -458,23 +465,23 @@ public class PlayActivity extends FragmentActivity implements SensorEventListene
 
         int orientation = getOrientation();
         if (orientation == 0) {
-            if ((roll - mOrignalRoll > 15.0) && (mEnableA)) {
+            if ((roll - mOriginalRoll > 15.0) && (mEnableA)) {
                 cardDetailFragment.switchQuestionAnswerView();
                 executeTextToSpeechOrPlayAudio(cardDetailFragment);
                 mEnableA = false;
             }
-            if (roll - mOrignalRoll < 0) {
+            if (roll - mOriginalRoll < 0) {
                 mEnableA = true;
             }
 
         } else if ((orientation == 1) && (mEnableB)) {
-            if (roll - mOrignalRoll < -15.0) {
+            if (roll - mOriginalRoll < -15.0) {
                 cardDetailFragment.switchQuestionAnswerView();
                 executeTextToSpeechOrPlayAudio(cardDetailFragment);
                 mEnableB = false;
             }
 
-            if (roll - mOrignalRoll > 0) {
+            if (roll - mOriginalRoll > 0) {
                 mEnableB = true;
             }
         }
@@ -546,23 +553,35 @@ public class PlayActivity extends FragmentActivity implements SensorEventListene
                         Timber.tag(Global.debugTag).i("TTS", "Initilization Success");
 
 
-                        mTTS.setOnUtteranceCompletedListener(new TextToSpeech.OnUtteranceCompletedListener() {
+                        mTTS.setOnUtteranceProgressListener(new UtteranceProgressListener() {
                             @Override
-                            public void onUtteranceCompleted(String utteranceId) {
+                            public void onStart(String utteranceId) {
 
+                            }
+
+                            @Override
+                            public void onDone(String utteranceId) {
+                                //go to next
                                 mTextToSpeechContentArrayIndex ++;
 
                                 CardDetailFragment cardDetailFragment = ((CardDetailFragment) (mFragments.get(mPosition)));
 
-                                ArrayList<String> textToSpeechArray = cardDetailFragment.textToSpeechContentArray();
+                                final ArrayList<String> textToSpeechArray = cardDetailFragment.textToSpeechContentArray();
                                 if (textToSpeechArray.size() > mTextToSpeechContentArrayIndex) {
-
                                     try {
                                         Thread.sleep(500);
-                                        HashMap<String, String> params = new HashMap<String, String>();
-                                        params.put(TextToSpeech.Engine.KEY_PARAM_UTTERANCE_ID,"stringId");//必不可少
-                                        mTTS.speak(textToSpeechArray.get(mTextToSpeechContentArrayIndex),TextToSpeech.QUEUE_FLUSH,params);
-                                        Timber.tag(Global.debugTag).d("speak" + textToSpeechArray.get(mTextToSpeechContentArrayIndex));
+                                        mDelayHandler.postDelayed(new Runnable() {
+                                            @Override
+                                            public void run() {
+                                                HashMap<String, String> params = new HashMap<String, String>();
+                                                params.put(TextToSpeech.Engine.KEY_PARAM_UTTERANCE_ID, "stringId");//必不可少
+                                                if (mIsMute == false) {
+                                                    mTTS.speak(textToSpeechArray.get(mTextToSpeechContentArrayIndex), TextToSpeech.QUEUE_FLUSH, params);
+                                                    Timber.tag(Global.debugTag).d("speak" + textToSpeechArray.get(mTextToSpeechContentArrayIndex));
+                                                }
+                                            }
+                                        }, 500);
+
                                     } catch (InterruptedException e) {
                                         e.printStackTrace();
                                     }
@@ -572,17 +591,22 @@ public class PlayActivity extends FragmentActivity implements SensorEventListene
                                 }
 
                             }
+
+                            @Override
+                            public void onError(String utteranceId) {
+
+                            }
                         });
 
                         executeTextToSpeechOrPlayAudio(cardDetailFragment); //once setup is finished, automatically playback
 
 
                     } else {
-                        Timber.tag(Global.debugTag).e("TTS", "Initilization Failed!");
+                        Timber.tag(Global.debugTag).e("TTS", "Initialization Failed!");
                     }
                 }
             });
-            mTTS.setSpeechRate((float)0.7);
+            mTTS.setSpeechRate((float) 0.7);
 
 
 
@@ -599,6 +623,7 @@ public class PlayActivity extends FragmentActivity implements SensorEventListene
         }
 
         if (AppConfig.sharedInstance().isTextToSpeech()) {
+            mDelayHandler.removeCallbacksAndMessages(null);
             textToSpeechAllContentNow(cardDetailFragment);//先text-to-speech，然后再播放audio
         } else {
             playAudio();
@@ -606,6 +631,10 @@ public class PlayActivity extends FragmentActivity implements SensorEventListene
     }
 
     private void playAudio() {
+
+        if (mIsMute) {
+            return;
+        }
 
         CardDetailFragment cardDetailFragment = (CardDetailFragment) (mFragments.get(mPosition));
 
@@ -629,8 +658,23 @@ public class PlayActivity extends FragmentActivity implements SensorEventListene
         }
     }
 
+    private void stopAudio() {
+        AudioHelper.stopAudio();
+
+    }
+
+    private void stopTextToSpeech() {
+        if (mTTS!= null) {
+            mTTS.stop();
+        }
+    }
+
 
     private void textToSpeechAllContentNow(CardDetailFragment cardDetailFragment) {
+
+        if (mIsMute) {
+            return;
+        }
 
         ArrayList<String> textToSpeechArray = cardDetailFragment.textToSpeechContentArray();
         if (textToSpeechArray.size() >0) {
@@ -748,9 +792,9 @@ public class PlayActivity extends FragmentActivity implements SensorEventListene
     private int getAutoPlaySpeedMilliSeconds () {
         int interval = mAutoPlaySpeedSeekBar.getProgress();
         if (interval == 0) {
-            interval = Global.k_Default_Auto_Play_Speed *1000;
+            interval = Global.k_Default_Auto_Play_Speed;
         }
-        return interval;
+        return interval*1000;
     }
 
 
