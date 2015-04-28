@@ -3782,6 +3782,12 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnKeyboa
       Be sure to have exact size of bitamp with card, othervise, the rounded size could vary;
      */
     private void setCardBackgroundImageWithBitmap(Bitmap bitmap) {
+
+        if (bitmap == null) {
+            Timber.tag(Global.debugTag).e("null bitmap for setCardBackgroundImageWithBitmap");
+            return;
+        }
+
         //set background image
 
 // 我们comment掉，因为有一种更好的解决方法（注释掉的方法执行效率较低）
@@ -3807,10 +3813,13 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnKeyboa
         File f = new File(FileOperationHelper.deleteUriSchemeHeader(uriString));
         Drawable drawable = Drawable.createFromPath(f.getAbsolutePath());
 
-        Bitmap bitmap = ((BitmapDrawable)drawable).getBitmap();
+        if (drawable == null) {
+            Timber.tag(Global.debugTag).e("null drawable for setCardBackgroundImageWithUri");
+        } else {
+            Bitmap bitmap = ((BitmapDrawable)drawable).getBitmap();
 
-        setCardBackgroundImageWithBitmap(bitmap);
-
+            setCardBackgroundImageWithBitmap(bitmap);
+        }
     }
 
 

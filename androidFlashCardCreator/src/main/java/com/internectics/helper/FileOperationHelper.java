@@ -26,17 +26,19 @@ import java.util.UUID;
  */
 public class FileOperationHelper {
 
-    private static int resrouceID[] = {R.drawable.question_placeholder_logo,
+    private static int resourceID[] = {R.drawable.question_placeholder_logo,
             R.drawable.question_placeholder_content,
             R.drawable.answer_placeholder_content,
             R.drawable.default_pack_cover_image,
-            R.drawable.card_cover_image_placeholder};
+            R.drawable.card_cover_image_placeholder,
+            R.drawable.default_pack_cover_image_transparent};
     private static String output[] = {
-            "question_placeholder_logo.jpg",
-            "question_placeholder_content.jpg",
-            "answer_placeholder_content.jpg",
-            "default_pack_cover_image.jpg",
-            "card_cover_image_placeholder.jpg"};
+            "question_placeholder_logo.png",
+            "question_placeholder_content.png",
+            "answer_placeholder_content.png",
+            "default_pack_cover_image.png",
+            "card_cover_image_placeholder.png",
+            "default_pack_cover_image_transparent.png"};
 
 
     /*
@@ -80,7 +82,7 @@ public class FileOperationHelper {
     }
 
     /**
-     * All the image resouces in pack/card will be JPG format Everytime you call
+     * All the image resouces in pack/card will be PNG format. Every time you call
      * this method, the file path will be unique
      */
     public static File generateUniqueImageFilePath() {
@@ -248,8 +250,8 @@ public class FileOperationHelper {
             return;
         }
 
-        for (int i = 0; i < resrouceID.length; i++) {
-            InputStream in = context.getResources().openRawResource(resrouceID[i]);
+        for (int i = 0; i < resourceID.length; i++) {
+            InputStream in = context.getResources().openRawResource(resourceID[i]);
             FileOutputStream out;
             try {
                 out = new FileOutputStream(new File(imagesDirectory(), output[i]));
