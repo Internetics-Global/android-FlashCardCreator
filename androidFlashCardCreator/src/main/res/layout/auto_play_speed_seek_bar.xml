@@ -7,7 +7,7 @@
     android:layout_height="30dp">
 
     <TextView
-        android:layout_width="20dp"
+        android:layout_width="15dp"
         android:layout_height="match_parent"
         android:paddingLeft="0dp"
         android:gravity="center_vertical|right"
@@ -29,7 +29,7 @@
         app:dsb_indicatorFormatter="%02d"/>
 
     <TextView
-        android:layout_width="20dp"
+        android:layout_width="15dp"
         android:layout_height="match_parent"
         android:paddingLeft="0dp"
         android:gravity="center_vertical|left"

@@ -18,6 +18,7 @@ import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
 import android.support.v4.view.ViewPager;
+import android.util.Log;
 import android.view.GestureDetector;
 import android.view.KeyEvent;
 import android.view.MotionEvent;
@@ -123,6 +124,12 @@ public class PlayActivity extends FragmentActivity implements SensorEventListene
         });
 
         mAutoPlaySpeedSeekBar = (DiscreteSeekBar) findViewById(R.id.seekbar);
+        if (mCurrentPack.autoPlaySpeed < Global.k_MIN_Auto_Play_Speed
+                || mCurrentPack.autoPlaySpeed > Global.k_MAX_Auto_Play_Speed) {
+            mAutoPlaySpeedSeekBar.setProgress(Global.k_Default_Auto_Play_Speed);
+        } else {
+            mAutoPlaySpeedSeekBar.setProgress(mCurrentPack.autoPlaySpeed);
+        }
         mAutoPlaySpeedSeekBar.setOnProgressChangeListener(new DiscreteSeekBar.OnProgressChangeListener() {
             @Override
             public void onProgressChanged(DiscreteSeekBar seekBar, int value, boolean fromUser) {
@@ -423,6 +430,11 @@ public class PlayActivity extends FragmentActivity implements SensorEventListene
 
 
         } else {
+
+            if (mDelayHandler != null) {
+                mDelayHandler.removeCallbacksAndMessages(null);
+            }
+
             //只会运行一次
             if (mRunOnceFlag == false) {
                 setActiveFragmentTag(0);
@@ -568,23 +580,21 @@ public class PlayActivity extends FragmentActivity implements SensorEventListene
 
                                 final ArrayList<String> textToSpeechArray = cardDetailFragment.textToSpeechContentArray();
                                 if (textToSpeechArray.size() > mTextToSpeechContentArrayIndex) {
-                                    try {
-                                        Thread.sleep(500);
-                                        mDelayHandler.postDelayed(new Runnable() {
-                                            @Override
-                                            public void run() {
-                                                HashMap<String, String> params = new HashMap<String, String>();
-                                                params.put(TextToSpeech.Engine.KEY_PARAM_UTTERANCE_ID, "stringId");//必不可少
-                                                if (mIsMute == false) {
-                                                    mTTS.speak(textToSpeechArray.get(mTextToSpeechContentArrayIndex), TextToSpeech.QUEUE_FLUSH, params);
-                                                    Timber.tag(Global.debugTag).d("speak" + textToSpeechArray.get(mTextToSpeechContentArrayIndex));
+                                    mDelayHandler.postDelayed(new Runnable() {
+                                        @Override
+                                        public void run() {
+                                            HashMap<String, String> params = new HashMap<String, String>();
+                                            params.put(TextToSpeech.Engine.KEY_PARAM_UTTERANCE_ID, "stringId");//必不可少
+                                            if (mIsMute == false) {
+                                                //we still need to check boundary since it's a delayed operation
+                                                if (textToSpeechArray.size() > mTextToSpeechContentArrayIndex) {
+                                                    String text = textToSpeechArray.get(mTextToSpeechContentArrayIndex);
+                                                    mTTS.speak(text, TextToSpeech.QUEUE_FLUSH, params);
+                                                    Timber.tag(Global.debugTag).d("speak " + text);
                                                 }
                                             }
-                                        }, 500);
-
-                                    } catch (InterruptedException e) {
-                                        e.printStackTrace();
-                                    }
+                                        }
+                                    }, 500);
 
                                 } else {
                                     playAudio();
@@ -623,7 +633,6 @@ public class PlayActivity extends FragmentActivity implements SensorEventListene
         }
 
         if (AppConfig.sharedInstance().isTextToSpeech()) {
-            mDelayHandler.removeCallbacksAndMessages(null);
             textToSpeechAllContentNow(cardDetailFragment);//先text-to-speech，然后再播放audio
         } else {
             playAudio();
@@ -791,9 +800,6 @@ public class PlayActivity extends FragmentActivity implements SensorEventListene
 
     private int getAutoPlaySpeedMilliSeconds () {
         int interval = mAutoPlaySpeedSeekBar.getProgress();
-        if (interval == 0) {
-            interval = Global.k_Default_Auto_Play_Speed;
-        }
         return interval*1000;
     }
 
