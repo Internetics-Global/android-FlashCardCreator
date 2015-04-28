@@ -168,6 +168,7 @@ public class PlayActivity extends FragmentActivity implements SensorEventListene
         FCCPageAdapter pageAdapter = new FCCPageAdapter(getSupportFragmentManager(), mFragments);
         mPager = (VGViewPager) findViewById(R.id.viewpager);
         mPager.setStopScrollWhenTouch(false);
+        mPager.setScrollDurationFactor(5);
         mPager.setOnViewPagerClickListener(this);
 
 
