@@ -11,6 +11,7 @@ import android.hardware.SensorManager;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
+import android.os.PowerManager;
 import android.speech.tts.TextToSpeech;
 import android.speech.tts.UtteranceProgressListener;
 import android.support.v4.app.Fragment;
@@ -377,6 +378,7 @@ public class PlayActivity extends FragmentActivity implements SensorEventListene
                     })
                     .show();
         } else {
+            screenOff();
             mPager.disableAllTouchEvent(false);
             mIsAutoScroll = false;
             mAutoPlaySpeedSeekBar.setEnabled(true);
@@ -391,6 +393,7 @@ public class PlayActivity extends FragmentActivity implements SensorEventListene
     }
 
     private void autoScrollPopoverViewItemSelected() {
+        screenOn();
         mPager.disableAllTouchEvent(true);
         mIsAutoScroll = true;
         mAutoPlaySpeedSeekBar.setEnabled(false);
@@ -416,6 +419,14 @@ public class PlayActivity extends FragmentActivity implements SensorEventListene
         }
 
         mPager.setCycle(mIsCyclePlay);
+    }
+
+    private void screenOn() {
+        getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
+    }
+
+    private void screenOff() {
+        getWindow().clearFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
     }
 
     @Override
