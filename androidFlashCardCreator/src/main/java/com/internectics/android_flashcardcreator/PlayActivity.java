@@ -18,7 +18,6 @@ import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
 import android.support.v4.view.ViewPager;
-import android.util.Log;
 import android.view.GestureDetector;
 import android.view.KeyEvent;
 import android.view.MotionEvent;
@@ -93,7 +92,8 @@ public class PlayActivity extends FragmentActivity implements SensorEventListene
     private int            mTextToSpeechContentArrayIndex;
     private TextToSpeech   mTTS;
 
-    private Handler        mDelayHandler = new Handler();
+    private Handler mTTSDelayHandler = new Handler();
+    private Handler        mAutoHideControlPanelHandler = new Handler();;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -171,7 +171,6 @@ public class PlayActivity extends FragmentActivity implements SensorEventListene
         mPager.setScrollDurationFactor(5);
         mPager.setOnViewPagerClickListener(this);
 
-
         //used to get rid of interrupt during scroll
         View playMask = findViewById(R.id.play_mask);
         playMask.setOnTouchListener(new View.OnTouchListener() {
@@ -235,6 +234,19 @@ public class PlayActivity extends FragmentActivity implements SensorEventListene
 
         setupTextToSpeech((CardDetailFragment) (mFragments.get(mPosition)));
 
+        View baseView = findViewById(R.id.play_baseview);
+        baseView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                View controlPanelView = findViewById(R.id.play_control_panel);
+                if (controlPanelView.getVisibility() == View.VISIBLE) {
+                    controlPanelView.setVisibility(View.INVISIBLE);
+                } else {
+                    controlPanelView.setVisibility(View.VISIBLE);
+                }
+            }
+        });
+
     }
 
     @Override
@@ -251,6 +263,17 @@ public class PlayActivity extends FragmentActivity implements SensorEventListene
         }
 
         mIsResetRoll = true;
+
+        mAutoHideControlPanelHandler.postDelayed(new Runnable() {
+
+                    @Override
+                    public void run() {
+                        View controlPanelView = findViewById(R.id.play_control_panel);
+                        controlPanelView.setVisibility(View.INVISIBLE);
+                    }
+
+                }, 3000);
+
     }
 
     @Override
@@ -272,9 +295,14 @@ public class PlayActivity extends FragmentActivity implements SensorEventListene
             mTTS.shutdown();
         }
 
-        if (mDelayHandler !=null) {
-            mDelayHandler.removeCallbacksAndMessages(null);
-            mDelayHandler = null;
+        if (mTTSDelayHandler !=null) {
+            mTTSDelayHandler.removeCallbacksAndMessages(null);
+            mTTSDelayHandler = null;
+        }
+
+        if (mAutoHideControlPanelHandler !=null) {
+            mAutoHideControlPanelHandler.removeCallbacksAndMessages(null);
+            mAutoHideControlPanelHandler = null;
         }
 
         AudioHelper.cleanupAudioPlayResource();
@@ -283,6 +311,8 @@ public class PlayActivity extends FragmentActivity implements SensorEventListene
         mFragments.clear();
         mFragments = null;
     }
+
+
 
     private void muteImageButtonClicked() {
         if (mIsMute) {
@@ -432,8 +462,8 @@ public class PlayActivity extends FragmentActivity implements SensorEventListene
 
         } else {
 
-            if (mDelayHandler != null) {
-                mDelayHandler.removeCallbacksAndMessages(null);
+            if (mTTSDelayHandler != null) {
+                mTTSDelayHandler.removeCallbacksAndMessages(null);
             }
 
             //只会运行一次
@@ -581,7 +611,7 @@ public class PlayActivity extends FragmentActivity implements SensorEventListene
 
                                 final ArrayList<String> textToSpeechArray = cardDetailFragment.textToSpeechContentArray();
                                 if (textToSpeechArray.size() > mTextToSpeechContentArrayIndex) {
-                                    mDelayHandler.postDelayed(new Runnable() {
+                                    mTTSDelayHandler.postDelayed(new Runnable() {
                                         @Override
                                         public void run() {
                                             HashMap<String, String> params = new HashMap<String, String>();
