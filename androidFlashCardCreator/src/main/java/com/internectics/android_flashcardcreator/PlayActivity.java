@@ -365,18 +365,19 @@ public class PlayActivity extends FragmentActivity implements SensorEventListene
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
                             mIsAutoShowQuestionOnly = true;
-                            autoScrollPopoveriewItemSelected();
+                            autoScrollPopoverViewItemSelected();
                         }
                     })
                     .setNegativeButton("Both question and answer", new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
                             mIsAutoShowQuestionOnly = false;
-                            autoScrollPopoveriewItemSelected();
+                            autoScrollPopoverViewItemSelected();
                         }
                     })
                     .show();
         } else {
+            mPager.disableAllTouchEvent(false);
             mIsAutoScroll = false;
             mAutoPlaySpeedSeekBar.setEnabled(true);
             mAutoScrollImageButton.setImageDrawable(getResources().getDrawable(R.drawable.autoplay_off));
@@ -389,7 +390,8 @@ public class PlayActivity extends FragmentActivity implements SensorEventListene
         }
     }
 
-    private void autoScrollPopoveriewItemSelected() {
+    private void autoScrollPopoverViewItemSelected() {
+        mPager.disableAllTouchEvent(true);
         mIsAutoScroll = true;
         mAutoPlaySpeedSeekBar.setEnabled(false);
         mAutoScrollImageButton.setImageDrawable(getResources().getDrawable(R.drawable.autoplay_on));

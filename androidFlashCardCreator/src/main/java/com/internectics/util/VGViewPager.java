@@ -22,6 +22,8 @@ import timber.log.Timber;
  */
 public class VGViewPager extends AutoScrollViewPager {
 
+    private boolean isDisableTouchEvent = false;
+
     protected OnViewPagerClickListener mOnViewPagerItemClickListener;
 
     public VGViewPager(Context context) {
@@ -37,49 +39,56 @@ public class VGViewPager extends AutoScrollViewPager {
         super.onInterceptTouchEvent(event);
         Timber.tag(Global.debugTag4).d("onInterceptTouchEvent for VGViewPager");
 
-        int[] location = new int[2];
+        if (isDisableTouchEvent) {
+            return true; //防止传递给sub view
+        } else {
+            int[] location = new int[2];
 
-        this.getLocationOnScreen(location);
-        float hitXInScreen =  event.getX() + location[0];
-        float hitYInScreen =  event.getY() + location[1];
+            this.getLocationOnScreen(location);
+            float hitXInScreen =  event.getX() + location[0];
+            float hitYInScreen =  event.getY() + location[1];
 
 
-        //由于ViewPager包含多个card，而通过findViewById会只获取到第一个，这样就会出现问题（比如当前显示第二个卡片，但是这里就会获取到第一个）
-        ImageView logo_image = (ImageView)findViewWithTag(Global.mLogoImage_Showing);
-        if ((logo_image != null) && isViewContains(logo_image,hitXInScreen,hitYInScreen)) {
-            Timber.tag(Global.debugTag4).d( "touch location in logo_image");
-            return false;
-        }
-
-        ImageView image = (ImageView)findViewWithTag(Global.mImage_Showing);
-        if ((image != null) && (image.getVisibility() == VISIBLE) && (image.isEnabled() == true)) {
-            if (isViewContains(image,hitXInScreen,hitYInScreen)) {
-                Boolean bool = image.isEnabled();
-                Timber.tag(Global.debugTag4).d( "touch location in image，enable=  "+bool);
+            //由于ViewPager包含多个card，而通过findViewById会只获取到第一个，这样就会出现问题（比如当前显示第二个卡片，但是这里就会获取到第一个）
+            ImageView logo_image = (ImageView)findViewWithTag(Global.mLogoImage_Showing);
+            if ((logo_image != null) && isViewContains(logo_image,hitXInScreen,hitYInScreen)) {
+                Timber.tag(Global.debugTag4).d( "touch location in logo_image");
                 return false;
             }
-        }
 
-        ImageView image2 = (ImageView)findViewWithTag(Global.mImage2_Showing);
-        if ((image2 != null) && (image2.getVisibility() == VISIBLE) && (image2.isEnabled() == true)) {
-            if (isViewContains(image2,hitXInScreen,hitYInScreen)) {
-                Boolean bool = image2.isEnabled();
-                Timber.tag(Global.debugTag4).d( "touch location in image2，enable=  "+bool);
+            ImageView image = (ImageView)findViewWithTag(Global.mImage_Showing);
+            if ((image != null) && (image.getVisibility() == VISIBLE) && (image.isEnabled() == true)) {
+                if (isViewContains(image,hitXInScreen,hitYInScreen)) {
+                    Boolean bool = image.isEnabled();
+                    Timber.tag(Global.debugTag4).d( "touch location in image，enable=  "+bool);
+                    return false;
+                }
+            }
+
+            ImageView image2 = (ImageView)findViewWithTag(Global.mImage2_Showing);
+            if ((image2 != null) && (image2.getVisibility() == VISIBLE) && (image2.isEnabled() == true)) {
+                if (isViewContains(image2,hitXInScreen,hitYInScreen)) {
+                    Boolean bool = image2.isEnabled();
+                    Timber.tag(Global.debugTag4).d( "touch location in image2，enable=  "+bool);
+                    return false;
+                }
+            }
+
+
+            LinearLayout creatorLayout = (LinearLayout) findViewById(R.id.creator_layout);
+            if (isViewContains(creatorLayout,hitXInScreen,hitYInScreen))
+            {
+                Timber.tag(Global.debugTag4).d("touch location in creatorLayout");
                 return false;
             }
+
+            Timber.tag(Global.debugTag4).d( "onInterceptTouchEvent finally return true");
+
+            return true;
         }
 
 
-        LinearLayout creatorLayout = (LinearLayout) findViewById(R.id.creator_layout);
-        if (isViewContains(creatorLayout,hitXInScreen,hitYInScreen))
-        {
-            Timber.tag(Global.debugTag4).d("touch location in creatorLayout");
-            return false;
-        }
 
-        Timber.tag(Global.debugTag4).d( "onInterceptTouchEvent finally return true");
-
-        return true;
     }
 
     /*
@@ -104,6 +113,10 @@ public class VGViewPager extends AutoScrollViewPager {
     @Override
     public boolean onTouchEvent(MotionEvent ev) {
         super.onTouchEvent(ev);
+
+        if (isDisableTouchEvent) {
+            return false;  //防止传递给手势处理
+        }
 
         switch (ev.getAction()) {
             case MotionEvent.ACTION_DOWN:
@@ -140,13 +153,23 @@ public class VGViewPager extends AutoScrollViewPager {
     }
 
 
-    public static interface OnViewPagerClickListener {
-        public void OnViewPagerClickListener();
+    @Override
+    public boolean dispatchTouchEvent(MotionEvent ev) {
+        return super.dispatchTouchEvent(ev);
+    }
+
+    public interface OnViewPagerClickListener {
+        void OnViewPagerClickListener();
     }
 
     public void setOnViewPagerClickListener(OnViewPagerClickListener listener)
     {
         mOnViewPagerItemClickListener = listener;
+    }
+
+
+    public void disableAllTouchEvent(boolean isDisableTouchEvent) {
+        this.isDisableTouchEvent = isDisableTouchEvent;
     }
 
 }

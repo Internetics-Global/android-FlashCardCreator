@@ -127,7 +127,7 @@ public class PackDownloadHelper extends AsyncTask<Void, Long, Boolean> {
     @Override
     protected void onPostExecute(Boolean result) {
         if (result) {
-            Toast.makeText(mContext, "Download pack successfully.\n       Loading...", Toast.LENGTH_SHORT).show();
+            Toast.makeText(mContext, "Download pack successfully.", Toast.LENGTH_SHORT).show();
             try {
 
                 ZipFile zipFile = new ZipFile(mSavedFilePath);
