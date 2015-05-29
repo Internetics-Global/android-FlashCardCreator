@@ -20,6 +20,8 @@ import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.Set;
 
 import timber.log.Timber;
 
@@ -111,6 +113,11 @@ public class PackBuildHelper {
                 cardFiles.add(FileOperationHelper.deleteUriSchemeHeader(card.answer.audioUriFormatStr));
             }
 
+            //remove duplicated
+            Set<String> hs = new HashSet<>();
+            hs.addAll(cardFiles);
+            cardFiles.clear();
+            cardFiles.addAll(hs);
 
             File cardZipFile = new File(FileOperationHelper.uploadPackDirectory(), String.format("card%d.zip", i));
             try {
@@ -133,14 +140,13 @@ public class PackBuildHelper {
         File jsonPackFile = PackBuildHelper.buildPackJsonFile(currentPack);
         packFiles.add(jsonPackFile);
 
-        SharedPreferences prefs = activity.getSharedPreferences(String.format("%d", currentPack.packID), 0);
-        String shareFileName = prefs.getString(Global.shareFileName_Property,"");
-
+        String fullPath_S3 = PackRecordHelper.getFullPath_S3(currentPack);
         File packZipFile;
-        if ((shareFileName == null) || (shareFileName.length() == 0)) {
+        if (StringUtils.isEmpty(fullPath_S3)) {
             packZipFile = FileOperationHelper.generateUniquePackZipFilePathForUploading();
         } else {
-            packZipFile = new File(FileOperationHelper.uploadPackDirectory(),shareFileName);
+            String name = (new File(fullPath_S3)).getName();
+            packZipFile = new File(FileOperationHelper.uploadPackDirectory(),name);
         }
 
 
@@ -237,9 +243,9 @@ public class PackBuildHelper {
         obj.put("subheading", card.question.subheading);
         obj.put("main", card.question.main);
         obj.put("sub", card.question.sub);
-        obj.put("line_number_subheading", card.question.lineNoSubheading);
-        obj.put("line_number_main", card.question.lineNoMain);
-        obj.put("line_number_sub", card.question.lineNoSub);
+        obj.put("line_number_subheading", String.valueOf(card.question.lineNoSubheading));
+        obj.put("line_number_main", String.valueOf(card.question.lineNoMain));
+        obj.put("line_number_sub", String.valueOf(card.question.lineNoSub));
         obj.put("subheading_align", card.question.css.subheadingAlign);
         obj.put("subheading_align_vertical", card.question.css.subheadingAlignVertical);
         obj.put("subheading_color", card.question.css.subheadingColor);
@@ -290,9 +296,9 @@ public class PackBuildHelper {
         obj.put("subheading", card.answer.subheading);
         obj.put("main", card.answer.main);
         obj.put("sub", card.answer.sub);
-        obj.put("line_number_subheading", card.answer.lineNoSubheading);
-        obj.put("line_number_main", card.answer.lineNoMain);
-        obj.put("line_number_sub", card.answer.lineNoSub);
+        obj.put("line_number_subheading", String.valueOf(card.answer.lineNoSubheading));
+        obj.put("line_number_main", String.valueOf(card.answer.lineNoMain));
+        obj.put("line_number_sub", String.valueOf(card.answer.lineNoSub));
         obj.put("subheading_align", card.answer.css.subheadingAlign);
         obj.put("subheading_align_vertical", card.answer.css.subheadingAlignVertical);
         obj.put("subheading_color", card.answer.css.subheadingColor);

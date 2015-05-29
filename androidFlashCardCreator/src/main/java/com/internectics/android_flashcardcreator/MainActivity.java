@@ -13,6 +13,7 @@ import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
+import android.os.Message;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
@@ -40,9 +41,6 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.dropbox.client2.DropboxAPI;
-import com.dropbox.client2.android.AndroidAuthSession;
-import com.dropbox.client2.session.TokenPair;
 import com.google.analytics.tracking.android.EasyTracker;
 import com.internectics.data.Card;
 import com.internectics.data.Pack;
@@ -50,15 +48,16 @@ import com.internectics.fragment.CreateEditFragment;
 import com.internectics.fragment.CardDetailFragment;
 import com.internectics.fragment.CardListFragment;
 import com.internectics.fragment.SymbolBoxFragment;
-import com.internectics.helper.AmazonSDB.SimpleDBHelper;
-import com.internectics.helper.DropboxHelper;
+import com.internectics.helper.AWS.AWSUtils;
+import com.internectics.helper.AWS.AWS_Constant;
+import com.internectics.helper.AWS.S3UploadHelper;
+import com.internectics.helper.AWS.SimpleDBHelper;
 import com.internectics.helper.FileOperationHelper;
 import com.internectics.helper.PackBuildHelper;
 import com.internectics.helper.PackDownloadHelper;
 import com.internectics.helper.PackRecordHelper;
-import com.internectics.helper.PackUploadHelper;
 import com.internectics.helper.SQLiteHelper;
-import com.internectics.helper.ShareLinkHelper;
+import com.internectics.helper.ShareHelper;
 import com.internectics.helper.SymbolHelper;
 import com.internectics.util.AppConfig;
 import com.internectics.util.AppContext;
@@ -84,7 +83,6 @@ public class MainActivity extends FragmentActivity implements
 
     private boolean mIsCreatingCard = false;
     public boolean mIsEdittingCard = false;
-    private boolean mIsGoingAuthorizationBeforeUpload = false;
     private boolean mIsNecessaryToRestoreCSSToolbar = false;
     private boolean mIsFromRestartApp = false;
 
@@ -96,7 +94,12 @@ public class MainActivity extends FragmentActivity implements
 
     public PopupWindow mPopupWindow;
     private View mCSSToolbar;
+
+
     private ProgressDialog mProgressDialog;
+    private ProgressDialog mUploadProgressDialog;
+
+
     private Button mMasterMaskButton;
     private View mMasterViewUpdatingLayout;
 
@@ -115,6 +118,8 @@ public class MainActivity extends FragmentActivity implements
     public int packIDForMasterViewPack;
 
     private FrameLayout mPackInfoLayout;
+
+    private S3UploadHelper uploadHelper ;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -310,7 +315,7 @@ public class MainActivity extends FragmentActivity implements
 
             case R.id.actionbar_share_pack:
                 if (Global.apiReachableWithAlert(MainActivity.this)) {
-                    onActionbarShareSelected();
+                    onActionbarShareItemSelected();
                 }
                 break;
 
@@ -401,7 +406,7 @@ public class MainActivity extends FragmentActivity implements
 
         if ((!isDownloaded) && (isReachable) && (mIsFromRestartApp)) {
             mIsFromRestartApp = false;
-            String downloableShareLink = "https://dl.dropbox.com/s/szccw743kb41xol/Pack1421026646333651989.zip";
+            String downloableShareLink = Global.SAMPLE_URL;
             File downloadedZipFile = new File(FileOperationHelper.downloadedPackDirectory(), "downloadedPackZip.zip");
             PackDownloadHelper packDownloadHelper = new PackDownloadHelper(MainActivity.this, downloableShareLink, downloadedZipFile.toString());
             packDownloadHelper.mIsFromExamplePackDownload = true;
@@ -409,7 +414,7 @@ public class MainActivity extends FragmentActivity implements
             return;
         }
 
-        //Step2: call from other app or back from Dropbox authorization
+        //Step2: call from other app
         Uri data = getIntent().getData();
         if ((data != null) && (data.getScheme().equalsIgnoreCase("fcc"))) {
             //for download (not include sample pack
@@ -451,19 +456,6 @@ public class MainActivity extends FragmentActivity implements
                     }   else {
                         Toast.makeText(this, "You have reached the limit of downloads for this pack", Toast.LENGTH_LONG).show();
                     }
-                }
-            }
-        } else {
-            //for uploading
-            if (true == mIsGoingAuthorizationBeforeUpload) {
-                AndroidAuthSession session = DropboxHelper.getDropboxAPI().getSession();
-                if (session.authenticationSuccessful()) {
-                    session.finishAuthentication(); // Mandatory call to complete the auth
-                    // Store it locally in our app for later use
-                    TokenPair tokens = session.getAccessTokenPair();
-                    DropboxHelper.storeKeys(this, tokens.key, tokens.secret);
-                    mIsGoingAuthorizationBeforeUpload = false;
-                    uploadingPackAfterLinked();
                 }
             }
         }
@@ -610,6 +602,15 @@ public class MainActivity extends FragmentActivity implements
         if ((mCSSToolbar != null) && (mCSSToolbar.getParent() != null)) {
             removeCSSToolbar();
             mIsNecessaryToRestoreCSSToolbar = true;
+        }
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+
+        if (uploadHelper != null) {
+            uploadHelper.stop();
         }
     }
 
@@ -841,6 +842,7 @@ public class MainActivity extends FragmentActivity implements
         super.onCreateDialog(id);
         switch (id) {
             case 0:
+                //TODO:XXX
                 if (mProgressDialog == null) {
                     mProgressDialog = new ProgressDialog(MainActivity.this);
                     mProgressDialog.setMessage(getResources().getString(R.string.alert_applying_to_all_cards));
@@ -853,57 +855,30 @@ public class MainActivity extends FragmentActivity implements
         return mProgressDialog;
     }
 
-    private void onActionbarShareSelected() {
+    private void onActionbarShareItemSelected() {
         if (mCurrentPack == null) {
             Toast.makeText(this, "NO pack selected", Toast.LENGTH_LONG).show();
             return;
         }
 
         if ((mCurrentPack.creatorID).equals(OpenUDID_manager.getOpenUDID())) {
-            DropboxAPI<AndroidAuthSession> mDBApi = DropboxHelper.getDropboxAPI();
-            if (mDBApi.getSession().isLinked()) {
-                uploadingPackAfterLinked();
+
+            if (PackRecordHelper.checkUploadPackNecessary(MainActivity.this, mCurrentPack)) {
+                setPasswordAndUpload();
             } else {
-                mIsGoingAuthorizationBeforeUpload = true;
-                mDBApi.getSession().startAuthentication(MainActivity.this);
+                ShareHelper shareHelper = new ShareHelper(this,mCurrentPack,false);
+                shareHelper.execShareAction();
             }
+
         } else {
-           //directly share
-           String shareLink = AppConfig.sharedInstance().get(Integer.toString(mCurrentPack.packID));
-           if ((shareLink == null) || (shareLink.length() == 0)) {
-               AlertDialog.Builder builder = new AlertDialog.Builder(this);
-               builder.setMessage("Packs downloaded before current version of FlashCardCreator are no more supported to share");
-               builder.setTitle("Alert");
-               builder.setPositiveButton("OK",null);
-               builder.show();
-           } else {
-               String tempShareLink = shareLink.replace("http://dl", "fcc://www")
-                       .replace("https://dl", "fcc://www")
-                               .replace("https://www", "fcc://www")
-                                     .replace("http://www", "fcc://www");
-               ShareLinkHelper shareLinkHelper = new ShareLinkHelper(this,null,tempShareLink, mCurrentPack,true);
-               shareLinkHelper.execute();
-
-
-           }
+            ShareHelper shareHelper = new ShareHelper(this, mCurrentPack,true);
+            shareHelper.execute();
 
         }
     }
 
-    private void uploadingPackAfterLinked() {
-        if (PackRecordHelper.checkUploadPackNecessary(MainActivity.this, mCurrentPack)) {
-            AndroidAuthSession session = DropboxHelper.getDropboxAPI().getSession();
-            if (session.isLinked()) {
-                setPassword();
-            }
-        } else {
-            String shareLink = PackRecordHelper.getCurrentPackShareLink(mCurrentPack);
-            ShareLinkHelper shareLinkHelper = new ShareLinkHelper(this, null,shareLink, mCurrentPack,false);
-            shareLinkHelper.execShareAction();
-        }
-    }
 
-    private void setPassword() {
+    private void setPasswordAndUpload() {
         final EditText passwordEditText = new EditText(this);
         passwordEditText.setInputType(InputType.TYPE_TEXT_FLAG_NO_SUGGESTIONS);
         passwordEditText.setSingleLine();
@@ -921,10 +896,11 @@ public class MainActivity extends FragmentActivity implements
                         String password = passwordEditText.getText().toString();
                         File file = PackBuildHelper.createPackZipFile(MainActivity.this, mCurrentPack, password);
                         if (file == null) {
-                            Toast.makeText(MainActivity.this, "createPackZipFile failure", Toast.LENGTH_LONG).show();
+                            Toast.makeText(MainActivity.this, "Failed to zip pack", Toast.LENGTH_LONG).show();
                         } else {
-                            PackUploadHelper upload = new PackUploadHelper(MainActivity.this, "/FlashCardCreator/", file, mCurrentPack);
-                            upload.execute();
+
+                            uploadHelper = new S3UploadHelper(MainActivity.this,mUploadHandler);
+                            uploadHelper.upload(file);
                         }
 
                     }
@@ -938,10 +914,10 @@ public class MainActivity extends FragmentActivity implements
 
                         File file = PackBuildHelper.createPackZipFile(MainActivity.this, mCurrentPack, "");
                         if (file == null) {
-                            Toast.makeText(MainActivity.this, "createPackZipFile failure", Toast.LENGTH_LONG).show();
+                            Toast.makeText(MainActivity.this, "Failed to zip pack", Toast.LENGTH_LONG).show();
                         } else {
-                            PackUploadHelper upload = new PackUploadHelper(MainActivity.this, "/FlashCardCreator/", file, mCurrentPack);
-                            upload.execute();
+                            uploadHelper = new S3UploadHelper(MainActivity.this,mUploadHandler);
+                            uploadHelper.upload(file);
                         }
 
                     }
@@ -1300,6 +1276,46 @@ public class MainActivity extends FragmentActivity implements
         TextView  packCoverTextView = (TextView) findViewById(R.id.pack_info_title);
         packCoverTextView.setText(mCurrentPack.packName);
     }
+
+
+    private final Handler mUploadHandler = new Handler() {
+        @Override
+        public void handleMessage(Message msg) {
+            super.handleMessage(msg);
+            switch (msg.what) {
+                case AWS_Constant.UPLOAD_PROGRESS:
+                    File file = (File) msg.obj;
+                    int flag = msg.arg1; //indicate whether upload is finished or not
+                    int percent = msg.arg2;
+
+                    if (mUploadProgressDialog == null) {
+                        mUploadProgressDialog = new ProgressDialog(MainActivity.this);
+                        mUploadProgressDialog.setMax(100);
+                        mUploadProgressDialog.setMessage("Uploading...");
+                        mUploadProgressDialog.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
+                    }
+
+                    if (flag == 0) {
+                        mUploadProgressDialog.dismiss();
+
+                        Toast.makeText(MainActivity.this, "Pack successfully uploaded", Toast.LENGTH_SHORT).show();
+
+                        String fullPath_S3 = AWSUtils.fullPath_S3(file.getName());
+                        PackRecordHelper.save(MainActivity.this, mCurrentPack, null, fullPath_S3);  //因为这时还没有share link，所以设置为null
+
+                        ShareHelper createShareLink = new ShareHelper(MainActivity.this, mCurrentPack,false);
+                        createShareLink.execute();
+
+                    } else {
+                        if (mUploadProgressDialog.isShowing() == false) {
+                            mUploadProgressDialog.show();
+                        }
+                        mUploadProgressDialog.setProgress(percent);
+                    }
+                    break;
+            }
+        }
+    };
 
 
 

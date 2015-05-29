@@ -7,12 +7,11 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.text.InputType;
-import android.util.Log;
 import android.widget.EditText;
 import android.widget.Toast;
 
 import com.internectics.data.Pack;
-import com.internectics.helper.AmazonSDB.SimpleDBHelper;
+import com.internectics.helper.AWS.SimpleDBHelper;
 import com.internectics.util.AppConfig;
 import com.internectics.util.Global;
 
@@ -193,8 +192,8 @@ public class PackDownloadHelper extends AsyncTask<Void, Long, Boolean> {
         //Step4: save the downloaded linkage to persistence, which will be used during share
         int packID = downloadedPack.packID;
         if (mDownloadedLinkage != null) {
-            //我们的保存策略与share时不一样，请注意
-            AppConfig.sharedInstance().set(Integer.toString(packID),mDownloadedLinkage);
+            String fullPath_S3 = mDownloadedLinkage.split("\\?")[0];
+            PackRecordHelper.save(mContext,downloadedPack,null,fullPath_S3);
             Timber.tag(Global.debugTag).d( "save downloaded link:" + mDownloadedLinkage + "with packID=" + packID);
         }
 

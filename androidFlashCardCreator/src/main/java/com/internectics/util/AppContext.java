@@ -3,6 +3,8 @@ package com.internectics.util;
 import android.app.Application;
 import android.content.Context;
 
+import com.amazonaws.auth.CognitoCachingCredentialsProvider;
+import com.amazonaws.regions.Regions;
 import com.facebook.stetho.Stetho;
 import com.parse.Parse;
 import com.parse.ParseCrashReporting;
@@ -14,13 +16,21 @@ import timber.log.Timber;
 
 public class AppContext extends Application {
 
-    private static Context mContext;
+    private static Context                           mContext;
+    private static CognitoCachingCredentialsProvider mCredentialsProvider;
 
     @Override
     public void onCreate() {
         super.onCreate();
 
         AppContext.mContext = getApplicationContext();
+
+        // Initialize the Amazon Cognito credentials provider
+        mCredentialsProvider = new CognitoCachingCredentialsProvider(
+                mContext, // Context
+                "us-east-1:55b5aa55-921e-49d0-b4d3-673793805862", // Identity Pool ID
+                Regions.US_EAST_1 // Region
+        );
 
         ParseCrashReporting.enable(this);
         Parse.enableLocalDatastore(this);
@@ -38,6 +48,10 @@ public class AppContext extends Application {
                         .enableDumpapp(Stetho.defaultDumperPluginsProvider(this))
                         .enableWebKitInspector(Stetho.defaultInspectorModulesProvider(this))
                         .build());
+    }
+
+    public static CognitoCachingCredentialsProvider getCredentialsProvider() {
+        return mCredentialsProvider;
     }
 
     public static Context getAppContext() {

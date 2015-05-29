@@ -14,17 +14,15 @@ import android.content.pm.ResolveInfo;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.text.InputType;
-import android.util.Log;
 import android.view.Gravity;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.Toast;
 
-import com.dropbox.client2.DropboxAPI;
-import com.dropbox.client2.exception.DropboxException;
 import com.internectics.data.Pack;
-import com.internectics.helper.AmazonSDB.SimpleDBHelper;
+import com.internectics.helper.AWS.SimpleDBHelper;
 import com.internectics.util.Global;
+import com.internectics.util.StringUtils;
 import com.nostra13.socialsharing.common.AuthListener;
 import com.nostra13.socialsharing.common.PostListener;
 import com.nostra13.socialsharing.facebook.FacebookEvents;
@@ -40,81 +38,58 @@ import org.apache.http.impl.client.DefaultHttpClient;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
-import java.net.HttpURLConnection;
-import java.net.MalformedURLException;
-import java.net.URL;
 import java.util.HashMap;
 import java.util.List;
 
 import timber.log.Timber;
 
-/**
- * 1. create share linkage
- * 2. invoke share intent
- */
-public class ShareLinkHelper extends AsyncTask<Void, Long, Boolean> {
 
-    private Activity mActivity;
-    private Pack mCurentPack;
+public class ShareHelper extends AsyncTask<Void, Long, Boolean> {
 
-    private String mFilePathInDropbox;
+    private Activity   mActivity;
+    private Pack       mCurrentPack;
 
-    private String mUnshortedFCCShareLink;//如果share link是在本类中生成，而不是作为一个参数引入，则会用到。否则忽略
+    private String     mShortedLink;//经过tinyurl.com处理过的短域名，无论是何种形式（isDirectShare）的分享，都会涉及到
 
-    private String mShareLink;
-    private String mRedirectedShareLink;//经过tinyurl.com处理过的短域名，无论是何种形式（isDirectShare）的分享，都会涉及到
-
-    private boolean mIsDirectShare; //true: 没有经过上传，设密码等，直接share
+    private boolean    mIsDirectShare; //true: 没有经过上传，设密码等，直接share
 
 
     /*
-      isDirectShare. yes: 直接分享，不经过上传，设密码等，这时shareLink参数必不可少；no:需要经过上传等操作才能share pack
-      参数file和shareLink是互斥的，即file=nil,则sharelink！=nil，反之也是
-
-      实际中，这个类有两个作用：
-      a. share的完整过程，这时new ShareLinkHelper(...)，后执行execute
-      b. 部分，比如仅仅执行execShareAction
+     * isDirectShare: 如果是true,则不需要再次上传和创建短链接
      */
-    public ShareLinkHelper(Activity activity, String file, String shareLink, Pack currentPack, Boolean isDirectShare) {
-        mActivity = activity;
-        mFilePathInDropbox = file;
-        mCurentPack = currentPack;
-        mIsDirectShare= isDirectShare;
-        mShareLink = shareLink;
+    public ShareHelper(Activity activity, Pack currentPack, Boolean isDirectShare) {
+        mActivity         = activity;
+        mCurrentPack      = currentPack;
+        mIsDirectShare    = isDirectShare;
     }
-
 
     /*
     URL shorten
      */
     @Override
     protected Boolean doInBackground(Void... params) {
-        try {
-            if(mIsDirectShare) {
-                mRedirectedShareLink= getRidirectedURL(mShareLink);
+        String fullPath_S3 = PackRecordHelper.getFullPath_S3(mCurrentPack);
+        if (fullPath_S3 == null) {
+            //upload的动作一定在share前面，一旦upload后，会写入full path到meta info，所以这里的fullPath_S3一定有值
+            throw  new IllegalArgumentException("check code, make sure to upload firstly before calling ShareHelper");
+        }
+
+        if(mIsDirectShare == false) {
+            mShortedLink = generateRedirectedURL(fullPath_S3);
+            if (mShortedLink.indexOf("http://") != 0) {
+                Toast.makeText(mActivity, "Redirect service is not available now, please try again", Toast.LENGTH_LONG).show();
             } else {
-                DropboxAPI.DropboxLink link = DropboxHelper.getDropboxAPI().share(mFilePathInDropbox);
-                String shortedShareLink = link.url;
-                String shareLink = getUnshortedURL(shortedShareLink);
-                if (shareLink == null) {
-                    return false;
-                }
-                mUnshortedFCCShareLink = shareLink.replace("https","fcc").replace("http","fcc");
-                Timber.tag(Global.debugTag).d( "the fcc share linkage is: " + mUnshortedFCCShareLink);
-                mRedirectedShareLink = getRidirectedURL(mUnshortedFCCShareLink);
-                if (mRedirectedShareLink.indexOf("http://") != 0) {
-                    Toast.makeText(mActivity, "Redirect sevice is not available now, please try again", Toast.LENGTH_LONG).show();
-                } else {
-                    Timber.tag(Global.debugTag).d( "the shareLink is: " + mRedirectedShareLink);
-                    PackRecordHelper.savePackUploadRecord(mActivity, mCurentPack, mRedirectedShareLink,null);
+                Timber.tag(Global.debugTag).d( "the shareLink is: " + mShortedLink);
+                PackRecordHelper.save(mActivity, mCurrentPack, mShortedLink, null); //我们不需要写入fullPath_S3（因为这个工作在upload中进行）
 
-                }
             }
-
-
-
-        } catch (DropboxException e) {
-            e.printStackTrace();
+        } else {
+            mShortedLink = PackRecordHelper.getShortedLink(mCurrentPack);
+            if (StringUtils.isEmpty(mShortedLink)) {
+                //这个是有可能的：当下载别人的pack，然后再分享给别人，由于没有upload过，meta info中并没有mShortedLink的数据
+                mShortedLink = generateRedirectedURL(fullPath_S3);
+                PackRecordHelper.save(mActivity,mCurrentPack,mShortedLink,null);
+            }
         }
 
         return false;
@@ -128,7 +103,7 @@ public class ShareLinkHelper extends AsyncTask<Void, Long, Boolean> {
         super.onPostExecute(aBoolean);
 
         if (mIsDirectShare) {
-            execShareAction2(mRedirectedShareLink);
+            execShareAction();
         } else {
             //Dialog to show max allowable download time
             final  EditText editText = new EditText(mActivity);
@@ -147,12 +122,8 @@ public class ShareLinkHelper extends AsyncTask<Void, Long, Boolean> {
                             InputMethodManager imm =(InputMethodManager)mActivity.getSystemService(Context.INPUT_METHOD_SERVICE);
                             imm.hideSoftInputFromWindow(editText.getWindowToken(),0);
 
-                            Uri uri = Uri.parse(mUnshortedFCCShareLink);
-                            String simpleDBItemNamedata = uri.getLastPathSegment();
-                            simpleDBItemNamedata = simpleDBItemNamedata.substring(0, simpleDBItemNamedata.indexOf(".zip"));
-                            Global.currentAmazonSimpleDBItemName = simpleDBItemNamedata;
                             int maxNo = Integer.parseInt(editText.getText().toString());
-                            insertIntoAmazonSimpleDB(simpleDBItemNamedata, maxNo);
+                            didClickDownloadTimesDialog(maxNo);
                         }
                     })
                     .setNegativeButton("Unlimited", new DialogInterface.OnClickListener() {
@@ -161,47 +132,46 @@ public class ShareLinkHelper extends AsyncTask<Void, Long, Boolean> {
 
                             InputMethodManager imm =(InputMethodManager)mActivity.getSystemService(Context.INPUT_METHOD_SERVICE);
                             imm.hideSoftInputFromWindow(editText.getWindowToken(),0);
-
-                            Uri uri = Uri.parse(mUnshortedFCCShareLink);
-                            String simpleDBItemNamedata = uri.getLastPathSegment();
-                            simpleDBItemNamedata = simpleDBItemNamedata.substring(0, simpleDBItemNamedata.indexOf(".zip"));
-                            Global.currentAmazonSimpleDBItemName = simpleDBItemNamedata;
-                            int maxNo = 9999999;
-                            insertIntoAmazonSimpleDB(simpleDBItemNamedata, maxNo);
+                            didClickDownloadTimesDialog(9999);
                         }
                     })
                     .show();
         }
     }
 
-    /*
-    URL unshorten
-     */
-    public static String getUnshortedURL(String shortedURL) {
-        String location = null;
-        try {
-            final URL url = new URL(shortedURL);
-            final HttpURLConnection urlConnection = (HttpURLConnection) url.openConnection();
-            urlConnection.setInstanceFollowRedirects(false); //this is very important
-            location = urlConnection.getHeaderField("location");
-            Timber.tag(Global.debugTag).d("unshortened url is: " + location);
+    private void didClickDownloadTimesDialog(int maxNo) {
 
-        } catch (MalformedURLException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        final HashMap<String, String> rowData = new HashMap<String, String>();
+        rowData.put("currentNo","0");
+        rowData.put("maxNo",String.format("%d",maxNo));
 
-        return location;
+        new Thread()
+        {
+            @Override
+            public void run() {
+
+                String fullPath_S3 = PackRecordHelper.getFullPath_S3(mCurrentPack);
+                Uri uri = Uri.parse(fullPath_S3);
+                String simpleDBItemNameData = uri.getLastPathSegment();
+                simpleDBItemNameData = simpleDBItemNameData.substring(0, simpleDBItemNameData.indexOf(".zip"));
+                Global.currentAmazonSimpleDBItemName = simpleDBItemNameData;
+
+                SimpleDBHelper.updateAttributesForItem(Global.amazon_sdb_domain_name,simpleDBItemNameData,rowData);
+            }
+        }.start();
+
+        execShareAction();
 
     }
 
 
-    String getRidirectedURL(String url){
+    String generateRedirectedURL(String path){
 
         String responseString= "";
 
-        String wholeURL = Global.URL_REDIRECT_API + url;
+        String fccPath = path.replace("https:","fcc:");
+
+        String wholeURL = Global.URL_REDIRECT_API + fccPath;
 
         HttpClient httpclient = new DefaultHttpClient();
         HttpResponse response = null;
@@ -234,33 +204,7 @@ public class ShareLinkHelper extends AsyncTask<Void, Long, Boolean> {
         return responseString;
     }
 
-    public boolean insertIntoAmazonSimpleDB(final String itemName, int maxNo) {
-        Timber.tag(Global.debugTag).d( "Now begin to execute insertIntoAmazonSimpleDB");
-        boolean result = false;
-        final HashMap<String, String> rowData = new HashMap<String, String>();
-        rowData.put("currentNo","0");
-        rowData.put("maxNo",String.format("%d",maxNo));
 
-        new Thread()
-        {
-            @Override
-            public void run() {
-                SimpleDBHelper.updateAttributesForItem(Global.amazon_sdb_domain_name,itemName,rowData);
-            }
-        }.start();
-
-        execShareAction();
-
-        return result;
-
-    }
-
-
-    /*
-    用于自己创建的pack,自己share。有两种情况下会被调用
-    1. 自动被调用：.execute执行后
-    2. 手动被调用: 当已经保存了share link（比如上次share过），这时直接调用这个
-     */
     public void execShareAction() {
 
         new AlertDialog.Builder(mActivity)
@@ -269,30 +213,13 @@ public class ShareLinkHelper extends AsyncTask<Void, Long, Boolean> {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         dialog.dismiss();
-                        String shareLink = PackRecordHelper.getCurrentPackShareLink(mCurentPack);
+                        String shareLink = PackRecordHelper.getShortedLink(mCurrentPack);
                         shareActionOnItemSelected(which,shareLink);
                     }
                 })
                 .show();
     }
 
-
-    /*
-    直接分享：用于分享别人的，这时不允许设置密码上传等，
-     */
-    public void execShareAction2(final String finalShareLink) {
-
-        new AlertDialog.Builder(mActivity)
-                .setTitle("Share")
-                .setItems(new String[] {"Facebook","Twitter","Email","Copy to clipboard"}, new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        dialog.dismiss();
-                        shareActionOnItemSelected(which,finalShareLink);
-                    }
-                })
-                .show();
-    }
 
 
     private void shareActionOnItemSelected (int position,String shareLink) {

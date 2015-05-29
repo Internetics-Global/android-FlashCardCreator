@@ -12,7 +12,7 @@
  * express or implied. See the License for the specific language governing
  * permissions and limitations under the License.
  */
-package com.internectics.helper.AmazonSDB;
+package com.internectics.helper.AWS;
 
 import com.amazonaws.services.simpledb.AmazonSimpleDBClient;
 import com.amazonaws.services.simpledb.model.Attribute;
@@ -27,6 +27,7 @@ import com.amazonaws.services.simpledb.model.ListDomainsResult;
 import com.amazonaws.services.simpledb.model.PutAttributesRequest;
 import com.amazonaws.services.simpledb.model.ReplaceableAttribute;
 import com.amazonaws.services.simpledb.model.SelectRequest;
+import com.internectics.util.AppContext;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -37,13 +38,13 @@ public class SimpleDBHelper {
 	private static String nextToken = null;
 	private static int prevNumDomains = 0;
 
-    public static AmazonClientManager clientManager = null;
+    public static AmazonSimpleDBClient sdb = null;
 		
 	public static AmazonSimpleDBClient getInstance() {
-        if (clientManager == null) {
-            clientManager = new AmazonClientManager();
+        if (sdb == null) {
+            sdb = new AmazonSimpleDBClient(AppContext.getCredentialsProvider());;
         }
-        return clientManager.sdb();
+        return sdb;
 	}
 	
 	public static List<String> getDomainNames() {

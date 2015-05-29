@@ -10,7 +10,9 @@ import java.util.Map;
 
 public class Global {
 
-    public static final boolean   isDebug =  false;
+    public static final boolean   isDebug =  true;
+
+    public static final String    SAMPLE_URL = "https://s3.amazonaws.com/internetics.flashcardcreator/Sample_25052015.zip?type=demo";
 
     public static final String debugTag = "ccaa";
     public static final String debugTag2 = "ccaa2";
@@ -45,9 +47,9 @@ public class Global {
 
     //Used to judge whether need to upload pack again for certain pack
     public static final String shareDate_Property = "share_date";
-    public static final String shareLink_Property = "share_link";
+    public static final String shortedLink_Property = "share_link";
     public static final String updateDate_Property = "updated_date";
-    public static final String shareFileName_Property = "share_fielname";
+    public static final String fullPath_S3_Property = "share_fielname";
 
     //Used to judge whether need to download example pack again
     public static final String isExamplePackDownloadedSBefore_Property = "is_example_pack_downloaded_before";
@@ -67,8 +69,6 @@ public class Global {
     public static final String isAllowToShowTooltip = "isAllowToShowTooltip";
 
     //Amazon SimpleDB
-    public static final String amazon_sdb_accessKey = "AKIAJTO4QTQX2BPPFNAQ";
-    public static final String amazon_sdb_secretKey = "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";
     public static final String amazon_sdb_domain_name = "flashcardcreator";
     public static int currentAmazonSimpleDBItemDownloadCount = -1;
     public static String currentAmazonSimpleDBItemName = "";

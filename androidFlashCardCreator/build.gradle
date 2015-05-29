@@ -63,8 +63,12 @@ android {
 
 dependencies {
     compile 'com.android.support:support-v4:20.0.0'
-    compile files('libs/aws-android-sdk-1.6.0-debug.jar')
-    compile files('libs/dropbox-android-sdk-1.5.4.jar')
+
+    compile files('libs/aws-android-sdk-cognito-2.2.1.jar')
+    compile files('libs/aws-android-sdk-core-2.2.1.jar')
+    compile files('libs/aws-android-sdk-s3-2.2.1.jar')
+    compile files('libs/aws-android-sdk-sdb-2.2.1.jar')
+
     compile files('libs/httpmime-4.0.3.jar')
     compile files('libs/json_simple-1.1.jar')
     compile files('libs/libGoogleAnalyticsV2.jar')

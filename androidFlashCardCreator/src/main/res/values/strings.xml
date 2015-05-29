@@ -41,8 +41,6 @@
     <string name="help_title">Help</string>
 
     <string name="more_title">More</string>
-    <string name="more_dropbox_preference">Dropbox Preference</string>
-    <string name="more_dropbox">Dropbox</string>
     <string name="more_play_preference">Play Preference</string>
     <string name="more_random_play">Random Play</string>
     <string name="more_register">Register</string>
@@ -71,9 +69,7 @@
     <string name="alert_can_not_change_template_bg">You can only make changes to cards you have created yourself.
     </string>
     <string name="alert_existing_pack_name">Existing pack name, please input a different one</string>
-    <string name="alert_dropbox_unlinked">Your dropbox account has been unlinked</string>
     <string name="alert_create_pack_first">Create a pack first before creating a new card</string>
-    <string name="alert_fail_to_log_dropbox">Dropbox login failure. Please try again.</string>
     <string name="alert_can_not_create_card">You cannot create a card in pack you have not created yourself.</string>
     <string name="new_user">New user?</string>
     <string name="sorted_by_recently_viewed_first">Sorted by recently viewed first</string>

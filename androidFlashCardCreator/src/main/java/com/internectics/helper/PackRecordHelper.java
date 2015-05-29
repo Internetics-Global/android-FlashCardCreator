@@ -19,31 +19,36 @@ import java.util.Date;
  */
 public class PackRecordHelper {
 
-    public static String getCurrentPackShareLink(Pack currentPack) {
+    public static String getFullPath_S3(Pack currentPack) {
 
         SharedPreferences prefs = AppContext.getAppContext().getSharedPreferences(String.format("%d", currentPack.packID), 0);
-        String shareLinkage = prefs.getString(Global.shareLink_Property,StringUtils.getCurrentTimeDate());
+        String str = prefs.getString(Global.fullPath_S3_Property,"");
 
-        return shareLinkage;
+        return str;
+    }
+
+    public static String getShortedLink(Pack currentPack) {
+
+        SharedPreferences prefs = AppContext.getAppContext().getSharedPreferences(String.format("%d", currentPack.packID), 0);
+        String str = prefs.getString(Global.shortedLink_Property,"");
+
+        return str;
     }
 
     /**
-     * You can ignore those as long as set as null
-     * @param context
-     * @param currentPack
-     * @param shareLink
-     * @param dropboxFileName
+     * 当某个参数为null，则这个对应的信息忽略写入
+     * fullPath_S3: it's a full path in amazon s3, like https://s3.amazonaws.com/internetics.flashcardcreator/Sample_25052015.zip
      */
-    public static void savePackUploadRecord(Context context, Pack currentPack, String shareLink, String dropboxFileName) {
+    public static void save(Context context, Pack currentPack, String shortedLink, String fullPath_S3) {
 
         SharedPreferences prefs = context.getSharedPreferences(String.format("%d", currentPack.packID), 0);
         SharedPreferences.Editor edit = prefs.edit();
         edit.putString(Global.shareDate_Property,StringUtils.getCurrentTimeDate());
-        if ((shareLink != null) && (shareLink.length() != 0)) {
-            edit.putString(Global.shareLink_Property,shareLink);
+        if (StringUtils.isEmpty(shortedLink) == false) {
+            edit.putString(Global.shortedLink_Property,shortedLink);
         }
-        if ((dropboxFileName != null) && (dropboxFileName.length() !=0)) {
-            edit.putString(Global.shareFileName_Property,dropboxFileName);
+        if (StringUtils.isEmpty(fullPath_S3) == false) {
+            edit.putString(Global.fullPath_S3_Property,fullPath_S3);
         }
         edit.commit();
     }
@@ -56,6 +61,9 @@ public class PackRecordHelper {
         edit.commit();
     }
 
+    /*
+     * 如果最近的修改时间晚于上次上传的时间，则需要重新上传
+     */
     public static boolean checkUploadPackNecessary(Context context, Pack currentPack) {
 
         boolean result;

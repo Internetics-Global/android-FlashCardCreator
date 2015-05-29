@@ -757,6 +757,8 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnKeyboa
                     }
                 }
             }
+
+            PackRecordHelper.savePackUpdateRecord(AppContext.getAppContext(), mCurrentPack);
         }
 
     }

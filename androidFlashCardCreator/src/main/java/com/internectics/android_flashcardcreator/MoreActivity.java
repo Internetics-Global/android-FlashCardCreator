@@ -7,11 +7,6 @@ import android.preference.Preference;
 import android.preference.PreferenceActivity;
 import android.preference.PreferenceScreen;
 import android.view.WindowManager;
-
-import com.dropbox.client2.DropboxAPI;
-import com.dropbox.client2.android.AndroidAuthSession;
-import com.dropbox.client2.session.TokenPair;
-import com.internectics.helper.DropboxHelper;
 import com.internectics.util.AppConfig;
 
 import timber.log.Timber;
@@ -27,7 +22,6 @@ public class MoreActivity extends PreferenceActivity {
 
         addPreferencesFromResource(R.xml.more);
 
-        final CheckBoxPreference dropboxPreference = (CheckBoxPreference) findPreference("dropbox_preference");
         final CheckBoxPreference playPreference = (CheckBoxPreference) findPreference("play_preference");
 
         final CheckBoxPreference textToSpeechPreference = (CheckBoxPreference) findPreference("text_to_speech_preference");
@@ -35,24 +29,6 @@ public class MoreActivity extends PreferenceActivity {
         PreferenceScreen helpPreference = (PreferenceScreen) findPreference("help_preference");
         PreferenceScreen aboutPreference = (PreferenceScreen) findPreference("about_preference");
 
-        if (DropboxHelper.isLinked()) {
-            dropboxPreference.setChecked(true);
-        } else {
-            dropboxPreference.setChecked(false);
-        }
-
-        dropboxPreference.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
-            @Override
-            public boolean onPreferenceClick(Preference preference) {
-                if (!dropboxPreference.isChecked()) {
-                    DropboxHelper.logOut(MoreActivity.this);
-                } else {
-                    DropboxHelper.getDropboxAPI().getSession().startAuthentication(MoreActivity.this);
-                    mIsGoingAuthorization = true;
-                }
-                return false;
-            }
-        });
 
         playPreference.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
             @Override
@@ -101,23 +77,6 @@ public class MoreActivity extends PreferenceActivity {
     @Override
     protected void onResume() {
         super.onResume();
-
-        if (mIsGoingAuthorization) {
-            DropboxAPI<AndroidAuthSession> mDBApi = DropboxHelper.getDropboxAPI();
-
-            if (mDBApi.getSession().authenticationSuccessful()) {
-                try {
-                    mDBApi.getSession().finishAuthentication();
-                    // Store it locally in our app for later use
-                    TokenPair tokens = mDBApi.getSession().getAccessTokenPair();
-                    DropboxHelper.storeKeys(this, tokens.key, tokens.secret);
-                } catch (IllegalStateException e) {
-                    Timber.i("DbAuthLog", "Error authenticating", e);
-                }
-            }
-
-            mIsGoingAuthorization = false;
-        }
 
     }
 }

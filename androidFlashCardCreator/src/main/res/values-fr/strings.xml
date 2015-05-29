@@ -36,8 +36,6 @@
     <string name="help_title">Aide</string>
 
     <string name="more_title">Plus</string>
-    <string name="more_dropbox_preference">Dropbox Préférence</string>
-    <string name="more_dropbox">Dropbox</string>
     <string name="more_play_preference">Play Préférence</string>
     <string name="more_random_play">Lecture aléatoire</string>
     <string name="more_register">Enregistrez-vous</string>
@@ -62,11 +60,9 @@
     <string name="alert_downlod_sample">Téléchargement de pack d\'échantillons</string>
     <string name="alert_downlod_pack">Le téléchargement de paquet</string>
     <string name="alert_existing_pack_name">Existant nom du paquet, sil vous plaît entrez un autre</string>
-    <string name="alert_dropbox_unlinked">Deconnect Dropbox lien</string>
     <string name="alert_can_not_create_card">YVous navez pas à créer le groupe, donc je ne peux pas créer une nouvelle
         carte
     </string>
     <string name="alert_create_pack_first">Créé est nécessaire avant la mise en place d\'un groupe</string>
-    <string name="alert_fail_to_log_dropbox">Connectez-vous compte Dropbox ne</string>
 
 </resources>

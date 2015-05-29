@@ -2,13 +2,6 @@
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
 
     <PreferenceCategory
-            android:title="@string/more_dropbox_preference">
-        <CheckBoxPreference
-                android:key="dropbox_preference"
-                android:title="@string/more_dropbox"/>
-    </PreferenceCategory>
-
-    <PreferenceCategory
             android:title="@string/more_play_preference">
         <CheckBoxPreference
                 android:key="play_preference"
