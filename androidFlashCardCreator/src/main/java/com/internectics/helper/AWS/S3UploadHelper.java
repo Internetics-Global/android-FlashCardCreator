@@ -2,9 +2,9 @@ package com.internectics.helper.AWS;
 
 import android.content.Context;
 import android.os.Handler;
+import android.support.annotation.NonNull;
 import android.util.Log;
 import java.io.File;
-import java.util.Date;
 
 import com.amazonaws.event.ProgressEvent;
 import com.amazonaws.event.ProgressListener;
@@ -23,19 +23,17 @@ public class S3UploadHelper {
     private final Handler     mHandler;
     private UploadThread      mUploadThread;
 
-    public S3UploadHelper(Context context,Handler handler) {
+    public S3UploadHelper(Context context,@NonNull Handler handler) {
         mTransferManager = new TransferManager(AppContext.getCredentialsProvider());
         mHandler     = handler;
     }
 
-    public void upload(File file) {
-        // Cancel any thread currently running
+    public void upload(@NonNull File file) {
         if (mUploadThread != null) {
             mUploadThread.cancel();
             mUploadThread = null;
         }
 
-        // Start the thread to connect with the given device
         mUploadThread = new UploadThread(file);
         mUploadThread.start();
     }
@@ -59,6 +57,12 @@ public class S3UploadHelper {
 
         public UploadThread(final File file) {
             mFile = file;
+
+            if (file.getName().endsWith(".zip") == false) {
+              throw  new IllegalArgumentException("file should be end with .zip");
+            }
+
+
             mListener = new ProgressListener() {
                 @Override
                 public void progressChanged(ProgressEvent progressEvent) {
@@ -67,9 +71,6 @@ public class S3UploadHelper {
                         int percent = (int)(mUpload.getProgress().getPercentTransferred());
                         mHandler.obtainMessage(AWS_Constant.UPLOAD_PROGRESS, -1,percent, file).sendToTarget();
                     } else {
-                        System.out.println(
-                                ">> Upload done "
-                                        + new Date());
                         mHandler.obtainMessage(AWS_Constant.UPLOAD_PROGRESS, 0, 100, file).sendToTarget();
                     }
                 }

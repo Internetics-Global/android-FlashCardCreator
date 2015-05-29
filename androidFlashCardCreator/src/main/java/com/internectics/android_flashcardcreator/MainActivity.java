@@ -81,45 +81,37 @@ import timber.log.Timber;
 public class MainActivity extends FragmentActivity implements
         CardListFragment.Callbacks {
 
-    private boolean mIsCreatingCard = false;
-    public boolean mIsEdittingCard = false;
-    private boolean mIsNecessaryToRestoreCSSToolbar = false;
-    private boolean mIsFromRestartApp = false;
+    private boolean          mIsCreatingCard = false;
+    public boolean           mIsEdittingCard = false;
+    private boolean          mIsNecessaryToRestoreCSSToolbar = false;
+    private boolean          mIsFromRestartApp = false;
+    public boolean           mIsAllowedToShowPackList = true;
+    public boolean           mIsKeyboardVisible; //we can NOT judge by imm.isActive
+    private boolean          mIsAllowDownload;
+    private boolean          mSemaphore;
 
-    public boolean mIsAllowedToShowPackList = true;
+    public Pack              mCurrentPack = new Pack();//mCurrentPack will be automatically refreshed after creating a new card, add a new pack and new pack selected
+    public int               mCurrentCardIndex = 0;
+    public Card              mCurrentCard = new Card();
 
-    public Pack mCurrentPack = new Pack();//mCurrentPack will be automatically refreshed after creating a new card, add a new pack and new pack selected
-    public int mCurrentCardIndex = 0;
-    public Card mCurrentCard = new Card();
+    public PopupWindow       mPopupWindow;
+    private View             mCSSToolbar;
+    private Button           mMasterMaskButton;
+    private View             mMasterViewUpdatingLayout;
 
-    public PopupWindow mPopupWindow;
-    private View mCSSToolbar;
+    private ProgressDialog   mUploadProgressDialog;
 
+    private ArrayList<CardDetailFragment> mArrayCardDetailFragments;   //Special for snapshot(not include current card)
 
-    private ProgressDialog mProgressDialog;
-    private ProgressDialog mUploadProgressDialog;
+    public CardDetailFragment  mCardDetailFragment;
+    public SymbolBoxFragment   mSymbolBoxFragment;
+    private Button             mSymbolKeyboardSwitchButton;
 
+    public int                 packIDForMasterViewPack;
 
-    private Button mMasterMaskButton;
-    private View mMasterViewUpdatingLayout;
+    private FrameLayout        mPackInfoLayout;
 
-    private ArrayList<CardDetailFragment> mArrayCardDetailFragments;   //speical for snapshot(not include current card)
-    public CardDetailFragment mCardDetailFragment;
-
-    public SymbolBoxFragment mSymbolBoxFragment;
-
-    private Button mSymbolKeyboardSwitchButton;
-
-    public boolean mIsKeyboardVisible; //we can NOT judge by imm.isActive
-
-    private boolean mIsAllowDownload;
-    private boolean mSemaphore;
-
-    public int packIDForMasterViewPack;
-
-    private FrameLayout mPackInfoLayout;
-
-    private S3UploadHelper uploadHelper ;
+    private S3UploadHelper     uploadHelper ;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -837,23 +829,7 @@ public class MainActivity extends FragmentActivity implements
         EasyTracker.getInstance().activityStop(this);
     }
 
-    @Override
-    protected Dialog onCreateDialog(int id) {
-        super.onCreateDialog(id);
-        switch (id) {
-            case 0:
-                //TODO:XXX
-                if (mProgressDialog == null) {
-                    mProgressDialog = new ProgressDialog(MainActivity.this);
-                    mProgressDialog.setMessage(getResources().getString(R.string.alert_applying_to_all_cards));
-                    mProgressDialog.setIndeterminate(true);
-                    mProgressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
-                }
-            default:
-                //nothing
-        }
-        return mProgressDialog;
-    }
+
 
     private void onActionbarShareItemSelected() {
         if (mCurrentPack == null) {
@@ -867,7 +843,7 @@ public class MainActivity extends FragmentActivity implements
                 setPasswordAndUpload();
             } else {
                 ShareHelper shareHelper = new ShareHelper(this,mCurrentPack,false);
-                shareHelper.execShareAction();
+                shareHelper.share();
             }
 
         } else {
@@ -899,6 +875,7 @@ public class MainActivity extends FragmentActivity implements
                             Toast.makeText(MainActivity.this, "Failed to zip pack", Toast.LENGTH_LONG).show();
                         } else {
 
+                            //步骤： upload -- > 设置最大分享数 --> 创建短连接 --> 分享
                             uploadHelper = new S3UploadHelper(MainActivity.this,mUploadHandler);
                             uploadHelper.upload(file);
                         }
@@ -916,6 +893,7 @@ public class MainActivity extends FragmentActivity implements
                         if (file == null) {
                             Toast.makeText(MainActivity.this, "Failed to zip pack", Toast.LENGTH_LONG).show();
                         } else {
+                            //步骤： upload -- > 设置最大分享数 --> 创建短连接 --> 分享
                             uploadHelper = new S3UploadHelper(MainActivity.this,mUploadHandler);
                             uploadHelper.upload(file);
                         }
@@ -1303,8 +1281,8 @@ public class MainActivity extends FragmentActivity implements
                         String fullPath_S3 = AWSUtils.fullPath_S3(file.getName());
                         PackRecordHelper.save(MainActivity.this, mCurrentPack, null, fullPath_S3);  //因为这时还没有share link，所以设置为null
 
-                        ShareHelper createShareLink = new ShareHelper(MainActivity.this, mCurrentPack,false);
-                        createShareLink.execute();
+                        ShareHelper shareHelper = new ShareHelper(MainActivity.this, mCurrentPack,false);
+                        shareHelper.execute();
 
                     } else {
                         if (mUploadProgressDialog.isShowing() == false) {

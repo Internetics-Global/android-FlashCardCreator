@@ -41,17 +41,10 @@ public class StringUtils {
      */
     public static String getCurrentTimeDate() {
         String timeDateStr = dateFormater.format(new Date());
-        Timber.tag(Global.debugTag).d( "current time/date is:" + timeDateStr);
         return timeDateStr;
     }
 
 
-    /**
-     * return true if null or empty
-     *
-     * @param input
-     * @return boolean
-     */
     public static boolean isEmpty(String input) {
         if (input == null || "".equals(input))
             return true;
@@ -65,7 +58,8 @@ public class StringUtils {
         return true;
     }
 
-    /**used to diff whether it's a resource ID or not
+    /**
+     * Used to diff whether it's a resource ID or not
      * return true if numeric
      */
     public static boolean isNumeric(String str) {
@@ -75,7 +69,6 @@ public class StringUtils {
 
     /**
      * 在写入到json文件中，我们不再关心它的目录，因为在不同平台(android,ios)，这个目录是不一样的
-     * @param stringUri
      * @return
      */
     public static String lastComponentOfPath(Uri uri) {
@@ -111,7 +104,7 @@ public class StringUtils {
     }
 
     /**
-     * In order to be compatibile with iOS version
+     * In order to be compatible with iOS version
      */
     public static int[] convertTemplateBackgroundStringToResourceID(String templateBackground) {
         int[] resourceID = {0, 0, 0};
@@ -294,24 +287,6 @@ public class StringUtils {
         return result;
     }
 
-    public static boolean isIOSRelated(String str) {
-
-        if (str == null) return false;
-
-        if (str.toLowerCase().contains("iOS")) {
-            return true;
-        }
-
-        if (str.toLowerCase().contains("iphone")) {
-            return true;
-        }
-
-        if (str.toLowerCase().contains("ipad")) {
-            return true;
-        }
-
-        return false;
-    }
 
     public static boolean isYoutubeLinkage(String str) {
         boolean b;

@@ -49,23 +49,21 @@ public class ShareHelper extends AsyncTask<Void, Long, Boolean> {
     private Activity   mActivity;
     private Pack       mCurrentPack;
 
-    private String     mShortedLink;//经过tinyurl.com处理过的短域名，无论是何种形式（isDirectShare）的分享，都会涉及到
+    private String     mShortedLink;
 
-    private boolean    mIsDirectShare; //true: 没有经过上传，设密码等，直接share
-
-
-    /*
-     * isDirectShare: 如果是true,则不需要再次上传和创建短链接
+    /**
+     * true: 没有经过上传，设密码等，直接share (upload逻辑在S3UploadHelper）
      */
+    private boolean    mIsDirectShare;
+
+
     public ShareHelper(Activity activity, Pack currentPack, Boolean isDirectShare) {
         mActivity         = activity;
         mCurrentPack      = currentPack;
         mIsDirectShare    = isDirectShare;
     }
 
-    /*
-    URL shorten
-     */
+
     @Override
     protected Boolean doInBackground(Void... params) {
         String fullPath_S3 = PackRecordHelper.getFullPath_S3(mCurrentPack);
@@ -95,15 +93,13 @@ public class ShareHelper extends AsyncTask<Void, Long, Boolean> {
         return false;
     }
 
-    /*
-    Set max downloade count
-     */
+
     @Override
     protected void onPostExecute(Boolean aBoolean) {
         super.onPostExecute(aBoolean);
 
         if (mIsDirectShare) {
-            execShareAction();
+            share();
         } else {
             //Dialog to show max allowable download time
             final  EditText editText = new EditText(mActivity);
@@ -123,7 +119,7 @@ public class ShareHelper extends AsyncTask<Void, Long, Boolean> {
                             imm.hideSoftInputFromWindow(editText.getWindowToken(),0);
 
                             int maxNo = Integer.parseInt(editText.getText().toString());
-                            didClickDownloadTimesDialog(maxNo);
+                            didDismissDownloadTimesDialog(maxNo);
                         }
                     })
                     .setNegativeButton("Unlimited", new DialogInterface.OnClickListener() {
@@ -132,14 +128,14 @@ public class ShareHelper extends AsyncTask<Void, Long, Boolean> {
 
                             InputMethodManager imm =(InputMethodManager)mActivity.getSystemService(Context.INPUT_METHOD_SERVICE);
                             imm.hideSoftInputFromWindow(editText.getWindowToken(),0);
-                            didClickDownloadTimesDialog(9999);
+                            didDismissDownloadTimesDialog(9999);
                         }
                     })
                     .show();
         }
     }
 
-    private void didClickDownloadTimesDialog(int maxNo) {
+    private void didDismissDownloadTimesDialog(int maxNo) {
 
         final HashMap<String, String> rowData = new HashMap<String, String>();
         rowData.put("currentNo","0");
@@ -160,7 +156,7 @@ public class ShareHelper extends AsyncTask<Void, Long, Boolean> {
             }
         }.start();
 
-        execShareAction();
+        share();
 
     }
 
@@ -168,9 +164,7 @@ public class ShareHelper extends AsyncTask<Void, Long, Boolean> {
     String generateRedirectedURL(String path){
 
         String responseString= "";
-
         String fccPath = path.replace("https:","fcc:");
-
         String wholeURL = Global.URL_REDIRECT_API + fccPath;
 
         HttpClient httpclient = new DefaultHttpClient();
@@ -205,7 +199,8 @@ public class ShareHelper extends AsyncTask<Void, Long, Boolean> {
     }
 
 
-    public void execShareAction() {
+
+    public void share() {
 
         new AlertDialog.Builder(mActivity)
                 .setTitle("Share")
@@ -231,7 +226,6 @@ public class ShareHelper extends AsyncTask<Void, Long, Boolean> {
             }
 
             case 1: {
-
                 boolean isTwitterAppInstalled = true;
                 try {
                     ApplicationInfo info = mActivity.getPackageManager().
@@ -286,7 +280,7 @@ public class ShareHelper extends AsyncTask<Void, Long, Boolean> {
 
     private void shareToFacebook(final String shareLink) {
 
-        FacebookEvents.addPostListener(postListener);
+        FacebookEvents.addPostListener(facebookPostListener);
 
         final FacebookFacade facebook = new FacebookFacade(mActivity, "430339350417672");
         if (facebook.isAuthorized()) {
@@ -302,7 +296,7 @@ public class ShareHelper extends AsyncTask<Void, Long, Boolean> {
                 @Override
                 public void onAuthFail(String error) { // Do noting
                     showToastOnUIThread("Authorization was failed");
-                    FacebookEvents.removePostListener(postListener);
+                    FacebookEvents.removePostListener(facebookPostListener);
                 }
             });
         }
@@ -310,17 +304,17 @@ public class ShareHelper extends AsyncTask<Void, Long, Boolean> {
     }
 
 
-    private PostListener postListener = new PostListener() {
+    private PostListener facebookPostListener = new PostListener() {
         @Override
         public void onPostPublishingFailed() {
             showToastOnUIThread("Post publishing was failed");
-            FacebookEvents.removePostListener(postListener);
+            FacebookEvents.removePostListener(facebookPostListener);
         }
 
         @Override
         public void onPostPublished() {
             showToastOnUIThread("Posted to Facebook successfully");
-            FacebookEvents.removePostListener(postListener);
+            FacebookEvents.removePostListener(facebookPostListener);
         }
     };
 

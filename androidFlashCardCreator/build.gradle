@@ -63,6 +63,7 @@ android {
 
 dependencies {
     compile 'com.android.support:support-v4:20.0.0'
+    compile 'com.android.support:support-annotations:20.0.0'
 
     compile files('libs/aws-android-sdk-cognito-2.2.1.jar')
     compile files('libs/aws-android-sdk-core-2.2.1.jar')

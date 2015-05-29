@@ -199,7 +199,7 @@ public class PackParserHelper {
      */
     private static File getCardImageFullPath(String uriFormatStr, int indexOfCard) {
 
-        if (Global.isEmpty(uriFormatStr)) {
+        if (StringUtils.isEmpty(uriFormatStr)) {
             return null;
         }
 

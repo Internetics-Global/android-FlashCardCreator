@@ -14,12 +14,12 @@ public class Global {
 
     public static final String    SAMPLE_URL = "https://s3.amazonaws.com/internetics.flashcardcreator/Sample_25052015.zip?type=demo";
 
-    public static final String debugTag = "ccaa";
-    public static final String debugTag2 = "ccaa2";
-    public static final String debugTag3 = "ccaa3";
-    public static final String debugTag4 = "ccaa4";
-    public static final String DATABASE_NAME = "FlashCardCreator-Local.db";
-    public static final int DATABASE_VERSION = 1;  // you need to update this when changing
+    public static final String  debugTag = "ccaa";
+    public static final String  debugTag2 = "ccaa2";
+    public static final String  debugTag3 = "ccaa3";
+    public static final String  debugTag4 = "ccaa4";
+    public static final String  DATABASE_NAME = "FlashCardCreator-Local.db";
+    public static final int     DATABASE_VERSION = 1;  // you need to update this when changing
 
     public static final int USER_ID = 314;
     public static final String defaultUserStr = "Default_User";
@@ -88,6 +88,11 @@ public class Global {
     public static final String mImages_Not_Showing = "mImages_Not_Showing";
 
 
+    public static int     k_Default_Auto_Play_Speed  = 10;
+    public static int     k_MAX_Auto_Play_Speed  = 60;
+    public static int     k_MIN_Auto_Play_Speed  = 4;
+
+
     /**
      * detect network
      *
@@ -128,38 +133,13 @@ public class Global {
     }
 
     /*
-     * History reason: our table in sqlite is int format, so I have to do this
+     * History reason: our table in SQLite is int format, so I have to do this
      */
     public static int currentTimeSeconds() {
         long millSeconds = System.currentTimeMillis();
         return (int)(millSeconds/1000);
     }
 
-
-    public static boolean isEmpty(CharSequence str) {
-        return isNull(str) || str.length() == 0;
-    }
-
-    public static boolean isEmpty(Object[] os) {
-        return isNull(os) || os.length == 0;
-    }
-
-    public static boolean isEmpty(Collection<?> l) {
-        return isNull(l) || l.isEmpty();
-    }
-
-    public static boolean isEmpty(Map<?, ?> m) {
-        return isNull(m) || m.isEmpty();
-    }
-
-    public static boolean isNull(Object o) {
-        return o == null;
-    }
-
-
-    public static int     k_Default_Auto_Play_Speed  = 10;
-    public static int     k_MAX_Auto_Play_Speed  = 60;
-    public static int     k_MIN_Auto_Play_Speed  = 4;
 
 }
 
