@@ -11,7 +11,6 @@ import android.hardware.SensorManager;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
-import android.os.PowerManager;
 import android.speech.tts.TextToSpeech;
 import android.speech.tts.UtteranceProgressListener;
 import android.support.v4.app.Fragment;
@@ -28,6 +27,7 @@ import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.ImageButton;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.internectics.data.Card;
@@ -70,8 +70,6 @@ public class PlayActivity extends FragmentActivity implements SensorEventListene
 
     private VGViewPager       mPager;
 
-    private GestureDetector     mGestureDetector;
-
     private boolean             mIsScrollStop = true;
 
     private ImageButton         mCyclePlayImageButton;
@@ -79,6 +77,7 @@ public class PlayActivity extends FragmentActivity implements SensorEventListene
     private DiscreteSeekBar     mAutoPlaySpeedSeekBar;
     private ImageButton         mPlayRecordImageButton;
     private ImageButton         mMuteImageButton;
+    private TextView            mCounterDownTextView;
 
     private boolean     mIsAutoScroll;
     private boolean     mIsCyclePlay;
@@ -86,6 +85,7 @@ public class PlayActivity extends FragmentActivity implements SensorEventListene
 
     private boolean     mIsAutoShowQuestionOnly = true;
     private Timer       mAutoSwitchQATimer;
+    private Timer       mCountDownTimer;
 
     private boolean     mRunOnceFlag; //only allow to run once
 
@@ -93,8 +93,9 @@ public class PlayActivity extends FragmentActivity implements SensorEventListene
     private int            mTextToSpeechContentArrayIndex;
     private TextToSpeech   mTTS;
 
-    private Handler mTTSDelayHandler = new Handler();
-    private Handler        mAutoHideControlPanelHandler = new Handler();;
+    private Handler        mTTSDelayHandler = new Handler();
+    private Handler        mAutoHideControlPanelHandler = new Handler();
+    private Handler        mFirstPageDelaylHandler = new Handler();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -164,6 +165,8 @@ public class PlayActivity extends FragmentActivity implements SensorEventListene
                 muteImageButtonClicked();
             }
         });
+
+        mCounterDownTextView = (TextView) findViewById(R.id.count_down_textview);
 
         mFragments = getFragments();
         FCCPageAdapter pageAdapter = new FCCPageAdapter(getSupportFragmentManager(), mFragments);
@@ -306,6 +309,22 @@ public class PlayActivity extends FragmentActivity implements SensorEventListene
             mAutoHideControlPanelHandler = null;
         }
 
+        if (mFirstPageDelaylHandler !=null) {
+            mFirstPageDelaylHandler.removeCallbacksAndMessages(null);
+            mFirstPageDelaylHandler = null;
+        }
+
+        if (mAutoSwitchQATimer != null) {
+            mAutoSwitchQATimer.cancel();
+            mAutoSwitchQATimer = null;
+        }
+
+        if (mCountDownTimer != null) {
+            mCountDownTimer.cancel();
+            mCountDownTimer = null;
+        }
+
+
         AudioHelper.cleanupAudioPlayResource();
         AudioHelper.cleanupRecorderResource();
 
@@ -385,6 +404,12 @@ public class PlayActivity extends FragmentActivity implements SensorEventListene
             mAutoScrollImageButton.setImageDrawable(getResources().getDrawable(R.drawable.autoplay_off));
             mPager.stopAutoScroll();
 
+            mCounterDownTextView.setVisibility(View.INVISIBLE);
+            if (mCountDownTimer != null) {
+                mCountDownTimer.cancel();
+                mCountDownTimer = null;
+            }
+
             if (mAutoSwitchQATimer != null) {
                 mAutoSwitchQATimer.cancel();
                 mAutoSwitchQATimer = null;
@@ -393,19 +418,38 @@ public class PlayActivity extends FragmentActivity implements SensorEventListene
     }
 
     private void autoScrollPopoverViewItemSelected() {
+
+        final int delayMillSeconds = getAutoPlaySpeedMilliSeconds();
+
         screenOn();
         mPager.disableAllTouchEvent(true);
         mIsAutoScroll = true;
         mAutoPlaySpeedSeekBar.setEnabled(false);
         mAutoScrollImageButton.setImageDrawable(getResources().getDrawable(R.drawable.autoplay_on));
 
-        int interval = getAutoPlaySpeedMilliSeconds();
-        mPager.setInterval(interval);
-        mPager.startAutoScroll();
+        mAutoHideControlPanelHandler.postDelayed(new Runnable() {
 
-        mAutoSwitchQATimer = new Timer();
-        TimerTask updateBall = new SwitchQATimer();
-        mAutoSwitchQATimer.scheduleAtFixedRate(updateBall, getAutoPlaySpeedMilliSeconds() / 2 - 500, 3600 * 1000);
+            @Override
+            public void run() {
+
+                mPager.setInterval(delayMillSeconds);
+                mPager.startAutoScroll();
+
+                mAutoSwitchQATimer = new Timer();
+                TimerTask switchQATimer = new SwitchQATimer();
+                mAutoSwitchQATimer.scheduleAtFixedRate(switchQATimer, getAutoPlaySpeedMilliSeconds() / 2 - 500, 3600 * 1000);
+            }
+
+        }, delayMillSeconds);
+
+        CardDetailFragment targetDetailFragment = ((CardDetailFragment) (mFragments.get(mPosition)));
+        executeTextToSpeechOrPlayAudio(targetDetailFragment);
+
+
+        mCounterDownTextView.setText(String.format("%d",getAutoPlaySpeedMilliSeconds()/1000));
+        mCountDownTimer = new Timer();
+        TimerTask countDownTimer = new CountDownTimer();
+        mCountDownTimer.scheduleAtFixedRate(countDownTimer, 0, 1000);
 
     }
 
@@ -845,6 +889,27 @@ public class PlayActivity extends FragmentActivity implements SensorEventListene
     private int getAutoPlaySpeedMilliSeconds () {
         int interval = mAutoPlaySpeedSeekBar.getProgress();
         return interval*1000;
+    }
+
+    class CountDownTimer extends  TimerTask {
+        public void run() {
+            runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+
+                    int value = Integer.parseInt(mCounterDownTextView.getText().toString());
+                    if (value == 0) {
+                        mCounterDownTextView.setVisibility(View.INVISIBLE);
+                        mCountDownTimer.cancel();
+                        mCountDownTimer = null;
+                    } else {
+                        mCounterDownTextView.setVisibility(View.VISIBLE);
+                        mCounterDownTextView.setText(String.format("%d",value -1));
+                    }
+
+                }
+            });
+        }
     }
 
 

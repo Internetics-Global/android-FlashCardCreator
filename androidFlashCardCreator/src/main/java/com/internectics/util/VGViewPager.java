@@ -36,14 +36,11 @@ public class VGViewPager extends AutoScrollViewPager {
 
     @Override
     public boolean onInterceptTouchEvent(MotionEvent event) {
-        super.onInterceptTouchEvent(event);
-        Timber.tag(Global.debugTag4).d("onInterceptTouchEvent for VGViewPager");
-
         if (isDisableTouchEvent) {
             return true; //防止传递给sub view
         } else {
+            super.onInterceptTouchEvent(event);
             int[] location = new int[2];
-
             this.getLocationOnScreen(location);
             float hitXInScreen =  event.getX() + location[0];
             float hitYInScreen =  event.getY() + location[1];
