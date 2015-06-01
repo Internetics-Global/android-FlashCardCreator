@@ -1,3 +1,4 @@
 include ':androidFlashCardCreator', ':discreteSeekBar'
 include ':Viewflow'
 include ':NewQuickAction3D'
+include ':simpleSocialSharing'

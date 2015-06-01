@@ -23,6 +23,7 @@ import com.internectics.data.Pack;
 import com.internectics.helper.AWS.SimpleDBHelper;
 import com.internectics.util.Global;
 import com.internectics.util.StringUtils;
+
 import com.nostra13.socialsharing.common.AuthListener;
 import com.nostra13.socialsharing.common.PostListener;
 import com.nostra13.socialsharing.facebook.FacebookEvents;
@@ -313,7 +314,24 @@ public class ShareHelper extends AsyncTask<Void, Long, Boolean> {
 
         @Override
         public void onPostPublished() {
-            showToastOnUIThread("Posted to Facebook successfully");
+
+            mActivity.runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    AlertDialog alertDialog = new AlertDialog.Builder(mActivity).create();
+                    alertDialog.setTitle("Alert");
+                    alertDialog.setMessage("Posted to Facebook successfully");
+                    alertDialog.setButton(AlertDialog.BUTTON_NEUTRAL, "OK",
+                            new DialogInterface.OnClickListener() {
+                                public void onClick(DialogInterface dialog, int which) {
+                                    dialog.dismiss();
+                                }
+                            });
+                    alertDialog.show();
+                }
+            });
+
+
             FacebookEvents.removePostListener(facebookPostListener);
         }
     };
