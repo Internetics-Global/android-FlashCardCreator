@@ -1,7 +1,6 @@
 package com.internectics.helper;
 
 import android.net.Uri;
-import android.util.Log;
 
 import com.internectics.android_flashcardcreator.R;
 import com.internectics.data.Card;

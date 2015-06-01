@@ -6,7 +6,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
@@ -21,9 +20,7 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.SeekBar;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.internectics.android_flashcardcreator.MainActivity;
 import com.internectics.android_flashcardcreator.R;
@@ -36,13 +33,11 @@ import com.internectics.util.AppConfig;
 import com.internectics.util.AppContext;
 import com.internectics.util.Global;
 import com.internectics.util.OpenUDID_manager;
-import com.internectics.util.StringUtils;
 import com.internectics.util.UIHelper;
 
 import org.adw.library.widgets.discreteseekbar.DiscreteSeekBar;
 
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.Timer;
 import java.util.TimerTask;

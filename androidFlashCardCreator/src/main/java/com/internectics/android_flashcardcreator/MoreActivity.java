@@ -7,9 +7,8 @@ import android.preference.Preference;
 import android.preference.PreferenceActivity;
 import android.preference.PreferenceScreen;
 import android.view.WindowManager;
-import com.internectics.util.AppConfig;
 
-import timber.log.Timber;
+import com.internectics.util.AppConfig;
 
 public class MoreActivity extends PreferenceActivity {
 

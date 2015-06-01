@@ -1,7 +1,6 @@
 package com.internectics.helper;
 
 import android.app.Activity;
-import android.content.SharedPreferences;
 
 import com.internectics.data.Card;
 import com.internectics.data.Pack;

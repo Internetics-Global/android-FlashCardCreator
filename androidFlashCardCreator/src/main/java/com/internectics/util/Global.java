@@ -5,12 +5,9 @@ import android.content.Context;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 
-import java.util.Collection;
-import java.util.Map;
-
 public class Global {
 
-    public static final boolean   isDebug =  true;
+    public static final boolean   isDebug =  false;  //是否开启Timber的log
 
     public static final String    SAMPLE_URL = "https://s3.amazonaws.com/internetics.flashcardcreator/Sample_25052015.zip?type=demo";
 

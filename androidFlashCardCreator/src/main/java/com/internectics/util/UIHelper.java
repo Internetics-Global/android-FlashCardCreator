@@ -21,7 +21,6 @@ import android.provider.MediaStore;
 import android.text.Layout;
 import android.text.Selection;
 import android.util.DisplayMetrics;
-import android.util.Log;
 import android.util.TypedValue;
 import android.view.Display;
 import android.view.View;

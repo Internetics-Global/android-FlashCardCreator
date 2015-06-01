@@ -419,6 +419,9 @@ public class PlayActivity extends FragmentActivity implements SensorEventListene
 
     private void autoScrollPopoverViewItemSelected() {
 
+        stopAudio();
+        stopTextToSpeech();
+
         final int delayMillSeconds = getAutoPlaySpeedMilliSeconds();
 
         screenOn();

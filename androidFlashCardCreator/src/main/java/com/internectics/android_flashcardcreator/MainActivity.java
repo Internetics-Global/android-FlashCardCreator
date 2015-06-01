@@ -1,7 +1,6 @@
 package com.internectics.android_flashcardcreator;
 
 import android.app.AlertDialog;
-import android.app.Dialog;
 import android.app.DialogFragment;
 import android.app.ProgressDialog;
 import android.content.Context;
@@ -44,9 +43,9 @@ import android.widget.Toast;
 import com.google.analytics.tracking.android.EasyTracker;
 import com.internectics.data.Card;
 import com.internectics.data.Pack;
-import com.internectics.fragment.CreateEditFragment;
 import com.internectics.fragment.CardDetailFragment;
 import com.internectics.fragment.CardListFragment;
+import com.internectics.fragment.CreateEditFragment;
 import com.internectics.fragment.SymbolBoxFragment;
 import com.internectics.helper.AWS.AWSUtils;
 import com.internectics.helper.AWS.AWS_Constant;

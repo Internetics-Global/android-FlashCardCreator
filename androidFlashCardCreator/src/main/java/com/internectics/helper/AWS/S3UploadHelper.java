@@ -4,13 +4,14 @@ import android.content.Context;
 import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.util.Log;
-import java.io.File;
 
 import com.amazonaws.event.ProgressEvent;
 import com.amazonaws.event.ProgressListener;
 import com.amazonaws.mobileconnectors.s3.transfermanager.TransferManager;
 import com.amazonaws.mobileconnectors.s3.transfermanager.Upload;
 import com.internectics.util.AppContext;
+
+import java.io.File;
 
 
 

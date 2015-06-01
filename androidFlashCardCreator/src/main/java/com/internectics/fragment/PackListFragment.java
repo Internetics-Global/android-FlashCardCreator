@@ -1,6 +1,5 @@
 package com.internectics.fragment;
 
-import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.DialogFragment;
 import android.content.ContentResolver;
@@ -8,22 +7,16 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.graphics.Color;
 import android.graphics.Paint;
 import android.net.Uri;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
-import android.provider.MediaStore;
 import android.support.v4.app.Fragment;
-import android.text.InputType;
-import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.inputmethod.EditorInfo;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.BaseAdapter;
@@ -40,14 +33,12 @@ import com.internectics.android_flashcardcreator.R;
 import com.internectics.android_flashcardcreator.WebViewActivity;
 import com.internectics.data.Pack;
 import com.internectics.data.User;
-import com.internectics.helper.FileOperationHelper;
 import com.internectics.util.AppContext;
 import com.internectics.util.Global;
 import com.internectics.util.OpenUDID_manager;
 import com.internectics.util.StringUtils;
 import com.internectics.util.UIHelper;
 
-import java.io.File;
 import java.io.FileNotFoundException;
 
 import timber.log.Timber;
