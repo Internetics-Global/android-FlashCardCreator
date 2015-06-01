@@ -140,6 +140,10 @@ public class Pack {
         return returnArray;
     }
 
+    /**
+     * Only save pack info
+     * @param context
+     */
     public void save(Context context) {
         if (packID == -1) {
             insert(context);

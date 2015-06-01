@@ -93,6 +93,8 @@ dependencies {
     compile project(':discreteSeekBar')
 
     compile 'com.facebook.stetho:stetho:1.1.0'
+
+    compile 'com.orhanobut:hawk:1.14'
 }
 
 

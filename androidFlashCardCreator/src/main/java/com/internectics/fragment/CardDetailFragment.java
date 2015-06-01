@@ -246,7 +246,7 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnKeyboa
         mIMM = (InputMethodManager) (getActivity().getSystemService(Context.INPUT_METHOD_SERVICE));
 
         if (mIsPlayingCard) {
-            //need to hide queston/answer segment raido group
+            //need to hide question/answer segment radio group
             mContentView = inflater.inflate(R.layout.card, container, false);
         } else {
             mContentView = inflater.inflate(R.layout.fragment_card_detail, container, false);

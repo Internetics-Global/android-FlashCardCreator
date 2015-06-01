@@ -18,7 +18,6 @@ import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
 import android.support.v4.view.ViewPager;
-import android.view.GestureDetector;
 import android.view.KeyEvent;
 import android.view.MotionEvent;
 import android.view.Surface;
@@ -135,8 +134,7 @@ public class PlayActivity extends FragmentActivity implements SensorEventListene
         mAutoPlaySpeedSeekBar.setOnProgressChangeListener(new DiscreteSeekBar.OnProgressChangeListener() {
             @Override
             public void onProgressChanged(DiscreteSeekBar seekBar, int value, boolean fromUser) {
-                //when auto scroll, mAutoPlaySpeedSeekBar is disabled, which is different with iOS version
-                //TODO: _currentPack.autoPlaySpeed = slider.value
+                mCurrentPack.autoPlaySpeed = seekBar.getProgress();
             }
 
             @Override
@@ -286,6 +284,8 @@ public class PlayActivity extends FragmentActivity implements SensorEventListene
         if (mIsSensorAvailable) {
             mSensorManager.unregisterListener(this);
         }
+
+
     }
 
     @Override
@@ -638,6 +638,8 @@ public class PlayActivity extends FragmentActivity implements SensorEventListene
             if (mIsSensorAvailable) {
                 mSensorManager.unregisterListener(this);
             }
+
+            mCurrentPack.save(PlayActivity.this);
         }
         return super.onKeyDown(keyCode, event);  // need to use super to exit current activity
     }
@@ -944,6 +946,7 @@ public class PlayActivity extends FragmentActivity implements SensorEventListene
             return this.mFragments.size();
         }
     }
+
 
 
 

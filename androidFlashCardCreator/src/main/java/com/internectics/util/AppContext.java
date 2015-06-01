@@ -6,6 +6,8 @@ import android.content.Context;
 import com.amazonaws.auth.CognitoCachingCredentialsProvider;
 import com.amazonaws.regions.Regions;
 import com.facebook.stetho.Stetho;
+import com.orhanobut.hawk.Hawk;
+import com.orhanobut.hawk.LogLevel;
 import com.parse.Parse;
 import com.parse.ParseCrashReporting;
 
@@ -41,6 +43,9 @@ public class AppContext extends Application {
         } else {
             Timber.plant(new CrashReportingTree());
         }
+
+        //Key-value storage
+        Hawk.initWithoutEncryption(mContext, LogLevel.NONE);
 
         //facebook debug framework
         Stetho.initialize(
