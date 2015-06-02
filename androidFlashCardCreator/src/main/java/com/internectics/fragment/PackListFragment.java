@@ -1,6 +1,5 @@
 package com.internectics.fragment;
 
-import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.DialogFragment;
 import android.content.ContentResolver;
@@ -46,14 +45,11 @@ import timber.log.Timber;
 
 public class PackListFragment extends Fragment {
 
-    private boolean mIsEditStatus;
     private SmoothGallery mGallery;
 
     private View mRootView;
 
     private int  mSortType;
-
-    private int mSelectedItemIndex = -1;
 
     private User mUser;
 
@@ -82,24 +78,15 @@ public class PackListFragment extends Fragment {
         ViewGroup.LayoutParams params = editButton.getLayoutParams();
         params.width = params.width + UIHelper.getPixels(60);
         editButton.setLayoutParams(params);
-        mIsEditStatus = false;
         editButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
-                if (editButton.getText().equals("Create New Pack")) {
-                    ((MainActivity) getActivity()).mPopupWindow.dismiss();
-                    DialogFragment dialogFragment = new CreateEditFragment();
-                    dialogFragment.show(getActivity().getFragmentManager(), "add_pack_fragment");
-                } else {
-                    editButton.setText("Create New Pack");
-                    ViewGroup.LayoutParams params = editButton.getLayoutParams();
-                    params.width = params.width + UIHelper.getPixels(60);;
-                    editButton.setLayoutParams(params);
-                    mIsEditStatus = false;
-                    mSelectedItemIndex = -1;
-                }
+                DialogFragment dialogFragment = new CreateEditFragment();
+                dialogFragment.show(getActivity().getFragmentManager(), "add_pack_fragment");
                 ((ImageAdapter) mGallery.getAdapter()).notifyDataSetChanged();
+                ((MainActivity) getActivity()).dismissPackListPopupWindow();
+
 
             }
         });
@@ -117,9 +104,9 @@ public class PackListFragment extends Fragment {
         mGallery.setOnItemClickListener(new OnItemClickListener() {
             public void onItemClick(AdapterView<?> parent, View v, int position, long id) {
                 if (position ==0) {
-                    ((MainActivity) getActivity()).mPopupWindow.dismiss();
                     DialogFragment dialogFragment = new CreateEditFragment();
                     dialogFragment.show(getActivity().getFragmentManager(), "add_pack_fragment");
+                    ((MainActivity) getActivity()).dismissPackListPopupWindow();
                 } else {
                     Timber.tag(Global.debugTag).d( "Index of pack in pack list is:" + position);
                     Intent intent = new Intent();
@@ -297,13 +284,12 @@ public class PackListFragment extends Fragment {
                     @Override
                     public void onClick(View v) {
 
-                        if (currentPack.creatorID == OpenUDID_manager.getOpenUDID()) {
-                            ((MainActivity) getActivity()).mPopupWindow.dismiss();
-
+                        if (currentPack.creatorID.equals(OpenUDID_manager.getOpenUDID())) {
                             CreateEditFragment dialogFragment = new CreateEditFragment();
                             dialogFragment.setPack(mUser.packs.get(position - 1));
                             dialogFragment.setIsEditPack(true);
                             dialogFragment.show(getActivity().getFragmentManager(), "add_pack_fragment");
+                            ((MainActivity) getActivity()).dismissPackListPopupWindow();
                         } else {
 
                             new AlertDialog.Builder(mContext)
@@ -338,7 +324,6 @@ public class PackListFragment extends Fragment {
                                             ViewGroup.LayoutParams params = editButton.getLayoutParams();
                                             params.width = params.width + UIHelper.getPixels(60);
                                             editButton.setLayoutParams(params);
-                                            mIsEditStatus = false;
                                             mUser.removePack(currentPack);
                                             mUser.sortPacks(mSortType);
                                             ((ImageAdapter) mGallery.getAdapter()).notifyDataSetChanged();
