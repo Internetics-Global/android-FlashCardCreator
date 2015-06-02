@@ -7,7 +7,7 @@
 
 
     <corners
-            android:radius="10dp">
+            android:radius="@dimen/pack_list_item_corner_width">
     </corners>
 
 </shape>

@@ -41,7 +41,7 @@ public class SymbolPageViewFragment extends Fragment implements TextView.OnTouch
     private int              mPageNumber;
     private int              mNumberOfSymbolsBeforePage;
 
-    private Typeface mTypeFace;
+    private Typeface mTypeFace;  //引用它的原因是因为unicode需要特殊字体支持
 
     private final static int ROW_NUMBER           = 6;
     private final static int COLUMN_NUMBER_TYPE_A = 11;
@@ -95,7 +95,7 @@ public class SymbolPageViewFragment extends Fragment implements TextView.OnTouch
                 ImageView symbolBackgroundImageView = (ImageView) symbolView.findViewById(R.id.symbol_background_image);
                 TextView symbolTextView = (TextView) symbolView.findViewById(R.id.symbol_text);
 
-                symbolTextView.setTypeface(mTypeFace,Typeface.NORMAL);
+                symbolTextView.setTypeface(mTypeFace,Typeface.BOLD);
 
                 String symbolText = getText(i,j);
                 if(symbolText != null) {

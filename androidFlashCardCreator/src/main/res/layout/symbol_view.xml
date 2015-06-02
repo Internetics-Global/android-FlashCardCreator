@@ -6,6 +6,7 @@
     android:layout_height="match_parent">
 
     <ImageView
+
         android:layout_marginLeft="10dp"
         android:layout_marginRight="10dp"
         android:id="@+id/symbol_background_image"
@@ -13,7 +14,7 @@
         android:layout_height="match_parent"
         android:gravity="center"
         android:scaleType="fitXY"
-        android:src="@drawable/shape_symbol_background_rounded_corner"
+        android:src="@drawable/selector_symbol_background"
         android:layout_gravity="center"/>
 
 
