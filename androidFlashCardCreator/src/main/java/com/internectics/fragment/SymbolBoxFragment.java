@@ -17,6 +17,8 @@ import com.internectics.helper.SymbolHelper;
 import java.util.ArrayList;
 import java.util.List;
 
+import me.relex.circleindicator.CircleIndicator;
+
 /**
  * Created with IntelliJ IDEA.
  * User: bournewang
@@ -27,6 +29,7 @@ import java.util.List;
 public class SymbolBoxFragment extends Fragment {
 
     public View mContentView;
+    private final int  NUMBER_PAGE = 5;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -37,9 +40,11 @@ public class SymbolBoxFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         super.onCreateView(inflater, container, savedInstanceState);
         mContentView = inflater.inflate(R.layout.fragment_symbol_box, container);
+        CircleIndicator defaultIndicator = (CircleIndicator) mContentView.findViewById(R.id.symbol_indicator);
         ViewPager pager = (ViewPager) mContentView.findViewById(R.id.symbol_pager);
         SymbolPageAdapter pageAdapter = new SymbolPageAdapter(getFragmentManager(), getGridViewFragments());
         pager.setAdapter(pageAdapter);
+        defaultIndicator.setViewPager(pager);
         hideSymbolBoxWithAnimation(false);
         return mContentView;
     }
@@ -71,12 +76,16 @@ public class SymbolBoxFragment extends Fragment {
 
 
 
-    private List<SymbolGridViewFragment> getGridViewFragments() {
-        List<SymbolGridViewFragment> fList = new ArrayList<SymbolGridViewFragment>();
-        int size = SymbolHelper.getSymbolCount();
+    private List<SymbolPageViewFragment> getGridViewFragments() {
+        List<SymbolPageViewFragment> fList = new ArrayList<SymbolPageViewFragment>();
 
-        for (int i =0; i<size; i++) {
-            fList.add(new SymbolGridViewFragment());
+        for (int i = 0; i< NUMBER_PAGE; i++) {
+            SymbolPageViewFragment symbolPageViewFragment = new SymbolPageViewFragment();
+            Bundle bundle = new Bundle();
+            bundle.putInt("page_number",i);
+            symbolPageViewFragment.setArguments(bundle);
+            fList.add(symbolPageViewFragment);
+
         }
 
         return fList;
@@ -85,21 +94,21 @@ public class SymbolBoxFragment extends Fragment {
 
     public class SymbolPageAdapter extends FragmentStatePagerAdapter {
 
-        private List<SymbolGridViewFragment> mSymbolGridViewFragments;
+        private List<SymbolPageViewFragment> mSymbolGridViewFragments;
 
-        public SymbolPageAdapter(FragmentManager fm, List<SymbolGridViewFragment> gridviews) {
+        public SymbolPageAdapter(FragmentManager fm, List<SymbolPageViewFragment> gridviews) {
             super(fm);
             this.mSymbolGridViewFragments = gridviews;
         }
 
         @Override
-        public SymbolGridViewFragment getItem(int position) {
+        public SymbolPageViewFragment getItem(int position) {
             return this.mSymbolGridViewFragments.get(position);
         }
 
         @Override
         public int getCount() {
-            return 1;
+            return this.mSymbolGridViewFragments.size();
         }
     }
 

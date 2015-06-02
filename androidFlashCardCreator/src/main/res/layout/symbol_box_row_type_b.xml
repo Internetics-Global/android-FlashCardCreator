@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="horizontal" android:layout_width="match_parent"
+    android:weightSum="12"
+    android:layout_height="match_parent">
+
+    <include
+        android:id="@+id/symbol_box_column_1"
+        layout="@layout/symbol_view"
+        android:layout_width="0dp"
+        android:layout_weight="1"
+        android:layout_height="match_parent" />
+
+    <include
+        android:id="@+id/symbol_box_column_2"
+        layout="@layout/symbol_view"
+        android:layout_width="0dp"
+        android:layout_weight="1"
+        android:layout_height="match_parent" />
+
+    <include
+        android:id="@+id/symbol_box_column_3"
+        layout="@layout/symbol_view"
+        android:layout_width="0dp"
+        android:layout_weight="1"
+        android:layout_height="match_parent" />
+
+    <include
+        android:id="@+id/symbol_box_column_4"
+        layout="@layout/symbol_view"
+        android:layout_width="0dp"
+        android:layout_weight="1"
+        android:layout_height="match_parent" />
+
+    <include
+        android:id="@+id/symbol_box_column_5"
+        layout="@layout/symbol_view"
+        android:layout_width="0dp"
+        android:layout_weight="1"
+        android:layout_height="match_parent" />
+
+    <include
+        android:id="@+id/symbol_box_column_6"
+        layout="@layout/symbol_view"
+        android:layout_width="0dp"
+        android:layout_weight="1"
+        android:layout_height="match_parent" />
+
+    <include
+        android:id="@+id/symbol_box_column_7"
+        layout="@layout/symbol_view"
+        android:layout_width="0dp"
+        android:layout_weight="1"
+        android:layout_height="match_parent" />
+
+    <include
+        android:id="@+id/symbol_box_column_8"
+        layout="@layout/symbol_view"
+        android:layout_width="0dp"
+        android:layout_weight="1"
+        android:layout_height="match_parent" />
+
+    <include
+        android:id="@+id/symbol_box_column_9"
+        layout="@layout/symbol_view"
+        android:layout_width="0dp"
+        android:layout_weight="1"
+        android:layout_height="match_parent" />
+
+    <include
+        android:id="@+id/symbol_box_column_10"
+        layout="@layout/symbol_view"
+        android:layout_width="0dp"
+        android:layout_weight="1"
+        android:layout_height="match_parent" />
+
+    <include
+        android:id="@+id/symbol_box_column_11"
+        layout="@layout/symbol_view"
+        android:layout_width="0dp"
+        android:layout_weight="1"
+        android:layout_height="match_parent" />
+
+    <include
+        android:id="@+id/symbol_box_column_12"
+        layout="@layout/symbol_view"
+        android:layout_width="0dp"
+        android:layout_weight="1"
+        android:layout_height="match_parent" />
+
+
+
+
+</LinearLayout>

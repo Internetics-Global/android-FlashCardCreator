@@ -70,6 +70,7 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+import cn.pedant.SweetAlert.SweetAlertDialog;
 import timber.log.Timber;
 
 /**
@@ -226,7 +227,11 @@ public class MainActivity extends FragmentActivity implements
                 }
 
                 if (!mCurrentPack.creatorID.equals(OpenUDID_manager.getOpenUDID())) {
-                    Toast.makeText(this, "You can only make changes to cards you have created yourself", Toast.LENGTH_LONG).show();
+
+                    new SweetAlertDialog(this)
+                            .setTitleText("Alert")
+                            .setContentText("You can only make changes to cards you have created yourself")
+                            .show();
 
                 } else {
                     if ((mCurrentPack != null) && (mCurrentPack.cards.size() > 0)) {
@@ -250,7 +255,10 @@ public class MainActivity extends FragmentActivity implements
             case R.id.actionbar_change_template_color:
 
                 if (!mCurrentPack.creatorID.equals(OpenUDID_manager.getOpenUDID())) {
-                    Toast.makeText(this, "You can only make changes to cards you have created yourself", Toast.LENGTH_LONG).show();
+                    new SweetAlertDialog(this)
+                            .setTitleText("Alert")
+                            .setContentText("You can only make changes to cards you have created yourself")
+                            .show();
 
                 }  else {
                     if (mCardDetailFragment == null) {
@@ -808,7 +816,11 @@ public class MainActivity extends FragmentActivity implements
         }
         //case2: check owner
         if (!currentPack.creatorID.equals(OpenUDID_manager.getOpenUDID())) {
-            Toast.makeText(this, "You cannot create a card in pack you haven't created yourself.", Toast.LENGTH_LONG).show();
+            new SweetAlertDialog(this)
+                    .setTitleText("Alert")
+                    .setContentText("You cannot create a card in pack you haven't created yourself.")
+                    .show();
+
             return false;
 
         }

@@ -218,7 +218,7 @@ public class CardListFragment extends Fragment {
         public View getView(final int position, View convertView, ViewGroup parent) {
             View v = super.getView(position, convertView, parent);
 
-            ImageView coverImage = (RoundedImageView) v.findViewById(R.id.card_list_item_cover_image);
+            ImageView coverImage = (ImageView) v.findViewById(R.id.card_list_item_cover_image);
 
             ImageView coverImageMask = (ImageView) v.findViewById(R.id.card_list_item_cover_image_mask);
 

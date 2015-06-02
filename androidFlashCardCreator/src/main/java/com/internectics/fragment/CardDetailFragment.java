@@ -72,6 +72,7 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
 
+import cn.pedant.SweetAlert.SweetAlertDialog;
 import timber.log.Timber;
 
 enum IMAGE_SOURCE {
@@ -908,7 +909,10 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnKeyboa
                 if (isEditableMode()) {
                     showCreateSoundView();
                 } else {
-                    Toast.makeText(getActivity(),"You can only edit card that you have created it.",Toast.LENGTH_LONG).show();
+                    new SweetAlertDialog(getActivity())
+                            .setTitleText("Alert")
+                            .setContentText("You can only edit card that you have created it.")
+                            .show();
                 }
             }
         });
@@ -972,7 +976,10 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnKeyboa
                     }
 
                 } else {
-                    Toast.makeText(getActivity(),"You can only edit card that you have created it.",Toast.LENGTH_LONG).show();
+                    new SweetAlertDialog(getActivity())
+                            .setTitleText("Alert")
+                            .setContentText("You can only edit card that you have created it.")
+                            .show();
                 }
             }
         });
@@ -1053,7 +1060,10 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnKeyboa
                     @Override
                     public void onClick(View v) {
                         mIsImage2Active = true;
-                        Toast.makeText(getActivity(),"Video play is only available in play mode",Toast.LENGTH_LONG).show();
+                        new SweetAlertDialog(getActivity())
+                                .setTitleText("Alert")
+                                .setContentText("Video play is only available in play mode")
+                                .show();
 
                     }
                 });
@@ -1150,7 +1160,10 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnKeyboa
                             answerQuickAction.show(mChangeTemplateImage);
                         }
                     } else {
-                        Toast.makeText(getActivity(),"You can only edit card that you have created it.",Toast.LENGTH_LONG).show();
+                        new SweetAlertDialog(getActivity())
+                                .setTitleText("Alert")
+                                .setContentText("You can only edit card that you have created it.")
+                                .show();
                     }
 
                 }
@@ -3737,18 +3750,51 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnKeyboa
         PackRecordHelper.savePackUpdateRecord(AppContext.getAppContext(), mCurrentPack);
     }
 
-    public void onGridViewItemClicked(int index) {
-        Timber.tag(Global.debugTag).d("index of symobol/emotion is:" + index);
-        int start = mCurrentFocusedCardContentText.getSelectionStart();
+    public void onGridViewItemClicked(String text) {
 
+        int start = mCurrentFocusedCardContentText.getSelectionStart();
         String beforeString = mCurrentFocusedCardContentText.getText().toString().substring(0,start);
         String afterString = mCurrentFocusedCardContentText.getText().toString().substring(start);
 
-        mCurrentFocusedCardContentText.setText(beforeString + SymbolHelper.mUnicodeArray[index] + afterString);
+        int offset = 0;
+        String insertText = text;
+        if (text.toLowerCase().equals(SymbolHelper.K_Space_Bar_Lowcase)) {
+            insertText = " ";
+            offset = 1;
+            mCurrentFocusedCardContentText.setText(beforeString + insertText + afterString);
+        } else if (text.toLowerCase().equals(SymbolHelper.K_Line_Break_Lowcase)) {
+            insertText = "\n";
+            offset = 1;
+            mCurrentFocusedCardContentText.setText(beforeString + insertText + afterString);
+        } else if (text.toLowerCase().equals(SymbolHelper.K_Delete_Lowcase)) {
+
+            if (beforeString.length() > 0) {
+                offset = -1;
+            }
+
+            if (beforeString.length() - 2 >= 0 ) {
+                beforeString = beforeString.substring(0,beforeString.length() -1);
+            } else {
+                beforeString = "";
+            }
+
+            mCurrentFocusedCardContentText.setText(beforeString + afterString);
+
+        } else {
+            offset = text.length();
+            mCurrentFocusedCardContentText.setText(beforeString + insertText + afterString);
+        }
+
+        if (mCurrentFocusedCardContentText.getText().toString().length() == 0) {
+            mCurrentFocusedCardContentText.setSelection(0);
+        } else if (mCurrentFocusedCardContentText.getText().toString().length() == 1) {
+            mCurrentFocusedCardContentText.setSelection(1);
+        } else {
+            mCurrentFocusedCardContentText.setSelection(start + offset);
+        }
+
 
         Timber.tag(Global.debugTag).d("the result is:" + mCurrentFocusedCardContentText.getText().toString());
-
-        mCurrentFocusedCardContentText.setSelection(start +1);
 
     }
 

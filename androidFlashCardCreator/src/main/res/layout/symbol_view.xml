@@ -1,32 +1,34 @@
 <?xml version="1.0" encoding="utf-8"?>
 
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-              android:orientation="vertical"
-              android:padding="5dp"
-              android:layout_width="match_parent"
-              android:layout_height="match_parent">
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
 
     <ImageView
-            android:id="@+id/symbol_background_image"
-            android:layout_width="@dimen/symbol__width"
-            android:layout_height="@dimen/symbol__width"
-            android:gravity="center"
-            android:scaleType="fitXY"
-            android:src="@drawable/key"
-            android:layout_gravity="center"/>
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:id="@+id/symbol_background_image"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="center"
+        android:scaleType="fitXY"
+        android:src="@drawable/shape_symbol_background_rounded_corner"
+        android:layout_gravity="center"/>
 
 
     <TextView
-            android:layout_width="@dimen/symbol__width"
-            android:layout_height="@dimen/symbol__width"
-            android:text="1"
-            android:paddingTop="2dp"
-            android:gravity="center"
-            android:singleLine="true"
-            android:textColor="@android:color/black"
-            android:textSize="@dimen/symbol_text_size"
-            android:id="@+id/symbol_summary"
-            android:layout_gravity="center"/>
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:text="1"
+        android:gravity="center"
+        android:singleLine="true"
+        android:textColor="@android:color/black"
+        android:textSize="@dimen/symbol_text_size"
+        android:id="@+id/symbol_text"
+        android:layout_gravity="center"/>
 
 
 </FrameLayout>

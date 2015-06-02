@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+             xmlns:app="http://schemas.android.com/apk/res-auto"
               android:id="@+id/card"
               android:baselineAligned="false"
               android:layout_width="match_parent"
@@ -160,7 +161,7 @@
                         android:layout_gravity="bottom"
                         android:src="@drawable/selector_edit_link_button"/>
 
-                    <ImageView
+                    <com.makeramen.roundedimageview.RoundedImageView
                         android:id="@+id/logo_image"
                         android:layout_height="wrap_content"
                         android:layout_width="0dp"
@@ -169,6 +170,7 @@
                         android:layout_marginRight="10dp"
                         android:scaleType="fitCenter"
                         android:adjustViewBounds="true"
+                        app:riv_corner_radius="15dp"
                         android:background="@drawable/shape_image_round_corner"
                         android:src="@drawable/question_placeholder_logo"/>
                 </LinearLayout>
