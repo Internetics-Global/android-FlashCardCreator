@@ -1,5 +1,6 @@
 package com.internectics.fragment;
 
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.DialogFragment;
 import android.content.ContentResolver;
@@ -267,10 +268,12 @@ public class PackListFragment extends Fragment {
                         currentPack.lastVistDate = Global.currentTimeSeconds();
                         currentPack.save(AppContext.getAppContext());
 
-                        ((MainActivity) getActivity()).mPopupWindow.dismiss();
                         Intent intent = new Intent(getActivity(), PlayActivity.class);
                         intent.putExtra("packID", currentPack.packID);
                         startActivity(intent);
+
+                        ((MainActivity) getActivity()).dismissPackListPopupWindow();
+
                     }
                 });
 

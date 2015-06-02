@@ -486,7 +486,7 @@ public class PlayActivity extends FragmentActivity implements SensorEventListene
         if ((mPosition != position) && (positionOffsetPixels == 0)) {
             Timber.tag(Global.debugTag).i( "onPageScrolled, page index=" + position + " .mPosition=" + mPosition);
 
-            ((CardDetailFragment) (mFragments.get(position))).switchToQuestionView(false);
+            ((CardDetailFragment) (mFragments.get(position))).switchToQuestionViewWithOption(false);
 
             //hide or show play recorded voice
             String soundFile = ((CardDetailFragment) (mFragments.get(position))).mCurrentCard.question.audioUriFormatStr;
@@ -497,7 +497,7 @@ public class PlayActivity extends FragmentActivity implements SensorEventListene
             }
 
             //Restore previous card to question view
-            ((CardDetailFragment) (mFragments.get(mPosition))).switchToQuestionView(false);
+            ((CardDetailFragment) (mFragments.get(mPosition))).switchToQuestionViewWithOption(false);
 
             mPosition = position;
 
@@ -846,13 +846,13 @@ public class PlayActivity extends FragmentActivity implements SensorEventListene
         List<Fragment> fList = new ArrayList<Fragment>();
 
         if (mCurrentPack == null) {
-            Timber.tag(Global.debugTag).w( "mCurrentPack could not be null in PlayActictiy");
+            Timber.tag(Global.debugTag).w( "mCurrentPack could not be null in PlayActivity");
             return fList;
         }
 
         for (int i = 0; i < size; i++) {
             CardDetailFragment cardDetailFragment = new CardDetailFragment();
-            cardDetailFragment.configureParameters(mCurrentPack, cardsArray.get(i), 2);
+            cardDetailFragment.setupParameters(mCurrentPack, cardsArray.get(i), 2);
             fList.add(i, cardDetailFragment);
             Timber.tag(Global.debugTag).d( String.format("new CardDetailFragment %d", i));
 

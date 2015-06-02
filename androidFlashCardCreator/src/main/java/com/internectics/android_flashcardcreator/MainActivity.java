@@ -17,6 +17,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 import android.text.InputType;
+import android.util.Log;
 import android.util.TypedValue;
 import android.view.Gravity;
 import android.view.KeyEvent;
@@ -116,6 +117,8 @@ public class MainActivity extends FragmentActivity implements
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        Log.d("ccaa","onCreate from ");
 
         //Step1: check table and default user
         SQLiteHelper.defaultDatabase(AppContext.getAppContext());
@@ -535,11 +538,12 @@ public class MainActivity extends FragmentActivity implements
             mPopupWindow.setOnDismissListener(new PopupWindow.OnDismissListener() {
                 @Override
                 public void onDismiss() {
-                    mPopupWindow.dismiss();
+                    dismissPackListPopupWindow();
 
                     FragmentManager fragmentManager = getSupportFragmentManager();
                     Fragment fm = fragmentManager.findFragmentByTag("tag_pack_list_fragment");
                     fragmentManager.beginTransaction().remove(fm).commit();
+                    fragmentManager.executePendingTransactions();
 
                     if (AppConfig.sharedInstance().isAllowToShowTooltip()) {
                         showTooltips();
@@ -550,16 +554,34 @@ public class MainActivity extends FragmentActivity implements
 
         }
 
-        if ((mPopupWindow != null) &&(mPopupWindow.isShowing() == false)) {
-            LayoutInflater inflater = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-            View popupLayout = inflater.inflate(R.layout.pack_list, null, false);
-            if (popupLayout != null) {
-                mPopupWindow.setContentView(popupLayout);
-                View actionbarPacks = findViewById(R.id.actionbar_packs);
-                if (actionbarPacks != null) {
-                    mPopupWindow.showAsDropDown(actionbarPacks);
+
+
+        if (mPopupWindow.isShowing() == false) {
+            View popupLayout =  mPopupWindow.getContentView();
+            if (popupLayout == null) {
+                LayoutInflater inflater = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+                popupLayout = inflater.inflate(R.layout.pack_list, null, false);
+                if (popupLayout != null) {
+                    mPopupWindow.setContentView(popupLayout);
+                } else {
+                    Timber.tag(Global.debugTag).d("Failed to inflate, please check");
                 }
             }
+
+            View actionbarPacks = findViewById(R.id.actionbar_packs);
+            if ((popupLayout != null) && (actionbarPacks != null)) {
+                mPopupWindow.showAsDropDown(actionbarPacks);
+            }
+
+        } else {
+           dismissPackListPopupWindow();
+        }
+    }
+
+    public void dismissPackListPopupWindow() {
+        if (mPopupWindow != null) {
+            mPopupWindow.dismiss();
+            mPopupWindow = null;
         }
     }
 
@@ -629,7 +651,7 @@ public class MainActivity extends FragmentActivity implements
             if (mCurrentPack.cards.size() > mCurrentCardIndex) {
                 mCurrentCard = mCurrentPack.cards.get(mCurrentCardIndex);
                 mCardDetailFragment = new CardDetailFragment();
-                mCardDetailFragment.configureParameters(mCurrentPack, mCurrentCard, 0);
+                mCardDetailFragment.setupParameters(mCurrentPack, mCurrentCard, 0);
                 getSupportFragmentManager().beginTransaction()
                         .replace(R.id.card_detail_container, mCardDetailFragment).commitAllowingStateLoss();
             }  else {
@@ -653,14 +675,14 @@ public class MainActivity extends FragmentActivity implements
      * @param pack, not 100% equal with mCurrentPack in MainActivity.java
      * @param card
      */
-    private void prepareSnapShotSelectedCard(Pack pack, Card card) {
+    private void prepareSnapOnShotSelectedCard(Pack pack, Card card) {
         CardDetailFragment snapshotCardDetailFragment = new CardDetailFragment();
-        snapshotCardDetailFragment.configureParameters(pack, card, 3);
+        snapshotCardDetailFragment.setupParameters(pack, card, 3);
         getSupportFragmentManager().beginTransaction()
                 .add(R.id.detail, snapshotCardDetailFragment).commitAllowingStateLoss();
 
         if (mArrayCardDetailFragments == null) {
-            mArrayCardDetailFragments = new ArrayList<CardDetailFragment>();
+            mArrayCardDetailFragments = new ArrayList<>();
         }
         mArrayCardDetailFragments.add(snapshotCardDetailFragment);
     }
@@ -672,12 +694,12 @@ public class MainActivity extends FragmentActivity implements
      * @param pack,       snapshot all the cards in this pack
      * @param exceptCard, except this
      */
-    public void prepareSnapShotAllExceptOne(Pack pack, Card exceptCard) {
+    public void prepareSnapShotAllExceptCurrentCard(Pack pack, Card exceptCard) {
 
         ArrayList<Card> cards = pack.cards;
         for (Card card : cards) {
             if (card.cardID != exceptCard.cardID) {
-                prepareSnapShotSelectedCard(pack, card);
+                prepareSnapOnShotSelectedCard(pack, card);
             }
         }
     }
@@ -749,7 +771,7 @@ public class MainActivity extends FragmentActivity implements
 
 
         mCardDetailFragment = new CardDetailFragment();
-        mCardDetailFragment.configureParameters(mCurrentPack, null, 1);
+        mCardDetailFragment.setupParameters(mCurrentPack, null, 1);
         if (mCurrentPack.cards.size() >0) {
             //History of reason, we put templateBackground in Card, rather than Pack. It's not a good design practce anyway.
             mCardDetailFragment.mCurrentCard.templateBackground =  mCurrentPack.cards.get(0).templateBackground;
@@ -1001,7 +1023,7 @@ public class MainActivity extends FragmentActivity implements
                                     } catch (InterruptedException e) {
                                         e.printStackTrace();
                                     }
-                                    mCardDetailFragment.saveEdittedCard();
+                                    mCardDetailFragment.saveEditedCard();
                                 }
                             });
                         };
@@ -1035,7 +1057,7 @@ public class MainActivity extends FragmentActivity implements
                 if (mIsKeyboardVisible) {
 
                     if (mCardDetailFragment.isCurrentFocusedCardContentTextUsingDefaultFont() == false){
-                        Toast.makeText(getApplicationContext(),"ymbol could possibly not be supported by selected font, please check",Toast.LENGTH_LONG).show();
+                        Toast.makeText(getApplicationContext(),"Symbol could possibly not be supported by selected font, please check",Toast.LENGTH_LONG).show();
                     } else {
                         setAsSymbolStatus();
                         mIsKeyboardVisible = false;
