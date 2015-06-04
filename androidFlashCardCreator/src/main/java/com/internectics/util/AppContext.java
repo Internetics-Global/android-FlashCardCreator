@@ -15,7 +15,6 @@ import java.util.UUID;
 
 import timber.log.Timber;
 
-
 public class AppContext extends Application {
 
     private static Context                           mContext;
@@ -24,6 +23,8 @@ public class AppContext extends Application {
     @Override
     public void onCreate() {
         super.onCreate();
+
+        //LeakCanary.install(this);
 
         AppContext.mContext = getApplicationContext();
 
@@ -111,6 +112,7 @@ public class AppContext extends Application {
             // TODO e.g., Crashlytics.logException(t);
         }
     }
+
 
 
 }

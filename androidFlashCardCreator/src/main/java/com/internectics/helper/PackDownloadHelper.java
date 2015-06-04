@@ -10,6 +10,7 @@ import android.text.InputType;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.internectics.cryptor.CryptoHelper;
 import com.internectics.data.Pack;
 import com.internectics.helper.AWS.SimpleDBHelper;
 import com.internectics.util.AppConfig;
@@ -128,38 +129,46 @@ public class PackDownloadHelper extends AsyncTask<Void, Long, Boolean> {
     protected void onPostExecute(Boolean result) {
         if (result) {
             Toast.makeText(mContext, "Download pack successfully.", Toast.LENGTH_SHORT).show();
-            try {
 
-                ZipFile zipFile = new ZipFile(mSavedFilePath);
-                if (zipFile.isEncrypted()) {
+            boolean success = CryptoHelper.decryptFileWithSameOutput(mSavedFilePath);
+            if (success == false) {
+                Toast.makeText(mContext, "Failed to decrypt pack", Toast.LENGTH_LONG).show();
+            } else {
+                try {
+                    ZipFile zipFile = new ZipFile(mSavedFilePath);
+                    if (zipFile.isEncrypted()) {
 
-                    final EditText passwordEditText = new EditText(mContext);
-                    passwordEditText.setSingleLine(true);
-                    passwordEditText.setInputType(InputType.TYPE_TEXT_FLAG_NO_SUGGESTIONS);
-                    new AlertDialog.Builder(mContext)
-                            .setTitle("Input a password")
-                            .setIcon(android.R.drawable.ic_dialog_info)
-                            .setView(passwordEditText)
-                            .setPositiveButton("Done", new DialogInterface.OnClickListener() {
-                                @Override
-                                public void onClick(DialogInterface dialog, int which) {
-                                    ZipFileHelper.unzipPackFile(mContext, mSavedFilePath,passwordEditText.getText().toString());
-                                    parsePackAndGoOn();
-                                }
-                            })
-                            .setNegativeButton("Cancel", null)
-                            .show();
+                        final EditText passwordEditText = new EditText(mContext);
+                        passwordEditText.setSingleLine(true);
+                        passwordEditText.setInputType(InputType.TYPE_TEXT_FLAG_NO_SUGGESTIONS);
+                        new AlertDialog.Builder(mContext)
+                                .setTitle("Input a password")
+                                .setIcon(android.R.drawable.ic_dialog_info)
+                                .setView(passwordEditText)
+                                .setPositiveButton("Done", new DialogInterface.OnClickListener() {
+                                    @Override
+                                    public void onClick(DialogInterface dialog, int which) {
 
-                } else { // no password or the password is empty
-                    ZipFileHelper.unzipPackFile(mContext, mSavedFilePath, "");
-                    parsePackAndGoOn();
+                                        ZipFileHelper.unzipPackFile(mContext, mSavedFilePath,passwordEditText.getText().toString());
+                                        parsePackAndGoOn();
+                                    }
+                                })
+                                .setNegativeButton("Cancel", null)
+                                .show();
+
+                    } else { // no password or the password is empty
+
+                        ZipFileHelper.unzipPackFile(mContext, mSavedFilePath, "");
+                        parsePackAndGoOn();
+
+                    }
+
+
+
+                } catch (Exception e) {
+                    Timber.tag(Global.debugTag).e("Error:" + e.getCause());
+                    e.printStackTrace();
                 }
-
-
-
-            } catch (Exception e) {
-                Timber.tag(Global.debugTag).e("Error:" + e.getCause());
-                e.printStackTrace();
             }
 
         } else {

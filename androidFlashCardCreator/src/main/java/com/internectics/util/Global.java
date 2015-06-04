@@ -9,7 +9,7 @@ public class Global {
 
     public static final boolean   isDebug =  false;  //是否开启Timber的log
 
-    public static final String    SAMPLE_URL = "https://s3.amazonaws.com/internetics.flashcardcreator/Sample_25052015.zip?type=demo";
+    public static final String    SAMPLE_URL = "https://s3.amazonaws.com/internetics.flashcardcreator/Sample_25052015_Encripted.zip?type=demo";
 
     public static final String  debugTag = "ccaa";
     public static final String  debugTag2 = "ccaa2";

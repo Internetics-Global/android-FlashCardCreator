@@ -42,6 +42,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.analytics.tracking.android.EasyTracker;
+import com.internectics.cryptor.CryptoHelper;
 import com.internectics.data.Card;
 import com.internectics.data.Pack;
 import com.internectics.fragment.CardDetailFragment;
@@ -531,7 +532,7 @@ public class MainActivity extends FragmentActivity implements
     public void showPackListView() {
 
         if (mPopupWindow == null) {
-            mPopupWindow = new PopupWindow(UIHelper.getScreenWidth(this)- 50, getResources().getDimensionPixelSize(R.dimen.pack_list_window_height));
+            mPopupWindow = new PopupWindow(UIHelper.getScreenWidth(this), getResources().getDimensionPixelSize(R.dimen.pack_list_window_height));
             mPopupWindow.setFocusable(true);
             mPopupWindow.setOutsideTouchable(true);
             mPopupWindow.setBackgroundDrawable(getResources().getDrawable(R.drawable.shape_popupwindow_background));
@@ -908,9 +909,14 @@ public class MainActivity extends FragmentActivity implements
                             Toast.makeText(MainActivity.this, "Failed to zip pack", Toast.LENGTH_LONG).show();
                         } else {
 
-                            //步骤： upload -- > 设置最大分享数 --> 创建短连接 --> 分享
-                            uploadHelper = new S3UploadHelper(MainActivity.this,mUploadHandler);
-                            uploadHelper.upload(file);
+                            boolean result = CryptoHelper.encryptFileWithSameOutput(file);
+                            if (result == false) {
+                                Toast.makeText(MainActivity.this, "Failed to encrypt pack", Toast.LENGTH_LONG).show();
+                            } else {
+                                //步骤： upload -- > 设置最大分享数 --> 创建短连接 --> 分享
+                                uploadHelper = new S3UploadHelper(MainActivity.this, mUploadHandler);
+                                uploadHelper.upload(file);
+                            }
                         }
 
                     }
@@ -926,9 +932,15 @@ public class MainActivity extends FragmentActivity implements
                         if (file == null) {
                             Toast.makeText(MainActivity.this, "Failed to zip pack", Toast.LENGTH_LONG).show();
                         } else {
-                            //步骤： upload -- > 设置最大分享数 --> 创建短连接 --> 分享
-                            uploadHelper = new S3UploadHelper(MainActivity.this,mUploadHandler);
-                            uploadHelper.upload(file);
+
+                            boolean result = CryptoHelper.encryptFileWithSameOutput(file);
+                            if (result == false) {
+                                Toast.makeText(MainActivity.this, "Failed to encrypt pack", Toast.LENGTH_LONG).show();
+                            } else {
+                                //步骤： upload -- > 设置最大分享数 --> 创建短连接 --> 分享
+                                uploadHelper = new S3UploadHelper(MainActivity.this, mUploadHandler);
+                                uploadHelper.upload(file);
+                            }
                         }
 
                     }

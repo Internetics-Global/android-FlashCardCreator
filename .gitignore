@@ -38,3 +38,6 @@ proguard/
 # Log Files
 *.log
 
+ikzjfr0librarytest/
+captures/
+
