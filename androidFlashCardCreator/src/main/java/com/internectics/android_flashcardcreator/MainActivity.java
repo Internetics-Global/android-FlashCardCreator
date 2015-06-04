@@ -543,7 +543,7 @@ public class MainActivity extends FragmentActivity implements
 
                     FragmentManager fragmentManager = getSupportFragmentManager();
                     Fragment fm = fragmentManager.findFragmentByTag("tag_pack_list_fragment");
-                    fragmentManager.beginTransaction().remove(fm).commit();
+                    fragmentManager.beginTransaction().remove(fm).commitAllowingStateLoss();
                     fragmentManager.executePendingTransactions();
 
                     if (AppConfig.sharedInstance().isAllowToShowTooltip()) {

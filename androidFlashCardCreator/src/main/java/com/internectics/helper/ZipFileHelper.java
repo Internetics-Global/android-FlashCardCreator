@@ -15,6 +15,7 @@ import java.util.ArrayList;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipOutputStream;
 
+import cn.pedant.SweetAlert.SweetAlertDialog;
 import timber.log.Timber;
 
 /**
@@ -77,7 +78,12 @@ public class ZipFileHelper {
         } catch (ZipException e) {
             e.printStackTrace();
             Timber.tag(Global.debugTag).d(Global.debugTag, "unzip failed:" + e.getCause());
-            Toast.makeText(context, "Wrong password", Toast.LENGTH_LONG).show();
+
+            new SweetAlertDialog(context, SweetAlertDialog.WARNING_TYPE)
+                .setTitleText("Alert")
+                .setContentText("Wrong password")
+                .setConfirmText("Close")
+                .show();
         }
 
     }
