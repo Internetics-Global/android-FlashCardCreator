@@ -532,7 +532,7 @@ public class MainActivity extends FragmentActivity implements
     public void showPackListView() {
 
         if (mPopupWindow == null) {
-            mPopupWindow = new PopupWindow(UIHelper.getScreenWidth(this), getResources().getDimensionPixelSize(R.dimen.pack_list_window_height));
+            mPopupWindow = new PopupWindow(UIHelper.getScreenWidth(this)-50, getResources().getDimensionPixelSize(R.dimen.pack_list_window_height));
             mPopupWindow.setFocusable(true);
             mPopupWindow.setOutsideTouchable(true);
             mPopupWindow.setBackgroundDrawable(getResources().getDrawable(R.drawable.shape_popupwindow_background));
@@ -571,7 +571,10 @@ public class MainActivity extends FragmentActivity implements
 
             View actionbarPacks = findViewById(R.id.actionbar_packs);
             if ((popupLayout != null) && (actionbarPacks != null)) {
-                mPopupWindow.showAsDropDown(actionbarPacks);
+                //mPopupWindow.showAsDropDown(actionbarPacks);
+                View appMainView = findViewById(R.id.app_main);
+                int actionbarHeight = UIHelper.getActionbarHeight(MainActivity.this);
+                mPopupWindow.showAtLocation(appMainView,Gravity.LEFT|Gravity.TOP,25,actionbarHeight + 2);
             }
 
         } else {
