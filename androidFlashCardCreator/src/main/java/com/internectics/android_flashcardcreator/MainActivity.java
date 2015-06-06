@@ -10,6 +10,7 @@ import android.content.res.TypedArray;
 import android.graphics.PixelFormat;
 import android.net.Uri;
 import android.os.AsyncTask;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -26,6 +27,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
+import android.view.ViewTreeObserver;
 import android.view.WindowManager;
 import android.view.animation.AlphaAnimation;
 import android.view.animation.Animation;
@@ -467,8 +469,33 @@ public class MainActivity extends FragmentActivity implements
 
         //Used to show pack list
         if (mIsAllowedToShowPackList) {
-            ShowPacklistAfterViewDidAppearTask dTask = new ShowPacklistAfterViewDidAppearTask();
-            dTask.execute(100);
+
+            final View appMainView = findViewById(R.id.app_main);
+
+            if (appMainView.getHeight() > 0 && appMainView.getWidth() > 0) {
+                //如果已经渲染完毕
+                showPackListView();
+            } else {
+                appMainView.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
+                    @Override
+                    public void onGlobalLayout() {
+                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
+                            appMainView.getViewTreeObserver().removeOnGlobalLayoutListener(this);
+                        } else {
+                            appMainView.getViewTreeObserver().removeGlobalOnLayoutListener(this);
+                        }
+                        Handler handler = new Handler();
+                        handler.postDelayed(new Runnable() {
+                            @Override
+                            public void run() {
+                                showPackListView();//放在Handler中是一个trick，实际发现，如果没有这个，则不会显示pack list
+                            }
+
+                        }, 100); // 5000ms delay
+
+                    }
+                });
+            }
         }
 
         mIsAllowedToShowPackList = true;
@@ -539,7 +566,7 @@ public class MainActivity extends FragmentActivity implements
             mPopupWindow.setOnDismissListener(new PopupWindow.OnDismissListener() {
                 @Override
                 public void onDismiss() {
-                    dismissPackListPopupWindow();
+                    mPopupWindow = null;
 
                     FragmentManager fragmentManager = getSupportFragmentManager();
                     Fragment fm = fragmentManager.findFragmentByTag("tag_pack_list_fragment");
@@ -551,11 +578,7 @@ public class MainActivity extends FragmentActivity implements
                     }
                 }
             });
-
-
         }
-
-
 
         if (mPopupWindow.isShowing() == false) {
             View popupLayout =  mPopupWindow.getContentView();
@@ -1342,49 +1365,6 @@ public class MainActivity extends FragmentActivity implements
             }
         }
     };
-
-
-
-
-    /**
-     *
-     */
-    class ShowPacklistAfterViewDidAppearTask extends AsyncTask<Integer, Integer, String> {
-
-        final View myView = findViewById(R.id.card_list);
-
-        @Override
-        protected void onPreExecute() {
-            super.onPreExecute();
-        }
-
-        @Override
-        protected String doInBackground(Integer... params) {
-
-            while (myView.getHeight() == 0 || myView.getWidth() == 0) {
-                try {
-                    Thread.sleep(1);
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
-            }
-
-            return "Done";
-        }
-
-        @Override
-        protected void onProgressUpdate(Integer... progress) {
-            super.onProgressUpdate(progress);
-        }
-
-        @Override
-        protected void onPostExecute(String result) {
-            super.onPostExecute(result);
-            showPackListView();
-
-        }
-
-    }
 
 
 }
