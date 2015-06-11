@@ -478,7 +478,11 @@ public class PlayActivity extends FragmentActivity implements SensorEventListene
 
     @Override
     public void OnViewPagerClickListener() {
-        switchQuestionAnswerView();
+
+        if (mIsAutoScroll == false) {
+            switchQuestionAnswerView();  //not allow to switch during auto play mode
+        }
+
     }
 
     @Override
@@ -547,6 +551,10 @@ public class PlayActivity extends FragmentActivity implements SensorEventListene
 
     @Override
     public void onSensorChanged(SensorEvent event) {
+
+        if (mIsAutoScroll) {
+            return;  //not allow to switch during auto play mode
+        }
 
         CardDetailFragment cardDetailFragment = ((CardDetailFragment) (mFragments.get(mPosition)));
         if ((cardDetailFragment == null) || (cardDetailFragment.mCardSN == null))  {
