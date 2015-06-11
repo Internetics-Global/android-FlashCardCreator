@@ -94,7 +94,6 @@ public class PlayActivity extends FragmentActivity implements SensorEventListene
 
     private Handler        mTTSDelayHandler = new Handler();
     private Handler        mAutoHideControlPanelHandler = new Handler();
-    private Handler        mFirstPageDelaylHandler = new Handler();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -246,6 +245,15 @@ public class PlayActivity extends FragmentActivity implements SensorEventListene
                 } else {
                     controlPanelView.setVisibility(View.VISIBLE);
                 }
+
+                mAutoHideControlPanelHandler.postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        View controlPanelView = findViewById(R.id.play_control_panel);
+                        controlPanelView.setVisibility(View.INVISIBLE);
+                    }
+
+                }, 3000);
             }
         });
 
@@ -309,10 +317,6 @@ public class PlayActivity extends FragmentActivity implements SensorEventListene
             mAutoHideControlPanelHandler = null;
         }
 
-        if (mFirstPageDelaylHandler !=null) {
-            mFirstPageDelaylHandler.removeCallbacksAndMessages(null);
-            mFirstPageDelaylHandler = null;
-        }
 
         if (mAutoSwitchQATimer != null) {
             mAutoSwitchQATimer.cancel();
@@ -430,26 +434,23 @@ public class PlayActivity extends FragmentActivity implements SensorEventListene
         mAutoPlaySpeedSeekBar.setEnabled(false);
         mAutoScrollImageButton.setImageDrawable(getResources().getDrawable(R.drawable.autoplay_on));
 
-        mAutoHideControlPanelHandler.postDelayed(new Runnable() {
-
-            @Override
-            public void run() {
-
-                mPager.setInterval(delayMillSeconds);
-                mPager.startAutoScroll();
-
-                mAutoSwitchQATimer = new Timer();
-                TimerTask switchQATimer = new SwitchQATimer();
-                mAutoSwitchQATimer.scheduleAtFixedRate(switchQATimer, getAutoPlaySpeedMilliSeconds() / 2 - 500, 3600 * 1000);
-            }
-
-        }, delayMillSeconds);
+        mPager.setInterval(delayMillSeconds);
+        mPager.startAutoScroll();
+        mAutoSwitchQATimer = new Timer();
+        TimerTask switchQATimer = new SwitchQATimer();
+        if (mIsAutoShowQuestionOnly == false) {
+            mAutoSwitchQATimer.scheduleAtFixedRate(switchQATimer, getAutoPlaySpeedMilliSeconds() / 2 - 500, 3600 * 1000);
+        }
 
         CardDetailFragment targetDetailFragment = ((CardDetailFragment) (mFragments.get(mPosition)));
         executeTextToSpeechOrPlayAudio(targetDetailFragment);
 
 
-        mCounterDownTextView.setText(String.format("%d",getAutoPlaySpeedMilliSeconds()/1000));
+        if (mIsAutoShowQuestionOnly) {
+            mCounterDownTextView.setText(String.format("%d",getAutoPlaySpeedMilliSeconds()/1000));
+        } else {
+            mCounterDownTextView.setText(String.format("%d",getAutoPlaySpeedMilliSeconds()/1000/2 - 1));
+        }
         mCountDownTimer = new Timer();
         TimerTask countDownTimer = new CountDownTimer();
         mCountDownTimer.scheduleAtFixedRate(countDownTimer, 0, 1000);
