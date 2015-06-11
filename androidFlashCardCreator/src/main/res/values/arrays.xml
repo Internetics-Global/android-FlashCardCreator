@@ -55,6 +55,8 @@
     <string-array
         name="css_size">
         <item>Size</item>
+        <item>10</item>
+        <item>11</item>
         <item>12</item>
         <item>14</item>
         <item>18</item>
