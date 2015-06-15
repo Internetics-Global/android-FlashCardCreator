@@ -1304,15 +1304,26 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnKeyboa
 
             mImage = (ImageView) mContentView.findViewById(R.id.image);
             mImage2 = (ImageView) mContentView.findViewById(R.id.image2);
-            mImage.setImageURI(Uri.parse(mCurrentCard.question.imageUriFormatStr));
-            mImage2.setImageURI(Uri.parse(mCurrentCard.question.imageUriFormatStr2));
+
+            if (mCurrentCard.question.imageUriFormatStr != null) {
+                mImage.setImageURI(Uri.parse(mCurrentCard.question.imageUriFormatStr));
+            }
+
+            if (mCurrentCard.question.imageUriFormatStr2 != null) {
+                mImage2.setImageURI(Uri.parse(mCurrentCard.question.imageUriFormatStr2));
+            }
+
 
         } else {
             mSubheading = (FCCEditText) mContentView.findViewById(R.id.subheading_BodyType2);
             mMain = (FCCEditText) mContentView.findViewById(R.id.main_BodyType2);
             mSub = (FCCEditText) mContentView.findViewById(R.id.sub_BodyType2);
+
             mImage = (ImageView) mContentView.findViewById(R.id.image_BodyType2);
-            mImage.setImageURI(Uri.parse(mCurrentCard.question.imageUriFormatStr));
+
+            if (mCurrentCard.question.imageUriFormatStr != null) {
+                mImage.setImageURI(Uri.parse(mCurrentCard.question.imageUriFormatStr));
+            }
         }
 
         //2. text的重新OnTouchListener

@@ -146,6 +146,11 @@ public class AppConfig {
     }
 
 
+    /**
+     * YES： 当text to speech完成后，通过mTTS.setOnUtteranceProgressListener切换到下一个卡片
+     * NO: 通过固定的delay和timer切换到下一个卡片
+     * @return
+     */
     public boolean isAutoDelay() {
         String str = appConfig.get(Global.isAutoDelay);
         if ((str != null) && (str.equals("true")))

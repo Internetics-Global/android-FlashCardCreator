@@ -7,9 +7,8 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 
+import com.internectics.UI.autoscrollviewpager.AutoScrollViewPager;
 import com.internectics.android_flashcardcreator.R;
-
-import cn.trinea.android.view.autoscrollviewpager.AutoScrollViewPager;
 import timber.log.Timber;
 
 /**

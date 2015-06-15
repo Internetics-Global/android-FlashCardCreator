@@ -169,7 +169,6 @@ public class PlayActivity extends FragmentActivity implements SensorEventListene
         FCCPageAdapter pageAdapter = new FCCPageAdapter(getSupportFragmentManager(), mFragments);
         mPager = (VGViewPager) findViewById(R.id.viewpager);
         mPager.setStopScrollWhenTouch(false);
-        mPager.setScrollDurationFactor(5);
         mPager.setOnViewPagerClickListener(this);
 
         //used to get rid of interrupt during scroll
@@ -256,6 +255,13 @@ public class PlayActivity extends FragmentActivity implements SensorEventListene
                 }, 3000);
             }
         });
+
+        if (AppConfig.sharedInstance().isAutoDelay()) {
+            findViewById(R.id.auto_play_speed_seek_bar).setVisibility(View.INVISIBLE);
+            findViewById(R.id.auto_play_speed_textview).setVisibility(View.INVISIBLE);
+
+            mCounterDownTextView.setVisibility(View.INVISIBLE);
+        }
 
     }
 
@@ -434,12 +440,21 @@ public class PlayActivity extends FragmentActivity implements SensorEventListene
         mAutoPlaySpeedSeekBar.setEnabled(false);
         mAutoScrollImageButton.setImageDrawable(getResources().getDrawable(R.drawable.autoplay_on));
 
-        mPager.setInterval(delayMillSeconds);
-        mPager.startAutoScroll();
-        mAutoSwitchQATimer = new Timer();
-        TimerTask switchQATimer = new SwitchQATimer();
-        if (mIsAutoShowQuestionOnly == false) {
-            mAutoSwitchQATimer.scheduleAtFixedRate(switchQATimer, getAutoPlaySpeedMilliSeconds() / 2 - 500, 3600 * 1000);
+        if (AppConfig.sharedInstance().isAutoDelay()== false) {  //
+            mPager.setInterval(delayMillSeconds);
+            mPager.startAutoScroll();
+            mAutoSwitchQATimer = new Timer();
+            TimerTask switchQATimer = new SwitchQATimer();
+            if (mIsAutoShowQuestionOnly == false) {
+                mAutoSwitchQATimer.scheduleAtFixedRate(switchQATimer, getAutoPlaySpeedMilliSeconds() / 2 - 500, 3600 * 1000);
+            }
+
+            mCountDownTimer = new Timer();
+            TimerTask countDownTimer = new CountDownTimer();
+            mCountDownTimer.scheduleAtFixedRate(countDownTimer, 0, 1000);
+
+        } else {
+            //通过mTTS.setOnUtteranceProgressListener进行卡片的scroll
         }
 
         CardDetailFragment targetDetailFragment = ((CardDetailFragment) (mFragments.get(mPosition)));
@@ -451,9 +466,6 @@ public class PlayActivity extends FragmentActivity implements SensorEventListene
         } else {
             mCounterDownTextView.setText(String.format("%d",getAutoPlaySpeedMilliSeconds()/1000/2 - 1));
         }
-        mCountDownTimer = new Timer();
-        TimerTask countDownTimer = new CountDownTimer();
-        mCountDownTimer.scheduleAtFixedRate(countDownTimer, 0, 1000);
 
     }
 
@@ -513,15 +525,18 @@ public class PlayActivity extends FragmentActivity implements SensorEventListene
 
             executeTextToSpeechOrPlayAudio((CardDetailFragment) (mFragments.get(position)));
 
-            if (mIsAutoScroll && mIsAutoShowQuestionOnly == false) {
-                if (mAutoSwitchQATimer != null) {
-                    mAutoSwitchQATimer.cancel();
-                    mAutoSwitchQATimer = null;
+            if (AppConfig.sharedInstance().isAutoDelay() == false) {
+                if (mIsAutoScroll && mIsAutoShowQuestionOnly == false) {
+                    if (mAutoSwitchQATimer != null) {
+                        mAutoSwitchQATimer.cancel();
+                        mAutoSwitchQATimer = null;
+                    }
+                    mAutoSwitchQATimer = new Timer();
+                    TimerTask updateBall = new SwitchQATimer();
+                    mAutoSwitchQATimer.scheduleAtFixedRate(updateBall, getAutoPlaySpeedMilliSeconds() / 2 - 500, 3600*1000);
                 }
-                mAutoSwitchQATimer = new Timer();
-                TimerTask updateBall = new SwitchQATimer();
-                mAutoSwitchQATimer.scheduleAtFixedRate(updateBall, getAutoPlaySpeedMilliSeconds() / 2 - 500, 3600*1000);
             }
+
 
 
 
@@ -678,7 +693,7 @@ public class PlayActivity extends FragmentActivity implements SensorEventListene
                                 //go to next
                                 mTextToSpeechContentArrayIndex ++;
 
-                                CardDetailFragment cardDetailFragment = ((CardDetailFragment) (mFragments.get(mPosition)));
+                                final CardDetailFragment cardDetailFragment = ((CardDetailFragment) (mFragments.get(mPosition)));
 
                                 final ArrayList<String> textToSpeechArray = cardDetailFragment.textToSpeechContentArray();
                                 if (textToSpeechArray.size() > mTextToSpeechContentArrayIndex) {
@@ -699,7 +714,30 @@ public class PlayActivity extends FragmentActivity implements SensorEventListene
                                     }, 500);
 
                                 } else {
-                                    playAudio();
+
+                                    if (textToSpeechArray.size() >0 && AppConfig.sharedInstance().isAutoDelay()) {
+
+                                        runOnUiThread(new Runnable() {
+                                            @Override
+                                            public void run() {
+                                                if (mIsAutoScroll) {
+                                                    if (mIsAutoShowQuestionOnly) {
+                                                        mPager.scroll2NextPage();
+                                                    } else {
+                                                        if (cardDetailFragment.mIsQuestionShowing) {
+                                                            switchQuestionAnswerView();
+                                                        } else {
+                                                            mPager.scroll2NextPage();
+                                                        }
+                                                    }
+                                                }
+                                            }
+                                        });
+
+                                    } else {
+                                        playAudio();
+                                    }
+
                                 }
 
                             }

@@ -31,12 +31,13 @@
         android:text="Auto Play Speed"
         android:textSize="10sp"
         android:lines="1"
+        android:id="@+id/auto_play_speed_textview"
         android:textColor="@android:color/white"
         android:gravity="center"
         android:maxLines="1"/>
 
     <include
-        android:id="@+id/sidebar"
+        android:id="@+id/auto_play_speed_seek_bar"
         layout="@layout/auto_play_speed_seek_bar"
         android:layout_marginLeft="0dp"
         android:layout_width="120dp"
