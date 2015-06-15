@@ -389,23 +389,33 @@ public class PlayActivity extends FragmentActivity implements SensorEventListene
     private void autoScrollImageButtonClicked() {
 
         if (mIsAutoScroll == false) {
-            new AlertDialog.Builder(PlayActivity.this)
-                    .setMessage("Please select")
-                    .setPositiveButton("Show question only", new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialog, int which) {
-                            mIsAutoShowQuestionOnly = true;
-                            autoScrollPopoverViewItemSelected();
-                        }
-                    })
-                    .setNegativeButton("Both question and answer", new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialog, int which) {
-                            mIsAutoShowQuestionOnly = false;
-                            autoScrollPopoverViewItemSelected();
-                        }
-                    })
-                    .show();
+
+            if (mTTS.isSpeaking()) {
+                new SweetAlertDialog(this)
+                    .setTitleText("Alert")
+                    .setContentText("Waiting until Text to Speak is finished")
+                        .show();
+
+            } else {
+                new AlertDialog.Builder(PlayActivity.this)
+                        .setMessage("Please select")
+                        .setPositiveButton("Show question only", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                mIsAutoShowQuestionOnly = true;
+                                autoScrollPopoverViewItemSelected();
+                            }
+                        })
+                        .setNegativeButton("Both question and answer", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                mIsAutoShowQuestionOnly = false;
+                                autoScrollPopoverViewItemSelected();
+                            }
+                        })
+                        .show();
+            }
+
         } else {
             screenOff();
             mPager.disableAllTouchEvent(false);
