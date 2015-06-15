@@ -59,6 +59,8 @@ public class Global {
 
     public static final String isTextToSpeech = "is_Text_To_Speech";
 
+    public static final String isAutoDelay = "is_Auto_Delay";
+
     //used to generate a redirected URL
     public static final String URL_REDIRECT_API = "http://tinyurl.com/api-create.php?url=";
 

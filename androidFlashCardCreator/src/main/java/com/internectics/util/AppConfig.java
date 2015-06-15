@@ -145,6 +145,24 @@ public class AppConfig {
 
     }
 
+
+    public boolean isAutoDelay() {
+        String str = appConfig.get(Global.isAutoDelay);
+        if ((str != null) && (str.equals("true")))
+            return true;
+        else
+            return false;
+    }
+
+    public void setAutoDelay(boolean b) {
+        if (b) {
+            appConfig.set(Global.isAutoDelay, "true");
+        } else {
+            appConfig.set(Global.isAutoDelay, "false");
+        }
+
+    }
+
     public boolean isAllowToShowTooltip() {
         String str = appConfig.get(Global.isAllowToShowTooltip);
         if ((str == null) || (str.equals("true")))

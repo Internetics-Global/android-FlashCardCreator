@@ -9,6 +9,7 @@ import android.preference.PreferenceScreen;
 import android.view.WindowManager;
 
 import com.internectics.util.AppConfig;
+import com.internectics.util.AppContext;
 
 public class MoreActivity extends PreferenceActivity {
 
@@ -22,8 +23,9 @@ public class MoreActivity extends PreferenceActivity {
         addPreferencesFromResource(R.xml.more);
 
         final CheckBoxPreference playPreference = (CheckBoxPreference) findPreference("play_preference");
-
         final CheckBoxPreference textToSpeechPreference = (CheckBoxPreference) findPreference("text_to_speech_preference");
+        final CheckBoxPreference autoDelayPreference = (CheckBoxPreference) findPreference("auto_delay_preference");
+        autoDelayPreference.setChecked(AppConfig.sharedInstance().isAutoDelay());
 
         PreferenceScreen helpPreference = (PreferenceScreen) findPreference("help_preference");
         PreferenceScreen aboutPreference = (PreferenceScreen) findPreference("about_preference");
@@ -67,6 +69,18 @@ public class MoreActivity extends PreferenceActivity {
                     AppConfig.sharedInstance().setTextToSpeech(false);
                 } else {
                     AppConfig.sharedInstance().setTextToSpeech(true);
+                }
+                return false;
+            }
+        });
+
+        autoDelayPreference.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
+            @Override
+            public boolean onPreferenceClick(Preference preference) {
+                if (!autoDelayPreference.isChecked()) {
+                    AppConfig.sharedInstance().setAutoDelay(false);
+                } else {
+                    AppConfig.sharedInstance().setAutoDelay(true);
                 }
                 return false;
             }
