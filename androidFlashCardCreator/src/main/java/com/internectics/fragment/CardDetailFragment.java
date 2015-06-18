@@ -3772,6 +3772,10 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnKeyboa
             }
         }
 
+        if (arrayList.size() == 0) {
+            arrayList.add("    "); //in auto delay mode, we need this. Otherwise, scroll could not go on since there's no content
+        }
+
         return arrayList;
     }
 

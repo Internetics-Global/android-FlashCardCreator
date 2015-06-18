@@ -8,6 +8,7 @@ import android.hardware.Sensor;
 import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
+import android.media.AudioManager;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
@@ -81,6 +82,8 @@ public class PlayActivity extends FragmentActivity implements SensorEventListene
     private boolean     mIsAutoScroll;
     private boolean     mIsCyclePlay;
     private boolean     mIsMute = false;
+
+    private boolean     mAudioStreamStatus;
 
     private boolean     mIsAutoShowQuestionOnly = true;
     private Timer       mAutoSwitchQATimer;
@@ -256,7 +259,7 @@ public class PlayActivity extends FragmentActivity implements SensorEventListene
             }
         });
 
-        if (isAllowAutoPlayWithAutoDelay()) {
+        if (AppConfig.sharedInstance().isAutoDelay()) {
             findViewById(R.id.auto_play_speed_seek_bar).setVisibility(View.INVISIBLE);
             findViewById(R.id.auto_play_speed_textview).setVisibility(View.INVISIBLE);
 
@@ -290,6 +293,7 @@ public class PlayActivity extends FragmentActivity implements SensorEventListene
 
                 }, 3000);
 
+
     }
 
     @Override
@@ -298,6 +302,10 @@ public class PlayActivity extends FragmentActivity implements SensorEventListene
         if (mIsSensorAvailable) {
             mSensorManager.unregisterListener(this);
         }
+
+        //Since TTS does not provide a mute method, we have to do this from system scope, it's definitely not a good idea, but we have to
+        AudioManager audioManager=(AudioManager)getSystemService(Context.AUDIO_SERVICE);
+        audioManager.setStreamMute(AudioManager.STREAM_MUSIC, false);
 
 
     }
@@ -450,7 +458,7 @@ public class PlayActivity extends FragmentActivity implements SensorEventListene
         mAutoPlaySpeedSeekBar.setEnabled(false);
         mAutoScrollImageButton.setImageDrawable(getResources().getDrawable(R.drawable.autoplay_on));
 
-        if (isAllowAutoPlayWithAutoDelay()== false) {  //
+        if (AppConfig.sharedInstance().isAutoDelay()== false) {  //
             mPager.setInterval(delayMillSeconds);
             mPager.startAutoScroll();
             mAutoSwitchQATimer = new Timer();
@@ -535,7 +543,7 @@ public class PlayActivity extends FragmentActivity implements SensorEventListene
 
             executeTextToSpeechOrPlayAudio((CardDetailFragment) (mFragments.get(position)));
 
-            if (isAllowAutoPlayWithAutoDelay() == false) {
+            if (AppConfig.sharedInstance().isAutoDelay() == false) {
                 if (mIsAutoScroll && mIsAutoShowQuestionOnly == false) {
                     if (mAutoSwitchQATimer != null) {
                         mAutoSwitchQATimer.cancel();
@@ -725,19 +733,31 @@ public class PlayActivity extends FragmentActivity implements SensorEventListene
 
                                 } else {
 
-                                    if (textToSpeechArray.size() >0 && isAllowAutoPlayWithAutoDelay()) {
+                                    if (textToSpeechArray.size() >0 && AppConfig.sharedInstance().isAutoDelay()) {
 
                                         runOnUiThread(new Runnable() {
                                             @Override
                                             public void run() {
                                                 if (mIsAutoScroll) {
                                                     if (mIsAutoShowQuestionOnly) {
-                                                        mPager.scroll2NextPage();
+                                                        if (mIsCyclePlay) {
+                                                            mPager.scroll2NextPage();
+                                                        } else {
+                                                            if (mPosition < mCurrentPack.cards.size()-1) {
+                                                                mPager.scroll2NextPage();
+                                                            }
+                                                        }
                                                     } else {
                                                         if (cardDetailFragment.mIsQuestionShowing) {
                                                             switchQuestionAnswerView();
                                                         } else {
-                                                            mPager.scroll2NextPage();
+                                                            if (mIsCyclePlay) {
+                                                                mPager.scroll2NextPage();
+                                                            } else {
+                                                                if (mPosition < mCurrentPack.cards.size()-1) {
+                                                                    mPager.scroll2NextPage();
+                                                                }
+                                                            }
                                                         }
                                                     }
                                                 }
@@ -782,7 +802,11 @@ public class PlayActivity extends FragmentActivity implements SensorEventListene
             return;
         }
 
-        if (AppConfig.sharedInstance().isTextToSpeech()) {
+        //two cases:
+        //1. normal text to speech
+        //2. text to speech but mute, which is used in auto delay mode
+        if (AppConfig.sharedInstance().isTextToSpeech() ||
+                (AppConfig.sharedInstance().isTextToSpeech()== false || AppConfig.sharedInstance().isAutoDelay())) {
             textToSpeechAllContentNow(cardDetailFragment);//先text-to-speech，然后再播放audio
         } else {
             playAudio();
@@ -833,6 +857,14 @@ public class PlayActivity extends FragmentActivity implements SensorEventListene
 
         if (mIsMute) {
             return;
+        }
+
+        //mute mode (but still play)
+        AudioManager audioManager=(AudioManager)getSystemService(Context.AUDIO_SERVICE);
+        if ((AppConfig.sharedInstance().isTextToSpeech() == false) && (AppConfig.sharedInstance().isAutoDelay() == true)) {
+            audioManager.setStreamMute(AudioManager.STREAM_MUSIC, true);  ////mute mode (but still play)
+        } else {
+            audioManager.setStreamMute(AudioManager.STREAM_MUSIC, false);
         }
 
         ArrayList<String> textToSpeechArray = cardDetailFragment.textToSpeechContentArray();
@@ -953,21 +985,6 @@ public class PlayActivity extends FragmentActivity implements SensorEventListene
         return interval*1000;
     }
 
-
-    private boolean isAllowAutoPlayWithAutoDelay() {
-
-        //不允许在text to speech disable情况下进行 auto delay的auto play，因为它是依赖于text to speech的
-        if (AppConfig.sharedInstance().isTextToSpeech() == false) {
-            return false;
-        }
-
-        if (AppConfig.sharedInstance().isAutoDelay() == false) {
-            return false;
-        } else {
-            return true;
-        }
-
-    }
 
     class CountDownTimer extends  TimerTask {
         public void run() {
