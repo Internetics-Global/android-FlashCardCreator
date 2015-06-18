@@ -256,7 +256,7 @@ public class PlayActivity extends FragmentActivity implements SensorEventListene
             }
         });
 
-        if (AppConfig.sharedInstance().isAutoDelay()) {
+        if (isAllowAutoPlayWithAutoDelay()) {
             findViewById(R.id.auto_play_speed_seek_bar).setVisibility(View.INVISIBLE);
             findViewById(R.id.auto_play_speed_textview).setVisibility(View.INVISIBLE);
 
@@ -450,7 +450,7 @@ public class PlayActivity extends FragmentActivity implements SensorEventListene
         mAutoPlaySpeedSeekBar.setEnabled(false);
         mAutoScrollImageButton.setImageDrawable(getResources().getDrawable(R.drawable.autoplay_on));
 
-        if (AppConfig.sharedInstance().isAutoDelay()== false) {  //
+        if (isAllowAutoPlayWithAutoDelay()== false) {  //
             mPager.setInterval(delayMillSeconds);
             mPager.startAutoScroll();
             mAutoSwitchQATimer = new Timer();
@@ -535,7 +535,7 @@ public class PlayActivity extends FragmentActivity implements SensorEventListene
 
             executeTextToSpeechOrPlayAudio((CardDetailFragment) (mFragments.get(position)));
 
-            if (AppConfig.sharedInstance().isAutoDelay() == false) {
+            if (isAllowAutoPlayWithAutoDelay() == false) {
                 if (mIsAutoScroll && mIsAutoShowQuestionOnly == false) {
                     if (mAutoSwitchQATimer != null) {
                         mAutoSwitchQATimer.cancel();
@@ -725,7 +725,7 @@ public class PlayActivity extends FragmentActivity implements SensorEventListene
 
                                 } else {
 
-                                    if (textToSpeechArray.size() >0 && AppConfig.sharedInstance().isAutoDelay()) {
+                                    if (textToSpeechArray.size() >0 && isAllowAutoPlayWithAutoDelay()) {
 
                                         runOnUiThread(new Runnable() {
                                             @Override
@@ -951,6 +951,22 @@ public class PlayActivity extends FragmentActivity implements SensorEventListene
     private int getAutoPlaySpeedMilliSeconds () {
         int interval = mAutoPlaySpeedSeekBar.getProgress();
         return interval*1000;
+    }
+
+
+    private boolean isAllowAutoPlayWithAutoDelay() {
+
+        //不允许在text to speech disable情况下进行 auto delay的auto play，因为它是依赖于text to speech的
+        if (AppConfig.sharedInstance().isTextToSpeech() == false) {
+            return false;
+        }
+
+        if (AppConfig.sharedInstance().isAutoDelay() == false) {
+            return false;
+        } else {
+            return true;
+        }
+
     }
 
     class CountDownTimer extends  TimerTask {
