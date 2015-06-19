@@ -303,7 +303,7 @@ public class MainActivity extends FragmentActivity implements
                     Intent intent = new Intent(MainActivity.this, PlayActivity.class);
                     intent.putExtra("packID", mCurrentPack.packID);
                     startActivity(intent);
-                    //overridePendingTransition(R.anim.in_from_bottom, R.anim.out_to_above);
+//                    overridePendingTransition(R.anim.in_from_bottom, R.anim.out_to_above);
                     mIsAllowedToShowPackList = false;
                 }  else {
 

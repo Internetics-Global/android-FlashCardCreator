@@ -219,7 +219,7 @@ public class ShareHelper extends AsyncTask<Void, Long, Boolean> {
 
 
     private void shareActionOnItemSelected (int position,String shareLink) {
-        String finalPostString = "I've just created a pack of Flash Cards with the Flash Card Creator! ( " + shareLink +" ) Check it out!";
+        String finalPostString = "I've just created a pack of Flash Cards with Flip Flash Cards app! ( " + shareLink +" ) Check it out!";
         switch (position) {
             case 0: {
                 shareToFacebook(shareLink);
@@ -285,13 +285,13 @@ public class ShareHelper extends AsyncTask<Void, Long, Boolean> {
 
         final FacebookFacade facebook = new FacebookFacade(mActivity, "430339350417672");
         if (facebook.isAuthorized()) {
-            facebook.publishMessage("I've just created a pack of Flash Cards with the Flash Card Creator! ( " + shareLink +" ) Check it out!");
+            facebook.publishMessage("I've just created a pack of Flash Cards with Flip Flash Cards app! ( " + shareLink +" ) Check it out!");
         } else {
             // Start authentication dialog and publish message after successful authentication
             facebook.authorize(new AuthListener() {
                 @Override
                 public void onAuthSucceed() {
-                    facebook.publishMessage("I've just created a pack of Flash Cards with the Flash Card Creator! ( " + shareLink +" ) Check it out!");
+                    facebook.publishMessage("I've just created a pack of Flash Cards with Flip Flash Cards app! ( " + shareLink +" ) Check it out!");
                 }
 
                 @Override
