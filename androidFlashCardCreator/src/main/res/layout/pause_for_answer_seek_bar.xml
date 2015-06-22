@@ -13,7 +13,7 @@
         android:gravity="center_vertical|right"
         android:paddingRight="0dp"
         android:textSize="12sp"
-        android:text="4"/>
+        android:text="2"/>
 
     <org.adw.library.widgets.discreteseekbar.DiscreteSeekBar
         android:id="@+id/seekbar"
@@ -21,9 +21,9 @@
         android:layout_width="0dp"
         android:layout_weight="1"
         android:layout_height="match_parent"
-        app:dsb_min="4"
-        app:dsb_max="60"
-        app:dsb_value="10"
+        app:dsb_min="2"
+        app:dsb_max="20"
+        app:dsb_value="4"
         app:dsb_indicatorColor = "@android:color/holo_orange_dark"
         app:dsb_progressColor="@android:color/holo_orange_dark"
         app:dsb_trackColor="@android:color/white"
@@ -36,7 +36,7 @@
         android:paddingLeft="0dp"
         android:gravity="center_vertical|left"
         android:paddingRight="0dp"
-        android:textSize="10sp"
-        android:text="60"/>
+        android:textSize="12sp"
+        android:text="20"/>
 
 </LinearLayout>

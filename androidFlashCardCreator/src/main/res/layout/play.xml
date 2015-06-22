@@ -30,7 +30,7 @@
         android:layout_marginBottom="15dp"
         android:layout_gravity="center_horizontal|bottom"
         layout="@layout/play_control_panel"
-        android:layout_width="400dp"
+        android:layout_width="480dp"
         android:layout_height="30dp" />
 
 

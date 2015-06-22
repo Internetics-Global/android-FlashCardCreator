@@ -46,7 +46,13 @@ public class AutoScrollViewPager extends ViewPager {
     /** deliver event to parent when sliding at the last or first item **/
     public static final int        SLIDE_BORDER_MODE_TO_PARENT = 2;
 
-    /** auto scroll time in milliseconds, default is {@link #DEFAULT_INTERVAL} **/
+
+    //其实就是两个pager之间的间隔
+    private long                   pauseForAnswerMilliSeconds  = 0;
+
+    /**
+     * 其实就是一个pager的播放时间（不包括两个pager之间的间隔：pauseForAnswerMilliSeconds
+     * auto scroll time in milliseconds, default is {@link #DEFAULT_INTERVAL} **/
     private long                   interval                    = DEFAULT_INTERVAL;
     /** auto scroll direction, default is {@link #RIGHT} **/
     private int                    direction                   = RIGHT;
@@ -89,11 +95,11 @@ public class AutoScrollViewPager extends ViewPager {
     }
 
     /**
-     * start auto scroll, first scroll delay time is {@link #getInterval()}
+     * start auto scroll
      */
     public void startAutoScroll() {
         isAutoScroll = true;
-        sendScrollMessage((long)(interval + scroller.getDuration() / autoScrollFactor * swipeScrollFactor));
+        sendScrollMessage((long)(interval + pauseForAnswerMilliSeconds + scroller.getDuration() / autoScrollFactor * swipeScrollFactor));
     }
 
 
@@ -260,13 +266,21 @@ public class AutoScrollViewPager extends ViewPager {
                         pager.scrollOnce();
                         if (isAutoScroll) {
                             pager.scroller.setScrollDurationFactor(pager.swipeScrollFactor);
-                            pager.sendScrollMessage(pager.interval + pager.scroller.getDuration());
+                            pager.sendScrollMessage(pager.interval + pager.pauseForAnswerMilliSeconds + pager.scroller.getDuration());
                         }
                     }
                 default:
                     break;
             }
         }
+    }
+
+    public long getPauseForAnswerMilliSeconds() {
+        return pauseForAnswerMilliSeconds;
+    }
+
+    public void setPauseForAnswerMilliSeconds(long pauseForAnswerMilliSeconds) {
+        this.pauseForAnswerMilliSeconds = pauseForAnswerMilliSeconds;
     }
 
     /**
