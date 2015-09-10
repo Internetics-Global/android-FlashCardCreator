@@ -127,6 +127,22 @@ public class AppConfig {
 
     }
 
+    public int getCountDown() {
+        String str = appConfig.get("K_CountDown_Val");
+        if ((str != null))
+            return Integer.parseInt(str);
+        else
+            return Global.kDEFAULT_CountDown_Slider_Value;
+
+    }
+
+    public void setCountDown(int val) {
+
+        String strVal = String.valueOf(val);
+        appConfig.set("K_CountDown_Val",strVal);
+
+    }
+
 
     public boolean isTextToSpeech() {
         String str = appConfig.get(Global.isTextToSpeech);
@@ -164,6 +180,41 @@ public class AppConfig {
             appConfig.set(Global.isAutoDelay, "true");
         } else {
             appConfig.set(Global.isAutoDelay, "false");
+        }
+
+    }
+
+
+    public boolean isShowQuestionOnly() {
+        String str = appConfig.get("isShowQuestionOnly");
+        if ((str != null) && (str.equals("true")))
+            return true;
+        else
+            return false;
+    }
+
+    public void setShowQuestionOnly(boolean b) {
+        if (b) {
+            appConfig.set("isShowQuestionOnly", "true");
+        } else {
+            appConfig.set("isShowQuestionOnly", "false");
+        }
+
+    }
+
+    public boolean isMaleVoice() {
+        String str = appConfig.get("isMaleVoice");
+        if ((str != null) && (str.equals("true")))
+            return true;
+        else
+            return false;
+    }
+
+    public void setMaleVoice(boolean b) {
+        if (b) {
+            appConfig.set("isMaleVoice", "true");
+        } else {
+            appConfig.set("isMaleVoice", "false");
         }
 
     }

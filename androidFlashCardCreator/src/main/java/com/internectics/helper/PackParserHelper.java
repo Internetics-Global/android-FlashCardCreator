@@ -1,6 +1,7 @@
 package com.internectics.helper;
 
 import android.net.Uri;
+import android.util.Base64;
 
 import com.internectics.android_flashcardcreator.R;
 import com.internectics.data.Card;
@@ -250,6 +251,13 @@ public class PackParserHelper {
                 pack.jobTitle = "";
             }
 
+            if (obj.containsKey("restore_password")) {
+                pack.restorePassword = (String) obj.get("restore_password");
+            } else {
+                byte[] encodedVal = Base64.encode("".getBytes(), 0);
+                pack.restorePassword = new String(encodedVal);
+
+            }
 
             String temp = (String) obj.get("auto_play_speed");
             if ((temp != null) && (StringUtils.isNumeric(temp))) {
@@ -695,17 +703,20 @@ public class PackParserHelper {
                     int baseFontSizeOnCurrentDevice = standardCSSArrary[1];
                     float factor = baseFontSizeOnCurrentDevice/bestFontSizeFromSharedDevice;
 
-                    if (subheadingSize >0) {
-                        card.question.css.subheadingSize = (int)(subheadingSize * factor);
+                    if (subheadingSize == 0) {
+                        subheadingSize = standardCSSArrary[0];
                     }
+                    card.question.css.subheadingSize = (int)(subheadingSize * factor);
 
-                    if (mainSize >0) {
-                        card.question.css.mainSize = (int)(mainSize * factor);
+                    if (mainSize == 0) {
+                       mainSize = standardCSSArrary[1];
                     }
+                    card.question.css.mainSize = (int)(mainSize * factor);
 
                     if (subSize >0) {
-                        card.question.css.subSize = (int)(subSize * factor);
+                        subSize = standardCSSArrary[2];
                     }
+                    card.question.css.subSize = (int)(subSize * factor);
 
                 }
             }
@@ -1079,17 +1090,21 @@ public class PackParserHelper {
                     int baseFontSizeOnCurrentDevice = standardCSSArrary[4];
                     float factor = baseFontSizeOnCurrentDevice/bestFontSizeFromSharedDevice;
 
-                    if (subheadingSize >0) {
-                        card.answer.css.subheadingSize = (int)(subheadingSize * factor);
-                    }
 
-                    if (mainSize >0) {
-                        card.answer.css.mainSize = (int)(mainSize * factor);
+                    if (subheadingSize  == 0) {
+                      subheadingSize = standardCSSArrary[3];
                     }
+                    card.answer.css.subheadingSize = (int)(subheadingSize * factor);
 
-                    if (subSize >0) {
-                        card.answer.css.subSize = (int)(subSize * factor);
+                    if (mainSize == 0) {
+                        mainSize = standardCSSArrary[4];
                     }
+                    card.answer.css.mainSize = (int)(mainSize * factor);
+
+                    if (subSize == 0) {
+                       subSize = standardCSSArrary[5];
+                    }
+                    card.answer.css.subSize = (int)(subSize * factor);
 
                 }
             }

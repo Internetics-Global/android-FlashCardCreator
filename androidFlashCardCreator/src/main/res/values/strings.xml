@@ -28,6 +28,8 @@
     <string name="addpack_sidebar">Sidebar Title</string>
     <string name="addpack_Creator">Creator Name</string>
     <string name="addpack_Job_Title">Job Title</string>
+    <string name="addpack_Admin_Password">Admin password</string>
+    <string name="addpack_Confirm_Admin_Password">Confirm admin password</string>
 
     <string name="editpack_title">Edit Pack</string>
 
@@ -43,6 +45,7 @@
     <string name="more_title">More</string>
     <string name="more_play_preference">Play Preference</string>
     <string name="more_random_play">Random Play</string>
+    <string name="mute_sound_recording">Mute Sound Recording</string>
     <string name="more_register">Register</string>
     <string name="more_submit">Submit new listing</string>
     <string name="more_others">Others</string>
@@ -50,7 +53,9 @@
     <string name="more_about">About</string>
     <string name="more_mute">Mute</string>
     <string name="more_text_to_speech">Text to Speech</string>
-    <string name="more_auto_delay">Auto Delay</string>
+    <string name="more_show_question_only">Auto - Show Question Only</string>
+    <string name="more_male_female_voice">Mail/Female Voice</string>
+    <string name="more_countdown">Count Down</string>
 
     <string name="segment_question">Question</string>
     <string name="segment_answer">Answer</string>
@@ -65,7 +70,7 @@
 
     <string name="alert_applying_to_all_cards">Applying to all cards</string>
     <string name="alert_check_network">Check your network</string>
-    <string name="alert_downlod_sample">Downloading sample pack</string>
+    <string name="alert_downlod_sample">Downloading FFC sample cards</string>
     <string name="alert_downlod_pack">Downloading…</string>
     <string name="alert_can_not_change_template_bg">You can only make changes to cards you have created yourself.
     </string>

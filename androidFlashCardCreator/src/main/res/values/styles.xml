@@ -1,20 +1,8 @@
 <resources>
 
-    <!--
-        Base application theme, dependent on API level. This theme is replaced
-        by AppBaseTheme from res/values-vXX/styles.xml on newer devices.
-    -->
-    <style name="AppBaseTheme" parent="android:Theme.Holo">
-        <!--
-            Theme customizations available in newer API levels can go in
-            res/values-vXX/styles.xml, while customizations related to
-            backward-compatibility can go here.
-        -->
-    </style>
-
     <!-- Application theme. -->
     <style name="AppTheme" parent="android:Theme.Holo">
-        <!-- All customizations that are NOT specific to a particular API-level can go here. -->
+        <item name="android:editTextStyle">@style/CardBodyEditTextCustomStyle</item>
     </style>
 
     <!-- Dialog head title-->
@@ -118,6 +106,11 @@
         <item name="ttlm_backgroundColor">#ff696b1c</item>
         <item name="ttlm_strokeWeight">0dip</item>
         <item name="ttlm_cornerRadius">2dip</item>
+    </style>
+
+
+    <style name="CardBodyEditTextCustomStyle" parent="@android:style/Widget.EditText">
+        <item name="android:textCursorDrawable">@null</item>
     </style>
 
 </resources>

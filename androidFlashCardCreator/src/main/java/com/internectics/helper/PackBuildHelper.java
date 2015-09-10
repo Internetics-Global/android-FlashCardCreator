@@ -189,6 +189,8 @@ public class PackBuildHelper {
         summary.put("auto_play_speed",String.format("%d",pack.autoPlaySpeed));
         summary.put("screen_width",String.format("%d", (int)(UIHelper.getScreenWidthDPUnit(mActivity))));
 
+        summary.put("restore_password", pack.restorePassword);
+
         FileWriter file;
         File savedPath = FileOperationHelper.getUploadPackJsonFile();
         try {

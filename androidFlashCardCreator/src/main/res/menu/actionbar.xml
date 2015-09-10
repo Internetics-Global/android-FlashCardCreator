@@ -23,6 +23,19 @@
             android:id="@+id/actionbar_play"
             android:icon="@drawable/play_button"
             android:title="@string/actionbar_item_play" android:showAsAction="always">
+
+        <menu>
+            <item
+                android:id="@+id/actionbar_play_manually"
+                android:title="Play Manually" />
+            <item
+                android:id="@+id/actionbar_play_auto"
+                android:title="Auto Play" />
+            <item
+                android:id="@+id/actionbar_play_auto_loop"
+                android:title="Auto Play and Loop" />
+        </menu>
+
     </item>
 
     <item

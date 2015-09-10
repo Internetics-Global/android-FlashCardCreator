@@ -71,6 +71,14 @@
             android:layout_height="fill_parent">
 
             <ImageView
+                android:id="@+id/change_template_button"
+                android:layout_marginLeft="15dp"
+                android:layout_height= "24dp"
+                android:layout_width="24dp"
+                android:layout_gravity="center_vertical"
+                android:src="@drawable/selector_change_card_layout_template"/>
+
+            <ImageView
                 android:id="@+id/change_background_button"
                 android:layout_marginLeft="15dp"
                 android:layout_height= "24dp"
@@ -78,15 +86,6 @@
                 android:layout_gravity="center_vertical"
                 android:src="@drawable/selector_change_card_background_image_button"/>
 
-
-
-            <ImageView
-                android:id="@+id/change_template_button"
-                android:layout_marginLeft="15dp"
-                android:layout_height= "24dp"
-                android:layout_width="24dp"
-                android:layout_gravity="center_vertical"
-                android:src="@drawable/selector_change_card_layout_template"/>
 
             <ImageView
                 android:id="@+id/play_record_button"

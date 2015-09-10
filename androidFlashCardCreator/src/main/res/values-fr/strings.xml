@@ -38,11 +38,15 @@
     <string name="more_title">Plus</string>
     <string name="more_play_preference">Play Préférence</string>
     <string name="more_random_play">Lecture aléatoire</string>
+    <string name="mute_sound_recording">Mute Sound Recording</string>
     <string name="more_register">Enregistrez-vous</string>
     <string name="more_submit">Soumettre nouvelle liste</string>
     <string name="more_others">Others</string>
     <string name="more_help">Aide</string>
     <string name="more_about">A propos</string>
+    <string name="more_show_question_only">Auto - Show Question Only</string>
+    <string name="more_male_female_voice">Mail/Female Voice</string>
+    <string name="more_countdown">Count Down</string>
 
     <string name="segment_question">Question</string>
     <string name="segment_answer">Répondre</string>

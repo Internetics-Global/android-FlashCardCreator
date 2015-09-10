@@ -1,31 +1,29 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <PreferenceCategory
-            android:title="@string/more_play_preference">
-        <CheckBoxPreference
-                android:key="play_preference"
-                android:title="@string/more_random_play"/>
-    </PreferenceCategory>
+    <CheckBoxPreference
+        android:key="more_random_play_preference"
+        android:title="@string/more_random_play"/>
 
-    <PreferenceCategory
-            android:title="@string/more_others">
+    <CheckBoxPreference
+        android:key="more_mute_sound_recording_preference"
+        android:title="@string/mute_sound_recording"/>
 
-        <CheckBoxPreference
-            android:key="text_to_speech_preference"
-            android:title="@string/more_text_to_speech"/>
+    <PreferenceScreen
+        android:key="more_about_preference"
+        android:title="@string/more_about"/>
 
-        <CheckBoxPreference
-            android:key="auto_delay_preference"
-            android:title="@string/more_auto_delay"/>
+    <CheckBoxPreference
+        android:key="more_text_to_speech_preference"
+        android:title="@string/more_text_to_speech"/>
 
-        <PreferenceScreen
-                android:key="help_preference"
-                android:title="@string/more_help"/>
-        <PreferenceScreen
-                android:key="about_preference"
-                android:title="@string/more_about"/>
+    <CheckBoxPreference
+        android:key="more_show_question_only_preference"
+        android:title="@string/more_show_question_only"/>
 
-    </PreferenceCategory>
+    <CheckBoxPreference
+        android:key="more_male_female_voice_preference"
+        android:title="@string/more_male_female_voice"/>
+
 
 </PreferenceScreen>

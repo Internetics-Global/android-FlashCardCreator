@@ -47,7 +47,7 @@
     <dimen name="add_card_button_size">20dp</dimen>
 
     <!--template change relate-->
-    <dimen name="question_template_1_margin_right">300dp</dimen>
+    <dimen name="question_template_1_margin_right">250dp</dimen>
 
     <!--tooltip fake action bar-->
     <dimen name="tooltip_fake_actionitem_width">63dp</dimen>

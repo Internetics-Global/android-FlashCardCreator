@@ -75,7 +75,7 @@
         </ImageButton>
 
         <ImageButton
-            android:id="@+id/button_change_cover_image"
+            android:id="@+id/button_edit"
             android:gravity="center"
             android:background="@android:color/transparent"
             android:layout_width="0dp"

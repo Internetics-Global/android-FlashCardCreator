@@ -62,7 +62,7 @@ public class PackDownloadHelper extends AsyncTask<Void, Long, Boolean> {
         mDialog = new ProgressDialog(context);
         mDialog.setMax(100);
         if (mIsFromExamplePackDownload) {
-            mDialog.setMessage("Download sample pack now");
+            mDialog.setMessage("Download FFC sample cards now");
         } else {
             mDialog.setMessage("Downloading...");
         }

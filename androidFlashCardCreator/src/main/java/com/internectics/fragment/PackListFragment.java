@@ -14,6 +14,9 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.v4.app.Fragment;
+import android.text.InputType;
+import android.text.method.PasswordTransformationMethod;
+import android.util.Base64;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -52,6 +55,8 @@ public class PackListFragment extends Fragment {
     private int  mSortType;
 
     private User mUser;
+
+    private Pack  mCurrentPack; //Currently selected pack
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -243,7 +248,7 @@ public class PackListFragment extends Fragment {
 
                 final Pack currentPack = mUser.packs.get(position -1);
 
-                ImageButton changeCoverImageButton = (ImageButton) convertView.findViewById(R.id.button_change_cover_image);
+                ImageButton editButton = (ImageButton) convertView.findViewById(R.id.button_edit);
                 final ImageButton deleteButton = (ImageButton) convertView.findViewById(R.id.button_delete_pack);
                 ImageView playImageView = (ImageView) convertView.findViewById(R.id.pack_play_image_view);
 
@@ -280,22 +285,47 @@ public class PackListFragment extends Fragment {
                 }
 
 
-                changeCoverImageButton.setOnClickListener(new View.OnClickListener() {
+                editButton.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
 
-                        if (currentPack.creatorID.equals(OpenUDID_manager.getOpenUDID())) {
-                            CreateEditFragment dialogFragment = new CreateEditFragment();
-                            dialogFragment.setPack(mUser.packs.get(position - 1));
-                            dialogFragment.setIsEditPack(true);
-                            dialogFragment.show(getActivity().getFragmentManager(), "add_pack_fragment");
-                            ((MainActivity) getActivity()).dismissPackListPopupWindow();
+                        mCurrentPack = mUser.packs.get(position - 1);
+
+                        if (currentPack.creatorID.equals(OpenUDID_manager.getOpenUDID()) == false) {
+                            gotoPackEditView();
                         } else {
 
+                            final EditText input = new EditText(mContext);
+                            input.setTransformationMethod(PasswordTransformationMethod.getInstance());
                             new AlertDialog.Builder(mContext)
-                                    .setTitle("Alert")
-                                    .setMessage("You can not edit packs that are not created by you.")
-                                    .setPositiveButton("OK", null)
+                                    .setTitle("Input admin password")
+                                    .setIcon(android.R.drawable.ic_dialog_info)
+                                    .setView(input)
+                                    .setPositiveButton("Done", new DialogInterface.OnClickListener() {
+                                        @Override
+                                        public void onClick(DialogInterface dialog, int which) {
+
+                                            String password = input.getText().toString();
+                                            String savedPassword = new String(Base64.decode(currentPack.restorePassword,0));
+                                            if (password.equals(savedPassword)) {
+
+                                                mCurrentPack.creatorID = OpenUDID_manager.getOpenUDID();
+                                                mCurrentPack.save(mContext);
+
+                                                gotoPackEditView();
+
+                                            } else {
+
+                                                new AlertDialog.Builder(mContext)
+                                                        .setTitle("Error")
+                                                        .setMessage("Wrong password")
+                                                        .setPositiveButton("OK",null)
+                                                        .show();
+                                            }
+
+                                        }
+                                    })
+                                    .setNegativeButton("Cancel", null)
                                     .show();
 
                         }
@@ -346,6 +376,16 @@ public class PackListFragment extends Fragment {
             return convertView;
         }
 
+    }
+
+
+    private void gotoPackEditView() {
+
+        CreateEditFragment dialogFragment = new CreateEditFragment();
+        dialogFragment.setPack(mCurrentPack);
+        dialogFragment.setIsEditPack(true);
+        dialogFragment.show(getActivity().getFragmentManager(), "add_pack_fragment");
+        ((MainActivity) getActivity()).dismissPackListPopupWindow();
     }
 
     @Override

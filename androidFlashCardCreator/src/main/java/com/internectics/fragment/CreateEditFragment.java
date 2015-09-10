@@ -9,6 +9,7 @@ import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
+import android.util.Base64;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -34,6 +35,7 @@ import com.internectics.util.AppContext;
 import com.internectics.util.Global;
 import com.internectics.util.OpenUDID_manager;
 import com.internectics.util.UIHelper;
+import com.nostra13.socialsharing.twitter.extpack.lgpl.haustein.Base64Encoder;
 
 import org.adw.library.widgets.discreteseekbar.DiscreteSeekBar;
 
@@ -60,6 +62,9 @@ public class CreateEditFragment extends DialogFragment implements TextView.OnEdi
     private EditText           mJobTitleEditText;
     private DiscreteSeekBar    mAutoPlaySpeedSeekbar;
     private ImageView          mCoverImageView;
+
+    private EditText           mAdminPassowrdEditText;
+    private EditText           mConfirmAdminPassowrdEditText;
 
     private InputMethodManager mIMM;
 
@@ -140,6 +145,13 @@ public class CreateEditFragment extends DialogFragment implements TextView.OnEdi
                 .findViewById(R.id.fragment_add_pack_creator);
         mJobTitleEditText = (EditText) mContentView
                 .findViewById(R.id.fragment_add_pack_job_title);
+
+        mAdminPassowrdEditText = (EditText) mContentView
+                .findViewById(R.id.fragment_add_pack_admin_password);
+        mConfirmAdminPassowrdEditText = (EditText) mContentView
+                .findViewById(R.id.fragment_add_pack_confirm_admin_password);
+
+
         mAutoPlaySpeedSeekbar = (DiscreteSeekBar) mContentView.findViewById(R.id.seekbar);
 
 
@@ -170,6 +182,12 @@ public class CreateEditFragment extends DialogFragment implements TextView.OnEdi
 
             String imagePath = pack.coverImageUriFormatStr;
             mCoverImageView.setImageURI(Uri.parse(imagePath));
+
+            String decodedString = new String(Base64.decode(pack.restorePassword,0));
+            mAdminPassowrdEditText.setText(decodedString);
+            mConfirmAdminPassowrdEditText.setText(decodedString);
+
+
         } else {
             pack = new Pack();
         }
@@ -207,6 +225,15 @@ public class CreateEditFragment extends DialogFragment implements TextView.OnEdi
     private void save() {
 
 
+        if (mAdminPassowrdEditText.getText().toString().equals(mConfirmAdminPassowrdEditText.getText().toString()) == false) {
+            new SweetAlertDialog(getActivity())
+                    .setTitleText("Alert")
+                    .setContentText("Passwords do not match")
+            .show();
+            return;
+        }
+
+
         if (mAutoPlaySpeedSeekbar.getProgress() > Global.k_MAX_Auto_Play_Speed
                 || mAutoPlaySpeedSeekbar.getProgress() < Global.k_MIN_Auto_Play_Speed) {
             new SweetAlertDialog(getActivity())
@@ -235,6 +262,9 @@ public class CreateEditFragment extends DialogFragment implements TextView.OnEdi
         pack.packID = Global.generateNoRepeatInt();
         pack.lastVistDate = Global.currentTimeSeconds();
 
+        byte[] encodedVal = Base64.encode(mAdminPassowrdEditText.getText().toString().getBytes(),0);
+        pack.restorePassword = new String(encodedVal).replace("\n", "").replace("\r", "");;
+
         final Card defaultCard = new Card();
         if (mIsEditPack) {
         } else {
@@ -245,6 +275,14 @@ public class CreateEditFragment extends DialogFragment implements TextView.OnEdi
         }
 
         PackRecordHelper.savePackUpdateRecord(AppContext.getAppContext(), pack);
+
+
+        if (mAdminPassowrdEditText.getText().toString().length() == 0) {
+            new SweetAlertDialog(getActivity())
+                    .setTitleText("Alert")
+                    .setContentText("No admin password set. Setting an admin password allows you to edit this pack on on another device, or retrieve your editing rights on a pack that has been deleted off the device.")
+                    .show();
+        }
 
         dismiss();
 

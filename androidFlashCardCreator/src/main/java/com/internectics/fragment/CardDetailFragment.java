@@ -8,6 +8,7 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
+import android.graphics.Rect;
 import android.graphics.Typeface;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
@@ -21,6 +22,7 @@ import android.text.Editable;
 import android.text.InputType;
 import android.text.TextWatcher;
 import android.util.TypedValue;
+import android.view.Gravity;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
@@ -69,6 +71,7 @@ import net.londatiga.android.QuickAction;
 
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.lang.reflect.Field;
 import java.util.ArrayList;
 
 import cn.pedant.SweetAlert.SweetAlertDialog;
@@ -82,20 +85,8 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnKeyboa
 
     public View mContentView;
 
-
-    private LinearLayout mContentBodyType1;  //第一种布局 （这是同ios非常不同的一点），通过此对象，控制subheading,main,sub的显示与否，而不用每个单独控制
-    private LinearLayout mContentBodyType2;  //第二种布局  （这是同ios非常不同的一点），通过此对象，控制subheading,main,sub的显示与否，而不用每个单独控制
-
-    //左边，mContentBodyLeft是frameLayout，包含mContentBodyLeftText和mImage2
-    private LinearLayout mContentBodyLeftLayout;
-    private LinearLayout mContentBodyLeftTextMainSubLayout;//包含main and sub
-    private FrameLayout mContentBodyLeftMainSubFrameLayout;//包含了mContentBodyLeftTextMainSubLayout
     public ImageView mImage2;
-
-    //右边，mContentBodyRightFrameLayout，包含mImage和sub_replace_image
-    private FrameLayout mContentBodyRightFrameLayout;
     public ImageView mImage;
-
 
     private FCCEditText mSidebarTitle;
     private FrameLayout mSidebarBackground;
@@ -160,6 +151,8 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnKeyboa
     private TextWatcher mCreatorTextWatcher;
     private TextWatcher mJobTitleTextWatcher;
     private TextWatcher mSidebarTitleTextWatcher;
+
+    private LinearLayout mContentBodyLinearLayout;
 
 
     @Override
@@ -931,6 +924,11 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnKeyboa
         ActionItem questionActionItem9 = new ActionItem(7, null, getResources().getDrawable(R.drawable.question_templatescreenshot9));
         ActionItem questionActionItem10 = new ActionItem(7, null, getResources().getDrawable(R.drawable.question_templatescreenshot10));
         ActionItem questionActionItem11 = new ActionItem(7, null, getResources().getDrawable(R.drawable.question_templatescreenshot11));
+        ActionItem questionActionItem12 = new ActionItem(7, null, getResources().getDrawable(R.drawable.question_templatescreenshot12));
+        ActionItem questionActionItem13 = new ActionItem(7, null, getResources().getDrawable(R.drawable.question_templatescreenshot13));
+        ActionItem questionActionItem14 = new ActionItem(7, null, getResources().getDrawable(R.drawable.question_templatescreenshot14));
+        ActionItem questionActionItem15 = new ActionItem(7, null, getResources().getDrawable(R.drawable.question_templatescreenshot15));
+        ActionItem questionActionItem16 = new ActionItem(7, null, getResources().getDrawable(R.drawable.question_templatescreenshot16));
 
         ActionItem answerActionItem0 = new ActionItem(0, null, getResources().getDrawable(R.drawable.answer_templatescreenshot0));
         ActionItem answerActionItem1 = new ActionItem(1, null, getResources().getDrawable(R.drawable.answer_templatescreenshot1));
@@ -944,6 +942,11 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnKeyboa
         ActionItem answerActionItem9 = new ActionItem(7, null, getResources().getDrawable(R.drawable.answer_templatescreenshot9));
         ActionItem answerActionItem10 = new ActionItem(7, null, getResources().getDrawable(R.drawable.answer_templatescreenshot10));
         ActionItem answerActionItem11 = new ActionItem(7, null, getResources().getDrawable(R.drawable.answer_templatescreenshot11));
+        ActionItem answerActionItem12 = new ActionItem(7, null, getResources().getDrawable(R.drawable.answer_templatescreenshot12));
+        ActionItem answerActionItem13 = new ActionItem(7, null, getResources().getDrawable(R.drawable.answer_templatescreenshot13));
+        ActionItem answerActionItem14 = new ActionItem(7, null, getResources().getDrawable(R.drawable.answer_templatescreenshot14));
+        ActionItem answerActionItem15 = new ActionItem(7, null, getResources().getDrawable(R.drawable.answer_templatescreenshot15));
+        ActionItem answerActionItem16 = new ActionItem(7, null, getResources().getDrawable(R.drawable.answer_templatescreenshot16));
 
         final QuickAction questionQuickAction = new QuickAction(getActivity(), QuickAction.VERTICAL);
         final QuickAction answerQuickAction = new QuickAction(getActivity(), QuickAction.VERTICAL);
@@ -964,6 +967,11 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnKeyboa
         questionQuickAction.addActionItem(questionActionItem9);
         questionQuickAction.addActionItem(questionActionItem10);
         questionQuickAction.addActionItem(questionActionItem11);
+        questionQuickAction.addActionItem(questionActionItem12);
+        questionQuickAction.addActionItem(questionActionItem13);
+        questionQuickAction.addActionItem(questionActionItem14);
+        questionQuickAction.addActionItem(questionActionItem15);
+        questionQuickAction.addActionItem(questionActionItem16);
         questionQuickAction.setOnActionItemClickListener(new QuickAction.OnActionItemClickListener() {
             @Override
             public void onItemClick(QuickAction source, int pos, int actionId) {
@@ -983,6 +991,11 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnKeyboa
         answerQuickAction.addActionItem(answerActionItem9);
         answerQuickAction.addActionItem(answerActionItem10);
         answerQuickAction.addActionItem(answerActionItem11);
+        answerQuickAction.addActionItem(answerActionItem12);
+        answerQuickAction.addActionItem(answerActionItem13);
+        answerQuickAction.addActionItem(answerActionItem14);
+        answerQuickAction.addActionItem(answerActionItem15);
+        answerQuickAction.addActionItem(answerActionItem16);
         answerQuickAction.setOnActionItemClickListener(new QuickAction.OnActionItemClickListener() {
             @Override
             public void onItemClick(QuickAction source, int pos, int actionId) {
@@ -1150,6 +1163,7 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnKeyboa
         }
 
         mIsSwitchingQuestionAnswerView = false;
+
     }
 
 
@@ -1198,15 +1212,13 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnKeyboa
 
         LinearLayout creatorLayout = (LinearLayout) mContentView.findViewById(R.id.creator_layout);
 
-        mContentBodyLeftLayout = (LinearLayout) mContentView.findViewById(R.id.content_body_left);
-        mContentBodyLeftTextMainSubLayout = (LinearLayout) mContentView.findViewById(R.id.content_body_left_text_main_sub_layout);
-        mContentBodyLeftMainSubFrameLayout = (FrameLayout) mContentView.findViewById(R.id.content_body_left_B_C);
+        mContentBodyLinearLayout = (LinearLayout) mContentView.findViewById(R.id.card_content_body);
 
-        mContentBodyRightFrameLayout = (FrameLayout) mContentView.findViewById(R.id.content_body_right);
-
-        mContentBodyType1 = (LinearLayout) mContentView.findViewById(R.id.content_body_type1);
-        mContentBodyType2 = (LinearLayout) mContentView.findViewById(R.id.content_body_type2);
-
+        createSubheading();
+        createMain();
+        createSub();
+        createImage();
+        createImage2();
 
         updateContentViewsPointers(0);
 
@@ -1283,50 +1295,7 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnKeyboa
      */
     private void updateContentViewsPointers(int templateID) {
 
-        //1. 重新定向
-        if ((mContentBodyType1.getVisibility() == View.VISIBLE)) {
-            mSubheading = (FCCEditText) mContentView.findViewById(R.id.subheading);
-            mMain = (FCCEditText) mContentView.findViewById(R.id.main);
-
-            if (mIsQuestionShowing) {
-                if (templateID == 11) {
-                    mSub = (FCCEditText) mContentView.findViewById(R.id.sub_replace_image);
-                } else {
-                    mSub = (FCCEditText) mContentView.findViewById(R.id.sub);
-                }
-            } else {
-                if (templateID == 9) {
-                    mSub = (FCCEditText) mContentView.findViewById(R.id.sub_replace_image);
-                } else {
-                    mSub = (FCCEditText) mContentView.findViewById(R.id.sub);
-                }
-            }
-
-            mImage = (ImageView) mContentView.findViewById(R.id.image);
-            mImage2 = (ImageView) mContentView.findViewById(R.id.image2);
-
-            if (mCurrentCard.question.imageUriFormatStr != null) {
-                mImage.setImageURI(Uri.parse(mCurrentCard.question.imageUriFormatStr));
-            }
-
-            if (mCurrentCard.question.imageUriFormatStr2 != null) {
-                mImage2.setImageURI(Uri.parse(mCurrentCard.question.imageUriFormatStr2));
-            }
-
-
-        } else {
-            mSubheading = (FCCEditText) mContentView.findViewById(R.id.subheading_BodyType2);
-            mMain = (FCCEditText) mContentView.findViewById(R.id.main_BodyType2);
-            mSub = (FCCEditText) mContentView.findViewById(R.id.sub_BodyType2);
-
-            mImage = (ImageView) mContentView.findViewById(R.id.image_BodyType2);
-
-            if (mCurrentCard.question.imageUriFormatStr != null) {
-                mImage.setImageURI(Uri.parse(mCurrentCard.question.imageUriFormatStr));
-            }
-        }
-
-        //2. text的重新OnTouchListener
+        //OnTouchListener
         if (!mIsPlayingCard) {
             mSubheading.setOnTouchListener(this);
             mMain.setOnTouchListener(this);
@@ -1334,33 +1303,92 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnKeyboa
 
         }
 
-        //3. text的重新 EditorActionListener
+        //EditorActionListener
         setEditTextListener();
 
-        //4. text的重新 OnKeyboardCloseListener
+        //OnKeyboardCloseListener
         mSubheading.mCallbacks = this;
         mMain.mCallbacks = this;
         mSub.mCallbacks = this;
 
-        //5. image的重新OnClickListener
+        //Image的重新OnClickListener
         setImageVideoClickListener();
 
+    }
 
-        //TODO:由于重新指向，一些格式化数据比如size,font会丢失掉，所以需要后续修正
 
-        //6. 数据重新填充
-        if (mIsQuestionShowing) {
-            mSubheading.setText(mCurrentCard.question.subheading);
-            mMain.setText(mCurrentCard.question.main);
-            mSub.setText(mCurrentCard.question.sub);
+    private void createSubheading() {
 
-        } else {
-            mSubheading.setText(mCurrentCard.answer.subheading);
-            mMain.setText(mCurrentCard.answer.main);
-            mSub.setText(mCurrentCard.answer.sub);
+        mSubheading = new FCCEditText(getActivity());
+        mSubheading.setBackgroundResource(R.drawable.shape_edittext_editable);
+        mSubheading.setGravity(Gravity.CENTER);
+        mSubheading.setCursorVisible(true);
+        mSubheading.setTag("1001");
+        mSubheading.setTypeface(Typeface.DEFAULT_BOLD);
+        mSubheading.setTextColor(Color.BLACK);
+        mSubheading.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_FLAG_MULTI_LINE | InputType.TYPE_TEXT_FLAG_NO_SUGGESTIONS | InputType.TYPE_TEXT_FLAG_CAP_SENTENCES);
+        mSubheading.setEms(10);
+        mSubheading.setSingleLine(false);
+        mSubheading.setPadding(0, 0, 0, 0);
+    }
+
+    private void createMain() {
+
+        mMain = new FCCEditText(getActivity());
+        mMain.setBackgroundResource(R.drawable.shape_edittext_editable);
+        mMain.setCursorVisible(true);
+        mMain.setGravity(Gravity.CENTER);
+        mMain.setCursorVisible(true);
+        mMain.setTag("1002");
+        mMain.setTypeface(Typeface.DEFAULT_BOLD);
+        mMain.setTextColor(Color.BLACK);
+        mMain.setSingleLine(false);
+        mMain.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_FLAG_MULTI_LINE | InputType.TYPE_TEXT_FLAG_NO_SUGGESTIONS | InputType.TYPE_TEXT_FLAG_CAP_SENTENCES);
+        mMain.setEms(10);
+        mMain.setPadding(0, 0, 0, 0);
+
+    }
+
+    private void createSub() {
+
+        mSub = new FCCEditText(getActivity());
+        mSub.setCursorVisible(true);
+        mSub.setBackgroundResource(R.drawable.shape_edittext_editable);
+        mSub.setGravity(Gravity.CENTER);
+        mSub.setCursorVisible(true);
+        mSub.setTag("1003");
+        mSub.setTypeface(Typeface.DEFAULT_BOLD);
+        mSub.setTextColor(Color.BLACK);
+        mSub.setSingleLine(false);
+        mSub.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_FLAG_MULTI_LINE | InputType.TYPE_TEXT_FLAG_NO_SUGGESTIONS | InputType.TYPE_TEXT_FLAG_CAP_SENTENCES);
+        mSub.setEms(10);
+        mSub.setPadding(0,0,0,0);
+
+    }
+
+    private void createImage() {
+
+        mImage = new ImageView(getActivity());
+        mImage.setImageURI(Uri.parse(mCurrentCard.question.imageUriFormatStr));
+
+        mImage.setPadding(5,5,5,5);
+
+        if (isEditableMode()) {
+            mImage.setBackgroundResource(R.drawable.shape_imageview_editable);
         }
 
+    }
 
+    private void createImage2() {
+
+        mImage2 = new ImageView(getActivity());
+        mImage2.setImageURI(Uri.parse(mCurrentCard.question.imageUriFormatStr2));
+
+        mImage2.setPadding(5, 5, 5, 5);
+
+        if (isEditableMode()) {
+            mImage2.setBackgroundResource(R.drawable.shape_imageview_editable);
+        }
     }
 
 
@@ -1377,18 +1405,28 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnKeyboa
 //            return;
 //        }
 
+
         synchronized (v) {
 
             if (v.getText().length() == 0) {
                 return;
             }
 
+            if (v.getText().toString().contains("A) Boyle's Law.")) {
+               maxLines = 5; //TODO:XX, 这是因为sample pack有问题。
+            }
+
+            if (v.getText().toString().contains("Which animal is known")) {
+                maxLines = 7; //TODO:XX, 这是因为sample pack有问题。
+            }
+
+
             //noOfLines有可能返回0： getLineCount() will give you the correct number of lines only after a layout pass. That means the TextView must have been drawn at least once.
             int noOfLines = v.getLineCount(); //this is very important, when setTextSize execute, getLineCount could possibly be zero
             int textHeight = noOfLines * v.getLineHeight();
             int viewHeight = v.getHeight();
             int lineHeight = v.getLineHeight();
-            if ((textHeight > viewHeight) && (viewHeight > 1) && (noOfLines > 0)) {
+            if (((textHeight > viewHeight) && (viewHeight > 1) && (noOfLines > 0)) || (noOfLines > maxLines && maxLines > 0)) {
 
                 int cursorPosition = v.getSelectionStart();
 
@@ -1421,7 +1459,7 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnKeyboa
                     //in case the font size still too big
                     noOfLines = v.getLineCount();
                     if ((maxLines > 0) && (maxLines < noOfLines)) {
-                        newTextSize = v.getTextSize() - 1;
+                        newTextSize = v.getTextSize() - 2;
                         v.setTextSize(TypedValue.COMPLEX_UNIT_PX, newTextSize);
                         Timber.tag(Global.debugTag).d(Global.debugTag4, "maxLines < noOfLines*****triggerResizeTextToFitFrame and is resized on: " + v.getText().toString());
                     } else {
@@ -1860,7 +1898,9 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnKeyboa
 
 
     private void updateQuestionContent() {
+
         mSubheading.setText(mCurrentCard.question.subheading);
+
         mMain.setText(mCurrentCard.question.main);
         mSub.setText(mCurrentCard.question.sub);
         mImage.setImageURI(Uri.parse(mCurrentCard.question.imageUriFormatStr));
@@ -1871,6 +1911,8 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnKeyboa
         } else {
             setCardBackgroundImageDefault();
         }
+
+
 
     }
 
@@ -2135,1072 +2177,1173 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnKeyboa
 
         int templateID = mCurrentCard.question.templateID;
 
-        LinearLayout.LayoutParams paramsA = (LinearLayout.LayoutParams) mContentBodyRightFrameLayout.getLayoutParams();
-        paramsA.weight = 0f;
-        mContentBodyRightFrameLayout.setLayoutParams(paramsA);
 
-        LinearLayout.LayoutParams paramsB = (LinearLayout.LayoutParams) mContentBodyLeftLayout.getLayoutParams();
-        paramsB.weight = 710f;
-        mContentBodyLeftLayout.setLayoutParams(paramsB);
-
-        //we don't need to set font size here since it will be done in CSS constructor
-
-
-        LinearLayout.LayoutParams params;
         switch (templateID) {
-            case 0:
-
-                //1. type
-                mContentBodyType1.setVisibility(View.VISIBLE);
-                mContentBodyType2.setVisibility(View.INVISIBLE);
-                updateContentViewsPointers(templateID);
-
-                //no image
-                mImage.setVisibility(View.INVISIBLE);
-
-                //2. subheading
-                params = (LinearLayout.LayoutParams) mSubheading.getLayoutParams();
-                params.width = LinearLayout.LayoutParams.FILL_PARENT;
-                params.weight = 70;
-                params.rightMargin = UIHelper.getPixels(4);
-                mSubheading.setLayoutParams(params);
-
-                //3. layout for main and sub
-                params = (LinearLayout.LayoutParams) mContentBodyLeftMainSubFrameLayout.getLayoutParams();
-                params.width = LinearLayout.LayoutParams.FILL_PARENT;
-                params.weight = 330;
-                params.rightMargin = UIHelper.getPixels(4);
-                mContentBodyLeftMainSubFrameLayout.setLayoutParams(params);
-
-                //4. main
-                params = (LinearLayout.LayoutParams) mMain.getLayoutParams();
-                params.width = LinearLayout.LayoutParams.FILL_PARENT;
-                params.weight = 330;
-                mMain.setLayoutParams(params);
-
-                //5.sub
-                params = (LinearLayout.LayoutParams) mSub.getLayoutParams();
-                params.width = LinearLayout.LayoutParams.FILL_PARENT;
-                params.weight = 0;
-                mSub.setLayoutParams(params);
-
-                //6. not show image2
-                mImage2.setVisibility(View.INVISIBLE);
-                mContentBodyLeftTextMainSubLayout.setVisibility(View.VISIBLE);
-
+            case 0: {
+                configTemplate_0 ();
                 break;
-            case 1:
-
-                //1. type
-                mContentBodyType1.setVisibility(View.VISIBLE);
-                mContentBodyType2.setVisibility(View.INVISIBLE);
-                updateContentViewsPointers(templateID);
-
-                //2. no image
-                mImage.setVisibility(View.INVISIBLE);
-
-                //3. subheading
-                params = (LinearLayout.LayoutParams) mSubheading.getLayoutParams();
-                params.width = LinearLayout.LayoutParams.FILL_PARENT;
-                params.weight = 70;
-                params.rightMargin = getResources().getDimensionPixelSize(R.dimen.question_template_1_margin_right);
-                mSubheading.setLayoutParams(params);
-
-                //4.layout for main and sub
-                params = (LinearLayout.LayoutParams) mContentBodyLeftMainSubFrameLayout.getLayoutParams();
-                params.width = LinearLayout.LayoutParams.FILL_PARENT;
-                params.weight = 320;
-                params.rightMargin = UIHelper.getPixels(4);
-                mContentBodyLeftMainSubFrameLayout.setLayoutParams(params);
-
-                //5. main
-                params = (LinearLayout.LayoutParams) mMain.getLayoutParams();
-                params.width = LinearLayout.LayoutParams.FILL_PARENT;
-                params.weight = 160;
-                mMain.setLayoutParams(params);
-
-                //6. sub
-                params = (LinearLayout.LayoutParams) mSub.getLayoutParams();
-                params.width = LinearLayout.LayoutParams.FILL_PARENT;
-                params.weight = 160;
-                mSub.setLayoutParams(params);
-
-                //7. not show image2
-                mImage2.setVisibility(View.INVISIBLE);
-                mContentBodyLeftTextMainSubLayout.setVisibility(View.VISIBLE);
-
+            }
+            case 1: {
+                configTemplate_1();
                 break;
-            case 2:
-
-                //1. type
-                mContentBodyType1.setVisibility(View.VISIBLE);
-                mContentBodyType2.setVisibility(View.INVISIBLE);
-                updateContentViewsPointers(templateID);
-
-                //2. not show image
-                mImage.setVisibility(View.INVISIBLE);
-
-                //3. suheading
-                params = (LinearLayout.LayoutParams) mSubheading.getLayoutParams();
-                params.width = LinearLayout.LayoutParams.FILL_PARENT;
-                params.weight = 0;
-                params.rightMargin = UIHelper.getPixels(4);
-                mSubheading.setLayoutParams(params);
-
-                //4. layout for main and sub
-                params = (LinearLayout.LayoutParams) mContentBodyLeftMainSubFrameLayout.getLayoutParams();
-                params.width = LinearLayout.LayoutParams.FILL_PARENT;
-                params.weight = 380;
-                params.rightMargin = UIHelper.getPixels(4);
-                mContentBodyLeftMainSubFrameLayout.setLayoutParams(params);
-
-                //5. main
-                params = (LinearLayout.LayoutParams) mMain.getLayoutParams();
-                params.width = LinearLayout.LayoutParams.FILL_PARENT;
-                params.weight = 280;
-                mMain.setLayoutParams(params);
-
-                //6. sub
-                params = (LinearLayout.LayoutParams) mSub.getLayoutParams();
-                params.width = LinearLayout.LayoutParams.FILL_PARENT;
-                params.weight = 100;
-                mSub.setLayoutParams(params);
-
-                //7. not show image2
-                mImage2.setVisibility(View.INVISIBLE);
-                mContentBodyLeftTextMainSubLayout.setVisibility(View.VISIBLE);
-
+            }
+            case 2: {
+                configTemplate_2();
                 break;
-            case 3:
-
-                //1. type
-                mContentBodyType1.setVisibility(View.VISIBLE);
-                mContentBodyType2.setVisibility(View.INVISIBLE);
-                updateContentViewsPointers(templateID);
-
-                //not show image
-                mImage.setVisibility(View.INVISIBLE);
-
-                //2. subheading
-                params = (LinearLayout.LayoutParams) mSubheading.getLayoutParams();
-                params.width = LinearLayout.LayoutParams.FILL_PARENT;
-                params.weight = 0;
-                params.rightMargin = UIHelper.getPixels(4);
-                mSubheading.setLayoutParams(params);
-
-                //3. layout for main and sub
-                params = (LinearLayout.LayoutParams) mContentBodyLeftMainSubFrameLayout.getLayoutParams();
-                params.width = LinearLayout.LayoutParams.FILL_PARENT;
-                params.weight = 390;
-                params.rightMargin = UIHelper.getPixels(4);
-                mContentBodyLeftMainSubFrameLayout.setLayoutParams(params);
-
-                //4. main
-                params = (LinearLayout.LayoutParams) mMain.getLayoutParams();
-                params.width = LinearLayout.LayoutParams.FILL_PARENT;
-                params.weight = 200;
-                mMain.setLayoutParams(params);
-
-                //5. sub
-                params = (LinearLayout.LayoutParams) mSub.getLayoutParams();
-                params.width = LinearLayout.LayoutParams.FILL_PARENT;
-                params.weight = 190;
-                mSub.setLayoutParams(params);
-
-                //6. not show image2
-                mImage2.setVisibility(View.INVISIBLE);
-                mContentBodyLeftTextMainSubLayout.setVisibility(View.VISIBLE);
-
+            }
+            case 3: {
+                configTemplate_3();
                 break;
-            case 4:
-
-                //1.type
-                mContentBodyType1.setVisibility(View.VISIBLE);
-                mContentBodyType2.setVisibility(View.INVISIBLE);
-                updateContentViewsPointers(templateID);
-
-                //not show image
-                mImage.setVisibility(View.INVISIBLE);
-
-                //2. subheading
-                params = (LinearLayout.LayoutParams) mSubheading.getLayoutParams();
-                params.width = LinearLayout.LayoutParams.FILL_PARENT;
-                params.weight = 0;
-                params.rightMargin = UIHelper.getPixels(4);
-                mSubheading.setLayoutParams(params);
-
-                //3. layout for main and sub
-                params = (LinearLayout.LayoutParams) mContentBodyLeftMainSubFrameLayout.getLayoutParams();
-                params.width = LinearLayout.LayoutParams.FILL_PARENT;
-                params.weight = 380;
-                params.rightMargin = UIHelper.getPixels(4);
-                mContentBodyLeftMainSubFrameLayout.setLayoutParams(params);
-
-                //4.main
-                params = (LinearLayout.LayoutParams) mMain.getLayoutParams();
-                params.width = LinearLayout.LayoutParams.FILL_PARENT;
-                params.weight = 380;
-                mMain.setLayoutParams(params);
-
-                //5. sub
-                params = (LinearLayout.LayoutParams) mSub.getLayoutParams();
-                params.width = LinearLayout.LayoutParams.FILL_PARENT;
-                params.weight = 0;
-                mSub.setLayoutParams(params);
-
-                //6. not show image2
-                mImage2.setVisibility(View.INVISIBLE);
-                mContentBodyLeftTextMainSubLayout.setVisibility(View.VISIBLE);
-
+            }
+            case 4: {
+                configTemplate_4();
                 break;
-            case 5:
-
-                //1. type
-                mContentBodyType1.setVisibility(View.VISIBLE);
-                mContentBodyType2.setVisibility(View.INVISIBLE);
-                updateContentViewsPointers(templateID);
-
-                //2. left and right
-                params = (LinearLayout.LayoutParams) mContentBodyLeftLayout.getLayoutParams();
-                params.weight = 0f;
-                params.rightMargin = UIHelper.getPixels(4);
-                mContentBodyLeftLayout.setLayoutParams(params);
-
-                params = (LinearLayout.LayoutParams) mContentBodyRightFrameLayout.getLayoutParams();
-                params.weight = 710f;
-                params.rightMargin = UIHelper.getPixels(4);
-                mContentBodyRightFrameLayout.setLayoutParams(params);
-                mImage.setVisibility(View.VISIBLE);
-
-                //3. subheading
-                params = (LinearLayout.LayoutParams) mSubheading.getLayoutParams();
-                params.width = LinearLayout.LayoutParams.FILL_PARENT;
-                params.weight = 0;
-                params.rightMargin = UIHelper.getPixels(4);
-                mSubheading.setLayoutParams(params);
-
-                //4. layout for main and sub
-                params = (LinearLayout.LayoutParams) mContentBodyLeftMainSubFrameLayout.getLayoutParams();
-                params.width = LinearLayout.LayoutParams.FILL_PARENT;
-                params.weight = 0;
-                mContentBodyLeftMainSubFrameLayout.setLayoutParams(params);
-
-                //5. main
-                params = (LinearLayout.LayoutParams) mMain.getLayoutParams();
-                params.width = LinearLayout.LayoutParams.FILL_PARENT;
-                params.weight = 0;
-                mMain.setLayoutParams(params);
-
-                //6. sub
-                params = (LinearLayout.LayoutParams) mSub.getLayoutParams();
-                params.width = LinearLayout.LayoutParams.FILL_PARENT;
-                params.weight = 0;
-                mSub.setLayoutParams(params);
-
-                //7. not show image2
-                mImage2.setVisibility(View.INVISIBLE);
-                mContentBodyLeftTextMainSubLayout.setVisibility(View.VISIBLE);
-
+            }
+            case 5: {
+                configTemplate_5();
                 break;
+            }
 
-            case 6:
-
-                //1. type
-                mContentBodyType1.setVisibility(View.VISIBLE);
-                mContentBodyType2.setVisibility(View.INVISIBLE);
-                updateContentViewsPointers(templateID);
-
-                //2. left and right
-                params = (LinearLayout.LayoutParams) mContentBodyLeftLayout.getLayoutParams();
-                params.weight = 360f;
-                params.rightMargin = UIHelper.getPixels(4);
-                mContentBodyLeftLayout.setLayoutParams(params);
-
-                params = (LinearLayout.LayoutParams) mContentBodyRightFrameLayout.getLayoutParams();
-                params.weight = 350f;
-                params.rightMargin = UIHelper.getPixels(4);
-                mContentBodyRightFrameLayout.setLayoutParams(params);
-                mImage.setVisibility(View.VISIBLE);
-
-                //3. subheading
-                params = (LinearLayout.LayoutParams) mSubheading.getLayoutParams();
-                params.width = LinearLayout.LayoutParams.FILL_PARENT;
-                params.weight = 70;
-                params.rightMargin = UIHelper.getPixels(4);
-                mSubheading.setLayoutParams(params);
-
-                //4. layout for main and sub
-                params = (LinearLayout.LayoutParams) mContentBodyLeftMainSubFrameLayout.getLayoutParams();
-                params.width = LinearLayout.LayoutParams.FILL_PARENT;
-                params.weight = 360;
-                mContentBodyLeftMainSubFrameLayout.setLayoutParams(params);
-
-                //5. main
-                params = (LinearLayout.LayoutParams) mMain.getLayoutParams();
-                params.width = LinearLayout.LayoutParams.FILL_PARENT;
-                params.weight = 360;
-                mMain.setLayoutParams(params);
-
-                //6. sub
-                params = (LinearLayout.LayoutParams) mSub.getLayoutParams();
-                params.width = LinearLayout.LayoutParams.FILL_PARENT;
-                params.weight = 0;
-                mSub.setLayoutParams(params);
-
-                //7. not show image2
-                mImage2.setVisibility(View.INVISIBLE);
-                mContentBodyLeftTextMainSubLayout.setVisibility(View.VISIBLE);
-
+            case 6: {
+                configTemplate_6();
                 break;
+            }
 
-            case 7:
-
-                //1. type
-                mContentBodyType1.setVisibility(View.VISIBLE);
-                mContentBodyType2.setVisibility(View.INVISIBLE);
-                updateContentViewsPointers(templateID);
-
-                //2.left and right
-                params = (LinearLayout.LayoutParams) mContentBodyLeftLayout.getLayoutParams();
-                params.weight = 360f;
-                params.rightMargin = UIHelper.getPixels(4);
-                mContentBodyLeftLayout.setLayoutParams(params);
-
-                params = (LinearLayout.LayoutParams) mContentBodyRightFrameLayout.getLayoutParams();
-                params.weight = 350f;
-                params.rightMargin = UIHelper.getPixels(4);
-                mContentBodyRightFrameLayout.setLayoutParams(params);
-                mImage.setVisibility(View.VISIBLE);
-
-                //3. subheading
-                params = (LinearLayout.LayoutParams) mSubheading.getLayoutParams();
-                params.width = LinearLayout.LayoutParams.FILL_PARENT;
-                params.weight = 0;
-                params.rightMargin = UIHelper.getPixels(4);
-                mSubheading.setLayoutParams(params);
-
-                //4.layout for main and sub
-                params = (LinearLayout.LayoutParams) mContentBodyLeftMainSubFrameLayout.getLayoutParams();
-                params.width = LinearLayout.LayoutParams.FILL_PARENT;
-                params.weight = 420;
-                params.rightMargin = UIHelper.getPixels(4);
-                mContentBodyLeftMainSubFrameLayout.setLayoutParams(params);
-
-                //5. main
-                params = (LinearLayout.LayoutParams) mMain.getLayoutParams();
-                params.width = LinearLayout.LayoutParams.FILL_PARENT;
-                params.weight = 420;
-                mMain.setLayoutParams(params);
-
-                //6. sub
-                params = (LinearLayout.LayoutParams) mSub.getLayoutParams();
-                params.width = LinearLayout.LayoutParams.FILL_PARENT;
-                params.weight = 0;
-                mSub.setLayoutParams(params);
-
-                //7. not show image2
-                mImage2.setVisibility(View.INVISIBLE);
-                mContentBodyLeftTextMainSubLayout.setVisibility(View.VISIBLE);
-
+            case 7: {
+                configTemplate_7();
                 break;
+            }
 
-            case 8:
-                //1. type
-                mContentBodyType1.setVisibility(View.INVISIBLE);
-                mContentBodyType2.setVisibility(View.VISIBLE);
-                updateContentViewsPointers(templateID);
-
-                //use default in card.xml is OK
-
-                //2:NOT show image2
-                mImage2.setVisibility(View.INVISIBLE);
-                mContentBodyLeftTextMainSubLayout.setVisibility(View.VISIBLE);
-
+            case 8: {
+                configTemplate_8();
                 break;
+            }
 
-            case 9:
-
-                //1. type
-                mContentBodyType1.setVisibility(View.VISIBLE);
-                mContentBodyType2.setVisibility(View.INVISIBLE);
-                updateContentViewsPointers(templateID);
-
-                //2: left and right
-                params = (LinearLayout.LayoutParams) mContentBodyLeftLayout.getLayoutParams();
-                params.weight = 360f;
-                params.rightMargin = UIHelper.getPixels(4);
-                mContentBodyLeftLayout.setLayoutParams(params);
-
-                params = (LinearLayout.LayoutParams) mContentBodyRightFrameLayout.getLayoutParams();
-                params.weight = 350f;
-                params.rightMargin = UIHelper.getPixels(4);
-                mContentBodyRightFrameLayout.setLayoutParams(params);
-                mImage.setVisibility(View.VISIBLE);
-
-                //3:subheading
-                params = (LinearLayout.LayoutParams) mSubheading.getLayoutParams();
-                params.width = LinearLayout.LayoutParams.FILL_PARENT;
-                params.weight = 70;
-                params.rightMargin = UIHelper.getPixels(4);
-                mSubheading.setLayoutParams(params);
-
-                //4. layout for main and sub
-                params = (LinearLayout.LayoutParams) mContentBodyLeftMainSubFrameLayout.getLayoutParams();
-                params.width = LinearLayout.LayoutParams.FILL_PARENT;
-                params.weight = 360;
-                params.rightMargin = UIHelper.getPixels(4);
-                mContentBodyLeftMainSubFrameLayout.setLayoutParams(params);
-
-                //5:show image2
-                mImage2.setVisibility(View.VISIBLE);
-                mContentBodyLeftTextMainSubLayout.setVisibility(View.INVISIBLE);
+            case 9: {
+                configTemplate_9();
                 break;
+            }
 
-            case 10:
-
-                //1. type
-                mContentBodyType1.setVisibility(View.VISIBLE);
-                mContentBodyType2.setVisibility(View.INVISIBLE);
-                updateContentViewsPointers(templateID);
-
-                //2. left and right
-                params = (LinearLayout.LayoutParams) mContentBodyLeftLayout.getLayoutParams();
-                params.weight = 360f;
-                params.rightMargin = UIHelper.getPixels(4);
-                mContentBodyLeftLayout.setLayoutParams(params);
-
-                params = (LinearLayout.LayoutParams) mContentBodyRightFrameLayout.getLayoutParams();
-                params.weight = 350f;
-                params.rightMargin = UIHelper.getPixels(4);
-                mContentBodyRightFrameLayout.setLayoutParams(params);
-                mImage.setVisibility(View.VISIBLE);
-
-                //3. subheading
-                params = (LinearLayout.LayoutParams) mSubheading.getLayoutParams();
-                params.width = LinearLayout.LayoutParams.FILL_PARENT;
-                params.weight = 215;
-                params.rightMargin = UIHelper.getPixels(4);
-                mSubheading.setLayoutParams(params);
-
-                //4. layout for main and sub
-                params = (LinearLayout.LayoutParams) mContentBodyLeftMainSubFrameLayout.getLayoutParams();
-                params.width = LinearLayout.LayoutParams.FILL_PARENT;
-                params.weight = 215;
-                mContentBodyLeftMainSubFrameLayout.setLayoutParams(params);
-
-                //5. main
-                params = (LinearLayout.LayoutParams) mMain.getLayoutParams();
-                params.width = LinearLayout.LayoutParams.FILL_PARENT;
-                params.weight = 215;
-                mMain.setLayoutParams(params);
-
-                //6. sub
-                params = (LinearLayout.LayoutParams) mSub.getLayoutParams();
-                params.width = LinearLayout.LayoutParams.FILL_PARENT;
-                params.weight = 0;
-                mSub.setLayoutParams(params);
-
-                //7. not show image2
-                mImage2.setVisibility(View.INVISIBLE);
-                mContentBodyLeftTextMainSubLayout.setVisibility(View.VISIBLE);
-
+            case 10: {
+                configTemplate_10();
                 break;
+            }
 
-
-            case 11:
-
-                //第一步是，更新sub，因为在这里sub的指向在updateContentViewsPointers发生了变化
-                params = (LinearLayout.LayoutParams) mSub.getLayoutParams();
-                params.width = LinearLayout.LayoutParams.FILL_PARENT;
-                params.weight = 0;
-                params.rightMargin = UIHelper.getPixels(4);
-                mSub.setLayoutParams(params);
-
-                //1. type
-                mContentBodyType1.setVisibility(View.VISIBLE);
-                mContentBodyType2.setVisibility(View.INVISIBLE);
-                updateContentViewsPointers(templateID);
-
-                //2.left and right
-                params = (LinearLayout.LayoutParams) mContentBodyLeftLayout.getLayoutParams();
-                params.weight = 360f;
-                params.rightMargin = UIHelper.getPixels(4);
-                mContentBodyLeftLayout.setLayoutParams(params);
-
-                params = (LinearLayout.LayoutParams) mContentBodyRightFrameLayout.getLayoutParams();
-                params.weight = 350f;
-                params.rightMargin = UIHelper.getPixels(4);
-                mContentBodyRightFrameLayout.setLayoutParams(params);
-                mImage.setVisibility(View.INVISIBLE);
-                mSub.setVisibility(View.VISIBLE); //这时sub代替了image
-
-                //3. subheading
-                params = (LinearLayout.LayoutParams) mSubheading.getLayoutParams();
-                params.width = LinearLayout.LayoutParams.FILL_PARENT;
-                params.weight = 0;
-                params.rightMargin = UIHelper.getPixels(4);
-                mSubheading.setLayoutParams(params);
-
-                //4.layout for main and sub
-                params = (LinearLayout.LayoutParams) mContentBodyLeftMainSubFrameLayout.getLayoutParams();
-                params.width = LinearLayout.LayoutParams.FILL_PARENT;
-                params.weight = 420;
-                params.rightMargin = UIHelper.getPixels(4);
-                mContentBodyLeftMainSubFrameLayout.setLayoutParams(params);
-
-                //5. main
-                params = (LinearLayout.LayoutParams) mMain.getLayoutParams();
-                params.width = LinearLayout.LayoutParams.FILL_PARENT;
-                params.weight = 420;
-                mMain.setLayoutParams(params);
-
-                //6. not show image2
-                mImage2.setVisibility(View.INVISIBLE);
-                mContentBodyLeftTextMainSubLayout.setVisibility(View.VISIBLE);
-
+            case 11: {
+                configTemplate_11 ();
                 break;
+            }
 
+            case 12: {
+                configTemplate_12();
+                break;
+            }
+
+            case 13: {
+                configTemplate_13();
+                break;
+            }
+
+            case 14: {
+                configTemplate_14();
+                break;
+            }
+
+            case 15: {
+                configTemplate_15();
+                break;
+            }
+
+            case 16: {
+                configTemplate_16();
+                break;
+            }
 
             default:
                 Timber.tag(Global.debugTag).w("mCurrentCard.question.templateID is out of scope");
         }
 
+        updateContentViewsPointers(templateID);
+
     }
 
     private void updateAnswerViewTemplate() {
 
-        LinearLayout.LayoutParams paramsA = (LinearLayout.LayoutParams) mContentBodyRightFrameLayout.getLayoutParams();
-        paramsA.weight = 0f;
-        mContentBodyRightFrameLayout.setLayoutParams(paramsA);
-
-        LinearLayout.LayoutParams paramsB = (LinearLayout.LayoutParams) mContentBodyLeftLayout.getLayoutParams();
-        paramsB.weight = 710f;
-        mContentBodyLeftLayout.setLayoutParams(paramsB);
-
         int templateID = mCurrentCard.answer.templateID;
-
 
         //we don't need to set font size here since it will be done in CSS construct
 
-        LinearLayout.LayoutParams params;
         switch (templateID) {
-            case 10:
-
-                //1. type
-                mContentBodyType1.setVisibility(View.VISIBLE);
-                mContentBodyType2.setVisibility(View.INVISIBLE);
-                updateContentViewsPointers(templateID);
-
-                //no image
-                mImage.setVisibility(View.INVISIBLE);
-
-                //2. subheading
-                params = (LinearLayout.LayoutParams) mSubheading.getLayoutParams();
-                params.width = LinearLayout.LayoutParams.FILL_PARENT;
-                params.weight = 70;
-                params.rightMargin = UIHelper.getPixels(4);
-                mSubheading.setLayoutParams(params);
-
-                //3. layout for main and sub
-                params = (LinearLayout.LayoutParams) mContentBodyLeftMainSubFrameLayout.getLayoutParams();
-                params.width = LinearLayout.LayoutParams.FILL_PARENT;
-                params.weight = 330;
-                params.rightMargin = UIHelper.getPixels(4);
-                mContentBodyLeftMainSubFrameLayout.setLayoutParams(params);
-
-                //4. main
-                params = (LinearLayout.LayoutParams) mMain.getLayoutParams();
-                params.width = LinearLayout.LayoutParams.FILL_PARENT;
-                params.weight = 330;
-                mMain.setLayoutParams(params);
-
-                //5.sub
-                params = (LinearLayout.LayoutParams) mSub.getLayoutParams();
-                params.width = LinearLayout.LayoutParams.FILL_PARENT;
-                params.weight = 0;
-                mSub.setLayoutParams(params);
-
-                //6. not show image2
-                mImage2.setVisibility(View.INVISIBLE);
-                mContentBodyLeftTextMainSubLayout.setVisibility(View.VISIBLE);
-
+            case 0: {
+                configTemplate_6();
                 break;
-            case 8:
-
-                //1. type
-                mContentBodyType1.setVisibility(View.VISIBLE);
-                mContentBodyType2.setVisibility(View.INVISIBLE);
-                updateContentViewsPointers(templateID);
-
-                //2. no image
-                mImage.setVisibility(View.INVISIBLE);
-
-                //3. subheading
-                params = (LinearLayout.LayoutParams) mSubheading.getLayoutParams();
-                params.width = LinearLayout.LayoutParams.FILL_PARENT;
-                params.weight = 70;
-                params.rightMargin = getResources().getDimensionPixelSize(R.dimen.question_template_1_margin_right);
-                mSubheading.setLayoutParams(params);
-
-                //4.layout for main and sub
-                params = (LinearLayout.LayoutParams) mContentBodyLeftMainSubFrameLayout.getLayoutParams();
-                params.width = LinearLayout.LayoutParams.FILL_PARENT;
-                params.weight = 320;
-                params.rightMargin = UIHelper.getPixels(4);
-                mContentBodyLeftMainSubFrameLayout.setLayoutParams(params);
-
-                //5. main
-                params = (LinearLayout.LayoutParams) mMain.getLayoutParams();
-                params.width = LinearLayout.LayoutParams.FILL_PARENT;
-                params.weight = 160;
-                mMain.setLayoutParams(params);
-
-                //6. sub
-                params = (LinearLayout.LayoutParams) mSub.getLayoutParams();
-                params.width = LinearLayout.LayoutParams.FILL_PARENT;
-                params.weight = 160;
-                mSub.setLayoutParams(params);
-
-                //7. not show image2
-                mImage2.setVisibility(View.INVISIBLE);
-                mContentBodyLeftTextMainSubLayout.setVisibility(View.VISIBLE);
-
+            }
+            case 1: {
+                configTemplate_8();
                 break;
-            case 7:
-
-                //1. type
-                mContentBodyType1.setVisibility(View.VISIBLE);
-                mContentBodyType2.setVisibility(View.INVISIBLE);
-                updateContentViewsPointers(templateID);
-
-                //2. not show image
-                mImage.setVisibility(View.INVISIBLE);
-
-                //3. suheading
-                params = (LinearLayout.LayoutParams) mSubheading.getLayoutParams();
-                params.width = LinearLayout.LayoutParams.FILL_PARENT;
-                params.weight = 0;
-                params.rightMargin = UIHelper.getPixels(4);
-                mSubheading.setLayoutParams(params);
-
-                //4. layout for main and sub
-                params = (LinearLayout.LayoutParams) mContentBodyLeftMainSubFrameLayout.getLayoutParams();
-                params.width = LinearLayout.LayoutParams.FILL_PARENT;
-                params.weight = 380;
-                params.rightMargin = UIHelper.getPixels(4);
-                mContentBodyLeftMainSubFrameLayout.setLayoutParams(params);
-
-                //5. main
-                params = (LinearLayout.LayoutParams) mMain.getLayoutParams();
-                params.width = LinearLayout.LayoutParams.FILL_PARENT;
-                params.weight = 280;
-                mMain.setLayoutParams(params);
-
-                //6. sub
-                params = (LinearLayout.LayoutParams) mSub.getLayoutParams();
-                params.width = LinearLayout.LayoutParams.FILL_PARENT;
-                params.weight = 100;
-                mSub.setLayoutParams(params);
-
-                //7. not show image2
-                mImage2.setVisibility(View.INVISIBLE);
-                mContentBodyLeftTextMainSubLayout.setVisibility(View.VISIBLE);
-
+            }
+            case 2: {
+                configTemplate_10();
                 break;
-            case 6:
-
-                //1. type
-                mContentBodyType1.setVisibility(View.VISIBLE);
-                mContentBodyType2.setVisibility(View.INVISIBLE);
-                updateContentViewsPointers(templateID);
-
-                //not show image
-                mImage.setVisibility(View.INVISIBLE);
-
-                //2. subheading
-                params = (LinearLayout.LayoutParams) mSubheading.getLayoutParams();
-                params.width = LinearLayout.LayoutParams.FILL_PARENT;
-                params.weight = 0;
-                params.rightMargin = UIHelper.getPixels(4);
-                mSubheading.setLayoutParams(params);
-
-                //3. layout for main and sub
-                params = (LinearLayout.LayoutParams) mContentBodyLeftMainSubFrameLayout.getLayoutParams();
-                params.width = LinearLayout.LayoutParams.FILL_PARENT;
-                params.weight = 390;
-                params.rightMargin = UIHelper.getPixels(4);
-                mContentBodyLeftMainSubFrameLayout.setLayoutParams(params);
-
-                //4. main
-                params = (LinearLayout.LayoutParams) mMain.getLayoutParams();
-                params.width = LinearLayout.LayoutParams.FILL_PARENT;
-                params.weight = 200;
-                mMain.setLayoutParams(params);
-
-                //5. sub
-                params = (LinearLayout.LayoutParams) mSub.getLayoutParams();
-                params.width = LinearLayout.LayoutParams.FILL_PARENT;
-                params.weight = 190;
-                mSub.setLayoutParams(params);
-
-                //6. not show image2
-                mImage2.setVisibility(View.INVISIBLE);
-                mContentBodyLeftTextMainSubLayout.setVisibility(View.VISIBLE);
-
+            }
+            case 3: {
+                configTemplate_4();
                 break;
-            case 3:
-
-                //1.type
-                mContentBodyType1.setVisibility(View.VISIBLE);
-                mContentBodyType2.setVisibility(View.INVISIBLE);
-                updateContentViewsPointers(templateID);
-
-                //not show image
-                mImage.setVisibility(View.INVISIBLE);
-
-                //2. subheading
-                params = (LinearLayout.LayoutParams) mSubheading.getLayoutParams();
-                params.width = LinearLayout.LayoutParams.FILL_PARENT;
-                params.weight = 0;
-                params.rightMargin = UIHelper.getPixels(4);
-                mSubheading.setLayoutParams(params);
-
-                //3. layout for main and sub
-                params = (LinearLayout.LayoutParams) mContentBodyLeftMainSubFrameLayout.getLayoutParams();
-                params.width = LinearLayout.LayoutParams.FILL_PARENT;
-                params.weight = 380;
-                params.rightMargin = UIHelper.getPixels(4);
-                mContentBodyLeftMainSubFrameLayout.setLayoutParams(params);
-
-                //4.main
-                params = (LinearLayout.LayoutParams) mMain.getLayoutParams();
-                params.width = LinearLayout.LayoutParams.FILL_PARENT;
-                params.weight = 380;
-                mMain.setLayoutParams(params);
-
-                //5. sub
-                params = (LinearLayout.LayoutParams) mSub.getLayoutParams();
-                params.width = LinearLayout.LayoutParams.FILL_PARENT;
-                params.weight = 0;
-                mSub.setLayoutParams(params);
-
-                //6. not show image2
-                mImage2.setVisibility(View.INVISIBLE);
-                mContentBodyLeftTextMainSubLayout.setVisibility(View.VISIBLE);
-
+            }
+            case 4: {
+                configTemplate_7();
                 break;
-            case 5:
-
-                //1. type
-                mContentBodyType1.setVisibility(View.VISIBLE);
-                mContentBodyType2.setVisibility(View.INVISIBLE);
-                updateContentViewsPointers(templateID);
-
-                //2. left and right
-                params = (LinearLayout.LayoutParams) mContentBodyLeftLayout.getLayoutParams();
-                params.weight = 0f;
-                params.rightMargin = UIHelper.getPixels(4);
-                mContentBodyLeftLayout.setLayoutParams(params);
-
-                params = (LinearLayout.LayoutParams) mContentBodyRightFrameLayout.getLayoutParams();
-                params.weight = 710f;
-                params.rightMargin = UIHelper.getPixels(4);
-                mContentBodyRightFrameLayout.setLayoutParams(params);
-                mImage.setVisibility(View.VISIBLE);
-
-                //3. subheading
-                params = (LinearLayout.LayoutParams) mSubheading.getLayoutParams();
-                params.width = LinearLayout.LayoutParams.FILL_PARENT;
-                params.weight = 0;
-                params.rightMargin = UIHelper.getPixels(4);
-                mSubheading.setLayoutParams(params);
-
-                //4. layout for main and sub
-                params = (LinearLayout.LayoutParams) mContentBodyLeftMainSubFrameLayout.getLayoutParams();
-                params.width = LinearLayout.LayoutParams.FILL_PARENT;
-                params.weight = 0;
-                mContentBodyLeftMainSubFrameLayout.setLayoutParams(params);
-
-                //5. main
-                params = (LinearLayout.LayoutParams) mMain.getLayoutParams();
-                params.width = LinearLayout.LayoutParams.FILL_PARENT;
-                params.weight = 0;
-                mMain.setLayoutParams(params);
-
-                //6. sub
-                params = (LinearLayout.LayoutParams) mSub.getLayoutParams();
-                params.width = LinearLayout.LayoutParams.FILL_PARENT;
-                params.weight = 0;
-                mSub.setLayoutParams(params);
-
-                //7. not show image2
-                mImage2.setVisibility(View.INVISIBLE);
-                mContentBodyLeftTextMainSubLayout.setVisibility(View.VISIBLE);
-
+            }
+            case 5: {
+                configTemplate_5();
                 break;
-
-            case 0:
-
-                //1. type
-                mContentBodyType1.setVisibility(View.VISIBLE);
-                mContentBodyType2.setVisibility(View.INVISIBLE);
-                updateContentViewsPointers(templateID);
-
-                //2. left and right
-                params = (LinearLayout.LayoutParams) mContentBodyLeftLayout.getLayoutParams();
-                params.weight = 360f;
-                params.rightMargin = UIHelper.getPixels(4);
-                mContentBodyLeftLayout.setLayoutParams(params);
-
-                params = (LinearLayout.LayoutParams) mContentBodyRightFrameLayout.getLayoutParams();
-                params.weight = 350f;
-                params.rightMargin = UIHelper.getPixels(4);
-                mContentBodyRightFrameLayout.setLayoutParams(params);
-                mImage.setVisibility(View.VISIBLE);
-
-                //3. subheading
-                params = (LinearLayout.LayoutParams) mSubheading.getLayoutParams();
-                params.width = LinearLayout.LayoutParams.FILL_PARENT;
-                params.weight = 70;
-                params.rightMargin = UIHelper.getPixels(4);
-                mSubheading.setLayoutParams(params);
-
-                //4. layout for main and sub
-                params = (LinearLayout.LayoutParams) mContentBodyLeftMainSubFrameLayout.getLayoutParams();
-                params.width = LinearLayout.LayoutParams.FILL_PARENT;
-                params.weight = 360;
-                mContentBodyLeftMainSubFrameLayout.setLayoutParams(params);
-
-                //5. main
-                params = (LinearLayout.LayoutParams) mMain.getLayoutParams();
-                params.width = LinearLayout.LayoutParams.FILL_PARENT;
-                params.weight = 360;
-                mMain.setLayoutParams(params);
-
-                //6. sub
-                params = (LinearLayout.LayoutParams) mSub.getLayoutParams();
-                params.width = LinearLayout.LayoutParams.FILL_PARENT;
-                params.weight = 0;
-                mSub.setLayoutParams(params);
-
-                //7. not show image2
-                mImage2.setVisibility(View.INVISIBLE);
-                mContentBodyLeftTextMainSubLayout.setVisibility(View.VISIBLE);
-
+            }
+            case 6: {
+                configTemplate_3();
                 break;
-
-            case 4:
-
-                //1. type
-                mContentBodyType1.setVisibility(View.VISIBLE);
-                mContentBodyType2.setVisibility(View.INVISIBLE);
-                updateContentViewsPointers(templateID);
-
-                //2.left and right
-                params = (LinearLayout.LayoutParams) mContentBodyLeftLayout.getLayoutParams();
-                params.weight = 360f;
-                params.rightMargin = UIHelper.getPixels(4);
-                mContentBodyLeftLayout.setLayoutParams(params);
-
-                params = (LinearLayout.LayoutParams) mContentBodyRightFrameLayout.getLayoutParams();
-                params.weight = 350f;
-                params.rightMargin = UIHelper.getPixels(4);
-                mContentBodyRightFrameLayout.setLayoutParams(params);
-                mImage.setVisibility(View.VISIBLE);
-
-                //3. subheading
-                params = (LinearLayout.LayoutParams) mSubheading.getLayoutParams();
-                params.width = LinearLayout.LayoutParams.FILL_PARENT;
-                params.weight = 0;
-                params.rightMargin = UIHelper.getPixels(4);
-                mSubheading.setLayoutParams(params);
-
-                //4.layout for main and sub
-                params = (LinearLayout.LayoutParams) mContentBodyLeftMainSubFrameLayout.getLayoutParams();
-                params.width = LinearLayout.LayoutParams.FILL_PARENT;
-                params.weight = 420;
-                params.rightMargin = UIHelper.getPixels(4);
-                mContentBodyLeftMainSubFrameLayout.setLayoutParams(params);
-
-                //5. main
-                params = (LinearLayout.LayoutParams) mMain.getLayoutParams();
-                params.width = LinearLayout.LayoutParams.FILL_PARENT;
-                params.weight = 420;
-                mMain.setLayoutParams(params);
-
-                //6. sub
-                params = (LinearLayout.LayoutParams) mSub.getLayoutParams();
-                params.width = LinearLayout.LayoutParams.FILL_PARENT;
-                params.weight = 0;
-                mSub.setLayoutParams(params);
-
-                //7. not show image2
-                mImage2.setVisibility(View.INVISIBLE);
-                mContentBodyLeftTextMainSubLayout.setVisibility(View.VISIBLE);
-
+            }
+            case 7: {
+                configTemplate_2();
                 break;
-
-            case 1:
-                //1. type
-                mContentBodyType1.setVisibility(View.INVISIBLE);
-                mContentBodyType2.setVisibility(View.VISIBLE);
-                updateContentViewsPointers(templateID);
-
-                //use default in card.xml is OK
-
-                //2:NOT show image2
-                mImage2.setVisibility(View.INVISIBLE);
-                mContentBodyLeftTextMainSubLayout.setVisibility(View.VISIBLE);
-
+            }
+            case 8: {
+                configTemplate_1();
                 break;
-
-            case 11:
-
-                //1. type
-                mContentBodyType1.setVisibility(View.VISIBLE);
-                mContentBodyType2.setVisibility(View.INVISIBLE);
-                updateContentViewsPointers(templateID);
-
-                //2: left and right
-                params = (LinearLayout.LayoutParams) mContentBodyLeftLayout.getLayoutParams();
-                params.weight = 360f;
-                params.rightMargin = UIHelper.getPixels(4);
-                mContentBodyLeftLayout.setLayoutParams(params);
-
-                params = (LinearLayout.LayoutParams) mContentBodyRightFrameLayout.getLayoutParams();
-                params.weight = 350f;
-                params.rightMargin = UIHelper.getPixels(4);
-                mContentBodyRightFrameLayout.setLayoutParams(params);
-                mImage.setVisibility(View.VISIBLE);
-
-                //3:subheading
-                params = (LinearLayout.LayoutParams) mSubheading.getLayoutParams();
-                params.width = LinearLayout.LayoutParams.FILL_PARENT;
-                params.weight = 70;
-                params.rightMargin = UIHelper.getPixels(4);
-                mSubheading.setLayoutParams(params);
-
-                //4. layout for main and sub
-                params = (LinearLayout.LayoutParams) mContentBodyLeftMainSubFrameLayout.getLayoutParams();
-                params.width = LinearLayout.LayoutParams.FILL_PARENT;
-                params.weight = 360;
-                params.rightMargin = UIHelper.getPixels(4);
-                mContentBodyLeftMainSubFrameLayout.setLayoutParams(params);
-
-                //5:show image2
-                mImage2.setVisibility(View.VISIBLE);
-                mContentBodyLeftTextMainSubLayout.setVisibility(View.INVISIBLE);
+            }
+            case 9: {
+                configTemplate_11();
                 break;
+            }
 
-            case 2:
-
-                //1. type
-                mContentBodyType1.setVisibility(View.VISIBLE);
-                mContentBodyType2.setVisibility(View.INVISIBLE);
-                updateContentViewsPointers(templateID);
-
-                //2. left and right
-                params = (LinearLayout.LayoutParams) mContentBodyLeftLayout.getLayoutParams();
-                params.weight = 360f;
-                params.rightMargin = UIHelper.getPixels(4);
-                mContentBodyLeftLayout.setLayoutParams(params);
-
-                params = (LinearLayout.LayoutParams) mContentBodyRightFrameLayout.getLayoutParams();
-                params.weight = 350f;
-                params.rightMargin = UIHelper.getPixels(4);
-                mContentBodyRightFrameLayout.setLayoutParams(params);
-                mImage.setVisibility(View.VISIBLE);
-
-                //3. subheading
-                params = (LinearLayout.LayoutParams) mSubheading.getLayoutParams();
-                params.width = LinearLayout.LayoutParams.FILL_PARENT;
-                params.weight = 215;
-                params.rightMargin = UIHelper.getPixels(4);
-                mSubheading.setLayoutParams(params);
-
-                //4. layout for main and sub
-                params = (LinearLayout.LayoutParams) mContentBodyLeftMainSubFrameLayout.getLayoutParams();
-                params.width = LinearLayout.LayoutParams.FILL_PARENT;
-                params.weight = 215;
-                mContentBodyLeftMainSubFrameLayout.setLayoutParams(params);
-
-                //5. main
-                params = (LinearLayout.LayoutParams) mMain.getLayoutParams();
-                params.width = LinearLayout.LayoutParams.FILL_PARENT;
-                params.weight = 215;
-                mMain.setLayoutParams(params);
-
-                //6. sub
-                params = (LinearLayout.LayoutParams) mSub.getLayoutParams();
-                params.width = LinearLayout.LayoutParams.FILL_PARENT;
-                params.weight = 0;
-                mSub.setLayoutParams(params);
-
-                //7. not show image2
-                mImage2.setVisibility(View.INVISIBLE);
-                mContentBodyLeftTextMainSubLayout.setVisibility(View.VISIBLE);
-
+            case 10: {
+                configTemplate_0();
                 break;
+            }
 
-
-            case 9:
-
-                //第一步是，更新sub，因为在这里sub的指向在updateContentViewsPointers发生了变化
-                params = (LinearLayout.LayoutParams) mSub.getLayoutParams();
-                params.width = LinearLayout.LayoutParams.FILL_PARENT;
-                params.weight = 0;
-                params.rightMargin = UIHelper.getPixels(4);
-                mSub.setLayoutParams(params);
-
-                //1. type
-                mContentBodyType1.setVisibility(View.VISIBLE);
-                mContentBodyType2.setVisibility(View.INVISIBLE);
-                updateContentViewsPointers(templateID);
-
-                //2.left and right
-                params = (LinearLayout.LayoutParams) mContentBodyLeftLayout.getLayoutParams();
-                params.weight = 360f;
-                params.rightMargin = UIHelper.getPixels(4);
-                mContentBodyLeftLayout.setLayoutParams(params);
-
-                params = (LinearLayout.LayoutParams) mContentBodyRightFrameLayout.getLayoutParams();
-                params.weight = 350f;
-                params.rightMargin = UIHelper.getPixels(4);
-                mContentBodyRightFrameLayout.setLayoutParams(params);
-                mImage.setVisibility(View.INVISIBLE);
-                mSub.setVisibility(View.VISIBLE); //这时sub代替了image
-
-                //3. subheading
-                params = (LinearLayout.LayoutParams) mSubheading.getLayoutParams();
-                params.width = LinearLayout.LayoutParams.FILL_PARENT;
-                params.weight = 0;
-                params.rightMargin = UIHelper.getPixels(4);
-                mSubheading.setLayoutParams(params);
-
-                //4.layout for main and sub
-                params = (LinearLayout.LayoutParams) mContentBodyLeftMainSubFrameLayout.getLayoutParams();
-                params.width = LinearLayout.LayoutParams.FILL_PARENT;
-                params.weight = 420;
-                params.rightMargin = UIHelper.getPixels(4);
-                mContentBodyLeftMainSubFrameLayout.setLayoutParams(params);
-
-                //5. main
-                params = (LinearLayout.LayoutParams) mMain.getLayoutParams();
-                params.width = LinearLayout.LayoutParams.FILL_PARENT;
-                params.weight = 420;
-                mMain.setLayoutParams(params);
-
-                //6. not show image2
-                mImage2.setVisibility(View.INVISIBLE);
-                mContentBodyLeftTextMainSubLayout.setVisibility(View.VISIBLE);
-
+            case 11: {
+                configTemplate_9();
                 break;
+            }
 
+            case 12: {
+                configTemplate_12();
+                break;
+            }
+
+            case 13: {
+                configTemplate_13();
+                break;
+            }
+
+            case 14: {
+                configTemplate_14();
+                break;
+            }
+
+            case 15: {
+                configTemplate_15();
+                break;
+            }
+
+            case 16: {
+                configTemplate_16();
+                break;
+            }
 
             default:
                 Timber.tag(Global.debugTag).w("mCurrentCard.answer.templateID is out of scope");
         }
+
+        updateContentViewsPointers(templateID);
     }
+
+
+    private void configTemplate_0 () {
+
+        removeAllSubViewsInContentBody();
+
+        mContentBodyLinearLayout.setOrientation(LinearLayout.VERTICAL);
+        mImage.setVisibility(View.INVISIBLE);
+        mImage2.setVisibility(View.INVISIBLE);
+        mSubheading.setVisibility(View.VISIBLE);
+        mMain.setVisibility(View.VISIBLE);
+        mSub.setVisibility(View.INVISIBLE);
+
+        //subheading
+        LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,
+                ViewGroup.LayoutParams.MATCH_PARENT);
+        params.weight = 50;
+        params.height = 0;
+        mSubheading.setLayoutParams(params);
+        mContentBodyLinearLayout.addView(mSubheading);
+
+
+        //main
+        params = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,
+                ViewGroup.LayoutParams.MATCH_PARENT);
+        params.weight = 350;
+        params.height = 0;
+        params.topMargin = UIHelper.getPixels(4);
+        mMain.setLayoutParams(params);
+
+        mContentBodyLinearLayout.addView(mMain);
+    }
+
+    private void configTemplate_1 () {
+
+        removeAllSubViewsInContentBody();
+
+        mContentBodyLinearLayout.setOrientation(LinearLayout.VERTICAL);
+        mImage.setVisibility(View.INVISIBLE);
+        mImage2.setVisibility(View.INVISIBLE);
+        mSubheading.setVisibility(View.VISIBLE);
+        mMain.setVisibility(View.VISIBLE);
+        mSub.setVisibility(View.VISIBLE);
+
+
+        //subheading
+        LinearLayout.LayoutParams params;
+        params = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,
+                ViewGroup.LayoutParams.MATCH_PARENT);
+        params.weight = 50;
+        params.height = 0;
+        params.rightMargin = getResources().getDimensionPixelSize(R.dimen.question_template_1_margin_right);
+        mSubheading.setLayoutParams(params);
+
+        mContentBodyLinearLayout.addView(mSubheading);
+
+
+        //main
+        params = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,
+                ViewGroup.LayoutParams.MATCH_PARENT);
+        params.weight = 180;
+        params.height = 0;
+        params.topMargin = UIHelper.getPixels(4);
+        mMain.setLayoutParams(params);
+
+        mContentBodyLinearLayout.addView(mMain);
+
+        //sub
+        params = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,
+                ViewGroup.LayoutParams.MATCH_PARENT);
+        params.weight = 160;
+        params.height = 0;
+        params.topMargin = UIHelper.getPixels(4);
+        mSub.setLayoutParams(params);
+
+        mContentBodyLinearLayout.addView(mSub);
+    }
+
+    private void configTemplate_2 () {
+
+        removeAllSubViewsInContentBody();
+
+        mContentBodyLinearLayout.setOrientation(LinearLayout.VERTICAL);
+        mImage.setVisibility(View.INVISIBLE);
+        mImage2.setVisibility(View.INVISIBLE);
+        mSubheading.setVisibility(View.INVISIBLE);
+        mMain.setVisibility(View.VISIBLE);
+        mSub.setVisibility(View.VISIBLE);
+
+
+        //main
+        LinearLayout.LayoutParams params;
+        params = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,
+                ViewGroup.LayoutParams.MATCH_PARENT);
+        params.weight = 280;
+        params.height = 0;
+        mMain.setLayoutParams(params);
+
+        mContentBodyLinearLayout.addView(mMain);
+
+        //sub
+        params = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,
+                ViewGroup.LayoutParams.MATCH_PARENT);
+        params.weight = 100;
+        params.height = 0;
+        params.topMargin = UIHelper.getPixels(4);
+        mSub.setLayoutParams(params);
+
+        mContentBodyLinearLayout.addView(mSub);
+    }
+
+    private void configTemplate_3 () {
+
+        removeAllSubViewsInContentBody();
+
+        mContentBodyLinearLayout.setOrientation(LinearLayout.VERTICAL);
+        mImage.setVisibility(View.INVISIBLE);
+        mImage2.setVisibility(View.INVISIBLE);
+        mSubheading.setVisibility(View.INVISIBLE);
+        mMain.setVisibility(View.VISIBLE);
+        mSub.setVisibility(View.VISIBLE);
+
+        //main
+        LinearLayout.LayoutParams params;
+        params = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,
+                ViewGroup.LayoutParams.MATCH_PARENT);
+        params.weight = 200;
+        params.height = 0;
+        mMain.setLayoutParams(params);
+
+        mContentBodyLinearLayout.addView(mMain);
+
+        //sub
+        params = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,
+                ViewGroup.LayoutParams.MATCH_PARENT);
+        params.weight = 190;
+        params.height = 0;
+        params.topMargin = UIHelper.getPixels(4);
+        mSub.setLayoutParams(params);
+
+        mContentBodyLinearLayout.addView(mSub);
+    }
+
+    private void configTemplate_4 () {
+
+        removeAllSubViewsInContentBody();
+
+        mContentBodyLinearLayout.setOrientation(LinearLayout.VERTICAL);
+        mImage.setVisibility(View.INVISIBLE);
+        mImage2.setVisibility(View.INVISIBLE);
+        mSubheading.setVisibility(View.INVISIBLE);
+        mMain.setVisibility(View.VISIBLE);
+        mSub.setVisibility(View.INVISIBLE);
+
+        //main
+        LinearLayout.LayoutParams params;
+        params = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,
+                ViewGroup.LayoutParams.MATCH_PARENT);
+        params.topMargin = UIHelper.getPixels(4);
+        mMain.setLayoutParams(params);
+
+        mContentBodyLinearLayout.addView(mMain);
+    }
+
+
+
+    private void configTemplate_5 () {
+
+        removeAllSubViewsInContentBody();
+
+        mContentBodyLinearLayout.setOrientation(LinearLayout.VERTICAL);
+        mImage.setVisibility(View.VISIBLE);
+        mImage2.setVisibility(View.INVISIBLE);
+        mSubheading.setVisibility(View.INVISIBLE);
+        mMain.setVisibility(View.INVISIBLE);
+        mSub.setVisibility(View.INVISIBLE);
+
+        //mImage
+        LinearLayout.LayoutParams params;
+        params = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,
+                ViewGroup.LayoutParams.MATCH_PARENT);
+        int margin = UIHelper.getPixels(4);
+        params.setMargins(margin,margin,margin,margin);
+        mImage.setLayoutParams(params);
+
+        mContentBodyLinearLayout.addView(mImage);
+    }
+
+    private void configTemplate_6 () {
+
+        removeAllSubViewsInContentBody();
+
+        mContentBodyLinearLayout.setOrientation(LinearLayout.HORIZONTAL);
+        mImage.setVisibility(View.VISIBLE);
+        mImage2.setVisibility(View.INVISIBLE);
+        mSubheading.setVisibility(View.VISIBLE);
+        mMain.setVisibility(View.VISIBLE);
+        mSub.setVisibility(View.INVISIBLE);
+
+
+        //左布局
+        LinearLayout left = new LinearLayout(getActivity());
+        left.setOrientation(LinearLayout.VERTICAL);
+
+        LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,
+                ViewGroup.LayoutParams.MATCH_PARENT);
+        params.width = 0;
+        params.weight = 360f;
+        params.rightMargin = UIHelper.getPixels(4);
+        left.setLayoutParams(params);
+
+        mContentBodyLinearLayout.addView(left);
+
+        //右布局
+        params = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,
+                ViewGroup.LayoutParams.MATCH_PARENT);
+        LinearLayout right = new LinearLayout(getActivity());
+        right.setOrientation(LinearLayout.VERTICAL);
+        params.width = 0;
+        params.weight = 350f;
+        right.setLayoutParams(params);
+
+        mContentBodyLinearLayout.addView(right);
+
+        //subheading
+        params = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,
+                ViewGroup.LayoutParams.MATCH_PARENT);
+        params.width = LinearLayout.LayoutParams.FILL_PARENT;
+        params.weight = 70;
+        params.height = 0;
+        mSubheading.setLayoutParams(params);
+
+        left.addView(mSubheading);
+
+
+        //main
+        params = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,
+                ViewGroup.LayoutParams.MATCH_PARENT);
+        params.weight = 360;
+        params.height = 0;
+        params.topMargin = UIHelper.getPixels(4);
+        mMain.setLayoutParams(params);
+
+        left.addView(mMain);
+
+
+        //image
+        params = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,
+                ViewGroup.LayoutParams.MATCH_PARENT);
+        mImage.setLayoutParams(params);
+
+        right.addView(mImage);
+    }
+
+    private void configTemplate_7 () {
+
+        removeAllSubViewsInContentBody();
+
+        mContentBodyLinearLayout.setOrientation(LinearLayout.HORIZONTAL);
+        mImage.setVisibility(View.VISIBLE);
+        mImage2.setVisibility(View.INVISIBLE);
+        mSubheading.setVisibility(View.VISIBLE);
+        mMain.setVisibility(View.VISIBLE);
+        mSub.setVisibility(View.INVISIBLE);
+
+
+        //左布局
+        LinearLayout left = new LinearLayout(getActivity());
+        left.setOrientation(LinearLayout.VERTICAL);
+
+        LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,
+                ViewGroup.LayoutParams.MATCH_PARENT);
+        params.width = 0;
+        params.weight = 360f;
+        params.rightMargin = UIHelper.getPixels(4);
+        left.setLayoutParams(params);
+
+        mContentBodyLinearLayout.addView(left);
+
+        //右布局
+        LinearLayout right = new LinearLayout(getActivity());
+        right.setOrientation(LinearLayout.VERTICAL);
+
+        params = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,
+                ViewGroup.LayoutParams.MATCH_PARENT);
+        params.width = 0;
+        params.weight = 350f;
+        right.setLayoutParams(params);
+
+        mContentBodyLinearLayout.addView(right);
+
+
+        //5. main
+        params = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,
+                ViewGroup.LayoutParams.MATCH_PARENT);
+        mMain.setLayoutParams(params);
+
+        left.addView(mMain);
+
+
+        //image
+        params = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,
+                ViewGroup.LayoutParams.MATCH_PARENT);
+        int margin = UIHelper.getPixels(4);
+        params.setMargins(margin,margin,margin,margin);
+        mImage.setLayoutParams(params);
+
+        right.addView(mImage);
+    }
+
+    private void configTemplate_8 () {
+
+        removeAllSubViewsInContentBody();
+
+        mContentBodyLinearLayout.setOrientation(LinearLayout.VERTICAL);
+        mImage.setVisibility(View.VISIBLE);
+        mImage2.setVisibility(View.INVISIBLE);
+        mSubheading.setVisibility(View.VISIBLE);
+        mMain.setVisibility(View.VISIBLE);
+        mSub.setVisibility(View.VISIBLE);
+
+        //上布局
+        LinearLayout top = new LinearLayout(getActivity());
+        top.setOrientation(LinearLayout.VERTICAL);
+
+        LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
+        params.height = 0;
+        params.weight = 60f;
+        params.rightMargin = UIHelper.getPixels(4);
+        top.setLayoutParams(params);
+
+        mContentBodyLinearLayout.addView(top);
+
+
+        //下布局
+        LinearLayout bottom = new LinearLayout(getActivity());
+        bottom.setOrientation(LinearLayout.HORIZONTAL);
+
+        params = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,
+                ViewGroup.LayoutParams.MATCH_PARENT);
+        params.height = 0;
+        params.weight = 345f;
+        params.topMargin = UIHelper.getPixels(4);
+        bottom.setLayoutParams(params);
+
+        mContentBodyLinearLayout.addView(bottom);
+
+        //子下左布局
+        LinearLayout bottomLeft = new LinearLayout(getActivity());
+        bottomLeft.setOrientation(LinearLayout.VERTICAL);
+
+        params = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,
+                ViewGroup.LayoutParams.MATCH_PARENT);
+        params.width = 0;
+        params.weight = 360f;
+        params.rightMargin = UIHelper.getPixels(4);
+        bottomLeft.setLayoutParams(params);
+
+
+        bottom.addView(bottomLeft);
+
+        //子下右布局
+        LinearLayout bottomRight = new LinearLayout(getActivity());
+        bottomLeft.setOrientation(LinearLayout.VERTICAL);
+
+        params = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,
+                ViewGroup.LayoutParams.MATCH_PARENT);
+        params.width = 0;
+        params.weight = 350f;
+        bottomRight.setLayoutParams(params);
+
+        bottom.addView(bottomRight);
+
+
+        //subheading
+        params = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,
+                ViewGroup.LayoutParams.MATCH_PARENT);
+        mSubheading.setLayoutParams(params);
+
+        top.addView(mSubheading);
+
+        //main
+        params = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,
+                ViewGroup.LayoutParams.MATCH_PARENT);
+        params.height = 0;
+        params.weight = 295f;
+        mMain.setLayoutParams(params);
+
+        bottomLeft.addView(mMain);
+
+        // sub
+        params = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,
+                ViewGroup.LayoutParams.MATCH_PARENT);
+        params.height = 0;
+        params.weight = 50f;
+        params.topMargin = UIHelper.getPixels(4);
+        mSub.setLayoutParams(params);
+
+        bottomLeft.addView(mSub);
+
+
+        //image
+        params = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,
+                ViewGroup.LayoutParams.MATCH_PARENT);
+        int margin = UIHelper.getPixels(4);
+        params.setMargins(margin,margin,margin,margin);
+        mImage.setLayoutParams(params);
+
+        bottomRight.addView(mImage);
+    }
+
+    private void configTemplate_9 () {
+
+        removeAllSubViewsInContentBody();
+
+        mContentBodyLinearLayout.setOrientation(LinearLayout.HORIZONTAL);
+        mImage.setVisibility(View.VISIBLE);
+        mImage2.setVisibility(View.VISIBLE);
+        mSubheading.setVisibility(View.VISIBLE);
+        mMain.setVisibility(View.INVISIBLE);
+        mSub.setVisibility(View.INVISIBLE);
+
+
+        //左布局
+        LinearLayout left = new LinearLayout(getActivity());
+        left.setOrientation(LinearLayout.VERTICAL);
+
+        LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,
+                ViewGroup.LayoutParams.MATCH_PARENT);
+        params.width = 0;
+        params.weight = 360f;
+        params.rightMargin = UIHelper.getPixels(4);
+        left.setLayoutParams(params);
+
+        mContentBodyLinearLayout.addView(left);
+
+        //右布局
+        LinearLayout right = new LinearLayout(getActivity());
+        right.setOrientation(LinearLayout.VERTICAL);
+
+        params = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,
+                ViewGroup.LayoutParams.MATCH_PARENT);
+        params.width = 0;
+        params.weight = 350f;
+        right.setLayoutParams(params);
+
+        mContentBodyLinearLayout.addView(right);
+
+
+        //mSubheading
+        params = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,
+                ViewGroup.LayoutParams.MATCH_PARENT);
+        params.height = 0;
+        params.weight = 70f;
+        mSubheading.setLayoutParams(params);
+
+        left.addView(mSubheading);
+
+        //image2
+        params = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,
+                ViewGroup.LayoutParams.MATCH_PARENT);
+        params.height = 0;
+        params.weight = 360f;
+        int margin = UIHelper.getPixels(4);
+        params.setMargins(margin, margin, margin, margin);
+        mImage2.setLayoutParams(params);
+
+        left.addView(mImage2);
+
+
+        //image
+        params = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,
+                ViewGroup.LayoutParams.MATCH_PARENT);
+        mImage.setLayoutParams(params);
+
+        right.addView(mImage);
+    }
+
+    private void configTemplate_10 () {
+
+        removeAllSubViewsInContentBody();
+
+        mContentBodyLinearLayout.setOrientation(LinearLayout.HORIZONTAL);
+        mImage.setVisibility(View.VISIBLE);
+        mImage2.setVisibility(View.INVISIBLE);
+        mSubheading.setVisibility(View.VISIBLE);
+        mMain.setVisibility(View.VISIBLE);
+        mSub.setVisibility(View.INVISIBLE);
+
+
+        //左布局
+        LinearLayout left = new LinearLayout(getActivity());
+        left.setOrientation(LinearLayout.VERTICAL);
+
+        LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,
+                ViewGroup.LayoutParams.MATCH_PARENT);
+        params.width = 0;
+        params.weight = 360f;
+        params.rightMargin = UIHelper.getPixels(4);
+        left.setLayoutParams(params);
+
+        mContentBodyLinearLayout.addView(left);
+
+        //右布局
+        LinearLayout right = new LinearLayout(getActivity());
+        right.setOrientation(LinearLayout.VERTICAL);
+
+        params = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,
+                ViewGroup.LayoutParams.MATCH_PARENT);
+        params.width = 0;
+        params.weight = 350f;
+        right.setLayoutParams(params);
+
+        mContentBodyLinearLayout.addView(right);
+
+
+        //subheading
+        params = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,
+                ViewGroup.LayoutParams.MATCH_PARENT);
+        params.height = 0;
+        params.weight = 215f;
+        mSubheading.setLayoutParams(params);
+
+        left.addView(mSubheading);
+
+        //main
+        params = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,
+                ViewGroup.LayoutParams.MATCH_PARENT);
+        params.height = 0;
+        params.weight = 215f;
+        params.topMargin = UIHelper.getPixels(4);
+        mMain.setLayoutParams(params);
+
+        left.addView(mMain);
+
+
+        //image
+        params = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,
+                ViewGroup.LayoutParams.MATCH_PARENT);
+        int margin = UIHelper.getPixels(4);
+        params.setMargins(margin,margin,margin,margin);
+        mImage.setLayoutParams(params);
+
+        right.addView(mImage);
+    }
+
+    private void configTemplate_11 () {
+
+        removeAllSubViewsInContentBody();
+
+        mContentBodyLinearLayout.setOrientation(LinearLayout.HORIZONTAL);
+        mImage.setVisibility(View.INVISIBLE);
+        mImage2.setVisibility(View.INVISIBLE);
+        mSubheading.setVisibility(View.INVISIBLE);
+        mMain.setVisibility(View.VISIBLE);
+        mSub.setVisibility(View.VISIBLE);
+
+
+        //左布局
+        LinearLayout left = new LinearLayout(getActivity());
+        left.setOrientation(LinearLayout.VERTICAL);
+
+        LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,
+                ViewGroup.LayoutParams.MATCH_PARENT);
+        params.width = 0;
+        params.weight = 360f;
+        params.rightMargin = UIHelper.getPixels(4);
+        left.setLayoutParams(params);
+
+        mContentBodyLinearLayout.addView(left);
+
+        //右布局
+        LinearLayout right = new LinearLayout(getActivity());
+        right.setOrientation(LinearLayout.VERTICAL);
+
+        params = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,
+                ViewGroup.LayoutParams.MATCH_PARENT);
+        params.width = 0;
+        params.weight = 350f;
+        right.setLayoutParams(params);
+
+        mContentBodyLinearLayout.addView(right);
+
+
+        //mMain
+        params = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,
+                ViewGroup.LayoutParams.MATCH_PARENT);
+        mMain.setLayoutParams(params);
+        left.addView(mMain);
+
+
+        //mSub
+        params = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,
+                ViewGroup.LayoutParams.MATCH_PARENT);
+        mSub.setLayoutParams(params);
+        right.addView(mSub);
+    }
+
+    private void configTemplate_12 () {
+        removeAllSubViewsInContentBody();
+
+        mContentBodyLinearLayout.setOrientation(LinearLayout.HORIZONTAL);
+        mImage.setVisibility(View.INVISIBLE);
+        mImage2.setVisibility(View.INVISIBLE);
+        mSubheading.setVisibility(View.INVISIBLE);
+        mMain.setVisibility(View.VISIBLE);
+        mSub.setVisibility(View.VISIBLE);
+
+
+        //左布局
+        LinearLayout left = new LinearLayout(getActivity());
+        left.setOrientation(LinearLayout.VERTICAL);
+
+        LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,
+                ViewGroup.LayoutParams.MATCH_PARENT);
+        params.width = 0;
+        params.weight = 145f;
+        params.rightMargin = UIHelper.getPixels(4);
+        left.setLayoutParams(params);
+
+        mContentBodyLinearLayout.addView(left);
+
+        //右布局
+        LinearLayout right = new LinearLayout(getActivity());
+        right.setOrientation(LinearLayout.VERTICAL);
+
+        params = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,
+                ViewGroup.LayoutParams.MATCH_PARENT);
+        params.width = 0;
+        params.weight = 545f;
+        right.setLayoutParams(params);
+
+        mContentBodyLinearLayout.addView(right);
+
+
+        //mMain
+        params = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,
+                ViewGroup.LayoutParams.MATCH_PARENT);
+        mMain.setLayoutParams(params);
+        left.addView(mMain);
+
+
+        //mSub
+        params = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,
+                ViewGroup.LayoutParams.MATCH_PARENT);
+        mSub.setLayoutParams(params);
+        right.addView(mSub);
+    }
+
+    private void configTemplate_13 () {
+        removeAllSubViewsInContentBody();
+
+        mContentBodyLinearLayout.setOrientation(LinearLayout.HORIZONTAL);
+        mImage.setVisibility(View.VISIBLE);
+        mImage2.setVisibility(View.INVISIBLE);
+        mSubheading.setVisibility(View.VISIBLE);
+        mMain.setVisibility(View.VISIBLE);
+        mSub.setVisibility(View.INVISIBLE);
+
+
+        //左布局
+        LinearLayout left = new LinearLayout(getActivity());
+        left.setOrientation(LinearLayout.VERTICAL);
+
+        LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,
+                ViewGroup.LayoutParams.MATCH_PARENT);
+        params.width = 0;
+        params.weight = 360f;
+        params.rightMargin = UIHelper.getPixels(4);
+        left.setLayoutParams(params);
+
+        mContentBodyLinearLayout.addView(left);
+
+        //右布局
+        params = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,
+                ViewGroup.LayoutParams.MATCH_PARENT);
+        LinearLayout right = new LinearLayout(getActivity());
+        right.setOrientation(LinearLayout.VERTICAL);
+        params.width = 0;
+        params.weight = 350f;
+        right.setLayoutParams(params);
+
+        mContentBodyLinearLayout.addView(right);
+
+        //subheading
+        params = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,
+                ViewGroup.LayoutParams.MATCH_PARENT);
+        params.weight = 355;
+        params.height = 0;
+        mSubheading.setLayoutParams(params);
+
+        left.addView(mSubheading);
+
+
+        //main
+        params = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,
+                ViewGroup.LayoutParams.MATCH_PARENT);
+        params.weight = 60;
+        params.height = 0;
+        params.topMargin = UIHelper.getPixels(4);
+        mMain.setLayoutParams(params);
+
+        left.addView(mMain);
+
+
+        //image
+        params = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,
+                ViewGroup.LayoutParams.MATCH_PARENT);
+        int margin = UIHelper.getPixels(4);
+        params.setMargins(margin,margin,margin,margin);
+        mImage.setLayoutParams(params);
+
+        right.addView(mImage);
+    }
+
+    private void configTemplate_14 () {
+        removeAllSubViewsInContentBody();
+
+        mContentBodyLinearLayout.setOrientation(LinearLayout.HORIZONTAL);
+        mImage.setVisibility(View.VISIBLE);
+        mImage2.setVisibility(View.INVISIBLE);
+        mSubheading.setVisibility(View.VISIBLE);
+        mMain.setVisibility(View.VISIBLE);
+        mSub.setVisibility(View.VISIBLE);
+
+
+        //左布局
+        LinearLayout left = new LinearLayout(getActivity());
+        left.setOrientation(LinearLayout.VERTICAL);
+
+        LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,
+                ViewGroup.LayoutParams.MATCH_PARENT);
+        params.width = 0;
+        params.weight = 360f;
+        params.rightMargin = UIHelper.getPixels(4);
+        left.setLayoutParams(params);
+
+        mContentBodyLinearLayout.addView(left);
+
+        //右布局
+        params = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,
+                ViewGroup.LayoutParams.MATCH_PARENT);
+        LinearLayout right = new LinearLayout(getActivity());
+        right.setOrientation(LinearLayout.VERTICAL);
+        params.width = 0;
+        params.weight = 350f;
+        right.setLayoutParams(params);
+
+        mContentBodyLinearLayout.addView(right);
+
+        //subheading
+        params = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,
+                ViewGroup.LayoutParams.MATCH_PARENT);
+        params.width = LinearLayout.LayoutParams.FILL_PARENT;
+        params.weight = 100;
+        params.height = 0;
+        mSubheading.setLayoutParams(params);
+
+        left.addView(mSubheading);
+
+
+        //main
+        params = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,
+                ViewGroup.LayoutParams.MATCH_PARENT);
+        params.weight = 180;
+        params.height = 0;
+        params.topMargin = UIHelper.getPixels(4);
+        mMain.setLayoutParams(params);
+
+        left.addView(mMain);
+
+        //sub
+        params = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,
+                ViewGroup.LayoutParams.MATCH_PARENT);
+        params.weight = 100;
+        params.height = 0;
+        params.topMargin = UIHelper.getPixels(4);
+        mSub.setLayoutParams(params);
+
+        left.addView(mSub);
+
+
+        //image
+        params = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,
+                ViewGroup.LayoutParams.MATCH_PARENT);
+        int margin = UIHelper.getPixels(4);
+        params.setMargins(margin,margin,margin,margin);
+        mImage.setLayoutParams(params);
+
+        right.addView(mImage);
+    }
+
+    private void configTemplate_15 () {
+        removeAllSubViewsInContentBody();
+
+        mContentBodyLinearLayout.setOrientation(LinearLayout.HORIZONTAL);
+        mImage.setVisibility(View.VISIBLE);
+        mImage2.setVisibility(View.VISIBLE);
+        mSubheading.setVisibility(View.VISIBLE);
+        mMain.setVisibility(View.VISIBLE);
+        mSub.setVisibility(View.INVISIBLE);
+
+
+        //左布局
+        LinearLayout left = new LinearLayout(getActivity());
+        left.setOrientation(LinearLayout.VERTICAL);
+
+        LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,
+                ViewGroup.LayoutParams.MATCH_PARENT);
+        params.width = 0;
+        params.weight = 360f;
+        params.rightMargin = UIHelper.getPixels(4);
+        left.setLayoutParams(params);
+
+        mContentBodyLinearLayout.addView(left);
+
+        //右布局
+        params = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,
+                ViewGroup.LayoutParams.MATCH_PARENT);
+        LinearLayout right = new LinearLayout(getActivity());
+        right.setOrientation(LinearLayout.VERTICAL);
+        params.width = 0;
+        params.weight = 350f;
+        right.setLayoutParams(params);
+
+        mContentBodyLinearLayout.addView(right);
+
+        //image2
+        params = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,
+                ViewGroup.LayoutParams.MATCH_PARENT);
+        params.weight = 310;
+        params.height = 0;
+        int margin = UIHelper.getPixels(4);
+        params.setMargins(margin, margin, margin, margin);
+        mImage2.setLayoutParams(params);
+
+        left.addView(mImage2);
+
+        //subheading
+        params = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,
+                ViewGroup.LayoutParams.MATCH_PARENT);
+        params.weight = 60;
+        params.height = 0;
+        mSubheading.setLayoutParams(params);
+
+        left.addView(mSubheading);
+
+
+        //image
+        params = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,
+                ViewGroup.LayoutParams.MATCH_PARENT);
+        params.weight = 310;
+        params.height = 0;
+        params.setMargins(margin, margin, margin, margin);
+        mImage.setLayoutParams(params);
+
+        right.addView(mImage);
+
+        //main
+        params = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,
+                ViewGroup.LayoutParams.MATCH_PARENT);
+        params.weight = 60;
+        params.height = 0;
+        mMain.setLayoutParams(params);
+
+        right.addView(mMain);
+
+
+    }
+
+    private void configTemplate_16 () {
+        removeAllSubViewsInContentBody();
+
+        mContentBodyLinearLayout.setOrientation(LinearLayout.HORIZONTAL);
+        mImage.setVisibility(View.VISIBLE);
+        mImage2.setVisibility(View.INVISIBLE);
+        mSubheading.setVisibility(View.VISIBLE);
+        mMain.setVisibility(View.VISIBLE);
+        mSub.setVisibility(View.VISIBLE);
+
+
+        //左布局
+        LinearLayout left = new LinearLayout(getActivity());
+        left.setOrientation(LinearLayout.VERTICAL);
+
+        LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,
+                ViewGroup.LayoutParams.MATCH_PARENT);
+        params.width = 0;
+        params.weight = 360f;
+        params.rightMargin = UIHelper.getPixels(4);
+        left.setLayoutParams(params);
+
+        mContentBodyLinearLayout.addView(left);
+
+        //右布局
+        params = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,
+                ViewGroup.LayoutParams.MATCH_PARENT);
+        LinearLayout right = new LinearLayout(getActivity());
+        right.setOrientation(LinearLayout.VERTICAL);
+        params.width = 0;
+        params.weight = 350f;
+        right.setLayoutParams(params);
+
+        mContentBodyLinearLayout.addView(right);
+
+        //subheading
+        params = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,
+                ViewGroup.LayoutParams.MATCH_PARENT);
+        params.weight = 100;
+        params.height = 0;
+        mSubheading.setLayoutParams(params);
+
+        right.addView(mSubheading);
+
+        //main
+        params = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,
+                ViewGroup.LayoutParams.MATCH_PARENT);
+        params.weight = 180;
+        params.height = 0;
+        params.topMargin = UIHelper.getPixels(4);
+        mMain.setLayoutParams(params);
+
+        right.addView(mMain);
+
+        //sub
+        params = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,
+                ViewGroup.LayoutParams.MATCH_PARENT);
+        params.weight = 100;
+        params.height = 0;
+        params.topMargin = UIHelper.getPixels(4);
+        mSub.setLayoutParams(params);
+
+        right.addView(mSub);
+
+
+        //image
+        params = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,
+                ViewGroup.LayoutParams.MATCH_PARENT);
+        int margin = UIHelper.getPixels(4);
+        params.setMargins(margin,margin,margin,margin);
+        mImage.setLayoutParams(params);
+
+        left.addView(mImage);
+
+
+    }
+
+    private void removeAllSubViewsInContentBody() {
+
+        if(mMain.getParent()!=null)
+            ((ViewGroup)mMain.getParent()).removeView(mMain);
+
+        if(mSubheading.getParent()!=null)
+            ((ViewGroup)mSubheading.getParent()).removeView(mSubheading);
+
+
+        if(mSub.getParent()!=null)
+            ((ViewGroup)mSub.getParent()).removeView(mSub);
+
+        if(mImage.getParent()!=null)
+            ((ViewGroup)mImage.getParent()).removeView(mImage);
+
+        if(mImage2.getParent()!=null)
+            ((ViewGroup)mImage2.getParent()).removeView(mImage2);
+
+
+        int n = mContentBodyLinearLayout.getChildCount();
+        for (int i = 0; i < n; i++) {
+            View item = mContentBodyLinearLayout.getChildAt(i);
+            if (item.getClass().isInstance(ViewGroup.class)) {
+                int m = ((ViewGroup) item).getChildCount();
+                if (m > 0) {
+                    ((ViewGroup)item).removeAllViews();
+                }
+            }
+
+        }
+        if (n > 0) {
+            mContentBodyLinearLayout.removeAllViews();
+        }
+
+
+
+
+    }
+
+
+
 
     /**
      * 所谓CSS就是：颜色，字体，对其，大小

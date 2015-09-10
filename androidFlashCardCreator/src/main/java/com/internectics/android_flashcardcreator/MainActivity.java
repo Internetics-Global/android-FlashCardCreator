@@ -297,13 +297,12 @@ public class MainActivity extends FragmentActivity implements
                 mIsAllowedToShowPackList = false;
                 break;
 
-            case R.id.actionbar_play:
-
+            case R.id.actionbar_play_auto:
                 if (mCurrentPack.cards.size() > 0) {
                     Intent intent = new Intent(MainActivity.this, PlayActivity.class);
                     intent.putExtra("packID", mCurrentPack.packID);
+                    intent.putExtra("oneOffPlayType",1);  //manually
                     startActivity(intent);
-//                    overridePendingTransition(R.anim.in_from_bottom, R.anim.out_to_above);
                     mIsAllowedToShowPackList = false;
                 }  else {
 
@@ -313,9 +312,41 @@ public class MainActivity extends FragmentActivity implements
                             .setPositiveButton("OK", null)
                             .show();
                 }
+                break;
 
+            case R.id.actionbar_play_auto_loop:
+                if (mCurrentPack.cards.size() > 0) {
+                    Intent intent = new Intent(MainActivity.this, PlayActivity.class);
+                    intent.putExtra("packID", mCurrentPack.packID);
+                    intent.putExtra("oneOffPlayType",2);  //manually
+                    startActivity(intent);
+                    mIsAllowedToShowPackList = false;
+                }  else {
 
+                    new AlertDialog.Builder(this)
+                            .setTitle("Alert")
+                            .setMessage("No card available")
+                            .setPositiveButton("OK", null)
+                            .show();
+                }
+                break;
 
+            case R.id.actionbar_play_manually:
+
+                if (mCurrentPack.cards.size() > 0) {
+                    Intent intent = new Intent(MainActivity.this, PlayActivity.class);
+                    intent.putExtra("packID", mCurrentPack.packID);
+                    intent.putExtra("oneOffPlayType",0);  //manually
+                    startActivity(intent);
+                    mIsAllowedToShowPackList = false;
+                }  else {
+
+                    new AlertDialog.Builder(this)
+                            .setTitle("Alert")
+                            .setMessage("No card available")
+                            .setPositiveButton("OK", null)
+                            .show();
+                }
                 break;
 
             case R.id.actionbar_share_pack:

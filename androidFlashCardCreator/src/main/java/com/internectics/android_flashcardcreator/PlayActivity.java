@@ -48,6 +48,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Set;
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -102,6 +103,8 @@ public class PlayActivity extends FragmentActivity implements SensorEventListene
 
     private boolean        mIsShuttingDown;
 
+    private int            mOneOffPlayType; //0, manually; 1, auto play; 2, auto play loop
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -112,6 +115,8 @@ public class PlayActivity extends FragmentActivity implements SensorEventListene
         getActionBar().hide();
 
         int packID = getIntent().getIntExtra("packID", -1);
+        mOneOffPlayType = getIntent().getIntExtra("oneOffPlayType",-1);
+
         mCurrentPack = CardListModel.getPack(packID);
 
         mCyclePlayImageButton = (ImageButton) findViewById(R.id.cycle_play_image_button);
@@ -716,8 +721,7 @@ public class PlayActivity extends FragmentActivity implements SensorEventListene
                 @Override
                 public void onInit(int status) {
                     if (status == TextToSpeech.SUCCESS) {
-                        Timber.tag(Global.debugTag).i("TTS", "Initilization Success");
-
+                        Timber.tag(Global.debugTag).i("TTS", "Initialization Success");
 
                         mTTS.setOnUtteranceProgressListener(new UtteranceProgressListener() {
                             @Override

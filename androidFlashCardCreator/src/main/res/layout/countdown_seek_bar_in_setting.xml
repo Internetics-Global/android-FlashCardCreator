@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="50dp">
+
+    <TextView
+        android:layout_alignParentLeft="true"
+        android:id="@+id/count_down_textview"
+        android:layout_width="150dp"
+        android:layout_height="match_parent"
+        android:paddingLeft="10dp"
+        android:gravity="center_vertical|left"
+        android:paddingRight="0dp"
+        android:textSize="18sp"
+        android:textColor="@android:color/white"
+        android:text="Count Down (3)"/>
+
+    <LinearLayout
+        android:layout_alignParentRight="true"
+        android:layout_width="300dp"
+        android:layout_height="fill_parent">
+
+        <TextView
+            android:layout_width="35dp"
+            android:layout_height="match_parent"
+            android:paddingLeft="0dp"
+            android:gravity="center_vertical|right"
+            android:paddingRight="0dp"
+            android:textSize="12sp"
+            android:text="None"/>
+
+        <org.adw.library.widgets.discreteseekbar.DiscreteSeekBar
+            android:id="@+id/seekbar"
+            android:layout_marginTop="10dp"
+            android:layout_marginLeft="-10dp"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="match_parent"
+            app:dsb_min="0"
+            app:dsb_max="9"
+            app:dsb_value="3"
+            app:dsb_indicatorColor = "@android:color/holo_orange_dark"
+            app:dsb_progressColor="@android:color/holo_orange_dark"
+            app:dsb_trackColor="@android:color/white"
+            app:dsb_indicatorFormatter="%2d"/>
+
+        <TextView
+            android:layout_width="15dp"
+            android:layout_marginLeft="-10dp"
+            android:layout_marginRight="25dp"
+            android:layout_height="match_parent"
+            android:paddingLeft="0dp"
+            android:gravity="center_vertical|left"
+            android:paddingRight="0dp"
+            android:textSize="12sp"
+            android:text="9"/>
+
+    </LinearLayout>
+
+</RelativeLayout>

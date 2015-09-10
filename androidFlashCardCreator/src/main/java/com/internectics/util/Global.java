@@ -10,6 +10,7 @@ public class Global {
     public static final boolean   isDebug =  false;  //是否开启Timber的log
 
     public static final String    SAMPLE_URL = "https://s3.amazonaws.com/internetics.flashcardcreator/Sample_25052015_Encripted.zip?type=demo";
+    //public static final String    SAMPLE_URL = "http://7o51o0.com1.z0.glb.clouddn.com/tt.zip";
 
     public static final String  debugTag = "ccaa";
     public static final String  debugTag2 = "ccaa2";
@@ -90,6 +91,11 @@ public class Global {
     public static int     k_Default_Auto_Play_Speed  = 10;
     public static int     k_MAX_Auto_Play_Speed  = 60;
     public static int     k_MIN_Auto_Play_Speed  = 4;
+
+
+
+    //Setting related
+    public static final int kDEFAULT_CountDown_Slider_Value = 3;
 
 
     /**
