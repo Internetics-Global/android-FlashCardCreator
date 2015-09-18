@@ -170,8 +170,20 @@ public class AudioHelper {
 
     public static void stopAudio() {
         if (mp != null) {
-            mp.stop();
-            mp.release();
+
+            boolean isPlaying = false;
+            try {
+                isPlaying = mp.isPlaying();
+            } catch (IllegalStateException e) {
+                mp.release();
+                mp = null;
+            }
+
+            if (isPlaying) {
+                mp.stop();
+                mp.release();
+                mp = null;
+            }
         }
     }
 
