@@ -26,13 +26,12 @@ public class MoreActivity extends PreferenceActivity {
         addPreferencesFromResource(R.xml.more);
         setContentView(R.layout.more);
 
-
         final CheckBoxPreference randomPlayPreference = (CheckBoxPreference) findPreference("more_random_play_preference");
+        final CheckBoxPreference muteSoundRecordingPreference = (CheckBoxPreference) findPreference("more_mute_sound_recording_preference");
         final PreferenceScreen aboutPreference = (PreferenceScreen) findPreference("more_about_preference");
-        final CheckBoxPreference maleFemalePreference = (CheckBoxPreference) findPreference("more_male_female_voice_preference");
         final CheckBoxPreference textToSpeechPreference = (CheckBoxPreference) findPreference("more_text_to_speech_preference");
         final CheckBoxPreference showQuestionOnlyPreference = (CheckBoxPreference) findPreference("more_show_question_only_preference");
-
+        final CheckBoxPreference maleFemalePreference = (CheckBoxPreference) findPreference("more_male_female_voice_preference");
 
         final DiscreteSeekBar countDownDiscreteSeekBar = (DiscreteSeekBar) findViewById(R.id.seekbar);
         final TextView countDownTextView = (TextView) findViewById(R.id.count_down_textview);
@@ -57,6 +56,7 @@ public class MoreActivity extends PreferenceActivity {
             }
         });
 
+        randomPlayPreference.setChecked(AppConfig.sharedInstance().isRandomPlay());
         randomPlayPreference.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
             @Override
             public boolean onPreferenceClick(Preference preference) {
@@ -64,6 +64,19 @@ public class MoreActivity extends PreferenceActivity {
                     AppConfig.sharedInstance().setRandomPlay(false);
                 } else {
                     AppConfig.sharedInstance().setRandomPlay(true);
+                }
+                return false;
+            }
+        });
+
+        muteSoundRecordingPreference.setChecked(AppConfig.sharedInstance().isMuteSoundRecording());
+        muteSoundRecordingPreference.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
+            @Override
+            public boolean onPreferenceClick(Preference preference) {
+                if (muteSoundRecordingPreference.isChecked()) {
+                    AppConfig.sharedInstance().setMuteSoundRecording(true);
+                } else {
+                    AppConfig.sharedInstance().setMuteSoundRecording(false);
                 }
                 return false;
             }

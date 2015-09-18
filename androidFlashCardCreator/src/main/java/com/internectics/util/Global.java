@@ -58,9 +58,9 @@ public class Global {
     //Used to judge whether to play random
     public static final String isRandomPlay = "is_random_play";
 
-    public static final String isTextToSpeech = "is_Text_To_Speech";
+    public static final String isMuteSoundRecording = "isMuteSoundRecording";
 
-    public static final String isAutoDelay = "is_Auto_Delay";
+    public static final String isTextToSpeech = "is_Text_To_Speech";
 
     //used to generate a redirected URL
     public static final String URL_REDIRECT_API = "http://tinyurl.com/api-create.php?url=";
@@ -88,7 +88,7 @@ public class Global {
     public static final String mImages_Not_Showing = "mImages_Not_Showing";
 
 
-    public static int     k_Default_Auto_Play_Speed  = 10;
+    public static int k_Default_Auto_Play_Dwell_Time = 10;
     public static int     k_MAX_Auto_Play_Speed  = 60;
     public static int     k_MIN_Auto_Play_Speed  = 4;
 

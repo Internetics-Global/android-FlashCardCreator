@@ -145,12 +145,13 @@ public class CreateSoundFragment extends DialogFragment {
 
     private void playButtonClicked() {
 
-        AudioHelper.playAudio(temporaryRecordedSoundPath().toString());
+        AudioHelper.playAudio(temporaryRecordedSoundPath().toString(),false);
 
     }
 
     private void saveButtonClicked() {
-        dismiss();
+
+        AudioHelper.stopAudio();
 
         String saveToPath = "";
         if (mIsQuestionShowing) {
@@ -184,6 +185,8 @@ public class CreateSoundFragment extends DialogFragment {
 
 
         PackRecordHelper.savePackUpdateRecord(AppContext.getAppContext(), mCurrentPack);
+
+        dismiss();
 
     }
 

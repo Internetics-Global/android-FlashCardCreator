@@ -127,6 +127,24 @@ public class AppConfig {
 
     }
 
+
+    public boolean isMuteSoundRecording() {
+        String str = appConfig.get(Global.isMuteSoundRecording);
+        if ((str != null) && (str.equals("true")))
+            return true;
+        else
+            return false;
+    }
+
+    public void setMuteSoundRecording(boolean b) {
+        if (b) {
+            appConfig.set(Global.isMuteSoundRecording, "true");
+        } else {
+            appConfig.set(Global.isMuteSoundRecording, "false");
+        }
+
+    }
+
     public int getCountDown() {
         String str = appConfig.get("K_CountDown_Val");
         if ((str != null))
@@ -161,28 +179,6 @@ public class AppConfig {
 
     }
 
-
-    /**
-     * YES： 当text to speech完成后，通过mTTS.setOnUtteranceProgressListener切换到下一个卡片
-     * NO: 通过固定的delay和timer切换到下一个卡片
-     * @return
-     */
-    public boolean isAutoDelay() {
-        String str = appConfig.get(Global.isAutoDelay);
-        if ((str != null) && (str.equals("true")))
-            return true;
-        else
-            return false;
-    }
-
-    public void setAutoDelay(boolean b) {
-        if (b) {
-            appConfig.set(Global.isAutoDelay, "true");
-        } else {
-            appConfig.set(Global.isAutoDelay, "false");
-        }
-
-    }
 
 
     public boolean isShowQuestionOnly() {

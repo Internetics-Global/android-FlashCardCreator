@@ -25,10 +25,10 @@
 
     <TextView
         android:layout_marginTop="5dp"
-        android:layout_marginLeft="10dp"
-        android:layout_width="50dp"
+        android:layout_marginLeft="5dp"
+        android:layout_width="70dp"
         android:layout_height="20dp"
-        android:text="Auto Delay"
+        android:text="Reading timer"
         android:textSize="10sp"
         android:lines="1"
         android:id="@+id/auto_play_speed_textview"
@@ -37,8 +37,8 @@
         android:maxLines="1"/>
 
     <include
-        android:id="@+id/auto_play_speed_seek_bar"
-        layout="@layout/auto_play_speed_seek_bar"
+        android:id="@+id/auto_play_dwell_time_seek_bar"
+        layout="@layout/auto_play_dwell_time_seek_bar"
         android:layout_marginLeft="0dp"
         android:layout_width="100dp"
         android:layout_marginTop="0dp"
@@ -46,10 +46,10 @@
 
     <TextView
         android:layout_marginTop="5dp"
-        android:layout_marginLeft="10dp"
-        android:layout_width="80dp"
+        android:layout_marginLeft="5dp"
+        android:layout_width="70dp"
         android:layout_height="20dp"
-        android:text="Pause for Answer"
+        android:text="Question pause"
         android:textSize="10sp"
         android:lines="1"
         android:id="@+id/pause_for_answer_textview"

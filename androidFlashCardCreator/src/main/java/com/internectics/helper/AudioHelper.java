@@ -2,6 +2,10 @@ package com.internectics.helper;
 
 import android.media.MediaPlayer;
 import android.media.MediaRecorder;
+import android.os.Build;
+import android.widget.Toast;
+
+import com.internectics.fragment.CardDetailFragment;
 
 import junit.framework.Assert;
 
@@ -51,6 +55,8 @@ public class AudioHelper {
 
     public static void startRecord() {
 
+        stopAudio();
+
         try {
             mRecorder.prepare();
             mRecorder.start();
@@ -89,16 +95,40 @@ public class AudioHelper {
         }
     }
 
+    public static void playAudio(CardDetailFragment cardDetailFragment,boolean isMute) {
+
+        String audioFileStr;
+        if (cardDetailFragment.mIsQuestionShowing) {
+            audioFileStr = cardDetailFragment.mCurrentCard.question.audioUriFormatStr;
+        } else {
+            audioFileStr = cardDetailFragment.mCurrentCard.answer.audioUriFormatStr;
+        }
+
+        if (audioFileStr.length() >0) {
+             playAudio(FileOperationHelper.deleteUriSchemeHeader(audioFileStr),isMute);
+        } else {
+            //Toast.makeText(PlayActivity.this,"Not available audio file", Toast.LENGTH_LONG).show();
+        }
+    }
+
 
     /*
       Just play a sound, no UI
       Support two formats: AAC (iOS), 3GP(android)
      */
-    public static void playAudio(String pathString){
+    public static void playAudio(String pathString, boolean isMute){
+
+        stopAudio();
 
         //set up MediaPlayer
         if (mp == null) {
             mp = new MediaPlayer();
+        }
+
+        if (isMute) {
+            mp.setVolume(0,0);
+        } else {
+            mp.setVolume(1,1);
         }
 
         try {
@@ -141,6 +171,7 @@ public class AudioHelper {
     public static void stopAudio() {
         if (mp != null) {
             mp.stop();
+            mp.release();
         }
     }
 

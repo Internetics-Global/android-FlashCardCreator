@@ -36,18 +36,16 @@
 
     <TextView
         android:textColor="@android:color/white"
-        android:layout_marginLeft="30dp"
-        android:layout_marginBottom="30dp"
-        android:layout_width="200dp"
-        android:textSize="168sp"
         android:background="@drawable/shape_play_countdown_circle"
-        android:visibility="visible"
-        android:layout_height="200dp"
+        android:layout_width="220dp"
+        android:textSize="168sp"
+        android:visibility="gone"
+        android:layout_height="220dp"
         android:id="@+id/count_down_textview"
         android:layout_gravity="center"
         android:gravity="center"
-        android:padding="10dp"
-        android:text="N"/>
+        android:singleLine="true"
+        android:text="3"/>
 
 
 </FrameLayout>

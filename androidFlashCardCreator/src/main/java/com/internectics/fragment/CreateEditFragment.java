@@ -35,7 +35,6 @@ import com.internectics.util.AppContext;
 import com.internectics.util.Global;
 import com.internectics.util.OpenUDID_manager;
 import com.internectics.util.UIHelper;
-import com.nostra13.socialsharing.twitter.extpack.lgpl.haustein.Base64Encoder;
 
 import org.adw.library.widgets.discreteseekbar.DiscreteSeekBar;
 
@@ -175,7 +174,7 @@ public class CreateEditFragment extends DialogFragment implements TextView.OnEdi
             mCreatorEditText.setText(pack.creatorNickName);
             mJobTitleEditText.setText(pack.jobTitle);
             if (pack.autoPlaySpeed == 0) {
-                mAutoPlaySpeedSeekbar.setProgress(Global.k_Default_Auto_Play_Speed);
+                mAutoPlaySpeedSeekbar.setProgress(Global.k_Default_Auto_Play_Dwell_Time);
             } else {
                 mAutoPlaySpeedSeekbar.setProgress(pack.autoPlaySpeed);
             }

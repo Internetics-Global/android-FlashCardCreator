@@ -12,6 +12,7 @@ import android.graphics.Rect;
 import android.graphics.Typeface;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
+import android.media.MediaPlayer;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Build;
@@ -2170,6 +2171,20 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnKeyboa
         } else {
             return false;
         }
+    }
+
+
+    public int durationForQuestionRecordedSound () {
+        MediaPlayer mp = MediaPlayer.create(getActivity(), Uri.parse(mCurrentCard.question.audioUriFormatStr));
+        int duration = mp.getDuration();
+        return duration;
+    }
+
+
+    public int durationForAnswerRecordedSound () {
+        MediaPlayer mp = MediaPlayer.create(getActivity(), Uri.parse(mCurrentCard.answer.audioUriFormatStr));
+        int duration = mp.getDuration();
+        return duration;
     }
 
 

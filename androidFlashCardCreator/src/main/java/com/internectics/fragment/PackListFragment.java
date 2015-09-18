@@ -14,7 +14,6 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.v4.app.Fragment;
-import android.text.InputType;
 import android.text.method.PasswordTransformationMethod;
 import android.util.Base64;
 import android.view.LayoutInflater;
@@ -42,6 +41,9 @@ import com.internectics.util.OpenUDID_manager;
 import com.internectics.util.StringUtils;
 import com.internectics.util.UIHelper;
 
+import net.londatiga.android.ActionItem;
+import net.londatiga.android.QuickAction;
+
 import java.io.FileNotFoundException;
 
 import timber.log.Timber;
@@ -55,8 +57,6 @@ public class PackListFragment extends Fragment {
     private int  mSortType;
 
     private User mUser;
-
-    private Pack  mCurrentPack; //Currently selected pack
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -211,10 +211,7 @@ public class PackListFragment extends Fragment {
 
     public class ImageAdapter extends BaseAdapter {
 
-        private final Context mContext;
-
         public ImageAdapter(Context c) {
-            mContext = c;
         }
 
         public int getCount() {
@@ -248,23 +245,15 @@ public class PackListFragment extends Fragment {
 
                 final Pack currentPack = mUser.packs.get(position -1);
 
-                ImageButton editButton = (ImageButton) convertView.findViewById(R.id.button_edit);
+                final ImageButton editButton = (ImageButton) convertView.findViewById(R.id.button_edit);
                 final ImageButton deleteButton = (ImageButton) convertView.findViewById(R.id.button_delete_pack);
-                ImageView playImageView = (ImageView) convertView.findViewById(R.id.pack_play_image_view);
+                final ImageView playImageView = (ImageView) convertView.findViewById(R.id.pack_play_image_view);
 
                 playImageView.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        ((MainActivity)getActivity()).mIsAllowedToShowPackList = false;
 
-                        currentPack.lastVistDate = Global.currentTimeSeconds();
-                        currentPack.save(AppContext.getAppContext());
-
-                        Intent intent = new Intent(getActivity(), PlayActivity.class);
-                        intent.putExtra("packID", currentPack.packID);
-                        startActivity(intent);
-
-                        ((MainActivity) getActivity()).dismissPackListPopupWindow();
+                        playImageViewButtonClicked(position);
 
                     }
                 });
@@ -289,46 +278,7 @@ public class PackListFragment extends Fragment {
                     @Override
                     public void onClick(View v) {
 
-                        mCurrentPack = mUser.packs.get(position - 1);
-
-                        if (currentPack.creatorID.equals(OpenUDID_manager.getOpenUDID()) == false) {
-                            gotoPackEditView();
-                        } else {
-
-                            final EditText input = new EditText(mContext);
-                            input.setTransformationMethod(PasswordTransformationMethod.getInstance());
-                            new AlertDialog.Builder(mContext)
-                                    .setTitle("Input admin password")
-                                    .setIcon(android.R.drawable.ic_dialog_info)
-                                    .setView(input)
-                                    .setPositiveButton("Done", new DialogInterface.OnClickListener() {
-                                        @Override
-                                        public void onClick(DialogInterface dialog, int which) {
-
-                                            String password = input.getText().toString();
-                                            String savedPassword = new String(Base64.decode(currentPack.restorePassword,0));
-                                            if (password.equals(savedPassword)) {
-
-                                                mCurrentPack.creatorID = OpenUDID_manager.getOpenUDID();
-                                                mCurrentPack.save(mContext);
-
-                                                gotoPackEditView();
-
-                                            } else {
-
-                                                new AlertDialog.Builder(mContext)
-                                                        .setTitle("Error")
-                                                        .setMessage("Wrong password")
-                                                        .setPositiveButton("OK",null)
-                                                        .show();
-                                            }
-
-                                        }
-                                    })
-                                    .setNegativeButton("Cancel", null)
-                                    .show();
-
-                        }
+                        editButtonClicked(position);
 
 
                     }
@@ -337,32 +287,7 @@ public class PackListFragment extends Fragment {
                 deleteButton.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        if (currentPack.packID == ((MainActivity) getActivity()).packIDForMasterViewPack) {
-                            new AlertDialog.Builder(mContext)
-                                    .setTitle("Warning")
-                                    .setMessage("The pack is currently being used")
-                                    .setPositiveButton("OK", null)
-                                    .show();
-                        } else {
-                            new AlertDialog.Builder(mContext)
-                                    .setTitle("Are you sure you want to delete?")
-                                    .setPositiveButton("Delete", new DialogInterface.OnClickListener() {
-                                        @Override
-                                        public void onClick(DialogInterface dialog, int which) {
-                                            final Button editButton = (Button) mRootView.findViewById(R.id.dialog_head_save_btn);
-                                            editButton.setText("Create New Pack");
-                                            ViewGroup.LayoutParams params = editButton.getLayoutParams();
-                                            params.width = params.width + UIHelper.getPixels(60);
-                                            editButton.setLayoutParams(params);
-                                            mUser.removePack(currentPack);
-                                            mUser.sortPacks(mSortType);
-                                            ((ImageAdapter) mGallery.getAdapter()).notifyDataSetChanged();
-                                        }
-                                    })
-                                    .setNegativeButton("Cancel", null)
-                                    .show();
-                        }
-
+                        deleteButtonClicked(position);
                     }
                 });
 
@@ -378,15 +303,141 @@ public class PackListFragment extends Fragment {
 
     }
 
+    private void deleteButtonClicked(int position) {
 
-    private void gotoPackEditView() {
+        final Pack currentPack = mUser.packs.get(position -1);
+
+        if (currentPack.packID == ((MainActivity) getActivity()).packIDForMasterViewPack) {
+            new AlertDialog.Builder(getActivity())
+                    .setTitle("Warning")
+                    .setMessage("The pack is currently being used")
+                    .setPositiveButton("OK", null)
+                    .show();
+        } else {
+            new AlertDialog.Builder(getActivity())
+                    .setTitle("Are you sure you want to delete?")
+                    .setPositiveButton("Delete", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            final Button editButton = (Button) mRootView.findViewById(R.id.dialog_head_save_btn);
+                            editButton.setText("Create New Pack");
+                            ViewGroup.LayoutParams params = editButton.getLayoutParams();
+                            params.width = params.width + UIHelper.getPixels(60);
+                            editButton.setLayoutParams(params);
+                            mUser.removePack(currentPack);
+                            mUser.sortPacks(mSortType);
+                            ((ImageAdapter) mGallery.getAdapter()).notifyDataSetChanged();
+                        }
+                    })
+                    .setNegativeButton("Cancel", null)
+                    .show();
+        }
+    }
+
+    private void editButtonClicked(final int position) {
+
+        final Pack currentPack = mUser.packs.get(position -1);
+
+        if (currentPack.creatorID.equals(OpenUDID_manager.getOpenUDID()) == false) {
+            gotoPackEditView(position);
+        } else {
+
+            final EditText input = new EditText(getActivity());
+            input.setTransformationMethod(PasswordTransformationMethod.getInstance());
+            new AlertDialog.Builder(getActivity())
+                    .setTitle("Input admin password")
+                    .setIcon(android.R.drawable.ic_dialog_info)
+                    .setView(input)
+                    .setPositiveButton("Done", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+
+                            String password = input.getText().toString();
+                            String savedPassword = new String(Base64.decode(currentPack.restorePassword,0));
+                            if (password.equals(savedPassword)) {
+
+                                currentPack.creatorID = OpenUDID_manager.getOpenUDID();
+                                currentPack.save(getActivity());
+
+                                gotoPackEditView(position);
+
+                            } else {
+
+                                new AlertDialog.Builder(getActivity())
+                                        .setTitle("Error")
+                                        .setMessage("Wrong password")
+                                        .setPositiveButton("OK",null)
+                                        .show();
+                            }
+
+                        }
+                    })
+                    .setNegativeButton("Cancel", null)
+                    .show();
+
+        }
+    }
+
+    private void playImageViewButtonClicked(int position) {
+
+        final Pack currentPack = mUser.packs.get(position -1);
+
+        new AlertDialog.Builder(getActivity())
+                .setTitle("Select")
+                .setMessage("Please select one")
+                .setNegativeButton("Play Manually", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+
+                        Intent intent = new Intent(getActivity(), PlayActivity.class);
+                        intent.putExtra("packID", currentPack.packID);
+                        intent.putExtra("oneOffPlayType", 0);  //manually
+                        startActivity(intent);
+
+                        ((MainActivity) getActivity()).dismissPackListPopupWindow();
+                    }
+                })
+                .setNeutralButton("Auto Play", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+
+                        Intent intent = new Intent(getActivity(), PlayActivity.class);
+                        intent.putExtra("packID", currentPack.packID);
+                        intent.putExtra("oneOffPlayType", 1);  //manually
+                        startActivity(intent);
+
+                        ((MainActivity) getActivity()).dismissPackListPopupWindow();
+                    }
+                })
+                .setPositiveButton("Auto Play and Loop", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+
+                        Intent intent = new Intent(getActivity(), PlayActivity.class);
+                        intent.putExtra("packID", currentPack.packID);
+                        intent.putExtra("oneOffPlayType", 2);  //manually
+                        startActivity(intent);
+
+                        ((MainActivity) getActivity()).dismissPackListPopupWindow();
+                    }
+                })
+                .show();
+
+    }
+
+
+    private void gotoPackEditView(int position) {
+
+        Pack currentPack = mUser.packs.get(position -1);
 
         CreateEditFragment dialogFragment = new CreateEditFragment();
-        dialogFragment.setPack(mCurrentPack);
+        dialogFragment.setPack(currentPack);
         dialogFragment.setIsEditPack(true);
         dialogFragment.show(getActivity().getFragmentManager(), "add_pack_fragment");
         ((MainActivity) getActivity()).dismissPackListPopupWindow();
     }
+
+
 
     @Override
     public void onStop() {

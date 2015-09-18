@@ -7,13 +7,13 @@
     android:layout_height="30dp">
 
     <TextView
-        android:layout_width="15dp"
+        android:layout_width="25dp"
         android:layout_height="match_parent"
         android:paddingLeft="0dp"
         android:gravity="center_vertical|right"
         android:paddingRight="0dp"
-        android:textSize="12sp"
-        android:text="4"/>
+        android:textSize="10sp"
+        android:text="Auto"/>
 
     <org.adw.library.widgets.discreteseekbar.DiscreteSeekBar
         android:id="@+id/seekbar"
