@@ -1,0 +1,143 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="@android:color/black"
+    android:scrollbars="none">
+
+
+
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical" >
+
+        <View
+            style="@style/h_line"/>
+
+        <RelativeLayout
+            style="@style/option_item_rl" >
+
+            <TextView
+                style="@style/option_item_text_parent"
+                android:text="Random Play"
+                android:textColor="@android:color/white"
+                android:textSize="16dp" />
+
+            <com.internectics.UI.togglebutton.ToggleButton
+                android:id="@+id/random_play_toggle_button"
+                style="@style/option_item_toggleButton"
+                android:layout_alignParentRight="true" />
+        </RelativeLayout>
+
+        <View
+            style="@style/h_line"/>
+
+        <RelativeLayout
+            style="@style/option_item_rl" >
+
+            <TextView
+                style="@style/option_item_text_parent"
+                android:text="Mute Sound Recording"
+                android:textColor="@android:color/white"
+                android:textSize="16dp" />
+
+            <com.internectics.UI.togglebutton.ToggleButton
+                android:id="@+id/mute_sound_recording_toggle_button"
+                style="@style/option_item_toggleButton"
+                android:layout_alignParentRight="true" />
+        </RelativeLayout>
+
+        <View
+            style="@style/h_line" />
+
+        <RelativeLayout
+            android:id="@+id/rl_about"
+            style="@style/option_item_rl" >
+
+            <TextView
+                style="@style/option_item_text_parent"
+                android:text="About"
+                android:textColor="@android:color/white"
+                android:textSize="16dp" />
+        </RelativeLayout>
+
+
+        <View
+            style="@style/h_line"/>
+
+        <RelativeLayout
+            style="@style/option_item_rl" >
+
+            <TextView
+                style="@style/option_item_text_parent"
+                android:text="Text to Speech"
+                android:textColor="@android:color/white"
+                android:textSize="16dp" />
+
+            <com.internectics.UI.togglebutton.ToggleButton
+                android:id="@+id/text_to_speech_toggle_button"
+                style="@style/option_item_toggleButton"
+                android:layout_alignParentRight="true" />
+        </RelativeLayout>
+
+        <View
+            style="@style/h_line"/>
+
+        <RelativeLayout
+            style="@style/option_item_rl" >
+
+            <TextView
+                style="@style/option_item_text_parent"
+                android:text="Auto-Show Question Only"
+                android:textColor="@android:color/white"
+                android:textSize="16dp" />
+
+            <com.internectics.UI.togglebutton.ToggleButton
+                android:id="@+id/auto_show_question_only_toggle_button"
+                style="@style/option_item_toggleButton"
+                android:layout_alignParentRight="true" />
+        </RelativeLayout>
+
+        <View
+            style="@style/h_line"/>
+
+        <RelativeLayout
+            style="@style/option_item_rl" >
+
+            <TextView
+                style="@style/option_item_text_parent"
+                android:text="Male/Female Voice"
+                android:textColor="@android:color/white"
+                android:textSize="16dp" />
+
+            <com.internectics.UI.togglebutton.ToggleButton
+                android:id="@+id/male_female_voice_toggle_button"
+                style="@style/option_item_toggleButton"
+                android:layout_alignParentRight="true" />
+        </RelativeLayout>
+
+
+
+        <View
+            style="@style/h_line" />
+
+
+        <include
+
+            android:layout_gravity="center_horizontal|bottom"
+            layout="@layout/countdown_seek_bar_in_setting"
+            android:layout_width="fill_parent"
+            android:layout_height="50dp" />
+
+
+        <View
+            style="@style/h_line" />
+
+
+
+
+    </LinearLayout>
+
+</ScrollView>

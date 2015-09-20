@@ -9,8 +9,13 @@ public class Global {
 
     public static final boolean   isDebug =  false;  //是否开启Timber的log
 
-    public static final String    SAMPLE_URL = "https://s3.amazonaws.com/internetics.flashcardcreator/Sample_25052015_Encripted.zip?type=demo";
+    //public static final String    SAMPLE_URL = "https://s3.amazonaws.com/internetics.flashcardcreator/Sample_25052015_Encripted.zip?type=demo";
     //public static final String    SAMPLE_URL = "http://7o51o0.com1.z0.glb.clouddn.com/tt.zip";
+
+    //latest and newer
+    //public static final String    SAMPLE_URL = "https://s3.amazonaws.com/internetics.flashcardcreator/Pack1440729625-2043618070.zip?from=Flipflashcards&type=demo";
+    public static final String    SAMPLE_URL = "http://7o51o0.com1.z0.glb.clouddn.com/Pack1440729625-2043618324.zip";
+
 
     public static final String  debugTag = "ccaa";
     public static final String  debugTag2 = "ccaa2";
