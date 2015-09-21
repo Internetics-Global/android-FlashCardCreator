@@ -50,11 +50,13 @@ import com.internectics.data.Pack;
 import com.internectics.fragment.CardDetailFragment;
 import com.internectics.fragment.CardListFragment;
 import com.internectics.fragment.CreateEditFragment;
+import com.internectics.fragment.CreateSoundFragment;
 import com.internectics.fragment.SymbolBoxFragment;
 import com.internectics.helper.AWS.AWSUtils;
 import com.internectics.helper.AWS.AWS_Constant;
 import com.internectics.helper.AWS.S3UploadHelper;
 import com.internectics.helper.AWS.SimpleDBHelper;
+import com.internectics.helper.AudioHelper;
 import com.internectics.helper.FileOperationHelper;
 import com.internectics.helper.PackBuildHelper;
 import com.internectics.helper.PackDownloadHelper;
@@ -139,6 +141,14 @@ public class MainActivity extends FragmentActivity implements
 
         setContentView(R.layout.activity_card_twopane);
 
+        Button recordStopButton = (Button) findViewById(R.id.record_stop_button);
+        recordStopButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                recordStopButtonClicked();
+            }
+        });
+
 
         Button addCardButton = (Button) this.findViewById(R.id.add_card_button);
         addCardButton.setOnClickListener(new View.OnClickListener() {
@@ -164,6 +174,14 @@ public class MainActivity extends FragmentActivity implements
 
         EasyTracker.getInstance().setContext(this);
 
+    }
+
+    private void recordStopButtonClicked() {
+        AudioHelper.isRecordFinished = true;
+
+        mCardDetailFragment.showCreateSoundView();
+
+        findViewById(R.id.record_button_background_mask_layout).setVisibility(View.INVISIBLE);
     }
 
     @Override
@@ -1361,6 +1379,18 @@ public class MainActivity extends FragmentActivity implements
             Uri uri = Uri.parse(mCurrentPack.shareLink);
             shareCodeTextView.setText(uri.getLastPathSegment());
         }
+    }
+
+
+    public void dismissCreateSoundFragment(boolean is_to_recording) {
+        View view = findViewById(R.id.record_button_background_mask_layout);
+        if (is_to_recording == false) {
+            view.setVisibility(View.INVISIBLE);
+
+        } else {
+            view.setVisibility(View.VISIBLE);
+        }
+
     }
 
 

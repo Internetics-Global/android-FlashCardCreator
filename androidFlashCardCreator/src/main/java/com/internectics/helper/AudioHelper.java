@@ -19,6 +19,8 @@ public class AudioHelper {
     private static MediaRecorder mRecorder;
     private static MediaPlayer   mp;
 
+    public static boolean isRecordFinished;
+
     /*
     outputPathString must be a .3gp format, otherwise exception will be thrown
      */

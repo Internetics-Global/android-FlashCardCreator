@@ -263,12 +263,32 @@
                     android:background="@drawable/w2048">
 
             </FrameLayout>
+            
 
         </FrameLayout>
 
 
 
     </LinearLayout>
+
+
+    <FrameLayout
+        android:id="@+id/record_button_background_mask_layout"
+        android:layout_width="match_parent"
+        android:visibility="gone"
+        android:layout_height="match_parent">
+
+        <Button
+            android:id="@+id/record_stop_button"
+            android:layout_width="60dp"
+            android:layout_height="60dp"
+            android:text="Stop"
+            android:layout_marginRight="20dp"
+            android:layout_marginBottom="80dp"
+            android:background="@drawable/shape_stop_record_button_round"
+            android:layout_gravity="bottom|right"/>
+
+    </FrameLayout>
 
     <fragment
             android:id="@+id/fragment_symbol_box"

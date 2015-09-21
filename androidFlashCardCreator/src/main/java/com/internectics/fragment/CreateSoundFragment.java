@@ -11,6 +11,7 @@ import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.TextView;
 
+import com.internectics.android_flashcardcreator.MainActivity;
 import com.internectics.android_flashcardcreator.R;
 import com.internectics.data.Card;
 import com.internectics.data.Pack;
@@ -20,6 +21,8 @@ import com.internectics.helper.PackRecordHelper;
 import com.internectics.util.AppContext;
 
 import java.io.File;
+
+import cn.pedant.SweetAlert.SweetAlertDialog;
 
 /**
  * Created by bournewang on 4/16/14.
@@ -32,18 +35,14 @@ public class CreateSoundFragment extends DialogFragment {
     private Button   mRecordButton;
     private Button   mPlayButton;
     private Button   mSaveButton;
+    private Button   mCloseButton;
+    private Button   mDeleteButton;
 
     public Card      mCurrentCard;
     public Pack      mCurrentPack;
     public Boolean   mIsQuestionShowing;
 
-    public boolean mIsCreatingCard = false;
-
-    public enum Record_Status {
-        Record_Status_Unkown, Record_Status_Recording, Record_Status_Stop, Record_Status_Normal
-    }
-
-    public Record_Status mRecordStatus;
+    public boolean   mIsCreatingCard = false;
 
 
     @Override
@@ -70,32 +69,17 @@ public class CreateSoundFragment extends DialogFragment {
         mSaveButton = (Button) mContentView
                 .findViewById(R.id.save_button);
 
+        mCloseButton = (Button) mContentView
+                .findViewById(R.id.close_button);
+
+        mDeleteButton = (Button) mContentView
+                .findViewById(R.id.delete_button);
+
         mRecordButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (mRecordStatus == Record_Status.Record_Status_Normal) {
-                    mRecordStatus = Record_Status.Record_Status_Recording;
-                    mRecordButton.setText("Stop");
-                    recordButtonClicked();
-                } else if (mRecordStatus == Record_Status.Record_Status_Recording) {
-                    mRecordStatus = Record_Status.Record_Status_Stop;
 
-                    mPlayButton.setEnabled(true);
-                    mSaveButton.setVisibility(View.VISIBLE);
-                    mPlayButton.setVisibility(View.VISIBLE);
-                    mDescriptionTextView.setText("When you click ‘Record’ you have a maximum of ten seconds to record your message. \nClick 'Stop' when ready to stop recording. \nYou can then click 'Play' to hear it, or 'Save' to save it to the card.");
-
-                    try {
-                        Thread.sleep(200);
-                    } catch (InterruptedException e) {
-                        e.printStackTrace();
-                    }
-
-                    AudioHelper.stopRecord();
-                    AudioHelper.cleanupRecorderResource();
-                    mRecordStatus = Record_Status.Record_Status_Normal;
-                    mRecordButton.setText("Record");
-                }
+                recordButtonClicked();
             }
         });
 
@@ -113,39 +97,117 @@ public class CreateSoundFragment extends DialogFragment {
             }
         });
 
+        mCloseButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                closeButtonClicked();
+            }
+        });
+
+
+        mDeleteButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                deleteButtonClicked();
+            }
+        });
+
         mSaveButton.setVisibility(View.INVISIBLE);
         mPlayButton.setVisibility(View.INVISIBLE);
 
-        mRecordStatus = Record_Status.Record_Status_Normal;
 
         return mContentView;
+    }
+
+    private void recordButtonClicked() {
+
+        AudioHelper.startRecord();
+        AudioHelper.isRecordFinished = true;
+
+        MainActivity mainActivity = (MainActivity)(getActivity());
+        mainActivity.dismissCreateSoundFragment(true);
+
+        dismiss();
+    }
+
+
+    @Override
+    public void onResume() {
+        super.onResume();
+
+        if (AudioHelper.isRecordFinished) {
+
+            AudioHelper.stopRecord();
+
+            mSaveButton.setVisibility(View.VISIBLE);
+            mPlayButton.setVisibility(View.VISIBLE);
+            mDescriptionTextView.setText("Record is finished, you can playback or save the recorded sound");
+
+            mRecordButton.setText("Record");
+        } else {
+
+            AudioHelper.setupAudioRecord(temporaryRecordedSoundPath().toString());
+
+            mSaveButton.setVisibility(View.INVISIBLE);
+            mPlayButton.setVisibility(View.INVISIBLE);
+            mDescriptionTextView.setText("When you click “Record” you have a maximum of 30 seconds to record your message. \\n\\nClick “Stop” when ready to stop recording.\\n\\nYou can then click “Play” to hear it, or “Save” to save it to the card.");
+
+        }
+
+
+        String audioUriFormatStr;
+        if (mIsQuestionShowing) {
+            audioUriFormatStr = mCurrentCard.question.audioUriFormatStr;
+        } else {
+            audioUriFormatStr = mCurrentCard.answer.audioUriFormatStr;
+        }
+        if (new File(FileOperationHelper.deleteUriSchemeHeader(audioUriFormatStr)).exists()) {
+            mDeleteButton.setVisibility(View.VISIBLE);
+        } else {
+            mDeleteButton.setVisibility(View.INVISIBLE);
+        }
     }
 
     @Override
     public void onDestroy() {
         super.onDestroy();
+    }
+
+    private void deleteButtonClicked() {
+        String audioUriFormatStr;
+        if (mIsQuestionShowing) {
+            audioUriFormatStr = mCurrentCard.question.audioUriFormatStr;
+        } else {
+            audioUriFormatStr = mCurrentCard.answer.audioUriFormatStr;
+        }
+        boolean result = new File((FileOperationHelper.deleteUriSchemeHeader(audioUriFormatStr))).delete();
+
+        if (result) {
+            mDeleteButton.setVisibility(View.INVISIBLE);
+        } else {
+            new SweetAlertDialog(getActivity())
+                    .setTitleText("Alert")
+                    .setContentText("Fail to delete or file does not exit")
+                    .show();
+        }
+    }
+
+    private void closeButtonClicked() {
+
+        AudioHelper.isRecordFinished = false;
+        MainActivity mainActivity = (MainActivity)(getActivity());
+        mainActivity.dismissCreateSoundFragment(false);
+
         AudioHelper.cleanupRecorderResource();
+
+        dismiss();
     }
 
-    private void recordButtonClicked() {
-
-        AudioHelper.setupAudioRecord(temporaryRecordedSoundPath().toString());
-
-        mPlayButton.setEnabled(false);
-        mPlayButton.setVisibility(View.INVISIBLE);
-        mSaveButton.setVisibility(View.INVISIBLE);
-
-        AudioHelper.startRecord();
-
-        TimerAysncTask dTask = new TimerAysncTask();
-        dTask.execute(100);
-
-
-    }
 
     private void playButtonClicked() {
 
-        AudioHelper.playAudio(temporaryRecordedSoundPath().toString(),false);
+        AudioHelper.playAudio(temporaryRecordedSoundPath().toString(), false);
 
     }
 
@@ -175,7 +237,7 @@ public class CreateSoundFragment extends DialogFragment {
         }
 
         File sourceFile = temporaryRecordedSoundPath();
-        FileOperationHelper.moveFile(sourceFile.toString(),saveToPath);
+        FileOperationHelper.moveFile(sourceFile.toString(), saveToPath);
 
         if (mIsCreatingCard) {
           //我们在这里不做处理，而是在create card上处理
@@ -186,9 +248,14 @@ public class CreateSoundFragment extends DialogFragment {
 
         PackRecordHelper.savePackUpdateRecord(AppContext.getAppContext(), mCurrentPack);
 
+        AudioHelper.isRecordFinished = false;
+
+        AudioHelper.cleanupRecorderResource();
+
         dismiss();
 
     }
+
 
 
     public static File temporaryRecordedSoundPath() {
@@ -196,56 +263,4 @@ public class CreateSoundFragment extends DialogFragment {
         return tempFile;
     }
 
-
-    class TimerAysncTask extends AsyncTask<Integer, Integer, String> {
-
-        int i = 0;
-
-        @Override
-        protected void onPreExecute() {
-            super.onPreExecute();
-        }
-
-        @Override
-        protected String doInBackground(Integer... params) {
-
-            while ((i < 600) && (mRecordStatus == Record_Status.Record_Status_Recording)) {
-                try {
-                    publishProgress(60- i/10); //剩余时间
-                    i++;
-                    Thread.sleep(100);
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
-            }
-
-            return "Done";
-        }
-
-        @Override
-        protected void onProgressUpdate(Integer... progress) {
-            super.onProgressUpdate(progress);
-
-            mDescriptionTextView.setText("Time left:" + progress[0]);
-        }
-
-        @Override
-        protected void onPostExecute(String result) {
-            super.onPostExecute(result);
-            mPlayButton.setEnabled(true);
-            mSaveButton.setVisibility(View.VISIBLE);
-            mPlayButton.setVisibility(View.VISIBLE);
-            mDescriptionTextView.setText("When you click ‘Record’ you have a maximum of ten seconds to record your message. \nClick 'Stop' when ready to stop recording. \nYou can then click 'Play' to hear it, or 'Save' to save it to the card.");
-
-            if (mRecordStatus == Record_Status.Record_Status_Recording) {
-                AudioHelper.stopRecord();
-                AudioHelper.cleanupRecorderResource();
-                mRecordButton.setText("Record");
-            }
-
-            mRecordStatus = Record_Status.Record_Status_Normal;
-
-        }
-
-    }
 }

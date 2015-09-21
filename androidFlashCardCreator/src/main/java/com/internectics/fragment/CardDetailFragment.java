@@ -1070,7 +1070,7 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnKeyboa
     /**
      * 打开录制声音的view
      */
-    private void showCreateSoundView() {
+    public void showCreateSoundView() {
 
         CreateSoundFragment dialogFragment = new CreateSoundFragment();
         dialogFragment.mIsCreatingCard = mIsCreatingCard;
