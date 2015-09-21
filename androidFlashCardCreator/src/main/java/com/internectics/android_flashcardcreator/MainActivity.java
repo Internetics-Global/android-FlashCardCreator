@@ -1355,6 +1355,12 @@ public class MainActivity extends FragmentActivity implements
 
         TextView  packCoverTextView = (TextView) findViewById(R.id.pack_info_title);
         packCoverTextView.setText(mCurrentPack.packName);
+
+        TextView  shareCodeTextView = (TextView) findViewById(R.id.pack_info_share_code);
+        if (StringUtils.isEmpty(mCurrentPack.shareLink)) {
+            Uri uri = Uri.parse(mCurrentPack.shareLink);
+            shareCodeTextView.setText(uri.getLastPathSegment());
+        }
     }
 
 
@@ -1379,9 +1385,6 @@ public class MainActivity extends FragmentActivity implements
                         mUploadProgressDialog.dismiss();
 
                         Toast.makeText(MainActivity.this, "Pack successfully uploaded", Toast.LENGTH_SHORT).show();
-
-                        String fullPath_S3 = AWSUtils.fullPath_S3(file.getName());
-                        PackRecordHelper.save(MainActivity.this, mCurrentPack, null, fullPath_S3);  //因为这时还没有share link，所以设置为null
 
                         ShareHelper shareHelper = new ShareHelper(MainActivity.this, mCurrentPack,false);
                         shareHelper.execute();

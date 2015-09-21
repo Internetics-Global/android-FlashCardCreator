@@ -251,6 +251,19 @@ public class PackParserHelper {
                 pack.jobTitle = "";
             }
 
+            if (obj.containsKey("share_link")) {
+                pack.shareLink = (String) obj.get("share_link");
+            } else {
+                pack.shareLink = "";
+            }
+
+            if (obj.containsKey("file_name_on_aws")) {
+                pack.fileNameOnAWS = (String) obj.get("file_name_on_aws");
+            } else {
+                pack.fileNameOnAWS = "";
+            }
+
+
             if (obj.containsKey("restore_password")) {
                 pack.restorePassword = (String) obj.get("restore_password");
             } else {

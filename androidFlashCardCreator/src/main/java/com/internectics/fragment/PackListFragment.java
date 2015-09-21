@@ -338,7 +338,7 @@ public class PackListFragment extends Fragment {
 
         final Pack currentPack = mUser.packs.get(position -1);
 
-        if (currentPack.creatorID.equals(OpenUDID_manager.getOpenUDID()) == false) {
+        if (currentPack.creatorID.equals(OpenUDID_manager.getOpenUDID()) == true) {
             gotoPackEditView(position);
         } else {
 

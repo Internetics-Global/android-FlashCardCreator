@@ -139,13 +139,13 @@ public class PackBuildHelper {
         File jsonPackFile = PackBuildHelper.buildPackJsonFile(currentPack);
         packFiles.add(jsonPackFile);
 
-        String fullPath_S3 = PackRecordHelper.getFullPath_S3(currentPack);
         File packZipFile;
-        if (StringUtils.isEmpty(fullPath_S3)) {
+        if (StringUtils.isEmpty(currentPack.fileNameOnAWS)) {
             packZipFile = FileOperationHelper.generateUniquePackZipFilePathForUploading();
+            currentPack.fileNameOnAWS = packZipFile.getName();
+            currentPack.save(mActivity);
         } else {
-            String name = (new File(fullPath_S3)).getName();
-            packZipFile = new File(FileOperationHelper.uploadPackDirectory(),name);
+            packZipFile = new File(FileOperationHelper.uploadPackDirectory(),currentPack.fileNameOnAWS);
         }
 
 
@@ -190,6 +190,9 @@ public class PackBuildHelper {
         summary.put("screen_width",String.format("%d", (int)(UIHelper.getScreenWidthDPUnit(mActivity))));
 
         summary.put("restore_password", pack.restorePassword);
+
+        summary.put("share_link", pack.shareLink);
+        summary.put("file_name_on_aws", pack.fileNameOnAWS);
 
         FileWriter file;
         File savedPath = FileOperationHelper.getUploadPackJsonFile();

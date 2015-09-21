@@ -85,7 +85,9 @@ public class SQLiteHelper {
                     + "creator_nick_name" + " TEXT,"
                     + "job_title" + " TEXT,"
                     + "auto_play_speed" + " INTEGER,"
-                    + "restore_password" + " TEXT)");
+                    + "restore_password" + " TEXT,"
+                    + "share_link" + " TEXT,"
+                    + "file_name_on_aws" + " TEXT)");
             db.execSQL("CREATE INDEX IF NOT EXISTS IA on Packs_Tables(pack_id)");
 
             // compared with iOS version, we made changes:

@@ -198,16 +198,7 @@ public class PackDownloadHelper extends AsyncTask<Void, Long, Boolean> {
             AppConfig.sharedInstance().setExamplePackDownloadedFlag();
         }
 
-        //Step4: save the downloaded linkage to persistence, which will be used during share
-        int packID = downloadedPack.packID;
-        if (mDownloadedLinkage != null) {
-            String fullPath_S3 = mDownloadedLinkage.split("\\?")[0];
-            PackRecordHelper.save(mContext,downloadedPack,null,fullPath_S3);
-            Timber.tag(Global.debugTag).d( "save downloaded link:" + mDownloadedLinkage + "with packID=" + packID);
-        }
-
-
-        //Step5: notify master view to update
+        //Step4: notify master view to update
         Intent intent = new Intent();
         intent.setAction(Global.BROADCAST_ACTION_UPDATE_MASTER_VIEW);
         intent.putExtra(Global.KEY_FROM, Global.BROADCAST_EXTRA_FROM_PACK_DOWNLOADED);

@@ -8,6 +8,7 @@ import com.internectics.util.AppContext;
 import com.internectics.util.Global;
 import com.internectics.util.StringUtils;
 
+import java.io.File;
 import java.util.Date;
 
 /**
@@ -19,39 +20,13 @@ import java.util.Date;
  */
 public class PackRecordHelper {
 
-    public static String getFullPath_S3(Pack currentPack) {
+    public static File getLocalFullPath_S3(Pack currentPack) {
 
-        SharedPreferences prefs = AppContext.getAppContext().getSharedPreferences(String.format("%d", currentPack.packID), 0);
-        String str = prefs.getString(Global.fullPath_S3_Property,"");
+        File file = new File(FileOperationHelper.uploadPackDirectory(),currentPack.fileNameOnAWS);
 
-        return str;
+        return file;
     }
 
-    public static String getShortedLink(Pack currentPack) {
-
-        SharedPreferences prefs = AppContext.getAppContext().getSharedPreferences(String.format("%d", currentPack.packID), 0);
-        String str = prefs.getString(Global.shortedLink_Property,"");
-
-        return str;
-    }
-
-    /**
-     * 当某个参数为null，则这个对应的信息忽略写入
-     * fullPath_S3: it's a full path in amazon s3, like https://s3.amazonaws.com/internetics.flashcardcreator/Sample_25052015.zip
-     */
-    public static void save(Context context, Pack currentPack, String shortedLink, String fullPath_S3) {
-
-        SharedPreferences prefs = context.getSharedPreferences(String.format("%d", currentPack.packID), 0);
-        SharedPreferences.Editor edit = prefs.edit();
-        edit.putString(Global.shareDate_Property,StringUtils.getCurrentTimeDate());
-        if (StringUtils.isEmpty(shortedLink) == false) {
-            edit.putString(Global.shortedLink_Property,shortedLink);
-        }
-        if (StringUtils.isEmpty(fullPath_S3) == false) {
-            edit.putString(Global.fullPath_S3_Property,fullPath_S3);
-        }
-        edit.commit();
-    }
 
     public static void savePackUpdateRecord(Context context, Pack currentPack) {
 

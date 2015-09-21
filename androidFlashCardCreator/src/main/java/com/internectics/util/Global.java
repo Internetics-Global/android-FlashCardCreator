@@ -50,9 +50,7 @@ public class Global {
 
     //Used to judge whether need to upload pack again for certain pack
     public static final String shareDate_Property = "share_date";
-    public static final String shortedLink_Property = "share_link";
     public static final String updateDate_Property = "updated_date";
-    public static final String fullPath_S3_Property = "share_fielname";
 
     //Used to judge whether need to download example pack again
     public static final String isExamplePackDownloadedSBefore_Property = "is_example_pack_downloaded_before";

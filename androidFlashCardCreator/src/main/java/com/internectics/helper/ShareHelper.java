@@ -20,6 +20,7 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import com.internectics.data.Pack;
+import com.internectics.helper.AWS.AWSUtils;
 import com.internectics.helper.AWS.SimpleDBHelper;
 import com.internectics.util.Global;
 import com.internectics.util.StringUtils;
@@ -38,6 +39,7 @@ import org.apache.http.client.methods.HttpGet;
 import org.apache.http.impl.client.DefaultHttpClient;
 
 import java.io.ByteArrayOutputStream;
+import java.io.File;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.List;
@@ -49,8 +51,6 @@ public class ShareHelper extends AsyncTask<Void, Long, Boolean> {
 
     private Activity   mActivity;
     private Pack       mCurrentPack;
-
-    private String     mShortedLink;
 
     /**
      * true: 没有经过上传，设密码等，直接share (upload逻辑在S3UploadHelper）
@@ -67,28 +67,30 @@ public class ShareHelper extends AsyncTask<Void, Long, Boolean> {
 
     @Override
     protected Boolean doInBackground(Void... params) {
-        String fullPath_S3 = PackRecordHelper.getFullPath_S3(mCurrentPack);
+
+
+        String fullPath_S3 = AWSUtils.fullPath_On_S3(mCurrentPack);
         if (fullPath_S3 == null) {
             //upload的动作一定在share前面，一旦upload后，会写入full path到meta info，所以这里的fullPath_S3一定有值
             throw  new IllegalArgumentException("check code, make sure to upload firstly before calling ShareHelper");
         }
 
         if(mIsDirectShare == false) {
-            mShortedLink = generateRedirectedURL(fullPath_S3);
-            if (mShortedLink.indexOf("http://") != 0) {
-                Toast.makeText(mActivity, "Redirect service is not available now, please try again", Toast.LENGTH_LONG).show();
-            } else {
-                Timber.tag(Global.debugTag).d( "the shareLink is: " + mShortedLink);
-                PackRecordHelper.save(mActivity, mCurrentPack, mShortedLink, null); //我们不需要写入fullPath_S3（因为这个工作在upload中进行）
 
+            if (StringUtils.isEmpty(mCurrentPack.shareLink)) {
+                mCurrentPack.shareLink = generateRedirectedURL(fullPath_S3);
+
+                if (mCurrentPack.shareLink.indexOf("http://") != 0) {
+                    Toast.makeText(mActivity, "Redirect service is not available now, please try again", Toast.LENGTH_LONG).show();
+                } else {
+                    mCurrentPack.save(mActivity);
+                }
+            } else {
             }
+
+
         } else {
-            mShortedLink = PackRecordHelper.getShortedLink(mCurrentPack);
-            if (StringUtils.isEmpty(mShortedLink)) {
-                //这个是有可能的：当下载别人的pack，然后再分享给别人，由于没有upload过，meta info中并没有mShortedLink的数据
-                mShortedLink = generateRedirectedURL(fullPath_S3);
-                PackRecordHelper.save(mActivity,mCurrentPack,mShortedLink,null);
-            }
+
         }
 
         return false;
@@ -147,9 +149,7 @@ public class ShareHelper extends AsyncTask<Void, Long, Boolean> {
             @Override
             public void run() {
 
-                String fullPath_S3 = PackRecordHelper.getFullPath_S3(mCurrentPack);
-                Uri uri = Uri.parse(fullPath_S3);
-                String simpleDBItemNameData = uri.getLastPathSegment();
+                String simpleDBItemNameData = mCurrentPack.fileNameOnAWS;
                 simpleDBItemNameData = simpleDBItemNameData.substring(0, simpleDBItemNameData.indexOf(".zip"));
                 Global.currentAmazonSimpleDBItemName = simpleDBItemNameData;
 
@@ -209,7 +209,7 @@ public class ShareHelper extends AsyncTask<Void, Long, Boolean> {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         dialog.dismiss();
-                        String shareLink = PackRecordHelper.getShortedLink(mCurrentPack);
+                        String shareLink = mCurrentPack.shareLink;
                         shareActionOnItemSelected(which,shareLink);
                     }
                 })
