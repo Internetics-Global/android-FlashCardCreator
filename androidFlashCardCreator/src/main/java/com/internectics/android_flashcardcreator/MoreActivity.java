@@ -12,6 +12,8 @@ import com.internectics.util.AppConfig;
 
 import org.adw.library.widgets.discreteseekbar.DiscreteSeekBar;
 
+import cn.pedant.SweetAlert.SweetAlertDialog;
+
 public class MoreActivity extends Activity {
 
 
@@ -26,13 +28,14 @@ public class MoreActivity extends Activity {
         final ToggleButton muteSoundRecordingToggleButton = (ToggleButton) findViewById(R.id.mute_sound_recording_toggle_button);
         final ToggleButton textToSpeechToggleButton =(ToggleButton) findViewById(R.id.text_to_speech_toggle_button);
         final ToggleButton showQuestionOnlyToggleButton = (ToggleButton) findViewById(R.id.auto_show_question_only_toggle_button);
-        final ToggleButton maleFemaleToggleButton = (ToggleButton) findViewById(R.id.mute_sound_recording_toggle_button);
+        final ToggleButton maleFemaleToggleButton = (ToggleButton) findViewById(R.id.male_female_voice_toggle_button);
 
         final DiscreteSeekBar countDownDiscreteSeekBar = (DiscreteSeekBar) findViewById(R.id.seekbar);
         final TextView countDownTextView = (TextView) findViewById(R.id.count_down_textview);
 
 
         countDownTextView.setText(String.format("Count Down (%d)", AppConfig.sharedInstance().getCountDown()));
+        countDownDiscreteSeekBar.setProgress(AppConfig.sharedInstance().getCountDown());
         countDownDiscreteSeekBar.setOnProgressChangeListener(new DiscreteSeekBar.OnProgressChangeListener() {
             @Override
             public void onProgressChanged(DiscreteSeekBar seekBar, int value, boolean fromUser) {
@@ -112,6 +115,11 @@ public class MoreActivity extends Activity {
             @Override
             public void onToggle(boolean on) {
                 AppConfig.sharedInstance().setMaleVoice(on);
+
+                new SweetAlertDialog(MoreActivity.this)
+                        .setTitleText("Alert")
+                        .setContentText("Not supported")
+                        .show();
             }
         });
 

@@ -129,7 +129,6 @@ public class MainActivity extends FragmentActivity implements
 
         Log.d("ccaa", "onCreate from ");
 
-
         //Step1: check table and default user
         SQLiteHelper.defaultDatabase(AppContext.getAppContext());
 
@@ -811,7 +810,7 @@ public class MainActivity extends FragmentActivity implements
         mArrayCardDetailFragments.clear();
         mArrayCardDetailFragments = null;
 
-        //we don't need to conisder "during creating card" since we have disabled that
+        //we don't need to consider "during creating card" since we have disabled that
         //this used to free memory since we "except current" in finishSnapShotAllExceptCurrent
         Intent intent = new Intent();
         intent.setAction(Global.BROADCAST_ACTION_UPDATE_MASTER_VIEW);
@@ -1363,6 +1362,7 @@ public class MainActivity extends FragmentActivity implements
 
     public void showPackInfoView() {
         mPackInfoLayout.setVisibility(View.VISIBLE);
+        updatePackInfoView();
         findViewById(R.id.card_detail_container).setVisibility(View.INVISIBLE);
     }
 
@@ -1395,7 +1395,7 @@ public class MainActivity extends FragmentActivity implements
         packCoverTextView.setText(mCurrentPack.packName);
 
         TextView  shareCodeTextView = (TextView) findViewById(R.id.pack_info_share_code);
-        if (StringUtils.isEmpty(mCurrentPack.shareLink)) {
+        if (StringUtils.isEmpty(mCurrentPack.shareLink) == false) {
             Uri uri = Uri.parse(mCurrentPack.shareLink);
             shareCodeTextView.setText(uri.getLastPathSegment());
         }

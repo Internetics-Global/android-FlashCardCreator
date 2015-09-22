@@ -175,6 +175,7 @@ public class AudioHelper {
 
             boolean isPlaying = false;
             try {
+                mp.setVolume(1,1); //restore
                 isPlaying = mp.isPlaying();
             } catch (IllegalStateException e) {
                 mp.release();

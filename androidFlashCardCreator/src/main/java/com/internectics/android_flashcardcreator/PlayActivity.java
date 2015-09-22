@@ -45,6 +45,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -314,7 +315,7 @@ public class PlayActivity extends FragmentActivity implements SensorEventListene
         });
 
         if (isSmartDelay()) {
-            mCounterDownTextView.setVisibility(View.INVISIBLE);
+            mCounterDownTextView.setVisibility(View.GONE);
         }
 
 
@@ -323,7 +324,9 @@ public class PlayActivity extends FragmentActivity implements SensorEventListene
             @Override
             public void onProgressChanged(DiscreteSeekBar seekBar, int value, boolean fromUser) {
 
-                dwellTimeSeekBarProgressChanged();
+                if (fromUser) {
+                    dwellTimeSeekBarProgressManuallyChanged();
+                }
 
             }
 
@@ -348,7 +351,9 @@ public class PlayActivity extends FragmentActivity implements SensorEventListene
         mPauseForAnswerSeekBar.setOnProgressChangeListener(new DiscreteSeekBar.OnProgressChangeListener() {
             @Override
             public void onProgressChanged(DiscreteSeekBar seekBar, int value, boolean fromUser) {
-                pauseForAnswerSeekBarProgressChanged();
+                if (fromUser) {
+                    pauseForAnswerSeekBarProgressManuallyChanged();
+                }
             }
 
             @Override
@@ -362,25 +367,9 @@ public class PlayActivity extends FragmentActivity implements SensorEventListene
             }
         });
 
-
-        switch (mOneOffPlayType) {
-            case 0:
-                mCounterDownTextView.setVisibility(View.GONE);
-                break;
-
-            case 1:
-                mCounterDownTextView.setVisibility(View.VISIBLE);
-                break;
-            case 2:
-                mCounterDownTextView.setVisibility(View.VISIBLE);
-                break;
-            default:
-                break;
-        }
-
     }
 
-    private void dwellTimeSeekBarProgressChanged() {
+    private void dwellTimeSeekBarProgressManuallyChanged() {
 
         showControlPanel();
         resetAutoHideControlPanelTimer();
@@ -406,7 +395,7 @@ public class PlayActivity extends FragmentActivity implements SensorEventListene
 
     }
 
-    private void pauseForAnswerSeekBarProgressChanged() {
+    private void pauseForAnswerSeekBarProgressManuallyChanged() {
 
         showControlPanel();
         resetAutoHideControlPanelTimer();
@@ -423,6 +412,9 @@ public class PlayActivity extends FragmentActivity implements SensorEventListene
         //Since TTS does not provide a mute method, we have to do this from system scope, it's definitely not a good idea, but we have to
         AudioManager audioManager=(AudioManager)getSystemService(Context.AUDIO_SERVICE);
         audioManager.setStreamMute(AudioManager.STREAM_MUSIC, false);
+
+        AudioHelper.stopAudio();
+        stopTextToSpeech();
 
 
     }
@@ -497,12 +489,7 @@ public class PlayActivity extends FragmentActivity implements SensorEventListene
     protected void onDestroy() {
         super.onDestroy();
 
-        if(mTTS != null) {
-            if (mTTS.isSpeaking()) {
-                mTTS.stop();
-            }
-            mTTS.shutdown();
-        }
+        shutdownTextToSpeech();
 
         stopAllTimers();
 
@@ -567,7 +554,7 @@ public class PlayActivity extends FragmentActivity implements SensorEventListene
                     .show();
 
         } else {
-            playAudio();
+            AudioHelper.playAudio(cardDetailFragment,mIsMuteSoundRecording);
         }
     }
 
@@ -600,7 +587,7 @@ public class PlayActivity extends FragmentActivity implements SensorEventListene
             mAutoScrollImageButton.setImageDrawable(getResources().getDrawable(R.drawable.autoplay_off));
             mPager.stopAutoScroll();
 
-            mCounterDownTextView.setVisibility(View.INVISIBLE);
+            mCounterDownTextView.setVisibility(View.GONE);
 
         }
 
@@ -685,6 +672,7 @@ public class PlayActivity extends FragmentActivity implements SensorEventListene
     }
 
     private void executeAutoPlay() {
+
 
         int countDownVal = AppConfig.sharedInstance().getCountDown();
         mCounterDownTextView.setText(String.valueOf(countDownVal));
@@ -988,6 +976,10 @@ public class PlayActivity extends FragmentActivity implements SensorEventListene
                     if (status == TextToSpeech.SUCCESS) {
                         Timber.tag(Global.debugTag).i("TTS", "Initialization Success");
 
+                        Locale matchedLocale = getText2SpeechLocale();
+
+                        mTTS.setLanguage(matchedLocale);
+
                         mTTS.setOnUtteranceProgressListener(new UtteranceProgressListener() {
                             @Override
                             public void onStart(String utteranceId) {
@@ -1054,6 +1046,35 @@ public class PlayActivity extends FragmentActivity implements SensorEventListene
 
 
         }
+
+    }
+
+    private Locale getText2SpeechLocale() {
+
+
+        Locale[] locales = Locale.getAvailableLocales();
+        List<Locale> localeList = new ArrayList<Locale>();
+        for (Locale locale : locales) {
+            int res = mTTS.isLanguageAvailable(locale);
+            if (res == TextToSpeech.LANG_COUNTRY_AVAILABLE) {
+                localeList.add(locale);
+            }
+        }
+
+        String languageStr = Locale.getDefault().getLanguage();
+        String countryStr = Locale.getDefault().getCountry();
+
+        if (languageStr.equals("en")) {
+            return Locale.ENGLISH;
+        }
+
+        for (Locale item : localeList) {
+            if (item.getCountry().equals(countryStr) && item.getLanguage().equals(languageStr)) {
+                return item;
+            }
+        }
+
+        return Locale.ENGLISH;
 
     }
 
@@ -1214,21 +1235,17 @@ public class PlayActivity extends FragmentActivity implements SensorEventListene
 //        }
     }
 
-    private void playAudio() {
-
-        if (mIsShuttingDown) {
-            return;
-        }
-
-
-        CardDetailFragment cardDetailFragment = getCurrentCardDetailFragment();
-
-        AudioHelper.playAudio(cardDetailFragment, mIsMuteSoundRecording);
-    }
 
     private void stopAudio() {
         AudioHelper.stopAudio();
 
+    }
+
+    private void shutdownTextToSpeech() {
+
+        if (mTTS != null) {
+            mTTS.shutdown();
+        }
     }
 
     private void stopTextToSpeech() {
@@ -1452,7 +1469,7 @@ public class PlayActivity extends FragmentActivity implements SensorEventListene
 
                     int value = Integer.parseInt(mCounterDownTextView.getText().toString());
                     if (value == 0) {
-                        mCounterDownTextView.setVisibility(View.INVISIBLE);
+                        mCounterDownTextView.setVisibility(View.GONE);
                         mCountDownTimer.cancel();
 
                     } else {
