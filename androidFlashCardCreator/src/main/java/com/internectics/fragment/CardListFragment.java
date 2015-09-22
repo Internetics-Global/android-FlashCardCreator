@@ -291,7 +291,7 @@ public class CardListFragment extends Fragment {
         public void onReceive(Context context, Intent intent) {
             if (intent.getAction().equals(Global.BROADCAST_ACTION_UPDATE_MASTER_VIEW)) {
 
-                //step1: setmCurrentPack;
+                //step1: set mCurrentPack;
                 String extraFrom = intent.getExtras().getString(Global.KEY_FROM);
                 int extraCardIndex = 0;
 
@@ -322,8 +322,12 @@ public class CardListFragment extends Fragment {
 
                 ((MainActivity)getActivity()).packIDForMasterViewPack = mCurrentPack.packID;
 
-                //step2: update listview
-                updateListView(extraCardIndex);
+                //step2: update list view
+                if (extraFrom.equals(Global.BROADCAST_EXTRA_FROM_PACK_SELECTED)) {
+                    updateListView(-1);
+                } else {
+                    updateListView(extraCardIndex);
+                }
             }
         }
 
@@ -396,7 +400,7 @@ public class CardListFragment extends Fragment {
     }
 
     /**
-     * @param selectedItemIndex, dont' update detail view when -1
+     * @param selectedItemIndex, Don't update detail view when -1
      */
     private void updateListView(int selectedItemIndex) {
 

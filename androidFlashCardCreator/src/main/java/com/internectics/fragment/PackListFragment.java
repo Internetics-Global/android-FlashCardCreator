@@ -108,25 +108,8 @@ public class PackListFragment extends Fragment {
         }
         mGallery.setOnItemClickListener(new OnItemClickListener() {
             public void onItemClick(AdapterView<?> parent, View v, int position, long id) {
-                if (position ==0) {
-                    DialogFragment dialogFragment = new CreateEditFragment();
-                    dialogFragment.show(getActivity().getFragmentManager(), "add_pack_fragment");
-                    ((MainActivity) getActivity()).dismissPackListPopupWindow();
-                } else {
-                    Timber.tag(Global.debugTag).d( "Index of pack in pack list is:" + position);
-                    Intent intent = new Intent();
-                    intent.setAction(Global.BROADCAST_ACTION_UPDATE_MASTER_VIEW);
-                    intent.putExtra(Global.KEY_FROM, Global.BROADCAST_EXTRA_FROM_PACK_SELECTED);
-                    int selectedIndex = position-1;
-                    intent.putExtra("indexOfPack", selectedIndex);
-                    getActivity().sendBroadcast(intent);
 
-                    Pack selectPack = mUser.packs.get(selectedIndex);
-                    selectPack.lastVistDate = Global.currentTimeSeconds();
-                    selectPack.save(AppContext.getAppContext());
-
-                    ((MainActivity) getActivity()).mPopupWindow.dismiss();
-                }
+                galleryItemClicked(position);
 
             }
         });
@@ -206,6 +189,31 @@ public class PackListFragment extends Fragment {
         }
 
         return mRootView;
+    }
+
+    private void galleryItemClicked(int position) {
+
+        if (position ==0) {
+            DialogFragment dialogFragment = new CreateEditFragment();
+            dialogFragment.show(getActivity().getFragmentManager(), "add_pack_fragment");
+            ((MainActivity) getActivity()).dismissPackListPopupWindow();
+        } else {
+            Timber.tag(Global.debugTag).d("Index of pack in pack list is:" + position);
+            Intent intent = new Intent();
+            intent.setAction(Global.BROADCAST_ACTION_UPDATE_MASTER_VIEW);
+            intent.putExtra(Global.KEY_FROM, Global.BROADCAST_EXTRA_FROM_PACK_SELECTED);
+            int selectedIndex = position-1;
+            intent.putExtra("indexOfPack", selectedIndex);
+            getActivity().sendBroadcast(intent);
+
+            Pack selectPack = mUser.packs.get(selectedIndex);
+            selectPack.lastVistDate = Global.currentTimeSeconds();
+            selectPack.save(AppContext.getAppContext());
+
+            ((MainActivity) getActivity()).showPackInfoView();
+
+            ((MainActivity) getActivity()).mPopupWindow.dismiss();
+        }
     }
 
 

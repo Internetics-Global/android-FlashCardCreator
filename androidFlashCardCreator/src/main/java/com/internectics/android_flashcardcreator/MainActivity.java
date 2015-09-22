@@ -1361,13 +1361,17 @@ public class MainActivity extends FragmentActivity implements
         builder.create().show();
     }
 
-    private void showPackInfoView() {
+    public void showPackInfoView() {
         mPackInfoLayout.setVisibility(View.VISIBLE);
+        findViewById(R.id.card_detail_container).setVisibility(View.INVISIBLE);
     }
 
     private void hidePackInfoView() {
 
         mPackInfoLayout.setVisibility(View.INVISIBLE);
+        findViewById(R.id.card_detail_container).setVisibility(View.VISIBLE);
+
+
 
     }
 
