@@ -9,7 +9,6 @@ import android.content.Intent;
 import android.content.res.TypedArray;
 import android.graphics.PixelFormat;
 import android.net.Uri;
-import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
@@ -43,6 +42,7 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.github.lzyzsd.circleprogress.DonutProgress;
 import com.google.analytics.tracking.android.EasyTracker;
 import com.internectics.cryptor.CryptoHelper;
 import com.internectics.data.Card;
@@ -50,9 +50,7 @@ import com.internectics.data.Pack;
 import com.internectics.fragment.CardDetailFragment;
 import com.internectics.fragment.CardListFragment;
 import com.internectics.fragment.CreateEditFragment;
-import com.internectics.fragment.CreateSoundFragment;
 import com.internectics.fragment.SymbolBoxFragment;
-import com.internectics.helper.AWS.AWSUtils;
 import com.internectics.helper.AWS.AWS_Constant;
 import com.internectics.helper.AWS.S3UploadHelper;
 import com.internectics.helper.AWS.SimpleDBHelper;
@@ -75,6 +73,8 @@ import com.internectics.util.UIHelper;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Timer;
+import java.util.TimerTask;
 
 import cn.pedant.SweetAlert.SweetAlertDialog;
 import timber.log.Timber;
@@ -119,11 +119,16 @@ public class MainActivity extends FragmentActivity implements
 
     private S3UploadHelper     uploadHelper ;
 
+    private DonutProgress      mRecordStopProgress;
+    private Button             mRecordStopButton;
+    private Timer              mRecordCountDownTimer;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        Log.d("ccaa","onCreate from ");
+        Log.d("ccaa", "onCreate from ");
+
 
         //Step1: check table and default user
         SQLiteHelper.defaultDatabase(AppContext.getAppContext());
@@ -141,8 +146,9 @@ public class MainActivity extends FragmentActivity implements
 
         setContentView(R.layout.activity_card_twopane);
 
-        Button recordStopButton = (Button) findViewById(R.id.record_stop_button);
-        recordStopButton.setOnClickListener(new View.OnClickListener() {
+        mRecordStopProgress = (DonutProgress) findViewById(R.id.record_stop_progress);
+        mRecordStopButton = (Button) findViewById(R.id.record_stop_button);
+        mRecordStopButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 recordStopButtonClicked();
@@ -177,6 +183,12 @@ public class MainActivity extends FragmentActivity implements
     }
 
     private void recordStopButtonClicked() {
+
+        if (mRecordCountDownTimer != null) {
+            mRecordCountDownTimer.cancel();
+            mRecordCountDownTimer = null;
+        }
+
         AudioHelper.isRecordFinished = true;
 
         mCardDetailFragment.showCreateSoundView();
@@ -571,18 +583,17 @@ public class MainActivity extends FragmentActivity implements
 
             @Override
             public void run() {
-                TipHelper.showTipForCreateCard(MainActivity.this,addCardButton);
+                TipHelper.showTipForCreateCard(MainActivity.this, addCardButton);
 
 
-                TipHelper.showTipForOpenPack(MainActivity.this,openPackButton);
-                TipHelper.showTipForEditPack(MainActivity.this,editPackButton);
-                TipHelper.showTipForActionBarCreateNewPack(MainActivity.this,createPackButton);
-                TipHelper.showTipForActionBarPlay(MainActivity.this,playButton);
-                TipHelper.showTipForActionBarPalette(MainActivity.this,paletteButton);
-                TipHelper.showTipForActionBarHelp(MainActivity.this,helpButton);
-                TipHelper.showTipForActionBarSetting(MainActivity.this,settingButton);
-                TipHelper.showTipForActionBarShare(MainActivity.this,shareButton);
-
+                TipHelper.showTipForOpenPack(MainActivity.this, openPackButton);
+                TipHelper.showTipForEditPack(MainActivity.this, editPackButton);
+                TipHelper.showTipForActionBarCreateNewPack(MainActivity.this, createPackButton);
+                TipHelper.showTipForActionBarPlay(MainActivity.this, playButton);
+                TipHelper.showTipForActionBarPalette(MainActivity.this, paletteButton);
+                TipHelper.showTipForActionBarHelp(MainActivity.this, helpButton);
+                TipHelper.showTipForActionBarSetting(MainActivity.this, settingButton);
+                TipHelper.showTipForActionBarShare(MainActivity.this, shareButton);
 
 
             }
@@ -705,6 +716,11 @@ public class MainActivity extends FragmentActivity implements
     @Override
     protected void onDestroy() {
         super.onDestroy();
+
+        if (mRecordCountDownTimer != null) {
+            mRecordCountDownTimer.cancel();
+            mRecordCountDownTimer = null;
+        }
 
         if (uploadHelper != null) {
             uploadHelper.stop();
@@ -1381,14 +1397,48 @@ public class MainActivity extends FragmentActivity implements
         }
     }
 
-
+    private  int COUNTDOWN_SECOND_FOR_RECORDING = 30;
     public void dismissCreateSoundFragment(boolean is_to_recording) {
         View view = findViewById(R.id.record_button_background_mask_layout);
+
         if (is_to_recording == false) {
             view.setVisibility(View.INVISIBLE);
 
         } else {
             view.setVisibility(View.VISIBLE);
+            view.setOnTouchListener(new View.OnTouchListener() {
+                @Override
+                public boolean onTouch(View v, MotionEvent event) {
+                    return true;
+                }
+            });
+
+            if (mRecordCountDownTimer !=null) {
+                mRecordCountDownTimer.cancel();
+                mRecordCountDownTimer = null;
+            }
+
+            mRecordCountDownTimer = new Timer();
+            mRecordCountDownTimer.scheduleAtFixedRate(new TimerTask() {
+                @Override
+                public void run() {
+                    COUNTDOWN_SECOND_FOR_RECORDING--;
+
+                    runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            mRecordStopProgress.setProgress((int)((30-COUNTDOWN_SECOND_FOR_RECORDING)/30.0*100));
+                        }
+                    });
+                    if (COUNTDOWN_SECOND_FOR_RECORDING ==0) {
+                        AudioHelper.stopRecord();
+                        mRecordCountDownTimer.cancel();
+                        mRecordCountDownTimer = null;
+                    }
+                }
+            },0,1000);
+
+
         }
 
     }

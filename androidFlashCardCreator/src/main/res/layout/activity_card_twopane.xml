@@ -2,6 +2,7 @@
              xmlns:tools="http://schemas.android.com/tools"
              android:layout_width="match_parent"
              android:layout_height="match_parent"
+             xmlns:app="http://schemas.android.com/apk/res-auto"
         >
 
     <LinearLayout android:layout_width="match_parent"
@@ -276,17 +277,33 @@
         android:id="@+id/record_button_background_mask_layout"
         android:layout_width="match_parent"
         android:visibility="gone"
+        android:clickable="false"
         android:layout_height="match_parent">
+
+        <com.github.lzyzsd.circleprogress.DonutProgress
+            android:id="@+id/record_stop_progress"
+            android:layout_width="72dp"
+            android:layout_height="72dp"
+            app:donut_progress="30"
+            app:donut_unfinished_color = "@android:color/holo_orange_dark"
+            app:donut_finished_color = "@android:color/white"
+            app:donut_unfinished_stroke_width="4dp"
+            app:donut_finished_stroke_width="4dp"
+            android:textColor="@android:color/white"
+            android:layout_marginRight="14dp"
+            android:layout_marginBottom="74dp"
+            android:layout_gravity="bottom|right"
+            />
 
         <Button
             android:id="@+id/record_stop_button"
+            android:text="Stop"
             android:layout_width="60dp"
             android:layout_height="60dp"
-            android:text="Stop"
-            android:layout_marginRight="20dp"
-            android:layout_marginBottom="80dp"
+            android:layout_gravity="bottom|right"
             android:background="@drawable/shape_stop_record_button_round"
-            android:layout_gravity="bottom|right"/>
+            android:layout_marginRight="20dp"
+            android:layout_marginBottom="80dp"/>
 
     </FrameLayout>
 
