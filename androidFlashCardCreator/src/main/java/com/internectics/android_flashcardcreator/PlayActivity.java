@@ -17,6 +17,7 @@ import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
 import android.support.v4.view.ViewPager;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.MotionEvent;
 import android.view.Surface;
@@ -107,7 +108,6 @@ public class PlayActivity extends FragmentActivity implements SensorEventListene
     private Timer          mAutoSwitchQATimer;
     private Timer          mAutoScrollForFixedDelayTimer;    //only for fixed delay
     private Timer          mCountDownTimer;
-    private Timer          mAutoHideControlPanelTimer;
 
     private boolean        mIsShuttingDown;
 
@@ -197,7 +197,7 @@ public class PlayActivity extends FragmentActivity implements SensorEventListene
                 hideControlPanel();
             }
 
-        }, 3000);
+        }, 4000);
 
 
     }
@@ -304,6 +304,10 @@ public class PlayActivity extends FragmentActivity implements SensorEventListene
             public void onClick(View v) {
                 switchControlPanelVisibility();
 
+                if (mAutoHideControlPanelHandler != null) {
+                    mAutoHideControlPanelHandler.removeCallbacksAndMessages(null);
+                }
+
                 mAutoHideControlPanelHandler.postDelayed(new Runnable() {
                     @Override
                     public void run() {
@@ -371,10 +375,19 @@ public class PlayActivity extends FragmentActivity implements SensorEventListene
 
     private void dwellTimeSeekBarProgressManuallyChanged() {
 
-        showControlPanel();
-        resetAutoHideControlPanelTimer();
+        Log.d("ccaa","dwellTimeSeekBarProgressManuallyChanged");
+
+        AudioHelper.stopAudio();
+        stopTextToSpeech();
+
+        mCounterDownTextView.setVisibility(View.GONE);
 
         stopAllTimers();
+        stopAllHandlers();
+
+        showControlPanel();
+        resetAutoHideControlPanelHandler();
+
 
         int duration = mDwellTimeSeekBar.getProgress();
         mCurrentPack.autoPlaySpeed = duration;
@@ -398,7 +411,7 @@ public class PlayActivity extends FragmentActivity implements SensorEventListene
     private void pauseForAnswerSeekBarProgressManuallyChanged() {
 
         showControlPanel();
-        resetAutoHideControlPanelTimer();
+        resetAutoHideControlPanelHandler();
     }
 
 
@@ -427,10 +440,6 @@ public class PlayActivity extends FragmentActivity implements SensorEventListene
 
         if (mAutoSwitchQATimer != null) {
             mAutoSwitchQATimer.cancel();
-        }
-
-        if (mAutoHideControlPanelTimer != null) {
-            mAutoHideControlPanelTimer.cancel();
         }
 
         if (mCountDownTimer != null) {
@@ -508,7 +517,7 @@ public class PlayActivity extends FragmentActivity implements SensorEventListene
     private void muteImageButtonClicked() {
 
         showControlPanel();
-        resetAutoHideControlPanelTimer();
+        resetAutoHideControlPanelHandler();
 
         if (mIsMuteSoundRecording) {
             mMuteImageButton.setImageDrawable(getResources().getDrawable(R.drawable.sound_on));
@@ -528,7 +537,7 @@ public class PlayActivity extends FragmentActivity implements SensorEventListene
     private void playRecordedSoundImageButtonClicked() {
 
         showControlPanel();
-        resetAutoHideControlPanelTimer();
+        resetAutoHideControlPanelHandler();
 
         if (mIsMuteSoundRecording) {
             return;
@@ -561,7 +570,7 @@ public class PlayActivity extends FragmentActivity implements SensorEventListene
     private void autoScrollImageButtonClicked() {
 
         showControlPanel();
-        resetAutoHideControlPanelTimer();
+        resetAutoHideControlPanelHandler();
 
         stopAllTimers();
         stopAllHandlers();
@@ -621,7 +630,7 @@ public class PlayActivity extends FragmentActivity implements SensorEventListene
     private void cyclePlayImageButtonClicked() {
 
         showControlPanel();
-        resetAutoHideControlPanelTimer();
+        resetAutoHideControlPanelHandler();
 
         if (mIsCyclePlay) {
             mIsCyclePlay = false;
@@ -695,7 +704,6 @@ public class PlayActivity extends FragmentActivity implements SensorEventListene
         screenOn();
         mPager.disableAllTouchEvent(true);
         mIsAutoScroll = true;
-        mDwellTimeSeekBar.setEnabled(false);
         mAutoScrollImageButton.setImageDrawable(getResources().getDrawable(R.drawable.autoplay_on));
 
         if (isSmartDelay()== false) {  //
@@ -781,7 +789,7 @@ public class PlayActivity extends FragmentActivity implements SensorEventListene
         if (mIsAutoScroll == false) {
 
             showControlPanel();
-            resetAutoHideControlPanelTimer();
+            resetAutoHideControlPanelHandler();
 
             switchQuestionAnswerView();  //not allow to switch during auto play mode
         }
@@ -1432,33 +1440,24 @@ public class PlayActivity extends FragmentActivity implements SensorEventListene
         }
     }
 
-    private void resetAutoHideControlPanelTimer() {
+    private void resetAutoHideControlPanelHandler() {
 
-        if (mAutoHideControlPanelTimer != null) {
-            mAutoHideControlPanelTimer.cancel();
+        if (mAutoHideControlPanelHandler != null) {
+            mAutoHideControlPanelHandler.removeCallbacksAndMessages(null);
         }
 
-        AutoHideControlPanelTimerTask autoHideControlPanelTimerTask = new AutoHideControlPanelTimerTask();
-        mAutoHideControlPanelTimer = new Timer();
-        mAutoHideControlPanelTimer.scheduleAtFixedRate(autoHideControlPanelTimerTask, 5000, 5000);
+        mAutoHideControlPanelHandler.postDelayed(new Runnable() {
+
+            @Override
+            public void run() {
+                hideControlPanel();
+            }
+
+        }, 4000);
     }
 
 
 
-
-    class AutoHideControlPanelTimerTask extends  TimerTask {
-        public void run() {
-            runOnUiThread(new Runnable() {
-                @Override
-                public void run() {
-
-                    hideControlPanel();
-                    mAutoHideControlPanelTimer.cancel();
-
-                }
-            });
-        }
-    }
 
 
     class CountDownTimerTask extends  TimerTask {

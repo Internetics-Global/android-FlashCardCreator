@@ -97,8 +97,7 @@
                 android:ems="10"/>
 
             <include
-                android:id="@+id/sidebar"
-                layout="@layout/auto_play_dwell_time_seek_bar"
+                layout="@layout/create_edit_pack_seek_bar"
                 android:layout_width="match_parent"
                 android:layout_marginTop="10dp"
                 android:layout_height="30dp" />

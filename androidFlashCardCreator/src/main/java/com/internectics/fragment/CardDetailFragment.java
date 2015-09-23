@@ -1412,7 +1412,7 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnKeyboa
             if (v.getText().length() == 0) {
                 return;
             }
-            
+
 
 
             //noOfLines有可能返回0： getLineCount() will give you the correct number of lines only after a layout pass. That means the TextView must have been drawn at least once.

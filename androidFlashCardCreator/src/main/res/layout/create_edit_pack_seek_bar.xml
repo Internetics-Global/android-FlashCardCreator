@@ -7,17 +7,17 @@
     android:layout_height="30dp">
 
     <TextView
-        android:layout_width="25dp"
+        android:layout_width="35dp"
         android:layout_height="match_parent"
         android:paddingLeft="0dp"
         android:gravity="center_vertical|right"
         android:paddingRight="0dp"
-        android:textSize="10sp"
+        android:textSize="12sp"
         android:text="Auto"/>
 
     <org.adw.library.widgets.discreteseekbar.DiscreteSeekBar
         android:id="@+id/seekbar"
-        android:layout_marginLeft="-10dp"
+        android:layout_marginLeft="0dp"
         android:layout_width="0dp"
         android:layout_weight="1"
         android:layout_height="match_parent"
@@ -31,12 +31,12 @@
 
     <TextView
         android:layout_width="15dp"
-        android:layout_marginLeft="-10dp"
+        android:layout_marginLeft="0dp"
         android:layout_height="match_parent"
         android:paddingLeft="0dp"
         android:gravity="center_vertical|left"
         android:paddingRight="0dp"
-        android:textSize="10sp"
+        android:textSize="12sp"
         android:text="60"/>
 
 </LinearLayout>

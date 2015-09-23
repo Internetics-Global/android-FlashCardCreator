@@ -62,7 +62,7 @@ public class CreateEditFragment extends DialogFragment implements TextView.OnEdi
     private DiscreteSeekBar    mAutoPlaySpeedSeekbar;
     private ImageView          mCoverImageView;
 
-    private EditText           mAdminPassowrdEditText;
+    private EditText           mAdminPasswordEditText;
     private EditText           mConfirmAdminPassowrdEditText;
 
     private InputMethodManager mIMM;
@@ -145,7 +145,7 @@ public class CreateEditFragment extends DialogFragment implements TextView.OnEdi
         mJobTitleEditText = (EditText) mContentView
                 .findViewById(R.id.fragment_add_pack_job_title);
 
-        mAdminPassowrdEditText = (EditText) mContentView
+        mAdminPasswordEditText = (EditText) mContentView
                 .findViewById(R.id.fragment_add_pack_admin_password);
         mConfirmAdminPassowrdEditText = (EditText) mContentView
                 .findViewById(R.id.fragment_add_pack_confirm_admin_password);
@@ -183,7 +183,7 @@ public class CreateEditFragment extends DialogFragment implements TextView.OnEdi
             mCoverImageView.setImageURI(Uri.parse(imagePath));
 
             String decodedString = new String(Base64.decode(pack.restorePassword,0));
-            mAdminPassowrdEditText.setText(decodedString);
+            mAdminPasswordEditText.setText(decodedString);
             mConfirmAdminPassowrdEditText.setText(decodedString);
 
 
@@ -224,7 +224,7 @@ public class CreateEditFragment extends DialogFragment implements TextView.OnEdi
     private void save() {
 
 
-        if (mAdminPassowrdEditText.getText().toString().equals(mConfirmAdminPassowrdEditText.getText().toString()) == false) {
+        if (mAdminPasswordEditText.getText().toString().equals(mConfirmAdminPassowrdEditText.getText().toString()) == false) {
             new SweetAlertDialog(getActivity())
                     .setTitleText("Alert")
                     .setContentText("Passwords do not match")
@@ -261,7 +261,7 @@ public class CreateEditFragment extends DialogFragment implements TextView.OnEdi
         pack.packID = Global.generateNoRepeatInt();
         pack.lastVistDate = Global.currentTimeSeconds();
 
-        byte[] encodedVal = Base64.encode(mAdminPassowrdEditText.getText().toString().getBytes(),0);
+        byte[] encodedVal = Base64.encode(mAdminPasswordEditText.getText().toString().getBytes(),0);
         pack.restorePassword = new String(encodedVal).replace("\n", "").replace("\r", "");;
 
         final Card defaultCard = new Card();
@@ -276,7 +276,7 @@ public class CreateEditFragment extends DialogFragment implements TextView.OnEdi
         PackRecordHelper.savePackUpdateRecord(AppContext.getAppContext(), pack);
 
 
-        if (mAdminPassowrdEditText.getText().toString().length() == 0) {
+        if (mAdminPasswordEditText.getText().toString().length() == 0) {
             new SweetAlertDialog(getActivity())
                     .setTitleText("Alert")
                     .setContentText("No admin password set. Setting an admin password allows you to edit this pack on on another device, or retrieve your editing rights on a pack that has been deleted off the device.")
