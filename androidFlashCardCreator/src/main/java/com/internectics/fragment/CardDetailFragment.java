@@ -1397,29 +1397,22 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnKeyboa
      * 在以下情况下被自动触发：
      * 1. TextEdit的内容改变（TextWatcher）
      * 2. 在布局时：ViewTreeObserver.OnGlobalLayoutListener
-     * @param v
-     * @param maxLines
+     *
+     * maxLines不再使用
      */
     private void triggerResizeTextToFitFrame(final EditText v, int maxLines) {
 
-//        if (mCurrentPack == null) {
-//            return;
-//        }
-
-
         synchronized (v) {
+
+            //由于lineNoSubheading，lineNoMain，lineNoSub不再使用，这个逻辑作废
+            //1. 可能由于历史原因(实际情况不明），lineNoSubheading，lineNoMain，lineNoSub的数值同实际不一致，导致有问题
+            //2. subHeading, main, sub本身已经有信息行数的信息
+            maxLines = 10000;
 
             if (v.getText().length() == 0) {
                 return;
             }
-
-            if (v.getText().toString().contains("A) Boyle's Law.")) {
-               maxLines = 5; //TODO:XX, 这是因为sample pack有问题。
-            }
-
-            if (v.getText().toString().contains("Which animal is known")) {
-                maxLines = 7; //TODO:XX, 这是因为sample pack有问题。
-            }
+            
 
 
             //noOfLines有可能返回0： getLineCount() will give you the correct number of lines only after a layout pass. That means the TextView must have been drawn at least once.
@@ -1468,7 +1461,7 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnKeyboa
                     }
 
 
-                    mIsSaveNeededAfterResize = true;
+                     mIsSaveNeededAfterResize = true;
 
 
                 } else {

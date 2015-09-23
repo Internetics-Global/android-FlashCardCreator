@@ -3,6 +3,7 @@ package com.internectics.helper;
 import android.net.Uri;
 import android.util.Base64;
 
+import com.amazonaws.auth.NoSessionSupportCredentials;
 import com.internectics.android_flashcardcreator.R;
 import com.internectics.data.Card;
 import com.internectics.data.Pack;
@@ -465,15 +466,15 @@ public class PackParserHelper {
             }
 
             if (questionObj.containsKey("subheading")) {
-                card.question.subheading = StringUtils.deleteEndLinesSpace((String) questionObj.get("subheading"));
+                card.question.subheading = removeTrailingSpaceAndUnexpectedCharacters((String) questionObj.get("subheading"));
             }
 
             if (questionObj.containsKey("main")) {
-                card.question.main = StringUtils.deleteEndLinesSpace((String) questionObj.get("main"));
+                card.question.main =  removeTrailingSpaceAndUnexpectedCharacters((String) questionObj.get("main"));
             }
 
             if (questionObj.containsKey("sub")) {
-                card.question.sub = StringUtils.deleteEndLinesSpace((String) questionObj.get("sub"));
+                card.question.sub =  removeTrailingSpaceAndUnexpectedCharacters((String) questionObj.get("sub"));
             }
 
 
@@ -590,7 +591,7 @@ public class PackParserHelper {
                 if (mScreenWidthFromSharedDevice == 0) { // mean no this field in pack json file  （兼容之前的版本）
 
                     //-----begin scale down policy with error protection
-                    //step1: get which is trustable
+                    //step1: get which is trustworthy
                     int baseSize = 0;
                     int whichAsBase = 0;  //0, subheading; 1, main; 2. sub
 
@@ -611,7 +612,7 @@ public class PackParserHelper {
                         whichAsBase =2;
                     }
 
-                    //put main at last is very important, because it's the most trustable value
+                    //put main at last is very important, because it's the most trustworthy value
                     if ((mainSize == 0) ||(card.question.main.length() == 0)) {
                         card.question.css.mainSize = standardCSSArrary[1];
                         Timber.tag(Global.debugTag).w( "mainSize = 0 or main.length = 0");
@@ -632,7 +633,7 @@ public class PackParserHelper {
                     switch (whichAsBase) {
                         case    0: {
 
-                            //subheadingSize is trustable
+                            //subheadingSize is trustworthy
                             //card.question.css.subheadingSize will be base value
                             //baseSize is same as subHeadingSize
 
@@ -655,7 +656,7 @@ public class PackParserHelper {
 
                         case    1: {
 
-                            //mainSize is trustable
+                            //mainSize is trustworthy
                             //card.question.css.mainSize will be base value
                             //baseSize is same as mainSize
 
@@ -683,7 +684,7 @@ public class PackParserHelper {
 
                         case    2: {
 
-                            //subSize is trustable
+                            //subSize is trustworthy
                             //card.question.css.subSize will be base value
                             //baseSize is same as subSize
 
@@ -811,19 +812,16 @@ public class PackParserHelper {
             }
 
             if (answerObj.containsKey("subheading"))  {
-                card.answer.subheading = ((String) answerObj.get("subheading")).replace("\\s+$", ""); //delete trailing space
+                card.answer.subheading = removeTrailingSpaceAndUnexpectedCharacters((String) answerObj.get("subheading"));
             }
 
             if (answerObj.containsKey("main"))  {
-                card.answer.main = ((String) answerObj.get("main")).replace("\\s+$", "");
+                card.answer.main = removeTrailingSpaceAndUnexpectedCharacters((String) answerObj.get("main"));
             }
 
-            if (card.answer.main.toLowerCase().trim().equals("apple")) {
-                Timber.tag(Global.debugTag).d("ccaa", "dfdfdf");
-            }
 
             if (answerObj.containsKey("sub")) {
-                card.answer.sub = ((String) answerObj.get("sub")).replace("\\s+$", "");
+                card.answer.sub = removeTrailingSpaceAndUnexpectedCharacters((String) answerObj.get("sub"));
             }
 
             if (answerObj.containsKey("subheading_align")) {
@@ -976,7 +974,7 @@ public class PackParserHelper {
                 if (mScreenWidthFromSharedDevice == 0) {  // mean no this field in pack json file
                     //-----begin scale down policy with error protection
 
-                    //step1: get which is trustable
+                    //step1: get which is trustworthy
                     int baseSize = 0;
                     int whichAsBase = 0;  //0, subheading; 1, main; 2. sub
 
@@ -997,7 +995,7 @@ public class PackParserHelper {
                         whichAsBase =2;
                     }
 
-                    //put main at last is very important, because it's the most trustable value
+                    //put main at last is very important, because it's the most trustworthy value
                     if ((mainSize == 0) ||(card.answer.main.length() == 0)) {
                         card.answer.css.mainSize = standardCSSArrary[4];
                         Timber.tag(Global.debugTag).w( "mainSize = 0 or main.length = 0");
@@ -1018,7 +1016,7 @@ public class PackParserHelper {
                     switch (whichAsBase) {
                         case    0: {
 
-                            //subheadingSize is trustable
+                            //subheadingSize is trustworthy
                             //card.answer.css.subheadingSize will be base value
                             //baseSize is same as subHeadingSize
 
@@ -1041,7 +1039,7 @@ public class PackParserHelper {
 
                         case    1: {
 
-                            //mainSize is trustable
+                            //mainSize is trustworthy
                             //card.answer.css.mainSize will be base value
                             //baseSize is same as mainSize
 
@@ -1071,7 +1069,7 @@ public class PackParserHelper {
 
                         case    2: {
 
-                            //subSize is trustable
+                            //subSize is trustworthy
                             //card.answer.css.subSize will be base value
                             //baseSize is same as subSize
 
@@ -1135,5 +1133,21 @@ public class PackParserHelper {
         }
 
         return card;
+    }
+
+
+    /*
+     *\r\n , \r , \n what is the difference between them: http://stackoverflow.com/questions/15433188/r-n-r-n-what-is-the-difference-between-them
+     */
+    private static String removeTrailingSpaceAndUnexpectedCharacters(String str) {
+
+        String returnStr = str.replace("\r\n","\n");
+
+        returnStr = returnStr.replace("\r","\n");  //it's strange,but it does here in real case
+
+        returnStr = StringUtils.removeAllLinesTrailingSpace(returnStr);
+
+        return returnStr;
+
     }
 }

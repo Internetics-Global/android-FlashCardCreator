@@ -267,7 +267,7 @@ public class StringUtils {
     }
 
 
-    public static String deleteEndLinesSpace(String str) {
+    public static String removeAllLinesTrailingSpace(String str) {
         String splitStr =  System.getProperty ("line.separator");
         String[] lines = str.split(splitStr);
 
@@ -275,6 +275,7 @@ public class StringUtils {
 
         int i = 0;
         for (String strLine:lines) {
+            //注意，replaceAll或replaceFirst里面是正则表达式，而replace则不是
             String trimmedStr = strLine.replaceAll("\\s+$", "");
             if (i == lines.length - 1) {
                 result = result + trimmedStr;

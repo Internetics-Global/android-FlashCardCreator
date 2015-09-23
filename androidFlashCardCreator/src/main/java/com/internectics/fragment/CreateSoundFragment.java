@@ -151,7 +151,7 @@ public class CreateSoundFragment extends DialogFragment {
 
             mSaveButton.setVisibility(View.INVISIBLE);
             mPlayButton.setVisibility(View.INVISIBLE);
-            mDescriptionTextView.setText("When you click “Record” you have a maximum of 30 seconds to record your message. \\n\\nClick “Stop” when ready to stop recording.\\n\\nYou can then click “Play” to hear it, or “Save” to save it to the card.");
+            mDescriptionTextView.setText("When you click “Record” you have a maximum of 30 seconds to record your message. \n\nClick “Stop” when ready to stop recording.\n\nYou can then click “Play” to hear it, or “Save” to save it to the card.");
 
         }
 

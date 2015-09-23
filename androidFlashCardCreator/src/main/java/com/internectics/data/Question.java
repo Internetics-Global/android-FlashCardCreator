@@ -25,9 +25,9 @@ public class Question {
     public int cssID;
     public int templateID;
 
-    public int lineNoSubheading;
-    public int lineNoMain;
-    public int lineNoSub;
+    public int lineNoSubheading;  //不再使用
+    public int lineNoMain; //不再使用
+    public int lineNoSub; //不再使用
 
     public String backgroundImageUriFormatStr;
 
