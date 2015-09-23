@@ -60,6 +60,7 @@
                 android:layout_marginRight="0dp"
                 android:background="@null"
                 style="@style/BlackButtonText"
+                android:visibility="invisible"
                 android:text="Sorted by "/>
 
 

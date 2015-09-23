@@ -22,12 +22,12 @@
     <string name="packlist_delete">Delete</string>
 
     <string name="addpack_close">Close</string>
-    <string name="addpack_title">New Pack</string>
+    <string name="addpack_title">Add a new pack</string>
     <string name="addpack_save">Save</string>
-    <string name="addpack_packname">Pack Name</string>
-    <string name="addpack_sidebar">Sidebar Title</string>
-    <string name="addpack_Creator">Creator Name</string>
-    <string name="addpack_Job_Title">Job Title</string>
+    <string name="addpack_packname">New pack name</string>
+    <string name="addpack_sidebar">Side bar title</string>
+    <string name="addpack_Creator">Your Name</string>
+    <string name="addpack_Job_Title">Name or title</string>
     <string name="addpack_Admin_Password">Admin password</string>
     <string name="addpack_Confirm_Admin_Password">Confirm admin password</string>
 

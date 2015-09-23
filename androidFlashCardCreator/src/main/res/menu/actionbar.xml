@@ -19,24 +19,6 @@
             android:title="@string/actionbar_item_add" android:showAsAction="always">
     </item>
 
-    <item
-            android:id="@+id/actionbar_play"
-            android:icon="@drawable/play_button"
-            android:title="@string/actionbar_item_play" android:showAsAction="always">
-
-        <menu>
-            <item
-                android:id="@+id/actionbar_play_manually"
-                android:title="Play Manually" />
-            <item
-                android:id="@+id/actionbar_play_auto"
-                android:title="Auto Play" />
-            <item
-                android:id="@+id/actionbar_play_auto_loop"
-                android:title="Auto Play and Loop" />
-        </menu>
-
-    </item>
 
     <item
             android:id="@+id/actionbar_change_template_color"
@@ -63,10 +45,29 @@
         <menu>
             <item
                     android:id="@+id/actionbar_install_from_code"
-                    android:title="Install from code" />
+                    android:title="Install from the code" />
             <item
                     android:id="@+id/actionbar_share_pack"
                     android:title="Share the pack" />
+        </menu>
+
+    </item>
+
+    <item
+        android:id="@+id/actionbar_play"
+        android:icon="@drawable/play_button"
+        android:title="@string/actionbar_item_play" android:showAsAction="always">
+
+        <menu>
+            <item
+                android:id="@+id/actionbar_play_manually"
+                android:title="Play Manually" />
+            <item
+                android:id="@+id/actionbar_play_auto"
+                android:title="Auto Play" />
+            <item
+                android:id="@+id/actionbar_play_auto_loop"
+                android:title="Auto Play and Loop" />
         </menu>
 
     </item>

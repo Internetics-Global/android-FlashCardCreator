@@ -24,6 +24,7 @@ import android.widget.AdapterView.OnItemClickListener;
 import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.FrameLayout;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -35,6 +36,7 @@ import com.internectics.android_flashcardcreator.R;
 import com.internectics.android_flashcardcreator.WebViewActivity;
 import com.internectics.data.Pack;
 import com.internectics.data.User;
+import com.internectics.util.AppConfig;
 import com.internectics.util.AppContext;
 import com.internectics.util.Global;
 import com.internectics.util.OpenUDID_manager;
@@ -46,6 +48,7 @@ import net.londatiga.android.QuickAction;
 
 import java.io.FileNotFoundException;
 
+import cn.pedant.SweetAlert.SweetAlertDialog;
 import timber.log.Timber;
 
 public class PackListFragment extends Fragment {
@@ -119,6 +122,12 @@ public class PackListFragment extends Fragment {
         visitStoreButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
+                new SweetAlertDialog(getActivity(), SweetAlertDialog.WARNING_TYPE)
+                        .setTitleText("Alert")
+                        .setContentText("Not implemented yet")
+                        .setConfirmText("Close")
+                        .show();
             }
         });
 
@@ -210,7 +219,9 @@ public class PackListFragment extends Fragment {
             selectPack.lastVistDate = Global.currentTimeSeconds();
             selectPack.save(AppContext.getAppContext());
 
-            ((MainActivity) getActivity()).showPackInfoView();
+            AppConfig.sharedInstance().setPackIDForLastSelected(selectPack.packID);
+
+                    ((MainActivity) getActivity()).showPackInfoView();
 
             ((MainActivity) getActivity()).mPopupWindow.dismiss();
         }
@@ -252,6 +263,8 @@ public class PackListFragment extends Fragment {
             if ((position != 0)&&(mUser.packs.size() > 0)) {
 
                 final Pack currentPack = mUser.packs.get(position -1);
+
+
 
                 final ImageButton editButton = (ImageButton) convertView.findViewById(R.id.button_edit);
                 final ImageButton deleteButton = (ImageButton) convertView.findViewById(R.id.button_delete_pack);
@@ -302,6 +315,15 @@ public class PackListFragment extends Fragment {
 
                 EditText packNameEditText = (EditText) convertView.findViewById(R.id.pack_name_text);
                 packNameEditText.setText(mUser.packs.get(position - 1).packName);
+
+
+                FrameLayout itemLayout = (FrameLayout) convertView.findViewById(R.id.pack_item_layout);
+
+                if (currentPack.packID == AppConfig.sharedInstance().getPackIDForLastSelected()) {
+                    itemLayout.setBackgroundResource(R.drawable.shape_pack_list_item_selected_border_green);
+                } else {
+                    itemLayout.setBackgroundResource(0);
+                }
 
             }
 
@@ -397,6 +419,8 @@ public class PackListFragment extends Fragment {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
 
+                        AppConfig.sharedInstance().setPackIDForLastSelected(currentPack.packID);
+
                         Intent intent = new Intent(getActivity(), PlayActivity.class);
                         intent.putExtra("packID", currentPack.packID);
                         intent.putExtra("oneOffPlayType", 0);  //manually
@@ -409,6 +433,8 @@ public class PackListFragment extends Fragment {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
 
+                        AppConfig.sharedInstance().setPackIDForLastSelected(currentPack.packID);
+
                         Intent intent = new Intent(getActivity(), PlayActivity.class);
                         intent.putExtra("packID", currentPack.packID);
                         intent.putExtra("oneOffPlayType", 1);  //manually
@@ -420,6 +446,8 @@ public class PackListFragment extends Fragment {
                 .setPositiveButton("Auto Play and Loop", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
+
+                        AppConfig.sharedInstance().setPackIDForLastSelected(currentPack.packID);
 
                         Intent intent = new Intent(getActivity(), PlayActivity.class);
                         intent.putExtra("packID", currentPack.packID);

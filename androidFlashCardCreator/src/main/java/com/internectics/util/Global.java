@@ -52,6 +52,9 @@ public class Global {
     public static final String shareDate_Property = "share_date";
     public static final String updateDate_Property = "updated_date";
 
+    //
+    public static final String lastCreatedPackID = "lastCreatedPackID";
+
     //Used to judge whether need to download example pack again
     public static final String isExamplePackDownloadedSBefore_Property = "is_example_pack_downloaded_before";
 
@@ -99,6 +102,8 @@ public class Global {
 
     //Setting related
     public static final int kDEFAULT_CountDown_Slider_Value = 3;
+
+
 
 
     /**

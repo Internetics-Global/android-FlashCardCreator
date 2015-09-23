@@ -22,6 +22,7 @@
     </EditText>
 
     <FrameLayout
+        android:id="@+id/pack_item_layout"
         android:layout_width="fill_parent"
         android:layout_marginTop="5dp"
         android:layout_height="0dp"

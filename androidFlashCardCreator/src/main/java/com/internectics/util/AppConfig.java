@@ -233,5 +233,23 @@ public class AppConfig {
     }
 
 
+    public void setPackIDForLastSelected(int packID) {
+        appConfig.set(Global.lastCreatedPackID, String.format("%d",packID));
+    }
+
+    public  int getPackIDForLastSelected() {
+
+        String str = appConfig.get(Global.lastCreatedPackID);
+        if (str == null) {
+            return -1;
+        } else {
+            return Integer.parseInt(str);
+        }
+
+
+
+    }
+
+
 
 }

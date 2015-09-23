@@ -1392,12 +1392,14 @@ public class MainActivity extends FragmentActivity implements
         }
 
         TextView  packCoverTextView = (TextView) findViewById(R.id.pack_info_title);
-        packCoverTextView.setText(mCurrentPack.packName);
+        packCoverTextView.setText(String.format("Total cards:%d", mCurrentPack.cards.size()));
 
         TextView  shareCodeTextView = (TextView) findViewById(R.id.pack_info_share_code);
         if (StringUtils.isEmpty(mCurrentPack.shareLink) == false) {
             Uri uri = Uri.parse(mCurrentPack.shareLink);
-            shareCodeTextView.setText(uri.getLastPathSegment());
+            shareCodeTextView.setText(String.format("Share code: %s",uri.getLastPathSegment()));
+        } else {
+            shareCodeTextView.setText("");
         }
     }
 
