@@ -94,7 +94,7 @@ public class Global {
     public static final String mImages_Not_Showing = "mImages_Not_Showing";
 
 
-    public static int k_Default_Auto_Play_Dwell_Time = 10;
+    public static int     k_Default_Auto_Play_Dwell_Time = 10;
     public static int     k_MAX_Auto_Play_Speed  = 60;
     public static int     k_MIN_Auto_Play_Speed  = 4;
 

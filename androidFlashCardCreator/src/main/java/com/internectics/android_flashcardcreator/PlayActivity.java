@@ -124,7 +124,7 @@ public class PlayActivity extends FragmentActivity implements SensorEventListene
      * 当isAutoShowQuestionOnly = true时，intervalBetweenCardSeconds ＝ mPauseForAnswerSeekBar
      * 当isAutoShowQuestionOnly ＝ false时,intervalBetweenCardSeconds = K_IntervalBetweenCardSeconds_ForQAOnly
      */
-    private final int      K_IntervalBetweenCardSeconds_ForQAOnly      = 4000; //4 seconds
+    private final int      K_IntervalBetweenCardMilliSeconds_ForQAOnly      = 4000; //4 seconds
 
     private final int      K_Big_Enough_For_Endless_Repeated_Timer     =600000;
 
@@ -415,9 +415,9 @@ public class PlayActivity extends FragmentActivity implements SensorEventListene
         resetAutoHideControlPanelHandler();
 
 
-        int duration = mDwellTimeSeekBar.getProgress();
+        int duration = getDwellTimeMilliSeconds();
         mCurrentPack.autoPlaySpeed = duration;
-        if (duration == Global.k_MIN_Auto_Play_Speed) {
+        if (duration == Global.k_MIN_Auto_Play_Speed * 1000) {
             mIsFixedDelayAutoScroll = false;
         } else {
             mIsFixedDelayAutoScroll = true;
@@ -612,6 +612,13 @@ public class PlayActivity extends FragmentActivity implements SensorEventListene
 
         if (mIsAutoScroll == false) {
             mIsAutoScroll = true;
+
+            if (getDwellTimeMilliSeconds() == Global.k_MIN_Auto_Play_Speed * 1000) {
+                mIsFixedDelayAutoScroll = false;
+            } else {
+                mIsFixedDelayAutoScroll = true;
+            }
+
             executeAutoPlay();
 
         } else {
@@ -1231,7 +1238,7 @@ public class PlayActivity extends FragmentActivity implements SensorEventListene
                                 scroll2NextPage();
                             }
                         }
-                    }, K_IntervalBetweenCardSeconds_ForQAOnly);
+                    }, K_IntervalBetweenCardMilliSeconds_ForQAOnly);
 
                 }
             }
@@ -1518,7 +1525,7 @@ public class PlayActivity extends FragmentActivity implements SensorEventListene
             dwellMilliSecondsTotally = dwellTimeMilliSeconds *2 + pauseForAnswerMilliSeconds;
         }
 
-        dwellMilliSecondsTotally = dwellMilliSecondsTotally + K_IntervalBetweenCardSeconds_ForQAOnly;
+        dwellMilliSecondsTotally = dwellMilliSecondsTotally + K_IntervalBetweenCardMilliSeconds_ForQAOnly;
 
         return dwellMilliSecondsTotally;
     }
