@@ -199,7 +199,9 @@ public class PlayActivity extends FragmentActivity implements SensorEventListene
 
         if (mFirstTimeDelayHandler != null) {
             mFirstTimeDelayHandler.removeCallbacksAndMessages(null);
+            mFirstTimeDelayHandler = null;
         }
+        mFirstTimeDelayHandler = new Handler();
         mFirstTimeDelayHandler.postDelayed(new Runnable() {
             @Override
             public void run() {
@@ -209,7 +211,9 @@ public class PlayActivity extends FragmentActivity implements SensorEventListene
 
         if (mAutoHideControlPanelHandler != null) {
             mAutoHideControlPanelHandler.removeCallbacksAndMessages(null);
+            mAutoHideControlPanelHandler = null;
         }
+        mAutoHideControlPanelHandler = new Handler();
         mAutoHideControlPanelHandler.postDelayed(new Runnable() {
 
             @Override
@@ -326,7 +330,9 @@ public class PlayActivity extends FragmentActivity implements SensorEventListene
 
                 if (mAutoHideControlPanelHandler != null) {
                     mAutoHideControlPanelHandler.removeCallbacksAndMessages(null);
+                    mAutoHideControlPanelHandler = null;
                 }
+                mAutoHideControlPanelHandler = new Handler();
                 mAutoHideControlPanelHandler.postDelayed(new Runnable() {
                     @Override
                     public void run() {
@@ -470,18 +476,22 @@ public class PlayActivity extends FragmentActivity implements SensorEventListene
 
         if (mTTSDelayHandler !=null) {
             mTTSDelayHandler.removeCallbacksAndMessages(null);
+            mTTSDelayHandler = null;
         }
 
         if (mPauseForAnswerHandler !=null) {
             mPauseForAnswerHandler.removeCallbacksAndMessages(null);
+            mPauseForAnswerHandler = null;
         }
 
         if (mFirstTimeDelayHandler !=null) {
             mFirstTimeDelayHandler.removeCallbacksAndMessages(null);
+            mFirstTimeDelayHandler = null;
         }
 
         if (mAutoHideControlPanelHandler !=null) {
             mAutoHideControlPanelHandler.removeCallbacksAndMessages(null);
+            mAutoHideControlPanelHandler = null;
         }
 
         if (mFirstPageDelay_FixedMode_Handler !=null) {
@@ -490,24 +500,29 @@ public class PlayActivity extends FragmentActivity implements SensorEventListene
 
         if (mFirstPageDelay_AutoDelayMode_Handler !=null) {
             mFirstPageDelay_AutoDelayMode_Handler.removeCallbacksAndMessages(null);
+            mFirstPageDelay_AutoDelayMode_Handler = null;
         }
 
 
         if (mText2Speech_AfterSoundRecording_Handler !=null) {
             mText2Speech_AfterSoundRecording_Handler.removeCallbacksAndMessages(null);
+            mText2Speech_AfterSoundRecording_Handler = null;
         }
 
 
         if (mA_ForText2SpeechFinishedHandler !=null) {
             mA_ForText2SpeechFinishedHandler.removeCallbacksAndMessages(null);
+            mA_ForText2SpeechFinishedHandler = null;
         }
 
         if (mB_ForText2SpeechFinishedHandler !=null) {
             mB_ForText2SpeechFinishedHandler.removeCallbacksAndMessages(null);
+            mB_ForText2SpeechFinishedHandler = null;
         }
 
         if (mC_ForText2SpeechFinishedHandler !=null) {
             mC_ForText2SpeechFinishedHandler.removeCallbacksAndMessages(null);
+            mC_ForText2SpeechFinishedHandler = null;
         }
     }
 
@@ -666,6 +681,7 @@ public class PlayActivity extends FragmentActivity implements SensorEventListene
 
         if (mFirstTimeDelayHandler !=null) {
             mFirstTimeDelayHandler.removeCallbacksAndMessages(null);
+            mFirstTimeDelayHandler = null;
         }
 
         showControlPanel();
@@ -720,7 +736,9 @@ public class PlayActivity extends FragmentActivity implements SensorEventListene
 
             if (mFirstPageDelay_FixedMode_Handler != null) {
                 mFirstPageDelay_FixedMode_Handler.removeCallbacksAndMessages(null);
+                mFirstPageDelay_FixedMode_Handler = null;
             }
+            mFirstPageDelay_FixedMode_Handler = new Handler();
             mFirstPageDelay_FixedMode_Handler.postDelayed(new Runnable() {
                 @Override
                 public void run() {
@@ -732,7 +750,9 @@ public class PlayActivity extends FragmentActivity implements SensorEventListene
 
             if (mFirstPageDelay_AutoDelayMode_Handler != null) {
                 mFirstPageDelay_AutoDelayMode_Handler.removeCallbacksAndMessages(null);
+                mFirstPageDelay_AutoDelayMode_Handler = null;
             }
+            mFirstPageDelay_AutoDelayMode_Handler = new Handler();
             mFirstPageDelay_AutoDelayMode_Handler.postDelayed(new Runnable() {
                 @Override
                 public void run() {
@@ -749,11 +769,11 @@ public class PlayActivity extends FragmentActivity implements SensorEventListene
 
         //1. prerequisite
         if (mIsFixedDelayAutoScroll == false) {
-            return;
+            throw new IllegalArgumentException("ccaa, mIsFixedDelayAutoScroll should not be false");
         }
 
         if (isSmartDelay() || mIsAutoScroll == false) {
-            return;
+            throw new IllegalArgumentException("ccaa, isSmartDelay should not be true or mIsAutoScroll should not be false");
         }
 
         //2. 我们不再需要这段逻辑，因为：如果是fixed delay auto play,则我们通过mAutoScrollForFixedDelayTimer；如果是smart auto delay,我们通过setOnUtteranceProgressListener回调
@@ -812,7 +832,7 @@ public class PlayActivity extends FragmentActivity implements SensorEventListene
             showControlPanel();
             resetAutoHideControlPanelHandler();
 
-            switchQuestionAnswerView();  //not allow to switch during auto play mode
+            switchQuestionAnswerViewManually(true);  //not allow to switch during auto play mode
         }
 
     }
@@ -866,10 +886,12 @@ public class PlayActivity extends FragmentActivity implements SensorEventListene
 
             if (mTTSDelayHandler != null) {
                 mTTSDelayHandler.removeCallbacksAndMessages(null);
+                mTTSDelayHandler = null;
             }
 
             if (mPauseForAnswerHandler != null) {
                 mPauseForAnswerHandler.removeCallbacksAndMessages(null);
+                mPauseForAnswerHandler = null;
             }
 
             //只会运行一次
@@ -895,7 +917,7 @@ public class PlayActivity extends FragmentActivity implements SensorEventListene
     public void onSensorChanged(SensorEvent event) {
 
         if (mIsAutoScroll) {
-            return;  //not allow to switch during auto play mode
+            throw new IllegalArgumentException("ccaa, mIsAutoScroll should not be true");  //not allow to switch during auto play mode
         }
 
         CardDetailFragment currentCardDetailFragment = getCurrentCardDetailFragment();
@@ -956,32 +978,38 @@ public class PlayActivity extends FragmentActivity implements SensorEventListene
     private void switchQAFromTimerForFixedDelay() {
 
         if (mIsAutoScroll == false) {
-            return;
+            throw new IllegalArgumentException("ccaa,  mIsAutoScroll should not be false");
         }
 
         if (AppConfig.sharedInstance().isShowQuestionOnly() == true) {
-            return;
+            throw new IllegalArgumentException("ccaa, isShowQuestionOnly should not be true");
         }
 
         if (mIsAutoScroll&& isSmartDelay()) {
-            return;
+            throw new IllegalArgumentException("ccaa, mIsAutoScroll and isSmartDelay should not be both true");
         }
 
-        switchQuestionAnswerView();
+        switchQuestionAnswerViewManually(false);
 
     }
 
 
-    private void switchQuestionAnswerView() {
+    private void switchQuestionAnswerViewManually(boolean isManually) {
+
+        if (mIsAutoScroll && isManually == false) {
+            throw new IllegalArgumentException("ccaa, unconsistency error");
+        }
+
+        if (isManually) { //在fixed delay或smart delay的auto scroll中，都是不允许手动切换question/answer view的
+            stopAllHandlers();
+            stopAllTimers();
+        }
 
         stopAudio();
         stopTextToSpeech();
 
         CardDetailFragment currentCardDetailFragment = getCurrentCardDetailFragment();
 
-        if (mAutoSwitchQATimer != null) {
-            mAutoSwitchQATimer.cancel();
-        }
 
         currentCardDetailFragment.switchQuestionAnswerView();
 
@@ -1054,7 +1082,9 @@ public class PlayActivity extends FragmentActivity implements SensorEventListene
                                 if (textToSpeechArray.size() > mTextToSpeechContentArrayIndex) {
                                     if (mTTSDelayHandler != null) {
                                         mTTSDelayHandler.removeCallbacksAndMessages(null);
+                                        mTTSDelayHandler = null;
                                     }
+                                    mTTSDelayHandler = new Handler(getMainLooper());
                                     mTTSDelayHandler.postDelayed(new Runnable() {
                                         @Override
                                         public void run() {
@@ -1155,7 +1185,9 @@ public class PlayActivity extends FragmentActivity implements SensorEventListene
 
                 if (mA_ForText2SpeechFinishedHandler !=null) {
                     mA_ForText2SpeechFinishedHandler.removeCallbacksAndMessages(null);
+                    mA_ForText2SpeechFinishedHandler = null;
                 }
+                mA_ForText2SpeechFinishedHandler = new Handler();
                 mA_ForText2SpeechFinishedHandler.postDelayed(new Runnable() {
                     @Override
                     public void run() {
@@ -1172,12 +1204,14 @@ public class PlayActivity extends FragmentActivity implements SensorEventListene
 
                     if (mB_ForText2SpeechFinishedHandler !=null) {
                         mB_ForText2SpeechFinishedHandler.removeCallbacksAndMessages(null);
+                        mB_ForText2SpeechFinishedHandler = null;
                     }
+                    mB_ForText2SpeechFinishedHandler = new Handler();
                     mB_ForText2SpeechFinishedHandler.postDelayed(new Runnable() {
                         @Override
                         public void run() {
                             if (mIsShuttingDown == false && mIsAutoScroll && isSmartDelay()) {
-                                switchQuestionAnswerView();
+                                switchQuestionAnswerViewManually(false);
                             }
                         }
                     }, pauseForAnswerMilliSeconds);
@@ -1187,7 +1221,9 @@ public class PlayActivity extends FragmentActivity implements SensorEventListene
 
                     if (mC_ForText2SpeechFinishedHandler !=null) {
                         mC_ForText2SpeechFinishedHandler.removeCallbacksAndMessages(null);
+                        mC_ForText2SpeechFinishedHandler = null;
                     }
+                    mC_ForText2SpeechFinishedHandler = new Handler();
                     mC_ForText2SpeechFinishedHandler.postDelayed(new Runnable() {
                         @Override
                         public void run() {
@@ -1252,7 +1288,9 @@ public class PlayActivity extends FragmentActivity implements SensorEventListene
                     } else {
                         if (mText2Speech_AfterSoundRecording_Handler != null) {
                             mText2Speech_AfterSoundRecording_Handler.removeCallbacksAndMessages(null);
+                            mText2Speech_AfterSoundRecording_Handler = null;
                         }
+                        mText2Speech_AfterSoundRecording_Handler = new Handler();
                         mText2Speech_AfterSoundRecording_Handler.postDelayed(new Runnable() {
                             @Override
                             public void run() {
@@ -1270,6 +1308,7 @@ public class PlayActivity extends FragmentActivity implements SensorEventListene
 
                     if (mText2Speech_AfterSoundRecording_Handler !=null) {
                         mText2Speech_AfterSoundRecording_Handler.removeCallbacksAndMessages(null);
+                        mText2Speech_AfterSoundRecording_Handler = null;
                     }
 
                     textToSpeechAllContentNow(cardDetailFragment,isMuteText2Speech);
@@ -1305,6 +1344,8 @@ public class PlayActivity extends FragmentActivity implements SensorEventListene
     private void stopTextToSpeech() {
 
         unmuteTTS(); //这个非常重要
+
+        mTextToSpeechContentArrayIndex = 0; //这个非常重要
 
 
         if (mTTS!= null) {
@@ -1541,7 +1582,9 @@ public class PlayActivity extends FragmentActivity implements SensorEventListene
 
         if (mAutoHideControlPanelHandler != null) {
             mAutoHideControlPanelHandler.removeCallbacksAndMessages(null);
+            mAutoHideControlPanelHandler = null;
         }
+        mAutoHideControlPanelHandler = new Handler();
         mAutoHideControlPanelHandler.postDelayed(new Runnable() {
 
             @Override
