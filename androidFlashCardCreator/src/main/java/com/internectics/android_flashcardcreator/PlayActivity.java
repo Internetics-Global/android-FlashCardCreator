@@ -85,8 +85,6 @@ public class PlayActivity extends FragmentActivity implements SensorEventListene
     private boolean     mIsCyclePlay;
     private boolean     mIsMuteSoundRecording = false;  //实际上不是真正的mute,在auto play模式中，实际上还是在播放，只是mute了
 
-    private boolean     mIsAutoShowQuestionOnly = true;
-
     private boolean     mRunOnceFlag; //only allow to run once
 
     //Text to speech related
@@ -101,6 +99,13 @@ public class PlayActivity extends FragmentActivity implements SensorEventListene
     private Handler        mFirstPageDelay_AutoDelayMode_Handler        = new Handler();
     private Handler        mText2Speech_AfterSoundRecording_Handler     = new Handler();
 
+    /**
+     *  与iPhone不同的是，我们不需要这个
+     */
+//    private Handler        mDwellOnAnswerExpireHandler_ForFixedDelay    = new Handler();
+//    private Handler        mDwellOnQuestionExpireHandler_ForFixedDelay  = new Handler();
+
+
     private Handler        mA_ForText2SpeechFinishedHandler              = new Handler();
     private Handler        mB_ForText2SpeechFinishedHandler              = new Handler();
     private Handler        mC_ForText2SpeechFinishedHandler              = new Handler();
@@ -114,6 +119,14 @@ public class PlayActivity extends FragmentActivity implements SensorEventListene
     private boolean        mIsFixedDelayAutoScroll;  //用来区分是否是fixed delay 还是 smart  auto scroll
 
     private int            mOneOffPlayType; //0, manually; 1, auto play; 2, auto play loop
+
+    /*
+     * 当isAutoShowQuestionOnly = true时，intervalBetweenCardSeconds ＝ mPauseForAnswerSeekBar
+     * 当isAutoShowQuestionOnly ＝ false时,intervalBetweenCardSeconds = K_IntervalBetweenCardSeconds_ForQAOnly
+     */
+    private final int      K_IntervalBetweenCardSeconds_ForQAOnly      = 4000; //4 seconds
+
+    private final int      K_Big_Enough_For_Endless_Repeated_Timer     =600000;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -183,6 +196,10 @@ public class PlayActivity extends FragmentActivity implements SensorEventListene
             mPlayRecordImageButton.setImageDrawable(getResources().getDrawable(R.drawable.play25_normal));
         }
 
+
+        if (mFirstTimeDelayHandler != null) {
+            mFirstTimeDelayHandler.removeCallbacksAndMessages(null);
+        }
         mFirstTimeDelayHandler.postDelayed(new Runnable() {
             @Override
             public void run() {
@@ -190,6 +207,9 @@ public class PlayActivity extends FragmentActivity implements SensorEventListene
             }
         }, 1000);
 
+        if (mAutoHideControlPanelHandler != null) {
+            mAutoHideControlPanelHandler.removeCallbacksAndMessages(null);
+        }
         mAutoHideControlPanelHandler.postDelayed(new Runnable() {
 
             @Override
@@ -307,7 +327,6 @@ public class PlayActivity extends FragmentActivity implements SensorEventListene
                 if (mAutoHideControlPanelHandler != null) {
                     mAutoHideControlPanelHandler.removeCallbacksAndMessages(null);
                 }
-
                 mAutoHideControlPanelHandler.postDelayed(new Runnable() {
                     @Override
                     public void run() {
@@ -393,7 +412,7 @@ public class PlayActivity extends FragmentActivity implements SensorEventListene
         int duration = mDwellTimeSeekBar.getProgress();
         mCurrentPack.autoPlaySpeed = duration;
         if (duration == Global.k_MIN_Auto_Play_Speed) {
-            mIsFixedDelayAutoScroll= false;
+            mIsFixedDelayAutoScroll = false;
         } else {
             mIsFixedDelayAutoScroll = true;
             mOneOffPlayType = -1;  //因为是one off的，所以一旦有新动作，需要重置
@@ -427,8 +446,6 @@ public class PlayActivity extends FragmentActivity implements SensorEventListene
 
         stopAudio();
         stopTextToSpeech();
-
-
     }
 
     protected void stopAllTimers() {
@@ -479,6 +496,7 @@ public class PlayActivity extends FragmentActivity implements SensorEventListene
         if (mText2Speech_AfterSoundRecording_Handler !=null) {
             mText2Speech_AfterSoundRecording_Handler.removeCallbacksAndMessages(null);
         }
+
 
         if (mA_ForText2SpeechFinishedHandler !=null) {
             mA_ForText2SpeechFinishedHandler.removeCallbacksAndMessages(null);
@@ -578,7 +596,7 @@ public class PlayActivity extends FragmentActivity implements SensorEventListene
         stopAllHandlers();
 
         if (mIsAutoScroll == false) {
-
+            mIsAutoScroll = true;
             executeAutoPlay();
 
         } else {
@@ -655,7 +673,7 @@ public class PlayActivity extends FragmentActivity implements SensorEventListene
 
         switch (mOneOffPlayType) {
             case 0: {
-
+                mIsAutoScroll = false;
                 CardDetailFragment currentCardDetailFragment = getCurrentCardDetailFragment();
                 playbackOnCard(currentCardDetailFragment);
 
@@ -663,10 +681,12 @@ public class PlayActivity extends FragmentActivity implements SensorEventListene
             }
 
             case 1:
+                mIsAutoScroll = true;
                 executeAutoPlay();
                 break;
 
             case 2:
+                mIsAutoScroll = true;
                 executeAutoPlay();
                 cyclePlayImageButtonClicked();
 
@@ -680,7 +700,6 @@ public class PlayActivity extends FragmentActivity implements SensorEventListene
 
     private void executeAutoPlay() {
 
-
         int countDownVal = AppConfig.sharedInstance().getCountDown();
         mCounterDownTextView.setText(String.valueOf(countDownVal));
         if (countDownVal > 0) {
@@ -692,20 +711,16 @@ public class PlayActivity extends FragmentActivity implements SensorEventListene
             mCounterDownTextView.setVisibility(View.GONE);
         }
 
-        if (AppConfig.sharedInstance().isShowQuestionOnly()) {
-            mIsAutoShowQuestionOnly = true;
-        } else {
-            mIsAutoShowQuestionOnly = false;
-        }
-
 
         screenOn();
         mPager.disableAllTouchEvent(true);
-        mIsAutoScroll = true;
         mAutoScrollImageButton.setImageDrawable(getResources().getDrawable(R.drawable.autoplay_on));
 
         if (isSmartDelay()== false) {  //
 
+            if (mFirstPageDelay_FixedMode_Handler != null) {
+                mFirstPageDelay_FixedMode_Handler.removeCallbacksAndMessages(null);
+            }
             mFirstPageDelay_FixedMode_Handler.postDelayed(new Runnable() {
                 @Override
                 public void run() {
@@ -715,6 +730,9 @@ public class PlayActivity extends FragmentActivity implements SensorEventListene
 
         } else {
 
+            if (mFirstPageDelay_AutoDelayMode_Handler != null) {
+                mFirstPageDelay_AutoDelayMode_Handler.removeCallbacksAndMessages(null);
+            }
             mFirstPageDelay_AutoDelayMode_Handler.postDelayed(new Runnable() {
                 @Override
                 public void run() {
@@ -729,6 +747,7 @@ public class PlayActivity extends FragmentActivity implements SensorEventListene
 
     private void beginFixedDelayAutoScroll() {
 
+        //1. prerequisite
         if (mIsFixedDelayAutoScroll == false) {
             return;
         }
@@ -737,33 +756,41 @@ public class PlayActivity extends FragmentActivity implements SensorEventListene
             return;
         }
 
-        final int dwellTimeMilliSeconds = getDwellTimeMilliSeconds();
-        final int pauseForAnswerMilliSeconds = getPauseForAnswerMilliSeconds();
+        //2. 我们不再需要这段逻辑，因为：如果是fixed delay auto play,则我们通过mAutoScrollForFixedDelayTimer；如果是smart auto delay,我们通过setOnUtteranceProgressListener回调
+//        final int dwellTimeMilliSeconds = getDwellTimeMilliSeconds();
+//        final int pauseForAnswerMilliSeconds = getPauseForAnswerMilliSeconds();
+//
+//        mPager.setInterval(dwellTimeMilliSeconds);
+//        mPager.setPauseForAnswerMilliSeconds(pauseForAnswerMilliSeconds);
+//        mPager.startAutoScroll();
 
-        mPager.setInterval(dwellTimeMilliSeconds);
-        mPager.setPauseForAnswerMilliSeconds(pauseForAnswerMilliSeconds);
-        mPager.startAutoScroll();
-
+        //3. auto scroll timer
         int dwellMilliSecondsTotally = getDwellMilliSecondsTotally();
-        int dwellMilliSecondsOnQuestionOnly = getDwellMilliSecondsOnQuestionOnly();
-
-        if (mAutoSwitchQATimer != null) {
-            mAutoSwitchQATimer.cancel();
-        }
-        mAutoSwitchQATimer = new Timer();
-        TimerTask switchQATimer = new SwitchQATimerTask();
-        mAutoSwitchQATimer.scheduleAtFixedRate(switchQATimer, dwellMilliSecondsOnQuestionOnly, 3600 * 1000);
 
         if (mAutoScrollForFixedDelayTimer != null) {
             mAutoScrollForFixedDelayTimer.cancel();
         }
         mAutoScrollForFixedDelayTimer = new Timer();
         TimerTask autoScrollForFixedDelayTimerTask = new AutoScrollForFixedDelayTimerTask();
-        mAutoScrollForFixedDelayTimer.scheduleAtFixedRate(autoScrollForFixedDelayTimerTask, dwellMilliSecondsTotally, 3600 * 1000);
+        mAutoScrollForFixedDelayTimer.scheduleAtFixedRate(autoScrollForFixedDelayTimerTask, dwellMilliSecondsTotally, K_Big_Enough_For_Endless_Repeated_Timer * 1000);
 
 
+        //4. play now
         CardDetailFragment currentCardDetailFragment = getCurrentCardDetailFragment();
         playbackOnCard(currentCardDetailFragment);
+
+
+        //5.  question /answer switch timer
+        int dwellMilliSecondsOnQuestionOnly = getDwellMilliSecondsOnQuestionOnly() + getPauseForAnswerMilliSeconds();
+
+        if (mAutoSwitchQATimer != null) {
+            mAutoSwitchQATimer.cancel();
+        }
+        if (AppConfig.sharedInstance().isShowQuestionOnly() == false) {
+            mAutoSwitchQATimer = new Timer();
+            TimerTask switchQATimer = new SwitchQATimerTask();
+            mAutoSwitchQATimer.scheduleAtFixedRate(switchQATimer, dwellMilliSecondsOnQuestionOnly, K_Big_Enough_For_Endless_Repeated_Timer * 1000);
+        }
     }
 
 
@@ -819,13 +846,16 @@ public class PlayActivity extends FragmentActivity implements SensorEventListene
             playbackOnCard((CardDetailFragment) (mFragments.get(position)));
 
             if (isSmartDelay() == false) {
-                if (mIsAutoScroll && mIsAutoShowQuestionOnly == false) {
-                    if (mAutoSwitchQATimer != null) {
-                        mAutoSwitchQATimer.cancel();
-                    }
+
+                if (mAutoSwitchQATimer != null) {
+                    mAutoSwitchQATimer.cancel();
+                }
+
+                if (mIsAutoScroll && AppConfig.sharedInstance().isShowQuestionOnly() == false) {
+                    int dwellMilliSecondsOnQuestionOnly = getDwellMilliSecondsOnQuestionOnly() + getPauseForAnswerMilliSeconds();
                     mAutoSwitchQATimer = new Timer();
                     TimerTask updateBall = new SwitchQATimerTask();
-                    mAutoSwitchQATimer.scheduleAtFixedRate(updateBall, getDwellTimeMilliSeconds() / 2 - 500, 3600*1000);
+                    mAutoSwitchQATimer.scheduleAtFixedRate(updateBall, dwellMilliSecondsOnQuestionOnly, K_Big_Enough_For_Endless_Repeated_Timer*1000);
                 }
             }
 
@@ -920,7 +950,32 @@ public class PlayActivity extends FragmentActivity implements SensorEventListene
     }
 
 
+    /**
+     *  由于是个延时调用，我们必须重新check
+     */
+    private void switchQAFromTimerForFixedDelay() {
+
+        if (mIsAutoScroll == false) {
+            return;
+        }
+
+        if (AppConfig.sharedInstance().isShowQuestionOnly() == true) {
+            return;
+        }
+
+        if (mIsAutoScroll&& isSmartDelay()) {
+            return;
+        }
+
+        switchQuestionAnswerView();
+
+    }
+
+
     private void switchQuestionAnswerView() {
+
+        stopAudio();
+        stopTextToSpeech();
 
         CardDetailFragment currentCardDetailFragment = getCurrentCardDetailFragment();
 
@@ -997,6 +1052,9 @@ public class PlayActivity extends FragmentActivity implements SensorEventListene
 
                                 final ArrayList<String> textToSpeechArray = currentCardDetailFragment.textToSpeechContentArray();
                                 if (textToSpeechArray.size() > mTextToSpeechContentArrayIndex) {
+                                    if (mTTSDelayHandler != null) {
+                                        mTTSDelayHandler.removeCallbacksAndMessages(null);
+                                    }
                                     mTTSDelayHandler.postDelayed(new Runnable() {
                                         @Override
                                         public void run() {
@@ -1091,15 +1149,13 @@ public class PlayActivity extends FragmentActivity implements SensorEventListene
 //                [self enableDwellTimeSlider];
 //            }
 
-            if (mIsAutoShowQuestionOnly) {
+            if (AppConfig.sharedInstance().isShowQuestionOnly()) {
 
                 int pauseForAnswerMilliSeconds = getPauseForAnswerMilliSeconds();
 
                 if (mA_ForText2SpeechFinishedHandler !=null) {
                     mA_ForText2SpeechFinishedHandler.removeCallbacksAndMessages(null);
                 }
-                mA_ForText2SpeechFinishedHandler = new Handler();
-
                 mA_ForText2SpeechFinishedHandler.postDelayed(new Runnable() {
                     @Override
                     public void run() {
@@ -1117,8 +1173,6 @@ public class PlayActivity extends FragmentActivity implements SensorEventListene
                     if (mB_ForText2SpeechFinishedHandler !=null) {
                         mB_ForText2SpeechFinishedHandler.removeCallbacksAndMessages(null);
                     }
-                    mB_ForText2SpeechFinishedHandler = new Handler();
-
                     mB_ForText2SpeechFinishedHandler.postDelayed(new Runnable() {
                         @Override
                         public void run() {
@@ -1131,13 +1185,9 @@ public class PlayActivity extends FragmentActivity implements SensorEventListene
 
                 } else {
 
-                    int delayInMillseconds = 4000 ; //4 second
-
                     if (mC_ForText2SpeechFinishedHandler !=null) {
                         mC_ForText2SpeechFinishedHandler.removeCallbacksAndMessages(null);
                     }
-                    mC_ForText2SpeechFinishedHandler = new Handler();
-
                     mC_ForText2SpeechFinishedHandler.postDelayed(new Runnable() {
                         @Override
                         public void run() {
@@ -1145,7 +1195,7 @@ public class PlayActivity extends FragmentActivity implements SensorEventListene
                                 scroll2NextPage();
                             }
                         }
-                    }, delayInMillseconds);
+                    }, K_IntervalBetweenCardSeconds_ForQAOnly);
 
                 }
             }
@@ -1155,6 +1205,10 @@ public class PlayActivity extends FragmentActivity implements SensorEventListene
 
 
     private void scroll2NextPage() {
+
+        stopAudio();
+        stopTextToSpeech();
+
         if (mIsCyclePlay) {
             mPager.scroll2NextPage();
         } else {
@@ -1162,6 +1216,7 @@ public class PlayActivity extends FragmentActivity implements SensorEventListene
                 mPager.scroll2NextPage();
             }
         }
+
     }
 
 
@@ -1181,12 +1236,6 @@ public class PlayActivity extends FragmentActivity implements SensorEventListene
                 isMuteText2Speech = true;
             }
 
-            //TODO:XXX
-//            if (_previousCard) {
-//                [_previousCard stopTextToSpeechNow];
-//                [_previousCard stopAudio];
-//            }
-
             if (mIsShuttingDown == false) {
 
                 if (mIsMuteSoundRecording == false) {
@@ -1201,6 +1250,9 @@ public class PlayActivity extends FragmentActivity implements SensorEventListene
                     if (durationForRecordedSound == 0) {
                         textToSpeechAllContentNow(cardDetailFragment,isMuteText2Speech);
                     } else {
+                        if (mText2Speech_AfterSoundRecording_Handler != null) {
+                            mText2Speech_AfterSoundRecording_Handler.removeCallbacksAndMessages(null);
+                        }
                         mText2Speech_AfterSoundRecording_Handler.postDelayed(new Runnable() {
                             @Override
                             public void run() {
@@ -1209,7 +1261,7 @@ public class PlayActivity extends FragmentActivity implements SensorEventListene
                                     textToSpeechAllContentNow(cardDetailFragment,isMuteText2Speech);
                                 }
                             }
-                        },durationForRecordedSound +1000);
+                        },durationForRecordedSound + 1000);  //这里1000（1秒）是适当的，因为mPauseForAnswerSeekBar或K_IntervalBetweenCardSeconds_ForQAOnly都远大于这个数
 
                         AudioHelper.playAudio(cardDetailFragment,mIsMuteSoundRecording);
                     }
@@ -1260,15 +1312,16 @@ public class PlayActivity extends FragmentActivity implements SensorEventListene
         }
     }
 
-    //由于TTS没有单独的音量控制，所以需要通过AudioManager全局控制，这种体验其实是不好的，但是也是唯一的方法
+    //由于TTS没有单独的音量控制，所以需要通过AudioManager全局控制，这种体验其实是不好的，但是也是唯一的方法.
+    // DON'T use AudioManager to set volume! It will cause many side effects such as disabling silent mode, which will make your users mad!
     private  void muteTTS() {
         AudioManager audioManager=(AudioManager)getSystemService(Context.AUDIO_SERVICE);
-        audioManager.setStreamMute(AudioManager.STREAM_MUSIC, true);
+        audioManager.setStreamMute(AudioManager.STREAM_RING, true); //TTS实际走的是STREAM_RING，不是STREAM_TTS
     }
 
     private void unmuteTTS() {
         AudioManager audioManager=(AudioManager)getSystemService(Context.AUDIO_SERVICE);
-        audioManager.setStreamMute(AudioManager.STREAM_MUSIC, false);
+        audioManager.setStreamMute(AudioManager.STREAM_MUSIC, false);//TTS实际走的是STREAM_RING，不是STREAM_TTS
     }
 
 
@@ -1418,11 +1471,13 @@ public class PlayActivity extends FragmentActivity implements SensorEventListene
         final int pauseForAnswerMilliSeconds = getPauseForAnswerMilliSeconds();
 
         int dwellMilliSecondsTotally;
-        if (mIsAutoShowQuestionOnly) {
+        if (AppConfig.sharedInstance().isShowQuestionOnly()) {
             dwellMilliSecondsTotally = dwellTimeMilliSeconds;
         } else {
             dwellMilliSecondsTotally = dwellTimeMilliSeconds *2 + pauseForAnswerMilliSeconds;
         }
+
+        dwellMilliSecondsTotally = dwellMilliSecondsTotally + K_IntervalBetweenCardSeconds_ForQAOnly;
 
         return dwellMilliSecondsTotally;
     }
@@ -1439,6 +1494,9 @@ public class PlayActivity extends FragmentActivity implements SensorEventListene
     }
 
 
+    /*
+     * time on question or answer
+     */
     private int getDwellTimeMilliSeconds() {
         int interval = mDwellTimeSeekBar.getProgress();
         return interval*1000;
@@ -1484,7 +1542,6 @@ public class PlayActivity extends FragmentActivity implements SensorEventListene
         if (mAutoHideControlPanelHandler != null) {
             mAutoHideControlPanelHandler.removeCallbacksAndMessages(null);
         }
-
         mAutoHideControlPanelHandler.postDelayed(new Runnable() {
 
             @Override
@@ -1532,12 +1589,15 @@ public class PlayActivity extends FragmentActivity implements SensorEventListene
     }
 
 
+    /*
+     * 仅仅用于fixed delay mode
+     */
     class SwitchQATimerTask extends TimerTask {
         public void run() {
             runOnUiThread(new Runnable() {
                 @Override
                 public void run() {
-                    switchQuestionAnswerView();
+                    switchQAFromTimerForFixedDelay();
                 }
             });
         }
