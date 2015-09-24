@@ -57,7 +57,7 @@ public class AudioHelper {
 
     public static void startRecord() {
 
-        stopAudio();
+        stopAndCleanAudio();
 
         try {
             mRecorder.prepare();
@@ -120,7 +120,7 @@ public class AudioHelper {
      */
     public static void playAudio(String pathString, boolean isMute){
 
-        stopAudio();
+        stopAndCleanAudio();
 
         //set up MediaPlayer
         if (mp == null) {
@@ -155,38 +155,33 @@ public class AudioHelper {
         mp.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
             @Override
             public void onCompletion(MediaPlayer mp) {
-              mp.release();
-              mp = null;
+                cleanupAudioPlayResource();
             }
         });
 
         mp.setOnErrorListener(new MediaPlayer.OnErrorListener() {
             @Override
             public boolean onError(MediaPlayer mp, int what, int extra) {
-                mp.release();
-                mp = null;
+                cleanupAudioPlayResource();
                 return false;
             }
         });
     }
 
-    public static void stopAudio() {
+    public static void stopAndCleanAudio() {
         if (mp != null) {
 
             boolean isPlaying = false;
             try {
-                mp.setVolume(1,1); //restore
                 isPlaying = mp.isPlaying();
             } catch (IllegalStateException e) {
-                mp.release();
-                mp = null;
+                cleanupAudioPlayResource();
             }
 
             if (isPlaying) {
                 mp.stop();
-                mp.release();
-                mp = null;
             }
+            cleanupAudioPlayResource();
         }
     }
 
@@ -195,7 +190,7 @@ public class AudioHelper {
      */
     public static void cleanupAudioPlayResource() {
         if (mp != null) {
-            mp.stop();
+            mp.setVolume(1,1); //this is very important
             mp.release();
             mp = null;
         }

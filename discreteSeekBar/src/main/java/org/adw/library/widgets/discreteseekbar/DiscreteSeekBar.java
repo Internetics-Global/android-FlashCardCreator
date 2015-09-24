@@ -49,7 +49,7 @@ import org.adw.library.widgets.discreteseekbar.internal.drawable.TrackRectDrawab
 import java.util.Formatter;
 import java.util.Locale;
 
-public class DiscreteSeekBar extends View {
+public class  DiscreteSeekBar extends View {
 
     /**
      * Interface to propagate seekbar change event
@@ -160,6 +160,7 @@ public class DiscreteSeekBar extends View {
     private int mAnimationTarget;
     private float mDownX;
     private float mTouchSlop;
+
 
     public DiscreteSeekBar(Context context) {
         this(context, null);
@@ -380,20 +381,32 @@ public class DiscreteSeekBar extends View {
      * @see #setMin(int)
      */
     public void setProgress(int progress) {
-        setProgress(progress, false);
+        setProgress(progress, false, false);
     }
 
-    private void setProgress(int value, boolean fromUser) {
+    /*
+     * Modified by ccaa
+     * Background: 由于不支持类似iOS的continuous mode，在一次sliding的action导致多次被触发onProgressChanged
+     * 改进后，onProgressChanged仅当sliding action结束后
+     */
+    private void setProgress(int value, boolean fromUser, boolean isTouchEventUp) {
         value = Math.max(mMin, Math.min(mMax, value));
         if (isAnimationRunning()) {
             mPositionAnimator.cancel();
         }
 
-        if (mValue != value) {
+        if (isTouchEventUp) {
             mValue = value;
             notifyProgress(value, fromUser);
             updateProgressMessage(value);
             updateThumbPosFromCurrentProgress();
+        } else {
+            if (mValue != value) {
+                mValue = value;
+                notifyProgress(value, fromUser);
+                updateProgressMessage(value);
+                updateThumbPosFromCurrentProgress();
+            }
         }
     }
 
@@ -438,7 +451,7 @@ public class DiscreteSeekBar extends View {
     }
 
     private void notifyProgress(int value, boolean fromUser) {
-        if (mPublicChangeListener != null) {
+        if (mPublicChangeListener != null && mIsDragging == false) {
             mPublicChangeListener.onProgressChanged(DiscreteSeekBar.this, value, fromUser);
         }
         onValueChanged(value);
@@ -637,8 +650,9 @@ public class DiscreteSeekBar extends View {
                 }
                 break;
             case MotionEvent.ACTION_UP:
-            case MotionEvent.ACTION_CANCEL:
                 stopDragging();
+                updateDragging(event);
+            case MotionEvent.ACTION_CANCEL:
                 break;
         }
         return true;
@@ -782,7 +796,7 @@ public class DiscreteSeekBar extends View {
             scale = 1f - scale;
         }
         int progress = Math.round((scale * (mMax - mMin)) + mMin);
-        setProgress(progress, true);
+        setProgress(progress, true, MotionEvent.ACTION_UP == ev.getAction());
     }
 
     private void updateProgressFromAnimation(float scale) {
@@ -938,7 +952,7 @@ public class DiscreteSeekBar extends View {
         CustomState customState = (CustomState) state;
         setMin(customState.min);
         setMax(customState.max);
-        setProgress(customState.progress, false);
+        setProgress(customState.progress, false, false);
         super.onRestoreInstanceState(customState.getSuperState());
     }
 

@@ -360,6 +360,7 @@ public class PlayActivity extends FragmentActivity implements SensorEventListene
                 }
             }
 
+
             @Override
             public void onStartTrackingTouch(DiscreteSeekBar seekBar) {
 
@@ -375,9 +376,9 @@ public class PlayActivity extends FragmentActivity implements SensorEventListene
 
     private void dwellTimeSeekBarProgressManuallyChanged() {
 
-        Log.d("ccaa","dwellTimeSeekBarProgressManuallyChanged");
+        Log.d("ccaa", "dwellTimeSeekBarProgressManuallyChanged");
 
-        AudioHelper.stopAudio();
+        stopAudio();
         stopTextToSpeech();
 
         mCounterDownTextView.setVisibility(View.GONE);
@@ -403,7 +404,9 @@ public class PlayActivity extends FragmentActivity implements SensorEventListene
             CardDetailFragment currentDetailFragment = getCurrentCardDetailFragment();
             playbackOnCard(currentDetailFragment);
         }  else {
-            beginFixedDelayAutoScroll();
+            if (mIsAutoScroll) {
+                beginFixedDelayAutoScroll();
+            }
         }
 
     }
@@ -422,11 +425,7 @@ public class PlayActivity extends FragmentActivity implements SensorEventListene
             mSensorManager.unregisterListener(this);
         }
 
-        //Since TTS does not provide a mute method, we have to do this from system scope, it's definitely not a good idea, but we have to
-        AudioManager audioManager=(AudioManager)getSystemService(Context.AUDIO_SERVICE);
-        audioManager.setStreamMute(AudioManager.STREAM_MUSIC, false);
-
-        AudioHelper.stopAudio();
+        stopAudio();
         stopTextToSpeech();
 
 
@@ -563,11 +562,14 @@ public class PlayActivity extends FragmentActivity implements SensorEventListene
                     .show();
 
         } else {
-            AudioHelper.playAudio(cardDetailFragment,mIsMuteSoundRecording);
+            AudioHelper.playAudio(cardDetailFragment, mIsMuteSoundRecording);
         }
     }
 
     private void autoScrollImageButtonClicked() {
+
+        stopAudio();
+        stopTextToSpeech();
 
         showControlPanel();
         resetAutoHideControlPanelHandler();
@@ -576,10 +578,6 @@ public class PlayActivity extends FragmentActivity implements SensorEventListene
         stopAllHandlers();
 
         if (mIsAutoScroll == false) {
-
-            stopAudio();
-            stopTextToSpeech();
-
 
             executeAutoPlay();
 
@@ -590,9 +588,9 @@ public class PlayActivity extends FragmentActivity implements SensorEventListene
             mOneOffPlayType = -1; //因为是one off的，所以一旦有新动作，需要重置
 
             screenOff();
+
             mPager.disableAllTouchEvent(false);
             mIsAutoScroll = false;
-            mDwellTimeSeekBar.setEnabled(true);
             mAutoScrollImageButton.setImageDrawable(getResources().getDrawable(R.drawable.autoplay_off));
             mPager.stopAutoScroll();
 
@@ -731,7 +729,7 @@ public class PlayActivity extends FragmentActivity implements SensorEventListene
 
     private void beginFixedDelayAutoScroll() {
 
-        if (mIsFixedDelayAutoScroll) {
+        if (mIsFixedDelayAutoScroll == false) {
             return;
         }
 
@@ -746,22 +744,15 @@ public class PlayActivity extends FragmentActivity implements SensorEventListene
         mPager.setPauseForAnswerMilliSeconds(pauseForAnswerMilliSeconds);
         mPager.startAutoScroll();
 
-        int dwellMilliSecondsTotally;
-        int dwellMilliSecondsOnQuestion;
-        if (mIsAutoShowQuestionOnly) {
-            dwellMilliSecondsTotally = dwellTimeMilliSeconds;
-            dwellMilliSecondsOnQuestion = dwellTimeMilliSeconds;
-        } else {
-            dwellMilliSecondsTotally = dwellTimeMilliSeconds *2 + pauseForAnswerMilliSeconds;
-            dwellMilliSecondsOnQuestion = dwellTimeMilliSeconds;
-        }
+        int dwellMilliSecondsTotally = getDwellMilliSecondsTotally();
+        int dwellMilliSecondsOnQuestionOnly = getDwellMilliSecondsOnQuestionOnly();
 
         if (mAutoSwitchQATimer != null) {
             mAutoSwitchQATimer.cancel();
         }
         mAutoSwitchQATimer = new Timer();
         TimerTask switchQATimer = new SwitchQATimerTask();
-        mAutoSwitchQATimer.scheduleAtFixedRate(switchQATimer, dwellMilliSecondsOnQuestion, 3600 * 1000);
+        mAutoSwitchQATimer.scheduleAtFixedRate(switchQATimer, dwellMilliSecondsOnQuestionOnly, 3600 * 1000);
 
         if (mAutoScrollForFixedDelayTimer != null) {
             mAutoScrollForFixedDelayTimer.cancel();
@@ -774,6 +765,9 @@ public class PlayActivity extends FragmentActivity implements SensorEventListene
         CardDetailFragment currentCardDetailFragment = getCurrentCardDetailFragment();
         playbackOnCard(currentCardDetailFragment);
     }
+
+
+
 
     private void screenOn() {
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
@@ -1245,7 +1239,7 @@ public class PlayActivity extends FragmentActivity implements SensorEventListene
 
 
     private void stopAudio() {
-        AudioHelper.stopAudio();
+        AudioHelper.stopAndCleanAudio();
 
     }
 
@@ -1257,9 +1251,24 @@ public class PlayActivity extends FragmentActivity implements SensorEventListene
     }
 
     private void stopTextToSpeech() {
+
+        unmuteTTS(); //这个非常重要
+
+
         if (mTTS!= null) {
             mTTS.stop();
         }
+    }
+
+    //由于TTS没有单独的音量控制，所以需要通过AudioManager全局控制，这种体验其实是不好的，但是也是唯一的方法
+    private  void muteTTS() {
+        AudioManager audioManager=(AudioManager)getSystemService(Context.AUDIO_SERVICE);
+        audioManager.setStreamMute(AudioManager.STREAM_MUSIC, true);
+    }
+
+    private void unmuteTTS() {
+        AudioManager audioManager=(AudioManager)getSystemService(Context.AUDIO_SERVICE);
+        audioManager.setStreamMute(AudioManager.STREAM_MUSIC, false);
     }
 
 
@@ -1274,11 +1283,10 @@ public class PlayActivity extends FragmentActivity implements SensorEventListene
 
 
 //        mute mode (but still play)
-        AudioManager audioManager=(AudioManager)getSystemService(Context.AUDIO_SERVICE);
         if (isMuteText2Speech) {
-            audioManager.setStreamMute(AudioManager.STREAM_MUSIC, true);  ////mute mode (but still play)
+            muteTTS();
         } else {
-            audioManager.setStreamMute(AudioManager.STREAM_MUSIC, false);
+            unmuteTTS();
         }
 
         ArrayList<String> textToSpeechArray = cardDetailFragment.textToSpeechContentArray();
@@ -1399,6 +1407,37 @@ public class PlayActivity extends FragmentActivity implements SensorEventListene
         return -1; //other rotation
 
     }
+
+
+    /*
+     * Including question/ answer dwell time and pause for answer time
+     */
+    private int getDwellMilliSecondsTotally() {
+
+        final int dwellTimeMilliSeconds = getDwellTimeMilliSeconds();
+        final int pauseForAnswerMilliSeconds = getPauseForAnswerMilliSeconds();
+
+        int dwellMilliSecondsTotally;
+        if (mIsAutoShowQuestionOnly) {
+            dwellMilliSecondsTotally = dwellTimeMilliSeconds;
+        } else {
+            dwellMilliSecondsTotally = dwellTimeMilliSeconds *2 + pauseForAnswerMilliSeconds;
+        }
+
+        return dwellMilliSecondsTotally;
+    }
+
+    /*
+     * Only question dwell time
+     */
+    private int getDwellMilliSecondsOnQuestionOnly() {
+
+        final int dwellTimeMilliSeconds = getDwellTimeMilliSeconds();
+
+        return dwellTimeMilliSeconds;
+
+    }
+
 
     private int getDwellTimeMilliSeconds() {
         int interval = mDwellTimeSeekBar.getProgress();
@@ -1530,7 +1569,7 @@ public class PlayActivity extends FragmentActivity implements SensorEventListene
     public void onBackPressed() {
         super.onBackPressed();
 
-        AudioHelper.stopAudio();
+        stopAudio();
         stopTextToSpeech();
     }
 }

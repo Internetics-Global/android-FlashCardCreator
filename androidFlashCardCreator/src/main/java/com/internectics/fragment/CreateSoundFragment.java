@@ -213,7 +213,7 @@ public class CreateSoundFragment extends DialogFragment {
 
     private void saveButtonClicked() {
 
-        AudioHelper.stopAudio();
+        AudioHelper.stopAndCleanAudio();
 
         String saveToPath = "";
         if (mIsQuestionShowing) {
