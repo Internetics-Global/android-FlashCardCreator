@@ -17,6 +17,9 @@
     <!--segment related-->
     <dimen name="segment_text_size">10sp</dimen>
 
+    <!--pack info layout size-->
+    <dimen name="pack_info_layout_width">200dp</dimen>
+    <dimen name="pack_info_layout_height">250dp</dimen>
 
     <!--pack list related-->
     <dimen name="pack_list_width">380dp</dimen>

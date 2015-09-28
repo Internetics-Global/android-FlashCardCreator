@@ -214,27 +214,28 @@
 
             </FrameLayout>
 
-            <FrameLayout
+            <LinearLayout
                 android:id="@+id/pack_info_layout"
                 android:visibility="visible"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent">
+                android:layout_gravity="center"
+                android:orientation="vertical"
+                android:layout_width="@dimen/pack_info_layout_width"
+                android:layout_height="@dimen/pack_info_layout_height">
 
                 <ImageView
                     android:id="@+id/pack_info_cover_image"
-                    android:layout_marginBottom="50dp"
-                    android:layout_width="300dp"
-                    android:layout_height="300dp"
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:layout_weight="1"
                     android:layout_gravity="center"/>
 
                 <TextView
                     android:id="@+id/pack_info_title"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginBottom="50dp"
+                    android:layout_height="20dp"
                     android:textStyle="bold"
                     android:text=""
-                    android:layout_marginTop="170dp"
+                    android:layout_marginTop="10dp"
                     android:gravity="center"
                     android:layout_gravity="center"
                     android:textColor="@android:color/white"
@@ -244,17 +245,15 @@
                 <TextView
                     android:id="@+id/pack_info_share_code"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginBottom="50dp"
+                    android:layout_height="20dp"
                     android:textStyle="bold"
                     android:text="No share code"
-                    android:layout_marginTop="190dp"
                     android:gravity="center"
                     android:layout_gravity="center"
                     android:textColor="@android:color/white"
                     android:textAppearance="?android:attr/textAppearanceSmall" />
 
-            </FrameLayout>
+            </LinearLayout>
 
             <FrameLayout
                     android:id="@+id/add_card_frame_layout"

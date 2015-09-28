@@ -29,6 +29,9 @@ public class PackBuildHelper {
 
     private static Activity mActivity;
 
+    /*
+     * Generate a new file name if currentPack.fileNameOnAWS = null
+     */
     public static File createPackZipFile(Activity activity,Pack currentPack, String password) {
 
         mActivity = activity;

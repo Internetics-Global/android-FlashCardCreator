@@ -18,13 +18,13 @@ import java.io.File;
 /**
  * Created by BourneWang on 28/05/15.
  */
-public class S3UploadHelper {
+public class AWSUploadHelper {
 
     private TransferManager   mTransferManager;
     private final Handler     mHandler;
     private UploadThread      mUploadThread;
 
-    public S3UploadHelper(Context context,@NonNull Handler handler) {
+    public AWSUploadHelper(Context context, @NonNull Handler handler) {
         mTransferManager = new TransferManager(AppContext.getCredentialsProvider());
         mHandler     = handler;
     }

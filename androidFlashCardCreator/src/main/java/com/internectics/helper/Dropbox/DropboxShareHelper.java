@@ -1,4 +1,4 @@
-package com.internectics.helper;
+package com.internectics.helper.Dropbox;
 
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -11,7 +11,6 @@ import android.content.Intent;
 import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
-import android.net.Uri;
 import android.os.AsyncTask;
 import android.text.InputType;
 import android.view.Gravity;
@@ -19,12 +18,13 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.dropbox.client2.DropboxAPI;
+import com.dropbox.client2.exception.DropboxException;
 import com.internectics.data.Pack;
-import com.internectics.helper.AWS.AWSUtils;
 import com.internectics.helper.AWS.SimpleDBHelper;
+import com.internectics.helper.PackRecordHelper;
 import com.internectics.util.Global;
 import com.internectics.util.StringUtils;
-
 import com.nostra13.socialsharing.common.AuthListener;
 import com.nostra13.socialsharing.common.PostListener;
 import com.nostra13.socialsharing.facebook.FacebookEvents;
@@ -39,64 +39,89 @@ import org.apache.http.client.methods.HttpGet;
 import org.apache.http.impl.client.DefaultHttpClient;
 
 import java.io.ByteArrayOutputStream;
-import java.io.File;
 import java.io.IOException;
+import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.util.HashMap;
 import java.util.List;
 
 import timber.log.Timber;
 
+/**
+ * 1. create share linkage
+ * 2. invoke share intent
+ */
+public class DropboxShareHelper extends AsyncTask<Void, Long, Boolean> {
 
-public class ShareHelper extends AsyncTask<Void, Long, Boolean> {
-
-    private Activity   mActivity;
-    private Pack       mCurrentPack;
+    private Activity mActivity;
+    private Pack     mCurrentPack;
 
     /**
      * true: 没有经过上传，设密码等，直接share (upload逻辑在S3UploadHelper）
      */
-    private boolean    mIsDirectShare;
+    private boolean  mIsDirectShare; //true: 没有经过上传，设密码等，直接share
 
 
-    public ShareHelper(Activity activity, Pack currentPack, Boolean isDirectShare) {
-        mActivity         = activity;
-        mCurrentPack      = currentPack;
-        mIsDirectShare    = isDirectShare;
+
+    public DropboxShareHelper(Activity activity, Pack currentPack, Boolean isDirectShare) {
+
+        if (currentPack == null || StringUtils.isEmpty(currentPack.fileNameOnAWS)) {
+            throw  new IllegalArgumentException("currentPack.fileNameOnAWS should be set before");
+        }
+
+        mActivity = activity;
+        mCurrentPack = currentPack;
+        mIsDirectShare= isDirectShare;
     }
 
 
+    /*
+    URL shorten
+     */
     @Override
     protected Boolean doInBackground(Void... params) {
+        try {
+            if(mIsDirectShare) {
+            } else
+            {
+                if (StringUtils.isEmpty(mCurrentPack.shareLink)) {
 
+                    String filePathInDropbox = Global.DROPBOX_FOLDER + mCurrentPack.fileNameOnAWS;
 
-        String fullPath_S3 = AWSUtils.fullPath_On_S3(mCurrentPack);
-        if (fullPath_S3 == null) {
-            //upload的动作一定在share前面，一旦upload后，会写入full path到meta info，所以这里的fullPath_S3一定有值
-            throw  new IllegalArgumentException("check code, make sure to upload firstly before calling ShareHelper");
-        }
+                    DropboxAPI.DropboxLink link = DropboxAuthHelper.sharedHelper(mActivity).getDropboxAPI().share(filePathInDropbox);
+                    String shortedShareLink = link.url;
+                    String shareLink = getUnshortedURL(shortedShareLink);
+                    if (shareLink == null) {
+                        return false;
+                    }
+                    String undirectedURL = shareLink.replace("https","fcc").replace("http","fcc");
+                    Timber.tag(Global.debugTag).d( "the fcc share linkage is: " + undirectedURL);
+                    mCurrentPack.shareLink = generateRedirectedURL(undirectedURL);
 
-        if(mIsDirectShare == false) {
+                    if (mCurrentPack.shareLink.indexOf("http://") != 0) {
+                        Toast.makeText(mActivity, "Redirect service is not available now, please try again", Toast.LENGTH_LONG).show();
+                    } else {
+                        mCurrentPack.save(mActivity);
 
-            if (StringUtils.isEmpty(mCurrentPack.shareLink)) {
-                mCurrentPack.shareLink = generateRedirectedURL(fullPath_S3);
-
-                if (mCurrentPack.shareLink.indexOf("http://") != 0) {
-                    Toast.makeText(mActivity, "Redirect service is not available now, please try again", Toast.LENGTH_LONG).show();
-                } else {
-                    mCurrentPack.save(mActivity);
+                        //直到我们短链接生成并保存，我们才最终认为upload完成
+                        PackRecordHelper.savePackUploadRecord(mActivity, mCurrentPack);
+                    }
                 }
-            } else {
             }
 
 
-        } else {
 
+        } catch (DropboxException e) {
+            e.printStackTrace();
         }
 
         return false;
     }
 
-
+    /*
+    Set max download count
+     */
     @Override
     protected void onPostExecute(Boolean aBoolean) {
         super.onPostExecute(aBoolean);
@@ -131,12 +156,15 @@ public class ShareHelper extends AsyncTask<Void, Long, Boolean> {
 
                             InputMethodManager imm =(InputMethodManager)mActivity.getSystemService(Context.INPUT_METHOD_SERVICE);
                             imm.hideSoftInputFromWindow(editText.getWindowToken(),0);
+
                             didDismissDownloadTimesDialog(9999);
                         }
                     })
                     .show();
         }
     }
+
+
 
     private void didDismissDownloadTimesDialog(int maxNo) {
 
@@ -158,15 +186,35 @@ public class ShareHelper extends AsyncTask<Void, Long, Boolean> {
         }.start();
 
         share();
+    }
+
+
+
+    public static String getUnshortedURL(String shortedURL) {
+        String location = null;
+        try {
+            final URL url = new URL(shortedURL);
+            final HttpURLConnection urlConnection = (HttpURLConnection) url.openConnection();
+            urlConnection.setInstanceFollowRedirects(false); //this is very important
+            location = urlConnection.getHeaderField("location");
+            Timber.tag(Global.debugTag).d("unshortened url is: " + location);
+
+        } catch (MalformedURLException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        return location;
 
     }
 
 
-    String generateRedirectedURL(String path){
+    String generateRedirectedURL(String url){
 
         String responseString= "";
-        String fccPath = path.replace("https:","fcc:");
-        String wholeURL = Global.URL_REDIRECT_API + fccPath;
+
+        String wholeURL = Global.URL_REDIRECT_API + url;
 
         HttpClient httpclient = new DefaultHttpClient();
         HttpResponse response = null;
@@ -200,8 +248,16 @@ public class ShareHelper extends AsyncTask<Void, Long, Boolean> {
     }
 
 
-
+    /*
+    用于自己创建的pack,自己share。有两种情况下会被调用
+    1. 自动被调用：.execute执行后
+    2. 手动被调用: 当已经保存了share link（比如上次share过），这时直接调用这个
+     */
     public void share() {
+
+        if (StringUtils.isEmpty(mCurrentPack.shareLink)) {
+            throw new IllegalArgumentException("mCurrentPack.shareLink should not be empty");
+        }
 
         new AlertDialog.Builder(mActivity)
                 .setTitle("Share")
@@ -217,9 +273,8 @@ public class ShareHelper extends AsyncTask<Void, Long, Boolean> {
     }
 
 
-
     private void shareActionOnItemSelected (int position,String shareLink) {
-        String finalPostString = "I've just created a pack of Flash Cards with Flip Flash Cards app! ( " + shareLink +" ) Check it out!";
+        String finalPostString = "I've just created a pack of Flash Cards with the Flash Card Creator! ( " + shareLink +" ) Check it out!";
         switch (position) {
             case 0: {
                 shareToFacebook(shareLink);
@@ -227,6 +282,7 @@ public class ShareHelper extends AsyncTask<Void, Long, Boolean> {
             }
 
             case 1: {
+
                 boolean isTwitterAppInstalled = true;
                 try {
                     ApplicationInfo info = mActivity.getPackageManager().
@@ -251,10 +307,10 @@ public class ShareHelper extends AsyncTask<Void, Long, Boolean> {
             }
             case 2: {
                 Timber.tag(Global.debugTag).d( "Email share");
-                Intent emailIntent = new Intent(android.content.Intent.ACTION_SEND);
-                emailIntent.putExtra(android.content.Intent.EXTRA_SUBJECT, "Hi All");
+                Intent emailIntent = new Intent(Intent.ACTION_SEND);
+                emailIntent.putExtra(Intent.EXTRA_SUBJECT, "Hi All");
                 emailIntent.setType("message/rfc822");
-                emailIntent.putExtra(android.content.Intent.EXTRA_TEXT, finalPostString);
+                emailIntent.putExtra(Intent.EXTRA_TEXT, finalPostString);
                 mActivity.startActivity(Intent.createChooser(emailIntent, "Share via Email"));
                 break;
             }
@@ -281,23 +337,23 @@ public class ShareHelper extends AsyncTask<Void, Long, Boolean> {
 
     private void shareToFacebook(final String shareLink) {
 
-        FacebookEvents.addPostListener(facebookPostListener);
+        FacebookEvents.addPostListener(postListener);
 
         final FacebookFacade facebook = new FacebookFacade(mActivity, "430339350417672");
         if (facebook.isAuthorized()) {
-            facebook.publishMessage("I've just created a pack of Flash Cards with Flip Flash Cards app! ( " + shareLink +" ) Check it out!");
+            facebook.publishMessage("I've just created a pack of Flash Cards with the Flash Card Creator! ( " + shareLink +" ) Check it out!");
         } else {
             // Start authentication dialog and publish message after successful authentication
             facebook.authorize(new AuthListener() {
                 @Override
                 public void onAuthSucceed() {
-                    facebook.publishMessage("I've just created a pack of Flash Cards with Flip Flash Cards app! ( " + shareLink +" ) Check it out!");
+                    facebook.publishMessage("I've just created a pack of Flash Cards with the Flash Card Creator! ( " + shareLink +" ) Check it out!");
                 }
 
                 @Override
                 public void onAuthFail(String error) { // Do noting
                     showToastOnUIThread("Authorization was failed");
-                    FacebookEvents.removePostListener(facebookPostListener);
+                    FacebookEvents.removePostListener(postListener);
                 }
             });
         }
@@ -305,34 +361,17 @@ public class ShareHelper extends AsyncTask<Void, Long, Boolean> {
     }
 
 
-    private PostListener facebookPostListener = new PostListener() {
+    private PostListener postListener = new PostListener() {
         @Override
         public void onPostPublishingFailed() {
             showToastOnUIThread("Post publishing was failed");
-            FacebookEvents.removePostListener(facebookPostListener);
+            FacebookEvents.removePostListener(postListener);
         }
 
         @Override
         public void onPostPublished() {
-
-            mActivity.runOnUiThread(new Runnable() {
-                @Override
-                public void run() {
-                    AlertDialog alertDialog = new AlertDialog.Builder(mActivity).create();
-                    alertDialog.setTitle("Alert");
-                    alertDialog.setMessage("Posted to Facebook successfully");
-                    alertDialog.setButton(AlertDialog.BUTTON_NEUTRAL, "OK",
-                            new DialogInterface.OnClickListener() {
-                                public void onClick(DialogInterface dialog, int which) {
-                                    dialog.dismiss();
-                                }
-                            });
-                    alertDialog.show();
-                }
-            });
-
-
-            FacebookEvents.removePostListener(facebookPostListener);
+            showToastOnUIThread("Posted to Facebook successfully");
+            FacebookEvents.removePostListener(postListener);
         }
     };
 

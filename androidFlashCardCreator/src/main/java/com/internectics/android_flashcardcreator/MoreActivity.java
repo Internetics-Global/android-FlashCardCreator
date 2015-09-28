@@ -3,11 +3,13 @@ package com.internectics.android_flashcardcreator;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.TextView;
 
 import com.internectics.UI.togglebutton.ToggleButton;
+import com.internectics.helper.Dropbox.DropboxAuthHelper;
 import com.internectics.util.AppConfig;
 
 import org.adw.library.widgets.discreteseekbar.DiscreteSeekBar;
@@ -15,6 +17,8 @@ import org.adw.library.widgets.discreteseekbar.DiscreteSeekBar;
 import cn.pedant.SweetAlert.SweetAlertDialog;
 
 public class MoreActivity extends Activity {
+
+    ToggleButton mStorageProviderToggleButton;
 
 
     public void onCreate(Bundle savedInstanceState) {
@@ -29,6 +33,8 @@ public class MoreActivity extends Activity {
         final ToggleButton textToSpeechToggleButton =(ToggleButton) findViewById(R.id.text_to_speech_toggle_button);
         final ToggleButton showQuestionOnlyToggleButton = (ToggleButton) findViewById(R.id.auto_show_question_only_toggle_button);
         final ToggleButton maleFemaleToggleButton = (ToggleButton) findViewById(R.id.male_female_voice_toggle_button);
+
+        mStorageProviderToggleButton = (ToggleButton) findViewById(R.id.storage_provider_toggle_button);
 
         final DiscreteSeekBar countDownDiscreteSeekBar = (DiscreteSeekBar) findViewById(R.id.seekbar);
         final TextView countDownTextView = (TextView) findViewById(R.id.count_down_textview);
@@ -123,6 +129,26 @@ public class MoreActivity extends Activity {
             }
         });
 
+
+        if (DropboxAuthHelper.sharedHelper(MoreActivity.this).isLinked()) {
+            mStorageProviderToggleButton.setToggleOn();
+        } else {
+            mStorageProviderToggleButton.setToggleOff();
+        }
+
+        mStorageProviderToggleButton.setOnToggleChanged(new ToggleButton.OnToggleChanged() {
+            @Override
+            public void onToggle(boolean on) {
+
+                if (on) {
+                    DropboxAuthHelper.sharedHelper(MoreActivity.this).startAuthentication();
+                } else {
+                    DropboxAuthHelper.sharedHelper(MoreActivity.this).logOut();
+                }
+
+            }
+        });
+
        findViewById(R.id.rl_about).setOnClickListener(new View.OnClickListener() {
            @Override
            public void onClick(View v) {
@@ -132,10 +158,41 @@ public class MoreActivity extends Activity {
 
     }
 
+    @Override
+    protected void onStart() {
+        super.onStart();
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+    }
 
     @Override
     protected void onResume() {
         super.onResume();
+
+        if (DropboxAuthHelper.sharedHelper(MoreActivity.this).isLinked()) {
+            mStorageProviderToggleButton.setToggleOn();
+        } else {
+            if (DropboxAuthHelper.sharedHelper(MoreActivity.this).isAuthenticationSuccessful()) {
+                try {
+                    // Mandatory call to complete the auth
+                    DropboxAuthHelper.sharedHelper(MoreActivity.this).finishAuthentication();
+
+                    // Store it locally in our app for later use
+                    DropboxAuthHelper.sharedHelper(MoreActivity.this).storeAuth();
+
+                } catch (IllegalStateException e) {
+                    Log.w("ccaa", "Error authenticating", e);
+                }
+
+                mStorageProviderToggleButton.setToggleOn();
+
+            } else {
+                mStorageProviderToggleButton.setToggleOff();
+            }
+        }
 
     }
 }

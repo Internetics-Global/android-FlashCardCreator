@@ -20,11 +20,16 @@ import java.util.Date;
  */
 public class PackRecordHelper {
 
-    public static File getLocalFullPath_S3(Pack currentPack) {
+    public static void savePackUploadRecord(Context context, Pack currentPack) {
 
-        File file = new File(FileOperationHelper.uploadPackDirectory(),currentPack.fileNameOnAWS);
+        if (currentPack == null || StringUtils.isEmpty(currentPack.shareLink) || StringUtils.isEmpty(currentPack.fileNameOnAWS)) {
+            throw new IllegalArgumentException("currentPack,currentPack.shareLink or currentPack.fileNameOnAWS should not be null");
+        }
 
-        return file;
+        SharedPreferences prefs = context.getSharedPreferences(String.format("%d", currentPack.packID), 0);
+        SharedPreferences.Editor edit = prefs.edit();
+        edit.putString(Global.shareDate_Property,StringUtils.getCurrentTimeDate());
+        edit.commit();
     }
 
 
@@ -59,8 +64,8 @@ public class PackRecordHelper {
         }
 
         Date updateDate = StringUtils.toDate(updateDateStr);
-        Date sharedate = StringUtils.toDate(shareDateStr);
-        if (updateDate.before(sharedate)) {
+        Date shareDate = StringUtils.toDate(shareDateStr);
+        if (updateDate.before(shareDate)) {
             result = false; //don't need to upload pack again
         } else {
             result = true;

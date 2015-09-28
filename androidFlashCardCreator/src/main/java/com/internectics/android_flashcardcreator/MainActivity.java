@@ -37,6 +37,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.PopupWindow;
 import android.widget.Spinner;
 import android.widget.TextView;
@@ -51,16 +52,20 @@ import com.internectics.fragment.CardDetailFragment;
 import com.internectics.fragment.CardListFragment;
 import com.internectics.fragment.CreateEditFragment;
 import com.internectics.fragment.SymbolBoxFragment;
+import com.internectics.helper.AWS.AWSShareHelper;
 import com.internectics.helper.AWS.AWS_Constant;
-import com.internectics.helper.AWS.S3UploadHelper;
+import com.internectics.helper.AWS.AWSUploadHelper;
 import com.internectics.helper.AWS.SimpleDBHelper;
 import com.internectics.helper.AudioHelper;
+import com.internectics.helper.Dropbox.DropboxAuthHelper;
+import com.internectics.helper.Dropbox.DropboxShareHelper;
+import com.internectics.helper.Dropbox.DropboxUploadHelper;
+import com.internectics.helper.Dropbox.Dropbox_Constant;
 import com.internectics.helper.FileOperationHelper;
 import com.internectics.helper.PackBuildHelper;
 import com.internectics.helper.PackDownloadHelper;
 import com.internectics.helper.PackRecordHelper;
 import com.internectics.helper.SQLiteHelper;
-import com.internectics.helper.ShareHelper;
 import com.internectics.helper.SymbolHelper;
 import com.internectics.util.AppConfig;
 import com.internectics.util.AppContext;
@@ -115,9 +120,10 @@ public class MainActivity extends FragmentActivity implements
 
     public int                 packIDForMasterViewPack;
 
-    private FrameLayout        mPackInfoLayout;
+    private LinearLayout       mPackInfoLayout;
 
-    private S3UploadHelper     uploadHelper ;
+    private AWSUploadHelper mAmazonUploadHelper ;
+    private DropboxUploadHelper  mDropboxUploadHelper ;
 
     private DonutProgress      mRecordStopProgress;
     private Button             mRecordStopButton;
@@ -170,7 +176,7 @@ public class MainActivity extends FragmentActivity implements
         mMasterMaskButton = (Button) findViewById(R.id.master_view_mask);
         mMasterViewUpdatingLayout = findViewById(R.id.master_view_updating_layout);
 
-        mPackInfoLayout = (FrameLayout) findViewById(R.id.pack_info_layout);
+        mPackInfoLayout = (LinearLayout) findViewById(R.id.pack_info_layout);
         showPackInfoView();
 
         mSymbolBoxFragment = (SymbolBoxFragment) getSupportFragmentManager().findFragmentById(R.id.fragment_symbol_box);
@@ -479,7 +485,7 @@ public class MainActivity extends FragmentActivity implements
             return;
         }
 
-        //Step2: call from other app
+        //Step2: call from other app or Dropbox log in
         Uri data = getIntent().getData();
         if ((data != null) && (data.getScheme().equalsIgnoreCase("fcc"))) {
             //for download (not include sample pack
@@ -721,8 +727,13 @@ public class MainActivity extends FragmentActivity implements
             mRecordCountDownTimer = null;
         }
 
-        if (uploadHelper != null) {
-            uploadHelper.stop();
+        if (mAmazonUploadHelper != null) {
+            mAmazonUploadHelper.stop();
+        }
+
+        if (mDropboxUploadHelper != null) {
+            mDropboxUploadHelper.cancel(true);
+            mDropboxUploadHelper = null;
         }
     }
 
@@ -966,13 +977,23 @@ public class MainActivity extends FragmentActivity implements
             if (PackRecordHelper.checkUploadPackNecessary(MainActivity.this, mCurrentPack)) {
                 setPasswordAndUpload();
             } else {
-                ShareHelper shareHelper = new ShareHelper(this,mCurrentPack,false);
-                shareHelper.share();
+                if (DropboxAuthHelper.sharedHelper(MainActivity.this).isLinked()) {
+                    DropboxShareHelper dropboxShareHelper = new DropboxShareHelper(this,mCurrentPack,true);
+                    dropboxShareHelper.execute();
+                } else {
+                    AWSShareHelper AWSShareHelper = new AWSShareHelper(this,mCurrentPack,true);
+                    AWSShareHelper.share();
+                }
             }
 
         } else {
-            ShareHelper shareHelper = new ShareHelper(this, mCurrentPack,true);
-            shareHelper.execute();
+            if (DropboxAuthHelper.sharedHelper(MainActivity.this).isLinked()) {
+                DropboxShareHelper dropboxShareHelper = new DropboxShareHelper(this,mCurrentPack,true);
+                dropboxShareHelper.execute();
+            } else {
+                AWSShareHelper AWSShareHelper = new AWSShareHelper(this,mCurrentPack,true);
+                AWSShareHelper.share();
+            }
 
         }
     }
@@ -1004,8 +1025,13 @@ public class MainActivity extends FragmentActivity implements
                                 Toast.makeText(MainActivity.this, "Failed to encrypt pack", Toast.LENGTH_LONG).show();
                             } else {
                                 //步骤： upload -- > 设置最大分享数 --> 创建短连接 --> 分享
-                                uploadHelper = new S3UploadHelper(MainActivity.this, mUploadHandler);
-                                uploadHelper.upload(file);
+                                if (DropboxAuthHelper.sharedHelper(MainActivity.this).isLinked()) {
+                                    mDropboxUploadHelper = new DropboxUploadHelper(MainActivity.this, Global.DROPBOX_FOLDER, file,mDropboxUploadHandler);
+                                    mDropboxUploadHelper.execute();
+                                } else {
+                                    mAmazonUploadHelper = new AWSUploadHelper(MainActivity.this, mAmazonUploadHandler);
+                                    mAmazonUploadHelper.upload(file);
+                                }
                             }
                         }
 
@@ -1028,8 +1054,14 @@ public class MainActivity extends FragmentActivity implements
                                 Toast.makeText(MainActivity.this, "Failed to encrypt pack", Toast.LENGTH_LONG).show();
                             } else {
                                 //步骤： upload -- > 设置最大分享数 --> 创建短连接 --> 分享
-                                uploadHelper = new S3UploadHelper(MainActivity.this, mUploadHandler);
-                                uploadHelper.upload(file);
+                                if (DropboxAuthHelper.sharedHelper(MainActivity.this).isLinked()) {
+                                    mDropboxUploadHelper = new DropboxUploadHelper(MainActivity.this, "/FlashCardCreator2016/", file,mDropboxUploadHandler);
+                                    mDropboxUploadHelper.execute();
+                                } else {
+                                    mAmazonUploadHelper = new AWSUploadHelper(MainActivity.this, mAmazonUploadHandler);
+                                    mAmazonUploadHelper.upload(file);
+                                }
+
                             }
                         }
 
@@ -1449,13 +1481,38 @@ public class MainActivity extends FragmentActivity implements
 
     }
 
-
-    private final Handler mUploadHandler = new Handler() {
+    private final Handler mDropboxUploadHandler = new Handler() {
         @Override
         public void handleMessage(Message msg) {
             super.handleMessage(msg);
             switch (msg.what) {
-                case AWS_Constant.UPLOAD_PROGRESS:
+                case Dropbox_Constant.UPLOAD_SUCCEED: {
+                    File file = (File) msg.obj;
+
+                    Toast.makeText(MainActivity.this, "Pack successfully uploaded", Toast.LENGTH_SHORT).show();
+
+                    DropboxShareHelper dropboxShareHelper = new DropboxShareHelper(MainActivity.this,mCurrentPack,false);
+                    dropboxShareHelper.execute();
+
+                    break;
+                }
+
+
+                case Dropbox_Constant.UPLOAD_FAILED: {
+                    break;
+                }
+
+            }
+        }
+    };
+
+
+    private final Handler mAmazonUploadHandler = new Handler() {
+        @Override
+        public void handleMessage(Message msg) {
+            super.handleMessage(msg);
+            switch (msg.what) {
+                case AWS_Constant.UPLOAD_PROGRESS: {
                     File file = (File) msg.obj;
                     int flag = msg.arg1; //indicate whether upload is finished or not
                     int percent = msg.arg2;
@@ -1472,8 +1529,8 @@ public class MainActivity extends FragmentActivity implements
 
                         Toast.makeText(MainActivity.this, "Pack successfully uploaded", Toast.LENGTH_SHORT).show();
 
-                        ShareHelper shareHelper = new ShareHelper(MainActivity.this, mCurrentPack,false);
-                        shareHelper.execute();
+                        AWSShareHelper AWSShareHelper = new AWSShareHelper(MainActivity.this, mCurrentPack,false);
+                        AWSShareHelper.execute();
 
                     } else {
                         if (mUploadProgressDialog.isShowing() == false) {
@@ -1482,6 +1539,9 @@ public class MainActivity extends FragmentActivity implements
                         mUploadProgressDialog.setProgress(percent);
                     }
                     break;
+                }
+
+
             }
         }
     };
