@@ -63,7 +63,7 @@ public class CreateEditFragment extends DialogFragment implements TextView.OnEdi
     private ImageView          mCoverImageView;
 
     private EditText           mAdminPasswordEditText;
-    private EditText           mConfirmAdminPassowrdEditText;
+    private EditText           mConfirmAdminPasswordEditText;
 
     private InputMethodManager mIMM;
 
@@ -84,6 +84,7 @@ public class CreateEditFragment extends DialogFragment implements TextView.OnEdi
         getDialog().getWindow().requestFeature(Window.FEATURE_NO_TITLE);
         getDialog().getWindow().setSoftInputMode(
                 WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN);
+
 
         TextView titleTextView = (TextView) mContentView
                 .findViewById(R.id.dialog_title);
@@ -147,7 +148,7 @@ public class CreateEditFragment extends DialogFragment implements TextView.OnEdi
 
         mAdminPasswordEditText = (EditText) mContentView
                 .findViewById(R.id.fragment_add_pack_admin_password);
-        mConfirmAdminPassowrdEditText = (EditText) mContentView
+        mConfirmAdminPasswordEditText = (EditText) mContentView
                 .findViewById(R.id.fragment_add_pack_confirm_admin_password);
 
 
@@ -184,7 +185,7 @@ public class CreateEditFragment extends DialogFragment implements TextView.OnEdi
 
             String decodedString = new String(Base64.decode(pack.restorePassword,0));
             mAdminPasswordEditText.setText(decodedString);
-            mConfirmAdminPassowrdEditText.setText(decodedString);
+            mConfirmAdminPasswordEditText.setText(decodedString);
 
 
         } else {
@@ -208,23 +209,16 @@ public class CreateEditFragment extends DialogFragment implements TextView.OnEdi
 
         ViewGroup.LayoutParams params = mContentView.getLayoutParams();
         params.width = getResources().getDimensionPixelSize(R.dimen.add_pack_window_width);
+        params.height = getResources().getDimensionPixelSize(R.dimen.add_pack_window_height);
         mContentView.setLayoutParams(params);
 
-        Timer timer = new Timer();
-        timer.schedule(new TimerTask() {
-
-            public void run() {
-                mIMM.showSoftInput(mPackNameEditText, 0);
-            }
-
-        }, 500);
 
     }
 
     private void save() {
 
 
-        if (mAdminPasswordEditText.getText().toString().equals(mConfirmAdminPassowrdEditText.getText().toString()) == false) {
+        if (mAdminPasswordEditText.getText().toString().equals(mConfirmAdminPasswordEditText.getText().toString()) == false) {
             new SweetAlertDialog(getActivity())
                     .setTitleText("Alert")
                     .setContentText("Passwords do not match")

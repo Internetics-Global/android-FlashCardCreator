@@ -28,6 +28,7 @@
     <!--add pack related-->
     <dimen name="add_pack_edit_text_size">20sp</dimen>
     <dimen name="add_pack_window_width">580dp</dimen>
+    <dimen name="add_pack_window_height">400dp</dimen>
 
     <!--creator related-->
     <dimen name="creator_text_size">18sp</dimen>

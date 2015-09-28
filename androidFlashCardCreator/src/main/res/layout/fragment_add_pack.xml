@@ -20,10 +20,11 @@
             android:orientation="vertical">
 
             <EditText
-                android:layout_marginTop="10dp"
+                android:layout_marginTop="5dp"
                 android:id="@+id/fragment_add_pack_pack_name"
                 android:layout_width="match_parent"
-                android:layout_height="40dp"
+                android:layout_height="0dp"
+                android:layout_weight="1"
                 android:imeOptions="actionDone"
                 android:singleLine="true"
                 android:textColor="#FFFFFF"
@@ -34,10 +35,11 @@
             </EditText>
 
             <EditText
-                android:layout_marginTop="10dp"
+                android:layout_marginTop="5dp"
                 android:id="@+id/fragment_add_pack_sidebar_title"
                 android:layout_width="match_parent"
-                android:layout_height="40dp"
+                android:layout_height="0dp"
+                android:layout_weight="1"
                 android:imeOptions="actionDone"
                 android:singleLine="true"
                 android:textColor="#FFFFFF"
@@ -47,10 +49,11 @@
 
 
             <EditText
-                android:layout_marginTop="10dp"
+                android:layout_marginTop="5dp"
                 android:id="@+id/fragment_add_pack_creator"
                 android:layout_width="match_parent"
-                android:layout_height="40dp"
+                android:layout_height="0dp"
+                android:layout_weight="1"
                 android:imeOptions="actionDone"
                 android:singleLine="true"
                 android:textColor="#FFFFFF"
@@ -59,10 +62,11 @@
                 android:ems="10"/>
 
             <EditText
-                android:layout_marginTop="10dp"
+                android:layout_marginTop="5dp"
                 android:id="@+id/fragment_add_pack_job_title"
                 android:layout_width="match_parent"
-                android:layout_height="40dp"
+                android:layout_height="0dp"
+                android:layout_weight="1"
                 android:imeOptions="actionDone"
                 android:singleLine="true"
                 android:textColor="#FFFFFF"
@@ -71,11 +75,12 @@
                 android:ems="10"/>
 
             <EditText
-                android:layout_marginTop="10dp"
+                android:layout_marginTop="5dp"
                 android:id="@+id/fragment_add_pack_admin_password"
                 android:layout_width="match_parent"
                 android:inputType="textPassword"
-                android:layout_height="40dp"
+                android:layout_height="0dp"
+                android:layout_weight="1"
                 android:imeOptions="actionDone"
                 android:singleLine="true"
                 android:textColor="#FFFFFF"
@@ -84,11 +89,12 @@
                 android:ems="10"/>
 
             <EditText
-                android:layout_marginTop="10dp"
+                android:layout_marginTop="5dp"
                 android:id="@+id/fragment_add_pack_confirm_admin_password"
                 android:layout_width="match_parent"
                 android:inputType="textPassword"
-                android:layout_height="40dp"
+                android:layout_height="0dp"
+                android:layout_weight="1"
                 android:imeOptions="actionDone"
                 android:singleLine="true"
                 android:textColor="#FFFFFF"
@@ -99,42 +105,40 @@
             <include
                 layout="@layout/create_edit_pack_seek_bar"
                 android:layout_width="match_parent"
-                android:layout_marginTop="10dp"
-                android:layout_height="30dp" />
+                android:layout_marginTop="5dp"
+                android:layout_height="0dp"
+                android:layout_weight="1" />
 
             <TextView
                 android:layout_width="match_parent"
-                android:layout_height="20dp"
+                android:layout_height="0dp"
+                android:layout_weight="0.8"
                 android:textSize="12sp"
                 android:text="Reading timer"
-                android:layout_marginBottom="20dp"
                 android:gravity="center"
                 android:textColor="@android:color/white"/>
 
         </LinearLayout>
 
-        <RelativeLayout
+        <FrameLayout
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="20dp"
             android:layout_width="0dp"
             android:layout_weight="1"
             android:layout_height="match_parent">
 
             <com.makeramen.roundedimageview.RoundedImageView
                 android:id="@+id/fragment_add_pack_coverImage"
-                android:layout_alignParentTop="true"
                 android:layout_gravity="center"
-                android:layout_width="210dp"
-                android:layout_height="210dp"
-                android:layout_marginLeft="20dp"
-                android:layout_marginRight="20dp"
-                android:layout_marginTop="55dp"
-                android:layout_marginBottom="20dp"
+                android:layout_width="150dp"
+                android:layout_height="150dp"
                 android:scaleType="fitCenter"
                 android:adjustViewBounds="true"
                 app:riv_corner_radius="15dp"
                 android:background="@drawable/shape_image_round_corner"
                 android:src="@drawable/default_pack_cover_image"/>
 
-        </RelativeLayout>
+        </FrameLayout>
 
     </LinearLayout>
 
