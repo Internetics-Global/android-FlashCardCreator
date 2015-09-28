@@ -1329,6 +1329,7 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnKeyboa
         mSubheading.setTextColor(Color.BLACK);
         mSubheading.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_FLAG_MULTI_LINE | InputType.TYPE_TEXT_FLAG_NO_SUGGESTIONS | InputType.TYPE_TEXT_FLAG_CAP_SENTENCES);
         mSubheading.setEms(10);
+        mSubheading.setImeOptions(EditorInfo.IME_FLAG_NO_EXTRACT_UI);
         mSubheading.setSingleLine(false);
         mSubheading.setPadding(0, 0, 0, 0);
     }
@@ -1346,6 +1347,7 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnKeyboa
         mMain.setSingleLine(false);
         mMain.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_FLAG_MULTI_LINE | InputType.TYPE_TEXT_FLAG_NO_SUGGESTIONS | InputType.TYPE_TEXT_FLAG_CAP_SENTENCES);
         mMain.setEms(10);
+        mMain.setImeOptions(EditorInfo.IME_FLAG_NO_EXTRACT_UI);
         mMain.setPadding(0, 0, 0, 0);
 
     }
@@ -1363,6 +1365,7 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnKeyboa
         mSub.setSingleLine(false);
         mSub.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_FLAG_MULTI_LINE | InputType.TYPE_TEXT_FLAG_NO_SUGGESTIONS | InputType.TYPE_TEXT_FLAG_CAP_SENTENCES);
         mSub.setEms(10);
+        mSub.setImeOptions(EditorInfo.IME_FLAG_NO_EXTRACT_UI);
         mSub.setPadding(0,0,0,0);
 
     }
