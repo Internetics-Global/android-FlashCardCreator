@@ -655,7 +655,7 @@ public class PlayActivity extends FragmentActivity implements SensorEventListene
         }
 
 
-        if (mDwellTimeSeekBar.getProgress() == Global.k_Default_Auto_Play_Dwell_Time) {
+        if (mDwellTimeSeekBar.getProgress() == Global.k_MIN_Auto_Play_Speed) {
             return true;
         } else {
             return false;
