@@ -105,8 +105,13 @@ public class DropboxShareHelper extends AsyncTask<Void, Long, Boolean> {
                         mCurrentPack.save(mActivity);
 
                         //直到我们短链接生成并保存，我们才最终认为upload完成
+                        //同时为了保证savePackUploadRecord的发生，我们认为无论是isEmpty(mCurrentPack.shareLink)，都需要保存
                         PackRecordHelper.savePackUploadRecord(mActivity, mCurrentPack);
                     }
+                } else {
+                    //直到我们短链接生成并保存，我们才最终认为upload完成
+                    //同时为了保证savePackUploadRecord的发生，我们认为无论是isEmpty(mCurrentPack.shareLink)，都需要保存
+                    PackRecordHelper.savePackUploadRecord(mActivity, mCurrentPack);
                 }
             }
 
