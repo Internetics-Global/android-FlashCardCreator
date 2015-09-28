@@ -924,7 +924,8 @@ public class PlayActivity extends FragmentActivity implements SensorEventListene
     public void onSensorChanged(SensorEvent event) {
 
         if (mIsAutoScroll) {
-            throw new IllegalArgumentException("ccaa, mIsAutoScroll should not be true");  //not allow to switch during auto play mode
+            return;
+            //throw new IllegalArgumentException("ccaa, mIsAutoScroll should not be true");  //not allow to switch during auto play mode
         }
 
         CardDetailFragment currentCardDetailFragment = getCurrentCardDetailFragment();
