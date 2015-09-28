@@ -1,6 +1,8 @@
 package com.internectics.fragment;
 
+import android.app.AlertDialog;
 import android.app.DialogFragment;
+import android.content.DialogInterface;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -109,7 +111,19 @@ public class CreateSoundFragment extends DialogFragment {
         mDeleteButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                deleteButtonClicked();
+                AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(
+                        getActivity());
+                alertDialogBuilder.setTitle("Alert");
+                alertDialogBuilder
+                        .setMessage("Are you sure to delete?");
+                alertDialogBuilder.setPositiveButton("YES", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        deleteButtonClicked();
+                    }
+                });
+                alertDialogBuilder.setNegativeButton("Cancel",null);
+                alertDialogBuilder.show();
             }
         });
 
@@ -135,6 +149,11 @@ public class CreateSoundFragment extends DialogFragment {
     @Override
     public void onResume() {
         super.onResume();
+
+        ViewGroup.LayoutParams params = mContentView.getLayoutParams();
+        params.width = getResources().getDimensionPixelSize(R.dimen.add_pack_window_width);
+        params.height = getResources().getDimensionPixelSize(R.dimen.add_pack_window_height);
+        mContentView.setLayoutParams(params);
 
         if (AudioHelper.isRecordFinished) {
 

@@ -47,7 +47,7 @@
     <TextView
         android:layout_marginTop="5dp"
         android:layout_marginLeft="5dp"
-        android:layout_width="70dp"
+        android:layout_width="75dp"
         android:layout_height="20dp"
         android:text="Question pause"
         android:textSize="10sp"

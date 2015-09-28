@@ -1,12 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_height="fill_parent"
     android:layout_width="fill_parent"
+    android:orientation="vertical"
     android:background="#252525">
 
     <RelativeLayout
         android:orientation="horizontal"
-        android:layout_marginTop="30dp"
+        android:layout_marginTop="10dp"
         android:layout_alignParentTop="true"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -35,6 +36,30 @@
 
 
     </RelativeLayout>
+
+    <Button
+        android:layout_width="80dp"
+        android:layout_height="80dp"
+        android:layout_gravity="center_horizontal"
+        android:text="Record"
+        android:textSize="14sp"
+        android:background="@drawable/selector_button_simple_line_round"
+        android:id="@+id/record_button" />
+
+
+    <TextView
+        android:layout_width="fill_parent"
+        android:layout_weight="1"
+        android:layout_height="0dp"
+        android:gravity="top|center_horizontal"
+        android:textSize="12sp"
+        android:text="When you click ‘Record’ you have a maximum of ten seconds to record your message. \nClick 'Stop' when ready to stop recording. \nYou can then click 'Play' to hear it, or 'Save' to save it to the card."
+        android:layout_marginTop="10dp"
+        android:layout_marginBottom="5dp"
+        android:id="@+id/descripton_textview"></TextView>
+
+
+
 
     <RelativeLayout
         android:orientation="horizontal"
@@ -68,32 +93,8 @@
             android:id="@+id/save_button" />
 
 
-        </RelativeLayout>
-
-
-    <TextView
-        android:layout_width="450dp"
-        android:layout_height="80dp"
-        android:gravity="bottom|center_horizontal"
-        android:textSize="12sp"
-        android:text="When you click ‘Record’ you have a maximum of ten seconds to record your message. \nClick 'Stop' when ready to stop recording. \nYou can then click 'Play' to hear it, or 'Save' to save it to the card."
-        android:layout_above="@id/playsavebackground_layout"
-        android:layout_marginBottom="20dp"
-        android:layout_centerHorizontal="true"
-        android:id="@+id/descripton_textview"></TextView>
-
-
-    <Button
-        android:layout_width="80dp"
-        android:layout_height="80dp"
-        android:layout_centerInParent="true"
-        android:text="Record"
-        android:textSize="14sp"
-        android:layout_marginBottom="150dp"
-        android:layout_above="@id/descripton_textview"
-        android:background="@drawable/selector_button_simple_line_round"
-        android:id="@+id/record_button" />
+    </RelativeLayout>
 
 
 
-</RelativeLayout>
+</LinearLayout>
