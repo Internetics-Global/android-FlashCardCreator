@@ -48,7 +48,7 @@ public class Global {
     public static final String shareDate_Property = "share_date";
     public static final String updateDate_Property = "updated_date";
 
-    //
+    //Used to highlight current selected pack in pack list
     public static final String lastCreatedPackID = "lastCreatedPackID";
 
     //Used to judge whether need to download example pack again
@@ -138,7 +138,7 @@ public class Global {
      * @return
      */
     public static int generateNoRepeatInt() {
-        int result = (int) (System.currentTimeMillis() & 0x7FFFFFFF);   //0xFFFFFFF is the max number of int;
+        int result = (int) (System.currentTimeMillis() & 0x7FFFFFFF);   //0xFFFFFFF is the max number of int, 4 bytes (not long);
         return result;
     }
 

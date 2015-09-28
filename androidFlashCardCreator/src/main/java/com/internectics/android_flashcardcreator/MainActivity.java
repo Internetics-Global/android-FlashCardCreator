@@ -488,6 +488,9 @@ public class MainActivity extends FragmentActivity implements
         //Step2: call from other app or Dropbox log in
         Uri data = getIntent().getData();
         if ((data != null) && (data.getScheme().equalsIgnoreCase("fcc"))) {
+
+            mIsAllowedToShowPackList = false;
+
             //for download (not include sample pack
             if (Global.apiReachableWithAlert(MainActivity.this)) {
 
@@ -557,14 +560,23 @@ public class MainActivity extends FragmentActivity implements
                                 showPackListView();//放在Handler中是一个trick，实际发现，如果没有这个，则不会显示pack list
                             }
 
-                        }, 100); // 5000ms delay
+                        }, 100); // 100ms delay
 
                     }
                 });
             }
         }
 
-        mIsAllowedToShowPackList = true;
+        //之所以是个延时操作是因为上面的showPackListView也是一个延时操作
+        Handler handler = new Handler();
+        handler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                mIsAllowedToShowPackList = true;
+
+            }
+        },200);
+
 
 
 

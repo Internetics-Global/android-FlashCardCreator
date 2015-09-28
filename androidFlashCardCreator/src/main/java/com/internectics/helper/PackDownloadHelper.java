@@ -76,6 +76,7 @@ public class PackDownloadHelper extends AsyncTask<Void, Long, Boolean> {
         mDialog.setCancelable(false);
         mDialog.show();
 
+
     }
 
     @Override
@@ -181,7 +182,7 @@ public class PackDownloadHelper extends AsyncTask<Void, Long, Boolean> {
 
     private void parsePackAndGoOn() {
         //Step2: parse unzipped pack
-        Pack downloadedPack = PackParserHelper.parse();
+        Pack downloadedPack = PackParserHelper.parse(mContext);
 
         if (mIsFromExamplePackDownload == false) {
             new Thread()

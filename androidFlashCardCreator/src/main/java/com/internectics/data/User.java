@@ -70,23 +70,30 @@ public class User {
 
     public void addPack(Pack pack) {
         Boolean isExist = false;
+        int     indexExit = -1;
         for (int i = 0; i < packs.size(); i++) {
             if (packs.get(i).packID == pack.packID) {
                 isExist = true;
+                indexExit = i;
                 Timber.tag(Global.debugTag).w( "addPack failure because already existence");
                 break;
             }
         }
 
         pack.userID = this.userID;
-        if (!isExist) {
-            packs.add(pack);
-            pack.save(gloalContext);
+        if (isExist) {
+            packs.remove(indexExit);
         }
+
+        packs.add(pack);
+        pack.save(gloalContext);
     }
 
     public void removePack(Pack pack) {
-        packs.remove(pack);
+
+        for (int index = 0; index < packs.size(); index++) {
+            packs.remove(index);
+        }
         pack.destroy(gloalContext);
     }
 

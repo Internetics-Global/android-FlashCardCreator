@@ -319,7 +319,7 @@ public class DropboxShareHelper extends AsyncTask<Void, Long, Boolean> {
                 ClipboardManager clipboard = (ClipboardManager) mActivity.getSystemService(Service.CLIPBOARD_SERVICE);
                 ClipData clip = ClipData.newPlainText( "share linkage",shareLink);
                 clipboard.setPrimaryClip(clip);
-                Toast.makeText(mActivity, "Has copied to clipboard", Toast.LENGTH_LONG).show();
+                Toast.makeText(mActivity, "Copy done", Toast.LENGTH_LONG).show();
                 break;
             }
             case 4: {

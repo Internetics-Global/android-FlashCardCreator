@@ -1,5 +1,6 @@
 package com.internectics.helper;
 
+import android.content.Context;
 import android.net.Uri;
 import android.util.Base64;
 
@@ -37,14 +38,14 @@ public class PackParserHelper {
     /**
      * after finshing pack download and unzip, this methold will be called to build pack and add to current user
      */
-    public static Pack parse() {
+    public static Pack parse(Context context) {
 
         File newFile;
 
 
         //step1: save pack
         File packJsonFile = new File(FileOperationHelper.downloadedPackDirectory(), "packInformation.json");
-        Pack resultPack = parsePackJsonFile(packJsonFile.toString());
+        Pack resultPack = parsePackJsonFile(context,packJsonFile.toString());
 
         //step2: save cards
         for (int i = 0; ; i++) {
@@ -232,7 +233,7 @@ public class PackParserHelper {
     /**
      * parse downloaded pack JSON file into Pack
      */
-    private static Pack parsePackJsonFile(String packJsonFile) {
+    private static Pack parsePackJsonFile(Context context,String packJsonFile) {
 
         Pack pack = new Pack();
 
@@ -241,6 +242,15 @@ public class PackParserHelper {
         try {
             reader = new FileReader(packJsonFile);
             JSONObject obj = (JSONObject) parser.parse(reader);
+
+            if (obj.containsKey("pack_id")) {
+                pack.packID = Integer.parseInt((String)(obj.get("pack_id")));
+                User.defaultUser(context).removePack(pack);
+            } else {
+                pack.packID = -1;
+            }
+
+
             pack.packName = (String) obj.get("pack_name");
             pack.sidebarTitle = (String) obj.get("sidebar_title");
             pack.coverImageUriFormatStr = (String) obj.get("cover_image");

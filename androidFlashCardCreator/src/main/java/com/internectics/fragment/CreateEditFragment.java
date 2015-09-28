@@ -22,6 +22,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.internectics.android_flashcardcreator.MainActivity;
 import com.internectics.android_flashcardcreator.R;
@@ -271,9 +272,9 @@ public class CreateEditFragment extends DialogFragment implements TextView.OnEdi
 
 
         if (mAdminPasswordEditText.getText().toString().length() == 0) {
-            new SweetAlertDialog(getActivity())
-                    .setTitleText("Alert")
-                    .setContentText("No admin password set. Setting an admin password allows you to edit this pack on on another device, or retrieve your editing rights on a pack that has been deleted off the device.")
+            Toast.makeText(getActivity(),
+                    "No admin password set. Setting an admin password allows you to edit this pack on on another device, or retrieve your editing rights on a pack that has been deleted off the device.",
+                    Toast.LENGTH_SHORT)
                     .show();
         }
 

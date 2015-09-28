@@ -180,6 +180,7 @@ public class PackBuildHelper {
     */
     private static File buildPackJsonFile(Pack pack) {
         JSONObject summary = new JSONObject();
+        summary.put("pack_id",String.format("%d",pack.packID));
         summary.put("pack_name", pack.packName);
         summary.put("sidebar_title", pack.sidebarTitle);
         summary.put("cover_image", StringUtils.lastComponentOfPath(pack.coverImageUriFormatStr));
@@ -187,7 +188,7 @@ public class PackBuildHelper {
         summary.put("creator_nick_name", pack.creatorNickName);
         summary.put("job_title", pack.jobTitle);
         summary.put("platform", pack.platform);
-        summary.put("logo_image", StringUtils.lastComponentOfPath(pack.logoImageUriFormatStr));
+        summary.put("logo_image", StringUtils.lastComponentOfPath(pack.logoImageUriFormatStr));  //历史原因，在iOS中是存储在question/answer中的
         summary.put("platform", "Android");
         summary.put("auto_play_speed",String.format("%d",pack.autoPlaySpeed));
         summary.put("screen_width",String.format("%d", (int)(UIHelper.getScreenWidthDPUnit(mActivity))));
