@@ -237,9 +237,11 @@ public class MainActivity extends FragmentActivity implements
         if (item != null) {
             CardListFragment cardListFragment = (CardListFragment) (getSupportFragmentManager().findFragmentById(R.id.fragment_card_list));
             if (cardListFragment.getEditStyle()) {
-                item.setTitle("done");
+                //item.setTitle("done");
+                item.setIcon(getResources().getDrawable(R.drawable.pack_edit_finished));
             } else {
-                item.setTitle("edit");
+                //item.setTitle("edit");
+                item.setIcon(getResources().getDrawable(R.drawable.pack_edit));
             }
         }
 
@@ -277,11 +279,13 @@ public class MainActivity extends FragmentActivity implements
                 } else {
                     if ((mCurrentPack != null) && (mCurrentPack.cards.size() > 0)) {
                         CardListFragment cardListFragment = (CardListFragment) (getSupportFragmentManager().findFragmentById(R.id.fragment_card_list));
-                        if (item.getTitle().toString().toUpperCase().equals("EDIT")) {
-                            item.setTitle("done");
+                        if (cardListFragment.getEditStyle() == false) {
+                            //item.setTitle("done");
+                            item.setIcon(getResources().getDrawable(R.drawable.pack_edit_finished));
                             cardListFragment.enterEditStyle(true);
                         } else {
-                            item.setTitle("edit");
+                            //item.setTitle("edit");
+                            item.setIcon(getResources().getDrawable(R.drawable.pack_edit));
                             cardListFragment.enterEditStyle(false);
                         }
                     }

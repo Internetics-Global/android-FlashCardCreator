@@ -3,19 +3,19 @@
 
     <item
             android:id="@+id/actionbar_packs"
-            android:icon="@null"
-            android:showAsAction="always|withText"
+            android:icon="@drawable/pack_list"
+            android:showAsAction="always"
             android:title="@string/actionbar_item_packs">
     </item>
     <item
             android:id="@+id/actionbar_edit"
-            android:icon="@null"
+            android:icon="@drawable/pack_edit"
             android:title="@string/actionbar_item_edit"
             android:showAsAction="always">
     </item>
     <item
             android:id="@+id/actionbar_add_pack"
-            android:icon="@drawable/add_pack_button"
+            android:icon="@drawable/pack_add"
             android:title="@string/actionbar_item_add" android:showAsAction="always">
     </item>
 
