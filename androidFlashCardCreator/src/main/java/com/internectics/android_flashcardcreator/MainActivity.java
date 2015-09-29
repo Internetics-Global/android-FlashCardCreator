@@ -525,6 +525,7 @@ public class MainActivity extends FragmentActivity implements
 
                 if (timeoutCount == kTimeoutThreshold) {
                     Toast.makeText(this, "Network timeout, please try again", Toast.LENGTH_LONG).show();
+                    return;
                 } else {
                     if (mIsAllowDownload) {
                         String downloableShareLink = data.toString().replace("fcc", "https").replace("www", "dl");
