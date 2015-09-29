@@ -267,6 +267,15 @@ public class PlayActivity extends FragmentActivity implements SensorEventListene
             }
         });
 
+
+        if (AppConfig.sharedInstance().isMuteSoundRecording()) {
+            mMuteImageButton.setImageDrawable(getResources().getDrawable(R.drawable.sound_off));
+            mIsMuteSoundRecording = true;
+        } else {
+            mMuteImageButton.setImageDrawable(getResources().getDrawable(R.drawable.sound_on));
+            mIsMuteSoundRecording = false;
+        }
+
         mDwellTimeSeekBar = (DiscreteSeekBar) findViewById(R.id.auto_play_dwell_time_seek_bar).findViewById(R.id.seekbar);
         mPauseForAnswerSeekBar = (DiscreteSeekBar) findViewById(R.id.pause_for_answer_seek_bar).findViewById(R.id.seekbar);
 
