@@ -1403,7 +1403,7 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnKeyboa
      *
      * maxLines不再使用
      */
-    private void triggerResizeTextToFitFrame(final EditText v, int maxLines) {
+    private void triggerResizeTextToFitFrame(final EditText v, int targetLines) {
 
         synchronized (v) {
 
@@ -1419,7 +1419,14 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnKeyboa
             int viewHeight = v.getHeight();
             int lineHeight = v.getLineHeight();
 
-            if (((textHeight > viewHeight) && (viewHeight > 1) && (noOfLines > 0)) || (noOfLines > maxLines && maxLines > 0)) {
+            //In case it's too small
+            if (noOfLines < targetLines) {
+                float newTextSize = v.getTextSize() + 5;
+                v.setTextSize(TypedValue.COMPLEX_UNIT_PX, newTextSize);
+            }
+
+
+            if (((textHeight > viewHeight) && (viewHeight > 1) && (noOfLines > 0)) || (noOfLines > targetLines && targetLines > 0)) {
 
                 int cursorPosition = v.getSelectionStart();
 
@@ -1451,7 +1458,7 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnKeyboa
 
                     //in case the font size still too big
                     noOfLines = v.getLineCount();
-                    if ((maxLines > 0) && (maxLines < noOfLines)) {
+                    if ((targetLines > 0) && (targetLines < noOfLines)) {
                         newTextSize = v.getTextSize() - 2;
                         v.setTextSize(TypedValue.COMPLEX_UNIT_PX, newTextSize);
                         Timber.tag(Global.debugTag).d(Global.debugTag4, "maxLines < noOfLines*****triggerResizeTextToFitFrame and is resized on: " + v.getText().toString());
