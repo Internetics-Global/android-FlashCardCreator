@@ -1407,11 +1407,6 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnKeyboa
 
         synchronized (v) {
 
-            //由于lineNoSubheading，lineNoMain，lineNoSub不再使用，这个逻辑作废
-            //1. 可能由于历史原因(实际情况不明），lineNoSubheading，lineNoMain，lineNoSub的数值同实际不一致，导致有问题
-            //2. subHeading, main, sub本身已经有信息行数的信息
-            maxLines = 10000;
-
             if (v.getText().length() == 0) {
                 return;
             }
@@ -1423,6 +1418,7 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnKeyboa
             int textHeight = noOfLines * v.getLineHeight();
             int viewHeight = v.getHeight();
             int lineHeight = v.getLineHeight();
+
             if (((textHeight > viewHeight) && (viewHeight > 1) && (noOfLines > 0)) || (noOfLines > maxLines && maxLines > 0)) {
 
                 int cursorPosition = v.getSelectionStart();
@@ -1464,7 +1460,7 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnKeyboa
                     }
 
 
-                     mIsSaveNeededAfterResize = true;
+                     //mIsSaveNeededAfterResize = true;
 
 
                 } else {

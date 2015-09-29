@@ -22,6 +22,7 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
+import java.util.Timer;
 
 import timber.log.Timber;
 
@@ -482,6 +483,7 @@ public class PackParserHelper {
             if (questionObj.containsKey("main")) {
                 card.question.main =  removeTrailingSpaceAndUnexpectedCharacters((String) questionObj.get("main"));
             }
+
 
             if (questionObj.containsKey("sub")) {
                 card.question.sub =  removeTrailingSpaceAndUnexpectedCharacters((String) questionObj.get("sub"));
@@ -1150,7 +1152,6 @@ public class PackParserHelper {
      *\r\n , \r , \n what is the difference between them: http://stackoverflow.com/questions/15433188/r-n-r-n-what-is-the-difference-between-them
      */
     private static String removeTrailingSpaceAndUnexpectedCharacters(String str) {
-
         String returnStr = str.replace("\r\n","\n");
 
         returnStr = returnStr.replace("\r","\n");  //it's strange,but it does here in real case

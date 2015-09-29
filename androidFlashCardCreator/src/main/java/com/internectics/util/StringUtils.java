@@ -282,7 +282,11 @@ public class StringUtils {
             } else {
                 result = result + trimmedStr + splitStr;
             }
+
+            i++;
         }
+
+
         return result;
     }
 
