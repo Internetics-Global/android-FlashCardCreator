@@ -1004,10 +1004,6 @@ public class PlayActivity extends FragmentActivity implements SensorEventListene
 
     private void switchQuestionAnswerViewManually(boolean isManually) {
 
-        if (mIsAutoScroll && isManually == false) {
-            throw new IllegalArgumentException("ccaa, unconsistency error");
-        }
-
         if (isManually) { //在fixed delay或smart delay的auto scroll中，都是不允许手动切换question/answer view的
             stopAllHandlers();
             stopAllTimers();
@@ -1351,21 +1347,21 @@ public class PlayActivity extends FragmentActivity implements SensorEventListene
 
     private void stopTextToSpeech() {
 
-        unmuteTTS(); //这个非常重要
-
         mTextToSpeechContentArrayIndex = 0; //这个非常重要
 
 
         if (mTTS!= null) {
             mTTS.stop();
         }
+
+        unmuteTTS(); //这个非常重要
     }
 
     //由于TTS没有单独的音量控制，所以需要通过AudioManager全局控制，这种体验其实是不好的，但是也是唯一的方法.
     // DON'T use AudioManager to set volume! It will cause many side effects such as disabling silent mode, which will make your users mad!
     private  void muteTTS() {
         AudioManager audioManager=(AudioManager)getSystemService(Context.AUDIO_SERVICE);
-        audioManager.setStreamMute(AudioManager.STREAM_RING, true); //TTS实际走的是STREAM_RING，不是STREAM_TTS
+        audioManager.setStreamMute(AudioManager.STREAM_MUSIC, true); //TTS实际走的是STREAM_RING，不是STREAM_TTS
     }
 
     private void unmuteTTS() {
@@ -1385,6 +1381,10 @@ public class PlayActivity extends FragmentActivity implements SensorEventListene
 
 
 //        mute mode (but still play)
+        if (mTTS != null) {
+            mTTS.stop();
+        }
+
         if (isMuteText2Speech) {
             muteTTS();
         } else {
@@ -1393,10 +1393,6 @@ public class PlayActivity extends FragmentActivity implements SensorEventListene
 
         ArrayList<String> textToSpeechArray = cardDetailFragment.textToSpeechContentArray();
         if (textToSpeechArray.size() >0) {
-
-            if (mTTS.isSpeaking()) {
-                mTTS.stop();
-            }
 
             mTextToSpeechContentArrayIndex = 0;
             HashMap<String, String> params = new HashMap<String, String>();
