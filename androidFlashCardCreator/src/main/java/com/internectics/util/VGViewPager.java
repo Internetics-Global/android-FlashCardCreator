@@ -104,6 +104,7 @@ public class VGViewPager extends AutoScrollViewPager {
     }
 
     private boolean isSwipeAction = false;
+    private static int swipeActionCount = 0;
 
     @Override
     public boolean onTouchEvent(MotionEvent ev) {
@@ -120,7 +121,10 @@ public class VGViewPager extends AutoScrollViewPager {
                 return true;
             case MotionEvent.ACTION_MOVE:
                 Timber.tag(Global.debugTag4).d("ACTION_MOVE");
-                isSwipeAction = true;
+                swipeActionCount++; //check how long the button is pressed
+                if(swipeActionCount> 5){
+                    isSwipeAction = true;
+                }
                 requestDisallowInterceptTouchEvent(true);
                 break;
             case MotionEvent.ACTION_UP:
@@ -131,6 +135,7 @@ public class VGViewPager extends AutoScrollViewPager {
                         mOnViewPagerItemClickListener.OnViewPagerClickListener();
                     }
                 }
+                swipeActionCount = 0;
                 isSwipeAction = false;
                 break;
             case MotionEvent.ACTION_CANCEL:
