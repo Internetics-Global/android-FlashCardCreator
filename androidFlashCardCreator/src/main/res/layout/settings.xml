@@ -26,6 +26,7 @@
                 android:textSize="16dp" />
 
             <com.internectics.UI.togglebutton.ToggleButton
+                android:layout_marginRight="15dp"
                 android:id="@+id/random_play_toggle_button"
                 style="@style/option_item_toggleButton"
                 android:layout_alignParentRight="true" />
@@ -44,6 +45,7 @@
                 android:textSize="16dp" />
 
             <com.internectics.UI.togglebutton.ToggleButton
+                android:layout_marginRight="15dp"
                 android:id="@+id/mute_sound_recording_toggle_button"
                 style="@style/option_item_toggleButton"
                 android:layout_alignParentRight="true" />
@@ -77,6 +79,7 @@
                 android:textSize="16dp" />
 
             <com.internectics.UI.togglebutton.ToggleButton
+                android:layout_marginRight="15dp"
                 android:id="@+id/text_to_speech_toggle_button"
                 style="@style/option_item_toggleButton"
                 android:layout_alignParentRight="true" />
@@ -95,6 +98,7 @@
                 android:textSize="16dp" />
 
             <com.internectics.UI.togglebutton.ToggleButton
+                android:layout_marginRight="15dp"
                 android:id="@+id/auto_show_question_only_toggle_button"
                 style="@style/option_item_toggleButton"
                 android:layout_alignParentRight="true" />
@@ -113,6 +117,7 @@
                 android:textSize="16dp" />
 
             <com.internectics.UI.togglebutton.ToggleButton
+                android:layout_marginRight="15dp"
                 android:id="@+id/male_female_voice_toggle_button"
                 style="@style/option_item_toggleButton"
                 android:layout_alignParentRight="true" />
@@ -147,6 +152,7 @@
                 android:textSize="16dp" />
 
             <com.internectics.UI.togglebutton.ToggleButton
+                android:layout_marginRight="15dp"
                 android:id="@+id/storage_provider_toggle_button"
                 style="@style/option_item_toggleButton"
                 android:layout_alignParentRight="true" />

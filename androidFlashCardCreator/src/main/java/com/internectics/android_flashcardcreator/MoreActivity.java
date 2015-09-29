@@ -28,6 +28,8 @@ public class MoreActivity extends Activity {
 
         setContentView(R.layout.settings);
 
+        setTitle("Settings");
+
         final ToggleButton randomPlayToggleButton = (ToggleButton) findViewById(R.id.random_play_toggle_button);
         final ToggleButton muteSoundRecordingToggleButton = (ToggleButton) findViewById(R.id.mute_sound_recording_toggle_button);
         final ToggleButton textToSpeechToggleButton =(ToggleButton) findViewById(R.id.text_to_speech_toggle_button);
