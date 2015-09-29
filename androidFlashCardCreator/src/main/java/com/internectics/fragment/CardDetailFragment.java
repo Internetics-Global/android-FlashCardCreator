@@ -1332,6 +1332,14 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnKeyboa
         mSubheading.setImeOptions(EditorInfo.IME_FLAG_NO_EXTRACT_UI);
         mSubheading.setSingleLine(false);
         mSubheading.setPadding(0, 0, 0, 0);
+
+        try {
+            // https://github.com/android/platform_frameworks_base/blob/kitkat-release/core/java/android/widget/TextView.java#L562-564
+            Field f = TextView.class.getDeclaredField("mCursorDrawableRes");
+            f.setAccessible(true);
+            f.set(mSubheading, R.drawable.cursor);
+        } catch (Exception ignored) {
+        }
     }
 
     private void createMain() {
@@ -1350,6 +1358,14 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnKeyboa
         mMain.setImeOptions(EditorInfo.IME_FLAG_NO_EXTRACT_UI);
         mMain.setPadding(0, 0, 0, 0);
 
+        try {
+            // https://github.com/android/platform_frameworks_base/blob/kitkat-release/core/java/android/widget/TextView.java#L562-564
+            Field f = TextView.class.getDeclaredField("mCursorDrawableRes");
+            f.setAccessible(true);
+            f.set(mMain, R.drawable.cursor);
+        } catch (Exception ignored) {
+        }
+
     }
 
     private void createSub() {
@@ -1367,6 +1383,14 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnKeyboa
         mSub.setEms(10);
         mSub.setImeOptions(EditorInfo.IME_FLAG_NO_EXTRACT_UI);
         mSub.setPadding(0,0,0,0);
+
+        try {
+            // https://github.com/android/platform_frameworks_base/blob/kitkat-release/core/java/android/widget/TextView.java#L562-564
+            Field f = TextView.class.getDeclaredField("mCursorDrawableRes");
+            f.setAccessible(true);
+            f.set(mSub, R.drawable.cursor);
+        } catch (Exception ignored) {
+        }
 
     }
 
