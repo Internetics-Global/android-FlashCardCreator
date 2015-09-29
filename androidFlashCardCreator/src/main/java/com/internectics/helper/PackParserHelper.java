@@ -294,7 +294,6 @@ public class PackParserHelper {
 
             pack.platform = (String) obj.get("platform");
             pack.userID = Global.USER_ID; // there's no this information in json file, so we have to add manually
-            pack.packID = Global.generateNoRepeatInt();
 
             pack.createDate = Global.currentTimeSeconds();
             pack.lastVistDate = Global.currentTimeSeconds();
@@ -739,7 +738,7 @@ public class PackParserHelper {
                     }
                     card.question.css.mainSize = (int)(mainSize * factor);
 
-                    if (subSize >0) {
+                    if (subSize == 0) {
                         subSize = standardCSSArrary[2];
                     }
                     card.question.css.subSize = (int)(subSize * factor);
@@ -1152,6 +1151,7 @@ public class PackParserHelper {
      *\r\n , \r , \n what is the difference between them: http://stackoverflow.com/questions/15433188/r-n-r-n-what-is-the-difference-between-them
      */
     private static String removeTrailingSpaceAndUnexpectedCharacters(String str) {
+
         String returnStr = str.replace("\r\n","\n");
 
         returnStr = returnStr.replace("\r","\n");  //it's strange,but it does here in real case

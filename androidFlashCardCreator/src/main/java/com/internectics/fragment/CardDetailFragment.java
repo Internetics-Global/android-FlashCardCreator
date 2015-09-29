@@ -1444,9 +1444,14 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnKeyboa
             int lineHeight = v.getLineHeight();
 
             //In case it's too small
-            if (noOfLines < targetLines) {
+            if (noOfLines < targetLines && noOfLines > 0) {
                 float newTextSize = v.getTextSize() + 5;
                 v.setTextSize(TypedValue.COMPLEX_UNIT_PX, newTextSize);
+
+                noOfLines = v.getLineCount(); //this is very important, when setTextSize execute, getLineCount could possibly be zero
+                textHeight = noOfLines * v.getLineHeight();
+                viewHeight = v.getHeight();
+                lineHeight = v.getLineHeight();
             }
 
 
