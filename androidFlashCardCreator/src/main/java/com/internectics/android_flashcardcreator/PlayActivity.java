@@ -868,9 +868,10 @@ public class PlayActivity extends FragmentActivity implements SensorEventListene
         if (mIsAutoScroll == false) {
 
             showControlPanel();
-            resetAutoHideControlPanelHandler();
 
             switchQuestionAnswerViewManually(true);  //not allow to switch during auto play mode
+
+            resetAutoHideControlPanelHandler();
         }
 
     }
