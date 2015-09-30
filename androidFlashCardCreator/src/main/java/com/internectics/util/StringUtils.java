@@ -268,12 +268,29 @@ public class StringUtils {
 
 
     public static String removeAllLinesTrailingSpace(String str) {
+
+
         String splitStr =  System.getProperty ("line.separator");
         String[] lines = str.split(splitStr);
 
+        //由于split方法会对末尾的\n进行不正确处理，导致会忽略掉末尾的换行符，所以需要执行这个逻辑
+        int length = 0;
+        int i = 0;
+        for (String item: lines) {
+            if (i == lines.length - 1) {
+                length = item.length() + length;
+            } else {
+                length = item.length() + length + splitStr.length();
+            }
+            i++;
+        }
+
+        int numberOfLineSeparator = (str.length() - length) / splitStr.length();
+
+
         String result = "";
 
-        int i = 0;
+        i = 0;
         for (String strLine:lines) {
             //注意，replaceAll或replaceFirst里面是正则表达式，而replace则不是
             String trimmedStr = strLine.replaceAll("\\s+$", "");
@@ -286,6 +303,9 @@ public class StringUtils {
             i++;
         }
 
+        for (int j = 0; j < numberOfLineSeparator; j ++) {
+            result = result + splitStr;
+        }
 
         return result;
     }
