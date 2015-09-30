@@ -50,7 +50,7 @@ import timber.log.Timber;
 public class CreateEditFragment extends DialogFragment implements TextView.OnEditorActionListener {
 
     private View mContentView;
-    private Pack pack;
+    private Pack mCurrentPack;
 
     private boolean mIsEditPack = false ;
 
@@ -171,33 +171,33 @@ public class CreateEditFragment extends DialogFragment implements TextView.OnEdi
         }.start();
 
         if (mIsEditPack) {
-            mPackNameEditText.setText(pack.packName);
-            mSidebarTitleEditText.setText(pack.sidebarTitle);
-            mCreatorEditText.setText(pack.creatorNickName);
-            mJobTitleEditText.setText(pack.jobTitle);
-            if (pack.autoPlaySpeed == 0) {
-                mAutoPlaySpeedSeekbar.setProgress(Global.k_Default_Auto_Play_Dwell_Time);
+            mPackNameEditText.setText(mCurrentPack.packName);
+            mSidebarTitleEditText.setText(mCurrentPack.sidebarTitle);
+            mCreatorEditText.setText(mCurrentPack.creatorNickName);
+            mJobTitleEditText.setText(mCurrentPack.jobTitle);
+            if (mCurrentPack.autoPlaySpeed == 0) {
+                mAutoPlaySpeedSeekbar.setProgress(Global.kDefault_Auto_Play_Speed);
             } else {
-                mAutoPlaySpeedSeekbar.setProgress(pack.autoPlaySpeed);
+                mAutoPlaySpeedSeekbar.setProgress(mCurrentPack.autoPlaySpeed);
             }
 
-            String imagePath = pack.coverImageUriFormatStr;
+            String imagePath = mCurrentPack.coverImageUriFormatStr;
             mCoverImageView.setImageURI(Uri.parse(imagePath));
 
-            String decodedString = new String(Base64.decode(pack.restorePassword,0));
+            String decodedString = new String(Base64.decode(mCurrentPack.restorePassword,0));
             mAdminPasswordEditText.setText(decodedString);
             mConfirmAdminPasswordEditText.setText(decodedString);
 
 
         } else {
-            pack = new Pack();
+            mCurrentPack = new Pack();
         }
 
         return mContentView;
     }
 
     public void setPack(Pack pack) {
-        this.pack = pack;
+        this.mCurrentPack = pack;
     }
 
     public void setIsEditPack(boolean mIsEditPack) {
@@ -246,29 +246,30 @@ public class CreateEditFragment extends DialogFragment implements TextView.OnEdi
             return;
         }
 
-        pack.packName = mPackNameEditText.getText().toString();
-        pack.sidebarTitle = mSidebarTitleEditText.getText().toString();
-        pack.creatorNickName = mCreatorEditText.getText().toString();
-        pack.jobTitle = mJobTitleEditText.getText().toString();
-        pack.platform = UIHelper.getCurrentPlatform();
-        pack.platform = UIHelper.getCurrentPlatform();
-        pack.userID = Global.USER_ID;
-        pack.packID = Global.generateNoRepeatInt();
-        pack.lastVistDate = Global.currentTimeSeconds();
+        mCurrentPack.packName = mPackNameEditText.getText().toString();
+        mCurrentPack.sidebarTitle = mSidebarTitleEditText.getText().toString();
+        mCurrentPack.creatorNickName = mCreatorEditText.getText().toString();
+        mCurrentPack.jobTitle = mJobTitleEditText.getText().toString();
+        mCurrentPack.platform = UIHelper.getCurrentPlatform();
+        mCurrentPack.platform = UIHelper.getCurrentPlatform();
+        mCurrentPack.userID = Global.USER_ID;
+        mCurrentPack.packID = Global.generateNoRepeatInt();
+        mCurrentPack.lastVistDate = Global.currentTimeSeconds();
+        mCurrentPack.autoPlaySpeed = mAutoPlaySpeedSeekbar.getProgress();
 
         byte[] encodedVal = Base64.encode(mAdminPasswordEditText.getText().toString().getBytes(),0);
-        pack.restorePassword = new String(encodedVal).replace("\n", "").replace("\r", "");;
+        mCurrentPack.restorePassword = new String(encodedVal).replace("\n", "").replace("\r", "");;
 
         final Card defaultCard = new Card();
         if (mIsEditPack) {
         } else {
-            pack.creatorID = OpenUDID_manager.getOpenUDID();
-            pack.createDate = Global.currentTimeSeconds();
+            mCurrentPack.creatorID = OpenUDID_manager.getOpenUDID();
+            mCurrentPack.createDate = Global.currentTimeSeconds();
             defaultCard.cardSN = 1;
-            defaultCard.packID = pack.packID;
+            defaultCard.packID = mCurrentPack.packID;
         }
 
-        PackRecordHelper.savePackUpdateRecord(AppContext.getAppContext(), pack);
+        PackRecordHelper.savePackUpdateRecord(AppContext.getAppContext(), mCurrentPack);
 
 
         if (mAdminPasswordEditText.getText().toString().length() == 0) {
@@ -290,11 +291,11 @@ public class CreateEditFragment extends DialogFragment implements TextView.OnEdi
                         Intent intent = new Intent();
                         intent.setAction(Global.BROADCAST_ACTION_UPDATE_MASTER_VIEW);
                         if (mIsEditPack) {
-                            pack.save(AppContext.getAppContext());
+                            mCurrentPack.save(AppContext.getAppContext());
                             intent.putExtra(Global.KEY_FROM, Global.BROADCAST_EXTRA_FROM_EDIT_PACK);
                         } else {
-                            User.defaultUser(AppContext.getAppContext()).addPack(pack);
-                            pack.addCard(AppContext.getAppContext(),defaultCard);
+                            User.defaultUser(AppContext.getAppContext()).addPack(mCurrentPack);
+                            mCurrentPack.addCard(AppContext.getAppContext(),defaultCard);
                             intent.putExtra(Global.KEY_FROM, Global.BROADCAST_EXTRA_FROM_NEW_PACK);
                         }
                         if (activity != null) {
@@ -350,8 +351,8 @@ public class CreateEditFragment extends DialogFragment implements TextView.OnEdi
                     File toSaveFile = UIHelper.saveImageToCaches(resultBitmap);
                     mCoverImageView.setImageBitmap(resultBitmap);
 
-                    pack.coverImageUriFormatStr = FileOperationHelper.convertToUriFormatFile(toSaveFile);
-                    Timber.tag(Global.debugTag).d( "pack.coverImageUriFormatStr = " + pack.coverImageUriFormatStr);
+                    mCurrentPack.coverImageUriFormatStr = FileOperationHelper.convertToUriFormatFile(toSaveFile);
+                    Timber.tag(Global.debugTag).d( "pack.coverImageUriFormatStr = " + mCurrentPack.coverImageUriFormatStr);
                 }
             }
         }

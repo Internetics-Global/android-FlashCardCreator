@@ -157,10 +157,12 @@ public class PlayActivity extends FragmentActivity implements SensorEventListene
             case 1:
                 mIsAutoScroll = true;
                 DisableUserInteraction();
+                mDwellTimeSeekBar.setProgress(Global.kDefault_Auto_Play_Speed);
                 break;
             case 2:
                 mIsAutoScroll = true;
                 DisableUserInteraction();
+                mDwellTimeSeekBar.setProgress(Global.kDefault_Auto_Play_Speed);
                 break;
             default:
                 break;
@@ -281,6 +283,16 @@ public class PlayActivity extends FragmentActivity implements SensorEventListene
         }
 
         mDwellTimeSeekBar = (DiscreteSeekBar) findViewById(R.id.auto_play_dwell_time_seek_bar).findViewById(R.id.seekbar);
+
+        if (mCurrentPack.autoPlaySpeed == 0 ||
+                mCurrentPack.autoPlaySpeed > Global.k_MAX_Auto_Play_Speed ||
+                mCurrentPack.autoPlaySpeed < Global.k_MIN_Auto_Play_Speed) {
+            mDwellTimeSeekBar.setProgress(Global.kDefault_Auto_Play_Speed);
+        } else {
+            mDwellTimeSeekBar.setProgress(mCurrentPack.autoPlaySpeed);
+        }
+
+
         mPauseForAnswerSeekBar = (DiscreteSeekBar) findViewById(R.id.pause_for_answer_seek_bar).findViewById(R.id.seekbar);
 
         mCounterDownTextView = (TextView) findViewById(R.id.count_down_textview);
@@ -385,7 +397,7 @@ public class PlayActivity extends FragmentActivity implements SensorEventListene
 
         if (mCurrentPack.autoPlaySpeed < Global.k_MIN_Auto_Play_Speed
                 || mCurrentPack.autoPlaySpeed > Global.k_MAX_Auto_Play_Speed) {
-            mDwellTimeSeekBar.setProgress(Global.k_Default_Auto_Play_Dwell_Time);
+            mDwellTimeSeekBar.setProgress(Global.kDefault_Auto_Play_Speed);
         } else {
             mDwellTimeSeekBar.setProgress(mCurrentPack.autoPlaySpeed);
         }

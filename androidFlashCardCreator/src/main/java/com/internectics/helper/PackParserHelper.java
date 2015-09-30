@@ -288,7 +288,7 @@ public class PackParserHelper {
             if ((temp != null) && (StringUtils.isNumeric(temp))) {
                 pack.autoPlaySpeed =  Integer.parseInt(temp);
             } else {
-                pack.autoPlaySpeed = Global.k_Default_Auto_Play_Dwell_Time;
+                pack.autoPlaySpeed = Global.kDefault_Auto_Play_Speed;
             }
 
 
