@@ -248,7 +248,7 @@ public class PackParserHelper {
                 pack.packID = Integer.parseInt((String)(obj.get("pack_id")));
                 User.defaultUser(context).removePack(pack);
             } else {
-                pack.packID = -1;
+                pack.packID = Global.generateNoRepeatInt();;
             }
 
 
