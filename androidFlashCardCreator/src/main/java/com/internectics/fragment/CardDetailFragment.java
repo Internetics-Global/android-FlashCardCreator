@@ -1460,10 +1460,6 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnKeyboa
 
             if (((textHeight > viewHeight) && (viewHeight > 1) && (noOfLines > 0)) || (noOfLines > targetLines && targetLines > 0)) {
 
-                if (true) {
-                    return;
-                }
-
                 int cursorPosition = v.getSelectionStart();
 
                 if ((mCurrentPack.creatorID.equals(OpenUDID_manager.getOpenUDID())) == false) {

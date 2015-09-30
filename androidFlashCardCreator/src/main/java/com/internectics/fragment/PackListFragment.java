@@ -426,6 +426,7 @@ public class PackListFragment extends Fragment {
                         intent.putExtra("oneOffPlayType", 0);  //manually
                         startActivity(intent);
 
+                        ((MainActivity) getActivity()).mIsAllowedToShowPackList = false;
                         ((MainActivity) getActivity()).dismissPackListPopupWindow();
                     }
                 })
@@ -435,11 +436,13 @@ public class PackListFragment extends Fragment {
 
                         AppConfig.sharedInstance().setPackIDForLastSelected(currentPack.packID);
 
+
                         Intent intent = new Intent(getActivity(), PlayActivity.class);
                         intent.putExtra("packID", currentPack.packID);
                         intent.putExtra("oneOffPlayType", 1);  //manually
                         startActivity(intent);
 
+                        ((MainActivity) getActivity()).mIsAllowedToShowPackList = false;
                         ((MainActivity) getActivity()).dismissPackListPopupWindow();
                     }
                 })
@@ -454,6 +457,7 @@ public class PackListFragment extends Fragment {
                         intent.putExtra("oneOffPlayType", 2);  //manually
                         startActivity(intent);
 
+                        ((MainActivity) getActivity()).mIsAllowedToShowPackList = false;
                         ((MainActivity) getActivity()).dismissPackListPopupWindow();
                     }
                 })
