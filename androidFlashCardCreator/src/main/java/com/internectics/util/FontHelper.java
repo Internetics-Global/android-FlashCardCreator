@@ -29,6 +29,9 @@ public class FontHelper {
             case 4:
                 return (FontCache.get(Global.fontName_ArialBoldMT, context));
 
+            case 5:
+                return (FontCache.get(Global.fontName_Zapfino, context));
+
             default:
                 return (FontCache.get(Global.fontName_Default, context));
         }
@@ -52,6 +55,8 @@ public class FontHelper {
         }
         else if (fontStr.equalsIgnoreCase("Arial-BoldMT")) {
             return (FontCache.get(Global.fontName_ArialBoldMT, context));
+        } else if (fontStr.equalsIgnoreCase("Zapfino")) {
+            return (FontCache.get(Global.fontName_Zapfino, context));
         }
         else {
             return (FontCache.get(Global.fontName_Default, context));

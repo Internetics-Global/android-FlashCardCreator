@@ -1229,12 +1229,7 @@ public class MainActivity extends FragmentActivity implements
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 if (position > 0) //this is necessary, since default will be automatically executed
                 {
-                    if (SymbolHelper.isSymbolIncluded(mCardDetailFragment.mCurrentFocusedCardContentText.getText().toString())) {
-                        Toast.makeText(getApplicationContext(),"You can not change font once text includes symbol",Toast.LENGTH_LONG).show();
-
-                    } else {
-                        mCardDetailFragment.updateCSS(3, position - 1);
-                    }
+                    mCardDetailFragment.updateCSS(3, position - 1);
                 }
 
 

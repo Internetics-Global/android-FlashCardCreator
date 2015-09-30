@@ -28,6 +28,7 @@ public class Global {
     public static final String fontName_Chalkduster = "Chalkduster.ttf";
     public static final String fontName_Courier = "Courier.ttf";
     public static final String fontName_Papyrus = "Papyrus.ttf";
+    public static final String fontName_Zapfino = "Zapfino.otf";
 
     //Broadcast action name
     public static final String BROADCAST_ACTION_UPDATE_MASTER_VIEW = "com.internectics.update_master_view";
