@@ -1,12 +1,15 @@
 package com.internectics.android_flashcardcreator;
 
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.internectics.UI.togglebutton.ToggleButton;
 import com.internectics.helper.Dropbox.DropboxAuthHelper;
@@ -99,6 +102,19 @@ public class MoreActivity extends Activity {
             @Override
             public void onToggle(boolean on) {
                 AppConfig.sharedInstance().setTextToSpeech(on);
+
+                if (on) {
+                    Boolean isSimulator = Build.FINGERPRINT.startsWith("generic");
+                    if (isSimulator) {
+                        AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(
+                                MoreActivity.this);
+                        alertDialogBuilder.setTitle("Warn");
+                        alertDialogBuilder
+                                .setMessage("TextToSpeech and Recording may not be supported on some Android simulators")
+                                .setNegativeButton("Cancel",null)
+                                .show();
+                    }
+                }
             }
         });
 

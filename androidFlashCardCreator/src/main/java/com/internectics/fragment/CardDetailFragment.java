@@ -1435,6 +1435,11 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnKeyboa
                 return;
             }
 
+            //特殊逻辑，历史原因,sample pack中的这部分内容的line number不正确，需要二次修正
+            if (v.getText().toString().contains("Knee how ma")) {
+                targetLines = 5;
+            }
+
 
 
             //noOfLines有可能返回0： getLineCount() will give you the correct number of lines only after a layout pass. That means the TextView must have been drawn at least once.
@@ -1448,14 +1453,16 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnKeyboa
                 float newTextSize = v.getTextSize() + 5;
                 v.setTextSize(TypedValue.COMPLEX_UNIT_PX, newTextSize);
 
-                noOfLines = v.getLineCount(); //this is very important, when setTextSize execute, getLineCount could possibly be zero
-                textHeight = noOfLines * v.getLineHeight();
-                viewHeight = v.getHeight();
-                lineHeight = v.getLineHeight();
+                return;
+
             }
 
 
             if (((textHeight > viewHeight) && (viewHeight > 1) && (noOfLines > 0)) || (noOfLines > targetLines && targetLines > 0)) {
+
+                if (true) {
+                    return;
+                }
 
                 int cursorPosition = v.getSelectionStart();
 
@@ -2204,14 +2211,24 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnKeyboa
 
     public int durationForQuestionRecordedSound () {
         MediaPlayer mp = MediaPlayer.create(getActivity(), Uri.parse(mCurrentCard.question.audioUriFormatStr));
-        int duration = mp.getDuration();
+        int duration = 0;
+        try {
+            duration = mp.getDuration();
+        } catch (Exception ex) {
+            Timber.e(Global.debugTag,ex);
+        }
         return duration;
     }
 
 
     public int durationForAnswerRecordedSound () {
         MediaPlayer mp = MediaPlayer.create(getActivity(), Uri.parse(mCurrentCard.answer.audioUriFormatStr));
-        int duration = mp.getDuration();
+        int duration = 0;
+        try {
+            duration = mp.getDuration();
+        } catch (Exception ex) {
+            Timber.e(Global.debugTag,ex);
+        }
         return duration;
     }
 

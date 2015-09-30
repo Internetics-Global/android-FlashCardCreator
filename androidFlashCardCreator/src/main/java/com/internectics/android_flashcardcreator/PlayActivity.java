@@ -141,26 +141,30 @@ public class PlayActivity extends FragmentActivity implements SensorEventListene
         mOneOffPlayType = getIntent().getIntExtra("oneOffPlayType", -1);
         mCurrentPack = CardListModel.getPack(packID);
 
-        switch (mOneOffPlayType) {
-            case 0:
-                mIsAutoScroll = false;
-                break;
-
-            case 1:
-                mIsAutoScroll = true;
-                break;
-            case 2:
-                mIsAutoScroll = true;
-                break;
-            default:
-                break;
-        }
-
         mSensorManager = (SensorManager) getSystemService(Context.SENSOR_SERVICE);
 
         setupTextToSpeech();
 
         setupViews();
+
+
+        switch (mOneOffPlayType) {
+            case 0:
+                mIsAutoScroll = false;
+                EnableUserInteraction();
+                break;
+
+            case 1:
+                mIsAutoScroll = true;
+                DisableUserInteraction();
+                break;
+            case 2:
+                mIsAutoScroll = true;
+                DisableUserInteraction();
+                break;
+            default:
+                break;
+        }
 
     }
 
@@ -171,7 +175,7 @@ public class PlayActivity extends FragmentActivity implements SensorEventListene
         if (AppConfig.sharedInstance().isTextToSpeech()) {
             Boolean isSimulator = Build.FINGERPRINT.startsWith("generic");
             if (isSimulator) {
-                Toast.makeText(this, "Audio possibly could not be supported on simulator", Toast.LENGTH_LONG).show();
+                Toast.makeText(this, "TextToSpeech and Recording may not be supported on some Android simulators", Toast.LENGTH_LONG).show();
             }
         }
 
@@ -638,7 +642,7 @@ public class PlayActivity extends FragmentActivity implements SensorEventListene
 
             screenOff();
 
-            mPager.disableAllTouchEvent(false);
+            EnableUserInteraction();
             mIsAutoScroll = false;
             mAutoScrollImageButton.setImageDrawable(getResources().getDrawable(R.drawable.autoplay_off));
             mPager.stopAutoScroll();
@@ -745,7 +749,7 @@ public class PlayActivity extends FragmentActivity implements SensorEventListene
 
 
         screenOn();
-        mPager.disableAllTouchEvent(true);
+        DisableUserInteraction();
         mAutoScrollImageButton.setImageDrawable(getResources().getDrawable(R.drawable.autoplay_on));
 
         if (isSmartDelay()== false) {  //
@@ -830,7 +834,13 @@ public class PlayActivity extends FragmentActivity implements SensorEventListene
     }
 
 
+    private void EnableUserInteraction() {
+        mPager.disableAllTouchEvent(false);
+    }
 
+    private void DisableUserInteraction() {
+        mPager.disableAllTouchEvent(true);
+    }
 
     private void screenOn() {
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
