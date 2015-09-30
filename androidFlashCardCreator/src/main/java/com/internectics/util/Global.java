@@ -12,7 +12,6 @@ public class Global {
     public static final String    SAMPLE_URL = "https://s3.amazonaws.com/internetics.flashcardcreator/Pack1440729625-2043618070.zip?from=Flipflashcards&type=demo";
     //public static final String    SAMPLE_URL = "http://7o51o0.com1.z0.glb.clouddn.com/Pack1440729625-2043618324.zip";
 
-
     public static final String  debugTag = "ccaa";
     public static final String  debugTag2 = "ccaa2";
     public static final String  debugTag3 = "ccaa3";
@@ -90,9 +89,9 @@ public class Global {
     public static final String mImages_Not_Showing = "mImages_Not_Showing";
 
 
-    public static int     k_Default_Auto_Play_Dwell_Time = 10;
     public static int     k_MAX_Auto_Play_Speed  = 60;
     public static int     k_MIN_Auto_Play_Speed  = 4;
+    public static int     kDefault_Auto_Play_Speed = k_MIN_Auto_Play_Speed;
 
 
 

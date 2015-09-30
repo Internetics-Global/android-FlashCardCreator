@@ -1350,6 +1350,9 @@ public class PlayActivity extends FragmentActivity implements SensorEventListene
                 }
             }
 
+        } else {
+            AudioHelper.playAudio(cardDetailFragment,mIsMuteSoundRecording);
+
         }
 
 //        //two cases:
