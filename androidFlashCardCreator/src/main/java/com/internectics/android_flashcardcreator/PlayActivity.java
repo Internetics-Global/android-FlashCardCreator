@@ -884,6 +884,20 @@ public class PlayActivity extends FragmentActivity implements SensorEventListene
         if ((mPosition != position) && (positionOffsetPixels == 0)) {
             Timber.tag(Global.debugTag).i( "onPageScrolled, page index=" + position + " .mPosition=" + mPosition);
 
+
+            //主要目的是及时释放内存，以防内存不断增加导致crash
+            if (position-2 >=0) {
+                CardDetailFragment cardDetailFragment = new CardDetailFragment();
+                cardDetailFragment.setupParameters(mCurrentPack, mCurrentPack.cards.get(position-2), 2);
+                mFragments.set(position-2,cardDetailFragment);
+            }
+
+            if (position +2 <= mCurrentPack.cards.size() -1) {
+                CardDetailFragment cardDetailFragment = new CardDetailFragment();
+                cardDetailFragment.setupParameters(mCurrentPack, mCurrentPack.cards.get(position +2), 2);
+                mFragments.set(position +2,cardDetailFragment);
+            }
+
             ((CardDetailFragment) (mFragments.get(position))).switchToQuestionViewWithOption(false);
 
             //hide or show play recorded voice
