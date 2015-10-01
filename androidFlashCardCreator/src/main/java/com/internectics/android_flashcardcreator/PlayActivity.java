@@ -35,6 +35,7 @@ import com.internectics.fragment.CardDetailFragment;
 import com.internectics.helper.AudioHelper;
 import com.internectics.model.CardListModel;
 import com.internectics.util.AppConfig;
+import com.internectics.util.AppContext;
 import com.internectics.util.Global;
 import com.internectics.util.StringUtils;
 import com.internectics.util.UIHelper;
@@ -555,12 +556,13 @@ public class PlayActivity extends FragmentActivity implements SensorEventListene
     protected void onDestroy() {
         super.onDestroy();
 
-        shutdownTextToSpeech();
+        Timber.d("onDestroy called by PlayActivity");
 
         stopAllTimers();
 
         stopAllHandlers();
 
+        shutdownTextToSpeech();
 
         AudioHelper.cleanupAudioPlayResource();
         AudioHelper.cleanupRecorderResource();
@@ -1091,7 +1093,9 @@ public class PlayActivity extends FragmentActivity implements SensorEventListene
     private void setupTextToSpeech() {
 
         if (mTTS == null) {
-            mTTS = new TextToSpeech(this,new TextToSpeech.OnInitListener() {
+
+
+            mTTS = new TextToSpeech(AppContext.getAppContext(),new TextToSpeech.OnInitListener() {
                 @Override
                 public void onInit(int status) {
                     if (status == TextToSpeech.SUCCESS) {
@@ -1112,44 +1116,12 @@ public class PlayActivity extends FragmentActivity implements SensorEventListene
                                 //go to next
                                 mTextToSpeechContentArrayIndex ++;
 
+
+
                                 CardDetailFragment currentCardDetailFragment = getCurrentCardDetailFragment();
 
                                 final ArrayList<String> textToSpeechArray = currentCardDetailFragment.textToSpeechContentArray();
-                                if (textToSpeechArray.size() > mTextToSpeechContentArrayIndex) {
-                                    if (mTTSDelayHandler != null) {
-                                        mTTSDelayHandler.removeCallbacksAndMessages(null);
-                                        mTTSDelayHandler = null;
-                                    }
-                                    mTTSDelayHandler = new Handler(getMainLooper());
-                                    mTTSDelayHandler.postDelayed(new Runnable() {
-                                        @Override
-                                        public void run() {
-                                            HashMap<String, String> params = new HashMap<String, String>();
-                                            params.put(TextToSpeech.Engine.KEY_PARAM_UTTERANCE_ID, "stringId");//必不可少
-                                            if (textToSpeechArray.size() > mTextToSpeechContentArrayIndex) {
-                                                String text = textToSpeechArray.get(mTextToSpeechContentArrayIndex);
-                                                mTTS.speak(text, TextToSpeech.QUEUE_FLUSH, params);
-                                                Timber.tag(Global.debugTag).d("speak " + text);
-                                            }
-                                        }
-                                    }, 500);
 
-                                } else {
-
-                                    if (textToSpeechArray.size() >0 && isSmartDelay()) {
-
-                                        runOnUiThread(new Runnable() {
-                                            @Override
-                                            public void run() {
-                                                text2SpeechFinished();
-                                            }
-                                        });
-
-                                    } else {
-                                        //playAudio(); do nothing
-                                    }
-
-                                }
 
                             }
 
@@ -1378,6 +1350,8 @@ public class PlayActivity extends FragmentActivity implements SensorEventListene
         if (mTTS != null) {
             mTTS.shutdown();
         }
+
+        mTTS = null;
     }
 
     private void stopTextToSpeech() {
