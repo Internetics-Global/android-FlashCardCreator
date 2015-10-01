@@ -43,6 +43,7 @@ import com.internectics.util.VGViewPager;
 
 import org.adw.library.widgets.discreteseekbar.DiscreteSeekBar;
 
+import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
@@ -1105,31 +1106,7 @@ public class PlayActivity extends FragmentActivity implements SensorEventListene
 
                         mTTS.setLanguage(matchedLocale);
 
-                        mTTS.setOnUtteranceProgressListener(new UtteranceProgressListener() {
-                            @Override
-                            public void onStart(String utteranceId) {
-
-                            }
-
-                            @Override
-                            public void onDone(String utteranceId) {
-                                //go to next
-                                mTextToSpeechContentArrayIndex ++;
-
-
-
-                                CardDetailFragment currentCardDetailFragment = getCurrentCardDetailFragment();
-
-                                final ArrayList<String> textToSpeechArray = currentCardDetailFragment.textToSpeechContentArray();
-
-
-                            }
-
-                            @Override
-                            public void onError(String utteranceId) {
-
-                            }
-                        });
+                        mTTS.setOnUtteranceProgressListener(utteranceProgressListenerWeakReference.get());
 
 
 
@@ -1688,4 +1665,62 @@ public class PlayActivity extends FragmentActivity implements SensorEventListene
         stopAudio();
         stopTextToSpeech();
     }
+
+    private WeakReference<UtteranceProgressListener> utteranceProgressListenerWeakReference = new WeakReference<UtteranceProgressListener>(new UtteranceProgressListener() {
+        @Override
+        public void onStart(String utteranceId) {
+
+        }
+
+        @Override
+        public void onDone(String utteranceId) {
+            //go to next
+            mTextToSpeechContentArrayIndex ++;
+
+            CardDetailFragment currentCardDetailFragment = getCurrentCardDetailFragment();
+
+            final ArrayList<String> textToSpeechArray = currentCardDetailFragment.textToSpeechContentArray();
+            if (textToSpeechArray.size() > mTextToSpeechContentArrayIndex) {
+                if (mTTSDelayHandler != null) {
+                    mTTSDelayHandler.removeCallbacksAndMessages(null);
+                    mTTSDelayHandler = null;
+                }
+                mTTSDelayHandler = new Handler(getMainLooper());
+                mTTSDelayHandler.postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        HashMap<String, String> params = new HashMap<String, String>();
+                        params.put(TextToSpeech.Engine.KEY_PARAM_UTTERANCE_ID, "stringId");//必不可少
+                        if (textToSpeechArray.size() > mTextToSpeechContentArrayIndex) {
+                            String text = textToSpeechArray.get(mTextToSpeechContentArrayIndex);
+                            mTTS.speak(text, TextToSpeech.QUEUE_FLUSH, params);
+                            Timber.tag(Global.debugTag).d("speak " + text);
+                        }
+                    }
+                }, 500);
+
+            } else {
+
+                if (textToSpeechArray.size() >0 && isSmartDelay()) {
+
+                    runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            text2SpeechFinished();
+                        }
+                    });
+
+                } else {
+                    //playAudio(); do nothing
+                }
+
+            }
+
+        }
+
+        @Override
+        public void onError(String utteranceId) {
+
+        }
+    });
 }
