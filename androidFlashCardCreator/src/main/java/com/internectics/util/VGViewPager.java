@@ -130,7 +130,7 @@ public class VGViewPager extends AutoScrollViewPager {
             case MotionEvent.ACTION_UP:
                 Timber.d("ACTION_UP");
                 requestDisallowInterceptTouchEvent(false);
-                if (isSwipeAction == false) {
+                if (isSwipeAction == false && swipeActionCount <3) {
                     if (mOnViewPagerItemClickListener != null) {
                         mOnViewPagerItemClickListener.OnViewPagerClickListener();
                     }
