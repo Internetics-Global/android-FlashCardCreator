@@ -1427,17 +1427,27 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnKeyboa
      *
      * maxLines不再使用
      */
+    private boolean flag_Subheading_OneoffIncrease;
+    private boolean flag_Main_OneoffIncrease;
+    private boolean flag_Sub_OneoffIncrease;
     private void triggerResizeTextToFitFrame(final EditText v, int targetLines) {
 
         synchronized (v) {
+
+            String tag = (String) v.getTag();
 
             if (v.getText().length() == 0) {
                 return;
             }
 
+
             //特殊逻辑，历史原因,sample pack中的这部分内容的line number不正确，需要二次修正
             if (v.getText().toString().contains("Knee how ma")) {
                 targetLines = 5;
+            }
+
+            if (v.getText().toString().contains("What are the body")) {
+                Timber.d("checkpoint"); //debug purpose
             }
 
 
@@ -1448,14 +1458,31 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnKeyboa
             int viewHeight = v.getHeight();
             int lineHeight = v.getLineHeight();
 
-            //In case it's too small
-            if (noOfLines < targetLines && noOfLines > 0) {
-                float newTextSize = v.getTextSize() + 5;
-                v.setTextSize(TypedValue.COMPLEX_UNIT_PX, newTextSize);
+            if ((tag.equals("1001") && flag_Subheading_OneoffIncrease) ||
+                    (tag.equals("1002") && flag_Main_OneoffIncrease)||
+                    (tag.equals("1003") && flag_Sub_OneoffIncrease)) {
 
-                return;
+            } else {
+                //In case it's too small
+                //只允许一次，尽可能大，这样可以通过后续的缩小进行
+                if (noOfLines < targetLines && noOfLines > 0) {
 
+                    if (tag.equals("1001")) {
+                        flag_Subheading_OneoffIncrease = true;
+                    } else if (tag.equals("1002")) {
+                        flag_Main_OneoffIncrease = true;
+                    } else if (tag.equals("1003")) {
+                        flag_Sub_OneoffIncrease = true;
+                    }
+
+                    float newTextSize = v.getTextSize() + (v.getTextSize())/3;
+                    v.setTextSize(TypedValue.COMPLEX_UNIT_PX, newTextSize);
+
+                    return;
+
+                }
             }
+
 
 
             if (((textHeight > viewHeight) && (viewHeight > 1) && (noOfLines > 0)) || (noOfLines > targetLines && targetLines > 0)) {
@@ -1468,23 +1495,22 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnKeyboa
                     float newTextSize = 0;
 
                     if (textSize > 200) {
-                        newTextSize = v.getTextSize() - 30;
+                        newTextSize = textSize - textSize/10;
                         v.setTextSize(TypedValue.COMPLEX_UNIT_PX, newTextSize);
 
                     } else if ((textSize > 100) && (textSize <= 200)) {
-                        newTextSize = v.getTextSize() - 20;
+                        newTextSize = textSize - textSize/40;
                         v.setTextSize(TypedValue.COMPLEX_UNIT_PX, newTextSize);
                     } else if ((textSize > 50) && (textSize <= 100)) {
-                        newTextSize = v.getTextSize() - 5;
+                        newTextSize = textSize - textSize/50;
                         v.setTextSize(TypedValue.COMPLEX_UNIT_PX, newTextSize);
                     } else if ((textSize > 30) && (textSize <= 50)) {
-                        newTextSize = v.getTextSize() - 2;
+                        newTextSize = textSize - 1;
                         v.setTextSize(TypedValue.COMPLEX_UNIT_PX, newTextSize);
                     } else if (textSize <= 30) {
-                        newTextSize = v.getTextSize() - 1;
+                        newTextSize = textSize - 1;
                         v.setTextSize(TypedValue.COMPLEX_UNIT_PX, newTextSize);
                     } else {
-                        newTextSize = v.getTextSize();
                     }
 
 
