@@ -12,6 +12,7 @@ import android.graphics.Rect;
 import android.graphics.Typeface;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
+import android.media.MediaMetadataRetriever;
 import android.media.MediaPlayer;
 import android.net.Uri;
 import android.os.AsyncTask;
@@ -230,17 +231,6 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnKeyboa
             setCardBackgroundMaskBlack();
         } else {
             setCardBackgroundMaskGray();
-        }
-
-        //由于需要字体自适应，自适应的过程会在界面显示出（字体变大或变小），这种体验不好，所以先hide
-        if (mMain.getText().toString().length() > 0) {
-            mMain.setVisibility(View.INVISIBLE);
-        }
-        if (mSubheading.getText().toString().length() > 0) {
-            mSubheading.setVisibility(View.INVISIBLE);
-        }
-        if (mSub.getText().toString().length() > 0) {
-            mSub.setVisibility(View.INVISIBLE);
         }
 
         if (AppConfig.sharedInstance().isAllowToShowTooltip()) {
@@ -1550,7 +1540,12 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnKeyboa
             } else {
 
                 //恢复可见性
-                v.setVisibility(View.VISIBLE);
+                v.postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        mContentBodyLinearLayout.setVisibility(View.VISIBLE);
+                    }
+                },460);
 
                 //仅在如下情况起作用：
                 //1. read only
@@ -2230,27 +2225,56 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnKeyboa
         }
     }
 
-
+    /*
+     * Milli seconds is returned
+    */
     public int durationForQuestionRecordedSound () {
-        MediaPlayer mp = MediaPlayer.create(getActivity(), Uri.parse(mCurrentCard.question.audioUriFormatStr));
+
         int duration = 0;
-        try {
-            duration = mp.getDuration();
-        } catch (Exception ex) {
-            Timber.e(Global.debugTag,ex);
+
+        if (StringUtils.isEmpty(mCurrentCard.question.audioUriFormatStr)) {
+            return duration;
         }
+
+        try {
+            Uri uri = Uri.parse(mCurrentCard.question.audioUriFormatStr);
+
+            MediaMetadataRetriever mmr = new MediaMetadataRetriever();
+            mmr.setDataSource(AppContext.getAppContext(),uri);
+            String durationStr = mmr.extractMetadata(MediaMetadataRetriever.METADATA_KEY_DURATION);
+            duration = Integer.parseInt(durationStr);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+
         return duration;
     }
 
-
+    /*
+     * Milli seconds is returned
+     */
     public int durationForAnswerRecordedSound () {
-        MediaPlayer mp = MediaPlayer.create(getActivity(), Uri.parse(mCurrentCard.answer.audioUriFormatStr));
+
         int duration = 0;
-        try {
-            duration = mp.getDuration();
-        } catch (Exception ex) {
-            Timber.e(Global.debugTag,ex);
+
+        if (StringUtils.isEmpty(mCurrentCard.answer.audioUriFormatStr)) {
+            return duration;
         }
+
+        try {
+            Uri uri = Uri.parse(mCurrentCard.answer.audioUriFormatStr);
+
+            MediaMetadataRetriever mmr = new MediaMetadataRetriever();
+            mmr.setDataSource(AppContext.getAppContext(),uri);
+            String durationStr = mmr.extractMetadata(MediaMetadataRetriever.METADATA_KEY_DURATION);
+            duration = Integer.parseInt(durationStr);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+
+
         return duration;
     }
 
