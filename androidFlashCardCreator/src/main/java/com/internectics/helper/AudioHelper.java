@@ -2,8 +2,6 @@ package com.internectics.helper;
 
 import android.media.MediaPlayer;
 import android.media.MediaRecorder;
-import android.os.Build;
-import android.widget.Toast;
 
 import com.internectics.fragment.CardDetailFragment;
 
@@ -163,7 +161,7 @@ public class AudioHelper {
             @Override
             public boolean onError(MediaPlayer mp, int what, int extra) {
                 cleanupAudioPlayResource();
-                return false;
+                return true;
             }
         });
     }
@@ -191,6 +189,9 @@ public class AudioHelper {
     public static void cleanupAudioPlayResource() {
         if (mp != null) {
             mp.setVolume(1,1); //this is very important
+            if(mp.isPlaying())
+                mp.stop();
+            mp.reset();
             mp.release();
             mp = null;
         }
