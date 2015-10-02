@@ -1407,12 +1407,12 @@ public class MainActivity extends FragmentActivity implements
     public void showPackInfoView() {
         mPackInfoLayout.setVisibility(View.VISIBLE);
         updatePackInfoView();
-        findViewById(R.id.card_detail_container).setVisibility(View.INVISIBLE);
+        findViewById(R.id.card_detail_container).setVisibility(View.GONE);
     }
 
     private void hidePackInfoView() {
 
-        mPackInfoLayout.setVisibility(View.INVISIBLE);
+        mPackInfoLayout.setVisibility(View.GONE);
         findViewById(R.id.card_detail_container).setVisibility(View.VISIBLE);
 
 
