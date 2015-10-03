@@ -8,12 +8,10 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
-import android.graphics.Rect;
 import android.graphics.Typeface;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.media.MediaMetadataRetriever;
-import android.media.MediaPlayer;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Build;
@@ -156,6 +154,8 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnKeyboa
 
     private LinearLayout mContentBodyLinearLayout;
 
+    private Handler      mShowContentHandler;
+
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -292,8 +292,15 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnKeyboa
 
     @Override
     public void onStop() {
-        Timber.tag(Global.debugTag).d(String.format("onStop in CardDetailFragment, cardSN = %d", mCurrentCard.cardSN));
         super.onStop();
+
+        Timber.tag(Global.debugTag).d(String.format("onStop in CardDetailFragment, cardSN = %d", mCurrentCard.cardSN));
+
+        //需要及时收回资源
+        if (mShowContentHandler != null) {
+            mShowContentHandler.removeCallbacksAndMessages(null);
+            mShowContentHandler = null;
+        }
 
         removeEditTextListener();
 
@@ -1204,6 +1211,9 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnKeyboa
         LinearLayout creatorLayout = (LinearLayout) mContentView.findViewById(R.id.creator_layout);
 
         mContentBodyLinearLayout = (LinearLayout) mContentView.findViewById(R.id.card_content_body);
+        if (mIsCreatingCard || mIsPlayingCard == false) {
+            mContentBodyLinearLayout.setVisibility(View.VISIBLE); //默认是隐藏的
+        }
 
         createSubheading();
         createMain();
@@ -1539,11 +1549,18 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnKeyboa
 
             } else {
 
-                //恢复可见性
-                v.postDelayed(new Runnable() {
+                if (mShowContentHandler != null) {
+                    mShowContentHandler.removeCallbacksAndMessages(null);
+                    mShowContentHandler = null;
+                }
+                mShowContentHandler = new Handler();
+                mShowContentHandler.postDelayed(new Runnable() {
                     @Override
                     public void run() {
-                        mContentBodyLinearLayout.setVisibility(View.VISIBLE);
+                        Timber.d(mCardSN.getText() + " postDelayed to execute mContentBodyLinearLayout.setVisibility(View.VISIBLE)");
+                        if (mContentBodyLinearLayout.getVisibility() != View.VISIBLE) {
+                            mContentBodyLinearLayout.setVisibility(View.VISIBLE);
+                        }
                     }
                 },460);
 
