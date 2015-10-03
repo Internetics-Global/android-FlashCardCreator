@@ -154,8 +154,6 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnKeyboa
 
     private LinearLayout mContentBodyLinearLayout;
 
-    private Handler      mShowContentHandler;
-
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -295,12 +293,6 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnKeyboa
         super.onStop();
 
         Timber.tag(Global.debugTag).d(String.format("onStop in CardDetailFragment, cardSN = %d", mCurrentCard.cardSN));
-
-        //需要及时收回资源
-        if (mShowContentHandler != null) {
-            mShowContentHandler.removeCallbacksAndMessages(null);
-            mShowContentHandler = null;
-        }
 
         removeEditTextListener();
 
@@ -1549,20 +1541,6 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnKeyboa
 
             } else {
 
-                if (mShowContentHandler != null) {
-                    mShowContentHandler.removeCallbacksAndMessages(null);
-                    mShowContentHandler = null;
-                }
-                mShowContentHandler = new Handler();
-                mShowContentHandler.postDelayed(new Runnable() {
-                    @Override
-                    public void run() {
-                        Timber.d(mCardSN.getText() + " postDelayed to execute mContentBodyLinearLayout.setVisibility(View.VISIBLE)");
-                        if (mContentBodyLinearLayout.getVisibility() != View.VISIBLE) {
-                            mContentBodyLinearLayout.setVisibility(View.VISIBLE);
-                        }
-                    }
-                },460);
 
                 //仅在如下情况起作用：
                 //1. read only
