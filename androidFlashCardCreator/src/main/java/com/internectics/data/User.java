@@ -91,9 +91,17 @@ public class User {
 
     public void removePack(Pack pack) {
 
-        for (int index = 0; index < packs.size(); index++) {
-            packs.remove(index);
+        int i = 0;
+        for (Pack item: packs) {
+            if (item.packID == pack.packID) {
+                packs.remove(i);
+                break;
+            }
+
+            i++;
         }
+
+
         pack.destroy(gloalContext);
     }
 
