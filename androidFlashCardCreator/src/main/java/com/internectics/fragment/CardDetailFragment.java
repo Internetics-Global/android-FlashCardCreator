@@ -511,24 +511,30 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnKeyboa
 
         Uri selectedURI = Crop.getOutput(data);
 
-        Bitmap resultBitmap = null;
+        Bitmap unfilteredBitmap = null;
 
         //step1: get image
         try {
-            resultBitmap = BitmapFactory.decodeStream(getActivity().getContentResolver().openInputStream(selectedURI));
+            unfilteredBitmap = BitmapFactory.decodeStream(getActivity().getContentResolver().openInputStream(selectedURI));
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         }
 
         //step2: do next
-        if (resultBitmap == null) {
+        if (unfilteredBitmap == null) {
             Timber.tag(Global.debugTag).e("resultBitmap is null");
         } else {
 
-            File toSaveFile = UIHelper.saveImageToCaches(resultBitmap);
+            int width = unfilteredBitmap.getWidth();
+            int height = unfilteredBitmap.getHeight();
 
             if (mActiveImageSource == Enum_Image_Source.IMAGE_SOURCE_IS_LOGO) {
-                mLogoImage.setImageBitmap(resultBitmap);
+
+                Bitmap scaledBitmap = Bitmap.createScaledBitmap(unfilteredBitmap, 100, height / width * 100, false);
+                unfilteredBitmap.recycle();
+                File toSaveFile = UIHelper.saveImageToCaches(scaledBitmap);
+
+                mLogoImage.setImageBitmap(scaledBitmap);
                 mCurrentPack.logoImageUriFormatStr = FileOperationHelper.convertToUriFormatFile(toSaveFile);
 
                 if (mIsCreatingCard == false) {
@@ -539,15 +545,19 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnKeyboa
 
             } else if (mActiveImageSource == Enum_Image_Source.IMAGE_SOURCE_IS_IMAGE) {
 
+                Bitmap scaledBitmap = Bitmap.createScaledBitmap(unfilteredBitmap, 400, height / width * 400, false);
+                unfilteredBitmap.recycle();
+                File toSaveFile = UIHelper.saveImageToCaches(scaledBitmap);
+
                 if (mIsImage2Active) {
-                    mImage2.setImageBitmap(resultBitmap);
+                    mImage2.setImageBitmap(scaledBitmap);
                     if (mIsQuestionShowing) {
                         mCurrentCard.question.imageUriFormatStr2 = FileOperationHelper.convertToUriFormatFile(toSaveFile);
                     } else {
                         mCurrentCard.answer.imageUriFormatStr2 = FileOperationHelper.convertToUriFormatFile(toSaveFile);
                     }
                 } else {
-                    mImage.setImageBitmap(resultBitmap);
+                    mImage.setImageBitmap(scaledBitmap);
                     if (mIsQuestionShowing) {
                         mCurrentCard.question.imageUriFormatStr = FileOperationHelper.convertToUriFormatFile(toSaveFile);
                     } else {
@@ -566,7 +576,12 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnKeyboa
                     }
                 }
             } else if (mActiveImageSource == Enum_Image_Source.IMAGE_SOURCE_IS_BACKGROUND) {
-                setCardBackgroundImageWithBitmap(resultBitmap);
+
+                Bitmap scaledBitmap = Bitmap.createScaledBitmap(unfilteredBitmap, 1024, height / width * 1024, false);
+                unfilteredBitmap.recycle();
+                File toSaveFile = UIHelper.saveImageToCaches(scaledBitmap);
+
+                setCardBackgroundImageWithBitmap(scaledBitmap);
                 if (mIsQuestionShowing) {
                     mCurrentCard.question.backgroundImageUriFormatStr = FileOperationHelper.convertToUriFormatFile(toSaveFile);
                 } else {

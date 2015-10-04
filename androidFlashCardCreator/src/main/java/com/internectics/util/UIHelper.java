@@ -130,44 +130,12 @@ public class UIHelper {
     }
 
 
-
-    public static Bitmap resizedBitmapWithScaleToFit(Bitmap bm, int newWidth,int newHeight) {
-        int width = bm.getWidth();
-        int height = bm.getHeight();
-        float scaleWidth = ((float) newWidth) / width;
-        float scaleHeight = ((float) newHeight) / height;
-
-        // CREATE A MATRIX FOR THE MANIPULATION
-        Matrix matrix = new Matrix();
-
-        Bitmap resizedBitmap;
-
-        if (scaleWidth > scaleHeight) {
-            float originalScaleHeight  =  scaleHeight;
-            scaleHeight = scaleWidth;
-
-            // RESIZE THE BIT MAP
-            matrix.postScale(scaleWidth, scaleHeight);
-
-            resizedBitmap = Bitmap.createBitmap(bm, 0, 0, width,(int)(height * originalScaleHeight /scaleWidth), matrix, false);
-
-        } else {
-            float originalScaleWidth  =  scaleWidth;
-            scaleWidth = scaleHeight;
-
-            // RESIZE THE BIT MAP
-            matrix.postScale(scaleWidth, scaleHeight);
-
-            resizedBitmap = Bitmap.createBitmap(bm, 0, 0, (int)(width * originalScaleWidth/scaleHeight), height, matrix, false);
-        }
-
-        return resizedBitmap;
-    }
-
     /*
     所有的图片，视频，音频资源都保存在这个目录下面。
      */
     public static File saveImageToCaches(Bitmap savedBitmap) {
+
+
         File toSaveFile = FileOperationHelper.generateUniqueImageFilePath();
 
         try {
