@@ -89,13 +89,23 @@ public class UIHelper {
             int max;
             if ((opts.outWidth > width) || (opts.outHeight > width) ) {
                 max = (opts.outWidth > opts.outHeight)?opts.outWidth:opts.outHeight;
-                opts.inSampleSize = (max/width);
+                opts.inSampleSize = nextPowerOf2(max/width);
             }
             opts.inJustDecodeBounds = false;
             resizeBitmap = BitmapFactory.decodeFile(pathName, opts);
         }
 
         return resizeBitmap;
+    }
+
+    private static int nextPowerOf2(final int a)
+    {
+        int b = 1;
+        while (b < a)
+        {
+            b = b << 1;
+        }
+        return b;
     }
 
     /*

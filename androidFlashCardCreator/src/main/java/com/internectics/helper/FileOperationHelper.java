@@ -136,21 +136,33 @@ public class FileOperationHelper {
         return str;
     }
 
+    /*
+     * 有两种情况：content provider形式的(content://）和文件形式的(file:///)
+     */
     public static String getRealImagePathFromURI(Context context, Uri contentUri) {
-        String[] proj = { MediaStore.Images.Media.DATA };
 
-        //This method was deprecated in API level 11
-        //Cursor cursor = managedQuery(contentUri, proj, null, null, null);
+        String uriHeader = contentUri.getScheme();
 
-        CursorLoader cursorLoader = new CursorLoader(
-                context,
-                contentUri, proj, null, null, null);
-        Cursor cursor = cursorLoader.loadInBackground();
+        if (uriHeader.equals("file")) {
 
-        int column_index =
-                cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATA);
-        cursor.moveToFirst();
-        return cursor.getString(column_index);
+            String body = contentUri.toString().substring(uriHeader.length() + 3); // remove file://
+            return body;
+
+        } else if (uriHeader.equals("content")) {
+            String[] proj = { MediaStore.Images.Media.DATA };
+            CursorLoader cursorLoader = new CursorLoader(
+                    context,
+                    contentUri, proj, null, null, null);
+            Cursor cursor = cursorLoader.loadInBackground();
+
+            int column_index =
+                    cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATA);
+            cursor.moveToFirst();
+            return cursor.getString(column_index);
+        } else {
+            throw new IllegalStateException("Unexpected URI for getRealImagePathFromURI");
+        }
+
     }
 
     /**

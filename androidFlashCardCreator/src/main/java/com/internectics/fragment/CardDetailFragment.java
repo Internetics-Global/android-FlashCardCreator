@@ -506,102 +506,81 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnKeyboa
         }
 
         if (data == null) {
+            Timber.tag(Global.debugTag).e("handleCrop data is null");
             return;
         }
 
         Uri selectedURI = Crop.getOutput(data);
+        if (mActiveImageSource == Enum_Image_Source.IMAGE_SOURCE_IS_LOGO) {
 
-        Bitmap unfilteredBitmap = null;
+            Bitmap scaledBitmap = UIHelper.resizeImageTo(getActivity(), selectedURI, 100);
+            File toSaveFile = UIHelper.saveImageToCaches(scaledBitmap);
 
-        //step1: get image
-        try {
-            unfilteredBitmap = BitmapFactory.decodeStream(getActivity().getContentResolver().openInputStream(selectedURI));
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        }
+            mLogoImage.setImageBitmap(scaledBitmap);
+            mCurrentPack.logoImageUriFormatStr = FileOperationHelper.convertToUriFormatFile(toSaveFile);
 
-        //step2: do next
-        if (unfilteredBitmap == null) {
-            Timber.tag(Global.debugTag).e("resultBitmap is null");
-        } else {
+            if (mIsCreatingCard == false) {
+                mCurrentPack.save(AppContext.getAppContext());
+                ((MainActivity) getActivity()).setMaskButtonForContentUpdating();
+                takeSnapshotAll();
+            }
 
-            int width = unfilteredBitmap.getWidth();
-            int height = unfilteredBitmap.getHeight();
+        } else if (mActiveImageSource == Enum_Image_Source.IMAGE_SOURCE_IS_IMAGE) {
+            
+            Bitmap scaledBitmap = UIHelper.resizeImageTo(getActivity(), selectedURI, 400);
+            File toSaveFile = UIHelper.saveImageToCaches(scaledBitmap);
 
-            if (mActiveImageSource == Enum_Image_Source.IMAGE_SOURCE_IS_LOGO) {
-
-                Bitmap scaledBitmap = Bitmap.createScaledBitmap(unfilteredBitmap, 100, height / width * 100, false);
-                unfilteredBitmap.recycle();
-                File toSaveFile = UIHelper.saveImageToCaches(scaledBitmap);
-
-                mLogoImage.setImageBitmap(scaledBitmap);
-                mCurrentPack.logoImageUriFormatStr = FileOperationHelper.convertToUriFormatFile(toSaveFile);
-
-                if (mIsCreatingCard == false) {
-                    mCurrentPack.save(AppContext.getAppContext());
-                    ((MainActivity) getActivity()).setMaskButtonForContentUpdating();
-                    takeSnapshotAll();
-                }
-
-            } else if (mActiveImageSource == Enum_Image_Source.IMAGE_SOURCE_IS_IMAGE) {
-
-                Bitmap scaledBitmap = Bitmap.createScaledBitmap(unfilteredBitmap, 400, height / width * 400, false);
-                unfilteredBitmap.recycle();
-                File toSaveFile = UIHelper.saveImageToCaches(scaledBitmap);
-
-                if (mIsImage2Active) {
-                    mImage2.setImageBitmap(scaledBitmap);
-                    if (mIsQuestionShowing) {
-                        mCurrentCard.question.imageUriFormatStr2 = FileOperationHelper.convertToUriFormatFile(toSaveFile);
-                    } else {
-                        mCurrentCard.answer.imageUriFormatStr2 = FileOperationHelper.convertToUriFormatFile(toSaveFile);
-                    }
-                } else {
-                    mImage.setImageBitmap(scaledBitmap);
-                    if (mIsQuestionShowing) {
-                        mCurrentCard.question.imageUriFormatStr = FileOperationHelper.convertToUriFormatFile(toSaveFile);
-                    } else {
-                        mCurrentCard.answer.imageUriFormatStr = FileOperationHelper.convertToUriFormatFile(toSaveFile);
-                    }
-                }
-
-                if (mIsCreatingCard == false) {
-                    mCurrentCard.save(AppContext.getAppContext());
-                    if (mIsQuestionShowing) {
-                        takeSnapshotCurrentCard();
-                        Intent intent = new Intent();
-                        intent.setAction(Global.BROADCAST_ACTION_UPDATE_MASTER_VIEW);
-                        intent.putExtra(Global.KEY_FROM, Global.BROADCAST_EXTRA_FROM_CURRENT_PACK_UPDATE);
-                        getActivity().sendBroadcast(intent);
-                    }
-                }
-            } else if (mActiveImageSource == Enum_Image_Source.IMAGE_SOURCE_IS_BACKGROUND) {
-
-                Bitmap scaledBitmap = Bitmap.createScaledBitmap(unfilteredBitmap, 1024, height / width * 1024, false);
-                unfilteredBitmap.recycle();
-                File toSaveFile = UIHelper.saveImageToCaches(scaledBitmap);
-
-                setCardBackgroundImageWithBitmap(scaledBitmap);
+            if (mIsImage2Active) {
+                mImage2.setImageBitmap(scaledBitmap);
                 if (mIsQuestionShowing) {
-                    mCurrentCard.question.backgroundImageUriFormatStr = FileOperationHelper.convertToUriFormatFile(toSaveFile);
+                    mCurrentCard.question.imageUriFormatStr2 = FileOperationHelper.convertToUriFormatFile(toSaveFile);
                 } else {
-                    mCurrentCard.answer.backgroundImageUriFormatStr = FileOperationHelper.convertToUriFormatFile(toSaveFile);
+                    mCurrentCard.answer.imageUriFormatStr2 = FileOperationHelper.convertToUriFormatFile(toSaveFile);
                 }
-
-                if (mIsCreatingCard == false) {
-                    mCurrentCard.save(AppContext.getAppContext());
-                    if (mIsQuestionShowing) {
-                        takeSnapshotCurrentCard();
-                        Intent intent = new Intent();
-                        intent.setAction(Global.BROADCAST_ACTION_UPDATE_MASTER_VIEW);
-                        intent.putExtra(Global.KEY_FROM, Global.BROADCAST_EXTRA_FROM_CURRENT_PACK_UPDATE);
-                        getActivity().sendBroadcast(intent);
-                    }
+            } else {
+                mImage.setImageBitmap(scaledBitmap);
+                if (mIsQuestionShowing) {
+                    mCurrentCard.question.imageUriFormatStr = FileOperationHelper.convertToUriFormatFile(toSaveFile);
+                } else {
+                    mCurrentCard.answer.imageUriFormatStr = FileOperationHelper.convertToUriFormatFile(toSaveFile);
                 }
             }
 
-            PackRecordHelper.savePackUpdateRecord(AppContext.getAppContext(), mCurrentPack);
+            if (mIsCreatingCard == false) {
+                mCurrentCard.save(AppContext.getAppContext());
+                if (mIsQuestionShowing) {
+                    takeSnapshotCurrentCard();
+                    Intent intent = new Intent();
+                    intent.setAction(Global.BROADCAST_ACTION_UPDATE_MASTER_VIEW);
+                    intent.putExtra(Global.KEY_FROM, Global.BROADCAST_EXTRA_FROM_CURRENT_PACK_UPDATE);
+                    getActivity().sendBroadcast(intent);
+                }
+            }
+        } else if (mActiveImageSource == Enum_Image_Source.IMAGE_SOURCE_IS_BACKGROUND) {
+
+            Bitmap scaledBitmap = UIHelper.resizeImageTo(getActivity(), selectedURI, 1024);
+            File toSaveFile = UIHelper.saveImageToCaches(scaledBitmap);
+
+            setCardBackgroundImageWithBitmap(scaledBitmap);
+            if (mIsQuestionShowing) {
+                mCurrentCard.question.backgroundImageUriFormatStr = FileOperationHelper.convertToUriFormatFile(toSaveFile);
+            } else {
+                mCurrentCard.answer.backgroundImageUriFormatStr = FileOperationHelper.convertToUriFormatFile(toSaveFile);
+            }
+
+            if (mIsCreatingCard == false) {
+                mCurrentCard.save(AppContext.getAppContext());
+                if (mIsQuestionShowing) {
+                    takeSnapshotCurrentCard();
+                    Intent intent = new Intent();
+                    intent.setAction(Global.BROADCAST_ACTION_UPDATE_MASTER_VIEW);
+                    intent.putExtra(Global.KEY_FROM, Global.BROADCAST_EXTRA_FROM_CURRENT_PACK_UPDATE);
+                    getActivity().sendBroadcast(intent);
+                }
+            }
         }
+
+        PackRecordHelper.savePackUpdateRecord(AppContext.getAppContext(), mCurrentPack);
 
     }
 
