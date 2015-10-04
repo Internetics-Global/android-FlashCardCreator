@@ -267,13 +267,24 @@ public class UIHelper {
 
 
     public static Bitmap loadBitmapFromView(View v) {
-        Bitmap bitmap = Bitmap.createBitmap(v.getWidth(), v.getHeight(), Bitmap.Config.ARGB_8888);
+
+        int inWidth = v.getWidth();
+        int inHeight = v.getHeight();
+
+        if (inHeight == 0 || inHeight == 0) {
+            throw new IllegalStateException("loadBitmapFromView should have a view with size >0");
+        }
+
+        Bitmap bitmap = Bitmap.createBitmap(inWidth, inHeight, Bitmap.Config.ARGB_8888);
         Canvas canvas = new Canvas(bitmap);
         v.draw(canvas);
 
-        int factor = v.getWidth()/400 + 1;
 
-        Bitmap resizedBitmap = Bitmap.createScaledBitmap(bitmap, v.getWidth()/factor, v.getHeight()/factor, false);
+        //在我们的例子中，宽度永远是大于高度的
+        int outWidth = 400;
+        int outHeight = (inHeight * outWidth) / inWidth;
+
+        Bitmap resizedBitmap = Bitmap.createScaledBitmap(bitmap, outWidth, outHeight, false);
 
         bitmap.recycle();
 
