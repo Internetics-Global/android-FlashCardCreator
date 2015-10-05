@@ -139,6 +139,7 @@ public class PlayActivity extends FragmentActivity implements SensorEventListene
         setContentView(R.layout.play);
         getActionBar().hide();
 
+
         int packID = getIntent().getIntExtra("packID", -1);
         mOneOffPlayType = getIntent().getIntExtra("oneOffPlayType", -1);
         mCurrentPack = CardListModel.getPack(packID);
@@ -558,6 +559,9 @@ public class PlayActivity extends FragmentActivity implements SensorEventListene
         super.onDestroy();
 
         Timber.d("onDestroy called by PlayActivity");
+
+        mTTS.setOnUtteranceProgressListener(null);
+        utteranceProgressListener = null;
 
         stopAllTimers();
 
@@ -1118,7 +1122,7 @@ public class PlayActivity extends FragmentActivity implements SensorEventListene
 
                         mTTS.setLanguage(matchedLocale);
 
-                        mTTS.setOnUtteranceProgressListener(utteranceProgressListenerWeakReference.get());
+                        mTTS.setOnUtteranceProgressListener(utteranceProgressListener);
 
 
 
@@ -1260,6 +1264,9 @@ public class PlayActivity extends FragmentActivity implements SensorEventListene
  */
     private void playbackOnCard(final CardDetailFragment cardDetailFragment) {
 
+        unmuteTTS(); //我们需要确保这时音频的音量是可用的。
+        AudioHelper.stopAndCleanAudio();
+
         if (AppConfig.sharedInstance().isTextToSpeech() || isSmartDelay()) {
 
             final boolean isMuteText2Speech;  //Text2Speech is still on, but mute
@@ -1280,23 +1287,30 @@ public class PlayActivity extends FragmentActivity implements SensorEventListene
                         durationForRecordedSound = cardDetailFragment.durationForAnswerRecordedSound();
                     }
 
+                    if (mText2Speech_AfterSoundRecording_Handler != null) {
+                        mText2Speech_AfterSoundRecording_Handler.removeCallbacksAndMessages(null);
+                        mText2Speech_AfterSoundRecording_Handler = null;
+                    }
+
                     if (durationForRecordedSound == 0) {
                         textToSpeechAllContentNow(cardDetailFragment,isMuteText2Speech);
                     } else {
-                        if (mText2Speech_AfterSoundRecording_Handler != null) {
-                            mText2Speech_AfterSoundRecording_Handler.removeCallbacksAndMessages(null);
-                            mText2Speech_AfterSoundRecording_Handler = null;
-                        }
-                        mText2Speech_AfterSoundRecording_Handler = new Handler();
-                        mText2Speech_AfterSoundRecording_Handler.postDelayed(new Runnable() {
-                            @Override
-                            public void run() {
 
-                                if (mIsShuttingDown == false) {
-                                    textToSpeechAllContentNow(cardDetailFragment,isMuteText2Speech);
+                        if ((AppConfig.sharedInstance().isTextToSpeech() == false) && (mIsAutoScroll == false) &&
+                                (isSmartDelay() == false)) {
+                        } else {
+                            mText2Speech_AfterSoundRecording_Handler = new Handler();
+                            mText2Speech_AfterSoundRecording_Handler.postDelayed(new Runnable() {
+                                @Override
+                                public void run() {
+
+                                    if (mIsShuttingDown == false) {
+                                        textToSpeechAllContentNow(cardDetailFragment,isMuteText2Speech);
+                                    }
                                 }
-                            }
-                        },durationForRecordedSound + 1000);  //这里1000（1秒）是适当的，因为mPauseForAnswerSeekBar或K_IntervalBetweenCardSeconds_ForQAOnly都远大于这个数
+                            },durationForRecordedSound + 1000);  //这里1000（1秒）是适当的，因为mPauseForAnswerSeekBar或K_IntervalBetweenCardSeconds_ForQAOnly都远大于这个数
+
+                        }
 
                         AudioHelper.playAudio(cardDetailFragment,mIsMuteSoundRecording);
                     }
@@ -1678,7 +1692,7 @@ public class PlayActivity extends FragmentActivity implements SensorEventListene
         stopTextToSpeech();
     }
 
-    private WeakReference<UtteranceProgressListener> utteranceProgressListenerWeakReference = new WeakReference<UtteranceProgressListener>(new UtteranceProgressListener() {
+    private UtteranceProgressListener utteranceProgressListener = new UtteranceProgressListener() {
         @Override
         public void onStart(String utteranceId) {
 
@@ -1734,5 +1748,5 @@ public class PlayActivity extends FragmentActivity implements SensorEventListene
         public void onError(String utteranceId) {
 
         }
-    });
+    };
 }

@@ -133,7 +133,7 @@ public class MainActivity extends FragmentActivity implements
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        Log.d("ccaa", "onCreate from ");
+        Timber.d("onCreate on MainActivity");
 
         //Step1: check table and default user
         SQLiteHelper.defaultDatabase(AppContext.getAppContext());
@@ -468,6 +468,8 @@ public class MainActivity extends FragmentActivity implements
     @Override
     protected void onResume() {
         super.onResume();
+
+        Timber.d("onResume on MainActivity");
 
         if (mIsNecessaryToRestoreCSSToolbar) {
             initializeCSSToolbar();
@@ -978,6 +980,9 @@ public class MainActivity extends FragmentActivity implements
     @Override
     protected void onStop() {
         super.onStop();
+
+        Timber.d("onStop on MainActivity");
+
         EasyTracker.getInstance().activityStop(this);
     }
 

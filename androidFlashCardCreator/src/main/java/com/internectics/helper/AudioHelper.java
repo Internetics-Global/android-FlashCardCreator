@@ -173,7 +173,6 @@ public class AudioHelper {
             try {
                 isPlaying = mp.isPlaying();
             } catch (IllegalStateException e) {
-                cleanupAudioPlayResource();
             }
 
             if (isPlaying) {
