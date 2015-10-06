@@ -1,6 +1,10 @@
 package com.internectics.android_flashcardcreator;
 
+import android.app.AlertDialog;
+import android.content.BroadcastReceiver;
 import android.content.Context;
+import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.res.Configuration;
 import android.hardware.Sensor;
 import android.hardware.SensorEvent;
@@ -43,7 +47,6 @@ import com.internectics.util.VGViewPager;
 
 import org.adw.library.widgets.discreteseekbar.DiscreteSeekBar;
 
-import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
@@ -130,6 +133,9 @@ public class PlayActivity extends FragmentActivity implements SensorEventListene
 
     private final int      K_Big_Enough_For_Endless_Repeated_Timer     =600000;
 
+
+    private AudioIntentReceiver mAudioIntentReceiver;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -139,6 +145,7 @@ public class PlayActivity extends FragmentActivity implements SensorEventListene
         setContentView(R.layout.play);
         getActionBar().hide();
 
+        mAudioIntentReceiver = new AudioIntentReceiver();
 
         int packID = getIntent().getIntExtra("packID", -1);
         mOneOffPlayType = getIntent().getIntExtra("oneOffPlayType", -1);
@@ -176,6 +183,9 @@ public class PlayActivity extends FragmentActivity implements SensorEventListene
     @Override
     protected void onResume() {
         super.onResume();
+
+        IntentFilter filter = new IntentFilter(Intent.ACTION_HEADSET_PLUG);
+        registerReceiver(mAudioIntentReceiver, filter);
 
         if (AppConfig.sharedInstance().isTextToSpeech()) {
             Boolean isSimulator = Build.FINGERPRINT.startsWith("generic");
@@ -233,6 +243,13 @@ public class PlayActivity extends FragmentActivity implements SensorEventListene
         }, 4000);
 
 
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+
+        unregisterReceiver(mAudioIntentReceiver);
     }
 
     private void setupViews() {
@@ -1264,7 +1281,7 @@ public class PlayActivity extends FragmentActivity implements SensorEventListene
  */
     private void playbackOnCard(final CardDetailFragment cardDetailFragment) {
 
-        unmuteTTS(); //我们需要确保这时音频的音量是可用的。
+        AudioHelper.unmuteTTS(); //我们需要确保这时音频的音量是可用的。
         AudioHelper.stopAndCleanAudio();
 
         if (AppConfig.sharedInstance().isTextToSpeech() || isSmartDelay()) {
@@ -1366,19 +1383,7 @@ public class PlayActivity extends FragmentActivity implements SensorEventListene
             mTTS.stop();
         }
 
-        unmuteTTS(); //这个非常重要
-    }
-
-    //由于TTS没有单独的音量控制，所以需要通过AudioManager全局控制，这种体验其实是不好的，但是也是唯一的方法.
-    // DON'T use AudioManager to set volume! It will cause many side effects such as disabling silent mode, which will make your users mad!
-    private  void muteTTS() {
-        AudioManager audioManager=(AudioManager)getSystemService(Context.AUDIO_SERVICE);
-        audioManager.setStreamMute(AudioManager.STREAM_MUSIC, true); //TTS实际走的是STREAM_RING，不是STREAM_TTS
-    }
-
-    private void unmuteTTS() {
-        AudioManager audioManager=(AudioManager)getSystemService(Context.AUDIO_SERVICE);
-        audioManager.setStreamMute(AudioManager.STREAM_MUSIC, false);//TTS实际走的是STREAM_RING，不是STREAM_TTS
+        AudioHelper.unmuteTTS(); //这个非常重要
     }
 
 
@@ -1398,9 +1403,9 @@ public class PlayActivity extends FragmentActivity implements SensorEventListene
         }
 
         if (isMuteText2Speech) {
-            muteTTS();
+            AudioHelper.muteTTS();
         } else {
-            unmuteTTS();
+            AudioHelper.unmuteTTS();
         }
 
         ArrayList<String> textToSpeechArray = cardDetailFragment.textToSpeechContentArray();
@@ -1749,4 +1754,48 @@ public class PlayActivity extends FragmentActivity implements SensorEventListene
 
         }
     };
+
+    private int original_audio_stream_state = -1;
+    private class AudioIntentReceiver extends BroadcastReceiver {
+        @Override public void onReceive(Context context, Intent intent) {
+
+            if (intent.getAction().equals(Intent.ACTION_HEADSET_PLUG)) {
+                int state = intent.getIntExtra("state", -1);
+
+                //由于Activity首次起来时也会调用onReceive，而我们只希望在后续改变进行通知，所以加了这个条件。
+                if (original_audio_stream_state == -1) {
+                    original_audio_stream_state = state;
+                    return;
+                }
+
+                switch (state) {
+                    case 0: {
+                        Timber.d("Headset is unplugged at PlayActivity");
+                        AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(
+                                PlayActivity.this);
+                        alertDialogBuilder.setTitle("You have handset unplugged");
+                        alertDialogBuilder
+                                .setMessage("In order to play normally, please exit and reenter play mode")
+                                .setNegativeButton("Dismiss",null)
+                                .show();
+                        break;
+                    }
+                    case 1: {
+                        Timber.d("Headset is plugged");
+                        AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(
+                                PlayActivity.this);
+                        alertDialogBuilder.setTitle("You have handset plugged");
+                        alertDialogBuilder
+                                .setMessage("In order to play normally, please exit and reenter play mode")
+                                .setNegativeButton("Dismiss",null)
+                                .show();
+                        break;
+                    }
+                    default: {
+                        Timber.d("I have no idea what the headset state is");
+                    }
+                }
+            }
+        }
+    }
 }

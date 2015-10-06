@@ -1,9 +1,12 @@
 package com.internectics.helper;
 
+import android.content.Context;
+import android.media.AudioManager;
 import android.media.MediaPlayer;
 import android.media.MediaRecorder;
 
 import com.internectics.fragment.CardDetailFragment;
+import com.internectics.util.AppContext;
 
 import junit.framework.Assert;
 
@@ -193,6 +196,34 @@ public class AudioHelper {
             mp.reset();
             mp.release();
             mp = null;
+        }
+    }
+
+
+    //由于TTS没有单独的音量控制，所以需要通过AudioManager全局控制，这种体验其实是不好的，但是也是唯一的方法.
+    // DON'T use AudioManager to set volume! It will cause many side effects such as disabling silent mode, which will make your users mad!
+    public static void muteTTS() {
+        AudioManager audioManager=(AudioManager) AppContext.getAppContext().getSystemService(Context.AUDIO_SERVICE);
+
+        int streamType = getAudioHardwareOutputType();
+        audioManager.setStreamMute(streamType, true);
+    }
+
+    public static void  unmuteTTS() {
+        AudioManager audioManager=(AudioManager) AppContext.getAppContext().getSystemService(Context.AUDIO_SERVICE);
+
+        int streamType = getAudioHardwareOutputType();
+        audioManager.setStreamMute(streamType, false);
+    }
+
+    public static int getAudioHardwareOutputType() {
+        AudioManager audioManager=(AudioManager) AppContext.getAppContext().getSystemService(Context.AUDIO_SERVICE);
+        if (audioManager.isSpeakerphoneOn()) {
+            return AudioManager.STREAM_MUSIC;
+        } else if (audioManager.isWiredHeadsetOn()) {
+            return AudioManager.STREAM_VOICE_CALL;
+        } else {
+            return AudioManager.STREAM_MUSIC;
         }
     }
 
