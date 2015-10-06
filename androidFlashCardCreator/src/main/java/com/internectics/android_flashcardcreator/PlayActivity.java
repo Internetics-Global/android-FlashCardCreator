@@ -920,7 +920,9 @@ public class PlayActivity extends FragmentActivity implements SensorEventListene
             }
 
            //不再需要执行如下，因为setOffscreenPageLimit已经建立了3个缓存（当前，前，后）
-           // ((CardDetailFragment) (mFragments.get(position))).switchToQuestionViewWithOption(false);
+            if (mPosition >= 0 && mPosition <= mCurrentPack.cards.size() -1) {
+                ((CardDetailFragment) (mFragments.get(mPosition))).switchToQuestionViewWithOption(false);
+            }
 
             //update icon
             String soundFile = ((CardDetailFragment) (mFragments.get(position))).mCurrentCard.question.audioUriFormatStr;
