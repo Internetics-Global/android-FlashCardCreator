@@ -200,8 +200,10 @@ public class AudioHelper {
     }
 
 
-    //由于TTS没有单独的音量控制，所以需要通过AudioManager全局控制，这种体验其实是不好的，但是也是唯一的方法.
-    // DON'T use AudioManager to set volume! It will cause many side effects such as disabling silent mode, which will make your users mad!
+    /*
+     * 实际上，这将控制整个stream的音频播放，而不仅仅是TTS，比如MediaPlayer的输出（如果MediaPlayer的stream也是同一类型
+     * 由于TTS没有单独的音量控制，所以只能采用这种方式，这种体验其实是不好的，但是也是唯一的方法.
+     */
     public static void muteTTS() {
         AudioManager audioManager=(AudioManager) AppContext.getAppContext().getSystemService(Context.AUDIO_SERVICE);
 
@@ -220,7 +222,7 @@ public class AudioHelper {
         AudioManager audioManager=(AudioManager) AppContext.getAppContext().getSystemService(Context.AUDIO_SERVICE);
         if (audioManager.isSpeakerphoneOn()) {
             return AudioManager.STREAM_MUSIC;
-        } else if (audioManager.isWiredHeadsetOn()) {
+        } else if (audioManager.isWiredHeadsetOn()) {   //只是检查Checks whether a wired headset is connected or not
             return AudioManager.STREAM_VOICE_CALL;
         } else {
             return AudioManager.STREAM_MUSIC;
