@@ -20,7 +20,7 @@
             android:textSize="14sp"
             android:layout_alignParentLeft="true"
             android:layout_marginLeft="10dp"
-            android:text="Close"
+            android:text="@string/NavigationBarItem_Close"
             android:background="@drawable/selector_button_simple_line"
             android:id="@+id/close_button" />
 
@@ -30,7 +30,7 @@
             android:textSize="14sp"
             android:layout_alignParentRight="true"
             android:layout_marginRight="10dp"
-            android:text="Delete"
+            android:text="@string/NavigationBarItem_Delete"
             android:background="@drawable/selector_button_simple_line"
             android:id="@+id/delete_button" />
 
@@ -42,7 +42,7 @@
         android:layout_width="80dp"
         android:layout_height="80dp"
         android:layout_gravity="center_horizontal"
-        android:text="Record"
+        android:text="@string/Title_Record_Start"
         android:textSize="14sp"
         android:background="@drawable/selector_button_simple_line_round"
         android:id="@+id/record_button" />
@@ -54,7 +54,7 @@
         android:layout_height="0dp"
         android:gravity="top|center_horizontal"
         android:textSize="12sp"
-        android:text="When you click ‘Record’ you have a maximum of ten seconds to record your message. \nClick 'Stop' when ready to stop recording. \nYou can then click 'Play' to hear it, or 'Save' to save it to the card."
+        android:text="@string/Record_Introduction_Text"
         android:layout_marginTop="10dp"
         android:layout_marginBottom="5dp"
         android:id="@+id/descripton_textview"></TextView>
@@ -77,7 +77,7 @@
             android:textSize="14sp"
             android:layout_alignParentLeft="true"
             android:layout_marginLeft="10dp"
-            android:text="Play"
+            android:text="@string/Title_Playback"
             android:layout_marginBottom="10dp"
             android:background="@drawable/selector_button_simple_line"
             android:id="@+id/play_button" />
@@ -88,7 +88,7 @@
             android:textSize="14sp"
             android:layout_alignParentRight="true"
             android:layout_marginRight="10dp"
-            android:text="Save"
+            android:text="@string/NavigationBarItem_Save"
             android:layout_marginBottom="10dp"
             android:background="@drawable/selector_button_simple_line"
             android:id="@+id/save_button" />

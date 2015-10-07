@@ -32,7 +32,7 @@
         android:layout_marginLeft="10dp"
         android:background="@null"
         style="@style/BlackButtonText"
-        android:text="New User?"/>
+        android:text="@string/Label_New_User"/>
 
         <Button
             android:id="@+id/visit_store_btn"
@@ -43,7 +43,7 @@
             android:layout_marginLeft="10dp"
             android:background="@null"
             style="@style/BlackButtonText"
-            android:text="Visit Store"/>
+            android:text="@string/Label_Visit_Store"/>
 
         <LinearLayout
             android:layout_width="290dp"
@@ -74,7 +74,7 @@
                 android:layout_marginRight="5dp"
                 android:background="@null"
                 style="@style/BlackButtonText"
-                android:text="recently created"/>
+                android:text="@string/Label_Recently_Created"/>
 
             <TextView
                 android:layout_width="10dp"
@@ -97,7 +97,7 @@
                 android:layout_marginRight="5dp"
                 android:background="@null"
                 style="@style/BlackButtonText"
-                android:text="recently viewed"/>
+                android:text="@string/Label_Recently_Viewed"/>
 
 
 

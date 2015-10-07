@@ -1,4 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
+<!--
+ Loco xml export: Android string resources
+ Project: Untitled project
+ Release: Working copy
+ Locale: en_GB, English (UK)
+ Exported by: wangbourne
+ Exported at: Tue, 06 Oct 2015 05:07:48 +0100
+-->
 <resources>
 
     <string name="app_name">FlashCardCreator</string>
@@ -6,80 +14,233 @@
     <!--facebook related-->
     <string name="app_id">430339350417672</string>
 
-    <string name="actionbar_item_packs">Packs</string>
-    <string name="actionbar_item_edit">Edit</string>
-    <string name="actionbar_item_add">Add</string>
-    <string name="actionbar_item_play">Play</string>
-    <string name="actionbar_item_change">Change</string>
-    <string name="actionbar_item_help">Help</string>
-    <string name="actionbar_item_more">More</string>
-    <string name="actionbar_item_share">Share</string>
+    <string name="DIALOG_TITLE_NO_NETWORK">No internet connection</string>
+    <string name="DIALOG_PLEASE_CHECK_YOUR_NETWORK">Please check your internet settings.</string>
+    <string name="DIALOG_DOWNLOAD_PACK">Downloading FFC sample cards</string>
+    <string name="DIALOG_DOWNLOAD_PACK_FROM_FRIENDS">Downloading pack from </string>
+    <string name="DIALOG_YOU_CAN_NOT_CHANGE_TEMPLATE_BACKGROUND">You can only make changes to cards you have created yourself.</string>
+    <string name="DIALOG_EXISTING_PACK_NAME">Existing pack name, please input a different one</string>
+    <string name="NOT_ALLOW_CREATE_CARD_THAT_IS_NOT_YOU">You cannot create a card in pack you haven\'t created yourself.</string>
+    <string name="DIALOG_NEED_TO_CREATE_PACK_FIRST">Create a group first before creating a new card</string>
+    <string name="DIALOG_DOWNLOAD_EXAMPLE_PACK_FIRST">Download FFC sample cards first</string>
+    <string name="DIALOG_ENTER_VALID_URL">Input a valid URL/Email</string>
+    <string name="DIALOG_APPLY_TO_ALL_CARD">Apply to all cards...</string>
+    <string name="DIALOG_SET_PASSWORD">Set a passwords?</string>
+    <string name="DIALOG_AlERT">Alert</string>
+    <string name="DIALOG_CLOSE">Close</string>
+    <string name="DIALOG_OK">OK</string>
+    <string name="DIALOG_SET">Set</string>
+    <string name="DIALOG_CANCEL">Cancel</string>
+    <string name="DIALOG_DONE">Done</string>
+    <string name="DIALOG_SHARE">Share</string>
+    <string name="DIALOG_SET_MAX_NUMBER_OF_DOWNLOADS">Set max number of downloads</string>
+    <string name="DIALOG_WRONG_PASSWORD">Wrong password</string>
+    <string name="DIALOG_DELETE_PACK">Are you sure you want to delete?</string>
+    <string name="DIALOG_DELETE_CARD">Are you sure you want to delete?</string>
+    <string name="DIALOG_FAIL_TO_LOG_DROPBOX">Dropbox is not linked</string>
+    <string name="DIALOG_DOWNLOAD_LINK_ERROR">Check your download linkage or Dropbox sever is temporarily unavailable</string>
+    <string name="DIALOG_CREATE_ZIPPED_SHARE_FILE_FAILED">Failure to create zipped share file.</string>
+    <string name="DIALOG_ENCRPT_ZIPPED_SHARE_FILED_FAILED">Failure to encrypt zipped share file.</string>
+    <string name="DIALOG_REDIRECT_SERVICE_UNAVAILABLE">Redirect service is not available now, please try again</string>
+    <string name="DIALOG_WARN">Warning</string>
+    <string name="DIALOG_PACK_IS_BEING_USED">The pack is currently being used</string>
+    <string name="DIALOG_SHARE_FUNCTION_FORBIDDEN_BY_CREATOR">Share function is forbidden by the pack creator</string>
 
-    <string name="packlist_title">Pack List</string>
-    <string name="packlist_edit">Edit</string>
-    <string name="packlist_done">Done</string>
-    <string name="packlist_change">Change</string>
-    <string name="packlist_delete">Delete</string>
+    <string name="DIALOG_IMAGE_VIDEO_SELECTION">Image/video selection</string>
+    <string name="DIALOG_INSERT_YOUTUBE_URL">Insert a YouTube url</string>
+    <string name="DIALOG_SELECT_FROM_LIBRARY">Select from library</string>
+    <string name="DIALOG_REMOVE_VIDEO_IMAGE">Remove video/image</string>
+    <string name="DIALOG_INVALID_YOUTUBE_URL">Invalid YouTube url, it must be a full url - for example: http://www.youtube.com/watch?v=3-EaGGPGiJY</string>
 
-    <string name="addpack_close">Close</string>
-    <string name="addpack_title">Add a new pack</string>
-    <string name="addpack_save">Save</string>
-    <string name="addpack_packname">New pack name</string>
-    <string name="addpack_sidebar">Side bar title</string>
-    <string name="addpack_Creator">Your Name</string>
-    <string name="addpack_Job_Title">Name or title</string>
-    <string name="addpack_Admin_Password">Admin password</string>
-    <string name="addpack_Confirm_Admin_Password">Confirm admin password</string>
+    <string name="DIALOG_ARE_YOU_SURE_YOU_WANT_TO_EXIT">Are you sure you want to exit?</string>
+    <string name="DIALOG_SELECT_CARD_BEFOREHAND">You need to select a card first</string>
+    <string name="DIALOG_SELECT_PACK_BEFOREHAND">You need to select a pack first</string>
+    <string name="DIALOG_NO_CARD_AVAILABLE">No card available</string>
+    <string name="DIALOG_NOT_SUPPORTED">Not supported</string>
+    <string name="DIALOG_NO_AUDIO_ON_QUESTION_CARD"> There is no audio on the question card></string>
+    <string name="DIALOG_NO_AUDIO_ON_ANSWER_CARD"> There is no audio on the answer card></string>
+    <string name="DIALOG_SET_MAIL_ADDRESS"> Please set your mail address!></string>
+    <string name="DIALOG_INCORRECT_URL_OR_EMAIL"> Incorrect URL or Email format></string>
+    <string name="DIALOG_VIDEO_PLAY_ONLY_AVAILABLE_IN_PLAY">Video play is only available in play mode </string>
+    <string name="DIALOG_POST_FACEBOOK_SUCCESSFULLY">Posted to Facebook successfully</string>
+    <string name="DIALOG_NO_ADMIN_PASSWORD_WARNING">No admin password set. Setting an admin password allows you to edit this pack on on another device, or retrieve your editing rights on a pack that has been deleted off the device.</string>
 
-    <string name="editpack_title">Edit Pack</string>
+    <string name="DIALOG_NO_FACEBOOK">No Facebook Account</string>
+    <string name="DIALOG_NO_FACEBOOK_DETAIL">There are no Facebook accounts configured. You can add or create a Facebook account in Settings</string>
+    <string name="DIALOG_NO_Twitter">No Twitter Account</string>
+    <string name="DIALOG_NO_TWITTER_DETAIL">There are no Twitter accounts configured. You can add or create a Twitter account in Settings</string>
+    <string name="DIALOG_CONFIG_MAIL_REQUIRED">Please configure your mail in setting</string>
+    <string name="DIALOG_COPY_DONE">Copy done</string>
+    <string name="DIALOG_RECORDED_SOUND_REMOVED">Recorded sound is removed</string>
+    <string name="DIALOG_INPUT_DOWNLOAD_CODE">Input download code</string>
+    <string name="DIALOG_USE_AMAZON_AS_STORAGE">Use Amazon Cloud as storage</string>
+    <string name="DIALOG_SYMBOL_NOT_SUPPORTED_BY_FONT">Symbol could possibly not be supported by selected font, please check</string>
 
-    <string name="change_title">Select a template background</string>
-    <string name="change_blue">Blue</string>
-    <string name="change_coffee">Coffee</string>
-    <string name="change_gray">Gray</string>
-    <string name="change_purple">Purple</string>
-    <string name="change_red">Red</string>
+    <string name="DIALOG_ERROR_WHEN_PARSING_ANSWER_JSON">Error when parsing answerTextContent.json</string>
+    <string name="DIALOG_ERROR_WHEN_PARSING_QUESTION_JSON">Error when parsing questionTextContent.json</string>
+    <string name="DIALOG_REACH_MAX_DOWNLOAD_LIMIT">You have reached the limit of downloads for this pack</string>
+    <string name="DIALOG_UPLOAD_FAILURE">Failure to upload, please try again</string>
+    <string name="DIALOG_PLAY_ONLY_SUPPORTED_IN_PLAY">Only supported in play mode</string>
 
-    <string name="help_title">Help</string>
+    <string name="DIALOG_INPUT_ADMIN_PASSWORD">Input admin password</string>
+    <string name="DIALOG_UPLOAD_SUCCESSFULLY">Pack successfully uploaded</string>
+    <string name="Title_Copy_To_Clipboard">Copy to clipboard</string>
+    <string name="DIALOG_NETWORK_TIMEOUT">Network timeout, please try again</string>
+    <string name="DIALOG_NO_TWITTER_CLIENT_INSTALLED">Share is allowed only when Twitter app is installed</string>
 
-    <string name="more_title">More</string>
-    <string name="more_play_preference">Play Preference</string>
-    <string name="more_random_play">Random Play</string>
-    <string name="mute_sound_recording">Mute Sound Recording</string>
-    <string name="more_register">Register</string>
-    <string name="more_submit">Submit new listing</string>
-    <string name="more_others">Others</string>
-    <string name="more_help">Help</string>
-    <string name="more_about">About</string>
-    <string name="more_mute">Mute</string>
-    <string name="more_text_to_speech">Text to Speech</string>
-    <string name="more_show_question_only">Auto - Show Question Only</string>
-    <string name="more_male_female_voice">Mail/Female Voice</string>
-    <string name="more_countdown">Count Down</string>
+    <string name="DIALOG_DECRYPT_FAILED">Decrypt failed</string>
+    <string name="DIALOG_DOWNLOAD_FAILED">Download failed</string>
+    <string name="DIALOG_NOW_DECRYPTING">Now decrypting...</string>
 
-    <string name="segment_question">Question</string>
-    <string name="segment_answer">Answer</string>
 
-    <string name="logourl_title">Set URL/Email</string>
-    <string name="logourl_message">Please input a valid URL or Email</string>
+<string name="NavigationBarItem_Packs">Packs</string>
+    <string name="NavigationBarItem_Create">Create</string>
+    <string name="NavigationBarItem_Edit"> Edit </string>
+    <string name="NavigationBarItem_Close">Close</string>
+    <string name="NavigationBarItem_Edit_Cards">Edit cards</string>
+    <string name="NavigationBarItem_Create_New_Pack">Create New Pack</string>
+    <string name="NavigationBarItem_Delete">Delete</string>
+    <string name="NavigationBarItem_Change">Change Image</string>
+    <string name="NavigationBarItem_Done">Done</string>
+    <string name="NavigationBarItem_Share">Share the pack</string>
+    <string name="NavigationBarItem_More">More</string>
+    <string name="NavigationBarItem_Back"> Back </string>
+    <string name="NavigationBarItem_Play">Play</string>
+    <string name="NavigationBarItem_Save">Save</string>
+    <string name="Title_Delete">Delete</string>
 
-    <string name="button_cancel">Cancel</string>
-    <string name="button_done">Done</string>
-    <string name="button_save">Save</string>
-    <string name="button_symbol">Symbol</string>
+    <string name="NavigationBarItem_More_RandomPlay">Random Play</string>
+    <string name="NavigationBarItem_More_Register">Register</string>
+    <string name="NavigationBarItem_More_Logo_In">Login</string>
+    <string name="NavigationBarItem_More_Help">Help</string>
+    <string name="NavigationBarItem_More_About">About</string>
+    <string name="ToolbarItem_Answer">Answer</string>
+    <string name="ToolbarItem_Question">Question</string>
+    <string name="Keyboard_Done">Done</string>
+    <string name="Keyboard_Cancel">Cancel</string>
+    <string name="Keyboard_Save">Save</string>
+    <string name="Keyboard_Unlimited">Unlimited</string>
+    <string name="Keyboard_Set">Set</string>
+    <string name="Keyboard_No_Needed">Not needed</string>
+    <string name="Keyboard_Delete">Delete</string>
+    <string name="ToolbarItem_Font">Font</string>
+    <string name="ToolbarItem_Align">Align</string>
+    <string name="ToolbarItem_Size">Size</string>
+    <string name="ToolbarItem_Color">Color</string>
+    <string name="ToolbarItem_Symbol">Symbol</string>
+    <string name="ToolbarItem_Keyboard">Keyboard</string>
+    <string name="ToolbarItem_Back">Back</string>
+    <string name="ToolbarItem_Done">Done</string>
+    <string name="ToolbarItem_Save">Save</string>
+    <string name="ToolbarItem_Align_Left">Left</string>
+    <string name="ToolbarItem_Align_Center">Center</string>
+    <string name="ToolbarItem_Align_Right">Right</string>
+    <string name="ToolbarItem_Align_Justify">Justify</string>
+    <string name="ToolbarItem_Align_Vertical">Vertical</string>
+    <string name="ToolbarItem_Color_Red">Red</string>
+    <string name="ToolbarItem_Color_Green">Green</string>
+    <string name="ToolbarItem_Color_Blue">Blue</string>
+    <string name="ToolbarItem_Color_Black">Black</string>
+    <string name="ToolbarItem_Color_Yellow">Yellow</string>
+    <string name="ToolbarItem_Color_White">White</string>
+    <string name="Label_Question">Question</string>
+    <string name="Label_Answer">Answer</string>
+    <string name="Label_New_Pack_Name">New pack name</string>
+    <string name="Label_Sidebar_Title">Side bar title</string>
+    <string name="Label_Creator">Your name</string>
+    <string name="Label_Admin_Password">Admin password</string>
+    <string name="Label_Confirm_Admin_Password">Confirm admin password</string>
+    <string name="Label_Creator_Hint">Created by</string>
+    <string name="Job_Title">Name or title</string>
+    <string name="Label_New_User">New User?</string>
+    <string name="Label_Visit_Store">Visit Store</string>
+    <string name="Label_Recently_Created">recently created</string>
+    <string name="Label_Recently_Viewed">recently viewed</string>
+    <string name="Label_Please_Select">Please Select</string>
+    <string name="Label_Select">Select</string>
+    <string name="Label_Color_Select">Select Color</string>
+    <string name="Title_Add_A_New_Pack">Add a new pack</string>
+    <string name="Title_Create_A_New_Card">Create a new card</string>
+    <string name="Title_About">About us</string>
+    <string name="Title_Edit_Pack">Edit Pack</string>
+    <string name="Title_Settings">Settings</string>
+    <string name="Title_Help">Help</string>
+    <string name="Title_Total_Number_Card">Total cards</string>
+    <string name="Title_Share_Code">Share code</string>
+    <string name="Title_Select_Template">Select Template</string>
+    <string name="Title_Pack_List">Pack List</string>
+    <string name="Title_Auto">Auto</string>
+    <string name="Title_Record_Card_Sound">Record Card Sound</string>
+    <string name="Title_Record_Start">Record</string>
+    <string name="Title_Record_Stop">Stop</string>
+    <string name="Title_Playback">Play</string>
+    <string name="Title_Save">Save</string>
+    <string name="Title_Reading_Timer">Reading Timer</string>
+    <string name="Title_Question_Pause">Question Pause</string>
+    <string name="Title_None">None</string>
+    <string name="Title_Applying_To_All_Cards">Applying to all cards</string>
+    <string name="Title_HANDSET_UNPLUGGED">You have handset unplugged</string>
+    <string name="Title_HANDSET_PLUGGED">You have handset plugged</string>
+    <string name="Title_HANDSET_CHANGE_MESSAGE">In order to play normally, please exit and reenter play mode</string>
+    <string name="Title_Downloading">Downloading...</string>
 
-    <string name="alert_applying_to_all_cards">Applying to all cards</string>
-    <string name="alert_check_network">Check your network</string>
-    <string name="alert_downlod_sample">Downloading FFC sample cards</string>
-    <string name="alert_downlod_pack">Downloading…</string>
-    <string name="alert_can_not_change_template_bg">You can only make changes to cards you have created yourself.
-    </string>
-    <string name="alert_existing_pack_name">Existing pack name, please input a different one</string>
-    <string name="alert_create_pack_first">Create a pack first before creating a new card</string>
-    <string name="alert_can_not_create_card">You cannot create a card in pack you have not created yourself.</string>
-    <string name="new_user">New user?</string>
-    <string name="sorted_by_recently_viewed_first">Sorted by recently viewed first</string>
-    <string name="sorted_by_recently_created_first">Sorted by recently created first</string>
-    <string name="create_new_pack">Create New Pack</string>
+    <string name="Optional_Play_Manually">Play Manually</string>
+    <string name="Optional_Auto_Play">Auto Play</string>
+    <string name="Optional_Auto_Play_Loop">Auto Play and Loop</string>
+
+    <string name="Optional_Blue">Blue</string>
+    <string name="Optional_Coffee">Coffee</string>
+    <string name="Optional_Gray">Gray</string>
+    <string name="Optional_Purple">Purple</string>
+    <string name="Optional_Red">Red</string>
+
+    <string name="Optional_Edit_Or_Remove">Edit/Remove</string>
+    <string name="Optional_Remove_Background_Image">Remove background image</string>
+    <string name="Optional_Change_Background_Image">Change background image</string>
+    <string name="Optional_Undo_Last_Operation">Undo last operation</string>
+
+    <string name="Optional_Install_From_The_Code">Install from the Code</string>
+    <string name="Optional_Share_The_Pack">Share the Pack</string>
+    <string name="Optional_Play_Manually_61f74b98213d0600e069ec638891daec">Play Manually</string>
+    <string name="Optional_Play_Auto">Auto Play</string>
+    <string name="Optional_Play_Auto_Loop">Auto Play and Loop</string>
+
+    <string name="Table_Item_TTS">Text to Speech</string>
+    <string name="Table_Item_Show_Question_Only">Auto-Show Question Only</string>
+    <string name="Table_Item_Male_Female">Male/Female Voice</string>
+    <string name="Table_Item_Mute_Sound_Recording">Mute Sound Recording</string>
+    <string name="Table_Item_Count_Down">Count Down</string>
+    <string name="Table_Item_Amazon_Or_Dropbox">Use Dropbox Storage</string>
+
+    <string name="Indicator_Upload">Uploading first…</string>
+    <string name="Indicator_Creating_Short_Linkage">Creating short linkage</string>
+    <string name="Indicator_Create_Share_Link">Then create share linkage...</string>
+    <string name="Indicator_Creating_Share_Linkage_Failure">Fail to create share linkage</string>
+
+    <string name="Tip_Open_Pack_Viewer">Open pack viewer</string>
+    <string name="Tip_Edit_Pack">Edit a pack</string>
+    <string name="Tip_Create_New_Pack">Create a new pack</string>
+    <string name="Tip_Question">Click to see the question side of the card</string>
+    <string name="Tip_Answer">Click to see the answer side of the card</string>
+    <string name="Tip_Template">Change Template</string>
+    <string name="Tip_Background">Change background</string>
+    <string name="Tip_Record">Record sound/voice</string>
+    <string name="Tip_Play">Play these cards</string>
+    <string name="Tip_Share">Share this pack</string>
+    <string name="Tip_Edit_Logo">Edit logo</string>
+    <string name="Tip_Edit_Link">Edit link</string>
+    <string name="Tip_App_Setting">App setting</string>
+    <string name="Tip_Link">Add a link</string>
+    <string name="Tip_Toggle">Toggle help tips on and off</string>
+    <string name="Tip_Palette">Change the color palette</string>
+    <string name="Tip_Create_Card">Create a new card</string>
+    <string name="Tip_Image">Click to select an image/video from library, or insert a YouTube video linkage</string>
+
+
+    <string name="Copyright">Flip Card Creator has been developed by Flip Flash Cards Pty Ltd in conjunction with development team Internetics Pty Ltd.\n\nCopyright Flip Flash Cards 2015. All rights reserved.\n\nFor information on how to use the application, please click the (i) information button above.\n\nPlease submit any technical feedback to fcc@internetics.net.au\n\nThank you for your interest in the Flash Card Creator app and Flip Flash Cards Pty Ltd.</string>
+    <string name="Record_Introduction_Text">When you click “Record” you have a maximum of 30 seconds to record your message. \n\nClick “Stop” when ready to stop recording.\n\nYou can then click “Play” to hear it, or “Save” to save it to the card.</string>
+    <string name="Record_Introduction_Text2">Record is finished, you can playback or save the recorded sound</string>
+    <string name="Sample_Cards">FFC Sample Cards</string>
+
 
 </resources>

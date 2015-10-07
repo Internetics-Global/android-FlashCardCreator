@@ -113,16 +113,16 @@ public class CreateSoundFragment extends DialogFragment {
             public void onClick(View v) {
                 AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(
                         getActivity());
-                alertDialogBuilder.setTitle("Alert");
+                alertDialogBuilder.setTitle(getString(R.string.DIALOG_AlERT));
                 alertDialogBuilder
-                        .setMessage("Are you sure to delete?");
-                alertDialogBuilder.setPositiveButton("YES", new DialogInterface.OnClickListener() {
+                        .setMessage(getString(R.string.DIALOG_DELETE_PACK));
+                alertDialogBuilder.setPositiveButton(getString(R.string.DIALOG_OK), new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         deleteButtonClicked();
                     }
                 });
-                alertDialogBuilder.setNegativeButton("Cancel",null);
+                alertDialogBuilder.setNegativeButton(getString(R.string.DIALOG_CANCEL),null);
                 alertDialogBuilder.show();
             }
         });
@@ -161,16 +161,16 @@ public class CreateSoundFragment extends DialogFragment {
 
             mSaveButton.setVisibility(View.VISIBLE);
             mPlayButton.setVisibility(View.VISIBLE);
-            mDescriptionTextView.setText("Record is finished, you can playback or save the recorded sound");
+            mDescriptionTextView.setText(getString(R.string.Record_Introduction_Text2));
 
-            mRecordButton.setText("Record");
+            mRecordButton.setText(getString(R.string.Title_Record_Start));
         } else {
 
             AudioHelper.setupAudioRecord(temporaryRecordedSoundPath().toString());
 
             mSaveButton.setVisibility(View.INVISIBLE);
             mPlayButton.setVisibility(View.INVISIBLE);
-            mDescriptionTextView.setText("When you click “Record” you have a maximum of 30 seconds to record your message. \n\nClick “Stop” when ready to stop recording.\n\nYou can then click “Play” to hear it, or “Save” to save it to the card.");
+            mDescriptionTextView.setText(getString(R.string.Record_Introduction_Text));
 
         }
 
@@ -206,7 +206,7 @@ public class CreateSoundFragment extends DialogFragment {
             mDeleteButton.setVisibility(View.INVISIBLE);
         } else {
             new SweetAlertDialog(getActivity())
-                    .setTitleText("Alert")
+                    .setTitleText(getString(R.string.DIALOG_AlERT))
                     .setContentText("Fail to delete or file does not exit")
                     .show();
         }

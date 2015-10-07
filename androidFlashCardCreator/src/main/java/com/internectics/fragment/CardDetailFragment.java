@@ -6,7 +6,6 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.graphics.Typeface;
 import android.graphics.drawable.BitmapDrawable;
@@ -70,7 +69,6 @@ import net.londatiga.android.ActionItem;
 import net.londatiga.android.QuickAction;
 
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.lang.reflect.Field;
 import java.util.ArrayList;
 
@@ -377,10 +375,10 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnKeyboa
     private void showYoutubeLinkageInputDialog() {
         final EditText textInput = new EditText(getActivity());
         new AlertDialog.Builder(getActivity())
-                .setTitle("Input a valid YouTube url")
+                .setTitle(getString(R.string.DIALOG_INSERT_YOUTUBE_URL))
                 .setIcon(android.R.drawable.ic_dialog_info)
                 .setView(textInput)
-                .setPositiveButton("Done", new DialogInterface.OnClickListener() {
+                .setPositiveButton(getString(R.string.DIALOG_DONE), new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         String youtubeURLStr = textInput.getText().toString();
@@ -408,12 +406,12 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnKeyboa
                                 //mCurrentCard.save(AppContext.getAppContext());
                             }
                         } else {
-                            Toast.makeText(getActivity(), "Invalid YouTube url, it must be a full url - for example: http://www.youtube.com/watch?v=3-EaGGPGiJY", Toast.LENGTH_LONG).show();
+                            Toast.makeText(getActivity(), getString(R.string.DIALOG_INVALID_YOUTUBE_URL), Toast.LENGTH_LONG).show();
                         }
 
                     }
                 })
-                .setNegativeButton("Cancel", null)
+                .setNegativeButton(getString(R.string.DIALOG_CANCEL), null)
                 .show();
 
     }
@@ -429,15 +427,15 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnKeyboa
                 if (mIsImage2Active) {
                     if (mCurrentCard.question.movieUriFormatStr2.length() > 0) {
                         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-                        builder.setMessage("Play video in play mode");
-                        builder.setTitle("Alert");
+                        builder.setMessage(R.string.DIALOG_PLAY_ONLY_SUPPORTED_IN_PLAY);
+                        builder.setTitle(getString(R.string.DIALOG_AlERT));
                         builder.create().show();
                     }
                 } else {
                     if (mCurrentCard.question.movieUriFormatStr.length() > 0) {
                         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-                        builder.setMessage("Play video in play mode");
-                        builder.setTitle("Alert");
+                        builder.setMessage(R.string.DIALOG_PLAY_ONLY_SUPPORTED_IN_PLAY);
+                        builder.setTitle(getString(R.string.DIALOG_AlERT));
                         builder.create().show();
                     }
                 }
@@ -445,16 +443,16 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnKeyboa
                 if (mIsImage2Active) {
                     if (mCurrentCard.answer.movieUriFormatStr2.length() > 0) {
                         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-                        builder.setMessage("Play video in play mode");
-                        builder.setTitle("Alert");
+                        builder.setMessage(R.string.DIALOG_PLAY_ONLY_SUPPORTED_IN_PLAY);
+                        builder.setTitle(getString(R.string.DIALOG_AlERT));
                         builder.create().show();
 
                     }
                 } else {
                     if (mCurrentCard.answer.movieUriFormatStr.length() > 0) {
                         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-                        builder.setMessage("Play video in play mode");
-                        builder.setTitle("Alert");
+                        builder.setMessage(R.string.DIALOG_PLAY_ONLY_SUPPORTED_IN_PLAY);
+                        builder.setTitle(getString(R.string.DIALOG_AlERT));
                         builder.create().show();
 
                     }
@@ -643,15 +641,15 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnKeyboa
 
     private void showImageVideoSourceDialog() {
         new AlertDialog.Builder(getActivity())
-                .setTitle("Select")
-                .setMessage("Image/video selection")
-                .setPositiveButton("Insert a YouTube url", new DialogInterface.OnClickListener() {
+                .setTitle(R.string.Label_Select)
+                .setMessage(R.string.DIALOG_IMAGE_VIDEO_SELECTION)
+                .setPositiveButton(R.string.DIALOG_INSERT_YOUTUBE_URL, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         showYoutubeLinkageInputDialog();
                     }
                 })
-                .setNegativeButton("Select from library", new DialogInterface.OnClickListener() {
+                .setNegativeButton(R.string.DIALOG_SELECT_FROM_LIBRARY, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         mActiveImageSource = Enum_Image_Source.IMAGE_SOURCE_IS_IMAGE;
@@ -701,10 +699,10 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnKeyboa
                         startActivity(intent);
                     } else {
                         new AlertDialog.Builder(getActivity())
-                                .setTitle("Alert")
-                                .setMessage("Uncorrect website or mail address")
-                                .setPositiveButton("OK", null)
-                                .show();
+                                .setTitle(getString(R.string.DIALOG_AlERT))
+                                .setMessage(getString(R.string.DIALOG_INCORRECT_URL_OR_EMAIL))
+                                .setPositiveButton(getString(R.string.DIALOG_OK), null)
+                                        .show();
                     }
                 }
 
@@ -729,8 +727,8 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnKeyboa
                     showCreateSoundView();
                 } else {
                     new SweetAlertDialog(getActivity())
-                            .setTitleText("Alert")
-                            .setContentText("You can only edit card that you have created it.")
+                            .setTitleText(getString(R.string.DIALOG_AlERT))
+                            .setContentText(getString(R.string.DIALOG_YOU_CAN_NOT_CHANGE_TEMPLATE_BACKGROUND))
                             .show();
                 }
             }
@@ -759,8 +757,8 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnKeyboa
 
                     if (string.length() > 0) {
                         new AlertDialog.Builder(getActivity())
-                                .setTitle("Edit/Remove")
-                                .setPositiveButton("Remove background image", new DialogInterface.OnClickListener() {
+                                .setTitle(R.string.Optional_Edit_Or_Remove)
+                                .setPositiveButton(R.string.Optional_Remove_Background_Image, new DialogInterface.OnClickListener() {
                                     @Override
                                     public void onClick(DialogInterface dialog, int which) {
                                         if (mIsQuestionShowing) {
@@ -771,7 +769,7 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnKeyboa
                                         setCardBackgroundImageDefault();
                                     }
                                 })
-                                .setNegativeButton("Change background image", new DialogInterface.OnClickListener() {
+                                .setNegativeButton(R.string.Optional_Change_Background_Image, new DialogInterface.OnClickListener() {
                                     @Override
                                     public void onClick(DialogInterface dialog, int which) {
                                         mActiveImageSource = Enum_Image_Source.IMAGE_SOURCE_IS_BACKGROUND;
@@ -796,8 +794,8 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnKeyboa
 
                 } else {
                     new SweetAlertDialog(getActivity())
-                            .setTitleText("Alert")
-                            .setContentText("You can only edit card that you have created it.")
+                            .setTitleText(getString(R.string.DIALOG_AlERT))
+                            .setContentText(getString(R.string.DIALOG_YOU_CAN_NOT_CHANGE_TEMPLATE_BACKGROUND))
                             .show();
                 }
             }
@@ -880,8 +878,8 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnKeyboa
                     public void onClick(View v) {
                         mIsImage2Active = true;
                         new SweetAlertDialog(getActivity())
-                                .setTitleText("Alert")
-                                .setContentText("Video play is only available in play mode")
+                                .setTitleText(getString(R.string.DIALOG_AlERT))
+                                .setContentText(getString(R.string.DIALOG_VIDEO_PLAY_ONLY_AVAILABLE_IN_PLAY))
                                 .show();
 
                     }
@@ -1000,8 +998,8 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnKeyboa
                         }
                     } else {
                         new SweetAlertDialog(getActivity())
-                                .setTitleText("Alert")
-                                .setContentText("You can only edit card that you have created it.")
+                                .setTitleText(getString(R.string.DIALOG_AlERT))
+                                .setContentText(getString(R.string.DIALOG_YOU_CAN_NOT_CHANGE_TEMPLATE_BACKGROUND))
                                 .show();
                     }
 
@@ -1026,10 +1024,10 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnKeyboa
                 inputEditText.setSelection(inputEditText.getText().length());
                 inputEditText.setImeOptions(EditorInfo.IME_ACTION_DONE);
                 new AlertDialog.Builder(getActivity())
-                        .setTitle(R.string.logourl_title)
-                        .setMessage(R.string.logourl_message)
+                        .setTitle(R.string.DIALOG_AlERT)
+                        .setMessage(R.string.DIALOG_ENTER_VALID_URL)
                         .setView(inputEditText)
-                        .setPositiveButton(R.string.button_done, new DialogInterface.OnClickListener() {
+                        .setPositiveButton(R.string.Keyboard_Done, new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
                                 mCurrentPack.logoURL = inputEditText.getText().toString();
@@ -1043,7 +1041,7 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnKeyboa
 
                             }
                         })
-                        .setNegativeButton(R.string.button_cancel, null)
+                        .setNegativeButton(R.string.Keyboard_Cancel, null)
                         .show();
             }
         });

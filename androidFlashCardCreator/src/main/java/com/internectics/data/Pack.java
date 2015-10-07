@@ -41,6 +41,8 @@ public class Pack {
     public int    createDate;
     public int    autoPlaySpeed;
 
+    public boolean isAllowShare;
+
     public ArrayList<Card> cards;
 
     public Pack() {
@@ -62,6 +64,8 @@ public class Pack {
         fileNameOnAWS = "";
         logoImageUriFormatStr = FileOperationHelper.getLogoPlaceholderImagePath();
         coverImageUriFormatStr = FileOperationHelper.getPackCoverDefaultImagePath();
+
+        isAllowShare = true;
     }
 
 

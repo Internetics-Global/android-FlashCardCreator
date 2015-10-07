@@ -639,8 +639,8 @@ public class PlayActivity extends FragmentActivity implements SensorEventListene
         if (isEmpty) {
 
             new SweetAlertDialog(this)
-                    .setTitleText("Alert")
-                    .setContentText("There is no audio on the question card")
+                    .setTitleText(getString(R.string.DIALOG_AlERT))
+                    .setContentText(getString(R.string.DIALOG_NO_AUDIO_ON_QUESTION_CARD))
                     .show();
 
         } else {
@@ -1775,10 +1775,10 @@ public class PlayActivity extends FragmentActivity implements SensorEventListene
                         Timber.d("Headset is unplugged at PlayActivity");
                         AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(
                                 PlayActivity.this);
-                        alertDialogBuilder.setTitle("You have handset unplugged");
+                        alertDialogBuilder.setTitle(getString(R.string.Title_HANDSET_UNPLUGGED));
                         alertDialogBuilder
-                                .setMessage("In order to play normally, please exit and reenter play mode")
-                                .setNegativeButton("Dismiss",null)
+                                .setMessage(getString(R.string.Title_HANDSET_CHANGE_MESSAGE))
+                                .setNegativeButton(getString(R.string.DIALOG_CLOSE),null)
                                 .show();
                         break;
                     }
@@ -1786,10 +1786,10 @@ public class PlayActivity extends FragmentActivity implements SensorEventListene
                         Timber.d("Headset is plugged");
                         AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(
                                 PlayActivity.this);
-                        alertDialogBuilder.setTitle("You have handset plugged");
+                        alertDialogBuilder.setTitle(getString(R.string.Title_HANDSET_PLUGGED));
                         alertDialogBuilder
-                                .setMessage("In order to play normally, please exit and reenter play mode")
-                                .setNegativeButton("Dismiss",null)
+                                .setMessage(getString(R.string.Title_HANDSET_CHANGE_MESSAGE))
+                                .setNegativeButton(getString(R.string.DIALOG_CLOSE),null)
                                 .show();
                         break;
                     }

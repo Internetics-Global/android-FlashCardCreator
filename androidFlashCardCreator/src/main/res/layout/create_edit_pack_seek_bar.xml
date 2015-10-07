@@ -13,7 +13,7 @@
         android:gravity="center_vertical|right"
         android:paddingRight="0dp"
         android:textSize="12sp"
-        android:text="Auto"/>
+        android:text="@string/Title_Auto"/>
 
     <org.adw.library.widgets.discreteseekbar.DiscreteSeekBar
         android:id="@+id/seekbar"

@@ -28,7 +28,7 @@
                 android:imeOptions="actionDone|flagNoExtractUi"
                 android:singleLine="true"
                 android:textColor="#FFFFFF"
-                android:hint="@string/addpack_packname"
+                android:hint="@string/Label_New_Pack_Name"
                 android:textSize="@dimen/add_pack_edit_text_size"
                 android:ems="10">
                 <requestFocus/>
@@ -44,7 +44,7 @@
                 android:singleLine="true"
                 android:textColor="#FFFFFF"
                 android:textSize="@dimen/add_pack_edit_text_size"
-                android:hint="@string/addpack_sidebar"
+                android:hint="@string/Label_Sidebar_Title"
                 android:ems="10"/>
 
 
@@ -58,7 +58,7 @@
                 android:singleLine="true"
                 android:textColor="#FFFFFF"
                 android:textSize="@dimen/add_pack_edit_text_size"
-                android:hint="@string/addpack_Creator"
+                android:hint="@string/Label_Creator"
                 android:ems="10"/>
 
             <EditText
@@ -71,7 +71,7 @@
                 android:singleLine="true"
                 android:textColor="#FFFFFF"
                 android:textSize="@dimen/add_pack_edit_text_size"
-                android:hint="@string/addpack_Job_Title"
+                android:hint="@string/Job_Title"
                 android:ems="10"/>
 
             <EditText
@@ -85,7 +85,7 @@
                 android:singleLine="true"
                 android:textColor="#FFFFFF"
                 android:textSize="@dimen/add_pack_edit_text_size"
-                android:hint="@string/addpack_Admin_Password"
+                android:hint="@string/Label_Admin_Password"
                 android:ems="10"/>
 
             <EditText
@@ -99,7 +99,7 @@
                 android:singleLine="true"
                 android:textColor="#FFFFFF"
                 android:textSize="@dimen/add_pack_edit_text_size"
-                android:hint="@string/addpack_Confirm_Admin_Password"
+                android:hint="@string/Label_Confirm_Admin_Password"
                 android:ems="10"/>
 
             <include
@@ -114,7 +114,7 @@
                 android:layout_height="0dp"
                 android:layout_weight="0.8"
                 android:textSize="12sp"
-                android:text="Reading timer"
+                android:text="@string/Title_Reading_Timer"
                 android:gravity="top|center_horizontal"
                 android:textColor="@android:color/white"/>
 

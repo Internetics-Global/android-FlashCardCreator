@@ -49,7 +49,7 @@
             android:textSize="14sp"
             android:gravity="center_horizontal|bottom"
             android:layout_marginBottom="15dp"
-            android:text="Add a new Pack"/>
+            android:text="@string/Title_Add_A_New_Pack"/>
 
 
         </FrameLayout>
@@ -72,7 +72,7 @@
                 android:layout_width="0dp"
                 android:layout_height="fill_parent"
                 android:background="@drawable/button_red"
-                android:text="@string/packlist_delete"
+                android:text="@string/NavigationBarItem_Delete"
                 android:textSize="@dimen/pack_list_text_size"
             android:visibility="invisible"
                 android:layout_weight="50">
@@ -85,7 +85,7 @@
                 android:layout_width="0dp"
                 android:layout_height="fill_parent"
                 android:background="@drawable/button_gray"
-                android:text="@string/packlist_change"
+                android:text="@string/NavigationBarItem_Close"
                 android:textColor="#000000"
             android:visibility="invisible"
                 android:textSize="@dimen/pack_list_text_size"

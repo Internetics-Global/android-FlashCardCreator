@@ -29,7 +29,7 @@
             android:gravity="center_vertical|right"
             android:paddingRight="0dp"
             android:textSize="12sp"
-            android:text="None"/>
+            android:text="@string/Title_None"/>
 
         <org.adw.library.widgets.discreteseekbar.DiscreteSeekBar
             android:id="@+id/seekbar"

@@ -31,7 +31,7 @@ public class MoreActivity extends Activity {
 
         setContentView(R.layout.settings);
 
-        setTitle("Settings");
+        setTitle(getString(R.string.Title_Settings));
 
         final ToggleButton randomPlayToggleButton = (ToggleButton) findViewById(R.id.random_play_toggle_button);
         final ToggleButton muteSoundRecordingToggleButton = (ToggleButton) findViewById(R.id.mute_sound_recording_toggle_button);
@@ -45,13 +45,13 @@ public class MoreActivity extends Activity {
         final TextView countDownTextView = (TextView) findViewById(R.id.count_down_textview);
 
 
-        countDownTextView.setText(String.format("Count Down (%d)", AppConfig.sharedInstance().getCountDown()));
+        countDownTextView.setText(String.format("%s (%d)", getString(R.string.Table_Item_Count_Down),AppConfig.sharedInstance().getCountDown()));
         countDownDiscreteSeekBar.setProgress(AppConfig.sharedInstance().getCountDown());
         countDownDiscreteSeekBar.setOnProgressChangeListener(new DiscreteSeekBar.OnProgressChangeListener() {
             @Override
             public void onProgressChanged(DiscreteSeekBar seekBar, int value, boolean fromUser) {
                 AppConfig.sharedInstance().setCountDown(value);
-                countDownTextView.setText(String.format("Count Down (%d)", value));
+                countDownTextView.setText(String.format("%s (%d)", getString(R.string.Table_Item_Count_Down),value));
             }
 
             @Override
@@ -111,7 +111,7 @@ public class MoreActivity extends Activity {
                         alertDialogBuilder.setTitle("Warn");
                         alertDialogBuilder
                                 .setMessage("TextToSpeech and Recording may not be supported on some Android simulators")
-                                .setNegativeButton("Cancel",null)
+                                .setNegativeButton(R.string.DIALOG_CANCEL,null)
                                 .show();
                     }
                 }
@@ -141,8 +141,8 @@ public class MoreActivity extends Activity {
                 AppConfig.sharedInstance().setMaleVoice(on);
 
                 new SweetAlertDialog(MoreActivity.this)
-                        .setTitleText("Alert")
-                        .setContentText("Not supported")
+                        .setTitleText(getString(R.string.DIALOG_AlERT))
+                        .setContentText(getString(R.string.DIALOG_NOT_SUPPORTED))
                         .show();
             }
         });
@@ -162,6 +162,12 @@ public class MoreActivity extends Activity {
                     DropboxAuthHelper.sharedHelper(MoreActivity.this).startAuthentication();
                 } else {
                     DropboxAuthHelper.sharedHelper(MoreActivity.this).logOut();
+
+                    AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(
+                            MoreActivity.this);
+                    alertDialogBuilder.setTitle(R.string.DIALOG_AlERT);
+                    alertDialogBuilder
+                            .setMessage(R.string.DIALOG_USE_AMAZON_AS_STORAGE).show();
                 }
 
             }

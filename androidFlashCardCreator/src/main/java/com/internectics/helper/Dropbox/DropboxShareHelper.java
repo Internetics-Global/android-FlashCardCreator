@@ -20,6 +20,7 @@ import android.widget.Toast;
 
 import com.dropbox.client2.DropboxAPI;
 import com.dropbox.client2.exception.DropboxException;
+import com.internectics.android_flashcardcreator.R;
 import com.internectics.data.Pack;
 import com.internectics.helper.AWS.SimpleDBHelper;
 import com.internectics.helper.PackRecordHelper;
@@ -100,7 +101,7 @@ public class DropboxShareHelper extends AsyncTask<Void, Long, Boolean> {
                     mCurrentPack.shareLink = generateRedirectedURL(undirectedURL);
 
                     if (mCurrentPack.shareLink.indexOf("http://") != 0) {
-                        Toast.makeText(mActivity, "Redirect service is not available now, please try again", Toast.LENGTH_LONG).show();
+                        Toast.makeText(mActivity, R.string.DIALOG_REDIRECT_SERVICE_UNAVAILABLE, Toast.LENGTH_LONG).show();
                     } else {
                         mCurrentPack.save(mActivity);
 
@@ -141,10 +142,10 @@ public class DropboxShareHelper extends AsyncTask<Void, Long, Boolean> {
             editText.setSingleLine();
             editText.setInputType(InputType.TYPE_CLASS_NUMBER);
             new AlertDialog.Builder(mActivity)
-                    .setTitle("Set max number of downloads")
+                    .setTitle(R.string.DIALOG_SET_MAX_NUMBER_OF_DOWNLOADS)
                     .setIcon(android.R.drawable.ic_dialog_info)
                     .setView(editText)
-                    .setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                    .setPositiveButton(R.string.DIALOG_OK, new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
 
@@ -155,7 +156,7 @@ public class DropboxShareHelper extends AsyncTask<Void, Long, Boolean> {
                             didDismissDownloadTimesDialog(maxNo);
                         }
                     })
-                    .setNegativeButton("Unlimited", new DialogInterface.OnClickListener() {
+                    .setNegativeButton(R.string.Keyboard_Unlimited, new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
 
@@ -305,7 +306,7 @@ public class DropboxShareHelper extends AsyncTask<Void, Long, Boolean> {
                         mActivity.startActivity(Intent.createChooser(intent, "Share current pack to"));
                     }
                 }  else {
-                    Toast.makeText(mActivity, "Share is allowed only when Twitter app is installed.", Toast.LENGTH_LONG).show();
+                    Toast.makeText(mActivity, R.string.DIALOG_NO_TWITTER_CLIENT_INSTALLED, Toast.LENGTH_LONG).show();
                 }
 
                 break;
@@ -324,7 +325,7 @@ public class DropboxShareHelper extends AsyncTask<Void, Long, Boolean> {
                 ClipboardManager clipboard = (ClipboardManager) mActivity.getSystemService(Service.CLIPBOARD_SERVICE);
                 ClipData clip = ClipData.newPlainText( "share linkage",shareLink);
                 clipboard.setPrimaryClip(clip);
-                Toast.makeText(mActivity, "Copy done", Toast.LENGTH_LONG).show();
+                Toast.makeText(mActivity, mActivity.getString(R.string.DIALOG_COPY_DONE), Toast.LENGTH_LONG).show();
                 break;
             }
             case 4: {

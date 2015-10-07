@@ -4,11 +4,11 @@
     <item
             android:id="@+id/actionbar_add_card_cancel"
             android:showAsAction="ifRoom|withText"
-            android:title="@string/button_cancel">
+            android:title="@string/Keyboard_Cancel">
     </item>
     <item
             android:id="@+id/actionbar_add_card_save"
-            android:title="@string/button_save"
+            android:title="@string/Keyboard_Save"
             android:showAsAction="ifRoom|withText">
     </item>
 

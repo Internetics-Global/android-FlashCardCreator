@@ -5,6 +5,8 @@ import android.content.Context;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 
+import com.internectics.android_flashcardcreator.R;
+
 public class Global {
 
     public static final boolean   isDebug =  false;  //是否开启Timber的log
@@ -121,11 +123,12 @@ public class Global {
      */
     public static boolean apiReachableWithAlert(Context context) {
         boolean result = apiReachable(context);
+
         if (!result) {
             new AlertDialog.Builder(context)
-                    .setTitle("No internet connection")
-                    .setMessage("Please check your internet settings.")
-                    .setPositiveButton("OK", null)
+                    .setTitle(context.getResources().getString(R.string.DIALOG_TITLE_NO_NETWORK))
+                    .setMessage(context.getResources().getString(R.string.DIALOG_PLEASE_CHECK_YOUR_NETWORK))
+                    .setPositiveButton(context.getResources().getString(R.string.DIALOG_OK), null)
                     .show();
         }
         return result;

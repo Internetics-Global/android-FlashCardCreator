@@ -41,8 +41,6 @@ import org.adw.library.widgets.discreteseekbar.DiscreteSeekBar;
 
 import java.io.File;
 import java.util.ArrayList;
-import java.util.Timer;
-import java.util.TimerTask;
 
 import cn.pedant.SweetAlert.SweetAlertDialog;
 import timber.log.Timber;
@@ -91,9 +89,9 @@ public class CreateEditFragment extends DialogFragment implements TextView.OnEdi
                 .findViewById(R.id.dialog_title);
 
         if (mIsEditPack) {
-            titleTextView.setText(R.string.editpack_title);
+            titleTextView.setText(R.string.Title_Edit_Pack);
         } else {
-            titleTextView.setText(R.string.addpack_title);
+            titleTextView.setText(R.string.Title_Add_A_New_Pack);
         }
 
         final Button closeButton = (Button) mContentView
@@ -221,8 +219,8 @@ public class CreateEditFragment extends DialogFragment implements TextView.OnEdi
 
         if (mAdminPasswordEditText.getText().toString().equals(mConfirmAdminPasswordEditText.getText().toString()) == false) {
             new SweetAlertDialog(getActivity())
-                    .setTitleText("Alert")
-                    .setContentText("Passwords do not match")
+                    .setTitleText(getString(R.string.DIALOG_AlERT))
+                    .setContentText(getString(R.string.DIALOG_WRONG_PASSWORD))
             .show();
             return;
         }
@@ -231,7 +229,7 @@ public class CreateEditFragment extends DialogFragment implements TextView.OnEdi
         if (mAutoPlaySpeedSeekbar.getProgress() > Global.k_MAX_Auto_Play_Speed
                 || mAutoPlaySpeedSeekbar.getProgress() < Global.k_MIN_Auto_Play_Speed) {
             new SweetAlertDialog(getActivity())
-                    .setTitleText("Alert")
+                    .setTitleText(getString(R.string.DIALOG_AlERT))
                     .setContentText(String.format("The value of auto play speed should be between %d and %d seconds",
                             Global.k_MIN_Auto_Play_Speed,Global.k_MAX_Auto_Play_Speed))
                     .show();
@@ -240,8 +238,8 @@ public class CreateEditFragment extends DialogFragment implements TextView.OnEdi
 
         if ((mIsEditPack == false) && (checkExistingPackName(mPackNameEditText.getText().toString()))) {
             new SweetAlertDialog(getActivity())
-                .setTitleText("Alert")
-                .setContentText("Existing pack name, please rename it")
+                .setTitleText(getResources().getString(R.string.DIALOG_AlERT))
+                .setContentText(getString(R.string.DIALOG_EXISTING_PACK_NAME))
                     .show();
             return;
         }
@@ -274,7 +272,7 @@ public class CreateEditFragment extends DialogFragment implements TextView.OnEdi
 
         if (mAdminPasswordEditText.getText().toString().length() == 0) {
             Toast.makeText(getActivity(),
-                    "No admin password set. Setting an admin password allows you to edit this pack on on another device, or retrieve your editing rights on a pack that has been deleted off the device.",
+                    getString(R.string.DIALOG_NO_ADMIN_PASSWORD_WARNING),
                     Toast.LENGTH_SHORT)
                     .show();
         }

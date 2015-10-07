@@ -21,7 +21,7 @@
 
             <TextView
                 style="@style/option_item_text_parent"
-                android:text="Random Play"
+                android:text= "@string/NavigationBarItem_More_RandomPlay"
                 android:textColor="@android:color/white"
                 android:textSize="16dp" />
 
@@ -40,7 +40,7 @@
 
             <TextView
                 style="@style/option_item_text_parent"
-                android:text="Mute Sound Recording"
+                android:text="@string/Table_Item_Mute_Sound_Recording"
                 android:textColor="@android:color/white"
                 android:textSize="16dp" />
 
@@ -60,7 +60,7 @@
 
             <TextView
                 style="@style/option_item_text_parent"
-                android:text="About"
+                android:text= "@string/NavigationBarItem_More_About"
                 android:textColor="@android:color/white"
                 android:textSize="16dp" />
         </RelativeLayout>
@@ -74,7 +74,7 @@
 
             <TextView
                 style="@style/option_item_text_parent"
-                android:text="Text to Speech"
+                android:text="@string/Table_Item_TTS"
                 android:textColor="@android:color/white"
                 android:textSize="16dp" />
 
@@ -93,7 +93,7 @@
 
             <TextView
                 style="@style/option_item_text_parent"
-                android:text="Auto-Show Question Only"
+                android:text="@string/Table_Item_Show_Question_Only"
                 android:textColor="@android:color/white"
                 android:textSize="16dp" />
 
@@ -112,7 +112,7 @@
 
             <TextView
                 style="@style/option_item_text_parent"
-                android:text="Male/Female Voice"
+                android:text="@string/Table_Item_Male_Female"
                 android:textColor="@android:color/white"
                 android:textSize="16dp" />
 
@@ -147,7 +147,7 @@
 
             <TextView
                 style="@style/option_item_text_parent"
-                android:text="Use Dropbox Storage"
+                android:text="@string/Table_Item_Amazon_Or_Dropbox"
                 android:textColor="@android:color/white"
                 android:textSize="16dp" />
 

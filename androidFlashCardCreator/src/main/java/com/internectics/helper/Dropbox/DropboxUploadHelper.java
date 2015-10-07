@@ -21,6 +21,7 @@ import com.dropbox.client2.exception.DropboxParseException;
 import com.dropbox.client2.exception.DropboxPartialFileException;
 import com.dropbox.client2.exception.DropboxServerException;
 import com.dropbox.client2.exception.DropboxUnlinkedException;
+import com.internectics.android_flashcardcreator.R;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -63,7 +64,7 @@ public class DropboxUploadHelper extends AsyncTask<Void, Long, Boolean> {
 
         mDialog = new ProgressDialog(context);
         mDialog.setMax(100);
-        mDialog.setMessage("Uploading...");
+        mDialog.setMessage(mContext.getString(R.string.Indicator_Upload));
         mDialog.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
         mDialog.setProgress(0);
         mDialog.show();

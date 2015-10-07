@@ -89,7 +89,7 @@
                         android:gravity="center"
                         android:layout_gravity="center"
                         android:enabled="false"
-                        android:text="@string/alert_applying_to_all_cards"
+                        android:text="@string/Title_Applying_To_All_Cards"
                         android:textStyle="bold"
                         android:textColor="#FFFFFF"
                         android:textSize="12sp"
@@ -163,7 +163,7 @@
                <Button
                    android:layout_width="@dimen/tooltip_fake_actionitem_width"
                    android:layout_height="wrap_content"
-                   android:text="Play"
+                   android:text="@string/Title_Playback"
                    android:background="@android:color/transparent"
                    android:layout_marginRight="@dimen/tooltip_fake_actionitem_right_margin_5"
                    android:textColor="@android:color/white"
@@ -247,7 +247,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="20dp"
                     android:textStyle="bold"
-                    android:text="No share code"
+                    android:text=""
                     android:gravity="center"
                     android:layout_gravity="center"
                     android:textColor="@android:color/white"
@@ -296,7 +296,7 @@
 
         <Button
             android:id="@+id/record_stop_button"
-            android:text="Stop"
+            android:text="@string/Title_Record_Stop"
             android:layout_width="60dp"
             android:layout_height="60dp"
             android:layout_gravity="bottom|right"

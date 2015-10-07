@@ -43,9 +43,6 @@ import com.internectics.util.OpenUDID_manager;
 import com.internectics.util.StringUtils;
 import com.internectics.util.UIHelper;
 
-import net.londatiga.android.ActionItem;
-import net.londatiga.android.QuickAction;
-
 import java.io.FileNotFoundException;
 
 import cn.pedant.SweetAlert.SweetAlertDialog;
@@ -79,10 +76,10 @@ public class PackListFragment extends Fragment {
                 container, false);
 
         TextView titleTextView = (TextView) mRootView.findViewById(R.id.dialog_title);
-        titleTextView.setText(R.string.packlist_title);
+        titleTextView.setText(R.string.Title_Pack_List);
 
         final Button editButton = (Button) mRootView.findViewById(R.id.dialog_head_save_btn);
-        editButton.setText("Create New Pack");
+        editButton.setText(getString(R.string.NavigationBarItem_Create_New_Pack));
         ViewGroup.LayoutParams params = editButton.getLayoutParams();
         params.width = params.width + UIHelper.getPixels(60);
         editButton.setLayoutParams(params);
@@ -124,9 +121,9 @@ public class PackListFragment extends Fragment {
             public void onClick(View v) {
 
                 new SweetAlertDialog(getActivity(), SweetAlertDialog.WARNING_TYPE)
-                        .setTitleText("Alert")
+                        .setTitleText(getString(R.string.DIALOG_AlERT))
                         .setContentText("Not implemented yet")
-                        .setConfirmText("Close")
+                        .setConfirmText(getString(R.string.DIALOG_CLOSE))
                         .show();
             }
         });
@@ -339,18 +336,18 @@ public class PackListFragment extends Fragment {
 
         if (currentPack.packID == ((MainActivity) getActivity()).packIDForMasterViewPack) {
             new AlertDialog.Builder(getActivity())
-                    .setTitle("Warning")
-                    .setMessage("The pack is currently being used")
-                    .setPositiveButton("OK", null)
+                    .setTitle(getString(R.string.DIALOG_WARN))
+                    .setMessage(getString(R.string.DIALOG_PACK_IS_BEING_USED))
+                    .setPositiveButton(getString(R.string.DIALOG_OK), null)
                     .show();
         } else {
             new AlertDialog.Builder(getActivity())
-                    .setTitle("Are you sure you want to delete?")
-                    .setPositiveButton("Delete", new DialogInterface.OnClickListener() {
+                    .setTitle(getString(R.string.DIALOG_DELETE_PACK))
+                    .setPositiveButton(getString(R.string.Title_Delete), new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
                             final Button editButton = (Button) mRootView.findViewById(R.id.dialog_head_save_btn);
-                            editButton.setText("Create New Pack");
+                            editButton.setText(getString(R.string.NavigationBarItem_Create_New_Pack));
                             ViewGroup.LayoutParams params = editButton.getLayoutParams();
                             params.width = params.width + UIHelper.getPixels(60);
                             editButton.setLayoutParams(params);
@@ -359,7 +356,7 @@ public class PackListFragment extends Fragment {
                             ((ImageAdapter) mGallery.getAdapter()).notifyDataSetChanged();
                         }
                     })
-                    .setNegativeButton("Cancel", null)
+                    .setNegativeButton(getString(R.string.DIALOG_CANCEL), null)
                     .show();
         }
     }
@@ -375,10 +372,10 @@ public class PackListFragment extends Fragment {
             final EditText input = new EditText(getActivity());
             input.setTransformationMethod(PasswordTransformationMethod.getInstance());
             new AlertDialog.Builder(getActivity())
-                    .setTitle("Input admin password")
+                    .setTitle(R.string.DIALOG_INPUT_ADMIN_PASSWORD)
                     .setIcon(android.R.drawable.ic_dialog_info)
                     .setView(input)
-                    .setPositiveButton("Done", new DialogInterface.OnClickListener() {
+                    .setPositiveButton(R.string.DIALOG_DONE, new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
 
@@ -394,15 +391,15 @@ public class PackListFragment extends Fragment {
                             } else {
 
                                 new AlertDialog.Builder(getActivity())
-                                        .setTitle("Error")
-                                        .setMessage("Wrong password")
-                                        .setPositiveButton("OK",null)
+                                        .setTitle(R.string.DIALOG_WARN)
+                                        .setMessage(R.string.DIALOG_WRONG_PASSWORD)
+                                        .setPositiveButton(R.string.DIALOG_OK,null)
                                         .show();
                             }
 
                         }
                     })
-                    .setNegativeButton("Cancel", null)
+                    .setNegativeButton(R.string.DIALOG_CANCEL, null)
                     .show();
 
         }
@@ -413,9 +410,9 @@ public class PackListFragment extends Fragment {
         final Pack currentPack = mUser.packs.get(position -1);
 
         new AlertDialog.Builder(getActivity())
-                .setTitle("Select")
-                .setMessage("Please select one")
-                .setNegativeButton("Play Manually", new DialogInterface.OnClickListener() {
+                .setTitle(R.string.Label_Select)
+                .setMessage(R.string.Label_Please_Select)
+                .setNegativeButton(R.string.Optional_Play_Manually, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
 
@@ -430,7 +427,7 @@ public class PackListFragment extends Fragment {
                         ((MainActivity) getActivity()).dismissPackListPopupWindow();
                     }
                 })
-                .setNeutralButton("Auto Play", new DialogInterface.OnClickListener() {
+                .setNeutralButton(R.string.Optional_Auto_Play, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
 
@@ -446,7 +443,7 @@ public class PackListFragment extends Fragment {
                         ((MainActivity) getActivity()).dismissPackListPopupWindow();
                     }
                 })
-                .setPositiveButton("Auto Play and Loop", new DialogInterface.OnClickListener() {
+                .setPositiveButton(R.string.Optional_Auto_Play_Loop, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
 

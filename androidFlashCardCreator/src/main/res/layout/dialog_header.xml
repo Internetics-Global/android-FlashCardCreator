@@ -14,7 +14,7 @@
             android:layout_marginLeft="10.0dip"
             android:background="@drawable/selector_black_button"
             style="@style/BlackButtonText"
-            android:text="Close"/>
+            android:text="@string/NavigationBarItem_Close"/>
 
     <TextView
             android:id="@+id/dialog_title"
@@ -32,5 +32,5 @@
             android:layout_marginRight="10.0dip"
             android:background="@drawable/selector_black_button"
             style="@style/BlackButtonText"
-            android:text="Save"/>
+            android:text="@string/NavigationBarItem_Save"/>
 </FrameLayout>

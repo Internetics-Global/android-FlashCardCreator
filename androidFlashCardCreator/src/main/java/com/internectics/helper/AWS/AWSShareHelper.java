@@ -19,6 +19,7 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.internectics.android_flashcardcreator.R;
 import com.internectics.data.Pack;
 import com.internectics.helper.AWS.AWSUtils;
 import com.internectics.helper.AWS.SimpleDBHelper;
@@ -87,7 +88,7 @@ public class AWSShareHelper extends AsyncTask<Void, Long, Boolean> {
                 mCurrentPack.shareLink = generateRedirectedURL(fullPath_S3);
 
                 if (mCurrentPack.shareLink.indexOf("http://") != 0) {
-                    Toast.makeText(mActivity, "Redirect service is not available now, please try again", Toast.LENGTH_LONG).show();
+                    Toast.makeText(mActivity, R.string.DIALOG_REDIRECT_SERVICE_UNAVAILABLE, Toast.LENGTH_LONG).show();
                 } else {
                     mCurrentPack.save(mActivity);
 
@@ -126,10 +127,10 @@ public class AWSShareHelper extends AsyncTask<Void, Long, Boolean> {
             editText.setSingleLine();
             editText.setInputType(InputType.TYPE_CLASS_NUMBER);
             new AlertDialog.Builder(mActivity)
-                    .setTitle("Set max number of downloads")
+                    .setTitle(R.string.DIALOG_SET_MAX_NUMBER_OF_DOWNLOADS)
                     .setIcon(android.R.drawable.ic_dialog_info)
                     .setView(editText)
-                    .setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                    .setPositiveButton(R.string.DIALOG_OK, new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
 
@@ -140,7 +141,7 @@ public class AWSShareHelper extends AsyncTask<Void, Long, Boolean> {
                             didDismissDownloadTimesDialog(maxNo);
                         }
                     })
-                    .setNegativeButton("Unlimited", new DialogInterface.OnClickListener() {
+                    .setNegativeButton(R.string.Keyboard_Unlimited, new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
 
@@ -220,7 +221,7 @@ public class AWSShareHelper extends AsyncTask<Void, Long, Boolean> {
 
         new AlertDialog.Builder(mActivity)
                 .setTitle("Share")
-                .setItems(new String[] {"Facebook","Twitter","Email","Copy to clipboard"}, new DialogInterface.OnClickListener() {
+                .setItems(new String[] {"Facebook","Twitter","Email",mActivity.getString(R.string.Title_Copy_To_Clipboard)}, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         dialog.dismiss();
@@ -259,7 +260,7 @@ public class AWSShareHelper extends AsyncTask<Void, Long, Boolean> {
                         mActivity.startActivity(Intent.createChooser(intent, "Share current pack to"));
                     }
                 }  else {
-                    Toast.makeText(mActivity, "Share is allowed only when Twitter app is installed.", Toast.LENGTH_LONG).show();
+                    Toast.makeText(mActivity, R.string.DIALOG_NO_TWITTER_CLIENT_INSTALLED, Toast.LENGTH_LONG).show();
                 }
 
                 break;
@@ -278,7 +279,7 @@ public class AWSShareHelper extends AsyncTask<Void, Long, Boolean> {
                 ClipboardManager clipboard = (ClipboardManager) mActivity.getSystemService(Service.CLIPBOARD_SERVICE);
                 ClipData clip = ClipData.newPlainText( "share linkage",shareLink);
                 clipboard.setPrimaryClip(clip);
-                Toast.makeText(mActivity, "Has copied to clipboard", Toast.LENGTH_LONG).show();
+                Toast.makeText(mActivity, R.string.Title_Copy_To_Clipboard, Toast.LENGTH_LONG).show();
                 break;
             }
             case 4: {
@@ -334,9 +335,9 @@ public class AWSShareHelper extends AsyncTask<Void, Long, Boolean> {
                 @Override
                 public void run() {
                     AlertDialog alertDialog = new AlertDialog.Builder(mActivity).create();
-                    alertDialog.setTitle("Alert");
-                    alertDialog.setMessage("Posted to Facebook successfully");
-                    alertDialog.setButton(AlertDialog.BUTTON_NEUTRAL, "OK",
+                    alertDialog.setTitle(mActivity.getString(R.string.DIALOG_AlERT));
+                    alertDialog.setMessage(mActivity.getString(R.string.DIALOG_POST_FACEBOOK_SUCCESSFULLY));
+                    alertDialog.setButton(AlertDialog.BUTTON_NEUTRAL, mActivity.getString(R.string.DIALOG_OK),
                             new DialogInterface.OnClickListener() {
                                 public void onClick(DialogInterface dialog, int which) {
                                     dialog.dismiss();

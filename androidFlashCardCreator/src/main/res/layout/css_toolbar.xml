@@ -16,7 +16,7 @@
             android:gravity="center"
             android:background="@drawable/selector_csstoolbar_button_highligh"
             style="@style/BlackButtonText"
-            android:text="@string/button_save"/>
+            android:text="@string/Keyboard_Save"/>
 
     <Button
             android:id="@+id/csstoolbar_close_btn"
@@ -28,7 +28,7 @@
             android:gravity="center"
             android:background="@drawable/selector_csstoolbar_button"
             style="@style/BlackButtonText"
-            android:text="@string/button_cancel"/>
+            android:text="@string/Keyboard_Cancel"/>
 
     <Spinner
         android:id="@+id/spinner_font"
@@ -83,7 +83,7 @@
             android:layout_margin="5dp"
             android:background="@drawable/selector_csstoolbar_button"
             style="@style/BlackButtonText"
-            android:text="@string/button_symbol"/>
+            android:text="@string/ToolbarItem_Symbol"/>
 
 
 </RelativeLayout>

@@ -17,7 +17,6 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 import android.text.InputType;
-import android.util.Log;
 import android.util.TypedValue;
 import android.view.Gravity;
 import android.view.KeyEvent;
@@ -66,7 +65,6 @@ import com.internectics.helper.PackBuildHelper;
 import com.internectics.helper.PackDownloadHelper;
 import com.internectics.helper.PackRecordHelper;
 import com.internectics.helper.SQLiteHelper;
-import com.internectics.helper.SymbolHelper;
 import com.internectics.util.AppConfig;
 import com.internectics.util.AppContext;
 import com.internectics.util.Global;
@@ -272,8 +270,8 @@ public class MainActivity extends FragmentActivity implements
                 if (!mCurrentPack.creatorID.equals(OpenUDID_manager.getOpenUDID())) {
 
                     new SweetAlertDialog(this)
-                            .setTitleText("Alert")
-                            .setContentText("You can only make changes to cards you have created yourself")
+                            .setTitleText(getResources().getString(R.string.DIALOG_AlERT))
+                            .setContentText(getResources().getString(R.string.DIALOG_YOU_CAN_NOT_CHANGE_TEMPLATE_BACKGROUND))
                             .show();
 
                 } else {
@@ -301,23 +299,23 @@ public class MainActivity extends FragmentActivity implements
 
                 if (!mCurrentPack.creatorID.equals(OpenUDID_manager.getOpenUDID())) {
                     new SweetAlertDialog(this)
-                            .setTitleText("Alert")
-                            .setContentText("You can only make changes to cards you have created yourself")
+                            .setTitleText(getString(R.string.DIALOG_AlERT))
+                            .setContentText(getString(R.string.DIALOG_YOU_CAN_NOT_CHANGE_TEMPLATE_BACKGROUND))
                             .show();
 
                 }  else {
                     if (mCardDetailFragment == null) {
-                        Toast.makeText(this, "You need to select a card beforehand", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(this, getString(R.string.DIALOG_SELECT_CARD_BEFOREHAND), Toast.LENGTH_SHORT).show();
                         break;
                     }
 
                     int defaultIndex = (StringUtils.convertTemplateBackgroundStringToResourceID(mCurrentCard.templateBackground))[0];
                     if (mCurrentPack.cards.size() >= 0) {
                         new AlertDialog.Builder(this)
-                                .setTitle(R.string.change_title)
-                                .setSingleChoiceItems(new String[]{getResources().getString(R.string.change_blue),
-                                        getResources().getString(R.string.change_coffee), getResources().getString(R.string.change_gray),
-                                        getResources().getString(R.string.change_purple), getResources().getString(R.string.change_red)}, defaultIndex,
+                                .setTitle(R.string.Title_Select_Template)
+                                .setSingleChoiceItems(new String[]{getResources().getString(R.string.Optional_Blue),
+                                        getResources().getString(R.string.Optional_Coffee), getResources().getString(R.string.Optional_Gray),
+                                        getResources().getString(R.string.Optional_Purple), getResources().getString(R.string.Optional_Red)}, defaultIndex,
                                         new DialogInterface.OnClickListener() {
                                             @Override
                                             public void onClick(DialogInterface dialog, int which) {
@@ -346,9 +344,9 @@ public class MainActivity extends FragmentActivity implements
                 }  else {
 
                     new AlertDialog.Builder(this)
-                            .setTitle("Alert")
-                            .setMessage("No card available")
-                            .setPositiveButton("OK", null)
+                            .setTitle(getString(R.string.DIALOG_AlERT))
+                            .setMessage(getString(R.string.DIALOG_NO_CARD_AVAILABLE))
+                            .setPositiveButton(getString(R.string.DIALOG_OK), null)
                             .show();
                 }
                 break;
@@ -363,9 +361,9 @@ public class MainActivity extends FragmentActivity implements
                 }  else {
 
                     new AlertDialog.Builder(this)
-                            .setTitle("Alert")
-                            .setMessage("No card available")
-                            .setPositiveButton("OK", null)
+                            .setTitle(getString(R.string.DIALOG_AlERT))
+                            .setMessage(getString(R.string.DIALOG_NO_CARD_AVAILABLE))
+                            .setPositiveButton(getString(R.string.DIALOG_OK), null)
                             .show();
                 }
                 break;
@@ -381,9 +379,9 @@ public class MainActivity extends FragmentActivity implements
                 }  else {
 
                     new AlertDialog.Builder(this)
-                            .setTitle("Alert")
-                            .setMessage("No card available")
-                            .setPositiveButton("OK", null)
+                            .setTitle(getString(R.string.DIALOG_AlERT))
+                            .setMessage(getString(R.string.DIALOG_NO_CARD_AVAILABLE))
+                            .setPositiveButton(getString(R.string.DIALOG_OK), null)
                             .show();
                 }
                 break;
@@ -401,10 +399,10 @@ public class MainActivity extends FragmentActivity implements
                 codeEditText.setInputType(InputType.TYPE_TEXT_FLAG_NO_SUGGESTIONS);
                 codeEditText.setSingleLine();
                 new AlertDialog.Builder(this)
-                        .setTitle("Input download code")
+                        .setTitle(R.string.DIALOG_INPUT_DOWNLOAD_CODE)
                         .setIcon(android.R.drawable.ic_dialog_info)
                         .setView(codeEditText)
-                        .setPositiveButton("Done", new DialogInterface.OnClickListener() {
+                        .setPositiveButton(R.string.DIALOG_DONE, new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
                                 String codeString = codeEditText.getText().toString();
@@ -415,7 +413,7 @@ public class MainActivity extends FragmentActivity implements
                                 }
                             }
                         })
-                        .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                        .setNegativeButton(R.string.DIALOG_CANCEL, new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
                             }
@@ -526,7 +524,7 @@ public class MainActivity extends FragmentActivity implements
                 }
 
                 if (timeoutCount == kTimeoutThreshold) {
-                    Toast.makeText(this, "Network timeout, please try again", Toast.LENGTH_LONG).show();
+                    Toast.makeText(this, R.string.DIALOG_NETWORK_TIMEOUT, Toast.LENGTH_LONG).show();
                     return;
                 } else {
                     if (mIsAllowDownload) {
@@ -535,7 +533,7 @@ public class MainActivity extends FragmentActivity implements
                         PackDownloadHelper packDownloadHelper = new PackDownloadHelper(MainActivity.this, downloableShareLink, downloadedZipFile.toString());
                         packDownloadHelper.execute();
                     }   else {
-                        Toast.makeText(this, "You have reached the limit of downloads for this pack", Toast.LENGTH_LONG).show();
+                        Toast.makeText(this, R.string.DIALOG_REACH_MAX_DOWNLOAD_LIMIT, Toast.LENGTH_LONG).show();
                     }
                 }
             }
@@ -960,8 +958,8 @@ public class MainActivity extends FragmentActivity implements
         //case2: check owner
         if (!currentPack.creatorID.equals(OpenUDID_manager.getOpenUDID())) {
             new SweetAlertDialog(this)
-                    .setTitleText("Alert")
-                    .setContentText("You cannot create a card in pack you haven't created yourself.")
+                    .setTitleText(getString(R.string.DIALOG_AlERT))
+                    .setContentText(getString(R.string.NOT_ALLOW_CREATE_CARD_THAT_IS_NOT_YOU))
                     .show();
 
             return false;
@@ -1026,10 +1024,10 @@ public class MainActivity extends FragmentActivity implements
         passwordEditText.setInputType(InputType.TYPE_TEXT_FLAG_NO_SUGGESTIONS);
         passwordEditText.setSingleLine();
         new AlertDialog.Builder(this)
-                .setTitle("Set a password?")
+                .setTitle(R.string.DIALOG_SET_PASSWORD)
                 .setIcon(android.R.drawable.ic_dialog_info)
                 .setView(passwordEditText)
-                .setPositiveButton("Set", new DialogInterface.OnClickListener() {
+                .setPositiveButton(R.string.DIALOG_SET, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
 
@@ -1059,7 +1057,7 @@ public class MainActivity extends FragmentActivity implements
 
                     }
                 })
-                .setNegativeButton("Not needed", new DialogInterface.OnClickListener() {
+                .setNegativeButton(R.string.Keyboard_No_Needed, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
 
@@ -1068,12 +1066,12 @@ public class MainActivity extends FragmentActivity implements
 
                         File file = PackBuildHelper.createPackZipFile(MainActivity.this, mCurrentPack, "");
                         if (file == null) {
-                            Toast.makeText(MainActivity.this, "Failed to zip pack", Toast.LENGTH_LONG).show();
+                            Toast.makeText(MainActivity.this, R.string.DIALOG_CREATE_ZIPPED_SHARE_FILE_FAILED, Toast.LENGTH_LONG).show();
                         } else {
 
                             boolean result = CryptoHelper.encryptFileWithSameOutput(file);
                             if (result == false) {
-                                Toast.makeText(MainActivity.this, "Failed to encrypt pack", Toast.LENGTH_LONG).show();
+                                Toast.makeText(MainActivity.this, R.string.DIALOG_ENCRPT_ZIPPED_SHARE_FILED_FAILED, Toast.LENGTH_LONG).show();
                             } else {
                                 //步骤： upload -- > 设置最大分享数 --> 创建短连接 --> 分享
                                 if (DropboxAuthHelper.sharedHelper(MainActivity.this).isLinked()) {
@@ -1213,7 +1211,7 @@ public class MainActivity extends FragmentActivity implements
                 if (mIsKeyboardVisible) {
 
                     if (mCardDetailFragment.isCurrentFocusedCardContentTextUsingDefaultFont() == false){
-                        Toast.makeText(getApplicationContext(),"Symbol could possibly not be supported by selected font, please check",Toast.LENGTH_LONG).show();
+                        Toast.makeText(getApplicationContext(),R.string.DIALOG_SYMBOL_NOT_SUPPORTED_BY_FONT,Toast.LENGTH_LONG).show();
                     } else {
                         setAsSymbolStatus();
                         mIsKeyboardVisible = false;
@@ -1286,13 +1284,13 @@ public class MainActivity extends FragmentActivity implements
 
     public void setAsSymbolStatus() {
         mSymbolBoxFragment.showSymbolBoxWithAnimation(false);
-        mSymbolKeyboardSwitchButton.setText("Keyboard");
+        mSymbolKeyboardSwitchButton.setText(getString(R.string.ToolbarItem_Keyboard));
     }
 
     public void setAsKeyboardStatus() {
         mSymbolBoxFragment.hideSymbolBoxWithAnimation(false);
         if (mSymbolKeyboardSwitchButton != null) {
-            mSymbolKeyboardSwitchButton.setText("Symbol");
+            mSymbolKeyboardSwitchButton.setText(getString(R.string.ToolbarItem_Symbol));
         }
 
     }
@@ -1385,10 +1383,10 @@ public class MainActivity extends FragmentActivity implements
 
     public void dialog_Exit(Context context) {
         AlertDialog.Builder builder = new AlertDialog.Builder(context);
-        builder.setMessage("Are you sure you want to exit?");
-        builder.setTitle("Alert");
+        builder.setMessage(getString(R.string.DIALOG_ARE_YOU_SURE_YOU_WANT_TO_EXIT));
+        builder.setTitle(getString(R.string.DIALOG_AlERT));
         builder.setIcon(android.R.drawable.ic_dialog_alert);
-        builder.setPositiveButton("OK",
+        builder.setPositiveButton(getString(R.string.DIALOG_OK),
                 new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int which) {
 
@@ -1399,7 +1397,7 @@ public class MainActivity extends FragmentActivity implements
                     }
                 });
 
-        builder.setNegativeButton("Cancel",
+        builder.setNegativeButton(R.string.DIALOG_CANCEL,
                 new android.content.DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int which) {
                         dialog.dismiss();
@@ -1441,12 +1439,12 @@ public class MainActivity extends FragmentActivity implements
         }
 
         TextView  packCoverTextView = (TextView) findViewById(R.id.pack_info_title);
-        packCoverTextView.setText(String.format("Total cards:%d", mCurrentPack.cards.size()));
+        packCoverTextView.setText(String.format("%s:%d", getString(R.string.Title_Total_Number_Card),mCurrentPack.cards.size()));
 
         TextView  shareCodeTextView = (TextView) findViewById(R.id.pack_info_share_code);
         if (StringUtils.isEmpty(mCurrentPack.shareLink) == false) {
             Uri uri = Uri.parse(mCurrentPack.shareLink);
-            shareCodeTextView.setText(String.format("Share code: %s",uri.getLastPathSegment()));
+            shareCodeTextView.setText(String.format("%s: %s",getString(R.string.Title_Share_Code),uri.getLastPathSegment()));
         } else {
             shareCodeTextView.setText("");
         }
@@ -1506,7 +1504,7 @@ public class MainActivity extends FragmentActivity implements
                 case Dropbox_Constant.UPLOAD_SUCCEED: {
                     File file = (File) msg.obj;
 
-                    Toast.makeText(MainActivity.this, "Pack successfully uploaded", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(MainActivity.this, R.string.DIALOG_UPLOAD_SUCCESSFULLY, Toast.LENGTH_SHORT).show();
 
                     DropboxShareHelper dropboxShareHelper = new DropboxShareHelper(MainActivity.this,mCurrentPack,false);
                     dropboxShareHelper.execute();
@@ -1537,14 +1535,14 @@ public class MainActivity extends FragmentActivity implements
                     if (mUploadProgressDialog == null) {
                         mUploadProgressDialog = new ProgressDialog(MainActivity.this);
                         mUploadProgressDialog.setMax(100);
-                        mUploadProgressDialog.setMessage("Uploading...");
+                        mUploadProgressDialog.setMessage(getString(R.string.Indicator_Upload));
                         mUploadProgressDialog.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
                     }
 
                     if (flag == 0) {
                         mUploadProgressDialog.dismiss();
 
-                        Toast.makeText(MainActivity.this, "Pack successfully uploaded", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(MainActivity.this, R.string.DIALOG_UPLOAD_SUCCESSFULLY, Toast.LENGTH_SHORT).show();
 
                         AWSShareHelper AWSShareHelper = new AWSShareHelper(MainActivity.this, mCurrentPack,false);
                         AWSShareHelper.execute();
