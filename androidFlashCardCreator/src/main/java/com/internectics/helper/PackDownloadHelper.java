@@ -6,12 +6,14 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.AsyncTask;
+import android.os.Handler;
+import android.os.Message;
 import android.text.InputType;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.internectics.android_flashcardcreator.R;
 import com.internectics.cryptor.CryptoHelper;
-import com.internectics.data.Pack;
 import com.internectics.helper.AWS.SimpleDBHelper;
 import com.internectics.util.AppConfig;
 import com.internectics.util.Global;
@@ -36,7 +38,7 @@ public class PackDownloadHelper extends AsyncTask<Void, Long, Boolean> {
 
     private Context mContext;
     private String mDownloadURL;
-    private final ProgressDialog mDialog;
+    private ProgressDialog mDialog;
     private long mFileLen;
     private String mErrorMsg;
     private String mSavedFilePath;
@@ -62,13 +64,13 @@ public class PackDownloadHelper extends AsyncTask<Void, Long, Boolean> {
         mDialog = new ProgressDialog(context);
         mDialog.setMax(100);
         if (mIsFromExamplePackDownload) {
-            mDialog.setMessage("Download FFC sample cards now");
+            mDialog.setMessage(mContext.getResources().getString(R.string.DIALOG_DOWNLOAD_EXAMPLE_PACK_FIRST));
         } else {
-            mDialog.setMessage("Downloading...");
+            mDialog.setMessage(mContext.getString(R.string.Title_Downloading));
         }
         mDialog.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
         mDialog.setProgress(0);
-        mDialog.setButton("Cancel", new DialogInterface.OnClickListener() {
+        mDialog.setButton(mContext.getString(R.string.DIALOG_CANCEL), new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int which) {
                 mIsAllowPostExecute = false;
             }
@@ -112,77 +114,88 @@ public class PackDownloadHelper extends AsyncTask<Void, Long, Boolean> {
             output.flush();
             output.close();
             input.close();
+
+            publishProgress(total);
+
+            boolean result =CryptoHelper.decryptFileWithSameOutput(mSavedFilePath);
+            if (result == false) {
+                mErrorMsg = mContext.getString(R.string.DIALOG_DECRYPT_FAILED);
+            }
+
+
             return true;
         } catch (Exception e) {
             e.printStackTrace();
-            Timber.tag(Global.debugTag).e("Download failed:" + e.getCause() );
-            mErrorMsg = "Download failed";
+            Timber.tag(Global.debugTag).e("Download failed:" + e.getCause());
+            mErrorMsg = mContext.getString(R.string.DIALOG_DOWNLOAD_FAILED);
         }
+
         return false;
     }
 
     @Override
     protected void onProgressUpdate(Long... progress) {
         int percent = (int) (100.0 * (double) progress[0] / mFileLen + 0.5);
-        mDialog.setProgress(percent);
+        if (percent >= 100) {
+            mDialog.setMessage(mContext.getString(R.string.DIALOG_NOW_DECRYPTING));
+        } else {
+            mDialog.setProgress(percent);
+        }
     }
 
     @Override
     protected void onPostExecute(Boolean result) {
+
+        mDialog.dismiss();
+
         if (result) {
-            Toast.makeText(mContext, "Download pack successfully.", Toast.LENGTH_SHORT).show();
 
-            boolean success = CryptoHelper.decryptFileWithSameOutput(mSavedFilePath);
-            if (success == false) {
-                Toast.makeText(mContext, "Failed to decrypt pack", Toast.LENGTH_LONG).show();
-            } else {
-                try {
-                    ZipFile zipFile = new ZipFile(mSavedFilePath);
-                    if (zipFile.isEncrypted()) {
+            try {
+                ZipFile zipFile = new ZipFile(mSavedFilePath);
+                if (zipFile.isEncrypted()) {
 
-                        final EditText passwordEditText = new EditText(mContext);
-                        passwordEditText.setSingleLine(true);
-                        passwordEditText.setInputType(InputType.TYPE_TEXT_FLAG_NO_SUGGESTIONS);
-                        new AlertDialog.Builder(mContext)
-                                .setTitle("Input a password")
-                                .setIcon(android.R.drawable.ic_dialog_info)
-                                .setView(passwordEditText)
-                                .setPositiveButton("Done", new DialogInterface.OnClickListener() {
-                                    @Override
-                                    public void onClick(DialogInterface dialog, int which) {
+                    final EditText passwordEditText = new EditText(mContext);
+                    passwordEditText.setSingleLine(true);
+                    passwordEditText.setInputType(InputType.TYPE_TEXT_FLAG_NO_SUGGESTIONS);
+                    new AlertDialog.Builder(mContext)
+                            .setTitle(R.string.DIALOG_SET_PASSWORD)
+                            .setIcon(android.R.drawable.ic_dialog_info)
+                            .setView(passwordEditText)
+                            .setPositiveButton(R.string.DIALOG_DONE, new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
 
-                                        ZipFileHelper.unzipPackFile(mContext, mSavedFilePath,passwordEditText.getText().toString());
-                                        parsePackAndGoOn();
-                                    }
-                                })
-                                .setNegativeButton("Cancel", null)
-                                .show();
+                                    UnzipAndParsePackHelper unzipParsePackHelper = new UnzipAndParsePackHelper(mContext,
+                                            mSavedFilePath,passwordEditText.getText().toString(),mUnzipPackHandler);
+                                    unzipParsePackHelper.execute();
 
-                    } else { // no password or the password is empty
+                                }
+                            })
+                            .setNegativeButton(R.string.DIALOG_CANCEL, null)
+                            .show();
 
-                        ZipFileHelper.unzipPackFile(mContext, mSavedFilePath, "");
-                        parsePackAndGoOn();
+                } else { // no password or the password is empty
 
-                    }
+                    UnzipAndParsePackHelper unzipParsePackHelper = new UnzipAndParsePackHelper(mContext,
+                            mSavedFilePath,"",mUnzipPackHandler);
+                    unzipParsePackHelper.execute();
 
-
-
-                } catch (Exception e) {
-                    Timber.tag(Global.debugTag).e("Error:" + e.getCause());
-                    e.printStackTrace();
                 }
+
+
+
+            } catch (Exception e) {
+                Timber.tag(Global.debugTag).e("Error:" + e.getCause());
+                e.printStackTrace();
             }
 
         } else {
             Toast.makeText(mContext, mErrorMsg, Toast.LENGTH_SHORT).show();
         }
 
-        mDialog.dismiss();
     }
 
-    private void parsePackAndGoOn() {
-        //Step2: parse unzipped pack
-        Pack downloadedPack = PackParserHelper.parse(mContext);
+    private void unzipPackTaskFinished() {
 
         if (mIsFromExamplePackDownload == false) {
             new Thread()
@@ -215,5 +228,16 @@ public class PackDownloadHelper extends AsyncTask<Void, Long, Boolean> {
         SimpleDBHelper.updateAttributesForItem(Global.amazon_sdb_domain_name, Global.currentAmazonSimpleDBItemName, rowData);
 
     }
+
+
+    private final Handler mUnzipPackHandler = new Handler() {
+
+        @Override
+        public void handleMessage(Message msg) {
+            super.handleMessage(msg);
+
+            unzipPackTaskFinished();
+        }
+    };
 
 }

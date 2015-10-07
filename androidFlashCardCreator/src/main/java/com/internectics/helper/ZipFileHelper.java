@@ -3,6 +3,7 @@ package com.internectics.helper;
 import android.content.Context;
 import android.widget.Toast;
 
+import com.internectics.android_flashcardcreator.R;
 import com.internectics.util.Global;
 
 import net.lingala.zip4j.core.ZipFile;
@@ -47,45 +48,5 @@ public class ZipFileHelper {
         out.close();
     }
 
-    public static void unzipPackFile(Context context,String zipFileName,String password) {
-
-        File outputDirectory = FileOperationHelper.downloadedPackDirectory();
-        try {
-
-            //Step1, unzip pack
-            ZipFile zipFile = new ZipFile(zipFileName);
-
-            if (zipFile.isEncrypted()) {
-                if ((password == null) || (password.equals(""))) {
-                } else {
-                    zipFile.setPassword(password);
-                }
-            }
-            zipFile.extractAll(outputDirectory.toString());
-
-            ArrayList<String> zippedCardFileArray = FileOperationHelper.listAllZipCardFilesUnderDirectory(outputDirectory.toString());
-
-            //Step2, unzip cards in the pack
-            for (int i = 0; i < zippedCardFileArray.size(); i++) {
-                File unzippedDirectory = new File(outputDirectory + File.separator + String.format("card%d", i));
-                if (!unzippedDirectory.exists())
-                    unzippedDirectory.mkdir();
-
-                zipFile = new ZipFile(zippedCardFileArray.get(i));
-                zipFile.extractAll(unzippedDirectory.toString());
-            }
-
-        } catch (ZipException e) {
-            e.printStackTrace();
-            Timber.tag(Global.debugTag).d(Global.debugTag, "unzip failed:" + e.getCause());
-
-            new SweetAlertDialog(context, SweetAlertDialog.WARNING_TYPE)
-                .setTitleText("Alert")
-                .setContentText("Wrong password")
-                .setConfirmText("Close")
-                .show();
-        }
-
-    }
 
 }
