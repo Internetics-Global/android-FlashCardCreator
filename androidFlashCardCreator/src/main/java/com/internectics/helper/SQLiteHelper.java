@@ -40,6 +40,7 @@ public class SQLiteHelper {
         Cursor cursor = SQLiteHelper.defaultDatabase(context).rawQuery(
                 queryString, null);
         Boolean isExistBoolean = (cursor.getCount()) > 0 ? true : false;
+        cursor.close();
         return isExistBoolean;
     }
 
@@ -53,6 +54,7 @@ public class SQLiteHelper {
         while (cursor.moveToNext()) {
             number = cursor.getInt(0);
         }
+        cursor.close();
         return number;
     }
 
@@ -144,6 +146,7 @@ public class SQLiteHelper {
                 db.execSQL(
                         queryString);
             }
+            cursor.close();
         }
 
         @Override

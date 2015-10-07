@@ -158,7 +158,12 @@ public class FileOperationHelper {
             int column_index =
                     cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATA);
             cursor.moveToFirst();
-            return cursor.getString(column_index);
+
+            String returnStr = cursor.getString(column_index);
+
+            cursor.close();
+
+            return returnStr;
         } else {
             throw new IllegalStateException("Unexpected URI for getRealImagePathFromURI");
         }
