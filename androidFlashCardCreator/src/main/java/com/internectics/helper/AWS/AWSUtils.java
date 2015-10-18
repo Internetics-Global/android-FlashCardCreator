@@ -2,6 +2,7 @@ package com.internectics.helper.AWS;
 
 import com.internectics.data.Pack;
 import com.internectics.util.StringUtils;
+import com.parse.ParseUser;
 
 /**
  * Created by BourneWang on 29/05/15.
@@ -15,7 +16,7 @@ public class AWSUtils {
             throw  new IllegalArgumentException("fileNameOnAWS should be set backhand");
         }
 
-        String str = AWS_Constant.S3_BASE_URL + "/" + AWS_Constant.S3_BUCKET_NAME + "/" + pack.fileNameOnAWS;
+        String str = AWS_Constant.S3_BASE_URL + "/" + ParseUser.getCurrentUser().getUsername() + "/" + pack.fileNameOnAWS;
         return str;
     }
 }

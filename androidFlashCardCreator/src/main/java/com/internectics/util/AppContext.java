@@ -5,6 +5,7 @@ import android.content.Context;
 
 import com.amazonaws.auth.CognitoCachingCredentialsProvider;
 import com.amazonaws.regions.Regions;
+import com.amazonaws.services.s3.AmazonS3Client;
 import com.facebook.stetho.Stetho;
 import com.orhanobut.hawk.Hawk;
 import com.orhanobut.hawk.LogLevel;
@@ -21,6 +22,8 @@ public class AppContext extends Application {
 
     private static Context                           mContext;
     private static CognitoCachingCredentialsProvider mCredentialsProvider;
+    private static AmazonS3Client                    mS3Client;
+
 
     @Override
     public void onCreate() {
@@ -36,6 +39,8 @@ public class AppContext extends Application {
                 "us-east-1:55b5aa55-921e-49d0-b4d3-673793805862", // Identity Pool ID
                 Regions.US_EAST_1 // Region
         );
+
+        mS3Client = new AmazonS3Client(mCredentialsProvider);
 
         // Setup Parse
         ParseCrashReporting.enable(this);
@@ -70,6 +75,10 @@ public class AppContext extends Application {
 
     public static CognitoCachingCredentialsProvider getCredentialsProvider() {
         return mCredentialsProvider;
+    }
+
+    public static AmazonS3Client getS3Client() {
+        return mS3Client;
     }
 
     public static Context getAppContext() {

@@ -222,6 +222,7 @@ public class MoreActivity extends Activity {
                     ParseLoginBuilder loginBuilder = new ParseLoginBuilder(
                             MoreActivity.this);
                     Intent parseLoginIntent = loginBuilder.setParseLoginEnabled(true)
+                            .setParseLoginEmailAsUsername(false)
                             .setParseSignupButtonText("Create account")
                             .setParseSignupMinPasswordLength(4)
                             .setAppLogo(R.drawable.sign_in_logo)
@@ -304,7 +305,7 @@ public class MoreActivity extends Activity {
                                 .setPositiveButton(R.string.DIALOG_DONE, new DialogInterface.OnClickListener() {
                                     @Override
                                     public void onClick(DialogInterface dialog, int which) {
-                                        String username = passwordEditText.getText().toString();
+                                        String username = passwordEditText.getText().toString().trim().toLowerCase(); //bucket name必须小写
                                         currentUser.setUsername(username);
                                         currentUser.saveInBackground(new SaveCallback() {
                                             @Override

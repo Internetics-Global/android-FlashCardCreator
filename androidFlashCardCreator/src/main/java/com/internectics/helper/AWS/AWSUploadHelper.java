@@ -5,11 +5,18 @@ import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.util.Log;
 
+import com.amazonaws.AmazonClientException;
+import com.amazonaws.AmazonServiceException;
 import com.amazonaws.event.ProgressEvent;
 import com.amazonaws.event.ProgressListener;
 import com.amazonaws.mobileconnectors.s3.transfermanager.TransferManager;
 import com.amazonaws.mobileconnectors.s3.transfermanager.Upload;
+import com.amazonaws.services.s3.AmazonS3;
+import com.amazonaws.services.s3.model.CannedAccessControlList;
+import com.amazonaws.services.s3.model.CreateBucketRequest;
+import com.amazonaws.services.s3.model.PutObjectRequest;
 import com.internectics.util.AppContext;
+import com.parse.ParseUser;
 
 import java.io.File;
 
@@ -90,12 +97,49 @@ public class AWSUploadHelper {
         public void run() {
             super.run();
 
+            if (ParseUser.getCurrentUser() == null) {
+                throw  new AssertionError("ParseUser.getCurrentUser() should be set before being here");
+            }
+
+            AmazonS3 s3client = AppContext.getS3Client();
+
+            String expectedBucketName = ParseUser.getCurrentUser().getUsername().toLowerCase(); //bucket name必须是low case的，这是aws要求的
+
+            try {
+                boolean existing = s3client.doesBucketExist(expectedBucketName);
+
+                if (existing == false) {
+
+                    CreateBucketRequest createBucketRequest = new CreateBucketRequest(expectedBucketName);
+                    s3client.createBucket(createBucketRequest);
+
+                }
+            } catch (AmazonServiceException ase) {
+                System.out.println("Caught an AmazonServiceException, which " +
+                        "means your request made it " +
+                        "to Amazon S3, but was rejected with an error response" +
+                        " for some reason.");
+                System.out.println("Error Message:    " + ase.getMessage());
+                System.out.println("HTTP Status Code: " + ase.getStatusCode());
+                System.out.println("AWS Error Code:   " + ase.getErrorCode());
+                System.out.println("Error Type:       " + ase.getErrorType());
+                System.out.println("Request ID:       " + ase.getRequestId());
+            } catch (AmazonClientException ace) {
+                System.out.println("Caught an AmazonClientException, which " +
+                        "means the client encountered " +
+                        "an internal error while trying to " +
+                        "communicate with S3, " +
+                        "such as not being able to access the network.");
+                System.out.println("Error Message: " + ace.getMessage());
+            }
+
+
             if (mFile != null) {
                 try {
-                    mUpload = mTransferManager.upload(
-                            AWS_Constant.S3_BUCKET_NAME.toLowerCase(),
-                            mFile.getName(),   //mFile.getName include extension
-                            mFile);
+                    PutObjectRequest putObjectRequest = new PutObjectRequest(expectedBucketName.toLowerCase(),mFile.getName(),mFile);
+                    putObjectRequest.withCannedAcl(CannedAccessControlList.PublicRead);
+                    mUpload = mTransferManager.upload(putObjectRequest);
+
                     mUpload.addProgressListener(mListener);
                 } catch (Exception e) {
                     Log.e("ccaa", "", e);

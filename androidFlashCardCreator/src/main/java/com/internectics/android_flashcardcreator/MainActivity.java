@@ -1,5 +1,6 @@
 package com.internectics.android_flashcardcreator;
 
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.DialogFragment;
 import android.app.ProgressDialog;
@@ -72,6 +73,11 @@ import com.internectics.util.OpenUDID_manager;
 import com.internectics.util.StringUtils;
 import com.internectics.util.TipHelper;
 import com.internectics.util.UIHelper;
+import com.parse.LogOutCallback;
+import com.parse.ParseException;
+import com.parse.ParseUser;
+import com.parse.SaveCallback;
+import com.parse.ui.ParseLoginBuilder;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -89,6 +95,8 @@ import timber.log.Timber;
  */
 public class MainActivity extends FragmentActivity implements
         CardListFragment.Callbacks {
+
+    private static final int LOGIN_REQUEST = 0;
 
     private boolean          mIsCreatingCard = false;
     public boolean           mIsEdittingCard = false;
@@ -940,7 +948,7 @@ public class MainActivity extends FragmentActivity implements
         removeCSSToolbar();
         InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
         if ( imm.isActive( ) ) {
-            imm.hideSoftInputFromWindow(mMasterMaskButton.getApplicationWindowToken() , 0 );
+            imm.hideSoftInputFromWindow(mMasterMaskButton.getApplicationWindowToken(), 0);
         }
 
         mCardDetailFragment = null;
@@ -992,10 +1000,65 @@ public class MainActivity extends FragmentActivity implements
             return;
         }
 
-        if ((mCurrentPack.creatorID).equals(OpenUDID_manager.getOpenUDID())) {
 
-            if (PackRecordHelper.checkUploadPackNecessary(MainActivity.this, mCurrentPack)) {
-                setPasswordAndUpload();
+        ParseUser currentUser = ParseUser.getCurrentUser();
+
+        if (currentUser != null) {
+
+            share();
+
+        } else {
+            // User clicked to log in.
+            ParseLoginBuilder loginBuilder = new ParseLoginBuilder(
+                    MainActivity.this);
+            Intent parseLoginIntent = loginBuilder.setParseLoginEnabled(true)
+                    .setParseLoginEmailAsUsername(false)
+                    .setParseSignupButtonText("Create account")
+                    .setParseSignupMinPasswordLength(4)
+                    .setAppLogo(R.drawable.sign_in_logo)
+                    .build();
+            startActivityForResult(parseLoginIntent, LOGIN_REQUEST);
+        }
+
+
+
+    }
+
+    private void share() {
+
+        if (DropboxAuthHelper.sharedHelper(MainActivity.this).isLinked()) {
+
+            if ((mCurrentPack.creatorID).equals(OpenUDID_manager.getOpenUDID())) {
+
+                if (PackRecordHelper.checkUploadPackNecessary(MainActivity.this, mCurrentPack)) {
+                    setPasswordAndUpload();
+                } else {
+                    DropboxShareHelper dropboxShareHelper = new DropboxShareHelper(this,mCurrentPack,true);
+                    dropboxShareHelper.execute();
+                }
+
+            } else {
+                AWSShareHelper AWSShareHelper = new AWSShareHelper(this,mCurrentPack,true);
+                AWSShareHelper.share();
+
+            }
+
+        } else {
+
+            if ((mCurrentPack.creatorID).equals(OpenUDID_manager.getOpenUDID())) {
+
+                if (PackRecordHelper.checkUploadPackNecessary(MainActivity.this, mCurrentPack)) {
+                    setPasswordAndUpload();
+                } else {
+                    if (DropboxAuthHelper.sharedHelper(MainActivity.this).isLinked()) {
+                        DropboxShareHelper dropboxShareHelper = new DropboxShareHelper(this,mCurrentPack,true);
+                        dropboxShareHelper.execute();
+                    } else {
+                        AWSShareHelper AWSShareHelper = new AWSShareHelper(this,mCurrentPack,true);
+                        AWSShareHelper.share();
+                    }
+                }
+
             } else {
                 if (DropboxAuthHelper.sharedHelper(MainActivity.this).isLinked()) {
                     DropboxShareHelper dropboxShareHelper = new DropboxShareHelper(this,mCurrentPack,true);
@@ -1004,15 +1067,7 @@ public class MainActivity extends FragmentActivity implements
                     AWSShareHelper AWSShareHelper = new AWSShareHelper(this,mCurrentPack,true);
                     AWSShareHelper.share();
                 }
-            }
 
-        } else {
-            if (DropboxAuthHelper.sharedHelper(MainActivity.this).isLinked()) {
-                DropboxShareHelper dropboxShareHelper = new DropboxShareHelper(this,mCurrentPack,true);
-                dropboxShareHelper.execute();
-            } else {
-                AWSShareHelper AWSShareHelper = new AWSShareHelper(this,mCurrentPack,true);
-                AWSShareHelper.share();
             }
 
         }
@@ -1560,6 +1615,83 @@ public class MainActivity extends FragmentActivity implements
             }
         }
     };
+
+
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        //Parse暂时不支持区分sign up或sign in
+        //https://github.com/ParsePlatform/ParseUI-Android/issues/79
+
+        if (requestCode == LOGIN_REQUEST) {
+
+            if (resultCode == Activity.RESULT_OK) {
+
+                final ParseUser currentUser = ParseUser.getCurrentUser();
+                if (currentUser != null) {
+                    if (currentUser.getUsername().length() > 20) { //表明这是一个系统生成的user name，而不是二次用户生成
+
+                        final EditText passwordEditText = new EditText(MainActivity.this);
+                        passwordEditText.setSingleLine(true);
+                        passwordEditText.setInputType(InputType.TYPE_TEXT_FLAG_NO_SUGGESTIONS);
+                        new AlertDialog.Builder(MainActivity.this)
+                                .setTitle(R.string.DIALOG_CREATE_ACCOUNT_ALERT_MESSAGE)
+                                .setIcon(android.R.drawable.ic_dialog_info)
+                                .setView(passwordEditText)
+                                .setPositiveButton(R.string.DIALOG_DONE, new DialogInterface.OnClickListener() {
+                                    @Override
+                                    public void onClick(DialogInterface dialog, int which) {
+                                        String username = passwordEditText.getText().toString().trim().toLowerCase();//bucket name必须小写
+                                        currentUser.setUsername(username);
+                                        currentUser.saveInBackground(new SaveCallback() {
+                                            @Override
+                                            public void done(ParseException e) {
+                                                if (e == null) {
+                                                    share();
+                                                } else {
+                                                    new SweetAlertDialog(MainActivity.this, SweetAlertDialog.ERROR_TYPE)
+                                                            .setTitleText(getString(R.string.DIALOG_ERROR))
+                                                            .setContentText(getString(R.string.DIALOG_ACCOUNT_USERNAME_HAS_BEEN_REGISTERED))
+                                                            .show();
+
+                                                }
+
+                                            }
+                                        });
+
+
+                                    }
+                                })
+                                .setNegativeButton(R.string.DIALOG_CANCEL, null)
+                                .show();
+
+                    } else {
+
+                        share();
+                    }
+                } else {
+                    new SweetAlertDialog(MainActivity.this,SweetAlertDialog.ERROR_TYPE)
+                            .setTitleText(getString(R.string.DIALOG_ERROR))
+                            .setContentText(getString(R.string.DIALOG_SOCIAL_MEDIA_LOG_IN_FAILURE))
+                            .show();
+                    Timber.tag(Global.debugTag).w("sign up or sign in failure.currentUser should exist");
+                }
+
+
+            } else if (resultCode == Activity.RESULT_CANCELED) {
+
+            } else {
+
+                new SweetAlertDialog(MainActivity.this,SweetAlertDialog.ERROR_TYPE)
+                        .setTitleText(getString(R.string.DIALOG_ERROR))
+                        .setContentText(getString(R.string.DIALOG_SOCIAL_MEDIA_LOG_IN_FAILURE))
+                        .show();
+                Timber.tag(Global.debugTag).w("sign up or sign in failure with resultCode = " + resultCode);
+            }
+        }
+    }
 
 
 }
