@@ -1,4 +1,4 @@
-include ':androidFlashCardCreator', ':discreteSeekBar'
+include ':androidFlashCardCreator', ':discreteSeekBar', ':ParseUI-Login'
 include ':Viewflow'
 include ':NewQuickAction3D'
 include ':simpleSocialSharing'

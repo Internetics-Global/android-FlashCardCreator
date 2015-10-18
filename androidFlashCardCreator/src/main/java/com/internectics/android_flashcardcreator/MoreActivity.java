@@ -2,26 +2,38 @@ package com.internectics.android_flashcardcreator;
 
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
+import android.text.InputType;
 import android.util.Log;
 import android.view.View;
 import android.view.WindowManager;
+import android.widget.EditText;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.internectics.UI.togglebutton.ToggleButton;
 import com.internectics.helper.Dropbox.DropboxAuthHelper;
 import com.internectics.util.AppConfig;
+import com.internectics.util.Global;
+import com.parse.LogOutCallback;
+import com.parse.ParseException;
+import com.parse.ParseUser;
+import com.parse.SaveCallback;
+import com.parse.ui.ParseLoginBuilder;
 
 import org.adw.library.widgets.discreteseekbar.DiscreteSeekBar;
 
 import cn.pedant.SweetAlert.SweetAlertDialog;
+import timber.log.Timber;
 
 public class MoreActivity extends Activity {
 
-    ToggleButton mStorageProviderToggleButton;
+    private static final int LOGIN_REQUEST = 0;
+
+    ToggleButton             mStorageProviderToggleButton;
+    TextView                 mSocialAccountTextView;
 
 
     public void onCreate(Bundle savedInstanceState) {
@@ -39,19 +51,21 @@ public class MoreActivity extends Activity {
         final ToggleButton showQuestionOnlyToggleButton = (ToggleButton) findViewById(R.id.auto_show_question_only_toggle_button);
         final ToggleButton maleFemaleToggleButton = (ToggleButton) findViewById(R.id.male_female_voice_toggle_button);
 
+        mSocialAccountTextView = (TextView) findViewById(R.id.random_play_social_account_textview);
+
         mStorageProviderToggleButton = (ToggleButton) findViewById(R.id.storage_provider_toggle_button);
 
         final DiscreteSeekBar countDownDiscreteSeekBar = (DiscreteSeekBar) findViewById(R.id.seekbar);
         final TextView countDownTextView = (TextView) findViewById(R.id.count_down_textview);
 
 
-        countDownTextView.setText(String.format("%s (%d)", getString(R.string.Table_Item_Count_Down),AppConfig.sharedInstance().getCountDown()));
+        countDownTextView.setText(String.format("%s (%d)", getString(R.string.Table_Item_Count_Down), AppConfig.sharedInstance().getCountDown()));
         countDownDiscreteSeekBar.setProgress(AppConfig.sharedInstance().getCountDown());
         countDownDiscreteSeekBar.setOnProgressChangeListener(new DiscreteSeekBar.OnProgressChangeListener() {
             @Override
             public void onProgressChanged(DiscreteSeekBar seekBar, int value, boolean fromUser) {
                 AppConfig.sharedInstance().setCountDown(value);
-                countDownTextView.setText(String.format("%s (%d)", getString(R.string.Table_Item_Count_Down),value));
+                countDownTextView.setText(String.format("%s (%d)", getString(R.string.Table_Item_Count_Down), value));
             }
 
             @Override
@@ -173,12 +187,50 @@ public class MoreActivity extends Activity {
             }
         });
 
-       findViewById(R.id.rl_about).setOnClickListener(new View.OnClickListener() {
-           @Override
-           public void onClick(View v) {
-               startActivity(new Intent(MoreActivity.this, AboutActivity.class));
-           }
-       });
+        findViewById(R.id.rl_about).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(MoreActivity.this, AboutActivity.class));
+            }
+        });
+
+
+        findViewById(R.id.rl_social_account).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                ParseUser currentUser = ParseUser.getCurrentUser();
+
+                if (currentUser != null) {
+                    // User clicked to log out.
+                    ParseUser.logOutInBackground(new LogOutCallback() {
+                        @Override
+                        public void done(ParseException e) {
+
+                            mSocialAccountTextView.setText(R.string.Table_Item_Log_In_Social_Network);
+
+                            new SweetAlertDialog(MoreActivity.this,SweetAlertDialog.SUCCESS_TYPE)
+                                .setTitleText(getString(R.string.DIALOG_AlERT))
+                                .setContentText(getString(R.string.DIALOG_SOCIAL_MEDIA_LOG_OUT_SUCCESS))
+                                    .show();
+
+                        }
+                    });
+
+                } else {
+                    // User clicked to log in.
+                    ParseLoginBuilder loginBuilder = new ParseLoginBuilder(
+                            MoreActivity.this);
+                    Intent parseLoginIntent = loginBuilder.setParseLoginEnabled(true)
+                            .setParseSignupButtonText("Create account")
+                            .setParseSignupMinPasswordLength(4)
+                            .setAppLogo(R.drawable.sign_in_logo)
+                            .build();
+                    startActivityForResult(parseLoginIntent, LOGIN_REQUEST);
+                }
+            }
+        });
+
 
     }
 
@@ -195,6 +247,12 @@ public class MoreActivity extends Activity {
     @Override
     protected void onResume() {
         super.onResume();
+
+        if (ParseUser.getCurrentUser() != null) {
+            mSocialAccountTextView.setText(R.string.Table_Item_Log_Out_Social_Network);
+        } else {
+            mSocialAccountTextView.setText(R.string.Table_Item_Log_In_Social_Network);
+        }
 
         if (DropboxAuthHelper.sharedHelper(MoreActivity.this).isLinked()) {
             mStorageProviderToggleButton.setToggleOn();
@@ -218,5 +276,87 @@ public class MoreActivity extends Activity {
             }
         }
 
+    }
+
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        //Parse暂时不支持区分sign up或sign in
+        //https://github.com/ParsePlatform/ParseUI-Android/issues/79
+
+        if (requestCode == LOGIN_REQUEST) {
+
+            if (resultCode == Activity.RESULT_OK) {
+
+                final ParseUser currentUser = ParseUser.getCurrentUser();
+                if (currentUser != null) {
+                    if (currentUser.getUsername().length() > 20) { //表明这是一个系统生成的user name，而不是二次用户生成
+
+                        final EditText passwordEditText = new EditText(MoreActivity.this);
+                        passwordEditText.setSingleLine(true);
+                        passwordEditText.setInputType(InputType.TYPE_TEXT_FLAG_NO_SUGGESTIONS);
+                        new AlertDialog.Builder(MoreActivity.this)
+                                .setTitle(R.string.DIALOG_CREATE_ACCOUNT_ALERT_MESSAGE)
+                                .setIcon(android.R.drawable.ic_dialog_info)
+                                .setView(passwordEditText)
+                                .setPositiveButton(R.string.DIALOG_DONE, new DialogInterface.OnClickListener() {
+                                    @Override
+                                    public void onClick(DialogInterface dialog, int which) {
+                                        String username = passwordEditText.getText().toString();
+                                        currentUser.setUsername(username);
+                                        currentUser.saveInBackground(new SaveCallback() {
+                                            @Override
+                                            public void done(ParseException e) {
+                                                if (e == null) {
+                                                    new SweetAlertDialog(MoreActivity.this, SweetAlertDialog.SUCCESS_TYPE)
+                                                            .setTitleText(getString(R.string.DIALOG_AlERT))
+                                                            .setContentText(getString(R.string.DIALOG_ACCOUNT_USERNAME_LINKED_SUCCESSFULLY))
+                                                            .show();
+                                                } else {
+                                                    new SweetAlertDialog(MoreActivity.this, SweetAlertDialog.ERROR_TYPE)
+                                                                                                                .setTitleText(getString(R.string.DIALOG_ERROR))
+                                                                                                                .setContentText(getString(R.string.DIALOG_ACCOUNT_USERNAME_HAS_BEEN_REGISTERED))
+                                                            .show();
+
+                                                }
+
+                                            }
+                                        });
+
+
+                                    }
+                                })
+                                .setNegativeButton(R.string.DIALOG_CANCEL, null)
+                                .show();
+
+                    } else {
+
+                        new SweetAlertDialog(MoreActivity.this,SweetAlertDialog.SUCCESS_TYPE)
+                                .setTitleText(getString(R.string.DIALOG_AlERT))
+                                .setContentText(getString(R.string.DIALOG_SOCIAL_MEDIA_SIGNUP_OR_SIGNIN_SUCCESS))
+                                .show();
+                    }
+                } else {
+                    new SweetAlertDialog(MoreActivity.this,SweetAlertDialog.ERROR_TYPE)
+                            .setTitleText(getString(R.string.DIALOG_ERROR))
+                            .setContentText(getString(R.string.DIALOG_SOCIAL_MEDIA_LOG_IN_FAILURE))
+                            .show();
+                    Timber.tag(Global.debugTag).w("sign up or sign in failure.currentUser should exist");
+                }
+
+
+            } else if (resultCode == Activity.RESULT_CANCELED) {
+
+            } else {
+
+                new SweetAlertDialog(MoreActivity.this,SweetAlertDialog.ERROR_TYPE)
+                        .setTitleText(getString(R.string.DIALOG_ERROR))
+                        .setContentText(getString(R.string.DIALOG_SOCIAL_MEDIA_LOG_IN_FAILURE))
+                        .show();
+                Timber.tag(Global.debugTag).w("sign up or sign in failure with resultCode = " + resultCode);
+            }
+        }
     }
 }

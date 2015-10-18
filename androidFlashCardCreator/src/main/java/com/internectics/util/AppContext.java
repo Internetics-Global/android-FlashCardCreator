@@ -10,6 +10,8 @@ import com.orhanobut.hawk.Hawk;
 import com.orhanobut.hawk.LogLevel;
 import com.parse.Parse;
 import com.parse.ParseCrashReporting;
+import com.parse.ParseFacebookUtils;
+import com.parse.ParseTwitterUtils;
 
 import java.util.UUID;
 
@@ -28,16 +30,26 @@ public class AppContext extends Application {
 
         AppContext.mContext = getApplicationContext();
 
-        // Initialize the Amazon Cognito credentials provider
+        // Setup Amazon Cognito
         mCredentialsProvider = new CognitoCachingCredentialsProvider(
                 mContext, // Context
                 "us-east-1:55b5aa55-921e-49d0-b4d3-673793805862", // Identity Pool ID
                 Regions.US_EAST_1 // Region
         );
 
+        // Setup Parse
         ParseCrashReporting.enable(this);
         Parse.enableLocalDatastore(this);
-        Parse.initialize(this, "n6hQQEqaa52887A46KF3ThYgxG4dSmQBTHJMArkW", "VUDwIHOFGEkAe9ngdFgdBqVFDgOLEINdnd0DkF2i");
+        Parse.initialize(this);
+        // Parse的app_key和app_id是在Manifest中进行设置
+
+        //Twitter
+        ParseTwitterUtils.initialize("spW6th3vldJVq5Zjnud3Lg",
+                "CZHdQXJIVGtLlBnvh6T1eEZ2WJgWPSfNUdju6jXEs");
+
+        //Facebook
+        ParseFacebookUtils.initialize(this);
+        //facebook_app_id 是在Manifest中进行设置
 
         if (Global.isDebug) {
             Timber.plant(new Timber.DebugTree());

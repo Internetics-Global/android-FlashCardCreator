@@ -12,7 +12,9 @@
     <string name="app_name">FlashCardCreator</string>
 
     <!--facebook related-->
-    <string name="app_id">430339350417672</string>
+    <string name="facebook_app_id">430339350417672</string>
+    <string name="parse_app_id">GrdwW4Td2T9d7hp9LvhHdXcewKycs6HM3nyUkXta</string>
+    <string name="parse_client_key">qHXKXhGMkvvn4TaHyXPwLi8wUeAnbXLnwFPvFuRd</string>
 
     <string name="DIALOG_TITLE_NO_NETWORK">No internet connection</string>
     <string name="DIALOG_PLEASE_CHECK_YOUR_NETWORK">Please check your internet settings.</string>
@@ -32,6 +34,7 @@
     <string name="DIALOG_SET">Set</string>
     <string name="DIALOG_CANCEL">Cancel</string>
     <string name="DIALOG_DONE">Done</string>
+    <string name="DIALOG_ERROR">Error</string>
     <string name="DIALOG_SHARE">Share</string>
     <string name="DIALOG_SET_MAX_NUMBER_OF_DOWNLOADS">Set max number of downloads</string>
     <string name="DIALOG_WRONG_PASSWORD">Wrong password</string>
@@ -92,8 +95,19 @@
     <string name="DIALOG_DOWNLOAD_FAILED">Download failed</string>
     <string name="DIALOG_NOW_DECRYPTING">Now decrypting...</string>
 
+    <string name="DIALOG_SOCIAL_MEDIA_LOG_OUT_SUCCESS">You have successfully signed out.</string>
+    <string name="DIALOG_SOCIAL_MEDIA_LOG_OUT_FAILURE">Failed, please try again later.</string>
+    <string name="DIALOG_SOCIAL_MEDIA_LOG_IN_SUCCESS">You have successfully sign in.</string>
+    <string name="DIALOG_SOCIAL_MEDIA_LOG_IN_FAILURE">Failed, please try again later.</string>
+    <string name="DIALOG_ACCOUNT_CREATED_SUCCESS">You have successfully created a new account.</string>
+    <string name="DIALOG_ACCOUNT_CREATED_FAILURE">Failed to create a new account.</string>
+    <string name="DIALOG_CREATE_ACCOUNT_ALERT_MESSAGE">Create a user name</string>
+    <string name="DIALOG_ACCOUNT_USERNAME_HAS_BEEN_REGISTERED">The user name has been registered</string>
+    <string name="DIALOG_ACCOUNT_USERNAME_LINKED_SUCCESSFULLY">Successfully</string>
+    <string name="DIALOG_SOCIAL_MEDIA_SIGNUP_OR_SIGNIN_SUCCESS">You now are logged in</string>
+    <string name="DIALOG_FAILURE_TO_CREATE_BUCKET">Failure to create a new bucket on AWS</string>
 
-<string name="NavigationBarItem_Packs">Packs</string>
+    <string name="NavigationBarItem_Packs">Packs</string>
     <string name="NavigationBarItem_Create">Create</string>
     <string name="NavigationBarItem_Edit"> Edit </string>
     <string name="NavigationBarItem_Close">Close</string>
@@ -211,6 +225,8 @@
     <string name="Table_Item_Mute_Sound_Recording">Mute Sound Recording</string>
     <string name="Table_Item_Count_Down">Count Down</string>
     <string name="Table_Item_Amazon_Or_Dropbox">Use Dropbox Storage</string>
+    <string name="Table_Item_Log_In_Social_Network">Sign in</string>
+    <string name="Table_Item_Log_Out_Social_Network">Sign out</string>
 
     <string name="Indicator_Upload">Uploading first…</string>
     <string name="Indicator_Creating_Short_Linkage">Creating short linkage</string>

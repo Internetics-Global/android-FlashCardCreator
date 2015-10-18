@@ -163,6 +163,22 @@
         <View
             style="@style/h_line" />
 
+        <RelativeLayout
+            android:id="@+id/rl_social_account"
+            style="@style/option_item_rl" >
+
+            <TextView
+                android:id="@+id/random_play_social_account_textview"
+                style="@style/option_item_text_parent"
+                android:text= "@string/Table_Item_Log_In_Social_Network"
+                android:textColor="@android:color/white"
+                android:textSize="16dp" />
+        </RelativeLayout>
+
+
+        <View
+            style="@style/h_line" />
+
 
 
 
