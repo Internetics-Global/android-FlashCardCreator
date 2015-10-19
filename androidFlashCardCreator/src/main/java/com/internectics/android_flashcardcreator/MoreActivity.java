@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
 import android.text.InputType;
@@ -203,11 +204,20 @@ public class MoreActivity extends Activity {
 
                 if (currentUser != null) {
                     // User clicked to log out.
+
+                    final SweetAlertDialog pDialog = new SweetAlertDialog(MoreActivity.this, SweetAlertDialog.PROGRESS_TYPE);
+                    pDialog.getProgressHelper().setBarColor(Color.parseColor("#A5DC86"));
+                    pDialog.setTitleText("Logging out...");
+                    pDialog.setCancelable(false);
+                    pDialog.show();
+
                     ParseUser.logOutInBackground(new LogOutCallback() {
                         @Override
                         public void done(ParseException e) {
 
                             mSocialAccountTextView.setText(R.string.Table_Item_Log_In_Social_Network);
+
+                            pDialog.dismiss();
 
                             new SweetAlertDialog(MoreActivity.this,SweetAlertDialog.SUCCESS_TYPE)
                                 .setTitleText(getString(R.string.DIALOG_AlERT))
