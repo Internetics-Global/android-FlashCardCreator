@@ -12,6 +12,7 @@ import com.amazonaws.event.ProgressListener;
 import com.amazonaws.mobileconnectors.s3.transfermanager.TransferManager;
 import com.amazonaws.mobileconnectors.s3.transfermanager.Upload;
 import com.amazonaws.services.s3.AmazonS3;
+import com.amazonaws.services.s3.model.Bucket;
 import com.amazonaws.services.s3.model.CannedAccessControlList;
 import com.amazonaws.services.s3.model.CreateBucketRequest;
 import com.amazonaws.services.s3.model.PutObjectRequest;
@@ -21,6 +22,7 @@ import com.internectics.util.Global;
 import com.parse.ParseUser;
 
 import java.io.File;
+import java.util.List;
 
 import cn.pedant.SweetAlert.SweetAlertDialog;
 import timber.log.Timber;
@@ -114,7 +116,17 @@ public class AWSUploadHelper {
 
             boolean succeeded = true;
             try {
-                boolean existing = s3client.doesBucketExist(expectedBucketName);
+                boolean existing = false;
+
+                //s3client.doesBucketExist(expectedBucketName) //这种方法不能使用，因为这不能证明当前账号下是否存在
+
+                List<Bucket> list = s3client.listBuckets();
+                for (Bucket item:list) {
+                    if (item.getName().equals(expectedBucketName)) {
+                        existing = true;
+                        break;
+                    }
+                }
 
                 if (existing == false) {
 
