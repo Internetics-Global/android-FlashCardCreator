@@ -15,11 +15,15 @@ import com.amazonaws.services.s3.AmazonS3;
 import com.amazonaws.services.s3.model.CannedAccessControlList;
 import com.amazonaws.services.s3.model.CreateBucketRequest;
 import com.amazonaws.services.s3.model.PutObjectRequest;
+import com.internectics.android_flashcardcreator.R;
 import com.internectics.util.AppContext;
+import com.internectics.util.Global;
 import com.parse.ParseUser;
 
 import java.io.File;
 
+import cn.pedant.SweetAlert.SweetAlertDialog;
+import timber.log.Timber;
 
 
 /**
@@ -31,9 +35,12 @@ public class AWSUploadHelper {
     private final Handler     mHandler;
     private UploadThread      mUploadThread;
 
+    private Context           mContext;
+
     public AWSUploadHelper(Context context, @NonNull Handler handler) {
         mTransferManager = new TransferManager(AppContext.getCredentialsProvider());
         mHandler     = handler;
+        mContext = context;
     }
 
     public void upload(@NonNull File file) {
@@ -105,6 +112,7 @@ public class AWSUploadHelper {
 
             String expectedBucketName = ParseUser.getCurrentUser().getUsername().toLowerCase(); //bucket name必须是low case的，这是aws要求的
 
+            boolean succeeded = true;
             try {
                 boolean existing = s3client.doesBucketExist(expectedBucketName);
 
@@ -115,6 +123,7 @@ public class AWSUploadHelper {
 
                 }
             } catch (AmazonServiceException ase) {
+                succeeded = false;
                 System.out.println("Caught an AmazonServiceException, which " +
                         "means your request made it " +
                         "to Amazon S3, but was rejected with an error response" +
@@ -125,12 +134,21 @@ public class AWSUploadHelper {
                 System.out.println("Error Type:       " + ase.getErrorType());
                 System.out.println("Request ID:       " + ase.getRequestId());
             } catch (AmazonClientException ace) {
+                succeeded = false;
                 System.out.println("Caught an AmazonClientException, which " +
                         "means the client encountered " +
                         "an internal error while trying to " +
                         "communicate with S3, " +
                         "such as not being able to access the network.");
                 System.out.println("Error Message: " + ace.getMessage());
+            }
+
+            if (succeeded == false) {
+                new SweetAlertDialog(mContext, SweetAlertDialog.ERROR_TYPE)
+                    .setTitleText(mContext.getString(R.string.DIALOG_ERROR))
+                    .setContentText(mContext.getString(R.string.DIALOG_FAILURE_TO_CREATE_BUCKET))
+                    .show();
+                return;
             }
 
 
@@ -142,7 +160,7 @@ public class AWSUploadHelper {
 
                     mUpload.addProgressListener(mListener);
                 } catch (Exception e) {
-                    Log.e("ccaa", "", e);
+                    Log.e(Global.debugTag, "", e);
                 }
             }
         }

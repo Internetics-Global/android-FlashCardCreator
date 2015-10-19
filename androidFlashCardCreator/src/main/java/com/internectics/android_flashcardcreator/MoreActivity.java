@@ -218,21 +218,25 @@ public class MoreActivity extends Activity {
                     });
 
                 } else {
-                    // User clicked to log in.
-                    ParseLoginBuilder loginBuilder = new ParseLoginBuilder(
-                            MoreActivity.this);
-                    Intent parseLoginIntent = loginBuilder.setParseLoginEnabled(true)
-                            .setParseLoginEmailAsUsername(false)
-                            .setParseSignupButtonText("Create account")
-                            .setParseSignupMinPasswordLength(4)
-                            .setAppLogo(R.drawable.sign_in_logo)
-                            .build();
-                    startActivityForResult(parseLoginIntent, LOGIN_REQUEST);
+                    parseUserAuth();
                 }
             }
         });
 
 
+    }
+
+    private void parseUserAuth() {
+
+        ParseLoginBuilder loginBuilder = new ParseLoginBuilder(
+                MoreActivity.this);
+        Intent parseLoginIntent = loginBuilder.setParseLoginEnabled(true)
+                .setParseLoginEmailAsUsername(false)
+                .setParseSignupButtonText("Create account")
+                .setParseSignupMinPasswordLength(4)
+                .setAppLogo(R.drawable.sign_in_logo)
+                .build();
+        startActivityForResult(parseLoginIntent, LOGIN_REQUEST);
     }
 
     @Override
@@ -306,6 +310,17 @@ public class MoreActivity extends Activity {
                                     @Override
                                     public void onClick(DialogInterface dialog, int which) {
                                         String username = passwordEditText.getText().toString().trim().toLowerCase(); //bucket name必须小写
+
+                                        if (username.length() == 0) {
+
+                                            new SweetAlertDialog(MoreActivity.this, SweetAlertDialog.ERROR_TYPE)
+                                                                                                .setTitleText("Oops...")
+                                                                                                .setContentText(getString(R.string.DIALOG_ACCOUNT_USERNAME_EMPTY_ERROR))
+                                                                                                .show();
+
+                                            return;
+                                        }
+
                                         currentUser.setUsername(username);
                                         currentUser.saveInBackground(new SaveCallback() {
                                             @Override
@@ -317,8 +332,8 @@ public class MoreActivity extends Activity {
                                                             .show();
                                                 } else {
                                                     new SweetAlertDialog(MoreActivity.this, SweetAlertDialog.ERROR_TYPE)
-                                                                                                                .setTitleText(getString(R.string.DIALOG_ERROR))
-                                                                                                                .setContentText(getString(R.string.DIALOG_ACCOUNT_USERNAME_HAS_BEEN_REGISTERED))
+                                                            .setTitleText(getString(R.string.DIALOG_ERROR))
+                                                            .setContentText(getString(R.string.DIALOG_ACCOUNT_USERNAME_HAS_BEEN_REGISTERED))
                                                             .show();
 
                                                 }

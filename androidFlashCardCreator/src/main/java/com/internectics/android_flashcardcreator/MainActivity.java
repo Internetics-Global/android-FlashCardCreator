@@ -73,7 +73,6 @@ import com.internectics.util.OpenUDID_manager;
 import com.internectics.util.StringUtils;
 import com.internectics.util.TipHelper;
 import com.internectics.util.UIHelper;
-import com.parse.LogOutCallback;
 import com.parse.ParseException;
 import com.parse.ParseUser;
 import com.parse.SaveCallback;
@@ -580,18 +579,6 @@ public class MainActivity extends FragmentActivity implements
             }
         }
 
-        //之所以是个延时操作是因为上面的showPackListView也是一个延时操作
-        Handler handler = new Handler();
-        handler.postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                mIsAllowedToShowPackList = true;
-
-            }
-        },200);
-
-
-
 
     }
 
@@ -1008,18 +995,27 @@ public class MainActivity extends FragmentActivity implements
             share();
 
         } else {
-            // User clicked to log in.
-            ParseLoginBuilder loginBuilder = new ParseLoginBuilder(
-                    MainActivity.this);
-            Intent parseLoginIntent = loginBuilder.setParseLoginEnabled(true)
-                    .setParseLoginEmailAsUsername(false)
-                    .setParseSignupButtonText("Create account")
-                    .setParseSignupMinPasswordLength(4)
-                    .setAppLogo(R.drawable.sign_in_logo)
-                    .build();
-            startActivityForResult(parseLoginIntent, LOGIN_REQUEST);
+
+            parseUserAuth();
         }
 
+
+
+    }
+
+    private void parseUserAuth() {
+
+        mIsAllowedToShowPackList = false;
+
+        ParseLoginBuilder loginBuilder = new ParseLoginBuilder(
+                MainActivity.this);
+        Intent parseLoginIntent = loginBuilder.setParseLoginEnabled(true)
+                .setParseLoginEmailAsUsername(false)
+                .setParseSignupButtonText("Create account")
+                .setParseSignupMinPasswordLength(4)
+                .setAppLogo(R.drawable.sign_in_logo)
+                .build();
+        startActivityForResult(parseLoginIntent, LOGIN_REQUEST);
 
 
     }
@@ -1644,6 +1640,15 @@ public class MainActivity extends FragmentActivity implements
                                     @Override
                                     public void onClick(DialogInterface dialog, int which) {
                                         String username = passwordEditText.getText().toString().trim().toLowerCase();//bucket name必须小写
+
+                                        if (username.length() == 0) {
+                                            new SweetAlertDialog(MainActivity.this, SweetAlertDialog.ERROR_TYPE)
+                                                    .setTitleText("Oops...")
+                                                    .setContentText(getString(R.string.DIALOG_ACCOUNT_USERNAME_EMPTY_ERROR))
+                                                    .show();
+                                            return;
+                                        }
+
                                         currentUser.setUsername(username);
                                         currentUser.saveInBackground(new SaveCallback() {
                                             @Override
@@ -1690,7 +1695,10 @@ public class MainActivity extends FragmentActivity implements
                         .show();
                 Timber.tag(Global.debugTag).w("sign up or sign in failure with resultCode = " + resultCode);
             }
+        } else {
+
         }
+
     }
 
 

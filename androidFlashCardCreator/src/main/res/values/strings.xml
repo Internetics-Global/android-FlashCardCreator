@@ -106,6 +106,7 @@
     <string name="DIALOG_ACCOUNT_USERNAME_LINKED_SUCCESSFULLY">Successfully</string>
     <string name="DIALOG_SOCIAL_MEDIA_SIGNUP_OR_SIGNIN_SUCCESS">You now are logged in</string>
     <string name="DIALOG_FAILURE_TO_CREATE_BUCKET">Failure to create a new bucket on AWS</string>
+    <string name="DIALOG_ACCOUNT_USERNAME_EMPTY_ERROR">User name can not be empty</string>
 
     <string name="NavigationBarItem_Packs">Packs</string>
     <string name="NavigationBarItem_Create">Create</string>
