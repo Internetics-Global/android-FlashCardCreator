@@ -114,19 +114,24 @@ public class AWSUploadHelper {
 
             String expectedBucketName = ParseUser.getCurrentUser().getUsername().toLowerCase(); //bucket name必须是low case的，这是aws要求的
 
-            expectedBucketName = String.format("%s_%s",expectedBucketName,Global.BucketPostfixAfterUserName);
+            //AWS对于bucket是有命名要求的：http://docs.rightscale.com/faq/clouds/aws/What_are_valid_S3_bucket_names.html
+            expectedBucketName = String.format("%s-%s",expectedBucketName,Global.BucketPostfixAfterUserName);
 
             boolean succeeded = true;
             try {
                 boolean existing = false;
 
-                //s3client.doesBucketExist(expectedBucketName) //这种方法不能使用，因为这不能证明当前账号下是否存在
-
-                List<Bucket> list = s3client.listBuckets();
-                for (Bucket item:list) {
-                    if (item.getName().equals(expectedBucketName)) {
-                        existing = true;
-                        break;
+                if (true) {
+                    //一般来说返回true，表明在AWS全局范围内存在（但并不表明在当前账号下存在)；
+                    // 但是在本应用中，由于bucket的命名的特殊性（见上面），可以说如果在全局范围内存在，也必定在当前账号下存在
+                   existing = s3client.doesBucketExist(expectedBucketName);
+                } else {
+                    List<Bucket> list = s3client.listBuckets();
+                    for (Bucket item:list) {
+                        if (item.getName().equals(expectedBucketName)) {
+                            existing = true;
+                            break;
+                        }
                     }
                 }
 
