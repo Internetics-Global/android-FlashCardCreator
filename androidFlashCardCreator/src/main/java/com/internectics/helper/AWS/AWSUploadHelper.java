@@ -114,6 +114,8 @@ public class AWSUploadHelper {
 
             String expectedBucketName = ParseUser.getCurrentUser().getUsername().toLowerCase(); //bucket name必须是low case的，这是aws要求的
 
+            expectedBucketName = String.format("%s_%s",expectedBucketName,Global.BucketPostfixAfterUserName);
+
             boolean succeeded = true;
             try {
                 boolean existing = false;
