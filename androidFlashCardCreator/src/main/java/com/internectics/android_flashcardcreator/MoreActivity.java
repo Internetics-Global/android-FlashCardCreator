@@ -50,7 +50,7 @@ public class MoreActivity extends Activity {
         final ToggleButton muteSoundRecordingToggleButton = (ToggleButton) findViewById(R.id.mute_sound_recording_toggle_button);
         final ToggleButton textToSpeechToggleButton =(ToggleButton) findViewById(R.id.text_to_speech_toggle_button);
         final ToggleButton showQuestionOnlyToggleButton = (ToggleButton) findViewById(R.id.auto_show_question_only_toggle_button);
-        final ToggleButton maleFemaleToggleButton = (ToggleButton) findViewById(R.id.male_female_voice_toggle_button);
+//        final ToggleButton maleFemaleToggleButton = (ToggleButton) findViewById(R.id.male_female_voice_toggle_button);
 
         mSocialAccountTextView = (TextView) findViewById(R.id.random_play_social_account_textview);
 
@@ -145,22 +145,22 @@ public class MoreActivity extends Activity {
             }
         });
 
-        if (AppConfig.sharedInstance().isMaleVoice()) {
-            maleFemaleToggleButton.setToggleOn();
-        } else {
-            maleFemaleToggleButton.setToggleOff();
-        }
-        maleFemaleToggleButton.setOnToggleChanged(new ToggleButton.OnToggleChanged() {
-            @Override
-            public void onToggle(boolean on) {
-                AppConfig.sharedInstance().setMaleVoice(on);
-
-                new SweetAlertDialog(MoreActivity.this)
-                        .setTitleText(getString(R.string.DIALOG_AlERT))
-                        .setContentText(getString(R.string.DIALOG_NOT_SUPPORTED))
-                        .show();
-            }
-        });
+//        if (AppConfig.sharedInstance().isMaleVoice()) {
+//            maleFemaleToggleButton.setToggleOn();
+//        } else {
+//            maleFemaleToggleButton.setToggleOff();
+//        }
+//        maleFemaleToggleButton.setOnToggleChanged(new ToggleButton.OnToggleChanged() {
+//            @Override
+//            public void onToggle(boolean on) {
+//                AppConfig.sharedInstance().setMaleVoice(on);
+//
+//                new SweetAlertDialog(MoreActivity.this)
+//                        .setTitleText(getString(R.string.DIALOG_AlERT))
+//                        .setContentText(getString(R.string.DIALOG_NOT_SUPPORTED))
+//                        .show();
+//            }
+//        });
 
 
         if (DropboxAuthHelper.sharedHelper(MoreActivity.this).isLinked()) {

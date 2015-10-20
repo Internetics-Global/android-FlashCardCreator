@@ -104,26 +104,6 @@
                 android:layout_alignParentRight="true" />
         </RelativeLayout>
 
-        <View
-            style="@style/h_line"/>
-
-        <RelativeLayout
-            style="@style/option_item_rl" >
-
-            <TextView
-                style="@style/option_item_text_parent"
-                android:text="@string/Table_Item_Male_Female"
-                android:textColor="@android:color/white"
-                android:textSize="16dp" />
-
-            <com.internectics.UI.togglebutton.ToggleButton
-                android:layout_marginRight="15dp"
-                android:id="@+id/male_female_voice_toggle_button"
-                style="@style/option_item_toggleButton"
-                android:layout_alignParentRight="true" />
-        </RelativeLayout>
-
-
 
         <View
             style="@style/h_line" />
