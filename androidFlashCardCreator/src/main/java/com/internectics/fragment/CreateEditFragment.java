@@ -251,7 +251,6 @@ public class CreateEditFragment extends DialogFragment implements TextView.OnEdi
         mCurrentPack.platform = UIHelper.getCurrentPlatform();
         mCurrentPack.platform = UIHelper.getCurrentPlatform();
         mCurrentPack.userID = Global.USER_ID;
-        mCurrentPack.packID = Global.generateNoRepeatInt();
         mCurrentPack.lastVistDate = Global.currentTimeSeconds();
         mCurrentPack.autoPlaySpeed = mAutoPlaySpeedSeekbar.getProgress();
 
@@ -260,7 +259,13 @@ public class CreateEditFragment extends DialogFragment implements TextView.OnEdi
 
         final Card defaultCard = new Card();
         if (mIsEditPack) {
+
+            if (mCurrentPack.packID == -1) {
+                throw new IllegalStateException("During editing, packID should no be -1");
+            }
+
         } else {
+            mCurrentPack.packID = Global.generateNoRepeatInt();
             mCurrentPack.creatorID = OpenUDID_manager.getOpenUDID();
             mCurrentPack.createDate = Global.currentTimeSeconds();
             defaultCard.cardSN = 1;
