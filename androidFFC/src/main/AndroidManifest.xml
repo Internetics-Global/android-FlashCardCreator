@@ -1,0 +1,138 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.flipflash.android_ffc"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:versionCode="1"
+    android:versionName="1.0.0">
+
+    <supports-screens
+        android:requiresSmallestWidthDp="510" />
+
+    <uses-feature android:name="android.hardware.screen.portrait"/>
+
+    <uses-permission android:name="android.permission.INTERNET"/>
+    <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW"/>
+    <uses-permission android:name="com.google.android.gallery3d.permission.GALLERY_PROVIDER"/>
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
+    <uses-permission android:name="android.permission.RECORD_AUDIO" />
+
+    <uses-sdk
+        android:minSdkVersion="15"
+        android:targetSdkVersion="20"/>
+
+    <application
+        android:name="com.flipflash.util.AppContext"
+        android:allowBackup="false"
+        android:hardwareAccelerated="false"
+        android:largeHeap="true"
+        android:icon="@drawable/fcc_launcher"
+        tools:replace="icon, label,android:allowBackup"
+        android:label="@string/app_name"
+        android:theme="@style/FCCTheme">
+
+        <meta-data
+            android:name="com.parse.APPLICATION_ID"
+            android:value="@string/parse_app_id" />
+        <meta-data
+            android:name="com.parse.CLIENT_KEY"
+            android:value="@string/parse_client_key" />
+        <meta-data
+            android:name="com.facebook.sdk.ApplicationId"
+            android:value="@string/facebook_app_id"/>
+
+        <activity
+            android:name="com.flipflash.android_ffc.MainActivity"
+            android:label="@string/app_name"
+            android:windowSoftInputMode="adjustPan"
+            android:configChanges="orientation"
+            android:screenOrientation="sensorLandscape">
+            <intent-filter>
+                <data
+                    android:scheme="fcc"/>
+
+                <action android:name="android.intent.action.VIEW"/>
+
+                <category android:name="android.intent.category.BROWSABLE"/>
+                <category android:name="android.intent.category.DEFAULT"/>
+            </intent-filter>
+        </activity>
+        <activity
+            android:name="com.flipflash.android_ffc.PlayActivity"
+            android:windowSoftInputMode="stateAlwaysHidden"
+            android:screenOrientation="landscape">
+        </activity>
+        <activity
+            android:name="com.flipflash.android_ffc.AboutActivity"
+            android:screenOrientation="landscape">
+        </activity>
+        <activity
+            android:name="com.flipflash.android_ffc.VideoViewActivity"
+            android:windowSoftInputMode="stateAlwaysHidden"
+            android:screenOrientation="landscape">
+        </activity>
+        <activity android:name="com.flipflash.android_ffc.MoreActivity"
+            android:screenOrientation="sensorLandscape"/>
+        <activity android:name="com.flipflash.android_ffc.WebViewActivity"
+            android:screenOrientation="sensorLandscape"/>
+        <activity android:name="com.flipflash.android_ffc.AppStart" android:theme="@android:style/Theme.NoTitleBar.Fullscreen" android:screenOrientation="landscape">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN"/>
+                <category android:name="android.intent.category.LAUNCHER"/>
+            </intent-filter>
+        </activity>
+
+        <activity
+            android:name="com.soundcloud.android.crop.CropImageActivity"
+            android:screenOrientation="sensorLandscape"/>
+
+
+        <activity
+            android:name="com.dropbox.client2.android.AuthActivity"
+            android:launchMode="singleTask"
+            android:configChanges="orientation|keyboard">
+            <intent-filter>
+                <!-- Change this to be db- followed by your app key -->
+                <data android:scheme="db-rl7510fe1641dyl" />
+                <action android:name="android.intent.action.VIEW" />
+                <category android:name="android.intent.category.BROWSABLE"/>
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
+
+
+        <activity
+            android:name="com.parse.ui.ParseLoginActivity"
+            android:screenOrientation="portrait"
+            android:label="@string/app_name"
+            android:launchMode="singleTop">
+        <meta-data
+            android:name="com.parse.ui.ParseLoginActivity.PARSE_LOGIN_ENABLED"
+            android:value="true"/>
+        <meta-data
+            android:name="com.parse.ui.ParseLoginActivity.PARSE_LOGIN_EMAIL_AS_USERNAME"
+            android:value="true"/>
+        <meta-data
+            android:name="com.parse.ui.ParseLoginActivity.FACEBOOK_LOGIN_ENABLED"
+            android:value="true"/>
+        <meta-data
+            android:name="com.parse.ui.ParseLoginActivity.TWITTER_LOGIN_ENABLED"
+            android:value="true"/>
+        </activity>
+
+
+        <activity android:name="com.facebook.FacebookActivity"
+            android:screenOrientation="portrait"
+            android:configChanges=
+                "keyboard|keyboardHidden|screenLayout|screenSize|orientation"
+            android:theme="@android:style/Theme.Translucent.NoTitleBar"
+            android:label="@string/app_name" />
+
+        <service android:name="com.flipflash.util.OpenUDID_service">
+            <intent-filter>
+                <action android:name="org.openudid.GETUDID"/>
+            </intent-filter>
+        </service>
+    </application>
+
+</manifest>

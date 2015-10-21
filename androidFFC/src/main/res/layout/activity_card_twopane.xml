@@ -1,0 +1,321 @@
+<merge xmlns:android="http://schemas.android.com/apk/res/android"
+             xmlns:tools="http://schemas.android.com/tools"
+             android:layout_width="match_parent"
+             android:layout_height="match_parent"
+             xmlns:app="http://schemas.android.com/apk/res-auto"
+        >
+
+    <LinearLayout android:layout_width="match_parent"
+                  android:layout_height="match_parent"
+                  android:id="@+id/app_main"
+                  android:baselineAligned="false"
+                  android:divider="?android:attr/dividerHorizontal"
+                  android:orientation="horizontal"
+                  android:showDividers="none"
+                  android:background="@drawable/w2048"
+                  tools:context=".MainActivity">
+
+        <FrameLayout
+                android:id="@+id/card_list"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:background="@null">
+
+            <fragment
+                    android:id="@+id/fragment_card_list"
+                    android:name="com.flipflash.fragment.CardListFragment"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    tools:layout="@android:layout/list_content"/>
+
+            <FrameLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="60dp"
+                    android:layout_gravity="bottom">
+
+                <Button
+                        android:enabled="false"
+                        android:layout_height="match_parent"
+                        android:visibility="invisible"
+                        android:layout_width="match_parent"
+                        android:background="@drawable/image_add_card_button_bg">
+
+                </Button>
+
+                <Button
+                        android:id="@+id/add_card_button"
+                        android:layout_width= "60dp"
+                        android:layout_height= "60dp"
+                        android:layout_gravity="center"
+                        android:background="@drawable/selector_add_card"/>
+
+            </FrameLayout>
+
+            <Button
+                    android:id="@+id/master_view_mask"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:background="#E0000000"
+                    android:visibility="invisible">
+            </Button>
+
+            <LinearLayout
+                    android:id="@+id/master_view_updating_layout"
+                    android:layout_width="114dp"
+                    android:layout_height="70dp"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginRight="10dp"
+                    android:orientation="vertical"
+                    android:background="@drawable/button_updating_background"
+                    android:visibility="invisible"
+                    android:gravity="center"
+                    android:layout_gravity="center">
+
+                <ProgressBar
+                        android:id="@+id/master_view_updating_progressBar"
+                        android:layout_marginTop="5dp"
+                        android:layout_width="114dp"
+                        android:layout_height="40dp"
+                        android:indeterminate="true"
+                        style="?android:attr/progressBarStyle"
+                        android:gravity="center"
+                        android:layout_gravity="center"
+                        ></ProgressBar>
+
+                <TextView
+                        android:layout_width="114dp"
+                        android:layout_height="25dp"
+                        android:gravity="center"
+                        android:layout_gravity="center"
+                        android:enabled="false"
+                        android:text="@string/Title_Applying_To_All_Cards"
+                        android:textStyle="bold"
+                        android:textColor="#FFFFFF"
+                        android:textSize="12sp"
+                        >
+                </TextView>
+
+
+            </LinearLayout>
+
+
+        </FrameLayout>
+
+        <FrameLayout
+
+                android:layout_width="0dp"
+                android:id="@+id/detail"
+                android:layout_height="match_parent"
+                android:layout_weight="3"
+                android:background="@null">
+
+           <RelativeLayout
+               android:layout_width="fill_parent"
+               android:layout_height="1dp"
+               android:background="@android:color/holo_red_dark"
+               android:visibility="invisible">
+
+               <Button
+                   android:layout_width="@dimen/tooltip_fake_actionitem_width"
+                   android:layout_height="wrap_content"
+                   android:text="Share"
+                   android:background="@android:color/transparent"
+                   android:layout_marginRight="@dimen/tooltip_fake_actionitem_right_margin_1"
+                   android:textColor="@android:color/white"
+                   android:id="@+id/tooltip_fake_actionbar_share"
+                   android:layout_centerVertical="true"
+                   android:layout_alignParentRight = "true"/>
+
+               <Button
+                   android:layout_width="@dimen/tooltip_fake_actionitem_width"
+                   android:layout_height="wrap_content"
+                   android:text="Setting"
+                   android:background="@android:color/transparent"
+                   android:layout_marginRight="@dimen/tooltip_fake_actionitem_right_margin_2"
+                   android:textColor="@android:color/white"
+                   android:id="@+id/tooltip_fake_actionbar_setting"
+                   android:layout_centerVertical="true"
+                   android:layout_alignParentRight = "true" />
+
+               <Button
+                   android:layout_width="@dimen/tooltip_fake_actionitem_width"
+                   android:layout_height="wrap_content"
+                   android:text="Help"
+                   android:background="@android:color/transparent"
+                   android:layout_marginRight="@dimen/tooltip_fake_actionitem_right_margin_3"
+                   android:textColor="@android:color/white"
+                   android:id="@+id/tooltip_fake_actionbar_help"
+                   android:layout_centerVertical="true"
+                   android:layout_alignParentRight = "true"  />
+
+               <Button
+                   android:layout_width="@dimen/tooltip_fake_actionitem_width"
+                   android:layout_height="wrap_content"
+                   android:text="Palette"
+                   android:background="@android:color/transparent"
+                   android:layout_marginRight="@dimen/tooltip_fake_actionitem_right_margin_4"
+                   android:textColor="@android:color/white"
+                   android:id="@+id/tooltip_fake_actionbar_palette"
+                   android:layout_centerVertical="true"
+                   android:layout_alignParentRight = "true"  />
+
+               <Button
+                   android:layout_width="@dimen/tooltip_fake_actionitem_width"
+                   android:layout_height="wrap_content"
+                   android:text="@string/Title_Playback"
+                   android:background="@android:color/transparent"
+                   android:layout_marginRight="@dimen/tooltip_fake_actionitem_right_margin_5"
+                   android:textColor="@android:color/white"
+                   android:id="@+id/tooltip_fake_actionbar_play"
+                   android:layout_centerVertical="true"
+                   android:layout_alignParentRight = "true"  />
+
+               <Button
+                   android:layout_width="@dimen/tooltip_fake_actionitem_width"
+                   android:layout_height="wrap_content"
+                   android:text="Create Pack"
+                   android:background="@android:color/transparent"
+                   android:layout_marginRight="@dimen/tooltip_fake_actionitem_right_margin_6"
+                   android:textColor="@android:color/white"
+                   android:id="@+id/tooltip_fake_actionbar_create_pack"
+                   android:layout_centerVertical="true"
+                   android:layout_alignParentRight = "true"  />
+
+               <Button
+                   android:layout_width="@dimen/tooltip_fake_actionitem_width"
+                   android:layout_height="wrap_content"
+                   android:text="Edit Pack"
+                   android:background="@android:color/transparent"
+                   android:layout_marginRight="@dimen/tooltip_fake_actionitem_right_margin_7"
+                   android:textColor="@android:color/white"
+                   android:id="@+id/tooltip_fake_actionbar_edit_pack"
+                   android:layout_centerVertical="true"
+                   android:layout_alignParentRight = "true"  />
+
+               <Button
+                   android:layout_width="@dimen/tooltip_fake_actionitem_width"
+                   android:layout_height="wrap_content"
+                   android:text="Open Pack"
+                   android:background="@android:color/transparent"
+                   android:layout_marginRight="@dimen/tooltip_fake_actionitem_right_margin_8"
+                   android:textColor="@android:color/white"
+                   android:id="@+id/tooltip_fake_actionbar_open_pack"
+                   android:layout_centerVertical="true"
+                   android:layout_alignParentRight = "true"  />
+
+
+               </RelativeLayout>
+
+            <FrameLayout
+                    android:id="@+id/card_detail_container"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+
+            </FrameLayout>
+
+            <LinearLayout
+                android:id="@+id/pack_info_layout"
+                android:visibility="visible"
+                android:layout_gravity="center"
+                android:orientation="vertical"
+                android:layout_width="@dimen/pack_info_layout_width"
+                android:layout_height="@dimen/pack_info_layout_height">
+
+                <ImageView
+                    android:id="@+id/pack_info_cover_image"
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:layout_weight="1"
+                    android:layout_gravity="center"/>
+
+                <TextView
+                    android:id="@+id/pack_info_title"
+                    android:layout_width="match_parent"
+                    android:layout_height="20dp"
+                    android:textStyle="bold"
+                    android:text=""
+                    android:layout_marginTop="10dp"
+                    android:gravity="center"
+                    android:layout_gravity="center"
+                    android:textColor="@android:color/white"
+                    android:textAppearance="?android:attr/textAppearanceSmall" />
+
+
+                <TextView
+                    android:id="@+id/pack_info_share_code"
+                    android:layout_width="match_parent"
+                    android:layout_height="20dp"
+                    android:textStyle="bold"
+                    android:text=""
+                    android:gravity="center"
+                    android:layout_gravity="center"
+                    android:textColor="@android:color/white"
+                    android:textAppearance="?android:attr/textAppearanceSmall" />
+
+            </LinearLayout>
+
+            <FrameLayout
+                    android:id="@+id/add_card_frame_layout"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:visibility="invisible"
+                    android:background="@drawable/w2048">
+
+            </FrameLayout>
+            
+
+        </FrameLayout>
+
+
+
+    </LinearLayout>
+
+
+    <FrameLayout
+        android:id="@+id/record_button_background_mask_layout"
+        android:layout_width="match_parent"
+        android:visibility="gone"
+        android:clickable="false"
+        android:layout_height="match_parent">
+
+        <com.github.lzyzsd.circleprogress.DonutProgress
+            android:id="@+id/record_stop_progress"
+            android:layout_width="72dp"
+            android:layout_height="72dp"
+            app:donut_progress="30"
+            app:donut_unfinished_color = "@android:color/holo_orange_dark"
+            app:donut_finished_color = "@android:color/white"
+            app:donut_unfinished_stroke_width="4dp"
+            app:donut_finished_stroke_width="4dp"
+            android:textColor="@android:color/white"
+            android:layout_marginRight="14dp"
+            android:layout_marginBottom="74dp"
+            android:layout_gravity="bottom|right"
+            />
+
+        <Button
+            android:id="@+id/record_stop_button"
+            android:text="@string/Title_Record_Stop"
+            android:layout_width="60dp"
+            android:layout_height="60dp"
+            android:layout_gravity="bottom|right"
+            android:background="@drawable/shape_stop_record_button_round"
+            android:layout_marginRight="20dp"
+            android:layout_marginBottom="80dp"/>
+
+    </FrameLayout>
+
+    <fragment
+            android:id="@+id/fragment_symbol_box"
+            android:name="com.flipflash.fragment.SymbolBoxFragment"
+        android:background="#ffcdcfd1"
+            android:layout_gravity="bottom"
+            android:layout_marginBottom="0dp"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/symbol_box_height"
+            tools:layout="@layout/fragment_symbol_box" />
+
+
+
+</merge>
