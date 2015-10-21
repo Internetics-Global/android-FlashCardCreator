@@ -34,6 +34,7 @@ import cn.pedant.SweetAlert.SweetAlertDialog;
 import static com.flipflash.util.LogUtils.LOGE;
 import static com.flipflash.util.LogUtils.LOGW;
 
+import static com.flipflash.util.LogUtils.LOGD;
 
 public class MoreActivity extends Activity {
 
@@ -268,6 +269,8 @@ public class MoreActivity extends Activity {
     @Override
     protected void onStart() {
         super.onStart();
+
+        LOGD(TAG, "onStart");
     }
 
     @Override

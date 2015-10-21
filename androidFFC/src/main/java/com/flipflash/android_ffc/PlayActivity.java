@@ -188,6 +188,8 @@ public class PlayActivity extends FragmentActivity implements SensorEventListene
     protected void onResume() {
         super.onResume();
 
+        LOGD(TAG, "onResume");
+
         IntentFilter filter = new IntentFilter(Intent.ACTION_HEADSET_PLUG);
         registerReceiver(mAudioIntentReceiver, filter);
 
@@ -495,6 +497,8 @@ public class PlayActivity extends FragmentActivity implements SensorEventListene
     @Override
     protected void onStop() {
         super.onStop();
+        LOGD(TAG, "onStop");
+        
         if (mIsSensorAvailable) {
             mSensorManager.unregisterListener(this);
         }

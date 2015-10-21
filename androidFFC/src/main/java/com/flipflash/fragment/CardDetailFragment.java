@@ -274,6 +274,11 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnKeyboa
         }
     }
 
+    @Override
+    public void onStart() {
+        super.onStart();
+        LOGD(TAG, "onStart");
+    }
 
     @Override
     public void onResume() {

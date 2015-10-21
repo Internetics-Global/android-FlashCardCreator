@@ -971,6 +971,9 @@ public class MainActivity extends FragmentActivity implements
     @Override
     protected void onStart() {
         super.onStart();
+
+        LOGD(TAG, "onStart");
+
         EasyTracker.getInstance().activityStart(this);
     }
 
