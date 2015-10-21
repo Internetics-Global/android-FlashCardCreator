@@ -28,6 +28,8 @@ import me.relex.circleindicator.CircleIndicator;
  */
 public class SymbolBoxFragment extends Fragment {
 
+    private static final String TAG = SymbolBoxFragment.class.getName();
+
     public View mContentView;
     private final int  NUMBER_PAGE = 5;
 

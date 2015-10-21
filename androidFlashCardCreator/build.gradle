@@ -90,7 +90,6 @@ dependencies {
     compile(name: 'android-crop-0.9.10', ext: 'aar')
     compile(name: 'android_target_tooltip_ccaa_22112014', ext: 'aar')
     compile 'com.nineoldandroids:library:+'
-    compile 'com.jakewharton.timber:timber:2.5.1'
 
     compile 'com.makeramen:roundedimageview:2.0.1'
     compile 'cn.pedant.sweetalert:library:1.3'

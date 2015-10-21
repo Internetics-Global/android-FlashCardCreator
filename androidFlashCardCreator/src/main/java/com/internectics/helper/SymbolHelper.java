@@ -9,6 +9,8 @@ package com.internectics.helper;
  */
 public class SymbolHelper {
 
+    private static final String TAG = SymbolHelper.class.getName();
+
     /**
      * 这是3个特殊的symbol，占用了普通的两倍距离，且有不同的含义
      */

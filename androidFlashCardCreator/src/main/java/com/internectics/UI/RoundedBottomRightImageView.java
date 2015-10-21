@@ -14,6 +14,8 @@ import com.internectics.android_flashcardcreator.R;
  */
 public class RoundedBottomRightImageView extends ImageView{
 
+    private static final String TAG = RoundedBottomRightImageView.class.getName();
+
     public static float radius = 250;//default value
 
 

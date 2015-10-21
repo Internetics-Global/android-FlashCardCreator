@@ -18,6 +18,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 import android.text.InputType;
+import android.util.Log;
 import android.util.TypedValue;
 import android.view.Gravity;
 import android.view.KeyEvent;
@@ -84,8 +85,10 @@ import java.util.HashMap;
 import java.util.Timer;
 import java.util.TimerTask;
 
+import static com.internectics.util.LogUtils.LOGD;
+import static com.internectics.util.LogUtils.LOGE;
+
 import cn.pedant.SweetAlert.SweetAlertDialog;
-import timber.log.Timber;
 
 /**
  * MainActivity is the entry for whole app
@@ -94,6 +97,8 @@ import timber.log.Timber;
  */
 public class MainActivity extends FragmentActivity implements
         CardListFragment.Callbacks {
+
+    private static final String TAG = MainActivity.class.getName();
 
     private static final int LOGIN_REQUEST = 0;
 
@@ -138,7 +143,7 @@ public class MainActivity extends FragmentActivity implements
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        Timber.d("onCreate on MainActivity");
+        LOGD(TAG, "onCreate");
 
         //Step1: check table and default user
         SQLiteHelper.defaultDatabase(AppContext.getAppContext());
@@ -149,7 +154,7 @@ public class MainActivity extends FragmentActivity implements
         //Step2: OpenUDID
         OpenUDID_manager.sync(this);
         if (!OpenUDID_manager.isInitialized()) {
-            Timber.tag(Global.debugTag).w("OpenUDID_manager is not initialized");
+            LOGD(TAG, "onCreate: OpenUDID_manager is not initialized");
         }
 
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
@@ -170,7 +175,7 @@ public class MainActivity extends FragmentActivity implements
         addCardButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Timber.tag(Global.debugTag).d("add card button  is clicked");
+                LOGD(TAG, "onClick: add card button  is clicked");
                 startCreateCard();
                 TipHelper.hideEverthing(MainActivity.this);
 
@@ -430,12 +435,12 @@ public class MainActivity extends FragmentActivity implements
                 break;
 
             case R.id.actionbar_add_card_cancel:
-                Timber.tag(Global.debugTag).d("Cancel button is clicked");
+                LOGD(TAG, "onOptionsItemSelected: Cancel button is clicked");
                 dismissCardCreateWindow();
                 break;
 
             case R.id.actionbar_add_card_save:
-                Timber.tag(Global.debugTag).d("Save button is clicked");
+                LOGD(TAG, "onOptionsItemSelected: Save button is clicked");
                 saveNewCreatedCard();
                 break;
 
@@ -474,7 +479,7 @@ public class MainActivity extends FragmentActivity implements
     protected void onResume() {
         super.onResume();
 
-        Timber.d("onResume on MainActivity");
+        LOGD(TAG, "onResume");
 
         if (mIsNecessaryToRestoreCSSToolbar) {
             initializeCSSToolbar();
@@ -665,7 +670,7 @@ public class MainActivity extends FragmentActivity implements
                 if (popupLayout != null) {
                     mPopupWindow.setContentView(popupLayout);
                 } else {
-                    Timber.tag(Global.debugTag).d("Failed to inflate, please check");
+                    LOGE(TAG, "showPackListView: Failed to inflate, please check");
                 }
             }
 
@@ -690,8 +695,8 @@ public class MainActivity extends FragmentActivity implements
     }
 
 
-    private boolean checkDownloadable (String itemName) {
-        Timber.tag(Global.debugTag).d("Now begin to execute checkDownloadable");
+    private boolean checkDownloadable(String itemName) {
+        LOGD(TAG, "checkDownloadable: Now begin to execute checkDownloadable");
 
         boolean result = false;
 
@@ -768,8 +773,8 @@ public class MainActivity extends FragmentActivity implements
                 mCardDetailFragment.setupParameters(mCurrentPack, mCurrentCard, 0);
                 getSupportFragmentManager().beginTransaction()
                         .replace(R.id.card_detail_container, mCardDetailFragment).commitAllowingStateLoss();
-            }  else {
-                Timber.tag(Global.debugTag).e("Out of index of array during executing onItemSelected");
+            } else {
+                LOGE(TAG, "onItemSelected: Out of index of array during executing onItemSelected");
             }
 
         } else {
@@ -853,7 +858,7 @@ public class MainActivity extends FragmentActivity implements
 
         getSupportFragmentManager().beginTransaction().remove(fragment).commitAllowingStateLoss();
 
-        Timber.tag(Global.debugTag).w(String.format("FinishSnapShot on cardSN = %d",fragment.mCurrentCard.cardID));
+        LOGD(TAG, "finishSnapShot: " + String.format("FinishSnapShot on cardSN = %d",fragment.mCurrentCard.cardID));
     }
 
 
@@ -974,7 +979,7 @@ public class MainActivity extends FragmentActivity implements
     protected void onStop() {
         super.onStop();
 
-        Timber.d("onStop on MainActivity");
+        LOGD(TAG, "onStop");
 
         EasyTracker.getInstance().activityStop(this);
     }
@@ -1143,6 +1148,8 @@ public class MainActivity extends FragmentActivity implements
 
     private void initializeCSSToolbar() {
 
+        LOGD(TAG, "initializeCSSToolbar");
+
         if (mCSSToolbar != null) {
             return;
         }
@@ -1152,7 +1159,7 @@ public class MainActivity extends FragmentActivity implements
         int actionbarHeight = 0;
         if (getTheme().resolveAttribute(android.R.attr.actionBarSize, tv, true)) {
             actionbarHeight = TypedValue.complexToDimensionPixelSize(tv.data, getResources().getDisplayMetrics());
-            Timber.tag(Global.debugTag).d("actionbar height is:" + actionbarHeight);
+            LOGD(TAG, "initializeCSSToolbar: actionbar height is:" + actionbarHeight);
         }
 
         WindowManager.LayoutParams params = new WindowManager.LayoutParams(
@@ -1167,7 +1174,7 @@ public class MainActivity extends FragmentActivity implements
         mCSSToolbar.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View v, MotionEvent event) {
-                Timber.tag(Global.debugTag).d("touching mCSSToolbar");
+                LOGD(TAG, "onTouch: touching mCSSToolbar");
                 return false;
             }
         });
@@ -1349,7 +1356,7 @@ public class MainActivity extends FragmentActivity implements
     public void prepareCSSToolbar() {
         if ((mCSSToolbar == null) || (mCSSToolbar.getParent() == null)) {
             initializeCSSToolbar();
-            Timber.tag(Global.debugTag).d("initializeCSSToolbar is called");
+            
         }
     }
 
@@ -1372,8 +1379,6 @@ public class MainActivity extends FragmentActivity implements
             spinnerColor.setSelection(0);
             spinnerSize.setSelection(0);
 
-            Timber.tag(Global.debugTag).d("prepareCSSToolbar is called");
-
             mIsKeyboardVisible = true;
 
             saveButton.setVisibility(View.VISIBLE);
@@ -1383,7 +1388,7 @@ public class MainActivity extends FragmentActivity implements
 
     public void removeCSSToolbar() {
         if (mCSSToolbar == null) {
-            Timber.tag(Global.debugTag).w("rmCSSToolbar is null when executing removeCSSToolbar");
+            LOGD(TAG, "removeCSSToolbar: mCSSToolbar is null when executing removeCSSToolbar");
             return;
         } else {
             WindowManager wm = (WindowManager) getSystemService(WINDOW_SERVICE);
@@ -1391,7 +1396,7 @@ public class MainActivity extends FragmentActivity implements
                 mCSSToolbar.setVisibility(View.GONE);
                 wm.removeView(mCSSToolbar);
                 mCSSToolbar = null;
-                Timber.tag(Global.debugTag).d("removeCSSToolbar is called");
+                LOGD(TAG, "removeCSSToolbar: removeCSSToolbar is called");
             }
 
             mIsKeyboardVisible = false;
@@ -1681,7 +1686,7 @@ public class MainActivity extends FragmentActivity implements
                             .setTitleText(getString(R.string.DIALOG_ERROR))
                             .setContentText(getString(R.string.DIALOG_SOCIAL_MEDIA_LOG_IN_FAILURE))
                             .show();
-                    Timber.tag(Global.debugTag).w("sign up or sign in failure.currentUser should exist");
+                    LOGD(TAG, "onActivityResult: sign up or sign in failure.currentUser should exist");
                 }
 
 
@@ -1693,7 +1698,7 @@ public class MainActivity extends FragmentActivity implements
                         .setTitleText(getString(R.string.DIALOG_ERROR))
                         .setContentText(getString(R.string.DIALOG_SOCIAL_MEDIA_LOG_IN_FAILURE))
                         .show();
-                Timber.tag(Global.debugTag).w("sign up or sign in failure with resultCode = " + resultCode);
+                LOGE(TAG, "onActivityResult: " + "sign up or sign in failure with resultCode = " + resultCode);
             }
         } else {
 

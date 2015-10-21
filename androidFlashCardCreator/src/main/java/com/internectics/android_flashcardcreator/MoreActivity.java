@@ -8,7 +8,6 @@ import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
 import android.text.InputType;
-import android.util.Log;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.EditText;
@@ -17,7 +16,6 @@ import android.widget.TextView;
 import com.internectics.UI.togglebutton.ToggleButton;
 import com.internectics.helper.Dropbox.DropboxAuthHelper;
 import com.internectics.util.AppConfig;
-import com.internectics.util.Global;
 import com.parse.LogOutCallback;
 import com.parse.ParseException;
 import com.parse.ParseUser;
@@ -27,9 +25,14 @@ import com.parse.ui.ParseLoginBuilder;
 import org.adw.library.widgets.discreteseekbar.DiscreteSeekBar;
 
 import cn.pedant.SweetAlert.SweetAlertDialog;
-import timber.log.Timber;
+
+import static com.internectics.util.LogUtils.LOGE;
+import static com.internectics.util.LogUtils.LOGW;
+
 
 public class MoreActivity extends Activity {
+
+    private static final String TAG = MoreActivity.class.getName();
 
     private static final int LOGIN_REQUEST = 0;
 
@@ -281,7 +284,7 @@ public class MoreActivity extends Activity {
                     DropboxAuthHelper.sharedHelper(MoreActivity.this).storeAuth();
 
                 } catch (IllegalStateException e) {
-                    Log.w("ccaa", "Error authenticating", e);
+                    LOGW("ccaa", "Error authenticating", e);
                 }
 
                 mStorageProviderToggleButton.setToggleOn();
@@ -369,7 +372,7 @@ public class MoreActivity extends Activity {
                             .setTitleText(getString(R.string.DIALOG_ERROR))
                             .setContentText(getString(R.string.DIALOG_SOCIAL_MEDIA_LOG_IN_FAILURE))
                             .show();
-                    Timber.tag(Global.debugTag).w("sign up or sign in failure.currentUser should exist");
+                    LOGE(TAG, "onActivityResult: sign up or sign in failure.currentUser should exist");
                 }
 
 
@@ -381,7 +384,7 @@ public class MoreActivity extends Activity {
                         .setTitleText(getString(R.string.DIALOG_ERROR))
                         .setContentText(getString(R.string.DIALOG_SOCIAL_MEDIA_LOG_IN_FAILURE))
                         .show();
-                Timber.tag(Global.debugTag).w("sign up or sign in failure with resultCode = " + resultCode);
+                LOGE(TAG, "onActivityResult: sign up or sign in failure with resultCode = " + resultCode);
             }
         }
     }

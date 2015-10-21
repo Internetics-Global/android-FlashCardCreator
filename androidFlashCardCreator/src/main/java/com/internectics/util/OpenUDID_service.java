@@ -13,7 +13,7 @@ import android.os.IBinder;
  
 <service android:name="org.OpenUDID.OpenUDID_service">
 	<intent-filter>
-		<action android:name="org.OpenUDID.GETUDID" />
+		<action android:name="com.internectics.util.OpenUDID_service" />
 	</intent-filter>
 </service>
 
@@ -21,6 +21,9 @@ import android.os.IBinder;
 
 
 public class OpenUDID_service extends Service {
+
+    private static final String TAG = OpenUDID_service.class.getName();
+
     @Override
     public IBinder onBind(Intent arg0) {
         return new Binder() {

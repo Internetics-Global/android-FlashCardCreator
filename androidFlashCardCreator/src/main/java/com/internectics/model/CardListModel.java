@@ -15,6 +15,8 @@ import java.util.List;
 
 public class CardListModel {
 
+    private static final String TAG = CardListModel.class.getName();
+
     /**
      * Return card list for current pack
      * returned List is re-sorted by cardSN, rather than others

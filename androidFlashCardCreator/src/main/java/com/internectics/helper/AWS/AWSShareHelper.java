@@ -46,10 +46,12 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.List;
 
-import timber.log.Timber;
+import static com.internectics.util.LogUtils.LOGD;
 
 
 public class AWSShareHelper extends AsyncTask<Void, Long, Boolean> {
+
+    private static final String TAG = AWSShareHelper.class.getName();
 
     private Activity   mActivity;
     private Pack       mCurrentPack;
@@ -206,10 +208,10 @@ public class AWSShareHelper extends AsyncTask<Void, Long, Boolean> {
         }
 
         if (responseString.contains("http://") == false) {
-            Timber.tag(Global.debugTag).e("The generated redirected URL from tinyurl.com is not correct:" + responseString);
+            LOGD(TAG, "generateRedirectedURL: " + "The generated redirected URL from tinyurl.com is not correct:" + responseString);
             responseString = "";
         } else {
-            Timber.tag(Global.debugTag).d("The generated redirected URL from tinyurl.com is:" + responseString);
+            LOGD(TAG, "generateRedirectedURL: " + "The generated redirected URL from tinyurl.com is:" + responseString);
         }
 
         return responseString;
@@ -266,7 +268,7 @@ public class AWSShareHelper extends AsyncTask<Void, Long, Boolean> {
                 break;
             }
             case 2: {
-                Timber.tag(Global.debugTag).d( "Email share");
+                LOGD(TAG, "shareActionOnItemSelected: Email share");
                 Intent emailIntent = new Intent(android.content.Intent.ACTION_SEND);
                 emailIntent.putExtra(android.content.Intent.EXTRA_SUBJECT, "Hi All");
                 emailIntent.setType("message/rfc822");
@@ -275,7 +277,7 @@ public class AWSShareHelper extends AsyncTask<Void, Long, Boolean> {
                 break;
             }
             case 3: {
-                Timber.tag(Global.debugTag).d( "Copy");
+                LOGD(TAG, "shareActionOnItemSelected: copy");
                 ClipboardManager clipboard = (ClipboardManager) mActivity.getSystemService(Service.CLIPBOARD_SERVICE);
                 ClipData clip = ClipData.newPlainText( "share linkage",shareLink);
                 clipboard.setPrimaryClip(clip);

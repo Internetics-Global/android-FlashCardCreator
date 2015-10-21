@@ -16,9 +16,10 @@ import com.parse.ParseTwitterUtils;
 
 import java.util.UUID;
 
-import timber.log.Timber;
+import com.internectics.util.LogUtils;
 
 public class AppContext extends Application {
+    private static final String TAG = AppContext.class.getName();
 
     private static Context                           mContext;
     private static CognitoCachingCredentialsProvider mCredentialsProvider;
@@ -55,12 +56,6 @@ public class AppContext extends Application {
         //Facebook
         ParseFacebookUtils.initialize(this);
         //facebook_app_id 是在Manifest中进行设置
-
-        if (Global.isDebug) {
-            Timber.plant(new Timber.DebugTree());
-        } else {
-            Timber.plant(new CrashReportingTree());
-        }
 
         //Key-value storage
         Hawk.initWithoutEncryption(mContext, LogLevel.NONE);
@@ -111,29 +106,5 @@ public class AppContext extends Application {
     public void removeProperty(String key) {
         AppConfig.sharedInstance().remove(key);
     }
-
-
-    /** A tree which logs important information for crash reporting. */
-    private static class CrashReportingTree extends Timber.HollowTree {
-        @Override public void i(String message, Object... args) {
-            // TODO e.g., Crashlytics.log(String.format(message, args));
-        }
-
-        @Override public void i(Throwable t, String message, Object... args) {
-            i(message, args); // Just add to the log.
-        }
-
-        @Override public void e(String message, Object... args) {
-            i("ERROR: " + message, args); // Just add to the log.
-        }
-
-        @Override public void e(Throwable t, String message, Object... args) {
-            e(message, args);
-
-            // TODO e.g., Crashlytics.logException(t);
-        }
-    }
-
-
 
 }

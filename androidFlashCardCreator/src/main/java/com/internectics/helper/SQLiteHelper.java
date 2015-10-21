@@ -12,12 +12,14 @@ import android.database.sqlite.SQLiteOpenHelper;
 
 import com.internectics.util.Global;
 
-import timber.log.Timber;
+import static com.internectics.util.LogUtils.LOGD;
 
 /*
  * Sqlite operation
  */
 public class SQLiteHelper {
+
+    private static final String TAG = SQLiteHelper.class.getName();
 
     private static DBOpenHelper dbOpenHelper = null;
 
@@ -138,7 +140,7 @@ public class SQLiteHelper {
                     "SELECT * FROM Users_Tables WHERE user_id=%d", Global.USER_ID);
             Cursor cursor = db.rawQuery(queryString, null);
             if (cursor.moveToNext()) {
-                Timber.tag(Global.debugTag).w("default user has existed");
+                LOGD(TAG, "onCreate: default user has existed");
             } else {
                 queryString = String
                         .format("INSERT INTO Users_Tables(user_id, nick_name) VALUES (%d,\"%s\")",

@@ -5,11 +5,11 @@ import android.util.AttributeSet;
 import android.view.KeyEvent;
 import android.widget.EditText;
 
-import com.internectics.util.Global;
-
-import timber.log.Timber;
+import static com.internectics.util.LogUtils.LOGE;
 
 public class FCCEditText extends EditText {
+
+    private static final String TAG = FCCEditText.class.getName();
 
     public OnKeyboardCloseListener mCallbacks;
 
@@ -32,7 +32,7 @@ public class FCCEditText extends EditText {
 
                 mCallbacks.onKeyboardClose(this);
             else
-                Timber.tag(Global.debugTag).w("mCallbacks for FCCEditText is null");
+                LOGE(TAG, "onKeyPreIme: mCallbacks for FCCEditText is null");
         }
         return super.onKeyPreIme(keyCode, event);
 

@@ -8,6 +8,8 @@ import android.graphics.Typeface;
  */
 public class FontHelper {
 
+    private static final String TAG = FontHelper.class.getName();
+
     /**
      * 与css_font(arrays.xml）的对应关系
      */

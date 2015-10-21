@@ -17,7 +17,7 @@ import java.util.zip.ZipEntry;
 import java.util.zip.ZipOutputStream;
 
 import cn.pedant.SweetAlert.SweetAlertDialog;
-import timber.log.Timber;
+
 
 /**
  * Created with IntelliJ IDEA.
@@ -27,6 +27,8 @@ import timber.log.Timber;
  * To change this template use File | Settings | File Templates.
  */
 public class ZipFileHelper {
+
+    private static final String TAG = ZipFileHelper.class.getName();
 
     /*
     * @param zipFileName new created zip file name (full path)

@@ -46,9 +46,13 @@ import com.internectics.util.UIHelper;
 import java.io.FileNotFoundException;
 
 import cn.pedant.SweetAlert.SweetAlertDialog;
-import timber.log.Timber;
+
+
+import static com.internectics.util.LogUtils.LOGD;
 
 public class PackListFragment extends Fragment {
+
+    private static final String TAG = PackListFragment.class.getName();
 
     private SmoothGallery mGallery;
 
@@ -204,7 +208,7 @@ public class PackListFragment extends Fragment {
             dialogFragment.show(getActivity().getFragmentManager(), "add_pack_fragment");
             ((MainActivity) getActivity()).dismissPackListPopupWindow();
         } else {
-            Timber.tag(Global.debugTag).d("Index of pack in pack list is:" + position);
+            LOGD(TAG, "galleryItemClicked: " + "Index of pack in pack list is:" + position);
             Intent intent = new Intent();
             intent.setAction(Global.BROADCAST_ACTION_UPDATE_MASTER_VIEW);
             intent.putExtra(Global.KEY_FROM, Global.BROADCAST_EXTRA_FROM_PACK_SELECTED);
@@ -480,13 +484,14 @@ public class PackListFragment extends Fragment {
     public void onStop() {
         super.onStop();
 
-        Timber.tag(Global.debugTag).d("onStop in PackListFragment");
+        LOGD(TAG, "onStop");
     }
 
     @Override
     public void onDestroy() {
         mGallery.setAdapter(null);
         super.onDestroy();
-        Timber.tag(Global.debugTag).d("onDestory in PackListFragment");
+
+        LOGD(TAG, "onDestroy");
     }
 }

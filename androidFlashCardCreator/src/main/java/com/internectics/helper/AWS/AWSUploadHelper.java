@@ -3,7 +3,6 @@ package com.internectics.helper.AWS;
 import android.content.Context;
 import android.os.Handler;
 import android.support.annotation.NonNull;
-import android.util.Log;
 
 import com.amazonaws.AmazonClientException;
 import com.amazonaws.AmazonServiceException;
@@ -25,13 +24,15 @@ import java.io.File;
 import java.util.List;
 
 import cn.pedant.SweetAlert.SweetAlertDialog;
-import timber.log.Timber;
 
+import static com.internectics.util.LogUtils.LOGE;
 
 /**
  * Created by BourneWang on 28/05/15.
  */
 public class AWSUploadHelper {
+
+    private static final String TAG = AWSUploadHelper.class.getName();
 
     private TransferManager   mTransferManager;
     private final Handler     mHandler;
@@ -179,7 +180,7 @@ public class AWSUploadHelper {
 
                     mUpload.addProgressListener(mListener);
                 } catch (Exception e) {
-                    Log.e(Global.debugTag, "", e);
+                    LOGE(TAG, "", e);
                 }
             }
         }

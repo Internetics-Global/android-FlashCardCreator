@@ -7,9 +7,11 @@ import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.net.Uri;
+import android.nfc.cardemulation.CardEmulation;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.util.Base64;
+
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -43,9 +45,11 @@ import java.io.File;
 import java.util.ArrayList;
 
 import cn.pedant.SweetAlert.SweetAlertDialog;
-import timber.log.Timber;
+
+import static com.internectics.util.LogUtils.LOGD;
 
 public class CreateEditFragment extends DialogFragment implements TextView.OnEditorActionListener {
+    private static final String TAG = CreateEditFragment.class.getName();
 
     private View mContentView;
     private Pack mCurrentPack;
@@ -349,13 +353,13 @@ public class CreateEditFragment extends DialogFragment implements TextView.OnEdi
                 }
 
                 if (resultBitmap == null) {
-                    Timber.tag(Global.debugTag).w( "resultBitmap is null");
+                    LOGD(TAG, "onActivityResult: resultBitmap is null");
                 } else {
                     File toSaveFile = UIHelper.saveImageToCaches(resultBitmap);
                     mCoverImageView.setImageBitmap(resultBitmap);
 
                     mCurrentPack.coverImageUriFormatStr = FileOperationHelper.convertToUriFormatFile(toSaveFile);
-                    Timber.tag(Global.debugTag).d( "pack.coverImageUriFormatStr = " + mCurrentPack.coverImageUriFormatStr);
+                    LOGD(TAG, "onActivityResult: " + "pack.coverImageUriFormatStr = " + mCurrentPack.coverImageUriFormatStr);
                 }
             }
         }

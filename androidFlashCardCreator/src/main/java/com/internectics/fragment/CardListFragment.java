@@ -34,7 +34,7 @@ import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 
-import timber.log.Timber;
+import static com.internectics.util.LogUtils.LOGD;
 
 
 /**
@@ -42,6 +42,7 @@ import timber.log.Timber;
  * the order of card shown in CardListFragment is consisitent with cardSN order
  */
 public class CardListFragment extends Fragment {
+    private static final String TAG = CardListFragment.class.getName();
 
     //View related
     public View mContentView;
@@ -105,15 +106,14 @@ public class CardListFragment extends Fragment {
         mDSLVListView.setRemoveListener(new DragSortListView.RemoveListener() {
             @Override
             public void remove(int which) {
-                Timber.tag(Global.debugTag).d( "Card list item is removed" + which);
-                removeListItem(which);
+                LOGD(TAG, "remove: Card list item is removed" + which);
+                        removeListItem(which);
             }
         });
 
         mDSLVListView.setDragListener(new DragSortListView.DragListener() {
             @Override
             public void drag(int from, int to) {
-                Timber.tag(Global.debugTag).d( String.format("Move card list item from %d to %d", from, to));
                 dragListItem(from, to);
             }
         });
@@ -250,7 +250,7 @@ public class CardListFragment extends Fragment {
             coverImage.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    Timber.tag(Global.debugTag).d( "card item is clicked:" + position);
+                    LOGD(TAG, "onClick: " +  "card item is clicked:" + position);
                     mCallbacks.onItemSelected(position);
                     ((FCCdapter) adapter).setSelectedPosition(position);
                     adapter.notifyDataSetChanged();
@@ -391,11 +391,11 @@ public class CardListFragment extends Fragment {
         //Step3: update list view
         updateListView(0);
 
-        Timber.tag(Global.debugTag).d("test point 0");
+        LOGD(TAG, "removeListItem: test point 0");
         //Step4: save change
         mCurrentPack.saveAllCards(AppContext.getAppContext());
 
-        Timber.tag(Global.debugTag).d( "test point 1");
+        LOGD(TAG, "removeListItem: test point 1");
 
     }
 

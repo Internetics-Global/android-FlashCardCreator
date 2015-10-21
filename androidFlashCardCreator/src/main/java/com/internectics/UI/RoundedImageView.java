@@ -12,6 +12,8 @@ import android.widget.ImageView;
  */
 public class RoundedImageView extends ImageView{
 
+    private static final String TAG = RoundedImageView.class.getName();
+
     public static float radius = 10.0f;
 
     public RoundedImageView(Context context) {

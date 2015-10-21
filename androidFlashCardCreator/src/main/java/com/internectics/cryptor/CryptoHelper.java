@@ -16,6 +16,8 @@ import java.io.InputStream;
  */
 public class CryptoHelper {
 
+    private static final String TAG = CryptoHelper.class.getName();
+
     private final static String password = "@$4245dfsfer42r4243sfds";
 
     public static boolean encryptFileWithSameOutput(File filePath) {

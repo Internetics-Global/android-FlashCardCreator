@@ -11,6 +11,8 @@ import java.util.HashMap;
 
 public class CSS {
 
+    private static final String TAG = CSS.class.getName();
+
     public int cssID;
     public String subheadingAlign;
     public String subheadingAlignVertical;

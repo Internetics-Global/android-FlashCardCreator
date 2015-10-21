@@ -7,8 +7,9 @@ import android.view.View;
 import android.view.animation.AlphaAnimation;
 import android.view.animation.Animation;
 
-
 public class AppStart extends Activity {
+    private static final String TAG = AppStart.class.getName();
+
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         final View view = View.inflate(this, R.layout.start, null);

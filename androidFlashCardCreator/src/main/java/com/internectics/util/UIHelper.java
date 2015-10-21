@@ -38,9 +38,12 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.URL;
 
-import timber.log.Timber;
+import static com.internectics.util.LogUtils.LOGD;
+import static com.internectics.util.LogUtils.LOGE;
 
 public class UIHelper {
+
+    private static final String TAG = UIHelper.class.getName();
 
     public static int getPixels(int dipValue) {
 
@@ -158,7 +161,7 @@ public class UIHelper {
                 oException.printStackTrace();
             }
         } catch (FileNotFoundException e) {
-            Timber.tag(Global.debugTag).e("Exception: " + e.getMessage());
+            LOGE(TAG, "saveImageToCaches: " + "Exception: " + e.getMessage());
         }
 
         return toSaveFile;
@@ -219,17 +222,16 @@ public class UIHelper {
 
             outputStream = new FileOutputStream( toSaveFile);
             if(outputStream != null){
-                Timber.tag(Global.debugTag).e(  "Output Stream Opened successfully");
+                LOGD(TAG, "saveVideoToCaches: Output Stream Opened successfully");
             }
 
             byte[] buffer = new byte[1000];
             int bytesRead = 0;
-            while ( ( bytesRead = inputStream.read( buffer, 0, buffer.length ) ) >= 0 )
-            {
-                outputStream.write( buffer, 0, buffer.length );
+            while ( ( bytesRead = inputStream.read( buffer, 0, buffer.length)) >= 0) {
+                outputStream.write(buffer, 0, buffer.length );
             }
         } catch ( Exception e ){
-            Timber.tag(Global.debugTag).e( "Exception occurred " + e.getMessage());
+            LOGE(TAG, "saveVideoToCaches: " +  "Exception occurred " + e.getMessage());
 
         } finally{
             try {
@@ -329,7 +331,7 @@ public class UIHelper {
         int height = metric.heightPixels;
         int densityDpi = metric.densityDpi;
         String returnStr = String.format("android-%d-%d-%d", width, height, densityDpi);
-        Timber.tag(Global.debugTag).d( "current platform is: " + returnStr);
+        LOGE(TAG, "getCurrentPlatform: " + "current platform is: " + returnStr);
         return returnStr;
     }
 
@@ -402,7 +404,7 @@ public class UIHelper {
             return resizeBitmap;
 
         } catch (Exception ex) {
-            Timber.tag(Global.debugTag).e( "Exception: " + ex.getMessage());
+            LOGE(TAG, "getResizedSizeBitmapFromPicasa: " + "Exception: " + ex.getMessage());
             ex.printStackTrace();
             return resizeBitmap;
         }

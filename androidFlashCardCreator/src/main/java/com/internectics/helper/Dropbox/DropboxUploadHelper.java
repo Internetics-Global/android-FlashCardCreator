@@ -32,6 +32,8 @@ import java.io.FileNotFoundException;
  */
 public class DropboxUploadHelper extends AsyncTask<Void, Long, Boolean> {
 
+    private static final String TAG = DropboxUploadHelper.class.getName();
+
     private final Handler     mHandler;
 
     private DropboxAPI<AndroidAuthSession> mApi;

@@ -35,27 +35,29 @@ import java.util.List;
 
 public class SimpleDBHelper {
 
+	private static final String TAG = SimpleDBHelper.class.getName();
+
 	private static String nextToken = null;
 	private static int prevNumDomains = 0;
 
-    public static AmazonSimpleDBClient sdb = null;
-		
+	public static AmazonSimpleDBClient sdb = null;
+
 	public static AmazonSimpleDBClient getInstance() {
-        if (sdb == null) {
-            sdb = new AmazonSimpleDBClient(AppContext.getCredentialsProvider());;
-        }
-        return sdb;
+		if (sdb == null) {
+			sdb = new AmazonSimpleDBClient(AppContext.getCredentialsProvider());;
+		}
+		return sdb;
 	}
-	
+
 	public static List<String> getDomainNames() {
 		return getInstance().listDomains().getDomainNames();
 	}
-	
+
 	public static List<String> getDomainNames(int numDomains) {
 		prevNumDomains = numDomains;
 		return getDomainNames(numDomains, null);
 	}
-	
+
 	private static List<String> getDomainNames(int numDomains, String nextToken) {
 		ListDomainsRequest req = new ListDomainsRequest();
 		req.setMaxNumberOfDomains(numDomains);
@@ -63,10 +65,10 @@ public class SimpleDBHelper {
 			req.setNextToken(nextToken);
 		ListDomainsResult result = getInstance().listDomains(req);
 		List<String> domains = result.getDomainNames();
-        SimpleDBHelper.nextToken = result.getNextToken();
+		SimpleDBHelper.nextToken = result.getNextToken();
 		return domains;
 	}
-	
+
 	public static List<String> getMoreDomainNames() {
 		if(nextToken == null) {
 			return new ArrayList<String>();
@@ -75,11 +77,11 @@ public class SimpleDBHelper {
 		}
 
 	}
-	
+
 	public static void createDomain( String domainName ) {
 		getInstance().createDomain( new CreateDomainRequest( domainName ) );
 	}
-		
+
 	public static void deleteDomain( String domainName ) {
 		getInstance().deleteDomain( new DeleteDomainRequest( domainName ) );
 	}
@@ -99,33 +101,33 @@ public class SimpleDBHelper {
 	public static String[] getItemNamesForDomain( String domainName ) {
 		SelectRequest selectRequest = new SelectRequest( "select itemName() from `" + domainName + "`" ).withConsistentRead( true );
 		List<Item> items = getInstance().select( selectRequest ).getItems();
-		
+
 		String[] itemNames = new String[ items.size() ];
 		for ( int i = 0; i < items.size(); i++ ) {
 			itemNames[ i ] = ((Item)items.get( i )).getName();
 		}
-		
+
 		return itemNames;
 	}
 
 	public static HashMap<String,String> getAttributesForItem( String domainName, String itemName ) {
 		GetAttributesRequest getRequest = new GetAttributesRequest( domainName, itemName ).withConsistentRead( true );
 		GetAttributesResult getResult = getInstance().getAttributes( getRequest );
-		
+
 		HashMap<String,String> attributes = new HashMap<String,String>(30);
 		for ( Object attribute : getResult.getAttributes() ) {
 			String name = ((Attribute)attribute).getName();
 			String value = ((Attribute)attribute).getValue();
-			
+
 			attributes.put(  name, value );
 		}
 
 		return attributes;
 	}
-	
+
 	public static void updateAttributesForItem( String domainName, String itemName, HashMap<String,String> attributes ) {
 		List<ReplaceableAttribute> replaceableAttributes = new ArrayList<ReplaceableAttribute>( attributes.size() );
-		
+
 		for ( String attributeName : attributes.keySet() ) {
 			replaceableAttributes.add( new ReplaceableAttribute().withName( attributeName ).withValue( attributes.get( attributeName ) ).withReplace( true ) );
 		}
@@ -136,9 +138,9 @@ public class SimpleDBHelper {
 	public static void deleteItem( String domainName, String itemName ) {
 		getInstance().deleteAttributes( new DeleteAttributesRequest( domainName, itemName ) );
 	}
-	
+
 	public static void deleteItemAttribute( String domainName, String itemName, String attributeName ) {
 		getInstance().deleteAttributes(  new DeleteAttributesRequest( domainName, itemName ).withAttributes( new Attribute[] { new Attribute().withName( attributeName ) } ) );
 	}
-	
+
 }

@@ -15,6 +15,8 @@ import com.dropbox.client2.session.Session;
  */
 public class DropboxAuthHelper {
 
+    private static final String TAG = DropboxAuthHelper.class.getName();
+
     private static Context mContext;
     final static private Session.AccessType ACCESS_TYPE = Session.AccessType.DROPBOX;
 

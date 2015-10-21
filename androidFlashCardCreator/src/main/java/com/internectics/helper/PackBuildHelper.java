@@ -1,10 +1,10 @@
 package com.internectics.helper;
 
 import android.app.Activity;
+import android.util.Log;
 
 import com.internectics.data.Card;
 import com.internectics.data.Pack;
-import com.internectics.util.Global;
 import com.internectics.util.StringUtils;
 import com.internectics.util.UIHelper;
 
@@ -22,10 +22,12 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Set;
 
-import timber.log.Timber;
+import static com.internectics.util.LogUtils.LOGE;
 
 
 public class PackBuildHelper {
+
+    private static final String TAG = PackBuildHelper.class.getName();
 
     private static Activity mActivity;
 
@@ -169,7 +171,7 @@ public class PackBuildHelper {
             zipFile.addFiles(packFiles, parameters);
         } catch (ZipException e) {
             e.printStackTrace();
-            Timber.tag(Global.debugTag).d( "zip pack file failure");
+            LOGE(TAG, "createPackZipFile: zip pack file failure");
             return null;
         }
         return packZipFile;

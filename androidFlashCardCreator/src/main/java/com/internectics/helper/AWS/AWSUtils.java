@@ -9,6 +9,7 @@ import com.parse.ParseUser;
  */
 public class AWSUtils {
 
+    private static final String TAG = AWSUtils.class.getName();
 
     public static String fullPath_On_S3(Pack pack) {
 

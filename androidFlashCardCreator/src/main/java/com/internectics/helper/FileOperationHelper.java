@@ -26,6 +26,8 @@ import java.util.UUID;
  */
 public class FileOperationHelper {
 
+    private static final String TAG = FileOperationHelper.class.getName();
+
     private static int resourceID[] = {R.drawable.question_placeholder_logo,
             R.drawable.question_placeholder_content,
             R.drawable.answer_placeholder_content,

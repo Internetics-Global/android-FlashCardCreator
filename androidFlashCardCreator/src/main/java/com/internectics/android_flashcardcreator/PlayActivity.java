@@ -10,7 +10,6 @@ import android.hardware.Sensor;
 import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
-import android.media.AudioManager;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
@@ -21,7 +20,6 @@ import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
 import android.support.v4.view.ViewPager;
-import android.util.Log;
 import android.view.KeyEvent;
 import android.view.MotionEvent;
 import android.view.Surface;
@@ -56,9 +54,14 @@ import java.util.Timer;
 import java.util.TimerTask;
 
 import cn.pedant.SweetAlert.SweetAlertDialog;
-import timber.log.Timber;
+
+import static com.internectics.util.LogUtils.LOGD;
+import static com.internectics.util.LogUtils.LOGE;
+
 
 public class PlayActivity extends FragmentActivity implements SensorEventListener,VGViewPager.OnViewPagerClickListener, ViewPager.OnPageChangeListener{
+
+    private static final String TAG = PlayActivity.class.getName();
 
     private Pack              mCurrentPack;
     private int               mPosition = 0;
@@ -201,7 +204,7 @@ public class PlayActivity extends FragmentActivity implements SensorEventListene
             mIsSensorAvailable = true;
         } else {
             mIsSensorAvailable = false;
-            Timber.tag(Global.debugTag).w("No Sensor.TYPE_ORIENTATION exists");
+            LOGE(TAG, "onResume: No Sensor.TYPE_ORIENTATION exists");
         }
 
         mIsResetRoll = true;
@@ -351,9 +354,9 @@ public class PlayActivity extends FragmentActivity implements SensorEventListene
             marginHorizontal = (screenWidth - widthOfCard)/2;
         }
 
-        Global.scaleInPlayMode = (float)(widthOfCard/Global.widthOfCardInEditMode);
+        Global.scaleInPlayMode = (float) (widthOfCard / Global.widthOfCardInEditMode);
         if ((Global.scaleInPlayMode >2) || (Global.scaleInPlayMode <0.5)) {
-            Timber.tag(Global.debugTag).e("the value of scaleInPlayMode is out of normal value");
+            LOGD(TAG, "setupViews: the value of scaleInPlayMode is out of normal value");
             Global.scaleInPlayMode = (float)1.2; //default value
         }
 
@@ -446,7 +449,7 @@ public class PlayActivity extends FragmentActivity implements SensorEventListene
 
     private void dwellTimeSeekBarProgressManuallyChanged() {
 
-        Log.d("ccaa", "dwellTimeSeekBarProgressManuallyChanged");
+        LOGD("ccaa", "dwellTimeSeekBarProgressManuallyChanged");
 
         stopAudio();
         stopTextToSpeech();
@@ -575,7 +578,7 @@ public class PlayActivity extends FragmentActivity implements SensorEventListene
     protected void onDestroy() {
         super.onDestroy();
 
-        Timber.d("onDestroy called by PlayActivity");
+        LOGD(TAG, "onDestroy");
 
         mTTS.setOnUtteranceProgressListener(null);
         utteranceProgressListener = null;
@@ -903,7 +906,7 @@ public class PlayActivity extends FragmentActivity implements SensorEventListene
     @Override
     public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
         if ((mPosition != position) && (positionOffsetPixels == 0)) {
-            Timber.tag(Global.debugTag).i( "onPageScrolled, page index=" + position + " .mPosition=" + mPosition);
+            LOGD(TAG, "onPageScrolled: "+ "onPageScrolled, page index=" + position + " .mPosition=" + mPosition);
 
 
             //主要目的是及时释放内存，以防内存不断增加导致crash
@@ -1001,7 +1004,6 @@ public class PlayActivity extends FragmentActivity implements SensorEventListene
         CardDetailFragment currentCardDetailFragment = getCurrentCardDetailFragment();
         if ((currentCardDetailFragment == null) || (currentCardDetailFragment.mCardSN == null))  {
             //this could happen when cardDetailFragment is not full inflated
-            //Timber.tag(Global.debugTag).w( "cardDetailFragment is not fully intialized during play mode");
             return;
         }
 
@@ -1135,7 +1137,7 @@ public class PlayActivity extends FragmentActivity implements SensorEventListene
                 @Override
                 public void onInit(int status) {
                     if (status == TextToSpeech.SUCCESS) {
-                        Timber.tag(Global.debugTag).i("TTS", "Initialization Success");
+                        LOGD(TAG, "onInit: TTS Initialization Success");
 
                         Locale matchedLocale = getText2SpeechLocale();
 
@@ -1146,7 +1148,7 @@ public class PlayActivity extends FragmentActivity implements SensorEventListene
 
 
                     } else {
-                        Timber.tag(Global.debugTag).e("TTS", "Initialization Failed!");
+                        LOGE(TAG, "onInit: TTS Initialization Failed!");
                     }
                 }
             });
@@ -1417,7 +1419,7 @@ public class PlayActivity extends FragmentActivity implements SensorEventListene
             HashMap<String, String> params = new HashMap<String, String>();
             params.put(TextToSpeech.Engine.KEY_PARAM_UTTERANCE_ID, "stringId");//必不可少
             mTTS.speak(textToSpeechArray.get(0), TextToSpeech.QUEUE_FLUSH, params);
-            Timber.tag(Global.debugTag).d("speak" + textToSpeechArray.get(mTextToSpeechContentArrayIndex));
+            LOGD(TAG, "textToSpeechAllContentNow: "+ "speak" + textToSpeechArray.get(mTextToSpeechContentArrayIndex));
 
         }  else {
             //playAudio(); //play audio after Text2Speech finished
@@ -1480,7 +1482,7 @@ public class PlayActivity extends FragmentActivity implements SensorEventListene
         List<Fragment> fList = new ArrayList<Fragment>();
 
         if (mCurrentPack == null) {
-            Timber.tag(Global.debugTag).w( "mCurrentPack could not be null in PlayActivity");
+            LOGE(TAG, "getFragments: mCurrentPack could not be null in PlayActivity");
             return fList;
         }
 
@@ -1488,7 +1490,7 @@ public class PlayActivity extends FragmentActivity implements SensorEventListene
             CardDetailFragment cardDetailFragment = new CardDetailFragment();
             cardDetailFragment.setupParameters(mCurrentPack, cardsArray.get(i), 2);
             fList.add(i, cardDetailFragment);
-            Timber.tag(Global.debugTag).d( String.format("new CardDetailFragment %d", i));
+            LOGD(TAG, "getFragments: " + String.format("new CardDetailFragment %d", i));
 
         }
 
@@ -1509,13 +1511,11 @@ public class PlayActivity extends FragmentActivity implements SensorEventListene
         if (orientation == Configuration.ORIENTATION_LANDSCAPE) {
             if ((rotation == Surface.ROTATION_0)
                     || (rotation == Surface.ROTATION_90)) {
-                //Timber.tag(Global.debugTag).d( "current rotation is landscape");
                 return 0; //landscape (for nexus 7, camera is left side of screen)
             }
 
             if ((rotation == Surface.ROTATION_180)
                     || (rotation == Surface.ROTATION_270)) {
-                //Timber.tag(Global.debugTag).d( "current rotation is reverselandscape");
                 return 1; //reverse landscape   (for nexus 7, camera is right side of screen)
             }
 
@@ -1727,7 +1727,7 @@ public class PlayActivity extends FragmentActivity implements SensorEventListene
                         if (textToSpeechArray.size() > mTextToSpeechContentArrayIndex) {
                             String text = textToSpeechArray.get(mTextToSpeechContentArrayIndex);
                             mTTS.speak(text, TextToSpeech.QUEUE_FLUSH, params);
-                            Timber.tag(Global.debugTag).d("speak " + text);
+                            LOGD(TAG, "TTS Speak text: " + text);
                         }
                     }
                 }, 500);
@@ -1772,7 +1772,7 @@ public class PlayActivity extends FragmentActivity implements SensorEventListene
 
                 switch (state) {
                     case 0: {
-                        Timber.d("Headset is unplugged at PlayActivity");
+                        LOGD(TAG, "onReceive: Headset is unplugged at PlayActivity");
                         AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(
                                 PlayActivity.this);
                         alertDialogBuilder.setTitle(getString(R.string.Title_HANDSET_UNPLUGGED));
@@ -1783,7 +1783,7 @@ public class PlayActivity extends FragmentActivity implements SensorEventListene
                         break;
                     }
                     case 1: {
-                        Timber.d("Headset is plugged");
+                        LOGD(TAG, "onReceive: Headset is plugged");
                         AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(
                                 PlayActivity.this);
                         alertDialogBuilder.setTitle(getString(R.string.Title_HANDSET_PLUGGED));
@@ -1794,7 +1794,7 @@ public class PlayActivity extends FragmentActivity implements SensorEventListene
                         break;
                     }
                     default: {
-                        Timber.d("I have no idea what the headset state is");
+                        LOGD(TAG, "onReceive: I have no idea what the headset state is");
                     }
                 }
             }

@@ -47,13 +47,15 @@ import java.net.URL;
 import java.util.HashMap;
 import java.util.List;
 
-import timber.log.Timber;
+import static com.internectics.util.LogUtils.LOGD;
 
 /**
  * 1. create share linkage
  * 2. invoke share intent
  */
 public class DropboxShareHelper extends AsyncTask<Void, Long, Boolean> {
+
+    private static final String TAG = DropboxShareHelper.class.getName();
 
     private Activity mActivity;
     private Pack     mCurrentPack;
@@ -97,7 +99,7 @@ public class DropboxShareHelper extends AsyncTask<Void, Long, Boolean> {
                         return false;
                     }
                     String undirectedURL = shareLink.replace("https","fcc").replace("http","fcc");
-                    Timber.tag(Global.debugTag).d( "the fcc share linkage is: " + undirectedURL);
+                    LOGD(TAG, "doInBackground: " +  "the fcc share linkage is: " + undirectedURL);
                     mCurrentPack.shareLink = generateRedirectedURL(undirectedURL);
 
                     if (mCurrentPack.shareLink.indexOf("http://") != 0) {
@@ -203,7 +205,7 @@ public class DropboxShareHelper extends AsyncTask<Void, Long, Boolean> {
             final HttpURLConnection urlConnection = (HttpURLConnection) url.openConnection();
             urlConnection.setInstanceFollowRedirects(false); //this is very important
             location = urlConnection.getHeaderField("location");
-            Timber.tag(Global.debugTag).d("unshortened url is: " + location);
+            LOGD(TAG, "getUnshortedURL: " + "unshortened url is: " + location);
 
         } catch (MalformedURLException e) {
             e.printStackTrace();
@@ -244,10 +246,10 @@ public class DropboxShareHelper extends AsyncTask<Void, Long, Boolean> {
         }
 
         if (responseString.contains("http://") == false) {
-            Timber.tag(Global.debugTag).e("The generated redirected URL from tinyurl.com is not correct:" + responseString);
+            LOGD(TAG, "generateRedirectedURL: " + "The generated redirected URL from tinyurl.com is not correct:" + responseString);
             responseString = "";
         } else {
-            Timber.tag(Global.debugTag).d("The generated redirected URL from tinyurl.com is:" + responseString);
+            LOGD(TAG, "generateRedirectedURL: " + "The generated redirected URL from tinyurl.com is:" + responseString);
         }
 
         return responseString;
@@ -312,7 +314,7 @@ public class DropboxShareHelper extends AsyncTask<Void, Long, Boolean> {
                 break;
             }
             case 2: {
-                Timber.tag(Global.debugTag).d( "Email share");
+                LOGD(TAG, "shareActionOnItemSelected: Email share");
                 Intent emailIntent = new Intent(Intent.ACTION_SEND);
                 emailIntent.putExtra(Intent.EXTRA_SUBJECT, "Hi All");
                 emailIntent.setType("message/rfc822");
@@ -321,7 +323,7 @@ public class DropboxShareHelper extends AsyncTask<Void, Long, Boolean> {
                 break;
             }
             case 3: {
-                Timber.tag(Global.debugTag).d( "Copy");
+                LOGD(TAG, "shareActionOnItemSelected: copy");
                 ClipboardManager clipboard = (ClipboardManager) mActivity.getSystemService(Service.CLIPBOARD_SERVICE);
                 ClipData clip = ClipData.newPlainText( "share linkage",shareLink);
                 clipboard.setPrimaryClip(clip);

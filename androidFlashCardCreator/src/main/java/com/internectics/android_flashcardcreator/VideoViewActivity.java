@@ -9,6 +9,8 @@ import android.widget.VideoView;
  * Created by bournewang on 4/9/14.
  */
 public class VideoViewActivity extends Activity {
+    private static final String TAG = VideoViewActivity.class.getName();
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

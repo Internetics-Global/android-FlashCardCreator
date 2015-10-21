@@ -20,6 +20,8 @@ import java.util.Date;
  */
 public class PackRecordHelper {
 
+    private static final String TAG = PackRecordHelper.class.getName();
+
     public static void savePackUploadRecord(Context context, Pack currentPack) {
 
         if (currentPack == null || StringUtils.isEmpty(currentPack.shareLink) || StringUtils.isEmpty(currentPack.fileNameOnAWS)) {

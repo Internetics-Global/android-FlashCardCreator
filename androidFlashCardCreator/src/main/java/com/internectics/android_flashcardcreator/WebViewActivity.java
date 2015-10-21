@@ -10,6 +10,7 @@ import android.webkit.WebViewClient;
 import android.widget.Toast;
 
 public class WebViewActivity extends Activity {
+    private static final String TAG = WebViewActivity.class.getName();
 
     private WebView mWebview;
 

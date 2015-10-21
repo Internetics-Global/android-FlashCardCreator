@@ -12,9 +12,14 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-import timber.log.Timber;
+import static com.internectics.util.LogUtils.LOGD;
+import static com.internectics.util.LogUtils.LOGE;
+import static com.internectics.util.LogUtils.LOGW;
 
 public class Card {
+
+    private static final String TAG = Card.class.getName();
+
     public int cardID;
     public int packID;
     public String coverImageUriFormatStr;
@@ -45,14 +50,14 @@ public class Card {
 
         HashMap<String, Object> questionMap = (HashMap<String, Object>) dataDict.get("question");
         if (questionMap.size() == 0) {
-            Timber.tag(Global.debugTag).d( "questionMap.size() is 0");
+            LOGD(TAG, "initWithDictionary: questionMap.size() is 0");
         } else {
             this.question = (new Question()).initWithDictionary(questionMap);
         }
 
         HashMap<String, Object> answerMap = (HashMap<String, Object>) dataDict.get("answer");
         if (answerMap.size() == 0) {
-            Timber.tag(Global.debugTag).d( "answerMap.size() is 0");
+            LOGD(TAG, "initWithDictionary: answerMap.size() is 0");
         } else {
             this.answer = (new Answer()).initWithDictionary(answerMap);
         }
@@ -110,7 +115,7 @@ public class Card {
     private void insert(Context context) {
         if (cardID == -1) {
             cardID = Global.generateNoRepeatInt();
-            Timber.tag(Global.debugTag).d( "Generated random but no-repeat cardID is:" + cardID);
+            LOGD(TAG, "insert: Generated random but no-repeat cardID is:" + cardID);
         }
         String query = String.format("INSERT INTO Cards_Tables(card_id, pack_id, cover_image, template_background, card_sn) VALUES (%d, %d, \"%s\", \"%s\", %d)", cardID, packID, coverImageUriFormatStr, templateBackground, cardSN);
         SQLiteHelper.defaultDatabase(context).execSQL(query);
@@ -125,9 +130,9 @@ public class Card {
         if ((!StringUtils.isNumeric(coverImageUriFormatStr))&&(!coverImageUriFormatStr.contains("placeholder"))) {
             File file = new File(FileOperationHelper.deleteUriSchemeHeader(this.coverImageUriFormatStr));
             if (file.delete()) {
-                Timber.tag(Global.debugTag).d( "Successful to delete coverImageUriFormatStr file");
+                LOGD(TAG, "destroy: Successful to delete coverImageUriFormatStr file");
             } else {
-                Timber.tag(Global.debugTag).e( "Fail to delete coverImageUriFormatStr file");
+                LOGE(TAG, "destroy: Fail to delete coverImageUriFormatStr file");
             }
         }
 

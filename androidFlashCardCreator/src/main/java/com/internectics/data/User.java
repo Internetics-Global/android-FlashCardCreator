@@ -12,9 +12,12 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashMap;
 
-import timber.log.Timber;
+import static com.internectics.util.LogUtils.LOGD;
+import static com.internectics.util.LogUtils.LOGE;
 
 public class User {
+    private static final String TAG = User.class.getName();
+
     public int userID;
     public String nickName;
     public ArrayList<Pack> packs;
@@ -75,7 +78,7 @@ public class User {
             if (packs.get(i).packID == pack.packID) {
                 isExist = true;
                 indexExit = i;
-                Timber.tag(Global.debugTag).w( "addPack failure because already existence");
+                LOGE(TAG, "addPack: addPack failure because already existence");
                 break;
             }
         }
@@ -148,11 +151,11 @@ public class User {
 
         if ((sortType == 0) || (sortType == 1)) {
             for (int i =0;i<packs.size();i++) {
-                Timber.tag(Global.debugTag3).d("Create date: " + packs.get(i).createDate );
+                LOGD(TAG, "sortPacks: " + "Create date: " + packs.get(i).createDate);
             }
         } else {
             for (int i =0;i<packs.size();i++) {
-                Timber.tag(Global.debugTag3).d("Last Visit date: " + packs.get(i).lastVistDate );
+                LOGD(TAG, "sortPacks: "+ "Last Visit date: " + packs.get(i).lastVistDate);
             }
         }
 

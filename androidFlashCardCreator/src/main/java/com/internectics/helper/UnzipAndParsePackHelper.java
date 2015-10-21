@@ -17,6 +17,8 @@ import java.util.ArrayList;
  */
 public class UnzipAndParsePackHelper extends AsyncTask<Void, Long, Boolean> {
 
+    private static final String TAG = UnzipAndParsePackHelper.class.getName();
+
     public final static int        UNZIP_SUCCEED  = 0;
     public final static int        UNZIP_FAILED   = 1;
 

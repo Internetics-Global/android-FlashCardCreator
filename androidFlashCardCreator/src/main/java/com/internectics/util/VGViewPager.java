@@ -9,7 +9,8 @@ import android.widget.LinearLayout;
 
 import com.internectics.UI.autoscrollviewpager.AutoScrollViewPager;
 import com.internectics.android_flashcardcreator.R;
-import timber.log.Timber;
+
+import static com.internectics.util.LogUtils.LOGD;
 
 /**
  * Created with IntelliJ IDEA.
@@ -19,6 +20,8 @@ import timber.log.Timber;
  * To change this template use File | Settings | File Templates.
  */
 public class VGViewPager extends AutoScrollViewPager {
+
+    private static final String TAG = VGViewPager.class.getName();
 
     private boolean isDisableTouchEvent = false;
 
@@ -47,37 +50,36 @@ public class VGViewPager extends AutoScrollViewPager {
             //由于ViewPager包含多个card，而通过findViewById会只获取到第一个，这样就会出现问题（比如当前显示第二个卡片，但是这里就会获取到第一个）
             ImageView logo_image = (ImageView)findViewWithTag(Global.mLogoImage_Showing);
             if ((logo_image != null) && isViewContains(logo_image,hitXInScreen,hitYInScreen)) {
-                Timber.tag(Global.debugTag4).d( "touch location in logo_image");
+                LOGD(TAG, "onInterceptTouchEvent: touch location in logo_image");
                 return false;
             }
 
             ImageView image = (ImageView)findViewWithTag(Global.mImage_Showing);
             if ((image != null) && (image.getVisibility() == VISIBLE) && (image.isEnabled() == true)) {
-                if (isViewContains(image,hitXInScreen,hitYInScreen)) {
+                if (isViewContains(image, hitXInScreen, hitYInScreen)) {
                     Boolean bool = image.isEnabled();
-                    Timber.tag(Global.debugTag4).d( "touch location in image，enable=  "+bool);
+                    LOGD(TAG, "onInterceptTouchEvent: " + "touch location in image，enable=  "+bool);
                     return false;
                 }
             }
 
             ImageView image2 = (ImageView)findViewWithTag(Global.mImage2_Showing);
             if ((image2 != null) && (image2.getVisibility() == VISIBLE) && (image2.isEnabled() == true)) {
-                if (isViewContains(image2,hitXInScreen,hitYInScreen)) {
+                if (isViewContains(image2, hitXInScreen, hitYInScreen)) {
                     Boolean bool = image2.isEnabled();
-                    Timber.tag(Global.debugTag4).d( "touch location in image2，enable=  "+bool);
+                    LOGD(TAG, "onInterceptTouchEvent: "+ "touch location in image2，enable=  "+bool);
                     return false;
                 }
             }
 
 
             LinearLayout creatorLayout = (LinearLayout) findViewById(R.id.creator_layout);
-            if (isViewContains(creatorLayout,hitXInScreen,hitYInScreen))
-            {
-                Timber.tag(Global.debugTag4).d("touch location in creatorLayout");
+            if (isViewContains(creatorLayout,hitXInScreen,hitYInScreen)) {
+                LOGD(TAG, "onInterceptTouchEvent: touch location in creatorLayout");
                 return false;
             }
 
-            Timber.tag(Global.debugTag4).d( "onInterceptTouchEvent finally return true");
+            LOGD(TAG, "onInterceptTouchEvent: finally return true");
 
             return true;
         }
@@ -116,11 +118,11 @@ public class VGViewPager extends AutoScrollViewPager {
 
         switch (ev.getAction()) {
             case MotionEvent.ACTION_DOWN:
-                Timber.tag(Global.debugTag4).d("ACTION_DOWN");
+                LOGD(TAG, "onTouchEvent: ACTION_DOWN");
                 isSwipeAction = false;
                 return true;
             case MotionEvent.ACTION_MOVE:
-                Timber.tag(Global.debugTag4).d("ACTION_MOVE");
+                LOGD(TAG, "onTouchEvent: ACTION_MOVE");
                 swipeActionCount++; //check how long the button is pressed
                 if(swipeActionCount> 5){
                     isSwipeAction = true;
@@ -128,7 +130,7 @@ public class VGViewPager extends AutoScrollViewPager {
                 requestDisallowInterceptTouchEvent(true);
                 break;
             case MotionEvent.ACTION_UP:
-                Timber.d("ACTION_UP");
+                LOGD(TAG, "onTouchEvent: ACTION_UP");
                 requestDisallowInterceptTouchEvent(false);
                 if (isSwipeAction == false && swipeActionCount <3) {
                     if (mOnViewPagerItemClickListener != null) {
@@ -139,12 +141,12 @@ public class VGViewPager extends AutoScrollViewPager {
                 isSwipeAction = false;
                 break;
             case MotionEvent.ACTION_CANCEL:
-                Timber.tag(Global.debugTag4).d("ACTION_CANCEL");
+                LOGD(TAG, "onTouchEvent: ACTION_CANCEL");
                 requestDisallowInterceptTouchEvent(false);
                 isSwipeAction =false;
                 break;
             default:
-                Timber.tag(Global.debugTag).d("default");
+                LOGD(TAG, "onTouchEvent: other action");
                 break;
         }
 

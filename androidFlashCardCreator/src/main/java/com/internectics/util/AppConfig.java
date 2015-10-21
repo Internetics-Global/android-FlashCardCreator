@@ -8,6 +8,7 @@ import java.io.FileOutputStream;
 import java.util.Properties;
 
 public class AppConfig {
+    private static final String TAG = AppConfig.class.getName();
     private final static String APP_CONFIG = "config";
     private static AppConfig appConfig;
     private Context mContext;

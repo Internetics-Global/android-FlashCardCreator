@@ -3,8 +3,6 @@ package com.internectics.helper;
 import android.content.Context;
 import android.net.Uri;
 import android.util.Base64;
-
-import com.amazonaws.auth.NoSessionSupportCredentials;
 import com.internectics.android_flashcardcreator.R;
 import com.internectics.data.Card;
 import com.internectics.data.Pack;
@@ -22,11 +20,13 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
-import java.util.Timer;
 
-import timber.log.Timber;
+import static com.internectics.util.LogUtils.LOGD;
+import static com.internectics.util.LogUtils.LOGE;
 
 public class PackParserHelper {
+
+    private static final String TAG = PackParserHelper.class.getName();
 
     /*
       iPhone ＝ 640
@@ -166,7 +166,7 @@ public class PackParserHelper {
                 newFile = FileOperationHelper.copyImageVideoToImagesFolder(getCardImageFullPath(resultCard.question.audioUriFormatStr, i));
                 resultCard.question.audioUriFormatStr = FileOperationHelper.convertToUriFormatFile(newFile);
             } else {
-                Timber.tag(Global.debugTag).d( "resultCard.question.audioUriFormatStr is empty");
+                LOGD(TAG, "parse: resultCard.question.audioUriFormatStr is empty");
             }
 
             if (resultCard.answer.audioUriFormatStr.length() >0) {
@@ -174,7 +174,7 @@ public class PackParserHelper {
                 resultCard.answer.audioUriFormatStr = FileOperationHelper.convertToUriFormatFile(newFile);
 
             } else {
-                Timber.tag(Global.debugTag).d( "resultCard.answer.audioUriFormatStr is empty");
+                LOGD(TAG, "parse: resultCard.answer.audioUriFormatStr is empty");
             }
 
             //***************再次加工,结束
@@ -307,11 +307,11 @@ public class PackParserHelper {
                 if ((temp != null) && (StringUtils.isNumeric(temp))) {
                     mScreenWidthFromSharedDevice =  Integer.parseInt(temp);
                 } else {
-                    Timber.w("mScreenWidthFromSharedDevice is 0");
+                    LOGD(TAG, "parsePackJsonFile: mScreenWidthFromSharedDevice is 0");
                     mScreenWidthFromSharedDevice = 0;
                 }
             }
-            Timber.tag(Global.debugTag2).d("screenWith from shared device is:" + mScreenWidthFromSharedDevice);
+            LOGD(TAG, "parsePackJsonFile: " + "screenWith from shared device is " + mScreenWidthFromSharedDevice);
 
 
         } catch (FileNotFoundException e) {
@@ -608,25 +608,25 @@ public class PackParserHelper {
 
                     if ((subheadingSize == 0) ||(card.question.subheading.length() == 0)) {
                         card.question.css.subheadingSize = standardCSSArrary[0];
-                        Timber.tag(Global.debugTag).w( "subheadingSize = 0 or subheading.length = 0");
+                        LOGD(TAG, "parseCardJsonFiles: subheadingSize = 0 or subheading.length = 0");
                     } else {
                         baseSize =  subheadingSize;
                         whichAsBase = 0;
                     }
 
 
-                    if ((subSize == 0) ||(card.question.sub.length() == 0)) {
+                    if ((subSize == 0) || (card.question.sub.length() == 0)) {
                         card.question.css.subSize = standardCSSArrary[2];
-                        Timber.tag(Global.debugTag).w( "subSize = 0 or sub.length = 0");
+                        LOGD(TAG, "parseCardJsonFiles: subSize = 0 or sub.length = 0");
                     } else {
                         baseSize =  subSize;
                         whichAsBase =2;
                     }
 
                     //put main at last is very important, because it's the most trustworthy value
-                    if ((mainSize == 0) ||(card.question.main.length() == 0)) {
+                    if ((mainSize == 0) || (card.question.main.length() == 0)) {
                         card.question.css.mainSize = standardCSSArrary[1];
-                        Timber.tag(Global.debugTag).w( "mainSize = 0 or main.length = 0");
+                        LOGD(TAG, "parseCardJsonFiles: mainSize = 0 or main.length = 0");
                     } else {
                         baseSize =  mainSize;
                         whichAsBase = 1;
@@ -741,7 +741,7 @@ public class PackParserHelper {
                     if (subSize == 0) {
                         subSize = standardCSSArrary[2];
                     }
-                    card.question.css.subSize = (int)(subSize * factor);
+                    card.question.css.subSize = (int) (subSize * factor);
 
                 }
             }
@@ -749,13 +749,13 @@ public class PackParserHelper {
 
         } catch (FileNotFoundException e) {
             e.printStackTrace();
-            Timber.tag(Global.debugTag).e("Error during parse questionTextContent.json, reason:" + e.getCause());
+            LOGE(TAG, "parseCardJsonFiles: " + "Error during parse questionTextContent.json, reason:" + e.getCause());
         } catch (ParseException e) {
             e.printStackTrace();
-            Timber.tag(Global.debugTag).e("Error during parse questionTextContent.json, reason:" + e.getCause());
+            LOGE(TAG, "parseCardJsonFiles: " + "Error during parse questionTextContent.json, reason:" + e.getCause());
         } catch (IOException e) {
             e.printStackTrace();
-            Timber.tag(Global.debugTag).e("Error during parse questionTextContent.json, reason:" + e.getCause());
+            LOGE(TAG, "parseCardJsonFiles: " + "Error during parse questionTextContent.json, reason:" + e.getCause());
         }
 
         //Answer
@@ -989,27 +989,27 @@ public class PackParserHelper {
                     int baseSize = 0;
                     int whichAsBase = 0;  //0, subheading; 1, main; 2. sub
 
-                    if ((subheadingSize == 0) ||(card.answer.subheading.length() == 0)) {
+                    if ((subheadingSize == 0) || (card.answer.subheading.length() == 0)) {
                         card.answer.css.subheadingSize = standardCSSArrary[3];
-                        Timber.tag(Global.debugTag).w( "subheadingSize = 0 or subheading.length = 0");
+                        LOGD(TAG, "parseCardJsonFiles: \"subheadingSize = 0 or subheading.length = 0\"");
                     } else {
                         baseSize =  subheadingSize;
                         whichAsBase = 0;
                     }
 
 
-                    if ((subSize == 0) ||(card.answer.sub.length() == 0)) {
+                    if ((subSize == 0) || (card.answer.sub.length() == 0)) {
                         card.answer.css.subSize = standardCSSArrary[5];
-                        Timber.tag(Global.debugTag).w( "subSize = 0 or sub.length = 0");
+                        LOGD(TAG, "parseCardJsonFiles: subSize = 0 or sub.length = 0");
                     } else {
                         baseSize =  subSize;
                         whichAsBase =2;
                     }
 
                     //put main at last is very important, because it's the most trustworthy value
-                    if ((mainSize == 0) ||(card.answer.main.length() == 0)) {
+                    if ((mainSize == 0) || (card.answer.main.length() == 0)) {
                         card.answer.css.mainSize = standardCSSArrary[4];
-                        Timber.tag(Global.debugTag).w( "mainSize = 0 or main.length = 0");
+                        LOGD(TAG, "parseCardJsonFiles: mainSize = 0 or main.length = 0");
                     } else {
                         baseSize =  mainSize;
                         whichAsBase = 1;
@@ -1126,7 +1126,7 @@ public class PackParserHelper {
                     if (subSize == 0) {
                        subSize = standardCSSArrary[5];
                     }
-                    card.answer.css.subSize = (int)(subSize * factor);
+                    card.answer.css.subSize = (int) (subSize * factor);
 
                 }
             }
@@ -1134,13 +1134,13 @@ public class PackParserHelper {
 
         } catch (FileNotFoundException e) {
             e.printStackTrace();
-            Timber.tag(Global.debugTag).e("Error during parse questionTextContent.json, reason:" + e.getCause());
+            LOGE(TAG, "parseCardJsonFiles: " + "Error during parse questionTextContent.json, reason:" + e.getCause());
         } catch (ParseException e) {
             e.printStackTrace();
-            Timber.tag(Global.debugTag).e("Error during parse questionTextContent.json, reason:" + e.getCause());
+            LOGE(TAG, "parseCardJsonFiles: " + "Error during parse questionTextContent.json, reason:" + e.getCause());
         } catch (IOException e) {
             e.printStackTrace();
-            Timber.tag(Global.debugTag).e("Error during parse questionTextContent.json, reason:" + e.getCause());
+            LOGE(TAG, "parseCardJsonFiles: " + "Error during parse questionTextContent.json, reason:" + e.getCause());
         }
 
         return card;

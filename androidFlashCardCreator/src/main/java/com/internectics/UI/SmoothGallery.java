@@ -11,6 +11,8 @@ import android.widget.Gallery;
  */
 public class SmoothGallery extends Gallery {
 
+    private static final String TAG = SmoothGallery.class.getName();
+
     private long mLastScrollEvent;
 
     public SmoothGallery(Context context) {

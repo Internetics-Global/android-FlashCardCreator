@@ -34,6 +34,8 @@ import android.view.animation.Interpolator;
  */
 public class AutoScrollViewPager extends ViewPager {
 
+    private static final String TAG = AutoScrollViewPager.class.getName();
+
     public static final int        DEFAULT_INTERVAL            = 1500;
 
     public static final int        LEFT                        = 0;

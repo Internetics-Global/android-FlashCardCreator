@@ -11,6 +11,8 @@ import com.internectics.util.UIHelper;
  */
 public class ScaleHelper {
 
+    private static final String TAG = ScaleHelper.class.getName();
+
     public static String[]  nominalSizeArray(Activity activity) {
 
         String rawNominalSizeArray[] =  activity.getResources().getStringArray(R.array.css_size);

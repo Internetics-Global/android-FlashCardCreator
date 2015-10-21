@@ -17,6 +17,8 @@ import java.io.IOException;
  */
 public class AudioHelper {
 
+    private static final String TAG = AudioHelper.class.getName();
+
     private static MediaRecorder mRecorder;
     private static MediaPlayer   mp;
 
