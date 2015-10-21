@@ -5,8 +5,10 @@ import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Environment;
 import android.text.InputType;
 import android.view.View;
 import android.view.WindowManager;
@@ -23,6 +25,9 @@ import com.parse.SaveCallback;
 import com.parse.ui.ParseLoginBuilder;
 
 import org.adw.library.widgets.discreteseekbar.DiscreteSeekBar;
+
+import java.io.File;
+import java.io.IOException;
 
 import cn.pedant.SweetAlert.SweetAlertDialog;
 
@@ -222,9 +227,9 @@ public class MoreActivity extends Activity {
 
                             pDialog.dismiss();
 
-                            new SweetAlertDialog(MoreActivity.this,SweetAlertDialog.SUCCESS_TYPE)
-                                .setTitleText(getString(R.string.DIALOG_AlERT))
-                                .setContentText(getString(R.string.DIALOG_SOCIAL_MEDIA_LOG_OUT_SUCCESS))
+                            new SweetAlertDialog(MoreActivity.this, SweetAlertDialog.SUCCESS_TYPE)
+                                    .setTitleText(getString(R.string.DIALOG_AlERT))
+                                    .setContentText(getString(R.string.DIALOG_SOCIAL_MEDIA_LOG_OUT_SUCCESS))
                                     .show();
 
                         }
@@ -233,6 +238,14 @@ public class MoreActivity extends Activity {
                 } else {
                     parseUserAuth();
                 }
+            }
+        });
+
+
+        findViewById(R.id.rl_send_log).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                sendLogcatMail();
             }
         });
 
@@ -387,5 +400,30 @@ public class MoreActivity extends Activity {
                 LOGE(TAG, "onActivityResult: sign up or sign in failure with resultCode = " + resultCode);
             }
         }
+    }
+
+
+    public void sendLogcatMail(){
+
+        // save logcat in file
+        File outputFile = new File(Environment.getExternalStorageDirectory(),
+                "logcat.txt");
+        try {
+            Runtime.getRuntime().exec(
+                    "logcat -f " + outputFile.getAbsolutePath());
+        } catch (IOException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        } finally {
+
+        }
+
+        //send file using email
+        Intent emailIntent = new Intent(Intent.ACTION_SENDTO, Uri.parse("mailto:clive@internetics.net.au"));
+        emailIntent.putExtra(Intent.EXTRA_STREAM, Uri.fromFile(outputFile));
+        emailIntent .putExtra(Intent.EXTRA_SUBJECT, "Subject");
+        emailIntent.putExtra(Intent.EXTRA_SUBJECT, "Email Subject");
+
+        startActivity(Intent.createChooser(emailIntent, "Chooser Title"));
     }
 }

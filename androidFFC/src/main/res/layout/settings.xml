@@ -161,6 +161,23 @@
 
 
 
+        <RelativeLayout
+            android:id="@+id/rl_send_log"
+            style="@style/option_item_rl" >
+
+            <TextView
+                style="@style/option_item_text_parent"
+                android:text= "Send log"
+                android:textColor="@android:color/white"
+                android:textSize="16dp" />
+        </RelativeLayout>
+
+
+        <View
+            style="@style/h_line" />
+
+
+
 
     </LinearLayout>
 
