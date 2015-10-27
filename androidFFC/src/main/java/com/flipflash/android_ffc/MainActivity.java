@@ -381,7 +381,7 @@ public class MainActivity extends FragmentActivity implements
 
             case R.id.actionbar_play_manually:
 
-                if (mCurrentPack.cards.size() > 0) {
+                if ((mCurrentPack != null) && (mCurrentPack.cards.size() > 0)) {
                     Intent intent = new Intent(MainActivity.this, PlayActivity.class);
                     intent.putExtra("packID", mCurrentPack.packID);
                     intent.putExtra("oneOffPlayType",0);  //manually

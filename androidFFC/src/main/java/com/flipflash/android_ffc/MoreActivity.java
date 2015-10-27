@@ -411,6 +411,13 @@ public class MoreActivity extends Activity {
         // save logcat in file
         File outputFile = new File(Environment.getExternalStorageDirectory(),
                 "logcat.txt");
+        if (outputFile != null) {
+            boolean succeeded = outputFile.delete();
+            LOGD(TAG, "sendLogcatMail: delete file succeed = " + succeeded);
+        }
+
+        //clear logcat:    adb logcat -c
+
         try {
             Runtime.getRuntime().exec(
                     "logcat -f " + outputFile.getAbsolutePath());

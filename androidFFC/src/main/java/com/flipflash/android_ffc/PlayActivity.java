@@ -20,6 +20,7 @@ import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
 import android.support.v4.view.ViewPager;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.MotionEvent;
 import android.view.Surface;
@@ -50,6 +51,7 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
+import java.util.MissingResourceException;
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -485,6 +487,7 @@ public class PlayActivity extends FragmentActivity implements SensorEventListene
             }
         }
 
+
     }
 
     private void pauseForAnswerSeekBarProgressManuallyChanged() {
@@ -498,6 +501,7 @@ public class PlayActivity extends FragmentActivity implements SensorEventListene
     protected void onStop() {
         super.onStop();
         LOGD(TAG, "onStop");
+
         
         if (mIsSensorAvailable) {
             mSensorManager.unregisterListener(this);
@@ -1168,27 +1172,43 @@ public class PlayActivity extends FragmentActivity implements SensorEventListene
 
     private Locale getText2SpeechLocale() {
 
+        try {
+            Locale[] locales = Locale.getAvailableLocales();
 
-        Locale[] locales = Locale.getAvailableLocales();
-        List<Locale> localeList = new ArrayList<Locale>();
-        for (Locale locale : locales) {
-            int res = mTTS.isLanguageAvailable(locale);
-            if (res == TextToSpeech.LANG_COUNTRY_AVAILABLE) {
-                localeList.add(locale);
+            if (locales == null) {
+                return Locale.ENGLISH;
             }
-        }
 
-        String languageStr = Locale.getDefault().getLanguage();
-        String countryStr = Locale.getDefault().getCountry();
-
-        if (languageStr.equals("en")) {
-            return Locale.ENGLISH;
-        }
-
-        for (Locale item : localeList) {
-            if (item.getCountry().equals(countryStr) && item.getLanguage().equals(languageStr)) {
-                return item;
+            List<Locale> localeList = new ArrayList<Locale>();
+            for (Locale locale : locales) {
+                int res = mTTS.isLanguageAvailable(locale);
+                if (res == TextToSpeech.LANG_COUNTRY_AVAILABLE) {
+                    localeList.add(locale);
+                }
             }
+
+            String languageStr = Locale.getDefault().getLanguage();
+            String countryStr = Locale.getDefault().getCountry();
+
+            if (languageStr == null || countryStr == null) {
+                return Locale.ENGLISH;
+            }
+
+            if (languageStr.equals("en")) {
+                return Locale.ENGLISH;
+            }
+
+            for (Locale item : localeList) {
+                if (item.getCountry().equals(countryStr) && item.getLanguage().equals(languageStr)) {
+                    return item;
+                }
+            }
+
+        } catch (MissingResourceException ex) {
+            System.out.println("Error " + ex.getMessage());
+
+        } catch (Exception ex) {
+            System.out.println("Error " + ex.getMessage());
         }
 
         return Locale.ENGLISH;
