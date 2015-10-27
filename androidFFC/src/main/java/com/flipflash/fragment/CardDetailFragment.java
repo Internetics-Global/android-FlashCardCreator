@@ -115,8 +115,6 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnKeyboa
 
     public EditText mCurrentFocusedCardContentText;  // only applicable to subheading, main and sub text
 
-    private Enum_Image_Source mActiveImageSource;
-
     public boolean mIsCreatingCard = false;
     private boolean mIsPlayingCard = false;
     private boolean mIsSnapShotNotCurrent = false;//as to snapshot,we have different strategy on current showing card and other cards
@@ -154,6 +152,9 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnKeyboa
 
     private LinearLayout mContentBodyLinearLayout;
 
+    private final int REQUEST_CODE_FROM_LOGO  = 314;
+    private final int REQUEST_CODE_FROM_IMAGE  = 315;
+    private final int REQUEST_CODE_FROM_BACKGROUND  = 316;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -424,10 +425,8 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnKeyboa
 
     private void selectImageOrVideoFromLibrary() {
         if (mCurrentPack.creatorID.equals(OpenUDID_manager.getOpenUDID())) {
-//            Intent intent = new Intent(Intent.ACTION_PICK, null);
-//            intent.setType("video/*, images/*");
-//            startActivityForResult(intent, CODE_REQUEST_IMAGE_SOURCE_IS_IMAGE);
-            Crop.pickImageWithFragment(CardDetailFragment.this, false);
+            Intent intent = new Intent(Intent.ACTION_GET_CONTENT).setType("video/*, images/*");
+            startActivityForResult(intent, REQUEST_CODE_FROM_IMAGE);
         } else {
             if (mIsQuestionShowing) {
                 if (mIsImage2Active) {
@@ -515,72 +514,24 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnKeyboa
         }
 
         Uri selectedURI = Crop.getOutput(data);
-        if (mActiveImageSource == Enum_Image_Source.IMAGE_SOURCE_IS_LOGO) {
+        Bitmap scaledBitmap = UIHelper.resizeImageTo(getActivity(), selectedURI, 1024);
+        File toSaveFile = UIHelper.saveImageToCaches(scaledBitmap);
 
-            Bitmap scaledBitmap = UIHelper.resizeImageTo(getActivity(), selectedURI, 100);
-            File toSaveFile = UIHelper.saveImageToCaches(scaledBitmap);
+        setCardBackgroundImageWithBitmap(scaledBitmap);
+        if (mIsQuestionShowing) {
+            mCurrentCard.question.backgroundImageUriFormatStr = FileOperationHelper.convertToUriFormatFile(toSaveFile);
+        } else {
+            mCurrentCard.answer.backgroundImageUriFormatStr = FileOperationHelper.convertToUriFormatFile(toSaveFile);
+        }
 
-            mLogoImage.setImageBitmap(scaledBitmap);
-            mCurrentPack.logoImageUriFormatStr = FileOperationHelper.convertToUriFormatFile(toSaveFile);
-
-            if (mIsCreatingCard == false) {
-                mCurrentPack.save(AppContext.getAppContext());
-                ((MainActivity) getActivity()).setMaskButtonForContentUpdating();
-                takeSnapshotAll();
-            }
-
-        } else if (mActiveImageSource == Enum_Image_Source.IMAGE_SOURCE_IS_IMAGE) {
-            
-            Bitmap scaledBitmap = UIHelper.resizeImageTo(getActivity(), selectedURI, 400);
-            File toSaveFile = UIHelper.saveImageToCaches(scaledBitmap);
-
-            if (mIsImage2Active) {
-                mImage2.setImageBitmap(scaledBitmap);
-                if (mIsQuestionShowing) {
-                    mCurrentCard.question.imageUriFormatStr2 = FileOperationHelper.convertToUriFormatFile(toSaveFile);
-                } else {
-                    mCurrentCard.answer.imageUriFormatStr2 = FileOperationHelper.convertToUriFormatFile(toSaveFile);
-                }
-            } else {
-                mImage.setImageBitmap(scaledBitmap);
-                if (mIsQuestionShowing) {
-                    mCurrentCard.question.imageUriFormatStr = FileOperationHelper.convertToUriFormatFile(toSaveFile);
-                } else {
-                    mCurrentCard.answer.imageUriFormatStr = FileOperationHelper.convertToUriFormatFile(toSaveFile);
-                }
-            }
-
-            if (mIsCreatingCard == false) {
-                mCurrentCard.save(AppContext.getAppContext());
-                if (mIsQuestionShowing) {
-                    takeSnapshotCurrentCard();
-                    Intent intent = new Intent();
-                    intent.setAction(Global.BROADCAST_ACTION_UPDATE_MASTER_VIEW);
-                    intent.putExtra(Global.KEY_FROM, Global.BROADCAST_EXTRA_FROM_CURRENT_PACK_UPDATE);
-                    getActivity().sendBroadcast(intent);
-                }
-            }
-        } else if (mActiveImageSource == Enum_Image_Source.IMAGE_SOURCE_IS_BACKGROUND) {
-
-            Bitmap scaledBitmap = UIHelper.resizeImageTo(getActivity(), selectedURI, 1024);
-            File toSaveFile = UIHelper.saveImageToCaches(scaledBitmap);
-
-            setCardBackgroundImageWithBitmap(scaledBitmap);
+        if (mIsCreatingCard == false) {
+            mCurrentCard.save(AppContext.getAppContext());
             if (mIsQuestionShowing) {
-                mCurrentCard.question.backgroundImageUriFormatStr = FileOperationHelper.convertToUriFormatFile(toSaveFile);
-            } else {
-                mCurrentCard.answer.backgroundImageUriFormatStr = FileOperationHelper.convertToUriFormatFile(toSaveFile);
-            }
-
-            if (mIsCreatingCard == false) {
-                mCurrentCard.save(AppContext.getAppContext());
-                if (mIsQuestionShowing) {
-                    takeSnapshotCurrentCard();
-                    Intent intent = new Intent();
-                    intent.setAction(Global.BROADCAST_ACTION_UPDATE_MASTER_VIEW);
-                    intent.putExtra(Global.KEY_FROM, Global.BROADCAST_EXTRA_FROM_CURRENT_PACK_UPDATE);
-                    getActivity().sendBroadcast(intent);
-                }
+                takeSnapshotCurrentCard();
+                Intent intent = new Intent();
+                intent.setAction(Global.BROADCAST_ACTION_UPDATE_MASTER_VIEW);
+                intent.putExtra(Global.KEY_FROM, Global.BROADCAST_EXTRA_FROM_CURRENT_PACK_UPDATE);
+                getActivity().sendBroadcast(intent);
             }
         }
 
@@ -658,7 +609,6 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnKeyboa
                 .setNegativeButton(R.string.DIALOG_SELECT_FROM_LIBRARY, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        mActiveImageSource = Enum_Image_Source.IMAGE_SOURCE_IS_IMAGE;
                         selectImageOrVideoFromLibrary();
                     }
                 })
@@ -678,13 +628,9 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnKeyboa
 
                 if (mIsPlayingCard == false) {
                     if (isEditableMode()) {
-                        mActiveImageSource = Enum_Image_Source.IMAGE_SOURCE_IS_LOGO;
-                        Crop.pickImageWithFragment(CardDetailFragment.this, true);
-//                        startActivityForResult(
-//                                new Intent(
-//                                        Intent.ACTION_PICK,
-//                                        android.provider.MediaStore.Images.Media.INTERNAL_CONTENT_URI),
-//                                CODE_REQUEST_IMAGE_SOURCE_IS_LOGO);
+                        Intent intent = new Intent(Intent.ACTION_GET_CONTENT).setType("video/*, images/*");
+                        startActivityForResult(intent, REQUEST_CODE_FROM_LOGO);
+
 
                     } else {
                         Intent intent = new Intent(getActivity(), WebViewActivity.class);
@@ -778,24 +724,12 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnKeyboa
                                 .setNegativeButton(R.string.Optional_Change_Background_Image, new DialogInterface.OnClickListener() {
                                     @Override
                                     public void onClick(DialogInterface dialog, int which) {
-                                        mActiveImageSource = Enum_Image_Source.IMAGE_SOURCE_IS_BACKGROUND;
                                         Crop.pickImageWithFragment(CardDetailFragment.this, true);
-//                                        startActivityForResult(
-//                                                new Intent(
-//                                                        Intent.ACTION_PICK,
-//                                                        android.provider.MediaStore.Images.Media.INTERNAL_CONTENT_URI),
-//                                                CODE_REQUEST_IMAGE_SOURCE_IS_BACKGROUND);
                                     }
                                 })
                                 .show();
                     } else {
-                        mActiveImageSource = Enum_Image_Source.IMAGE_SOURCE_IS_BACKGROUND;
                         Crop.pickImageWithFragment(CardDetailFragment.this, true);
-//                        startActivityForResult(
-//                                new Intent(
-//                                        Intent.ACTION_PICK,
-//                                        android.provider.MediaStore.Images.Media.INTERNAL_CONTENT_URI),
-//                                CODE_REQUEST_IMAGE_SOURCE_IS_BACKGROUND);
                     }
 
                 } else {
@@ -4190,16 +4124,11 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnKeyboa
         if (requestCode == Crop.REQUEST_CROP) {
             handleCrop(requestCode, resultCode, data);
         } else {
-
             if (resultCode == Activity.RESULT_OK) {
-
                 Uri selectedURI = data.getData();
-
                 if (selectedURI.toString().contains("/video")) { //video
-
                     //step1: get image
                     thumbnailImageFromURL(selectedURI);
-
                     //step2: get video
                     File toSaveVideoFile = UIHelper.saveVideoToCaches(AppContext.getAppContext(), selectedURI);
 
@@ -4229,11 +4158,57 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnKeyboa
                     }
 
                 } else {   //images
+                    if (requestCode == REQUEST_CODE_FROM_LOGO) {
+                        Bitmap scaledBitmap = UIHelper.resizeImageTo(getActivity(), selectedURI, 100);
+                        File toSaveFile = UIHelper.saveImageToCaches(scaledBitmap);
 
-                    beginCrop(data.getData());
+                        mLogoImage.setImageBitmap(scaledBitmap);
+                        mCurrentPack.logoImageUriFormatStr = FileOperationHelper.convertToUriFormatFile(toSaveFile);
+
+                        if (mIsCreatingCard == false) {
+                            mCurrentPack.save(AppContext.getAppContext());
+                            ((MainActivity) getActivity()).setMaskButtonForContentUpdating();
+                            takeSnapshotAll();
+                        }
+
+                    } else if (requestCode == REQUEST_CODE_FROM_IMAGE) {
+
+                        Bitmap scaledBitmap = UIHelper.resizeImageTo(getActivity(), selectedURI, 400);
+                        File toSaveFile = UIHelper.saveImageToCaches(scaledBitmap);
+
+                        if (mIsImage2Active) {
+                            mImage2.setImageBitmap(scaledBitmap);
+                            if (mIsQuestionShowing) {
+                                mCurrentCard.question.imageUriFormatStr2 = FileOperationHelper.convertToUriFormatFile(toSaveFile);
+                            } else {
+                                mCurrentCard.answer.imageUriFormatStr2 = FileOperationHelper.convertToUriFormatFile(toSaveFile);
+                            }
+                        } else {
+                            mImage.setImageBitmap(scaledBitmap);
+                            if (mIsQuestionShowing) {
+                                mCurrentCard.question.imageUriFormatStr = FileOperationHelper.convertToUriFormatFile(toSaveFile);
+                            } else {
+                                mCurrentCard.answer.imageUriFormatStr = FileOperationHelper.convertToUriFormatFile(toSaveFile);
+                            }
+                        }
+
+                        if (mIsCreatingCard == false) {
+                            mCurrentCard.save(AppContext.getAppContext());
+                            if (mIsQuestionShowing) {
+                                takeSnapshotCurrentCard();
+                                Intent intent = new Intent();
+                                intent.setAction(Global.BROADCAST_ACTION_UPDATE_MASTER_VIEW);
+                                intent.putExtra(Global.KEY_FROM, Global.BROADCAST_EXTRA_FROM_CURRENT_PACK_UPDATE);
+                                getActivity().sendBroadcast(intent);
+                            }
+                        }
+                    } else {
+                        beginCrop(data.getData());
+                    }
 
                 }
             } else {
+                LOGE(TAG, "onActivityResult: unexpected with resultCode:" + resultCode);
             }
         }
 
