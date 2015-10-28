@@ -6,6 +6,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.graphics.Typeface;
 import android.graphics.drawable.BitmapDrawable;
@@ -16,6 +17,7 @@ import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
+import android.provider.MediaStore;
 import android.support.v4.app.Fragment;
 import android.text.Editable;
 import android.text.InputType;
@@ -43,6 +45,7 @@ import android.widget.Toast;
 import com.flipflash.UI.FCCEditText;
 import com.flipflash.UI.RoundedBottomRightImageView;
 import com.flipflash.UI.ScaleHelper;
+import com.flipflash.android_ffc.CropActivity;
 import com.flipflash.android_ffc.MainActivity;
 import com.flipflash.android_ffc.R;
 import com.flipflash.android_ffc.VideoViewActivity;
@@ -63,7 +66,6 @@ import com.flipflash.util.OpenUDID_manager;
 import com.flipflash.util.StringUtils;
 import com.flipflash.util.TipHelper;
 import com.flipflash.util.UIHelper;
-import com.soundcloud.android.crop.Crop;
 
 import net.londatiga.android.ActionItem;
 import net.londatiga.android.QuickAction;
@@ -155,6 +157,7 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnKeyboa
     private final int REQUEST_CODE_FROM_LOGO  = 314;
     private final int REQUEST_CODE_FROM_IMAGE  = 315;
     private final int REQUEST_CODE_FROM_BACKGROUND  = 316;
+    private final int REQUEST_CODE_FROM_BACKGROUND_AFTER_CROPPED  = 317;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -495,47 +498,34 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnKeyboa
     }
 
 
-
-    private void beginCrop(Uri source) {
-        Uri outputUri = Uri.fromFile(new File(getActivity().getCacheDir(), "cropped"));
-        new Crop(source).output(outputUri).asSquare().start(getActivity(), CardDetailFragment.this);
-    }
-
     private void handleCrop(int requestCode, int resultCode, Intent data) {
 
-        if (resultCode != Activity.RESULT_OK) {
-            LOGD(TAG, "handleCrop: resultCode != Activity.RESULT_OK");
-            return;
-        }
+        if (requestCode == REQUEST_CODE_FROM_BACKGROUND_AFTER_CROPPED &&
+                resultCode == Activity.RESULT_OK) {
 
-        if (data == null) {
-            LOGD(TAG, "handleCrop: handleCrop data is null");
-            return;
-        }
-
-        Uri selectedURI = Crop.getOutput(data);
-        Bitmap scaledBitmap = UIHelper.resizeImageTo(getActivity(), selectedURI, 1024);
-        File toSaveFile = UIHelper.saveImageToCaches(scaledBitmap);
-
-        setCardBackgroundImageWithBitmap(scaledBitmap);
-        if (mIsQuestionShowing) {
-            mCurrentCard.question.backgroundImageUriFormatStr = FileOperationHelper.convertToUriFormatFile(toSaveFile);
-        } else {
-            mCurrentCard.answer.backgroundImageUriFormatStr = FileOperationHelper.convertToUriFormatFile(toSaveFile);
-        }
-
-        if (mIsCreatingCard == false) {
-            mCurrentCard.save(AppContext.getAppContext());
+            Uri selectedURI = data.getParcelableExtra("cropped_image_uri");
+            Bitmap scaledBitmap = UIHelper.resizeImageTo(getActivity(), selectedURI, 1024);
+            File toSaveFile = UIHelper.saveImageToCaches(scaledBitmap);
+            setCardBackgroundImageWithBitmap(scaledBitmap);
             if (mIsQuestionShowing) {
-                takeSnapshotCurrentCard();
-                Intent intent = new Intent();
-                intent.setAction(Global.BROADCAST_ACTION_UPDATE_MASTER_VIEW);
-                intent.putExtra(Global.KEY_FROM, Global.BROADCAST_EXTRA_FROM_CURRENT_PACK_UPDATE);
-                getActivity().sendBroadcast(intent);
+                mCurrentCard.question.backgroundImageUriFormatStr = FileOperationHelper.convertToUriFormatFile(toSaveFile);
+            } else {
+                mCurrentCard.answer.backgroundImageUriFormatStr = FileOperationHelper.convertToUriFormatFile(toSaveFile);
             }
-        }
 
-        PackRecordHelper.savePackUpdateRecord(AppContext.getAppContext(), mCurrentPack);
+            if (mIsCreatingCard == false) {
+                mCurrentCard.save(AppContext.getAppContext());
+                if (mIsQuestionShowing) {
+                    takeSnapshotCurrentCard();
+                    Intent intent = new Intent();
+                    intent.setAction(Global.BROADCAST_ACTION_UPDATE_MASTER_VIEW);
+                    intent.putExtra(Global.KEY_FROM, Global.BROADCAST_EXTRA_FROM_CURRENT_PACK_UPDATE);
+                    getActivity().sendBroadcast(intent);
+                }
+            }
+
+            PackRecordHelper.savePackUpdateRecord(AppContext.getAppContext(), mCurrentPack);
+        }
 
     }
 
@@ -724,12 +714,14 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnKeyboa
                                 .setNegativeButton(R.string.Optional_Change_Background_Image, new DialogInterface.OnClickListener() {
                                     @Override
                                     public void onClick(DialogInterface dialog, int which) {
-                                        Crop.pickImageWithFragment(CardDetailFragment.this, true);
+                                        Intent intent = new Intent(Intent.ACTION_GET_CONTENT).setType("images/*");
+                                        startActivityForResult(intent, REQUEST_CODE_FROM_BACKGROUND);
                                     }
                                 })
                                 .show();
                     } else {
-                        Crop.pickImageWithFragment(CardDetailFragment.this, true);
+                        Intent intent = new Intent(Intent.ACTION_GET_CONTENT).setType("images/*");
+                        startActivityForResult(intent, REQUEST_CODE_FROM_BACKGROUND);
                     }
 
                 } else {
@@ -4121,11 +4113,20 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnKeyboa
         //whatever RESULT_OK or RESULT_CANCELED, we need to do this first
         ((MainActivity) getActivity()).mIsAllowedToShowPackList = false;
 
-        if (requestCode == Crop.REQUEST_CROP) {
-            handleCrop(requestCode, resultCode, data);
-        } else {
-            if (resultCode == Activity.RESULT_OK) {
-                Uri selectedURI = data.getData();
+        if (resultCode == Activity.RESULT_OK) {
+
+            Uri selectedURI = data.getData();
+
+            if (requestCode == REQUEST_CODE_FROM_BACKGROUND) {
+                Intent intent = new Intent(getActivity(), CropActivity.class);
+                intent.putExtra("uri",selectedURI);
+                startActivityForResult(intent, REQUEST_CODE_FROM_BACKGROUND_AFTER_CROPPED);
+
+            } else if (requestCode == REQUEST_CODE_FROM_BACKGROUND_AFTER_CROPPED) {
+
+                handleCrop(REQUEST_CODE_FROM_BACKGROUND_AFTER_CROPPED,resultCode,data);
+
+            } else {
                 if (selectedURI.toString().contains("/video")) { //video
                     //step1: get image
                     thumbnailImageFromURL(selectedURI);
@@ -4202,14 +4203,11 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnKeyboa
                                 getActivity().sendBroadcast(intent);
                             }
                         }
-                    } else {
-                        beginCrop(data.getData());
                     }
 
                 }
-            } else {
-                LOGE(TAG, "onActivityResult: unexpected with resultCode:" + resultCode);
             }
+
         }
 
 

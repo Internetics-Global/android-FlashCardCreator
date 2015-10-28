@@ -101,6 +101,21 @@ public class UIHelper {
         return resizeBitmap;
     }
 
+    public static Bitmap resizeImageTo(Context context, Bitmap bitmap,int width) {
+
+        int originalWidth = bitmap.getWidth();
+        int originalHeight = bitmap.getHeight();
+        int outHeight = (originalHeight * width) / originalWidth;
+
+        Bitmap resizedBitmap;
+        if (width < originalHeight) {
+            return bitmap;
+        } else {
+            resizedBitmap= Bitmap.createScaledBitmap(bitmap, width, outHeight, false);
+            return resizedBitmap;
+        }
+    }
+
     private static int nextPowerOf2(final int a)
     {
         int b = 1;

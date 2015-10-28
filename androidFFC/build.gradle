@@ -87,7 +87,7 @@ dependencies {
     compile 'asia.ivity.android:drag-sort-listview:1.0@aar'
     compile project(':Viewflow')
     compile project(':NewQuickAction3D')
-    compile(name: 'android-crop-0.9.10', ext: 'aar')
+    compile 'com.isseiaoki:simplecropview:1.0.9'
     compile(name: 'android_target_tooltip_ccaa_22112014', ext: 'aar')
     compile 'com.nineoldandroids:library:+'
 
