@@ -108,7 +108,14 @@ public class MainActivity extends FragmentActivity implements
 
     private boolean           mIsCreatingCard = false;
     public  boolean           mIsEdittingCard = false;
+
+    /*
+     * 用于切换到后台后，自动关闭css toolbar用
+     * 在onResume中执行initializeCSSToolbar，然后置成false;
+     * 在onPause中执行removeCSSToolbar，然后置成true
+     */
     private boolean           mIsNecessaryToRestoreCSSToolbar = false;
+
     private boolean           mIsFromRestartApp = false;
     public  boolean           mIsAllowedToShowPackList = true;
     public  boolean           mIsKeyboardVisible; //we can NOT judge by imm.isActive
@@ -128,7 +135,11 @@ public class MainActivity extends FragmentActivity implements
 
     private ArrayList<CardDetailFragment> mArrayCardDetailFragments;   //Special for snapshot(not include current card)
 
+    /*
+     * Master通过getSupportFragmentManager().beginTransaction().replace 初始化mCardDetailFragment
+     */
     public  CardDetailFragment   mCardDetailFragment;
+
     public  SymbolBoxFragment    mSymbolBoxFragment;
     private Button               mSymbolKeyboardSwitchButton;
 
@@ -155,16 +166,17 @@ public class MainActivity extends FragmentActivity implements
         //step2: background of to-do-this. we hope to use Uri globally including resource files
         FileOperationHelper.copyResourcesImagesToCache(MainActivity.this);
 
-        //Step2: OpenUDID
+        //Step3: OpenUDID
         OpenUDID_manager.sync(this);
         if (!OpenUDID_manager.isInitialized()) {
             LOGD(TAG, "onCreate: OpenUDID_manager is not initialized");
         }
 
+        //step3: setup basic view
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
-
         setContentView(R.layout.activity_card_twopane);
 
+        //step4: setup record button
         mRecordStopProgress = (DonutProgress) findViewById(R.id.record_stop_progress);
         mRecordStopButton = (Button) findViewById(R.id.record_stop_button);
         mRecordStopButton.setOnClickListener(new View.OnClickListener() {
@@ -174,7 +186,7 @@ public class MainActivity extends FragmentActivity implements
             }
         });
 
-
+        //step5: setup "creating a new card"
         Button addCardButton = (Button) this.findViewById(R.id.add_card_button);
         addCardButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -186,13 +198,14 @@ public class MainActivity extends FragmentActivity implements
             }
         });
 
-
         mMasterMaskButton = (Button) findViewById(R.id.master_view_mask);
         mMasterViewUpdatingLayout = findViewById(R.id.master_view_updating_layout);
 
+        //step6: set info view
         mPackInfoLayout = (LinearLayout) findViewById(R.id.pack_info_layout);
         showPackInfoView();
 
+        //step7: setup symbol box
         mSymbolBoxFragment = (SymbolBoxFragment) getSupportFragmentManager().findFragmentById(R.id.fragment_symbol_box);
 
         mIsFromRestartApp = true;
@@ -223,6 +236,7 @@ public class MainActivity extends FragmentActivity implements
         menu.clear();
         getMenuInflater().inflate(menuID, menu);
 
+        //在不同的屏幕尺寸下，我们需要隐藏或者显示
         if ((UIHelper.getScreenWidthDPUnit(this) >= 600) && (mIsCreatingCard == false)) {
             MenuItem item = menu.findItem(R.id.actionbar_change_template_color);
             item.setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS);
@@ -255,8 +269,6 @@ public class MainActivity extends FragmentActivity implements
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-
-        LayoutInflater inflater = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 
         switch (item.getItemId()) {
             case R.id.actionbar_add_pack: {
@@ -733,6 +745,25 @@ public class MainActivity extends FragmentActivity implements
 
 
     @Override
+    protected void onStart() {
+        super.onStart();
+
+        LOGD(TAG, "onStart");
+
+        EasyTracker.getInstance().activityStart(this);
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+
+        LOGD(TAG, "onStop");
+
+        EasyTracker.getInstance().activityStop(this);
+    }
+
+
+    @Override
     protected void onPause() {
         super.onPause();
         if ((mCSSToolbar != null) && (mCSSToolbar.getParent() != null)) {
@@ -760,12 +791,9 @@ public class MainActivity extends FragmentActivity implements
         }
     }
 
-    @Override
-    protected void onSaveInstanceState(Bundle outState) {
-        super.onSaveInstanceState(outState);
-    }
 
     /**
+     * 来自 CardListFragment onItemSelected
      * @param index (index<0) is used to clear master and detail views
      */
     @Override
@@ -850,8 +878,8 @@ public class MainActivity extends FragmentActivity implements
         intent.setAction(Global.BROADCAST_ACTION_UPDATE_MASTER_VIEW);
         intent.putExtra(Global.KEY_FROM, Global.BROADCAST_EXTRA_FROM_SNAPSHOT_ALL);
         Bundle extraBundle = new Bundle();
-        extraBundle.putInt("EXTRA_PACK_ID",mCurrentPack.packID);
-        extraBundle.putInt("EXTRA_INDEX",mCurrentCardIndex);
+        extraBundle.putInt("EXTRA_PACK_ID", mCurrentPack.packID);
+        extraBundle.putInt("EXTRA_INDEX", mCurrentCardIndex);
         intent.putExtra("BUNDLE", extraBundle);
         sendBroadcast(intent);
 
@@ -864,7 +892,7 @@ public class MainActivity extends FragmentActivity implements
 
         getSupportFragmentManager().beginTransaction().remove(fragment).commitAllowingStateLoss();
 
-        LOGD(TAG, "finishSnapShot: " + String.format("FinishSnapShot on cardSN = %d",fragment.mCurrentCard.cardID));
+        LOGD(TAG, "finishSnapShot: " + String.format("FinishSnapShot on cardSN = %d", fragment.mCurrentCard.cardID));
     }
 
 
@@ -924,7 +952,7 @@ public class MainActivity extends FragmentActivity implements
         Intent intent = new Intent();
         intent.setAction(Global.BROADCAST_ACTION_UPDATE_MASTER_VIEW);
         intent.putExtra(Global.KEY_FROM, Global.BROADCAST_EXTRA_FROM_NEW_CARD);
-        intent.putExtra(Global.KEY_CARD_INDEX, (mCurrentPack.cards.size()-1));
+        intent.putExtra(Global.KEY_CARD_INDEX, (mCurrentPack.cards.size() - 1));
         sendBroadcast(intent);
 
     }
@@ -974,25 +1002,6 @@ public class MainActivity extends FragmentActivity implements
 
         return true;
     }
-
-    @Override
-    protected void onStart() {
-        super.onStart();
-
-        LOGD(TAG, "onStart");
-
-        EasyTracker.getInstance().activityStart(this);
-    }
-
-    @Override
-    protected void onStop() {
-        super.onStop();
-
-        LOGD(TAG, "onStop");
-
-        EasyTracker.getInstance().activityStop(this);
-    }
-
 
 
     private void onActionbarShareItemSelected() {
@@ -1140,7 +1149,7 @@ public class MainActivity extends FragmentActivity implements
                             } else {
                                 //步骤： upload -- > 设置最大分享数 --> 创建短连接 --> 分享
                                 if (DropboxAuthHelper.sharedHelper(MainActivity.this).isLinked()) {
-                                    mDropboxUploadHelper = new DropboxUploadHelper(MainActivity.this, Global.DROPBOX_FOLDER, file,mDropboxUploadHandler);
+                                    mDropboxUploadHelper = new DropboxUploadHelper(MainActivity.this, Global.DROPBOX_FOLDER, file, mDropboxUploadHandler);
                                     mDropboxUploadHelper.execute();
                                 } else {
                                     mAmazonUploadHelper = new AWSUploadHelper(MainActivity.this, mAmazonUploadHandler);
@@ -1153,6 +1162,36 @@ public class MainActivity extends FragmentActivity implements
                     }
                 })
                 .show();
+    }
+
+
+    public void removeCSSToolbar() {
+        if (mCSSToolbar == null) {
+            LOGD(TAG, "removeCSSToolbar: mCSSToolbar is null when executing removeCSSToolbar");
+            return;
+        } else {
+            WindowManager wm = (WindowManager) getSystemService(WINDOW_SERVICE);
+            if (mCSSToolbar.getParent() != null) {
+                mCSSToolbar.setVisibility(View.GONE);
+                wm.removeView(mCSSToolbar);
+                mCSSToolbar = null;
+                LOGD(TAG, "removeCSSToolbar: removeCSSToolbar is called");
+            }
+
+            mIsKeyboardVisible = false;
+
+        }
+    }
+
+
+    /*
+     * 有条件的决定是否initializeCSSToolbar
+     */
+    public void prepareCSSToolbar() {
+        if ((mCSSToolbar == null) || (mCSSToolbar.getParent() == null)) {
+            initializeCSSToolbar();
+
+        }
     }
 
     private void initializeCSSToolbar() {
@@ -1348,7 +1387,6 @@ public class MainActivity extends FragmentActivity implements
         });
     }
 
-
     public void setAsSymbolStatus() {
         mSymbolBoxFragment.showSymbolBoxWithAnimation(false);
         mSymbolKeyboardSwitchButton.setText(getString(R.string.ToolbarItem_Keyboard));
@@ -1362,13 +1400,6 @@ public class MainActivity extends FragmentActivity implements
 
     }
 
-    public void prepareCSSToolbar() {
-        if ((mCSSToolbar == null) || (mCSSToolbar.getParent() == null)) {
-            initializeCSSToolbar();
-            
-        }
-    }
-
 
     public void showCSSToolbar(CSS css,String tag) {
 
@@ -1377,7 +1408,7 @@ public class MainActivity extends FragmentActivity implements
         if ((mCSSToolbar != null) && (mCSSToolbar.getParent() != null)) {
             mCSSToolbar.setVisibility(View.VISIBLE);
 
-            //Rest spinner title when touch another textfield
+            //Rest spinner title when touch another TextField
             Spinner spinnerFont = (Spinner) mCSSToolbar.findViewById(R.id.spinner_font);
             Spinner spinnerAlign = (Spinner) mCSSToolbar.findViewById(R.id.spinner_align);
             Spinner spinnerColor = (Spinner) mCSSToolbar.findViewById(R.id.spinner_color);
@@ -1396,7 +1427,7 @@ public class MainActivity extends FragmentActivity implements
             spinnerColor.setSelection(0);
             spinnerSize.setSelection(0);
 
-            updateSpinnersHighlightedItem(css,tag);
+            updateSpinnersHighlightedItem(currentCSS,tag);
 
         }
     }
@@ -1467,23 +1498,6 @@ public class MainActivity extends FragmentActivity implements
         adapterAlign.setSelection(alignIndex);
     }
 
-    public void removeCSSToolbar() {
-        if (mCSSToolbar == null) {
-            LOGD(TAG, "removeCSSToolbar: mCSSToolbar is null when executing removeCSSToolbar");
-            return;
-        } else {
-            WindowManager wm = (WindowManager) getSystemService(WINDOW_SERVICE);
-            if (mCSSToolbar.getParent() != null) {
-                mCSSToolbar.setVisibility(View.GONE);
-                wm.removeView(mCSSToolbar);
-                mCSSToolbar = null;
-                LOGD(TAG, "removeCSSToolbar: removeCSSToolbar is called");
-            }
-
-            mIsKeyboardVisible = false;
-
-        }
-    }
 
     public void setMaskButtonForContentUpdating() {
         mMasterViewUpdatingLayout.setVisibility(View.VISIBLE);
@@ -1787,6 +1801,31 @@ public class MainActivity extends FragmentActivity implements
 
     }
 
+
+
+    int searchNearestIndex(int[] array, int searchNumber) {
+        int pos = Arrays.binarySearch(array, searchNumber);
+        if (pos >= 0)
+            return pos;
+        else {
+            int insertionPoint = -pos - 1;
+            if (insertionPoint > 0 && insertionPoint < array.length) {
+                if ((searchNumber - array[insertionPoint - 1]) < (array[insertionPoint] - searchNumber)) {
+                    return insertionPoint - 1;
+                } else {
+                    return insertionPoint;
+                }
+
+            } else {
+
+                return insertionPoint == 0 ? 0 : array.length - 1;
+            }
+        }
+    }
+
+    /*
+     * 由于默认的spinner不支持highlight，所以需要这样些
+     */
     class HighLightArrayAdapter extends ArrayAdapter<CharSequence> {
 
         private int mSelectedIndex = -1;
@@ -1813,27 +1852,6 @@ public class MainActivity extends FragmentActivity implements
             }
 
             return itemView;
-        }
-    }
-
-
-    int searchNearestIndex(int[] array, int searchNumber) {
-        int pos = Arrays.binarySearch(array, searchNumber);
-        if (pos >= 0)
-            return pos;
-        else {
-            int insertionPoint = -pos - 1;
-            if (insertionPoint > 0 && insertionPoint < array.length) {
-                if ((searchNumber - array[insertionPoint - 1]) < (array[insertionPoint] - searchNumber)) {
-                    return insertionPoint - 1;
-                } else {
-                    return insertionPoint;
-                }
-
-            } else {
-
-                return insertionPoint == 0 ? 0 : array.length - 1;
-            }
         }
     }
 

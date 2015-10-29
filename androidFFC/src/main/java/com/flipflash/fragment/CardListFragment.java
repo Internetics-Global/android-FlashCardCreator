@@ -140,7 +140,7 @@ public class CardListFragment extends Fragment {
         MatrixCursor cursor = rebuildCursor();
         adapter.changeCursor(cursor);
 
-        //Step2: Finally, send back currenPack to activity
+        //Step2: Finally, send back currentPack to activity
         ((MainActivity) getActivity()).setCurrentPack(mCurrentPack);
     }
 
