@@ -13,18 +13,18 @@
     <!-- spinner menu items for card rich text edit -->
     <string-array
             name="css_align">
-        <item>Align</item>
-        <item>Left</item>
-        <item>Center</item>
-        <item>Right</item>
-        <item>Vertical Center</item>
-        <item>Vertical Top</item>
+        <item>@string/ToolbarItem_Align</item>
+        <item>@string/ToolbarItem_Align_Left</item>
+        <item>@string/ToolbarItem_Align_Center</item>
+        <item>@string/ToolbarItem_Align_Right</item>
+        <item>@string/ToolbarItem_Align_Vertical_Center</item>
+        <item>@string/ToolbarItem_Align_Vertical_Top</item>
     </string-array>
 
     <string-array
         name="css_font">
-        <item>Font</item>
-        <item>Default</item>
+        <item>@string/ToolbarItem_Font</item>
+        <item>@string/ToolbarItem_Default</item>
         <item>Papyrus</item>
         <item>Courier</item>
         <item>Chalkduster</item>
@@ -34,13 +34,13 @@
 
     <string-array
     name="css_color">
-    <item>Color</item>
-    <item>Red</item>
-    <item>Blue</item>
-    <item>Black</item>
-    <item>Yellow</item>
-    <item>Green</item>
-    <item>White</item>
+    <item>@string/ToolbarItem_Color</item>
+    <item>@string/ToolbarItem_Color_Red</item>
+    <item>@string/ToolbarItem_Color_Blue</item>
+    <item>@string/ToolbarItem_Color_Black</item>
+    <item>@string/ToolbarItem_Color_Yellow</item>
+    <item>@string/ToolbarItem_Color_Green</item>
+    <item>@string/ToolbarItem_Color_White</item>
     </string-array>
 
 
@@ -55,7 +55,7 @@
 
     <string-array
         name="css_size">
-        <item>Size</item>
+        <item>@string/ToolbarItem_Size</item>
         <item>10</item>
         <item>11</item>
         <item>12</item>

@@ -157,9 +157,7 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnKeyboa
     private final int REQUEST_CODE_FROM_BACKGROUND  = 316;
     private final int REQUEST_CODE_FROM_BACKGROUND_AFTER_CROPPED  = 317;
 
-    /*
-     * tag definition(1001,1002,1003) 在 card.xml 也有定义
-     */
+
     public final static  String TAG_SUBHEADING          = "1001";
     public final static  String TAG_MAIN                = "1002";
     public final static  String TAG_SUB                 = "1003";

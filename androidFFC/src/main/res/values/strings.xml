@@ -140,6 +140,7 @@
     <string name="Keyboard_No_Needed">Not needed</string>
     <string name="Keyboard_Delete">Delete</string>
     <string name="ToolbarItem_Font">Font</string>
+    <string name="ToolbarItem_Default">Default</string>
     <string name="ToolbarItem_Align">Align</string>
     <string name="ToolbarItem_Size">Size</string>
     <string name="ToolbarItem_Color">Color</string>
@@ -153,6 +154,8 @@
     <string name="ToolbarItem_Align_Right">Right</string>
     <string name="ToolbarItem_Align_Justify">Justify</string>
     <string name="ToolbarItem_Align_Vertical">Vertical</string>
+    <string name="ToolbarItem_Align_Vertical_Center">Vertical Center</string>
+    <string name="ToolbarItem_Align_Vertical_Top">Vertical Top</string>
     <string name="ToolbarItem_Color_Red">Red</string>
     <string name="ToolbarItem_Color_Green">Green</string>
     <string name="ToolbarItem_Color_Blue">Blue</string>
