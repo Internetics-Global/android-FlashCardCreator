@@ -26,7 +26,7 @@ public class ScaleHelper {
     }
 
 
-    public static String[]  realSizeArray(Activity activity) {
+    public static String[] getRealSizeStringArray(Activity activity) {
         float scale = getScale(activity);
         int size = nominalSizeArray(activity).length;
         String returnArray[] = new String[size];
@@ -34,6 +34,19 @@ public class ScaleHelper {
             String item =  (nominalSizeArray(activity))[i];
             float val = Float.parseFloat(item);
             returnArray[i] = Float.toString(val * scale);
+        }
+        return returnArray;
+
+    }
+
+    public static int[]  getRealSizeIntArray(Activity activity) {
+        float scale = getScale(activity);
+        int size = nominalSizeArray(activity).length;
+        int returnArray[] = new int[size];
+        for (int i= 0; i<size; i++) {
+            String item =  (nominalSizeArray(activity))[i];
+            float val = Float.parseFloat(item);
+            returnArray[i] = (int) (val * scale);
         }
         return returnArray;
 
@@ -47,7 +60,7 @@ public class ScaleHelper {
 
         int index = nearestIndexForArray(nominalSizeArray(activity),nominalSize);
 
-        String strVal = (realSizeArray(activity))[index];
+        String strVal = (getRealSizeStringArray(activity))[index];
 
         return Float.parseFloat(strVal);
     }
@@ -57,7 +70,7 @@ public class ScaleHelper {
    */
     public static float getNominalSizeFromRealSize (Activity activity,float realsize) {
 
-        int index = nearestIndexForArray(realSizeArray(activity),realsize);
+        int index = nearestIndexForArray(getRealSizeStringArray(activity),realsize);
 
         String strVal = (nominalSizeArray(activity))[index];
 

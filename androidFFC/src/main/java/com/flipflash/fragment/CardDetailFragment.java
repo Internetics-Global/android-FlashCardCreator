@@ -6,7 +6,6 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.graphics.Typeface;
 import android.graphics.drawable.BitmapDrawable;
@@ -17,7 +16,6 @@ import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
-import android.provider.MediaStore;
 import android.support.v4.app.Fragment;
 import android.text.Editable;
 import android.text.InputType;
@@ -158,6 +156,13 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnKeyboa
     private final int REQUEST_CODE_FROM_IMAGE  = 315;
     private final int REQUEST_CODE_FROM_BACKGROUND  = 316;
     private final int REQUEST_CODE_FROM_BACKGROUND_AFTER_CROPPED  = 317;
+
+    /*
+     * tag definition(1001,1002,1003) 在 card.xml 也有定义
+     */
+    public final static  String TAG_SUBHEADING          = "1001";
+    public final static  String TAG_MAIN                = "1002";
+    public final static  String TAG_SUB                 = "1003";
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -1240,7 +1245,7 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnKeyboa
         mSubheading.setBackgroundResource(R.drawable.shape_edittext_editable);
         mSubheading.setGravity(Gravity.CENTER);
         mSubheading.setCursorVisible(true);
-        mSubheading.setTag("1001");
+        mSubheading.setTag(TAG_SUBHEADING);
         mSubheading.setTypeface(Typeface.DEFAULT_BOLD);
         mSubheading.setTextColor(Color.BLACK);
         mSubheading.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_FLAG_MULTI_LINE | InputType.TYPE_TEXT_FLAG_NO_SUGGESTIONS | InputType.TYPE_TEXT_FLAG_CAP_SENTENCES);
@@ -1265,7 +1270,7 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnKeyboa
         mMain.setCursorVisible(true);
         mMain.setGravity(Gravity.CENTER);
         mMain.setCursorVisible(true);
-        mMain.setTag("1002");
+        mMain.setTag(TAG_MAIN);
         mMain.setTypeface(Typeface.DEFAULT_BOLD);
         mMain.setTextColor(Color.BLACK);
         mMain.setSingleLine(false);
@@ -1291,7 +1296,7 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnKeyboa
         mSub.setBackgroundResource(R.drawable.shape_edittext_editable);
         mSub.setGravity(Gravity.CENTER);
         mSub.setCursorVisible(true);
-        mSub.setTag("1003");
+        mSub.setTag(TAG_SUB);
         mSub.setTypeface(Typeface.DEFAULT_BOLD);
         mSub.setTextColor(Color.BLACK);
         mSub.setSingleLine(false);
@@ -1369,20 +1374,20 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnKeyboa
             int viewHeight = v.getHeight();
             int lineHeight = v.getLineHeight();
 
-            if ((tag.equals("1001") && flag_Subheading_OneoffIncrease) ||
-                    (tag.equals("1002") && flag_Main_OneoffIncrease)||
-                    (tag.equals("1003") && flag_Sub_OneoffIncrease)) {
+            if ((tag.equals(TAG_SUBHEADING) && flag_Subheading_OneoffIncrease) ||
+                    (tag.equals(TAG_MAIN) && flag_Main_OneoffIncrease)||
+                    (tag.equals(TAG_SUB) && flag_Sub_OneoffIncrease)) {
 
             } else {
                 //In case it's too small
                 //只允许一次，尽可能大，这样可以通过后续的缩小进行
                 if (noOfLines < targetLines && noOfLines > 0) {
 
-                    if (tag.equals("1001")) {
+                    if (tag.equals(TAG_SUBHEADING)) {
                         flag_Subheading_OneoffIncrease = true;
-                    } else if (tag.equals("1002")) {
+                    } else if (tag.equals(TAG_MAIN)) {
                         flag_Main_OneoffIncrease = true;
-                    } else if (tag.equals("1003")) {
+                    } else if (tag.equals(TAG_SUB)) {
                         flag_Sub_OneoffIncrease = true;
                     }
 
@@ -3441,8 +3446,8 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnKeyboa
         }
 
 
-        //Step2: determine operaton target
-        int editTextTag = Integer.parseInt((String) mCurrentFocusedCardContentText.getTag());
+        //Step2: determine operation target
+        String editTextTag = (String) mCurrentFocusedCardContentText.getTag();
         if (mIsQuestionShowing) {
             currentCSS = mCurrentCard.question.css;
         } else {
@@ -3451,7 +3456,7 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnKeyboa
 
 
         //Step3: fill values
-        String[] sizeArray = ScaleHelper.realSizeArray(getActivity()); //我们不能从R.array.css_size获取，因为它仅仅是名义值，而不是真实的值
+        String[] sizeArray = ScaleHelper.getRealSizeStringArray(getActivity()); //我们不能从R.array.css_size获取，因为它仅仅是名义值，而不是真实的值
 
 
         String[] alignArray = getResources().getStringArray(R.array.css_align);
@@ -3473,7 +3478,7 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnKeyboa
                 int horizontalGravity;
                 int verticallGravity;
 
-                if (editTextTag == 1001) {
+                if (editTextTag.equals(TAG_SUBHEADING)) {
                     if (isVerticalAlign) {
                         currentCSS.subheadingAlignVertical = alignArray[subMenuID + 1];
                     } else {
@@ -3483,7 +3488,7 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnKeyboa
                     horizontalGravity = StringUtils.convertGravityStringToInt(currentCSS.subheadingAlign);
                     verticallGravity = StringUtils.convertVerticalGravityStringToInt(currentCSS.subheadingAlignVertical);
 
-                } else if (editTextTag == 1002) {
+                } else if (editTextTag.equals(TAG_MAIN)) {
                     if (isVerticalAlign) {
                         currentCSS.mainAlignVertical = alignArray[subMenuID + 1];
                     } else {
@@ -3493,7 +3498,7 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnKeyboa
                     horizontalGravity = StringUtils.convertGravityStringToInt(currentCSS.mainAlign);
                     verticallGravity = StringUtils.convertVerticalGravityStringToInt(currentCSS.mainAlignVertical);
 
-                } else if (editTextTag == 1003) {
+                } else if (editTextTag.equals(TAG_SUB)) {
                     if (isVerticalAlign) {
                         currentCSS.subAlignVertical = alignArray[subMenuID + 1];
                     } else {
@@ -3513,14 +3518,13 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnKeyboa
 
             case 1:   //stand for size
 
-                float size = Float.parseFloat(sizeArray[subMenuID]);  //是个纯font size的数组，不带Size描述
+                float size = Float.parseFloat(sizeArray[subMenuID]);  //是个纯text real size的数组，不带Size描述
 
-                //you can find the tag definition(1001,1002,1003) in card.xml
-                if (editTextTag == 1001) {
+                if (editTextTag.equals(TAG_SUBHEADING)) {
                     currentCSS.subheadingSize = size;
-                } else if (editTextTag == 1002) {
+                } else if (editTextTag.equals(TAG_MAIN)) {
                     currentCSS.mainSize = size;
-                } else if (editTextTag == 1003) {
+                } else if (editTextTag.equals(TAG_SUB)) {
                     currentCSS.subSize = size;
                 }
 
@@ -3537,11 +3541,11 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnKeyboa
                 break;
             case 2:   //stand for color
 
-                if (editTextTag == 1001) {
+                if (editTextTag.equals(TAG_SUBHEADING)) {
                     currentCSS.subheadingColor = colorArray[subMenuID + 1];
-                } else if (editTextTag == 1002) {
+                } else if (editTextTag.equals(TAG_MAIN)) {
                     currentCSS.mainColor = colorArray[subMenuID + 1];
-                } else if (editTextTag == 1003) {
+                } else if (editTextTag.equals(TAG_SUB)) {
                     currentCSS.subColor = colorArray[subMenuID + 1];
                 }
 
@@ -3571,11 +3575,11 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnKeyboa
             case 3:   //font
 
 
-                if (editTextTag == 1001) {
+                if (editTextTag.equals(TAG_SUBHEADING)) {
                     currentCSS.subheadingFont = fontArray[subMenuID + 1];
-                } else if (editTextTag == 1002) {
+                } else if (editTextTag.equals(TAG_MAIN)) {
                     currentCSS.mainFont = fontArray[subMenuID + 1];
-                } else if (editTextTag == 1003) {
+                } else if (editTextTag.equals(TAG_SUB)) {
                     currentCSS.subFont = fontArray[subMenuID + 1];
                 }
 
@@ -3594,6 +3598,8 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnKeyboa
                 mCurrentCard.answer.css.save(AppContext.getAppContext());
             }
         }
+
+        ((MainActivity)getActivity()).updateSpinnersHighlightedItem(currentCSS,editTextTag);
     }
 
     @Override
@@ -3607,9 +3613,9 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnKeyboa
             ((MainActivity) getActivity()).mIsKeyboardVisible = true;
             ((MainActivity) getActivity()).setAsKeyboardStatus();
 
-            int tag = Integer.parseInt((String) v.getTag());
+            String tag = (String) v.getTag();
 
-            if ((tag == 1001) || (tag == 1002) || (tag == 1003)) {
+            if ((tag.equals(TAG_SUBHEADING)) || (tag.equals(TAG_MAIN)) || (tag.equals(TAG_SUB))) {
 
 
                 //this is quite a trick in order to make EditText scrollable
@@ -3633,7 +3639,14 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnKeyboa
                 ((MainActivity) getActivity()).mIsEdittingCard = true;
 
                 ((MainActivity) getActivity()).prepareCSSToolbar();
-                ((MainActivity) getActivity()).showCSSToolbar();
+
+                CSS currentCSS;
+                if (mIsQuestionShowing) {
+                    currentCSS = mCurrentCard.question.css;
+                } else {
+                    currentCSS = mCurrentCard.answer.css;
+                }
+                ((MainActivity) getActivity()).showCSSToolbar(currentCSS,tag);
 
                 mCurrentFocusedCardContentText = (EditText) v;
             } else {
@@ -4045,20 +4058,20 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnKeyboa
         }
 
         String fontStr = "";
-        int editTextTag = Integer.parseInt((String) mCurrentFocusedCardContentText.getTag());
-        if (editTextTag == 1001) {
+        String editTextTag = (String) mCurrentFocusedCardContentText.getTag();
+        if (editTextTag.equals(TAG_SUBHEADING)) {
             if (mIsQuestionShowing) {
                 fontStr = mCurrentCard.question.css.subheadingFont;
             } else {
                 fontStr = mCurrentCard.answer.css.subheadingFont;
             }
-        } else if (editTextTag == 1002) {
+        } else if (editTextTag.equals(TAG_MAIN)) {
             if (mIsQuestionShowing) {
                 fontStr = mCurrentCard.question.css.mainFont;
             } else {
                 fontStr = mCurrentCard.answer.css.mainFont;
             }
-        } else if (editTextTag == 1003) {
+        } else if (editTextTag.equals(TAG_SUB)) {
             if (mIsQuestionShowing) {
                 fontStr = mCurrentCard.question.css.subFont;
             } else {

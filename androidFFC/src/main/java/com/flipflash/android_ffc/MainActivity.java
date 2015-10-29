@@ -8,6 +8,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.res.TypedArray;
+import android.graphics.Color;
 import android.graphics.PixelFormat;
 import android.net.Uri;
 import android.os.Build;
@@ -26,6 +27,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.ViewTreeObserver;
 import android.view.WindowManager;
 import android.view.animation.AlphaAnimation;
@@ -43,6 +45,8 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.flipflash.UI.ScaleHelper;
+import com.flipflash.data.CSS;
 import com.github.lzyzsd.circleprogress.DonutProgress;
 import com.google.analytics.tracking.android.EasyTracker;
 import com.flipflash.cryptor.CryptoHelper;
@@ -80,6 +84,7 @@ import com.parse.ui.ParseLoginBuilder;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Timer;
 import java.util.TimerTask;
@@ -101,37 +106,37 @@ public class MainActivity extends FragmentActivity implements
 
     private static final int LOGIN_REQUEST = 0;
 
-    private boolean          mIsCreatingCard = false;
-    public boolean           mIsEdittingCard = false;
-    private boolean          mIsNecessaryToRestoreCSSToolbar = false;
-    private boolean          mIsFromRestartApp = false;
-    public boolean           mIsAllowedToShowPackList = true;
-    public boolean           mIsKeyboardVisible; //we can NOT judge by imm.isActive
-    private boolean          mIsAllowDownload;
-    private boolean          mSemaphore;
+    private boolean           mIsCreatingCard = false;
+    public  boolean           mIsEdittingCard = false;
+    private boolean           mIsNecessaryToRestoreCSSToolbar = false;
+    private boolean           mIsFromRestartApp = false;
+    public  boolean           mIsAllowedToShowPackList = true;
+    public  boolean           mIsKeyboardVisible; //we can NOT judge by imm.isActive
+    private boolean           mIsAllowDownload;
+    private boolean           mSemaphore;
 
-    public Pack              mCurrentPack = new Pack();//mCurrentPack will be automatically refreshed after creating a new card, add a new pack and new pack selected
-    public int               mCurrentCardIndex = 0;
-    public Card              mCurrentCard = new Card();
+    public Pack               mCurrentPack = new Pack();//mCurrentPack will be automatically refreshed after creating a new card, add a new pack and new pack selected
+    public int                mCurrentCardIndex = 0;
+    public Card               mCurrentCard = new Card();
 
-    public PopupWindow       mPopupWindow;
-    private View             mCSSToolbar;
-    private Button           mMasterMaskButton;
-    private View             mMasterViewUpdatingLayout;
+    public  PopupWindow       mPopupWindow;
+    private View              mCSSToolbar;
+    private Button            mMasterMaskButton;
+    private View              mMasterViewUpdatingLayout;
 
-    private ProgressDialog   mUploadProgressDialog;
+    private ProgressDialog    mUploadProgressDialog;
 
     private ArrayList<CardDetailFragment> mArrayCardDetailFragments;   //Special for snapshot(not include current card)
 
-    public CardDetailFragment  mCardDetailFragment;
-    public SymbolBoxFragment   mSymbolBoxFragment;
-    private Button             mSymbolKeyboardSwitchButton;
+    public  CardDetailFragment   mCardDetailFragment;
+    public  SymbolBoxFragment    mSymbolBoxFragment;
+    private Button               mSymbolKeyboardSwitchButton;
 
-    public int                 packIDForMasterViewPack;
+    public int                   packIDForMasterViewPack;
 
-    private LinearLayout       mPackInfoLayout;
+    private LinearLayout         mPackInfoLayout;
 
-    private AWSUploadHelper mAmazonUploadHelper ;
+    private AWSUploadHelper      mAmazonUploadHelper ;
     private DropboxUploadHelper  mDropboxUploadHelper ;
 
     private DonutProgress      mRecordStopProgress;
@@ -142,7 +147,7 @@ public class MainActivity extends FragmentActivity implements
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        LOGD(TAG, "onCreate");
+        LOGD(TAG, "onCreate: ");
 
         //Step1: check table and default user
         SQLiteHelper.defaultDatabase(AppContext.getAppContext());
@@ -196,19 +201,6 @@ public class MainActivity extends FragmentActivity implements
 
     }
 
-    private void recordStopButtonClicked() {
-
-        if (mRecordCountDownTimer != null) {
-            mRecordCountDownTimer.cancel();
-            mRecordCountDownTimer = null;
-        }
-
-        AudioHelper.isRecordFinished = true;
-
-        mCardDetailFragment.showCreateSoundView();
-
-        findViewById(R.id.record_button_background_mask_layout).setVisibility(View.INVISIBLE);
-    }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -472,6 +464,21 @@ public class MainActivity extends FragmentActivity implements
     public void setCurrentPack(Pack mCurrentPack) {
         this.mCurrentPack = mCurrentPack;
         updatePackInfoView();
+    }
+
+
+    private void recordStopButtonClicked() {
+
+        if (mRecordCountDownTimer != null) {
+            mRecordCountDownTimer.cancel();
+            mRecordCountDownTimer = null;
+        }
+
+        AudioHelper.isRecordFinished = true;
+
+        mCardDetailFragment.showCreateSoundView();
+
+        findViewById(R.id.record_button_background_mask_layout).setVisibility(View.INVISIBLE);
     }
 
     @Override
@@ -1188,23 +1195,23 @@ public class MainActivity extends FragmentActivity implements
         Spinner spinnerColor = (Spinner) mCSSToolbar.findViewById(R.id.spinner_color);
         Spinner spinnerSize = (Spinner) mCSSToolbar.findViewById(R.id.spinner_size);
 
-        ArrayAdapter<CharSequence> adapterFont = ArrayAdapter.createFromResource(this,
-                R.array.css_font, R.layout.spinner);
+        HighLightArrayAdapter adapterFont = new HighLightArrayAdapter(this,
+                R.layout.spinner,getResources().getTextArray(R.array.css_font));
         adapterFont.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinnerFont.setAdapter(adapterFont);
 
-        ArrayAdapter<CharSequence> adapterAlign = ArrayAdapter.createFromResource(this,
-                R.array.css_align, R.layout.spinner);
+        HighLightArrayAdapter adapterAlign = new HighLightArrayAdapter(this,
+                R.layout.spinner,getResources().getStringArray(R.array.css_align));
         adapterAlign.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinnerAlign.setAdapter(adapterAlign);
 
-        ArrayAdapter<CharSequence> adapterColor = ArrayAdapter.createFromResource(this,
-                R.array.css_color, R.layout.spinner);
+        HighLightArrayAdapter adapterColor = new HighLightArrayAdapter(this,
+                R.layout.spinner,getResources().getStringArray(R.array.css_color));
         adapterColor.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinnerColor.setAdapter(adapterColor);
 
-        ArrayAdapter<CharSequence> adapterSize = ArrayAdapter.createFromResource(this,
-                R.array.css_size, R.layout.spinner);
+        HighLightArrayAdapter adapterSize = new HighLightArrayAdapter(this,
+                R.layout.spinner,getResources().getStringArray(R.array.css_size));
         adapterSize.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinnerSize.setAdapter(adapterSize);
 
@@ -1363,7 +1370,10 @@ public class MainActivity extends FragmentActivity implements
     }
 
 
-    public void showCSSToolbar() {
+    public void showCSSToolbar(CSS css,String tag) {
+
+        CSS currentCSS = css;
+
         if ((mCSSToolbar != null) && (mCSSToolbar.getParent() != null)) {
             mCSSToolbar.setVisibility(View.VISIBLE);
 
@@ -1376,16 +1386,85 @@ public class MainActivity extends FragmentActivity implements
             Button saveButton = (Button)mCSSToolbar.findViewById(R.id.csstoolbar_save_btn);
             Button cancelButton = (Button)mCSSToolbar.findViewById(R.id.csstoolbar_close_btn);
 
+            mIsKeyboardVisible = true;
+
+            saveButton.setVisibility(View.VISIBLE);
+            cancelButton.setVisibility(View.VISIBLE);
+
             spinnerFont.setSelection(0);
             spinnerAlign.setSelection(0);
             spinnerColor.setSelection(0);
             spinnerSize.setSelection(0);
 
-            mIsKeyboardVisible = true;
+            updateSpinnersHighlightedItem(css,tag);
 
-            saveButton.setVisibility(View.VISIBLE);
-            cancelButton.setVisibility(View.VISIBLE);
         }
+    }
+
+    /*
+     * 高亮显示当前选中的spinner item
+     */
+    public void updateSpinnersHighlightedItem(CSS css,String tag) {
+
+        CSS currentCSS = css;
+
+        Spinner spinnerFont = (Spinner) mCSSToolbar.findViewById(R.id.spinner_font);
+        Spinner spinnerAlign = (Spinner) mCSSToolbar.findViewById(R.id.spinner_align);
+        Spinner spinnerColor = (Spinner) mCSSToolbar.findViewById(R.id.spinner_color);
+        Spinner spinnerSize = (Spinner) mCSSToolbar.findViewById(R.id.spinner_size);
+
+        String[] alignArray = getResources().getStringArray(R.array.css_align);
+        String[] colorArray = getResources().getStringArray(R.array.css_color);
+        String[] fontArray = getResources().getStringArray(R.array.css_font);
+        int[]    sizeArray = ScaleHelper.getRealSizeIntArray(MainActivity.this);
+
+        int alignIndex = -1; //no selected by default
+        int colorIndex = -1; //no selected by default
+        int fontIndex = 1;  // by default, it's default color, so it's 1
+        int sizeIndex = -1;
+        if (tag.equals(CardDetailFragment.TAG_SUBHEADING)) {
+            alignIndex = Arrays.asList(alignArray).indexOf(currentCSS.subheadingAlign);
+            if (alignIndex == -1) {
+                alignIndex = Arrays.asList(alignArray).indexOf(currentCSS.subheadingAlignVertical);
+            }
+            colorIndex = Arrays.asList(colorArray).indexOf(currentCSS.subheadingColor);
+            fontIndex = Arrays.asList(fontArray).indexOf(currentCSS.subheadingFont);
+            sizeIndex = searchNearestIndex(sizeArray, (int) currentCSS.subheadingSize);
+
+        } else if (tag.equals(CardDetailFragment.TAG_MAIN)) {
+
+            alignIndex = Arrays.asList(alignArray).indexOf(currentCSS.mainAlign);
+            if (alignIndex == -1) {
+                alignIndex = Arrays.asList(alignArray).indexOf(currentCSS.mainAlignVertical);
+            }
+            colorIndex = Arrays.asList(colorArray).indexOf(currentCSS.mainColor);
+            fontIndex = Arrays.asList(fontArray).indexOf(currentCSS.mainFont);
+            sizeIndex = searchNearestIndex(sizeArray, (int) currentCSS.mainSize);
+
+        } else if (tag.equals(CardDetailFragment.TAG_SUB)) {
+
+            alignIndex = Arrays.asList(alignArray).indexOf(currentCSS.subAlign);
+            if (alignIndex == -1) {
+                alignIndex = Arrays.asList(alignArray).indexOf(currentCSS.subAlignVertical);
+            }
+            colorIndex = Arrays.asList(colorArray).indexOf(currentCSS.subColor);
+            fontIndex = Arrays.asList(fontArray).indexOf(currentCSS.subFont);
+            sizeIndex = searchNearestIndex(sizeArray, (int) currentCSS.subSize);
+
+        }
+
+        if (fontIndex == -1) {
+            fontIndex = 1;  //我们必须这么做，因为我们希望默认是选择default，而不是什么都不选中
+        }
+
+        HighLightArrayAdapter adapterFont = (HighLightArrayAdapter) spinnerFont.getAdapter();
+        HighLightArrayAdapter adapterSize = (HighLightArrayAdapter) spinnerSize.getAdapter();
+        HighLightArrayAdapter adapterAlign = (HighLightArrayAdapter) spinnerAlign.getAdapter();
+        HighLightArrayAdapter adapterColor = (HighLightArrayAdapter) spinnerColor.getAdapter();
+        adapterFont.setSelection(fontIndex);
+        adapterSize.setSelection(sizeIndex+1); //因为我们之前剔除掉了
+        adapterColor.setSelection(colorIndex);
+        adapterAlign.setSelection(alignIndex);
     }
 
     public void removeCSSToolbar() {
@@ -1706,6 +1785,56 @@ public class MainActivity extends FragmentActivity implements
 
         }
 
+    }
+
+    class HighLightArrayAdapter extends ArrayAdapter<CharSequence> {
+
+        private int mSelectedIndex = -1;
+
+
+        public void setSelection(int position) {
+            mSelectedIndex =  position;
+            notifyDataSetChanged();
+        }
+
+        public HighLightArrayAdapter(Context context, int resource, CharSequence[] objects) {
+            super(context, resource, objects);
+        }
+
+
+        @Override
+        public View getDropDownView(int position, View convertView, ViewGroup parent) {
+            View itemView =  super.getDropDownView(position, convertView, parent);
+
+            if (position == mSelectedIndex) {
+                itemView.setBackgroundColor(Color.rgb(56,184,226));
+            } else {
+                itemView.setBackgroundColor(Color.TRANSPARENT);
+            }
+
+            return itemView;
+        }
+    }
+
+
+    int searchNearestIndex(int[] array, int searchNumber) {
+        int pos = Arrays.binarySearch(array, searchNumber);
+        if (pos >= 0)
+            return pos;
+        else {
+            int insertionPoint = -pos - 1;
+            if (insertionPoint > 0 && insertionPoint < array.length) {
+                if ((searchNumber - array[insertionPoint - 1]) < (array[insertionPoint] - searchNumber)) {
+                    return insertionPoint - 1;
+                } else {
+                    return insertionPoint;
+                }
+
+            } else {
+
+                return insertionPoint == 0 ? 0 : array.length - 1;
+            }
+        }
     }
 
 
