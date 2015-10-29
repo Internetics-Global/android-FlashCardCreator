@@ -328,6 +328,14 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnKeyboa
         mImage2.setImageURI(null);
         mLogoImage.setImageURI(null);
 
+//        mSubheadingTextWatcher = null;
+//        mMainTextWatcher = null;
+//        mSubTextWatcher = null;
+//        mCreatorTextWatcher = null;
+//        mTitleTextWatcher = null;
+//        mJobTitleTextWatcher = null;
+//        mSidebarTitleTextWatcher = null;
+
 
     }
 
@@ -684,6 +692,9 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnKeyboa
      * 配置background change imageview的click listner
      */
     private void configureBackgroundChangeImageView() {
+
+        LOGD(TAG, "configureBackgroundChangeImageView");
+        
         if (mChangeBackgroundImage == null) {
             return;
         }
@@ -706,6 +717,9 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnKeyboa
                                 .setPositiveButton(R.string.Optional_Remove_Background_Image, new DialogInterface.OnClickListener() {
                                     @Override
                                     public void onClick(DialogInterface dialog, int which) {
+
+                                        LOGD(TAG, "configureBackgroundChangeImageView onClick: remove background");
+
                                         if (mIsQuestionShowing) {
                                             mCurrentCard.question.backgroundImageUriFormatStr = "";
                                         } else {
@@ -717,12 +731,14 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnKeyboa
                                 .setNegativeButton(R.string.Optional_Change_Background_Image, new DialogInterface.OnClickListener() {
                                     @Override
                                     public void onClick(DialogInterface dialog, int which) {
+                                        LOGD(TAG, "configureBackgroundChangeImageView select: ready to show image library");
                                         Intent intent = new Intent(Intent.ACTION_GET_CONTENT).setType("images/*");
                                         startActivityForResult(intent, REQUEST_CODE_FROM_BACKGROUND);
                                     }
                                 })
                                 .show();
                     } else {
+                        LOGD(TAG, "configureBackgroundChangeImageView: ready to show image library");
                         Intent intent = new Intent(Intent.ACTION_GET_CONTENT).setType("images/*");
                         startActivityForResult(intent, REQUEST_CODE_FROM_BACKGROUND);
                     }
@@ -1315,6 +1331,8 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnKeyboa
 
     private void createImage() {
 
+        LOGD(TAG, "createImage: mCurrentCard.question.imageUriFormatStr = " + mCurrentCard.question.imageUriFormatStr);
+
         mImage = new ImageView(getActivity());
         mImage.setImageURI(Uri.parse(mCurrentCard.question.imageUriFormatStr));
 
@@ -1327,6 +1345,8 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnKeyboa
     }
 
     private void createImage2() {
+
+        LOGD(TAG, "createImage: mCurrentCard.question.imageUriFormatStr2 = " + mCurrentCard.question.imageUriFormatStr2);
 
         mImage2 = new ImageView(getActivity());
         mImage2.setImageURI(Uri.parse(mCurrentCard.question.imageUriFormatStr2));
@@ -4121,6 +4141,8 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnKeyboa
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
+        LOGD(TAG, "onActivityResult");
+
         //whatever RESULT_OK or RESULT_CANCELED, we need to do this first
         ((MainActivity) getActivity()).mIsAllowedToShowPackList = false;
 
@@ -4129,6 +4151,7 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnKeyboa
             Uri selectedURI = data.getData();
 
             if (requestCode == REQUEST_CODE_FROM_BACKGROUND) {
+                LOGD(TAG, "onActivityResult: ready to crop");
                 Intent intent = new Intent(getActivity(), CropActivity.class);
                 intent.putExtra("uri",selectedURI);
                 startActivityForResult(intent, REQUEST_CODE_FROM_BACKGROUND_AFTER_CROPPED);

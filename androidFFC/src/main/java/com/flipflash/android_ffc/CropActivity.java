@@ -23,17 +23,23 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
+import static com.flipflash.util.LogUtils.LOGD;
 
 /**
  * Created by BourneWang on 27/10/2015.
  */
 public class CropActivity extends Activity {
 
+    private static final String TAG = CropActivity.class.getName();
+
     private CropImageView cropImageView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        LOGD(TAG, "onCreate");
+
         setContentView(R.layout.crop_edit);
 
         Intent intent = getIntent();
