@@ -108,6 +108,7 @@
     <string name="DIALOG_FAILURE_TO_CREATE_BUCKET">Failed to create a new bucket on AWS</string>
     <string name="DIALOG_ACCOUNT_USERNAME_EMPTY_ERROR">User name can not be empty</string>
     <string name="DIALOG_INVALID_USERNAME_OR_PASSWORD">Invalid ID or password</string>
+    <string name="DIALOG_NO_PHOTO_GALLERIES_FOUND">No photo galleries found</string>
 
     <string name="NavigationBarItem_Packs">Packs</string>
     <string name="NavigationBarItem_Create">Create</string>

@@ -66,6 +66,38 @@ public class UIHelper {
         return resizeBitmap;
     }
 
+    /*
+     * imageWidth 最终希望的图片宽度
+     */
+    public static Bitmap bitmapFromUri(Activity activity,Uri imageUri, int imageWidth) {
+
+        //如果只是单纯的转换成bitmap，可以用：Bitmap bitmap = MediaStore.Images.Media.getBitmap(getContentResolver(), imageUri);
+
+        Bitmap resultBitmap = null;
+        final String[] filePathColumn = { MediaStore.MediaColumns.DATA, MediaStore.MediaColumns.DISPLAY_NAME };
+        Cursor cursor = activity.getContentResolver().query(imageUri, filePathColumn, null, null, null);
+        if (cursor != null) {
+            cursor.moveToFirst();
+            int columnIndex;
+            // if it is a Picasa image on newer devices with OS 3.0 and up
+            if ((imageUri.toString().startsWith("content://com.google.android.gallery3d"))
+                    ||(imageUri.toString().startsWith("content://com.sec.android.gallery3d"))){
+                columnIndex = cursor.getColumnIndex(MediaStore.MediaColumns.DISPLAY_NAME);
+                if (columnIndex != -1) {
+                    final Uri picasaUri = imageUri;
+                    resultBitmap = UIHelper.getResizedSizeBitmapFromPicasa(activity, picasaUri,imageWidth);
+                }
+            } else { // it is a regular local image file
+                resultBitmap = UIHelper.resizeImageTo(activity, imageUri,imageWidth);
+            }
+            cursor.close();
+        } else { //普通，比如file:///storage/emulated/0/cropped_cached.jpg
+            resultBitmap = UIHelper.resizeImageTo(activity, imageUri, imageWidth);
+        }
+
+        return resultBitmap;
+    }
+
 
     /**
      * local image uri, not include picasa web image

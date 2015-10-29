@@ -127,11 +127,18 @@ public class CreateEditFragment extends DialogFragment implements TextView.OnEdi
 
             @Override
             public void onClick(View v) {
-                startActivityForResult(
-                        new Intent(
-                                Intent.ACTION_PICK,
-                                android.provider.MediaStore.Images.Media.INTERNAL_CONTENT_URI),
-                        CODE_REQUEST_IMAGE_FROM_IMAGE_LIBRARY);
+                try {
+                    startActivityForResult(
+                            new Intent(
+                                    Intent.ACTION_PICK,
+                                    android.provider.MediaStore.Images.Media.INTERNAL_CONTENT_URI),
+                            CODE_REQUEST_IMAGE_FROM_IMAGE_LIBRARY);
+                } catch (Exception e) {
+                    Toast.makeText(getActivity(),
+                            getString(R.string.DIALOG_NO_PHOTO_GALLERIES_FOUND),
+                            Toast.LENGTH_SHORT)
+                            .show();
+                }
 
             }
         });
@@ -332,24 +339,7 @@ public class CreateEditFragment extends DialogFragment implements TextView.OnEdi
                 Uri selectedImageURI = data.getData();
 
                 //step1: get image
-                final String[] filePathColumn = { MediaStore.MediaColumns.DATA, MediaStore.MediaColumns.DISPLAY_NAME };
-                Cursor cursor = getActivity().getContentResolver().query(selectedImageURI, filePathColumn, null, null, null);
-                if (cursor != null) {
-                    cursor.moveToFirst();
-                    int columnIndex;
-                    // if it is a picasa image on newer devices with OS 3.0 and up
-                    if ((selectedImageURI.toString().startsWith("content://com.google.android.gallery3d"))
-                            ||(selectedImageURI.toString().startsWith("content://com.sec.android.gallery3d"))){
-                        columnIndex = cursor.getColumnIndex(MediaStore.MediaColumns.DISPLAY_NAME);
-                        if (columnIndex != -1) {
-                            final Uri picasaUri = selectedImageURI;
-                            resultBitmap = UIHelper.getResized400SizeBitmapFromPicasa(getActivity(), picasaUri);
-                        }
-                    } else { // it is a regular local image file
-                        resultBitmap = UIHelper.resizeImageTo400(getActivity(), selectedImageURI);
-                    }
-                    cursor.close();
-                }
+                resultBitmap = UIHelper.bitmapFromUri(getActivity(),selectedImageURI,400);
 
                 if (resultBitmap == null) {
                     LOGD(TAG, "onActivityResult: resultBitmap is null");

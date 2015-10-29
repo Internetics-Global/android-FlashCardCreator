@@ -439,8 +439,16 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnKeyboa
 
     private void selectImageOrVideoFromLibrary() {
         if (mCurrentPack.creatorID.equals(OpenUDID_manager.getOpenUDID())) {
-            Intent intent = new Intent(Intent.ACTION_GET_CONTENT).setType("video/*, images/*");
-            startActivityForResult(intent, REQUEST_CODE_FROM_IMAGE);
+            try {
+                //如果使用ACTION_PICK，则会先出一个类似文件浏览器
+                Intent intent = new Intent(Intent.ACTION_PICK).setType("video/*, images/*");
+                startActivityForResult(intent, REQUEST_CODE_FROM_IMAGE);
+            } catch (Exception e) {
+                Toast.makeText(getActivity(),
+                        getString(R.string.DIALOG_NO_PHOTO_GALLERIES_FOUND),
+                        Toast.LENGTH_SHORT)
+                        .show();
+            }
         } else {
             if (mIsQuestionShowing) {
                 if (mIsImage2Active) {
@@ -515,7 +523,7 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnKeyboa
                 resultCode == Activity.RESULT_OK) {
 
             Uri selectedURI = data.getParcelableExtra("cropped_image_uri");
-            Bitmap scaledBitmap = UIHelper.resizeImageTo(getActivity(), selectedURI, 1024);
+            Bitmap scaledBitmap = UIHelper.bitmapFromUri(getActivity(),selectedURI,1024);
             File toSaveFile = UIHelper.saveImageToCaches(scaledBitmap);
             setCardBackgroundImageWithBitmap(scaledBitmap);
             if (mIsQuestionShowing) {
@@ -629,8 +637,19 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnKeyboa
 
                 if (mIsPlayingCard == false) {
                     if (isEditableMode()) {
-                        Intent intent = new Intent(Intent.ACTION_GET_CONTENT).setType("video/*, images/*");
-                        startActivityForResult(intent, REQUEST_CODE_FROM_LOGO);
+                        try {
+                            startActivityForResult(
+                                    new Intent(
+                                            Intent.ACTION_PICK,
+                                            android.provider.MediaStore.Images.Media.INTERNAL_CONTENT_URI),
+                                    REQUEST_CODE_FROM_LOGO);
+                        }catch (Exception e) {
+                            Toast.makeText(getActivity(),
+                                    getString(R.string.DIALOG_NO_PHOTO_GALLERIES_FOUND),
+                                                Toast.LENGTH_SHORT)
+                                                .show();
+                        }
+
 
 
                     } else {
@@ -731,16 +750,34 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnKeyboa
                                 .setNegativeButton(R.string.Optional_Change_Background_Image, new DialogInterface.OnClickListener() {
                                     @Override
                                     public void onClick(DialogInterface dialog, int which) {
-                                        LOGD(TAG, "configureBackgroundChangeImageView select: ready to show image library");
-                                        Intent intent = new Intent(Intent.ACTION_GET_CONTENT).setType("images/*");
-                                        startActivityForResult(intent, REQUEST_CODE_FROM_BACKGROUND);
+                                        try {
+                                            startActivityForResult(
+                                                    new Intent(
+                                                            Intent.ACTION_PICK,
+                                                            android.provider.MediaStore.Images.Media.INTERNAL_CONTENT_URI),
+                                                    REQUEST_CODE_FROM_BACKGROUND);
+                                        } catch (Exception e) {
+                                            Toast.makeText(getActivity(),
+                                                    getString(R.string.DIALOG_NO_PHOTO_GALLERIES_FOUND),
+                                                    Toast.LENGTH_SHORT)
+                                                    .show();
+                                        }
                                     }
                                 })
                                 .show();
                     } else {
-                        LOGD(TAG, "configureBackgroundChangeImageView: ready to show image library");
-                        Intent intent = new Intent(Intent.ACTION_GET_CONTENT).setType("images/*");
-                        startActivityForResult(intent, REQUEST_CODE_FROM_BACKGROUND);
+                        try {
+                            startActivityForResult(
+                                    new Intent(
+                                            Intent.ACTION_PICK,
+                                            android.provider.MediaStore.Images.Media.INTERNAL_CONTENT_URI),
+                                    REQUEST_CODE_FROM_BACKGROUND);
+                        } catch (Exception e) {
+                            Toast.makeText(getActivity(),
+                                    getString(R.string.DIALOG_NO_PHOTO_GALLERIES_FOUND),
+                                    Toast.LENGTH_SHORT)
+                                    .show();
+                        }
                     }
 
                 } else {
@@ -4194,7 +4231,7 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnKeyboa
 
                 } else {   //images
                     if (requestCode == REQUEST_CODE_FROM_LOGO) {
-                        Bitmap scaledBitmap = UIHelper.resizeImageTo(getActivity(), selectedURI, 100);
+                        Bitmap scaledBitmap = UIHelper.bitmapFromUri(getActivity(), selectedURI, 100);
                         File toSaveFile = UIHelper.saveImageToCaches(scaledBitmap);
 
                         mLogoImage.setImageBitmap(scaledBitmap);
@@ -4208,7 +4245,7 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnKeyboa
 
                     } else if (requestCode == REQUEST_CODE_FROM_IMAGE) {
 
-                        Bitmap scaledBitmap = UIHelper.resizeImageTo(getActivity(), selectedURI, 400);
+                        Bitmap scaledBitmap = UIHelper.bitmapFromUri(getActivity(), selectedURI, 400);
                         File toSaveFile = UIHelper.saveImageToCaches(scaledBitmap);
 
                         if (mIsImage2Active) {
