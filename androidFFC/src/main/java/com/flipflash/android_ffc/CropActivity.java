@@ -71,14 +71,14 @@ public class CropActivity extends Activity {
         int id = item.getItemId();
         switch (id) {
             case R.id.action_crop_edit_save: {
-                Bitmap bitmap = cropImageView.getCroppedBitmap();
-
+                Bitmap tempBitmap = cropImageView.getCroppedBitmap();
+                Bitmap bitmap = UIHelper.resizeImageTo(CropActivity.this, tempBitmap, 1024);
                 String path = Environment.getExternalStorageDirectory().toString();
                 File filename = new File(path, "cropped_cached.jpg");
                 FileOutputStream out = null;
                 try {
                     out = new FileOutputStream(filename);
-                    bitmap.compress(Bitmap.CompressFormat.PNG, 100, out);
+                    bitmap.compress(Bitmap.CompressFormat.PNG, 30, out);
                 } catch (Exception e) {
                     e.printStackTrace();
                 } finally {
