@@ -38,6 +38,8 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.URL;
 
+import cn.pedant.SweetAlert.SweetAlertDialog;
+
 import static com.flipflash.util.LogUtils.LOGD;
 import static com.flipflash.util.LogUtils.LOGE;
 
@@ -93,6 +95,15 @@ public class UIHelper {
             cursor.close();
         } else { //普通，比如file:///storage/emulated/0/cropped_cached.jpg
             resultBitmap = UIHelper.resizeImageTo(activity, imageUri, imageWidth);
+        }
+
+
+        if (resultBitmap == null) {
+            //TODO: XXXX
+            new SweetAlertDialog(activity)
+                    .setTitleText(activity.getString(R.string.DIALOG_AlERT))
+                    .setContentText("Unsupported image source, please select another image.")
+                    .show();
         }
 
         return resultBitmap;

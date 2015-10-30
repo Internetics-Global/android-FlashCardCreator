@@ -46,6 +46,7 @@ import java.util.ArrayList;
 import cn.pedant.SweetAlert.SweetAlertDialog;
 
 import static com.flipflash.util.LogUtils.LOGD;
+import static com.flipflash.util.LogUtils.LOGE;
 
 public class CreateEditFragment extends DialogFragment implements TextView.OnEditorActionListener {
     private static final String TAG = CreateEditFragment.class.getName();

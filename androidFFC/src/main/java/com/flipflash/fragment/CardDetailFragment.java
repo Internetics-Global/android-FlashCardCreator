@@ -442,7 +442,7 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnKeyboa
         if (mCurrentPack.creatorID.equals(OpenUDID_manager.getOpenUDID())) {
             try {
                 //如果使用ACTION_PICK，则会先出一个类似文件浏览器
-                Intent intent = new Intent(Intent.ACTION_PICK).setType("video/*, images/*");
+                Intent intent = new Intent(Intent.ACTION_GET_CONTENT).setType("video/*, images/*");
                 startActivityForResult(intent, REQUEST_CODE_FROM_IMAGE);
             } catch (Exception e) {
                 Toast.makeText(getActivity(),
@@ -524,7 +524,13 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnKeyboa
                 resultCode == Activity.RESULT_OK) {
 
             Uri selectedURI = data.getParcelableExtra("cropped_image_uri");
-            Bitmap scaledBitmap = UIHelper.bitmapFromUri(getActivity(),selectedURI,1024);
+            Bitmap scaledBitmap = UIHelper.bitmapFromUri(getActivity(), selectedURI, 1024);
+
+            if (scaledBitmap == null) {
+                LOGE(TAG, "handleCrop, scaledBitmap = null");
+                return;
+            }
+
             File toSaveFile = UIHelper.saveImageToCaches(scaledBitmap);
             setCardBackgroundImageWithBitmap(scaledBitmap);
             if (mIsQuestionShowing) {
@@ -4247,6 +4253,12 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnKeyboa
                         } else {   //images
                             if (requestCodeFinal == REQUEST_CODE_FROM_LOGO) {
                                 Bitmap scaledBitmap = UIHelper.bitmapFromUri(getActivity(), selectedURI, 100);
+
+                                if (scaledBitmap == null) {
+                                    LOGE(TAG, "handleCrop, scaledBitmap = null");
+                                    return;
+                                }
+
                                 File toSaveFile = UIHelper.saveImageToCaches(scaledBitmap);
 
                                 mLogoImage.setImageBitmap(scaledBitmap);
@@ -4261,6 +4273,12 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnKeyboa
                             } else if (requestCodeFinal == REQUEST_CODE_FROM_IMAGE) {
 
                                 Bitmap scaledBitmap = UIHelper.bitmapFromUri(getActivity(), selectedURI, 400);
+
+                                if (scaledBitmap == null) {
+                                    LOGE(TAG, "handleCrop, scaledBitmap = null");
+                                    return;
+                                }
+
                                 File toSaveFile = UIHelper.saveImageToCaches(scaledBitmap);
 
                                 if (mIsImage2Active) {
