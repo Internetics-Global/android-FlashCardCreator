@@ -71,6 +71,7 @@ import net.londatiga.android.QuickAction;
 import java.io.File;
 import java.lang.reflect.Field;
 import java.util.ArrayList;
+import java.util.List;
 
 import cn.pedant.SweetAlert.SweetAlertDialog;
 
@@ -713,7 +714,7 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnKeyboa
     private void configureBackgroundChangeImageView() {
 
         LOGD(TAG, "configureBackgroundChangeImageView");
-        
+
         if (mChangeBackgroundImage == null) {
             return;
         }
@@ -4180,106 +4181,124 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnKeyboa
 
         LOGD(TAG, "onActivityResult");
 
+        final int requestCodeFinal = requestCode;
+        final int resultCodeFinal = resultCode;
+        final Intent dataFinal = data;
+
         //whatever RESULT_OK or RESULT_CANCELED, we need to do this first
         ((MainActivity) getActivity()).mIsAllowedToShowPackList = false;
 
-        if (resultCode == Activity.RESULT_OK) {
+        int delay = 0;
+        if (mContentView.getHeight() > mContentView.getWidth()) {
+            delay = 1000;
+        }
 
-            Uri selectedURI = data.getData();
+        final Handler handler = new Handler();
+        handler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
 
-            if (requestCode == REQUEST_CODE_FROM_BACKGROUND) {
-                LOGD(TAG, "onActivityResult: ready to crop");
-                Intent intent = new Intent(getActivity(), CropActivity.class);
-                intent.putExtra("uri",selectedURI);
-                startActivityForResult(intent, REQUEST_CODE_FROM_BACKGROUND_AFTER_CROPPED);
+                if (resultCodeFinal == Activity.RESULT_OK) {
 
-            } else if (requestCode == REQUEST_CODE_FROM_BACKGROUND_AFTER_CROPPED) {
+                    Uri selectedURI = dataFinal.getData();
 
-                handleCrop(REQUEST_CODE_FROM_BACKGROUND_AFTER_CROPPED,resultCode,data);
+                    if (requestCodeFinal == REQUEST_CODE_FROM_BACKGROUND) {
+                        LOGD(TAG, "onActivityResult: ready to crop");
+                        Intent intent = new Intent(getActivity(), CropActivity.class);
+                        intent.putExtra("uri",selectedURI);
+                        startActivityForResult(intent, REQUEST_CODE_FROM_BACKGROUND_AFTER_CROPPED);
 
-            } else {
-                if (selectedURI.toString().contains("/video")) { //video
-                    //step1: get image
-                    thumbnailImageFromURL(selectedURI);
-                    //step2: get video
-                    File toSaveVideoFile = UIHelper.saveVideoToCaches(AppContext.getAppContext(), selectedURI);
+                    } else if (requestCodeFinal == REQUEST_CODE_FROM_BACKGROUND_AFTER_CROPPED) {
 
-                    if (mIsImage2Active) {
-                        if (mIsQuestionShowing) {
-                            mCurrentCard.question.movieUriFormatStr2 = FileOperationHelper.convertToUriFormatFile(toSaveVideoFile);
-                        } else {
-                            mCurrentCard.answer.movieUriFormatStr2 = FileOperationHelper.convertToUriFormatFile(toSaveVideoFile);
-                        }
+                        handleCrop(REQUEST_CODE_FROM_BACKGROUND_AFTER_CROPPED,resultCodeFinal,dataFinal);
+
                     } else {
-                        if (mIsQuestionShowing) {
-                            mCurrentCard.question.movieUriFormatStr = FileOperationHelper.convertToUriFormatFile(toSaveVideoFile);
-                        } else {
-                            mCurrentCard.answer.movieUriFormatStr = FileOperationHelper.convertToUriFormatFile(toSaveVideoFile);
-                        }
-                    }
+                        if (selectedURI.toString().contains("/video")) { //video
+                            //step1: get image
+                            thumbnailImageFromURL(selectedURI);
+                            //step2: get video
+                            File toSaveVideoFile = UIHelper.saveVideoToCaches(AppContext.getAppContext(), selectedURI);
 
-                    if (mIsCreatingCard == false) {
-                        mCurrentCard.save(AppContext.getAppContext());
-                        if (mIsQuestionShowing) {
-                            takeSnapshotCurrentCard();
-                            Intent intent = new Intent();
-                            intent.setAction(Global.BROADCAST_ACTION_UPDATE_MASTER_VIEW);
-                            intent.putExtra(Global.KEY_FROM, Global.BROADCAST_EXTRA_FROM_CURRENT_PACK_UPDATE);
-                            getActivity().sendBroadcast(intent);
-                        }
-                    }
-
-                } else {   //images
-                    if (requestCode == REQUEST_CODE_FROM_LOGO) {
-                        Bitmap scaledBitmap = UIHelper.bitmapFromUri(getActivity(), selectedURI, 100);
-                        File toSaveFile = UIHelper.saveImageToCaches(scaledBitmap);
-
-                        mLogoImage.setImageBitmap(scaledBitmap);
-                        mCurrentPack.logoImageUriFormatStr = FileOperationHelper.convertToUriFormatFile(toSaveFile);
-
-                        if (mIsCreatingCard == false) {
-                            mCurrentPack.save(AppContext.getAppContext());
-                            ((MainActivity) getActivity()).setMaskButtonForContentUpdating();
-                            takeSnapshotAll();
-                        }
-
-                    } else if (requestCode == REQUEST_CODE_FROM_IMAGE) {
-
-                        Bitmap scaledBitmap = UIHelper.bitmapFromUri(getActivity(), selectedURI, 400);
-                        File toSaveFile = UIHelper.saveImageToCaches(scaledBitmap);
-
-                        if (mIsImage2Active) {
-                            mImage2.setImageBitmap(scaledBitmap);
-                            if (mIsQuestionShowing) {
-                                mCurrentCard.question.imageUriFormatStr2 = FileOperationHelper.convertToUriFormatFile(toSaveFile);
+                            if (mIsImage2Active) {
+                                if (mIsQuestionShowing) {
+                                    mCurrentCard.question.movieUriFormatStr2 = FileOperationHelper.convertToUriFormatFile(toSaveVideoFile);
+                                } else {
+                                    mCurrentCard.answer.movieUriFormatStr2 = FileOperationHelper.convertToUriFormatFile(toSaveVideoFile);
+                                }
                             } else {
-                                mCurrentCard.answer.imageUriFormatStr2 = FileOperationHelper.convertToUriFormatFile(toSaveFile);
+                                if (mIsQuestionShowing) {
+                                    mCurrentCard.question.movieUriFormatStr = FileOperationHelper.convertToUriFormatFile(toSaveVideoFile);
+                                } else {
+                                    mCurrentCard.answer.movieUriFormatStr = FileOperationHelper.convertToUriFormatFile(toSaveVideoFile);
+                                }
                             }
-                        } else {
-                            mImage.setImageBitmap(scaledBitmap);
-                            if (mIsQuestionShowing) {
-                                mCurrentCard.question.imageUriFormatStr = FileOperationHelper.convertToUriFormatFile(toSaveFile);
-                            } else {
-                                mCurrentCard.answer.imageUriFormatStr = FileOperationHelper.convertToUriFormatFile(toSaveFile);
-                            }
-                        }
 
-                        if (mIsCreatingCard == false) {
-                            mCurrentCard.save(AppContext.getAppContext());
-                            if (mIsQuestionShowing) {
-                                takeSnapshotCurrentCard();
-                                Intent intent = new Intent();
-                                intent.setAction(Global.BROADCAST_ACTION_UPDATE_MASTER_VIEW);
-                                intent.putExtra(Global.KEY_FROM, Global.BROADCAST_EXTRA_FROM_CURRENT_PACK_UPDATE);
-                                getActivity().sendBroadcast(intent);
+                            if (mIsCreatingCard == false) {
+                                mCurrentCard.save(AppContext.getAppContext());
+                                if (mIsQuestionShowing) {
+                                    takeSnapshotCurrentCard();
+                                    Intent intent = new Intent();
+                                    intent.setAction(Global.BROADCAST_ACTION_UPDATE_MASTER_VIEW);
+                                    intent.putExtra(Global.KEY_FROM, Global.BROADCAST_EXTRA_FROM_CURRENT_PACK_UPDATE);
+                                    getActivity().sendBroadcast(intent);
+                                }
                             }
+
+                        } else {   //images
+                            if (requestCodeFinal == REQUEST_CODE_FROM_LOGO) {
+                                Bitmap scaledBitmap = UIHelper.bitmapFromUri(getActivity(), selectedURI, 100);
+                                File toSaveFile = UIHelper.saveImageToCaches(scaledBitmap);
+
+                                mLogoImage.setImageBitmap(scaledBitmap);
+                                mCurrentPack.logoImageUriFormatStr = FileOperationHelper.convertToUriFormatFile(toSaveFile);
+
+                                if (mIsCreatingCard == false) {
+                                    mCurrentPack.save(AppContext.getAppContext());
+                                    ((MainActivity) getActivity()).setMaskButtonForContentUpdating();
+                                    takeSnapshotAll();
+                                }
+
+                            } else if (requestCodeFinal == REQUEST_CODE_FROM_IMAGE) {
+
+                                Bitmap scaledBitmap = UIHelper.bitmapFromUri(getActivity(), selectedURI, 400);
+                                File toSaveFile = UIHelper.saveImageToCaches(scaledBitmap);
+
+                                if (mIsImage2Active) {
+                                    mImage2.setImageBitmap(scaledBitmap);
+                                    if (mIsQuestionShowing) {
+                                        mCurrentCard.question.imageUriFormatStr2 = FileOperationHelper.convertToUriFormatFile(toSaveFile);
+                                    } else {
+                                        mCurrentCard.answer.imageUriFormatStr2 = FileOperationHelper.convertToUriFormatFile(toSaveFile);
+                                    }
+                                } else {
+                                    mImage.setImageBitmap(scaledBitmap);
+                                    if (mIsQuestionShowing) {
+                                        mCurrentCard.question.imageUriFormatStr = FileOperationHelper.convertToUriFormatFile(toSaveFile);
+                                    } else {
+                                        mCurrentCard.answer.imageUriFormatStr = FileOperationHelper.convertToUriFormatFile(toSaveFile);
+                                    }
+                                }
+
+                                if (mIsCreatingCard == false) {
+                                    mCurrentCard.save(AppContext.getAppContext());
+                                    if (mIsQuestionShowing) {
+                                        takeSnapshotCurrentCard();
+                                        Intent intent = new Intent();
+                                        intent.setAction(Global.BROADCAST_ACTION_UPDATE_MASTER_VIEW);
+                                        intent.putExtra(Global.KEY_FROM, Global.BROADCAST_EXTRA_FROM_CURRENT_PACK_UPDATE);
+                                        getActivity().sendBroadcast(intent);
+                                    }
+                                }
+                            }
+
                         }
                     }
 
                 }
             }
+        }, delay);
 
-        }
+
 
 
     }
