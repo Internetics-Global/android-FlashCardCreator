@@ -129,6 +129,7 @@ public class CreateEditFragment extends DialogFragment implements TextView.OnEdi
             @Override
             public void onClick(View v) {
                 try {
+                    //注意这里:http://stackoverflow.com/questions/27762377/android-why-intent-extra-local-only-shows-google-photos
                     startActivityForResult(
                             new Intent(
                                     Intent.ACTION_PICK,

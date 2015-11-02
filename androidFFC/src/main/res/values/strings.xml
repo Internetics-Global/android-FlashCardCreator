@@ -110,6 +110,8 @@
     <string name="DIALOG_INVALID_USERNAME_OR_PASSWORD">Invalid ID or password</string>
     <string name="DIALOG_NO_PHOTO_GALLERIES_FOUND">No photo galleries found</string>
 
+    <string name="DIALOG_UNSUPPORTED_IMAGE_SOURCE">Unsupported image source, please select another image</string>
+
     <string name="NavigationBarItem_Packs">Packs</string>
     <string name="NavigationBarItem_Create">Create</string>
     <string name="NavigationBarItem_Edit"> Edit </string>

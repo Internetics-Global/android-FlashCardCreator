@@ -5,6 +5,8 @@ import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.content.pm.ResolveInfo;
 import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.graphics.Typeface;
@@ -69,7 +71,9 @@ import net.londatiga.android.ActionItem;
 import net.londatiga.android.QuickAction;
 
 import java.io.File;
+import java.io.UnsupportedEncodingException;
 import java.lang.reflect.Field;
+import java.net.URLDecoder;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -442,8 +446,39 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnKeyboa
         if (mCurrentPack.creatorID.equals(OpenUDID_manager.getOpenUDID())) {
             try {
                 //如果使用ACTION_PICK，则会先出一个类似文件浏览器
-                Intent intent = new Intent(Intent.ACTION_GET_CONTENT).setType("video/*, images/*");
-                startActivityForResult(intent, REQUEST_CODE_FROM_IMAGE);
+                Intent intent = new Intent(Intent.ACTION_GET_CONTENT).setType("video/*, image/*");
+
+                boolean exist1 = false;
+                boolean exist2 = false;
+                final String galleryPackage1 = "com.android.gallery3d";
+                final String galleryPackage2 = "com.google.android.gallery3d";
+                PackageManager pm = getActivity().getPackageManager();
+                List<ResolveInfo> list = pm.queryIntentActivities(intent, PackageManager.MATCH_DEFAULT_ONLY);
+                for (ResolveInfo item:list) {
+                    if (item.activityInfo.packageName.equals(galleryPackage1)) {
+                        exist1 = true;
+                        break;
+                    }
+
+                    if (item.activityInfo.packageName.equals(galleryPackage2)) {
+                        exist2 = true;
+                        break;
+                    }
+                }
+
+                if (exist1) {
+                    Intent galleryIntent = new Intent();
+                    galleryIntent.setClassName(galleryPackage1,"com.android.gallery3d.app.Gallery");
+                    startActivityForResult(galleryIntent, REQUEST_CODE_FROM_IMAGE);
+                } else if (exist2) {
+                    Intent galleryIntent = new Intent();
+                    galleryIntent.setClassName(galleryPackage2,"com.android.gallery3d.app.Gallery");
+                    startActivityForResult(galleryIntent, REQUEST_CODE_FROM_IMAGE);
+                } else {
+                    startActivityForResult(intent, REQUEST_CODE_FROM_IMAGE);
+                }
+
+
             } catch (Exception e) {
                 Toast.makeText(getActivity(),
                         getString(R.string.DIALOG_NO_PHOTO_GALLERIES_FOUND),
@@ -4219,7 +4254,13 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnKeyboa
                         handleCrop(REQUEST_CODE_FROM_BACKGROUND_AFTER_CROPPED,resultCodeFinal,dataFinal);
 
                     } else {
-                        if (selectedURI.toString().contains("/video")) { //video
+                        String decodeUriStr = "";
+                        try {
+                            decodeUriStr = URLDecoder.decode(selectedURI.toString(), "UTF-8");
+                        } catch (UnsupportedEncodingException e) {
+                            e.printStackTrace();
+                        }
+                        if (decodeUriStr.contains("/video")) { //video
                             //step1: get image
                             thumbnailImageFromURL(selectedURI);
                             //step2: get video
@@ -4250,7 +4291,7 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnKeyboa
                                 }
                             }
 
-                        } else {   //images
+                        } else if (StringUtils.isEmpty(decodeUriStr) == false) {   //images
                             if (requestCodeFinal == REQUEST_CODE_FROM_LOGO) {
                                 Bitmap scaledBitmap = UIHelper.bitmapFromUri(getActivity(), selectedURI, 100);
 
@@ -4281,19 +4322,25 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnKeyboa
 
                                 File toSaveFile = UIHelper.saveImageToCaches(scaledBitmap);
 
+                                //TODO:如果有视频，则要删除掉
+
                                 if (mIsImage2Active) {
                                     mImage2.setImageBitmap(scaledBitmap);
                                     if (mIsQuestionShowing) {
                                         mCurrentCard.question.imageUriFormatStr2 = FileOperationHelper.convertToUriFormatFile(toSaveFile);
+                                        mCurrentCard.question.movieUriFormatStr2 = "";
                                     } else {
                                         mCurrentCard.answer.imageUriFormatStr2 = FileOperationHelper.convertToUriFormatFile(toSaveFile);
+                                        mCurrentCard.answer.movieUriFormatStr2 = "";
                                     }
                                 } else {
                                     mImage.setImageBitmap(scaledBitmap);
                                     if (mIsQuestionShowing) {
                                         mCurrentCard.question.imageUriFormatStr = FileOperationHelper.convertToUriFormatFile(toSaveFile);
+                                        mCurrentCard.question.movieUriFormatStr = "";
                                     } else {
                                         mCurrentCard.answer.imageUriFormatStr = FileOperationHelper.convertToUriFormatFile(toSaveFile);
+                                        mCurrentCard.answer.movieUriFormatStr = "";
                                     }
                                 }
 
@@ -4309,6 +4356,11 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnKeyboa
                                 }
                             }
 
+                        } else {
+                            new SweetAlertDialog(getActivity(), SweetAlertDialog.ERROR_TYPE)
+                                .setTitleText(getString(R.string.DIALOG_AlERT))
+                                .setContentText(getString(R.string.DIALOG_UNSUPPORTED_IMAGE_SOURCE))
+                                .show();
                         }
                     }
 

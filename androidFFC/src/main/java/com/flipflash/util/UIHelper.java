@@ -113,7 +113,7 @@ public class UIHelper {
             //TODO: XXXX
             new SweetAlertDialog(activity)
                     .setTitleText(activity.getString(R.string.DIALOG_AlERT))
-                    .setContentText("Unsupported image source, please select another image.")
+                    .setContentText(activity.getString(R.string.DIALOG_UNSUPPORTED_IMAGE_SOURCE))
                     .show();
         }
 
@@ -156,6 +156,10 @@ public class UIHelper {
     }
 
     public static Bitmap resizeImageTo(Context context, Bitmap bitmap,int width) {
+
+        if (bitmap == null) {
+            return null;
+        }
 
         int originalWidth = bitmap.getWidth();
         int originalHeight = bitmap.getHeight();
@@ -243,6 +247,9 @@ public class UIHelper {
             //我们暂时没有更好的方法获取来自http://的thumbnail图片，比如youtube。期待更加的解决方案
             bMap = BitmapFactory.decodeResource(context.getResources(), R.drawable.video_placeholder);
         } else {
+
+            //支持file://或content://,本地或者remote(比如picasa, Google photo)
+
             String path = getRealPathFromURI(context,uri);
 
             bMap = ThumbnailUtils.createVideoThumbnail(path, MediaStore.Video.Thumbnails.MINI_KIND);
