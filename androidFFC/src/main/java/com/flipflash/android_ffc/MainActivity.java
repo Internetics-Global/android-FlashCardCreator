@@ -7,6 +7,7 @@ import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.res.Configuration;
 import android.content.res.TypedArray;
 import android.graphics.Color;
 import android.graphics.PixelFormat;
@@ -1284,6 +1285,7 @@ public class MainActivity extends FragmentActivity implements
                                         e.printStackTrace();
                                     }
                                     mCardDetailFragment.saveEditedCard();
+                                    mCardDetailFragment.restoreDefaultCursorPosition();
                                 }
                             });
                         };
@@ -1305,6 +1307,9 @@ public class MainActivity extends FragmentActivity implements
                 if (mIsCreatingCard) {
                     dismissCardCreateWindow();
                 }
+
+                mCardDetailFragment.restoreDefaultCursorPosition();
+
             }
         });
 
@@ -1535,6 +1540,7 @@ public class MainActivity extends FragmentActivity implements
     public void clearMaskButtonForContentUpdating() {
         mMasterViewUpdatingLayout.setVisibility(View.INVISIBLE);
     }
+
 
 
     public boolean onKeyDown(int keyCode, KeyEvent event) {

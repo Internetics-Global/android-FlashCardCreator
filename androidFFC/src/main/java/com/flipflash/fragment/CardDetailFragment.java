@@ -7,6 +7,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
+import android.content.res.Configuration;
 import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.graphics.Typeface;
@@ -2297,7 +2298,7 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnKeyboa
 
         switch (templateID) {
             case 0: {
-                configTemplate_0 ();
+                configTemplate_0();
                 break;
             }
             case 1: {
@@ -2347,7 +2348,7 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnKeyboa
             }
 
             case 11: {
-                configTemplate_11 ();
+                configTemplate_11();
                 break;
             }
 
@@ -3461,7 +3462,6 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnKeyboa
 
 
 
-
     /**
      * 所谓CSS就是：颜色，字体，对其，大小
      */
@@ -3696,7 +3696,7 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnKeyboa
             }
         }
 
-        ((MainActivity)getActivity()).updateSpinnersHighlightedItem(currentCSS,editTextTag);
+        ((MainActivity)getActivity()).updateSpinnersHighlightedItem(currentCSS, editTextTag);
     }
 
     @Override
@@ -3776,6 +3776,17 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnKeyboa
             ((MainActivity) getActivity()).removeCSSToolbar();
         }
     }
+
+    /*
+     * 键盘从出现到消失，Cursor is causing text to go up the screen
+     */
+    public void restoreDefaultCursorPosition() {
+
+        mSubheading.setSelection(0);
+        mMain.setSelection(0);
+        mSub.setSelection(0);
+    }
+
 
 
     /**
