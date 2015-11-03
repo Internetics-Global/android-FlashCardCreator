@@ -3566,10 +3566,10 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnKeyboa
                 boolean isVerticalAlign = false;
                 if (subMenuID == 3) {
                     isVerticalAlign = true;
-                    alignArray[subMenuID + 1] = "Vertical";
+                    alignArray[subMenuID + 1] = "Vertical";  //这里非常特殊，在iOS中，我们没有vertical center和vertical top的概念，只有vertical。所以如果是vertical，在android中认为是vertical center;否则为空
                 } else if (subMenuID == 4) {
                     isVerticalAlign = true;
-                    alignArray[subMenuID + 1] = "";
+                    alignArray[subMenuID + 1] = ""; //vertical top
                 }
 
                 int horizontalGravity;
@@ -3605,7 +3605,7 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnKeyboa
                     horizontalGravity = StringUtils.convertGravityStringToInt(currentCSS.subAlign);
                     verticallGravity = StringUtils.convertVerticalGravityStringToInt(currentCSS.subAlignVertical);
                 } else {
-                    horizontalGravity = StringUtils.convertGravityStringToInt("");
+                    horizontalGravity = StringUtils.convertGravityStringToInt("");  //为了兼容iOS（iOS中只有vertical,没有vertical center或top概念）
                     verticallGravity = StringUtils.convertVerticalGravityStringToInt("");
                 }
 

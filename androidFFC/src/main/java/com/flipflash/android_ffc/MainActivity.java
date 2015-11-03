@@ -1449,14 +1449,21 @@ public class MainActivity extends FragmentActivity implements
         String[] fontArray = getResources().getStringArray(R.array.css_font);
         int[]    sizeArray = ScaleHelper.getRealSizeIntArray(MainActivity.this);
 
-        int alignIndex = -1; //no selected by default
+        int alignHorizontalIndex = -1; //no selected by default
+        int alignVerticalIndex = -1; //no selected by default
         int colorIndex = -1; //no selected by default
         int fontIndex = 1;  // by default, it's default color, so it's 1
         int sizeIndex = -1;
+
+
         if (tag.equals(CardDetailFragment.TAG_SUBHEADING)) {
-            alignIndex = Arrays.asList(alignArray).indexOf(currentCSS.subheadingAlign);
-            if (alignIndex == -1) {
-                alignIndex = Arrays.asList(alignArray).indexOf(currentCSS.subheadingAlignVertical);
+            alignHorizontalIndex = Arrays.asList(alignArray).indexOf(currentCSS.subheadingAlign);
+
+            //这里非常特殊，在iOS中，我们没有vertical center和vertical top的概念，只有vertical。所以如果是vertical，在android中认为是vertical center
+            if (currentCSS.subheadingAlignVertical.equals(getString(R.string.ToolbarItem_Align_Vertical))) {
+                alignVerticalIndex = 4;
+            } else {
+                alignVerticalIndex = 5;
             }
             colorIndex = Arrays.asList(colorArray).indexOf(currentCSS.subheadingColor);
             fontIndex = Arrays.asList(fontArray).indexOf(currentCSS.subheadingFont);
@@ -1464,20 +1471,28 @@ public class MainActivity extends FragmentActivity implements
 
         } else if (tag.equals(CardDetailFragment.TAG_MAIN)) {
 
-            alignIndex = Arrays.asList(alignArray).indexOf(currentCSS.mainAlign);
-            if (alignIndex == -1) {
-                alignIndex = Arrays.asList(alignArray).indexOf(currentCSS.mainAlignVertical);
+            alignHorizontalIndex = Arrays.asList(alignArray).indexOf(currentCSS.mainAlign);
+
+            if (currentCSS.mainAlignVertical.equals(getString(R.string.ToolbarItem_Align_Vertical))) {
+                alignVerticalIndex = 4;
+            } else {
+                alignVerticalIndex = 5;
             }
+
             colorIndex = Arrays.asList(colorArray).indexOf(currentCSS.mainColor);
             fontIndex = Arrays.asList(fontArray).indexOf(currentCSS.mainFont);
             sizeIndex = searchNearestIndex(sizeArray, (int) currentCSS.mainSize);
 
         } else if (tag.equals(CardDetailFragment.TAG_SUB)) {
 
-            alignIndex = Arrays.asList(alignArray).indexOf(currentCSS.subAlign);
-            if (alignIndex == -1) {
-                alignIndex = Arrays.asList(alignArray).indexOf(currentCSS.subAlignVertical);
+            alignHorizontalIndex = Arrays.asList(alignArray).indexOf(currentCSS.subAlign);
+
+            if (currentCSS.subAlignVertical.equals(getString(R.string.ToolbarItem_Align_Vertical))) {
+                alignVerticalIndex = 4;
+            } else {
+                alignVerticalIndex = 5;
             }
+
             colorIndex = Arrays.asList(colorArray).indexOf(currentCSS.subColor);
             fontIndex = Arrays.asList(fontArray).indexOf(currentCSS.subFont);
             sizeIndex = searchNearestIndex(sizeArray, (int) currentCSS.subSize);
@@ -1492,10 +1507,23 @@ public class MainActivity extends FragmentActivity implements
         HighLightArrayAdapter adapterSize = (HighLightArrayAdapter) spinnerSize.getAdapter();
         HighLightArrayAdapter adapterAlign = (HighLightArrayAdapter) spinnerAlign.getAdapter();
         HighLightArrayAdapter adapterColor = (HighLightArrayAdapter) spinnerColor.getAdapter();
-        adapterFont.setSelection(fontIndex);
-        adapterSize.setSelection(sizeIndex+1); //因为我们之前剔除掉了
-        adapterColor.setSelection(colorIndex);
-        adapterAlign.setSelection(alignIndex);
+
+        ArrayList fontIndexList = new ArrayList<Integer>();
+        fontIndexList.add(Integer.valueOf(fontIndex));
+        adapterFont.setSelection(fontIndexList);
+
+        ArrayList sizeIndexList = new ArrayList<Integer>();
+        sizeIndexList.add(Integer.valueOf(sizeIndex+1));//+1因为我们之前剔除掉了
+        adapterSize.setSelection(sizeIndexList);
+
+        ArrayList colorIndexList = new ArrayList<Integer>();
+        colorIndexList.add(Integer.valueOf(colorIndex));
+        adapterColor.setSelection(colorIndexList);
+
+        ArrayList alignIndexList = new ArrayList<Integer>();
+        alignIndexList.add(Integer.valueOf(alignHorizontalIndex));
+        alignIndexList.add(Integer.valueOf(alignVerticalIndex));
+        adapterAlign.setSelection(alignIndexList);
     }
 
 
@@ -1828,11 +1856,11 @@ public class MainActivity extends FragmentActivity implements
      */
     class HighLightArrayAdapter extends ArrayAdapter<CharSequence> {
 
-        private int mSelectedIndex = -1;
+        private ArrayList mSelectedList;
 
 
-        public void setSelection(int position) {
-            mSelectedIndex =  position;
+        public void setSelection(ArrayList list) {
+            mSelectedList =  list;
             notifyDataSetChanged();
         }
 
@@ -1845,7 +1873,7 @@ public class MainActivity extends FragmentActivity implements
         public View getDropDownView(int position, View convertView, ViewGroup parent) {
             View itemView =  super.getDropDownView(position, convertView, parent);
 
-            if (position == mSelectedIndex) {
+            if (mSelectedList!= null && mSelectedList.contains(Integer.valueOf(position))) {
                 itemView.setBackgroundColor(Color.rgb(56,184,226));
             } else {
                 itemView.setBackgroundColor(Color.TRANSPARENT);
