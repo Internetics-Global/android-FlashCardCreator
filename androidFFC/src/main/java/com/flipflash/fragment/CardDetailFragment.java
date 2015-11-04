@@ -304,23 +304,33 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnTouchL
 
         setEditTextListener();
 
-
         final View rootView = getActivity().getWindow().getDecorView().findViewById(android.R.id.content);
         rootView.getViewTreeObserver().addOnGlobalLayoutListener(keyboardVisibilityListener);
 
     }
 
+    @Override
+    public void onPause() {
+        super.onPause();
+
+        LOGD(TAG, "onPause:");
+
+        removeEditTextListener();
+
+        final View rootView = getActivity().getWindow().getDecorView().findViewById(android.R.id.content);
+        if (Build.VERSION.SDK_INT < 16) {
+            rootView.getViewTreeObserver().removeGlobalOnLayoutListener(keyboardVisibilityListener);
+        } else {
+            rootView.getViewTreeObserver().removeOnGlobalLayoutListener(keyboardVisibilityListener);
+        }
+
+    }
 
     @Override
     public void onStop() {
         super.onStop();
 
         LOGD(TAG, "onStop: " + String.format("cardSN = %d", mCurrentCard.cardSN));
-
-        removeEditTextListener();
-
-        final View rootView = getActivity().getWindow().getDecorView().findViewById(android.R.id.content);
-        rootView.getViewTreeObserver().removeOnGlobalLayoutListener(keyboardVisibilityListener);
 
         //当当前card移除时，比如进入下一卡片，如果进行过resize操作，则保存一下
         if (((mCurrentPack.creatorID.equals(OpenUDID_manager.getOpenUDID())) == false) && (mIsSaveNeededAfterResize)) {
