@@ -1274,21 +1274,15 @@ public class MainActivity extends FragmentActivity implements
                 if (mIsCreatingCard) {
                     saveNewCreatedCard();
                 } else {
-                    new Thread() {
+
+                    Handler handler = new Handler();
+                    handler.postDelayed(new Runnable() {
+                        @Override
                         public void run() {
-                            runOnUiThread(new Runnable() {
-                                @Override
-                                public void run() {
-                                    try {
-                                        Thread.sleep(10);
-                                    } catch (InterruptedException e) {
-                                        e.printStackTrace();
-                                    }
-                                    mCardDetailFragment.saveEditedCard();
-                                }
-                            });
-                        };
-                    }.start();
+                            mCardDetailFragment.saveEditedCard();
+                        }
+                    },1000);
+
                 }
             }
         });
