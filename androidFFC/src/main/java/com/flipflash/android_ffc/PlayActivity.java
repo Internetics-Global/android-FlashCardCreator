@@ -789,7 +789,7 @@ public class PlayActivity extends FragmentActivity implements SensorEventListene
         if (countDownVal > 0) {
             mCountDownTimer = new Timer();
             TimerTask countDownTimer = new CountDownTimerTask();
-            mCountDownTimer.scheduleAtFixedRate(countDownTimer, 0, 1000);
+            mCountDownTimer.scheduleAtFixedRate(countDownTimer, 1000, 1000);
             mCounterDownTextView.setVisibility(View.VISIBLE);
         } else {
             mCounterDownTextView.setVisibility(View.GONE);
