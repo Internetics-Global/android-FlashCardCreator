@@ -7,9 +7,9 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
-import android.content.res.Configuration;
 import android.graphics.Bitmap;
 import android.graphics.Color;
+import android.graphics.Rect;
 import android.graphics.Typeface;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
@@ -23,6 +23,7 @@ import android.support.v4.app.Fragment;
 import android.text.Editable;
 import android.text.InputType;
 import android.text.TextWatcher;
+import android.util.DisplayMetrics;
 import android.util.TypedValue;
 import android.view.Gravity;
 import android.view.KeyEvent;
@@ -83,7 +84,7 @@ import cn.pedant.SweetAlert.SweetAlertDialog;
 import static com.flipflash.util.LogUtils.LOGD;
 import static com.flipflash.util.LogUtils.LOGE;
 
-public class CardDetailFragment extends Fragment implements FCCEditText.OnKeyboardCloseListener, FCCEditText.OnTouchListener {
+public class CardDetailFragment extends Fragment implements FCCEditText.OnTouchListener {
     private static final String TAG = CardDetailFragment.class.getName();
 
     public Card mCurrentCard;
@@ -302,6 +303,11 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnKeyboa
         //need to be put onResume, see http://stackoverflow.com/questions/13721063/aftertextchanged-being-called-without-the-text-being-actually-changed
 
         setEditTextListener();
+
+
+        final View rootView = getActivity().getWindow().getDecorView().findViewById(android.R.id.content);
+        rootView.getViewTreeObserver().addOnGlobalLayoutListener(keyboardVisibilityListener);
+
     }
 
 
@@ -313,6 +319,9 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnKeyboa
 
         removeEditTextListener();
 
+        final View rootView = getActivity().getWindow().getDecorView().findViewById(android.R.id.content);
+        rootView.getViewTreeObserver().removeOnGlobalLayoutListener(keyboardVisibilityListener);
+
         //当当前card移除时，比如进入下一卡片，如果进行过resize操作，则保存一下
         if (((mCurrentPack.creatorID.equals(OpenUDID_manager.getOpenUDID())) == false) && (mIsSaveNeededAfterResize)) {
             mIsSaveNeededAfterResize = false;
@@ -321,6 +330,57 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnKeyboa
             LOGD(TAG, "onStop: Saving to database after triggerResizeTextToFitFrame");
         }
 
+
+    }
+
+
+    boolean mKeyboardDidDismissFlag = true;
+    boolean mKeyboardDidShowFlag = false;
+    private ViewTreeObserver.OnGlobalLayoutListener keyboardVisibilityListener = new ViewTreeObserver.OnGlobalLayoutListener() {
+        @Override
+        public void onGlobalLayout() {
+
+            final View rootView = getActivity().getWindow().getDecorView().findViewById(android.R.id.content);
+
+            final int softKeyboardHeight = 100;
+            Rect r = new Rect();
+            rootView.getWindowVisibleDisplayFrame(r);
+            DisplayMetrics dm = rootView.getResources().getDisplayMetrics();
+            int heightDiff = rootView.getBottom() - r.bottom;
+            if (heightDiff > softKeyboardHeight * dm.density) {
+                mKeyboardDidDismissFlag = false;
+                if (mKeyboardDidShowFlag == false) {
+                    mKeyboardDidShowFlag = true;
+                    keyboardDidShowNotification();
+                }
+
+            } else if (heightDiff == 0) {
+                mKeyboardDidShowFlag = false;
+                if (mKeyboardDidDismissFlag == false) {
+                    // 意味着，keyboard刚刚关闭
+                    mKeyboardDidDismissFlag = true;
+
+                    keyboardDidHideNotification();
+
+                }
+            }
+
+        }
+    };
+
+    private void keyboardDidHideNotification() {
+
+        LOGD(TAG, "keyboardDidHideNotification: ");
+        
+        restoreDefaultCursorPosition();
+
+        ((MainActivity) getActivity()).removeCSSToolbar();
+        
+    }
+
+    private void keyboardDidShowNotification() {
+
+        LOGD(TAG, "keyboardDidShowNotification");
 
     }
 
@@ -1260,10 +1320,6 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnKeyboa
         }
 
 
-        mSubheading.mCallbacks = this;
-        mMain.mCallbacks = this;
-        mSub.mCallbacks = this;
-
         if (!mIsPlayingCard) {
             mSubheading.setOnTouchListener(this);
             mMain.setOnTouchListener(this);
@@ -1321,11 +1377,6 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnKeyboa
 
         //EditorActionListener
         setEditTextListener();
-
-        //OnKeyboardCloseListener
-        mSubheading.mCallbacks = this;
-        mMain.mCallbacks = this;
-        mSub.mCallbacks = this;
 
         //Image的重新OnClickListener
         setImageVideoClickListener();
@@ -1397,7 +1448,7 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnKeyboa
         mSub.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_FLAG_MULTI_LINE | InputType.TYPE_TEXT_FLAG_NO_SUGGESTIONS | InputType.TYPE_TEXT_FLAG_CAP_SENTENCES);
         mSub.setEms(10);
         mSub.setImeOptions(EditorInfo.IME_FLAG_NO_EXTRACT_UI);
-        mSub.setPadding(0,0,0,0);
+        mSub.setPadding(0, 0, 0, 0);
 
         try {
             // https://github.com/android/platform_frameworks_base/blob/kitkat-release/core/java/android/widget/TextView.java#L562-564
@@ -3766,21 +3817,10 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnKeyboa
 
     }
 
-    /**
-     * put save here when editting a current card
-     * put save in saveNewCreatedCard when creating a new card
-     */
-    @Override
-    public void onKeyboardClose(EditText editText) {
-        if (mIsPlayingCard == false) {
-            ((MainActivity) getActivity()).removeCSSToolbar();
-        }
-    }
-
     /*
      * 键盘从出现到消失，Cursor is causing text to go up the screen
      */
-    public void restoreDefaultCursorPosition() {
+    private void restoreDefaultCursorPosition() {
 
         mSubheading.setSelection(0);
         mMain.setSelection(0);

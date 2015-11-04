@@ -25,6 +25,11 @@ public class FCCEditText extends EditText {
         super(context, attrs, defStyle);
     }
 
+
+    public void setCallbacks(OnKeyboardCloseListener callbacks) {
+        mCallbacks = callbacks;
+    }
+
     @Override
     public boolean onKeyPreIme(int keyCode, KeyEvent event) {
         if ((keyCode == KeyEvent.KEYCODE_BACK) && (event.getAction() == KeyEvent.ACTION_DOWN)) {

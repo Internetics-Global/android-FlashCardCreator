@@ -1285,7 +1285,6 @@ public class MainActivity extends FragmentActivity implements
                                         e.printStackTrace();
                                     }
                                     mCardDetailFragment.saveEditedCard();
-                                    mCardDetailFragment.restoreDefaultCursorPosition();
                                 }
                             });
                         };
@@ -1308,7 +1307,6 @@ public class MainActivity extends FragmentActivity implements
                     dismissCardCreateWindow();
                 }
 
-                mCardDetailFragment.restoreDefaultCursorPosition();
 
             }
         });
