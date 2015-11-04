@@ -3765,24 +3765,6 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnTouchL
 
             if ((tag.equals(TAG_SUBHEADING)) || (tag.equals(TAG_MAIN)) || (tag.equals(TAG_SUB))) {
 
-
-                //this is quite a trick in order to make EditText scrollable
-                EditText text = (EditText) v;
-                int lineHeight = text.getLineHeight();
-                int lineCount = text.getLineCount();
-                int textHeight = text.getHeight();
-                int maxNoOfLines = (2 * textHeight) / lineHeight;
-                int addedNoOfLines = maxNoOfLines - lineCount;
-
-                if ((addedNoOfLines > 0) && (lineCount > 1) && (lineCount * lineHeight < 2 * textHeight)) {
-
-                    String addedStr = "";
-                    for (int i = 0; i < addedNoOfLines; i++) {
-                        addedStr = addedStr + "\n";
-                    }
-                    text.setText(text.getText().toString() + addedStr);
-                }
-
                 //check card.xml for tag
                 ((MainActivity) getActivity()).mIsEdittingCard = true;
 
