@@ -936,11 +936,11 @@ public class PlayActivity extends FragmentActivity implements SensorEventListene
 
         if (mIsAutoScroll == false) {
 
-            showControlPanel();
+            //showControlPanel();
 
             switchQuestionAnswerViewManually(true);  //not allow to switch during auto play mode
 
-            resetAutoHideControlPanelHandler();
+            //resetAutoHideControlPanelHandler();
         }
 
     }
@@ -1040,7 +1040,7 @@ public class PlayActivity extends FragmentActivity implements SensorEventListene
 
     @Override
     public void onSensorChanged(SensorEvent event) {
-        LOGD(TAG, "onSensorChanged");
+        //LOGD(TAG, "onSensorChanged");
 
         if (mIsAutoScroll) {
             return;
@@ -1067,8 +1067,7 @@ public class PlayActivity extends FragmentActivity implements SensorEventListene
         int orientation = getOrientation();
         if (orientation == 0) {
             if ((roll - mOriginalRoll > 15.0) && (mEnableA)) {
-                currentCardDetailFragment.switchQuestionAnswerView();
-                playbackOnCard(currentCardDetailFragment);
+                switchQuestionAnswerViewManually(true);
                 mEnableA = false;
             }
             if (roll - mOriginalRoll < 0) {
@@ -1077,8 +1076,7 @@ public class PlayActivity extends FragmentActivity implements SensorEventListene
 
         } else if ((orientation == 1) && (mEnableB)) {
             if (roll - mOriginalRoll < -15.0) {
-                currentCardDetailFragment.switchQuestionAnswerView();
-                playbackOnCard(currentCardDetailFragment);
+                switchQuestionAnswerViewManually(true);
                 mEnableB = false;
             }
 
@@ -1122,9 +1120,22 @@ public class PlayActivity extends FragmentActivity implements SensorEventListene
     }
 
 
+    /*
+     * 只有两种情况isManually ＝ true;
+     * 1. OnViewPagerClickListener
+     * 2. onSensorChanged （而sensor只是在manually play中才enable）
+     */
+    private boolean mIsSwitchQuestionAnswerViewManually_Processing = false;  //由于switch是个非常耗性能的动作，同时执行会有副作用
     private void switchQuestionAnswerViewManually(boolean isManually) {
 
         LOGD(TAG, "switchQuestionAnswerViewManually");
+
+        if (mIsSwitchQuestionAnswerViewManually_Processing) {
+            LOGD(TAG, "switchQuestionAnswerViewManually is aborted since it's processing ");
+            return;
+        } else {
+            mIsSwitchQuestionAnswerViewManually_Processing = true;
+        }
 
         if (isManually) { //在fixed delay或smart delay的auto scroll中，都是不允许手动切换question/answer view的
             stopAllHandlers();
@@ -1155,6 +1166,8 @@ public class PlayActivity extends FragmentActivity implements SensorEventListene
         setActiveFragmentTag(mPosition);
 
         playbackOnCard(currentCardDetailFragment);
+
+        mIsSwitchQuestionAnswerViewManually_Processing = false;
     }
 
 
@@ -1554,7 +1567,7 @@ public class PlayActivity extends FragmentActivity implements SensorEventListene
 
 
     private CardDetailFragment getCurrentCardDetailFragment () {
-        LOGD(TAG, "getCurrentCardDetailFragment");
+       // LOGD(TAG, "getCurrentCardDetailFragment");
         CardDetailFragment cardDetailFragment = (CardDetailFragment) (mFragments.get(mPosition));
         return cardDetailFragment;
     }
@@ -1593,7 +1606,7 @@ public class PlayActivity extends FragmentActivity implements SensorEventListene
      */
     private int getOrientation() {
 
-        LOGD(TAG, "getOrientation");
+        //LOGD(TAG, "getOrientation");
 
         int orientation = getResources().getConfiguration().orientation;
         int rotation = getWindowManager().getDefaultDisplay().getRotation();
