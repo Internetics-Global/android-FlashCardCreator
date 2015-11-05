@@ -11,6 +11,8 @@ import com.flipflash.util.AppContext;
 import junit.framework.Assert;
 
 import java.io.IOException;
+import static com.flipflash.util.LogUtils.LOGD;
+import static com.flipflash.util.LogUtils.LOGE;
 
 /**
  * Created by bournewang on 4/13/14.
@@ -28,6 +30,7 @@ public class AudioHelper {
     outputPathString must be a .3gp format, otherwise exception will be thrown
      */
     public static void setupAudioRecord(String outputPathString) {
+        LOGD(TAG, "setupAudioRecord");
 
         Assert.assertTrue("outputPathString is null or is not file with .3gp extension",
                 ((outputPathString != null) && (outputPathString.toLowerCase().contains(".3gp") == true)));
@@ -59,12 +62,14 @@ public class AudioHelper {
     }
 
     public static void startRecord() {
+        LOGD(TAG, "startRecord");
 
         stopAndCleanAudio();
 
         try {
             mRecorder.prepare();
             mRecorder.start();
+            LOGD(TAG, "startRecord: mRecorder.start() is executed");
         } catch (IllegalStateException e) {
             e.printStackTrace();
         } catch (IOException e) {
@@ -75,6 +80,7 @@ public class AudioHelper {
 
 
     public static void stopRecord() {
+        LOGD(TAG, "stopRecord");
 
         try {
             if (mRecorder != null)  {
@@ -93,6 +99,7 @@ public class AudioHelper {
      * Clean all Recorded related resources
      */
     public static void cleanupRecorderResource() {
+        LOGD(TAG, "cleanupRecorderResource");
         if (mRecorder != null) {
             mRecorder.reset();
             mRecorder.release();
@@ -101,6 +108,7 @@ public class AudioHelper {
     }
 
     public static void playAudio(CardDetailFragment cardDetailFragment,boolean isMute) {
+        LOGD(TAG, "playAudio");
 
         String audioFileStr;
         if (cardDetailFragment.mIsQuestionShowing) {
@@ -122,6 +130,7 @@ public class AudioHelper {
       Support two formats: AAC (iOS), 3GP(android)
      */
     public static void playAudio(String pathString, boolean isMute){
+        LOGD(TAG, "playAudio");
 
         stopAndCleanAudio();
 
@@ -172,6 +181,7 @@ public class AudioHelper {
     }
 
     public static void stopAndCleanAudio() {
+        LOGD(TAG, "stopAndCleanAudio");
         if (mp != null) {
 
             boolean isPlaying = false;
@@ -191,6 +201,7 @@ public class AudioHelper {
      * Clean all Audio Play related resources
      */
     public static void cleanupAudioPlayResource() {
+        LOGD(TAG, "cleanupAudioPlayResource");
         if (mp != null) {
             mp.setVolume(1,1); //this is very important
             if(mp.isPlaying())
@@ -207,6 +218,7 @@ public class AudioHelper {
      * 由于TTS没有单独的音量控制，所以只能采用这种方式，这种体验其实是不好的，但是也是唯一的方法.
      */
     public static void muteTTS() {
+        LOGD(TAG, "muteTTS");
         AudioManager audioManager=(AudioManager) AppContext.getAppContext().getSystemService(Context.AUDIO_SERVICE);
 
         int streamType = getAudioHardwareOutputType();
@@ -214,6 +226,7 @@ public class AudioHelper {
     }
 
     public static void  unmuteTTS() {
+        LOGD(TAG, "unmuteTTS");
         AudioManager audioManager=(AudioManager) AppContext.getAppContext().getSystemService(Context.AUDIO_SERVICE);
 
         int streamType = getAudioHardwareOutputType();
@@ -221,6 +234,7 @@ public class AudioHelper {
     }
 
     public static int getAudioHardwareOutputType() {
+        LOGD(TAG, "getAudioHardwareOutputType");
         AudioManager audioManager=(AudioManager) AppContext.getAppContext().getSystemService(Context.AUDIO_SERVICE);
         if (audioManager.isSpeakerphoneOn()) {
             return AudioManager.STREAM_MUSIC;

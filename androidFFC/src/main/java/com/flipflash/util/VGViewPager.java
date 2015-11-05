@@ -37,6 +37,7 @@ public class VGViewPager extends AutoScrollViewPager {
 
     @Override
     public boolean onInterceptTouchEvent(MotionEvent event) {
+        LOGD(TAG, "onInterceptTouchEvent: " + event.toString());
         if (isDisableTouchEvent) {
             return true; //防止传递给sub view
         } else {
@@ -113,6 +114,7 @@ public class VGViewPager extends AutoScrollViewPager {
         super.onTouchEvent(ev);
 
         if (isDisableTouchEvent) {
+            LOGD(TAG, "onTouchEvent: returned because of isDisableTouchEvent = YES");
             return false;  //防止传递给手势处理
         }
 
@@ -171,6 +173,7 @@ public class VGViewPager extends AutoScrollViewPager {
 
 
     public void disableAllTouchEvent(boolean isDisableTouchEvent) {
+        LOGD(TAG, "disableAllTouchEvent");
         this.isDisableTouchEvent = isDisableTouchEvent;
     }
 

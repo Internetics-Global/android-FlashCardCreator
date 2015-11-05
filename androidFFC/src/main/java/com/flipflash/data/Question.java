@@ -72,7 +72,13 @@ public class Question {
         main = (String) dataDict.get("main");
         sub = (String) dataDict.get("sub");
         imageUriFormatStr = (String) dataDict.get("image");
+        if (imageUriFormatStr == null) {
+            imageUriFormatStr = "";
+        }
         imageUriFormatStr2 = (String) dataDict.get("image2");
+        if (imageUriFormatStr2 == null) {
+            imageUriFormatStr2 = "";
+        }
         cssID = (Integer) dataDict.get("css_id");
         templateID = (Integer) dataDict.get("template_id");
 

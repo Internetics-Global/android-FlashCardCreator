@@ -465,6 +465,8 @@ public class PackParserHelper {
             }
             if (StringUtils.isCorrectImageName(temp)) {
                 card.question.imageUriFormatStr = temp;
+            } else {
+                card.question.imageUriFormatStr = "";
             }
 
             temp = "";
@@ -812,6 +814,9 @@ public class PackParserHelper {
             }
             if (StringUtils.isCorrectImageName(temp)) {
                 card.answer.imageUriFormatStr = temp;
+            } else {
+
+                card.answer.imageUriFormatStr = "";
             }
 
             temp = "";

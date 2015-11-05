@@ -518,35 +518,39 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnTouchL
             try {
                 //如果使用ACTION_PICK，则会先出一个类似文件浏览器
                 Intent intent = new Intent(Intent.ACTION_GET_CONTENT).setType("video/*, image/*");
+                startActivityForResult(intent, REQUEST_CODE_FROM_IMAGE);
+                if (false) {
+                    boolean exist1 = false;
+                    boolean exist2 = false;
+                    final String galleryPackage1 = "com.android.gallery3d";
+                    final String galleryPackage2 = "com.google.android.gallery3d";
+                    PackageManager pm = getActivity().getPackageManager();
+                    List<ResolveInfo> list = pm.queryIntentActivities(intent, PackageManager.MATCH_DEFAULT_ONLY);
+                    for (ResolveInfo item:list) {
+                        if (item.activityInfo.packageName.equals(galleryPackage1)) {
+                            exist1 = true;
+                            break;
+                        }
 
-                boolean exist1 = false;
-                boolean exist2 = false;
-                final String galleryPackage1 = "com.android.gallery3d";
-                final String galleryPackage2 = "com.google.android.gallery3d";
-                PackageManager pm = getActivity().getPackageManager();
-                List<ResolveInfo> list = pm.queryIntentActivities(intent, PackageManager.MATCH_DEFAULT_ONLY);
-                for (ResolveInfo item:list) {
-                    if (item.activityInfo.packageName.equals(galleryPackage1)) {
-                        exist1 = true;
-                        break;
+                        if (item.activityInfo.packageName.equals(galleryPackage2)) {
+                            exist2 = true;
+                            break;
+                        }
                     }
 
-                    if (item.activityInfo.packageName.equals(galleryPackage2)) {
-                        exist2 = true;
-                        break;
+                    if (exist1) {
+                        Intent galleryIntent = new Intent();
+                        galleryIntent.setClassName(galleryPackage1, "com.android.gallery3d.app.Gallery");
+                        galleryIntent.setAction(Intent.ACTION_GET_CONTENT);
+                        startActivityForResult(galleryIntent, REQUEST_CODE_FROM_IMAGE);
+                    } else if (exist2) {
+                        Intent galleryIntent = new Intent();
+                        galleryIntent.setClassName(galleryPackage2, "com.android.gallery3d.app.Gallery");
+                        galleryIntent.setAction(Intent.ACTION_GET_CONTENT);
+                        startActivityForResult(galleryIntent, REQUEST_CODE_FROM_IMAGE);
+                    } else {
+                        startActivityForResult(intent, REQUEST_CODE_FROM_IMAGE);
                     }
-                }
-
-                if (exist1) {
-                    Intent galleryIntent = new Intent();
-                    galleryIntent.setClassName(galleryPackage1,"com.android.gallery3d.app.Gallery");
-                    startActivityForResult(galleryIntent, REQUEST_CODE_FROM_IMAGE);
-                } else if (exist2) {
-                    Intent galleryIntent = new Intent();
-                    galleryIntent.setClassName(galleryPackage2,"com.android.gallery3d.app.Gallery");
-                    startActivityForResult(galleryIntent, REQUEST_CODE_FROM_IMAGE);
-                } else {
-                    startActivityForResult(intent, REQUEST_CODE_FROM_IMAGE);
                 }
 
 
@@ -1471,11 +1475,11 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnTouchL
     }
 
     private void createImage() {
-
-        LOGD(TAG, "createImage: mCurrentCard.question.imageUriFormatStr = " + mCurrentCard.question.imageUriFormatStr);
+        LOGD(TAG, "createImage");
+        String imagePathStr = FileOperationHelper.getQuestionImagePlaceholderImagePath();
 
         mImage = new ImageView(getActivity());
-        mImage.setImageURI(Uri.parse(mCurrentCard.question.imageUriFormatStr));
+        mImage.setImageURI(Uri.parse(imagePathStr));
 
         mImage.setPadding(5,5,5,5);
 
@@ -1486,11 +1490,11 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnTouchL
     }
 
     private void createImage2() {
-
-        LOGD(TAG, "createImage: mCurrentCard.question.imageUriFormatStr2 = " + mCurrentCard.question.imageUriFormatStr2);
+        LOGD(TAG, "createImage2");
+        String imagePathStr = FileOperationHelper.getQuestionImagePlaceholderImagePath();
 
         mImage2 = new ImageView(getActivity());
-        mImage2.setImageURI(Uri.parse(mCurrentCard.question.imageUriFormatStr2));
+        mImage2.setImageURI(Uri.parse(imagePathStr));
 
         mImage2.setPadding(5, 5, 5, 5);
 

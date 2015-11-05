@@ -145,6 +145,8 @@ public class PlayActivity extends FragmentActivity implements SensorEventListene
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+        LOGD(TAG, "onCreate");
+
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
         requestWindowFeature(Window.FEATURE_ACTION_BAR);
         setContentView(R.layout.play);
@@ -257,10 +259,14 @@ public class PlayActivity extends FragmentActivity implements SensorEventListene
     protected void onPause() {
         super.onPause();
 
+        LOGD(TAG, "onPause");
+
         unregisterReceiver(mAudioIntentReceiver);
     }
 
     private void setupViews() {
+
+        LOGD(TAG, "setupViews");
 
         mFragments = getFragments();
         FCCPageAdapter pageAdapter = new FCCPageAdapter(getSupportFragmentManager(), mFragments);
@@ -454,7 +460,7 @@ public class PlayActivity extends FragmentActivity implements SensorEventListene
 
     private void dwellTimeSeekBarProgressManuallyChanged() {
 
-        LOGD("ccaa", "dwellTimeSeekBarProgressManuallyChanged");
+        LOGD(TAG, "dwellTimeSeekBarProgressManuallyChanged");
 
         stopAudio();
         stopTextToSpeech();
@@ -492,6 +498,8 @@ public class PlayActivity extends FragmentActivity implements SensorEventListene
 
     private void pauseForAnswerSeekBarProgressManuallyChanged() {
 
+        LOGD(TAG, "pauseForAnswerSeekBarProgressManuallyChanged");
+
         showControlPanel();
         resetAutoHideControlPanelHandler();
     }
@@ -513,6 +521,8 @@ public class PlayActivity extends FragmentActivity implements SensorEventListene
 
     protected void stopAllTimers() {
 
+        LOGD(TAG, "stopAllTimers");
+
         if (mAutoScrollForFixedDelayTimer != null) {
             mAutoScrollForFixedDelayTimer.cancel();
         }
@@ -530,6 +540,8 @@ public class PlayActivity extends FragmentActivity implements SensorEventListene
 
 
     protected void  stopAllHandlers() {
+
+        LOGD(TAG, "stopAllHandlers");
 
         if (mTTSDelayHandler !=null) {
             mTTSDelayHandler.removeCallbacksAndMessages(null);
@@ -609,6 +621,8 @@ public class PlayActivity extends FragmentActivity implements SensorEventListene
 
     private void muteImageButtonClicked() {
 
+        LOGD(TAG, "muteImageButtonClicked");
+
         showControlPanel();
         resetAutoHideControlPanelHandler();
 
@@ -628,6 +642,8 @@ public class PlayActivity extends FragmentActivity implements SensorEventListene
     }
 
     private void playRecordedSoundImageButtonClicked() {
+
+        LOGD(TAG, "playRecordedSoundImageButtonClicked");
 
         showControlPanel();
         resetAutoHideControlPanelHandler();
@@ -661,6 +677,8 @@ public class PlayActivity extends FragmentActivity implements SensorEventListene
     }
 
     private void autoScrollImageButtonClicked() {
+
+        LOGD(TAG, "autoScrollImageButtonClicked");
 
         stopAudio();
         stopTextToSpeech();
@@ -709,6 +727,9 @@ public class PlayActivity extends FragmentActivity implements SensorEventListene
     private boolean isSmartDelay() {
         //我们采用了一种非常特殊的方法，就是slider的值到了最小值时，isSmartDelay ＝ YES
 
+        LOGD(TAG, "isSmartDelay");
+
+
         if (mOneOffPlayType == 1 || mOneOffPlayType == 2) {
             return true;
         } else {
@@ -728,6 +749,8 @@ public class PlayActivity extends FragmentActivity implements SensorEventListene
 
     private void cyclePlayImageButtonClicked() {
 
+        LOGD(TAG, "cyclePlayImageButtonClicked");
+
         showControlPanel();
         resetAutoHideControlPanelHandler();
 
@@ -746,6 +769,8 @@ public class PlayActivity extends FragmentActivity implements SensorEventListene
 
 
     private void executeAfterFirstTimeDelayExpire() {
+
+        LOGD(TAG, "executeAfterFirstTimeDelayExpire");
 
         if (mFirstTimeDelayHandler !=null) {
             mFirstTimeDelayHandler.removeCallbacksAndMessages(null);
@@ -783,6 +808,8 @@ public class PlayActivity extends FragmentActivity implements SensorEventListene
     }
 
     private void executeAutoPlay() {
+
+        LOGD(TAG, "executeAutoPlay");
 
         int countDownVal = AppConfig.sharedInstance().getCountDown();
         mCounterDownTextView.setText(String.valueOf(countDownVal));
@@ -834,6 +861,8 @@ public class PlayActivity extends FragmentActivity implements SensorEventListene
     }
 
     private void beginFixedDelayAutoScroll() {
+
+        LOGD(TAG, "beginFixedDelayAutoScroll");
 
         //1. prerequisite
         if (mIsFixedDelayAutoScroll == false) {
@@ -891,15 +920,19 @@ public class PlayActivity extends FragmentActivity implements SensorEventListene
     }
 
     private void screenOn() {
+        LOGD(TAG, "screenOn");
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
     }
 
     private void screenOff() {
+        LOGD(TAG, "screenOff");
         getWindow().clearFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
     }
 
     @Override
     public void OnViewPagerClickListener() {
+
+        LOGD(TAG, "OnViewPagerClickListener");
 
         if (mIsAutoScroll == false) {
 
@@ -914,6 +947,7 @@ public class PlayActivity extends FragmentActivity implements SensorEventListene
 
     @Override
     public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+        LOGD(TAG, "onPageScrolled");
         if ((mPosition != position) && (positionOffsetPixels == 0)) {
             LOGD(TAG, "onPageScrolled: "+ "onPageScrolled, page index=" + position + " .mPosition=" + mPosition);
 
@@ -993,17 +1027,20 @@ public class PlayActivity extends FragmentActivity implements SensorEventListene
 
     @Override
     public void onPageSelected(int position) {
+        LOGD(TAG, "onPageSelected");
 
     }
 
     @Override
     public void onPageScrollStateChanged(int state) {
+        LOGD(TAG, "onPageScrollStateChanged");
 
     }
 
 
     @Override
     public void onSensorChanged(SensorEvent event) {
+        LOGD(TAG, "onSensorChanged");
 
         if (mIsAutoScroll) {
             return;
@@ -1057,6 +1094,7 @@ public class PlayActivity extends FragmentActivity implements SensorEventListene
 
     @Override
     public void onAccuracyChanged(Sensor sensor, int accuracy) {
+        LOGD(TAG, "onAccuracyChanged");
         //do nothing
     }
 
@@ -1065,6 +1103,7 @@ public class PlayActivity extends FragmentActivity implements SensorEventListene
      *  由于是个延时调用，我们必须重新check
      */
     private void switchQAFromTimerForFixedDelay() {
+        LOGD(TAG, "switchQAFromTimerForFixedDelay");
 
         if (mIsAutoScroll == false) {
             throw new IllegalArgumentException("ccaa,  mIsAutoScroll should not be false");
@@ -1084,6 +1123,8 @@ public class PlayActivity extends FragmentActivity implements SensorEventListene
 
 
     private void switchQuestionAnswerViewManually(boolean isManually) {
+
+        LOGD(TAG, "switchQuestionAnswerViewManually");
 
         if (isManually) { //在fixed delay或smart delay的auto scroll中，都是不允许手动切换question/answer view的
             stopAllHandlers();
@@ -1122,6 +1163,8 @@ public class PlayActivity extends FragmentActivity implements SensorEventListene
 
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
+
+        LOGD(TAG, "onKeyDown");
         if (((keyCode == KeyEvent.KEYCODE_BACK) ||
                 (keyCode == KeyEvent.KEYCODE_HOME))
                 && event.getRepeatCount() == 0) {
@@ -1138,6 +1181,8 @@ public class PlayActivity extends FragmentActivity implements SensorEventListene
 
 
     private void setupTextToSpeech() {
+
+        LOGD(TAG, "setupTextToSpeech");
 
         if (mTTS == null) {
 
@@ -1171,6 +1216,8 @@ public class PlayActivity extends FragmentActivity implements SensorEventListene
     }
 
     private Locale getText2SpeechLocale() {
+
+        LOGD(TAG, "getText2SpeechLocale");
 
         try {
             Locale[] locales = Locale.getAvailableLocales();
@@ -1216,6 +1263,8 @@ public class PlayActivity extends FragmentActivity implements SensorEventListene
     }
 
     private void text2SpeechFinished() {
+
+        LOGD(TAG, "text2SpeechFinished");
 
         CardDetailFragment cardDetailFragment = getCurrentCardDetailFragment();
 
@@ -1289,6 +1338,8 @@ public class PlayActivity extends FragmentActivity implements SensorEventListene
 
     private void scroll2NextPage() {
 
+        LOGD(TAG, "scroll2NextPage");
+
         stopAudio();
         stopTextToSpeech();
 
@@ -1309,6 +1360,8 @@ public class PlayActivity extends FragmentActivity implements SensorEventListene
  *2. 如果mIsMuteSoundRecording ＝ NO， 则先audio，然后执行只执行TextToSpeech
  */
     private void playbackOnCard(final CardDetailFragment cardDetailFragment) {
+
+        LOGD(TAG, "playbackOnCard");
 
         AudioHelper.unmuteTTS(); //我们需要确保这时音频的音量是可用的。
         AudioHelper.stopAndCleanAudio();
@@ -1390,11 +1443,14 @@ public class PlayActivity extends FragmentActivity implements SensorEventListene
 
 
     private void stopAudio() {
+        LOGD(TAG, "stopAudio");
         AudioHelper.stopAndCleanAudio();
 
     }
 
     private void shutdownTextToSpeech() {
+
+        LOGD(TAG, "shutdownTextToSpeech");
 
         if (mTTS != null) {
             mTTS.shutdown();
@@ -1404,6 +1460,7 @@ public class PlayActivity extends FragmentActivity implements SensorEventListene
     }
 
     private void stopTextToSpeech() {
+        LOGD(TAG, "stopTextToSpeech");
 
         mTextToSpeechContentArrayIndex = 0; //这个非常重要
 
@@ -1420,6 +1477,7 @@ public class PlayActivity extends FragmentActivity implements SensorEventListene
      * isMuteText2Speech, if false, mute but still text2speech
      */
     private void textToSpeechAllContentNow(CardDetailFragment cardDetailFragment,boolean isMuteText2Speech) {
+        LOGD(TAG, "textToSpeechAllContentNow");
 
         if (mIsShuttingDown) {
             return;
@@ -1462,6 +1520,7 @@ public class PlayActivity extends FragmentActivity implements SensorEventListene
       3. scroll到下一张卡片
      */
     private void setActiveFragmentTag(int indexShowing) {
+        LOGD(TAG, "setActiveFragmentTag");
         for (int i = 0; i < mFragments.size(); i ++) {
             CardDetailFragment cardDetailFragment = (CardDetailFragment) mFragments.get(i);
             if (i == indexShowing) {
@@ -1495,11 +1554,14 @@ public class PlayActivity extends FragmentActivity implements SensorEventListene
 
 
     private CardDetailFragment getCurrentCardDetailFragment () {
+        LOGD(TAG, "getCurrentCardDetailFragment");
         CardDetailFragment cardDetailFragment = (CardDetailFragment) (mFragments.get(mPosition));
         return cardDetailFragment;
     }
 
     private List<Fragment> getFragments() {
+
+        LOGD(TAG, "getFragments");
 
         ArrayList<Card> cardsArray = mCurrentPack.cards;
         int size = cardsArray.size();
@@ -1530,6 +1592,9 @@ public class PlayActivity extends FragmentActivity implements SensorEventListene
      * -1, other orientation; 0, landscape; 1. reverse landscape
      */
     private int getOrientation() {
+
+        LOGD(TAG, "getOrientation");
+
         int orientation = getResources().getConfiguration().orientation;
         int rotation = getWindowManager().getDefaultDisplay().getRotation();
 
@@ -1556,6 +1621,8 @@ public class PlayActivity extends FragmentActivity implements SensorEventListene
      */
     private int getDwellMilliSecondsTotally() {
 
+        LOGD(TAG, "getDwellMilliSecondsTotally");
+
         final int dwellTimeMilliSeconds = getDwellTimeMilliSeconds();
         final int pauseForAnswerMilliSeconds = getPauseForAnswerMilliSeconds();
 
@@ -1576,6 +1643,8 @@ public class PlayActivity extends FragmentActivity implements SensorEventListene
      */
     private int getDwellMilliSecondsOnQuestionOnly() {
 
+        LOGD(TAG, "getDwellMilliSecondsOnQuestionOnly");
+
         final int dwellTimeMilliSeconds = getDwellTimeMilliSeconds();
 
         return dwellTimeMilliSeconds;
@@ -1587,28 +1656,33 @@ public class PlayActivity extends FragmentActivity implements SensorEventListene
      * time on question or answer
      */
     private int getDwellTimeMilliSeconds() {
+        LOGD(TAG, "getDwellTimeMilliSeconds");
         int interval = mDwellTimeSeekBar.getProgress();
         return interval*1000;
     }
 
 
     private int getPauseForAnswerMilliSeconds () {
+        LOGD(TAG, "getPauseForAnswerMilliSeconds");
         int interval = mPauseForAnswerSeekBar.getProgress();
         return interval*1000;
     }
 
 
     private void hideControlPanel() {
+        LOGD(TAG, "hideControlPanel");
         View controlPanelView = findViewById(R.id.play_control_panel);
         controlPanelView.setVisibility(View.INVISIBLE);
     }
 
     private void showControlPanel() {
+        LOGD(TAG, "showControlPanel");
         View controlPanelView = findViewById(R.id.play_control_panel);
         controlPanelView.setVisibility(View.VISIBLE);
     }
 
     private boolean isControlPanelVisible() {
+        LOGD(TAG, "isControlPanelVisible");
         View controlPanelView = findViewById(R.id.play_control_panel);
         if (controlPanelView.getVisibility() == View.VISIBLE) {
             return true;
@@ -1619,6 +1693,8 @@ public class PlayActivity extends FragmentActivity implements SensorEventListene
     }
 
     private void switchControlPanelVisibility() {
+
+        LOGD(TAG, "switchControlPanelVisibility");
         if (isControlPanelVisible()) {
             hideControlPanel();
         } else {
@@ -1627,6 +1703,8 @@ public class PlayActivity extends FragmentActivity implements SensorEventListene
     }
 
     private void resetAutoHideControlPanelHandler() {
+
+        LOGD(TAG, "resetAutoHideControlPanelHandler");
 
         if (mAutoHideControlPanelHandler != null) {
             mAutoHideControlPanelHandler.removeCallbacksAndMessages(null);
@@ -1720,6 +1798,8 @@ public class PlayActivity extends FragmentActivity implements SensorEventListene
     public void onBackPressed() {
         super.onBackPressed();
 
+        LOGD(TAG, "onBackPressed");
+
         stopAudio();
         stopTextToSpeech();
     }
@@ -1727,11 +1807,13 @@ public class PlayActivity extends FragmentActivity implements SensorEventListene
     private UtteranceProgressListener utteranceProgressListener = new UtteranceProgressListener() {
         @Override
         public void onStart(String utteranceId) {
+            LOGD("UtteranceProgressListener", "onStart");
 
         }
 
         @Override
         public void onDone(String utteranceId) {
+            LOGD("UtteranceProgressListener", "onDone");
             //go to next
             mTextToSpeechContentArrayIndex ++;
 
@@ -1778,6 +1860,7 @@ public class PlayActivity extends FragmentActivity implements SensorEventListene
 
         @Override
         public void onError(String utteranceId) {
+            LOGD("UtteranceProgressListener", "onError");
 
         }
     };
@@ -1785,6 +1868,8 @@ public class PlayActivity extends FragmentActivity implements SensorEventListene
     private int original_audio_stream_state = -1;
     private class AudioIntentReceiver extends BroadcastReceiver {
         @Override public void onReceive(Context context, Intent intent) {
+
+            LOGD(TAG, "onReceive");
 
             if (intent.getAction().equals(Intent.ACTION_HEADSET_PLUG)) {
                 int state = intent.getIntExtra("state", -1);

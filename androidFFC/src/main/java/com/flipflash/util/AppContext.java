@@ -2,6 +2,8 @@ package com.flipflash.util;
 
 import android.app.Application;
 import android.content.Context;
+import android.content.pm.PackageInfo;
+import android.content.pm.PackageManager;
 
 import com.amazonaws.auth.CognitoCachingCredentialsProvider;
 import com.amazonaws.regions.Regions;
@@ -14,7 +16,10 @@ import com.parse.ParseCrashReporting;
 import com.parse.ParseFacebookUtils;
 import com.parse.ParseTwitterUtils;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.UUID;
+import static com.flipflash.util.LogUtils.LOGD;
 
 public class AppContext extends Application {
     private static final String TAG = AppContext.class.getName();
@@ -27,6 +32,17 @@ public class AppContext extends Application {
     @Override
     public void onCreate() {
         super.onCreate();
+
+        SimpleDateFormat s = new SimpleDateFormat("dd-MM-yyyy hh:mm:ss");
+        String timestamp = s.format(new Date());
+        PackageInfo pInfo = null;
+        try {
+            pInfo = getPackageManager().getPackageInfo(getPackageName(), 0);
+        } catch (PackageManager.NameNotFoundException e) {
+            e.printStackTrace();
+        }
+        long version = (pInfo != null)?pInfo.versionCode: -1;
+        LOGD(TAG, "onCreate on " + timestamp + " with build number = " + version);
 
         //LeakCanary.install(this);
 
