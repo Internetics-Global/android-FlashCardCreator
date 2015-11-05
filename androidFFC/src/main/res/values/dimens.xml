@@ -64,6 +64,7 @@
     <dimen name="tooltip_fake_actionitem_right_margin_7">378dp</dimen>
     <dimen name="tooltip_fake_actionitem_right_margin_8">441dp</dimen>
     <dimen name="pack_list_item_corner_width">5dp</dimen>
+    <dimen name="sidebar_text_height">180dp</dimen>
 
 
 </resources>

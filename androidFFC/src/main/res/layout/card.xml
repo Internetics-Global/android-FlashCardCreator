@@ -27,7 +27,7 @@
 
             <com.flipflash.UI.FCCEditText
                 android:id="@+id/sidebar_title"
-                android:layout_width="180dp"
+                android:layout_width="@dimen/sidebar_text_height"
                 android:layout_height="match_parent"
                 android:inputType="textNoSuggestions|textCapSentences"
                 android:singleLine="true"

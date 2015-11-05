@@ -366,6 +366,20 @@ public class UIHelper {
         return cardHeight;
     }
 
+    public static double getCardHeightDPUnit(Activity activity) {
+
+        DisplayMetrics metric = new DisplayMetrics();
+        activity.getWindowManager().getDefaultDisplay().getMetrics(metric);
+
+        double heightPixel = getCardHeight(activity);
+
+        float density  = metric.density;
+        double dpWidth  = heightPixel / density;
+
+        return dpWidth;
+
+    }
+
     public static double getCardWidth(Activity activity) {
         double cardWidth = getScreenWidth(activity) *3/4;
         return (cardWidth);

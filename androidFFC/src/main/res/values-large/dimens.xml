@@ -57,6 +57,7 @@
     <!--template change relate-->
     <dimen name="question_template_1_margin_right">200dp</dimen>
     <dimen name="pack_list_item_corner_width">5dp</dimen>
+    <dimen name="sidebar_text_height">400dp</dimen>
 
 
 </resources>
