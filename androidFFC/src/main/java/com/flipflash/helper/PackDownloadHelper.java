@@ -16,6 +16,7 @@ import com.flipflash.android_ffc.R;
 import com.flipflash.cryptor.CryptoHelper;
 import com.flipflash.helper.AWS.SimpleDBHelper;
 import com.flipflash.util.AppConfig;
+import com.flipflash.util.AppContext;
 import com.flipflash.util.Global;
 
 import net.lingala.zip4j.core.ZipFile;
@@ -193,7 +194,7 @@ public class PackDownloadHelper extends AsyncTask<Void, Long, Boolean> {
             }
 
         } else {
-            Toast.makeText(mContext, mErrorMsg, Toast.LENGTH_SHORT).show();
+            Toast.makeText(AppContext.getAppContext(), mErrorMsg, Toast.LENGTH_SHORT).show();
         }
 
     }

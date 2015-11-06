@@ -21,6 +21,7 @@ import com.dropbox.client2.exception.DropboxPartialFileException;
 import com.dropbox.client2.exception.DropboxServerException;
 import com.dropbox.client2.exception.DropboxUnlinkedException;
 import com.flipflash.android_ffc.R;
+import com.flipflash.util.AppContext;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -156,7 +157,7 @@ public class DropboxUploadHelper extends AsyncTask<Void, Long, Boolean> {
             mHandler.obtainMessage(Dropbox_Constant.UPLOAD_SUCCEED, 0, 0, mFile).sendToTarget();
 
         } else {
-            Toast.makeText(mContext, mErrorMsg, Toast.LENGTH_SHORT).show();
+            Toast.makeText(AppContext.getAppContext(), mErrorMsg, Toast.LENGTH_SHORT).show();
 
             mHandler.obtainMessage(Dropbox_Constant.UPLOAD_FAILED, 0, 0, mFile).sendToTarget();
         }

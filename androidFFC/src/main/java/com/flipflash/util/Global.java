@@ -79,11 +79,12 @@ public class Global {
     public static final String sortType = "sort_Type";
 
 
-    //ratio of height and width;
-    public static double   widthOfCardInEditMode = 0;
-    public static float   scaleInPlayMode = 1; //scale in play mode compared with in edit mode
+    //ratio between editing mode and play mode;
+    //TODO: 这个逻辑需要重新考虑过
+    public static float   scaleInPlayMode = 1.2f;
+    public static float   ratioOfCardInPlayMode = 1.45f;  //注意，这个值同play.xml中的soulwolf:widthRatio="1.45" 一致
 
-    //image, image2, logoImage的tag，用在VGViewPager
+    //ie, image2, logoImage的tag，用在VGViewPager
     public static final String mImage_Showing = "mImage_Showing";
     public static final String mImage2_Showing = "mImage2_Showing";
     public static final String mLogoImage_Showing = "mLogoImage_Showing";

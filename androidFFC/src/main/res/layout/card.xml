@@ -24,7 +24,7 @@
             android:background="@drawable/shape_card_blue_left_corner"
             android:orientation="vertical">
 
-
+            <!-- sidebar_text_height，这只是一个大概，实际中通过程序精确计算过 -->
             <com.flipflash.UI.FCCEditText
                 android:id="@+id/sidebar_title"
                 android:layout_width="@dimen/sidebar_text_height"

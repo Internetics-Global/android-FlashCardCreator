@@ -200,7 +200,7 @@ public class PlayActivity extends FragmentActivity implements SensorEventListene
         if (AppConfig.sharedInstance().isTextToSpeech()) {
             Boolean isSimulator = Build.FINGERPRINT.startsWith("generic");
             if (isSimulator) {
-                Toast.makeText(this, "TextToSpeech and Recording may not be supported on some Android simulators", Toast.LENGTH_LONG).show();
+                Toast.makeText(getApplicationContext(), "TextToSpeech and Recording may not be supported on some Android simulators", Toast.LENGTH_LONG).show();
             }
         }
 
@@ -340,42 +340,29 @@ public class PlayActivity extends FragmentActivity implements SensorEventListene
             }
         });
 
-        //Keep same size with non-play mode
-        ViewGroup.MarginLayoutParams marginLayoutParams = (ViewGroup.MarginLayoutParams) mPager.getLayoutParams();
+
+        //特殊情况，当 width/height < Global.ratioOfCardInPlayMode
+        double cardHeight = UIHelper.getScreenHeight(this) - UIHelper.getPixels(10 +10); //10 is top and bottom margin;
+        double cardWidth = cardHeight * Global.ratioOfCardInPlayMode;
+
         double screenWidth = UIHelper.getScreenWidth(this);
-        double screenHeight = UIHelper.getScreenHeight(this);
-        double ratio = screenHeight/screenWidth;
-        double marginHorizontal;
-        double marginVertical;
-        double widthOfCard;
-        double heightOfCard;
+        if (cardHeight *Global.ratioOfCardInPlayMode > screenWidth) {
+            //这时的卡片宽度和高度将重新需要计算
+            double horizontalMargin = UIHelper.getPixels(10);
+            cardWidth =  screenWidth - 2*horizontalMargin;
+            double verticalMarin =  (cardHeight - cardWidth/Global.ratioOfCardInPlayMode)/2;
+            cardHeight = UIHelper.getCardHeight(this) - 2 *verticalMarin;
 
-        double ratioCard = UIHelper.getCardRatio(this);
+            ViewGroup.MarginLayoutParams marginLayoutParams = (ViewGroup.MarginLayoutParams) mPager.getLayoutParams();
+            marginLayoutParams.topMargin = (int)verticalMarin;
+            marginLayoutParams.bottomMargin = (int)verticalMarin;
+            marginLayoutParams.leftMargin = (int)horizontalMargin;
+            marginLayoutParams.rightMargin = (int)horizontalMargin;
+            mPager.setLayoutParams(marginLayoutParams);
 
-        if (ratio >= ratioCard) {
-            //mean we should use width as reference
-            marginHorizontal = 10;
-            widthOfCard = screenWidth - 2*marginHorizontal;
-            heightOfCard = (int)(widthOfCard *ratioCard);
-            marginVertical = (screenHeight - heightOfCard)/2;
-        } else {
-            marginVertical = 10;
-            heightOfCard = screenHeight - 2*marginVertical;
-            widthOfCard = (int) (heightOfCard / ratioCard);
-            marginHorizontal = (screenWidth - widthOfCard)/2;
+            LOGD(TAG, "setupViews: We are now in a very special case, width/height < 1.45");
+
         }
-
-        Global.scaleInPlayMode = (float) (widthOfCard / Global.widthOfCardInEditMode);
-        if ((Global.scaleInPlayMode >2) || (Global.scaleInPlayMode <0.5)) {
-            LOGD(TAG, "setupViews: the value of scaleInPlayMode is out of normal value");
-            Global.scaleInPlayMode = (float)1.2; //default value
-        }
-
-        marginLayoutParams.leftMargin = (int)marginHorizontal;
-        marginLayoutParams.rightMargin =  (int)marginHorizontal;
-        marginLayoutParams.topMargin =  (int)marginVertical;
-        marginLayoutParams.bottomMargin =  (int)marginVertical;
-        mPager.setLayoutParams(marginLayoutParams);
 
         mPager.setOffscreenPageLimit(1);
         mPager.setAdapter(pageAdapter);
@@ -666,7 +653,7 @@ public class PlayActivity extends FragmentActivity implements SensorEventListene
 
         if (isEmpty) {
 
-            new SweetAlertDialog(this)
+            new SweetAlertDialog(getApplicationContext())
                     .setTitleText(getString(R.string.DIALOG_AlERT))
                     .setContentText(getString(R.string.DIALOG_NO_AUDIO_ON_QUESTION_CARD))
                     .show();

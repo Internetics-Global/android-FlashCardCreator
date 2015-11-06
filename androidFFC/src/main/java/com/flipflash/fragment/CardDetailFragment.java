@@ -1,5 +1,6 @@
 package com.flipflash.fragment;
 
+import android.app.ActionBar;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
@@ -445,7 +446,7 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnTouchL
         if (targetStr.length() > 0) {
 
             if (Build.FINGERPRINT.startsWith("generic")) {
-                Toast.makeText(getActivity(), "Don't support to play on simulator", Toast.LENGTH_LONG).show();
+                Toast.makeText(AppContext.getAppContext(), "Don't support to play on simulator", Toast.LENGTH_LONG).show();
                 return;
             }
 
@@ -462,7 +463,7 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnTouchL
             }
 
         } else {
-            Toast.makeText(getActivity(), "Not available video file", Toast.LENGTH_LONG).show();
+            Toast.makeText(AppContext.getAppContext(), "Not available video file", Toast.LENGTH_LONG).show();
         }
 
 
@@ -503,7 +504,7 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnTouchL
                                 //mCurrentCard.save(AppContext.getAppContext());
                             }
                         } else {
-                            Toast.makeText(getActivity(), getString(R.string.DIALOG_INVALID_YOUTUBE_URL), Toast.LENGTH_LONG).show();
+                            Toast.makeText(AppContext.getAppContext(), getString(R.string.DIALOG_INVALID_YOUTUBE_URL), Toast.LENGTH_LONG).show();
                         }
 
                     }
@@ -555,7 +556,7 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnTouchL
 
 
             } catch (Exception e) {
-                Toast.makeText(getActivity(),
+                Toast.makeText(AppContext.getAppContext(),
                         getString(R.string.DIALOG_NO_PHOTO_GALLERIES_FOUND),
                         Toast.LENGTH_SHORT)
                         .show();
@@ -761,7 +762,7 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnTouchL
                                             android.provider.MediaStore.Images.Media.INTERNAL_CONTENT_URI),
                                     REQUEST_CODE_FROM_LOGO);
                         }catch (Exception e) {
-                            Toast.makeText(getActivity(),
+                            Toast.makeText(AppContext.getAppContext(),
                                     getString(R.string.DIALOG_NO_PHOTO_GALLERIES_FOUND),
                                                 Toast.LENGTH_SHORT)
                                                 .show();
@@ -815,7 +816,7 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnTouchL
                 if (isEditableMode()) {
                     showCreateSoundView();
                 } else {
-                    new SweetAlertDialog(getActivity())
+                    new SweetAlertDialog(AppContext.getAppContext())
                             .setTitleText(getString(R.string.DIALOG_AlERT))
                             .setContentText(getString(R.string.DIALOG_YOU_CAN_NOT_CHANGE_TEMPLATE_BACKGROUND))
                             .show();
@@ -874,7 +875,7 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnTouchL
                                                             android.provider.MediaStore.Images.Media.INTERNAL_CONTENT_URI),
                                                     REQUEST_CODE_FROM_BACKGROUND);
                                         } catch (Exception e) {
-                                            Toast.makeText(getActivity(),
+                                            Toast.makeText(AppContext.getAppContext(),
                                                     getString(R.string.DIALOG_NO_PHOTO_GALLERIES_FOUND),
                                                     Toast.LENGTH_SHORT)
                                                     .show();
@@ -890,7 +891,7 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnTouchL
                                             android.provider.MediaStore.Images.Media.INTERNAL_CONTENT_URI),
                                     REQUEST_CODE_FROM_BACKGROUND);
                         } catch (Exception e) {
-                            Toast.makeText(getActivity(),
+                            Toast.makeText(AppContext.getAppContext(),
                                     getString(R.string.DIALOG_NO_PHOTO_GALLERIES_FOUND),
                                     Toast.LENGTH_SHORT)
                                     .show();
@@ -898,7 +899,7 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnTouchL
                     }
 
                 } else {
-                    new SweetAlertDialog(getActivity())
+                    new SweetAlertDialog(AppContext.getAppContext())
                             .setTitleText(getString(R.string.DIALOG_AlERT))
                             .setContentText(getString(R.string.DIALOG_YOU_CAN_NOT_CHANGE_TEMPLATE_BACKGROUND))
                             .show();
@@ -945,7 +946,7 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnTouchL
                     @Override
                     public void onClick(View v) {
                         mIsImage2Active = false;
-                        Toast.makeText(getActivity(), "Video play is only available in play mode", Toast.LENGTH_LONG).show();
+                        Toast.makeText(AppContext.getAppContext(), "Video play is only available in play mode", Toast.LENGTH_LONG).show();
 
                     }
                 });
@@ -982,7 +983,7 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnTouchL
                     @Override
                     public void onClick(View v) {
                         mIsImage2Active = true;
-                        new SweetAlertDialog(getActivity())
+                        new SweetAlertDialog(AppContext.getAppContext())
                                 .setTitleText(getString(R.string.DIALOG_AlERT))
                                 .setContentText(getString(R.string.DIALOG_VIDEO_PLAY_ONLY_AVAILABLE_IN_PLAY))
                                 .show();
@@ -1102,7 +1103,7 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnTouchL
                             answerQuickAction.show(mChangeTemplateImage);
                         }
                     } else {
-                        new SweetAlertDialog(getActivity())
+                        new SweetAlertDialog(AppContext.getAppContext())
                                 .setTitleText(getString(R.string.DIALOG_AlERT))
                                 .setContentText(getString(R.string.DIALOG_YOU_CAN_NOT_CHANGE_TEMPLATE_BACKGROUND))
                                 .show();
@@ -1289,8 +1290,15 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnTouchL
      */
     private void getAllViews() {
         mSidebarTitle = (FCCEditText) mContentView.findViewById(R.id.sidebar_title);
+        FrameLayout.LayoutParams params = (FrameLayout.LayoutParams) mSidebarTitle.getLayoutParams();
+        double cardHeightDPUnit = UIHelper.getCardHeightDPUnit(getActivity());
+        double cardSNHeightPXUnit = getResources().getDimensionPixelSize(R.dimen.cardsn_size) +  getResources().getDimensionPixelSize(R.dimen.cardsn_top_margin);
+        params.width = UIHelper.getPixels((int)cardHeightDPUnit - 10) - (int)cardSNHeightPXUnit * 2; //10 is the margin between sn and mSidebarTitle
+        mSidebarTitle.setLayoutParams(params);
+
         mSidebarBackground = (FrameLayout) mContentView.findViewById(R.id.sidebar_background_linearlayout);
         mCardSN = (TextView) mContentView.findViewById(R.id.card_sn);
+
 
         mTitle = (FCCEditText) mContentView.findViewById(R.id.title);
         mTitleBackground = (LinearLayout) mContentView.findViewById(R.id.title_background_linearlayout);
@@ -4404,7 +4412,7 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnTouchL
                             }
 
                         } else {
-                            new SweetAlertDialog(getActivity(), SweetAlertDialog.ERROR_TYPE)
+                            new SweetAlertDialog(AppContext.getAppContext(), SweetAlertDialog.ERROR_TYPE)
                                 .setTitleText(getString(R.string.DIALOG_AlERT))
                                 .setContentText(getString(R.string.DIALOG_UNSUPPORTED_IMAGE_SOURCE))
                                 .show();

@@ -285,7 +285,7 @@ public class MainActivity extends FragmentActivity implements
 
                 if (!mCurrentPack.creatorID.equals(OpenUDID_manager.getOpenUDID())) {
 
-                    new SweetAlertDialog(this)
+                    new SweetAlertDialog(getApplicationContext())
                             .setTitleText(getResources().getString(R.string.DIALOG_AlERT))
                             .setContentText(getResources().getString(R.string.DIALOG_YOU_CAN_NOT_CHANGE_TEMPLATE_BACKGROUND))
                             .show();
@@ -314,14 +314,14 @@ public class MainActivity extends FragmentActivity implements
             case R.id.actionbar_change_template_color:
 
                 if (!mCurrentPack.creatorID.equals(OpenUDID_manager.getOpenUDID())) {
-                    new SweetAlertDialog(this)
+                    new SweetAlertDialog(getApplicationContext())
                             .setTitleText(getString(R.string.DIALOG_AlERT))
                             .setContentText(getString(R.string.DIALOG_YOU_CAN_NOT_CHANGE_TEMPLATE_BACKGROUND))
                             .show();
 
                 }  else {
                     if (mCardDetailFragment == null) {
-                        Toast.makeText(this, getString(R.string.DIALOG_SELECT_CARD_BEFOREHAND), Toast.LENGTH_SHORT).show();
+                        Toast.makeText(getApplicationContext(), getString(R.string.DIALOG_SELECT_CARD_BEFOREHAND), Toast.LENGTH_SHORT).show();
                         break;
                     }
 
@@ -555,7 +555,7 @@ public class MainActivity extends FragmentActivity implements
                 }
 
                 if (timeoutCount == kTimeoutThreshold) {
-                    Toast.makeText(this, R.string.DIALOG_NETWORK_TIMEOUT, Toast.LENGTH_LONG).show();
+                    Toast.makeText(getApplicationContext(), R.string.DIALOG_NETWORK_TIMEOUT, Toast.LENGTH_LONG).show();
                     return;
                 } else {
                     if (mIsAllowDownload) {
@@ -564,7 +564,7 @@ public class MainActivity extends FragmentActivity implements
                         PackDownloadHelper packDownloadHelper = new PackDownloadHelper(MainActivity.this, downloableShareLink, downloadedZipFile.toString());
                         packDownloadHelper.execute();
                     }   else {
-                        Toast.makeText(this, R.string.DIALOG_REACH_MAX_DOWNLOAD_LIMIT, Toast.LENGTH_LONG).show();
+                        Toast.makeText(getApplicationContext(), R.string.DIALOG_REACH_MAX_DOWNLOAD_LIMIT, Toast.LENGTH_LONG).show();
                     }
                 }
             }
@@ -987,12 +987,12 @@ public class MainActivity extends FragmentActivity implements
 
         //case1: check whether pack is empty or not
         if (currentPack == null) {
-            Toast.makeText(this, "Create a pack first before creating a new card", Toast.LENGTH_LONG).show();
+            Toast.makeText(getApplicationContext(), "Create a pack first before creating a new card", Toast.LENGTH_LONG).show();
             return false;
         }
         //case2: check owner
         if (!currentPack.creatorID.equals(OpenUDID_manager.getOpenUDID())) {
-            new SweetAlertDialog(this)
+            new SweetAlertDialog(getApplicationContext())
                     .setTitleText(getString(R.string.DIALOG_AlERT))
                     .setContentText(getString(R.string.NOT_ALLOW_CREATE_CARD_THAT_IS_NOT_YOU))
                     .show();
@@ -1007,7 +1007,7 @@ public class MainActivity extends FragmentActivity implements
 
     private void onActionbarShareItemSelected() {
         if (mCurrentPack == null) {
-            Toast.makeText(this, "NO pack selected", Toast.LENGTH_LONG).show();
+            Toast.makeText(getApplicationContext(), "NO pack selected", Toast.LENGTH_LONG).show();
             return;
         }
 
@@ -1112,12 +1112,12 @@ public class MainActivity extends FragmentActivity implements
                         String password = passwordEditText.getText().toString();
                         File file = PackBuildHelper.createPackZipFile(MainActivity.this, mCurrentPack, password);
                         if (file == null) {
-                            Toast.makeText(MainActivity.this, "Failed to zip pack", Toast.LENGTH_LONG).show();
+                            Toast.makeText(getApplicationContext(), "Failed to zip pack", Toast.LENGTH_LONG).show();
                         } else {
 
                             boolean result = CryptoHelper.encryptFileWithSameOutput(file);
                             if (result == false) {
-                                Toast.makeText(MainActivity.this, "Failed to encrypt pack", Toast.LENGTH_LONG).show();
+                                Toast.makeText(getApplicationContext(), "Failed to encrypt pack", Toast.LENGTH_LONG).show();
                             } else {
                                 //步骤： upload -- > 设置最大分享数 --> 创建短连接 --> 分享
                                 if (DropboxAuthHelper.sharedHelper(MainActivity.this).isLinked()) {
@@ -1141,12 +1141,12 @@ public class MainActivity extends FragmentActivity implements
 
                         File file = PackBuildHelper.createPackZipFile(MainActivity.this, mCurrentPack, "");
                         if (file == null) {
-                            Toast.makeText(MainActivity.this, R.string.DIALOG_CREATE_ZIPPED_SHARE_FILE_FAILED, Toast.LENGTH_LONG).show();
+                            Toast.makeText(getApplicationContext(), R.string.DIALOG_CREATE_ZIPPED_SHARE_FILE_FAILED, Toast.LENGTH_LONG).show();
                         } else {
 
                             boolean result = CryptoHelper.encryptFileWithSameOutput(file);
                             if (result == false) {
-                                Toast.makeText(MainActivity.this, R.string.DIALOG_ENCRPT_ZIPPED_SHARE_FILED_FAILED, Toast.LENGTH_LONG).show();
+                                Toast.makeText(getApplicationContext(), R.string.DIALOG_ENCRPT_ZIPPED_SHARE_FILED_FAILED, Toast.LENGTH_LONG).show();
                             } else {
                                 //步骤： upload -- > 设置最大分享数 --> 创建短连接 --> 分享
                                 if (DropboxAuthHelper.sharedHelper(MainActivity.this).isLinked()) {
@@ -1681,7 +1681,7 @@ public class MainActivity extends FragmentActivity implements
                 case Dropbox_Constant.UPLOAD_SUCCEED: {
                     File file = (File) msg.obj;
 
-                    Toast.makeText(MainActivity.this, R.string.DIALOG_UPLOAD_SUCCESSFULLY, Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getApplicationContext(), R.string.DIALOG_UPLOAD_SUCCESSFULLY, Toast.LENGTH_SHORT).show();
 
                     DropboxShareHelper dropboxShareHelper = new DropboxShareHelper(MainActivity.this,mCurrentPack,false);
                     dropboxShareHelper.execute();
@@ -1719,7 +1719,7 @@ public class MainActivity extends FragmentActivity implements
                     if (flag == 0) {
                         mUploadProgressDialog.dismiss();
 
-                        Toast.makeText(MainActivity.this, R.string.DIALOG_UPLOAD_SUCCESSFULLY, Toast.LENGTH_SHORT).show();
+                        Toast.makeText(getApplicationContext(), R.string.DIALOG_UPLOAD_SUCCESSFULLY, Toast.LENGTH_SHORT).show();
 
                         AWSShareHelper AWSShareHelper = new AWSShareHelper(MainActivity.this, mCurrentPack,false);
                         AWSShareHelper.execute();
@@ -1768,7 +1768,7 @@ public class MainActivity extends FragmentActivity implements
                                         String username = passwordEditText.getText().toString().trim().toLowerCase();//bucket name必须小写
 
                                         if (username.length() == 0) {
-                                            new SweetAlertDialog(MainActivity.this, SweetAlertDialog.ERROR_TYPE)
+                                            new SweetAlertDialog(getApplicationContext(), SweetAlertDialog.ERROR_TYPE)
                                                     .setTitleText("Oops...")
                                                     .setContentText(getString(R.string.DIALOG_ACCOUNT_USERNAME_EMPTY_ERROR))
                                                     .show();
@@ -1782,7 +1782,7 @@ public class MainActivity extends FragmentActivity implements
                                                 if (e == null) {
                                                     share();
                                                 } else {
-                                                    new SweetAlertDialog(MainActivity.this, SweetAlertDialog.ERROR_TYPE)
+                                                    new SweetAlertDialog(getApplicationContext(), SweetAlertDialog.ERROR_TYPE)
                                                             .setTitleText(getString(R.string.DIALOG_ERROR))
                                                             .setContentText(getString(R.string.DIALOG_ACCOUNT_USERNAME_HAS_BEEN_REGISTERED))
                                                             .show();
@@ -1803,7 +1803,7 @@ public class MainActivity extends FragmentActivity implements
                         share();
                     }
                 } else {
-                    new SweetAlertDialog(MainActivity.this,SweetAlertDialog.ERROR_TYPE)
+                    new SweetAlertDialog(getApplicationContext(),SweetAlertDialog.ERROR_TYPE)
                             .setTitleText(getString(R.string.DIALOG_ERROR))
                             .setContentText(getString(R.string.DIALOG_SOCIAL_MEDIA_LOG_IN_FAILURE))
                             .show();
@@ -1815,7 +1815,7 @@ public class MainActivity extends FragmentActivity implements
 
             } else {
 
-                new SweetAlertDialog(MainActivity.this,SweetAlertDialog.ERROR_TYPE)
+                new SweetAlertDialog(getApplicationContext(),SweetAlertDialog.ERROR_TYPE)
                         .setTitleText(getString(R.string.DIALOG_ERROR))
                         .setContentText(getString(R.string.DIALOG_SOCIAL_MEDIA_LOG_IN_FAILURE))
                         .show();

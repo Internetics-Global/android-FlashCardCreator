@@ -136,7 +136,7 @@ public class CreateEditFragment extends DialogFragment implements TextView.OnEdi
                                     android.provider.MediaStore.Images.Media.INTERNAL_CONTENT_URI),
                             CODE_REQUEST_IMAGE_FROM_IMAGE_LIBRARY);
                 } catch (Exception e) {
-                    Toast.makeText(getActivity(),
+                    Toast.makeText(AppContext.getAppContext(),
                             getString(R.string.DIALOG_NO_PHOTO_GALLERIES_FOUND),
                             Toast.LENGTH_SHORT)
                             .show();
@@ -230,7 +230,7 @@ public class CreateEditFragment extends DialogFragment implements TextView.OnEdi
 
 
         if (mAdminPasswordEditText.getText().toString().equals(mConfirmAdminPasswordEditText.getText().toString()) == false) {
-            new SweetAlertDialog(getActivity())
+            new SweetAlertDialog(AppContext.getAppContext())
                     .setTitleText(getString(R.string.DIALOG_AlERT))
                     .setContentText(getString(R.string.DIALOG_WRONG_PASSWORD))
             .show();
@@ -240,7 +240,7 @@ public class CreateEditFragment extends DialogFragment implements TextView.OnEdi
 
         if (mAutoPlaySpeedSeekbar.getProgress() > Global.k_MAX_Auto_Play_Speed
                 || mAutoPlaySpeedSeekbar.getProgress() < Global.k_MIN_Auto_Play_Speed) {
-            new SweetAlertDialog(getActivity())
+            new SweetAlertDialog(AppContext.getAppContext())
                     .setTitleText(getString(R.string.DIALOG_AlERT))
                     .setContentText(String.format("The value of auto play speed should be between %d and %d seconds",
                             Global.k_MIN_Auto_Play_Speed,Global.k_MAX_Auto_Play_Speed))
@@ -249,7 +249,7 @@ public class CreateEditFragment extends DialogFragment implements TextView.OnEdi
         }
 
         if ((mIsEditPack == false) && (checkExistingPackName(mPackNameEditText.getText().toString()))) {
-            new SweetAlertDialog(getActivity())
+            new SweetAlertDialog(AppContext.getAppContext())
                 .setTitleText(getResources().getString(R.string.DIALOG_AlERT))
                 .setContentText(getString(R.string.DIALOG_EXISTING_PACK_NAME))
                     .show();
@@ -288,7 +288,7 @@ public class CreateEditFragment extends DialogFragment implements TextView.OnEdi
 
 
         if (mAdminPasswordEditText.getText().toString().length() == 0) {
-            Toast.makeText(getActivity(),
+            Toast.makeText(AppContext.getAppContext(),
                     getString(R.string.DIALOG_NO_ADMIN_PASSWORD_WARNING),
                     Toast.LENGTH_SHORT)
                     .show();

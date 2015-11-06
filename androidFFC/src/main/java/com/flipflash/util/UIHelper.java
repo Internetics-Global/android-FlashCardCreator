@@ -111,7 +111,7 @@ public class UIHelper {
 
         if (resultBitmap == null) {
             //TODO: XXXX
-            new SweetAlertDialog(activity)
+            new SweetAlertDialog(AppContext.getAppContext())
                     .setTitleText(activity.getString(R.string.DIALOG_AlERT))
                     .setContentText(activity.getString(R.string.DIALOG_UNSUPPORTED_IMAGE_SOURCE))
                     .show();

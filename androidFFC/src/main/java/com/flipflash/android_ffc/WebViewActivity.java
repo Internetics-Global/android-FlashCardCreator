@@ -35,7 +35,7 @@ public class WebViewActivity extends Activity {
 
         mWebview.setWebViewClient(new WebViewClient() {
             public void onReceivedError(WebView view, int errorCode, String description, String failingUrl) {
-                Toast.makeText(WebViewActivity.this, "Error! " + "Fail to load webpage", Toast.LENGTH_SHORT).show();
+                Toast.makeText(getApplicationContext(), "Error! " + "Fail to load webpage", Toast.LENGTH_SHORT).show();
             }
         });
 

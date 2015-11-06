@@ -21,6 +21,7 @@ import android.widget.Toast;
 import com.flipflash.android_ffc.R;
 import com.flipflash.data.Pack;
 import com.flipflash.helper.PackRecordHelper;
+import com.flipflash.util.AppContext;
 import com.flipflash.util.Global;
 import com.flipflash.util.StringUtils;
 
@@ -86,7 +87,7 @@ public class AWSShareHelper extends AsyncTask<Void, Long, Boolean> {
                 mCurrentPack.shareLink = generateRedirectedURL(fullPath_S3);
 
                 if (mCurrentPack.shareLink.indexOf("http://") != 0) {
-                    Toast.makeText(mActivity, R.string.DIALOG_REDIRECT_SERVICE_UNAVAILABLE, Toast.LENGTH_LONG).show();
+                    Toast.makeText(AppContext.getAppContext(), R.string.DIALOG_REDIRECT_SERVICE_UNAVAILABLE, Toast.LENGTH_LONG).show();
                 } else {
                     mCurrentPack.save(mActivity);
 
@@ -258,7 +259,7 @@ public class AWSShareHelper extends AsyncTask<Void, Long, Boolean> {
                         mActivity.startActivity(Intent.createChooser(intent, "Share current pack to"));
                     }
                 }  else {
-                    Toast.makeText(mActivity, R.string.DIALOG_NO_TWITTER_CLIENT_INSTALLED, Toast.LENGTH_LONG).show();
+                    Toast.makeText(AppContext.getAppContext(), R.string.DIALOG_NO_TWITTER_CLIENT_INSTALLED, Toast.LENGTH_LONG).show();
                 }
 
                 break;
@@ -277,7 +278,7 @@ public class AWSShareHelper extends AsyncTask<Void, Long, Boolean> {
                 ClipboardManager clipboard = (ClipboardManager) mActivity.getSystemService(Service.CLIPBOARD_SERVICE);
                 ClipData clip = ClipData.newPlainText( "share linkage",shareLink);
                 clipboard.setPrimaryClip(clip);
-                Toast.makeText(mActivity, R.string.Title_Copy_To_Clipboard, Toast.LENGTH_LONG).show();
+                Toast.makeText(AppContext.getAppContext(), R.string.Title_Copy_To_Clipboard, Toast.LENGTH_LONG).show();
                 break;
             }
             case 4: {
@@ -382,7 +383,7 @@ public class AWSShareHelper extends AsyncTask<Void, Long, Boolean> {
         mActivity.runOnUiThread(new Runnable() {
             @Override
             public void run() {
-                Toast.makeText(mActivity, text, Toast.LENGTH_LONG).show();
+                Toast.makeText(AppContext.getAppContext(), text, Toast.LENGTH_LONG).show();
             }
         });
     }
