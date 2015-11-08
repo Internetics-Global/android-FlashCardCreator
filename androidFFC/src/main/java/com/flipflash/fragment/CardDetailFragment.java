@@ -382,11 +382,11 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnTouchL
     private void keyboardDidHideNotification() {
 
         LOGD(TAG, "keyboardDidHideNotification: ");
-        
+
         restoreDefaultCursorPosition();
 
         ((MainActivity) getActivity()).removeCSSToolbar();
-        
+
     }
 
     private void keyboardDidShowNotification() {
@@ -517,42 +517,32 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnTouchL
     private void selectImageOrVideoFromLibrary() {
         if (mCurrentPack.creatorID.equals(OpenUDID_manager.getOpenUDID())) {
             try {
-                //如果使用ACTION_PICK，则会先出一个类似文件浏览器
-                Intent intent = new Intent(Intent.ACTION_GET_CONTENT).setType("video/*, image/*");
-                startActivityForResult(intent, REQUEST_CODE_FROM_IMAGE);
-                if (false) {
-                    boolean exist1 = false;
-                    boolean exist2 = false;
-                    final String galleryPackage1 = "com.android.gallery3d";
-                    final String galleryPackage2 = "com.google.android.gallery3d";
-                    PackageManager pm = getActivity().getPackageManager();
-                    List<ResolveInfo> list = pm.queryIntentActivities(intent, PackageManager.MATCH_DEFAULT_ONLY);
-                    for (ResolveInfo item:list) {
-                        if (item.activityInfo.packageName.equals(galleryPackage1)) {
-                            exist1 = true;
-                            break;
-                        }
 
-                        if (item.activityInfo.packageName.equals(galleryPackage2)) {
-                            exist2 = true;
+                final String galleryPackage1 = "com.android.gallery3d";
+                final String galleryPackage2 = "com.google.android.gallery3d";
+
+                boolean found = false;
+                Intent intent = new Intent(android.content.Intent.ACTION_GET_CONTENT);
+                intent.setType("video/*,image/*");
+                List<ResolveInfo> resInfo = getActivity().getPackageManager().queryIntentActivities(intent,0);
+                if (!resInfo.isEmpty()) {
+                    for (ResolveInfo info:resInfo) {
+                        if (info.activityInfo.packageName.toLowerCase().contains(galleryPackage1) ||
+                                info.activityInfo.packageName.toLowerCase().contains(galleryPackage2)) {
+                            intent.setPackage(info.activityInfo.packageName);
+                            found = true;
                             break;
                         }
                     }
 
-                    if (exist1) {
-                        Intent galleryIntent = new Intent();
-                        galleryIntent.setClassName(galleryPackage1, "com.android.gallery3d.app.Gallery");
-                        galleryIntent.setAction(Intent.ACTION_GET_CONTENT);
-                        startActivityForResult(galleryIntent, REQUEST_CODE_FROM_IMAGE);
-                    } else if (exist2) {
-                        Intent galleryIntent = new Intent();
-                        galleryIntent.setClassName(galleryPackage2, "com.android.gallery3d.app.Gallery");
-                        galleryIntent.setAction(Intent.ACTION_GET_CONTENT);
-                        startActivityForResult(galleryIntent, REQUEST_CODE_FROM_IMAGE);
-                    } else {
-                        startActivityForResult(intent, REQUEST_CODE_FROM_IMAGE);
-                    }
                 }
+
+                if (!found) {
+                    startActivityForResult(intent, REQUEST_CODE_FROM_IMAGE);
+                } else {
+                    startActivityForResult(Intent.createChooser(intent,"Select"),REQUEST_CODE_FROM_IMAGE);
+                }
+
 
 
             } catch (Exception e) {
@@ -599,6 +589,8 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnTouchL
             }
         }
     }
+
+
 
 
     /**
@@ -764,8 +756,8 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnTouchL
                         }catch (Exception e) {
                             Toast.makeText(AppContext.getAppContext(),
                                     getString(R.string.DIALOG_NO_PHOTO_GALLERIES_FOUND),
-                                                Toast.LENGTH_SHORT)
-                                                .show();
+                                    Toast.LENGTH_SHORT)
+                                    .show();
                         }
 
 
@@ -792,7 +784,7 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnTouchL
                                 .setTitle(getString(R.string.DIALOG_AlERT))
                                 .setMessage(getString(R.string.DIALOG_INCORRECT_URL_OR_EMAIL))
                                 .setPositiveButton(getString(R.string.DIALOG_OK), null)
-                                        .show();
+                                .show();
                     }
                 }
 
@@ -1610,7 +1602,7 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnTouchL
                     }
 
 
-                     //mIsSaveNeededAfterResize = true;
+                    //mIsSaveNeededAfterResize = true;
 
 
                 } else {
@@ -4413,9 +4405,9 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnTouchL
 
                         } else {
                             new SweetAlertDialog(AppContext.getAppContext(), SweetAlertDialog.ERROR_TYPE)
-                                .setTitleText(getString(R.string.DIALOG_AlERT))
-                                .setContentText(getString(R.string.DIALOG_UNSUPPORTED_IMAGE_SOURCE))
-                                .show();
+                                    .setTitleText(getString(R.string.DIALOG_AlERT))
+                                    .setContentText(getString(R.string.DIALOG_UNSUPPORTED_IMAGE_SOURCE))
+                                    .show();
                         }
                     }
 
