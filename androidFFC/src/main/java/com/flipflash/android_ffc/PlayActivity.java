@@ -1732,7 +1732,7 @@ public class PlayActivity extends FragmentActivity implements SensorEventListene
                 public void run() {
 
                     int value = Integer.parseInt(mCounterDownTextView.getText().toString());
-                    if (value == 0) {
+                    if (value == 1) {
                         mCounterDownTextView.setVisibility(View.GONE);
                         mCountDownTimer.cancel();
 
