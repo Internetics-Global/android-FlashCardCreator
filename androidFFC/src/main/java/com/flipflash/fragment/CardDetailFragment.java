@@ -2000,7 +2000,10 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnTouchL
         }
         mCardSN.setText(String.format("%d", mCurrentCard.cardSN));
 
-        mLogoImage.setImageURI(Uri.parse(mCurrentPack.logoImageUriFormatStr));
+        if (StringUtils.isEmpty(mCurrentPack.logoImageUriFormatStr) == false) {
+            mLogoImage.setImageURI(Uri.parse(mCurrentPack.logoImageUriFormatStr));
+        }
+
         mCreator.setText(mCurrentPack.creatorNickName);
         mJobTitle.setText(mCurrentPack.jobTitle);
 
@@ -2033,10 +2036,16 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnTouchL
 
         mMain.setText(mCurrentCard.question.main);
         mSub.setText(mCurrentCard.question.sub);
-        mImage.setImageURI(Uri.parse(mCurrentCard.question.imageUriFormatStr));
-        mImage2.setImageURI(Uri.parse(mCurrentCard.question.imageUriFormatStr2));
 
-        if (mCurrentCard.question.backgroundImageUriFormatStr.length() > 0) {
+        if (StringUtils.isEmpty(mCurrentCard.question.imageUriFormatStr) == false) {
+            mImage.setImageURI(Uri.parse(mCurrentCard.question.imageUriFormatStr));
+        }
+
+        if (StringUtils.isEmpty(mCurrentCard.question.imageUriFormatStr2) == false) {
+            mImage2.setImageURI(Uri.parse(mCurrentCard.question.imageUriFormatStr2));
+        }
+
+        if (StringUtils.isEmpty(mCurrentCard.question.backgroundImageUriFormatStr) == false) {
             setCardBackgroundImageWithUri(mCurrentCard.question.backgroundImageUriFormatStr);
         } else {
             setCardBackgroundImageDefault();
@@ -2050,10 +2059,16 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnTouchL
         mSubheading.setText(mCurrentCard.answer.subheading);
         mMain.setText(mCurrentCard.answer.main);
         mSub.setText(mCurrentCard.answer.sub);
-        mImage.setImageURI(Uri.parse(mCurrentCard.answer.imageUriFormatStr));
-        mImage2.setImageURI(Uri.parse(mCurrentCard.answer.imageUriFormatStr2));
 
-        if (mCurrentCard.answer.backgroundImageUriFormatStr.length() > 0) {
+        if (StringUtils.isEmpty(mCurrentCard.answer.imageUriFormatStr) == false) {
+            mImage.setImageURI(Uri.parse(mCurrentCard.answer.imageUriFormatStr));
+        }
+
+        if (StringUtils.isEmpty(mCurrentCard.answer.imageUriFormatStr2) == false) {
+            mImage2.setImageURI(Uri.parse(mCurrentCard.answer.imageUriFormatStr2));
+        }
+
+        if (StringUtils.isEmpty(mCurrentCard.answer.backgroundImageUriFormatStr) == false) {
             setCardBackgroundImageWithUri(mCurrentCard.answer.backgroundImageUriFormatStr);
         } else {
             setCardBackgroundImageDefault();
