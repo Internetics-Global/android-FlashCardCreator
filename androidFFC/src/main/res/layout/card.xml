@@ -1,12 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-             xmlns:app="http://schemas.android.com/apk/res-auto"
-              android:id="@+id/card"
-              android:baselineAligned="false"
-              android:layout_width="match_parent"
-              android:layout_height="match_parent"
-              android:background="@drawable/shape_card_bg"
-              android:orientation="horizontal">
+<net.soulwolf.widget.ratiolayout.widget.RatioFrameLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:soulwolf="http://schemas.android.com/apk/res-auto"
+    soulwolf:widthRatio="1.45"
+    soulwolf:heightRatio="1"
+    soulwolf:datumRatio="datumHeight"
+    android:id="@+id/card"
+    android:baselineAligned="false"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/shape_card_bg"
+    android:orientation="horizontal">
 
 
 
@@ -71,7 +76,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="0dp"
                     android:layout_weight="112"
-                    android:layout_marginRight="0dp"
+                    android:layout_marginRight="@dimen/card_round_corner"
                     android:orientation="horizontal"
                     android:background="@null">
 
@@ -220,4 +225,4 @@
 
 
 
-</FrameLayout>
+</net.soulwolf.widget.ratiolayout.widget.RatioFrameLayout>
