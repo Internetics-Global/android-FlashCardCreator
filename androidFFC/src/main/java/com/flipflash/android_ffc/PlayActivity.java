@@ -653,7 +653,7 @@ public class PlayActivity extends FragmentActivity implements SensorEventListene
 
         if (isEmpty) {
 
-            new SweetAlertDialog(getApplicationContext())
+            new SweetAlertDialog(PlayActivity.this)
                     .setTitleText(getString(R.string.DIALOG_AlERT))
                     .setContentText(getString(R.string.DIALOG_NO_AUDIO_ON_QUESTION_CARD))
                     .show();

@@ -214,7 +214,7 @@ public class MoreActivity extends Activity {
                 if (currentUser != null) {
                     // User clicked to log out.
 
-                    final SweetAlertDialog pDialog = new SweetAlertDialog(getApplicationContext(), SweetAlertDialog.PROGRESS_TYPE);
+                    final SweetAlertDialog pDialog = new SweetAlertDialog(MoreActivity.this, SweetAlertDialog.PROGRESS_TYPE);
                     pDialog.getProgressHelper().setBarColor(Color.parseColor("#A5DC86"));
                     pDialog.setTitleText("Logging out...");
                     pDialog.setCancelable(false);
@@ -228,7 +228,7 @@ public class MoreActivity extends Activity {
 
                             pDialog.dismiss();
 
-                            new SweetAlertDialog(getApplicationContext(), SweetAlertDialog.SUCCESS_TYPE)
+                            new SweetAlertDialog(MoreActivity.this, SweetAlertDialog.SUCCESS_TYPE)
                                     .setTitleText(getString(R.string.DIALOG_AlERT))
                                     .setContentText(getString(R.string.DIALOG_SOCIAL_MEDIA_LOG_OUT_SUCCESS))
                                     .show();
@@ -342,7 +342,7 @@ public class MoreActivity extends Activity {
 
                                         if (username.length() == 0) {
 
-                                            new SweetAlertDialog(getApplicationContext(), SweetAlertDialog.ERROR_TYPE)
+                                            new SweetAlertDialog(MoreActivity.this, SweetAlertDialog.ERROR_TYPE)
                                                                                                 .setTitleText("Oops...")
                                                                                                 .setContentText(getString(R.string.DIALOG_ACCOUNT_USERNAME_EMPTY_ERROR))
                                                                                                 .show();
@@ -355,12 +355,12 @@ public class MoreActivity extends Activity {
                                             @Override
                                             public void done(ParseException e) {
                                                 if (e == null) {
-                                                    new SweetAlertDialog(getApplicationContext(), SweetAlertDialog.SUCCESS_TYPE)
+                                                    new SweetAlertDialog(MoreActivity.this, SweetAlertDialog.SUCCESS_TYPE)
                                                             .setTitleText(getString(R.string.DIALOG_AlERT))
                                                             .setContentText(getString(R.string.DIALOG_ACCOUNT_USERNAME_LINKED_SUCCESSFULLY))
                                                             .show();
                                                 } else {
-                                                    new SweetAlertDialog(getApplicationContext(), SweetAlertDialog.ERROR_TYPE)
+                                                    new SweetAlertDialog(MoreActivity.this, SweetAlertDialog.ERROR_TYPE)
                                                             .setTitleText(getString(R.string.DIALOG_ERROR))
                                                             .setContentText(getString(R.string.DIALOG_ACCOUNT_USERNAME_HAS_BEEN_REGISTERED))
                                                             .show();
@@ -378,13 +378,13 @@ public class MoreActivity extends Activity {
 
                     } else {
 
-                        new SweetAlertDialog(getApplicationContext(),SweetAlertDialog.SUCCESS_TYPE)
+                        new SweetAlertDialog(MoreActivity.this,SweetAlertDialog.SUCCESS_TYPE)
                                 .setTitleText(getString(R.string.DIALOG_AlERT))
                                 .setContentText(getString(R.string.DIALOG_SOCIAL_MEDIA_SIGNUP_OR_SIGNIN_SUCCESS))
                                 .show();
                     }
                 } else {
-                    new SweetAlertDialog(getApplicationContext(),SweetAlertDialog.ERROR_TYPE)
+                    new SweetAlertDialog(MoreActivity.this,SweetAlertDialog.ERROR_TYPE)
                             .setTitleText(getString(R.string.DIALOG_ERROR))
                             .setContentText(getString(R.string.DIALOG_SOCIAL_MEDIA_LOG_IN_FAILURE))
                             .show();
@@ -396,7 +396,7 @@ public class MoreActivity extends Activity {
 
             } else {
 
-                new SweetAlertDialog(getApplicationContext(),SweetAlertDialog.ERROR_TYPE)
+                new SweetAlertDialog(MoreActivity.this,SweetAlertDialog.ERROR_TYPE)
                         .setTitleText(getString(R.string.DIALOG_ERROR))
                         .setContentText(getString(R.string.DIALOG_SOCIAL_MEDIA_LOG_IN_FAILURE))
                         .show();
