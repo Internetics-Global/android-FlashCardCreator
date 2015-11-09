@@ -1011,20 +1011,16 @@ public class MainActivity extends FragmentActivity implements
             return;
         }
 
-
-        ParseUser currentUser = ParseUser.getCurrentUser();
-
-        if (currentUser != null) {
-
+        if (DropboxAuthHelper.sharedHelper(MainActivity.this).isLinked()) {
             share();
-
         } else {
-
-            parseUserAuth();
+            ParseUser currentUser = ParseUser.getCurrentUser();
+            if (currentUser != null) {
+                share();
+            } else {
+                parseUserAuth();
+            }
         }
-
-
-
     }
 
     private void parseUserAuth() {
