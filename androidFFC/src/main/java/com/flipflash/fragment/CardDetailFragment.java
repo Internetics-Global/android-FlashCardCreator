@@ -1483,7 +1483,7 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnTouchL
 
         mImage.setPadding(5,5,5,5);
 
-        if (isEditableMode()) {
+        if (isEditableMode() && (mIsPlayingCard == false)) {
             mImage.setBackgroundResource(R.drawable.shape_imageview_editable);
         }
 
@@ -1498,7 +1498,7 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnTouchL
 
         mImage2.setPadding(5, 5, 5, 5);
 
-        if (isEditableMode()) {
+        if (isEditableMode() && (mIsPlayingCard == false)) {
             mImage2.setBackgroundResource(R.drawable.shape_imageview_editable);
         }
     }
