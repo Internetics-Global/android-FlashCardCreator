@@ -285,7 +285,7 @@ public class MainActivity extends FragmentActivity implements
 
                 if (!mCurrentPack.creatorID.equals(OpenUDID_manager.getOpenUDID())) {
 
-                    new SweetAlertDialog(getApplicationContext())
+                    new SweetAlertDialog(MainActivity.this)
                             .setTitleText(getResources().getString(R.string.DIALOG_AlERT))
                             .setContentText(getResources().getString(R.string.DIALOG_YOU_CAN_NOT_CHANGE_TEMPLATE_BACKGROUND))
                             .show();
@@ -314,7 +314,7 @@ public class MainActivity extends FragmentActivity implements
             case R.id.actionbar_change_template_color:
 
                 if (!mCurrentPack.creatorID.equals(OpenUDID_manager.getOpenUDID())) {
-                    new SweetAlertDialog(getApplicationContext())
+                    new SweetAlertDialog(MainActivity.this)
                             .setTitleText(getString(R.string.DIALOG_AlERT))
                             .setContentText(getString(R.string.DIALOG_YOU_CAN_NOT_CHANGE_TEMPLATE_BACKGROUND))
                             .show();
@@ -992,7 +992,7 @@ public class MainActivity extends FragmentActivity implements
         }
         //case2: check owner
         if (!currentPack.creatorID.equals(OpenUDID_manager.getOpenUDID())) {
-            new SweetAlertDialog(getApplicationContext())
+            new SweetAlertDialog(MainActivity.this)
                     .setTitleText(getString(R.string.DIALOG_AlERT))
                     .setContentText(getString(R.string.NOT_ALLOW_CREATE_CARD_THAT_IS_NOT_YOU))
                     .show();
@@ -1764,7 +1764,7 @@ public class MainActivity extends FragmentActivity implements
                                         String username = passwordEditText.getText().toString().trim().toLowerCase();//bucket name必须小写
 
                                         if (username.length() == 0) {
-                                            new SweetAlertDialog(getApplicationContext(), SweetAlertDialog.ERROR_TYPE)
+                                            new SweetAlertDialog(MainActivity.this, SweetAlertDialog.ERROR_TYPE)
                                                     .setTitleText("Oops...")
                                                     .setContentText(getString(R.string.DIALOG_ACCOUNT_USERNAME_EMPTY_ERROR))
                                                     .show();
@@ -1778,7 +1778,7 @@ public class MainActivity extends FragmentActivity implements
                                                 if (e == null) {
                                                     share();
                                                 } else {
-                                                    new SweetAlertDialog(getApplicationContext(), SweetAlertDialog.ERROR_TYPE)
+                                                    new SweetAlertDialog(MainActivity.this, SweetAlertDialog.ERROR_TYPE)
                                                             .setTitleText(getString(R.string.DIALOG_ERROR))
                                                             .setContentText(getString(R.string.DIALOG_ACCOUNT_USERNAME_HAS_BEEN_REGISTERED))
                                                             .show();
@@ -1799,7 +1799,7 @@ public class MainActivity extends FragmentActivity implements
                         share();
                     }
                 } else {
-                    new SweetAlertDialog(getApplicationContext(),SweetAlertDialog.ERROR_TYPE)
+                    new SweetAlertDialog(MainActivity.this,SweetAlertDialog.ERROR_TYPE)
                             .setTitleText(getString(R.string.DIALOG_ERROR))
                             .setContentText(getString(R.string.DIALOG_SOCIAL_MEDIA_LOG_IN_FAILURE))
                             .show();
@@ -1811,7 +1811,7 @@ public class MainActivity extends FragmentActivity implements
 
             } else {
 
-                new SweetAlertDialog(getApplicationContext(),SweetAlertDialog.ERROR_TYPE)
+                new SweetAlertDialog(MainActivity.this,SweetAlertDialog.ERROR_TYPE)
                         .setTitleText(getString(R.string.DIALOG_ERROR))
                         .setContentText(getString(R.string.DIALOG_SOCIAL_MEDIA_LOG_IN_FAILURE))
                         .show();
