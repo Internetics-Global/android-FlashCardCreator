@@ -305,7 +305,7 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnTouchL
         //need to be put onResume, see http://stackoverflow.com/questions/13721063/aftertextchanged-being-called-without-the-text-being-actually-changed
         setTextsListener();
 
-        setResizingMonitorTimer();
+        resetResizingMonitorTimer();
 
         final View rootView = getActivity().getWindow().getDecorView().findViewById(android.R.id.content);
         rootView.getViewTreeObserver().addOnGlobalLayoutListener(keyboardVisibilityListener);
@@ -316,7 +316,13 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnTouchL
     /*
      * 监视resizing过程是否已经完成，如果已经完成，则显示内容
      */
-    private void setResizingMonitorTimer() {
+    private void resetResizingMonitorTimer() {
+
+        if (mIsCreatingCard || isEditableMode()) {
+            mContentBodyLinearLayout.setVisibility(View.VISIBLE); //默认是隐藏的
+        } else {
+            mContentBodyLinearLayout.setVisibility(View.INVISIBLE);
+        }
 
         if (isEditableMode() == false) {
 
@@ -334,6 +340,11 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnTouchL
                 flag_Sub_ResizeFinished = true;
             } else {
                 flag_Sub_ResizeFinished = false;
+            }
+
+            if (mResizeMonitorTimer != null) {
+                mResizeMonitorTimer.cancel();
+                mResizeMonitorTimer = null;
             }
             mResizeMonitorTimer = new Timer();
             mResizeMonitorTimer.scheduleAtFixedRate(new TimerTask() {
@@ -1264,6 +1275,13 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnTouchL
      * @param ignoreResetTitleContent will trigger takeSnapAll function is it is set
      */
     public void switchToQuestionViewWithOption(boolean ignoreResetTitleContent) {
+
+        LOGD(TAG, "switchToQuestionViewWithOption");
+        if (mIsQuestionShowing == false) {
+            //我们仅仅是在从answer切换到question才，否则是在onResume中进行的
+            resetResizingMonitorTimer();
+        }
+
         mIsSwitchingQuestionAnswerView = true;
         mIsQuestionShowing = true;
         if (!ignoreResetTitleContent) {
@@ -1294,6 +1312,10 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnTouchL
      * @param ignoreResetTitleContent will trigger takeSnapAll function is it is set
      */
     private void switchToAnswerView(boolean ignoreResetTitleContent) {
+
+        LOGD(TAG, "switchToAnswerView:");
+
+        resetResizingMonitorTimer();
 
         mIsSwitchingQuestionAnswerView = true;
         mIsQuestionShowing = false;
@@ -1343,11 +1365,6 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnTouchL
         LinearLayout creatorLayout = (LinearLayout) mContentView.findViewById(R.id.creator_layout);
 
         mContentBodyLinearLayout = (LinearLayout) mContentView.findViewById(R.id.card_content_body);
-        if (mIsCreatingCard || isEditableMode()) {
-            mContentBodyLinearLayout.setVisibility(View.VISIBLE); //默认是隐藏的
-        } else {
-            mContentBodyLinearLayout.setVisibility(View.INVISIBLE);
-        }
 
         createSubheading();
         createMain();
