@@ -791,7 +791,6 @@ public class PlayActivity extends FragmentActivity implements SensorEventListene
             mIsSensorAvailable = false;
             LOGE(TAG, "onResume: No Sensor.TYPE_ORIENTATION exists");
         }
-
         mIsResetRoll = true;
 
     }
@@ -1029,9 +1028,7 @@ public class PlayActivity extends FragmentActivity implements SensorEventListene
     @Override
     public void onSensorChanged(SensorEvent event) {
         //LOGD(TAG, "onSensorChanged, event.values is: " + String.format("%f,%f,%f", event.values[0], event.values[1], event.values[2]));
-
-
-
+        
         if (mIsAutoScroll) {
             return;
             //throw new IllegalArgumentException("ccaa, mIsAutoScroll should not be true");  //not allow to switch during auto play mode
@@ -1051,14 +1048,16 @@ public class PlayActivity extends FragmentActivity implements SensorEventListene
 
         //range of values is 90 degrees to -90 degrees.
         float roll = event.values[2];
-        if (Math.abs(roll) <10 || Math.abs(roll) > 75) {
+        float pitch = event.values[1];
+        float azimuth = event.values[0];
+        if (Math.abs(pitch) >10 || Math.abs(roll) < 10 || Math.abs(roll) > 80) {
             //为了防止误触发
             return;
         }
 
         int orientation = getOrientation();
         if (orientation == 0) {
-            if ((roll - mOriginalRoll > 15.0) && (mEnableA)) {
+            if ((roll - mOriginalRoll > 12.0) && (mEnableA)) {
                 switchQuestionAnswerViewManually(true);
                 mEnableA = false;
             }
@@ -1067,7 +1066,7 @@ public class PlayActivity extends FragmentActivity implements SensorEventListene
             }
 
         } else if ((orientation == 1) && (mEnableB)) {
-            if (roll - mOriginalRoll < -15.0) {
+            if (roll - mOriginalRoll < -12.0) {
                 switchQuestionAnswerViewManually(true);
                 mEnableB = false;
             }
