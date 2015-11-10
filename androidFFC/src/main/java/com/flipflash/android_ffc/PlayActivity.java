@@ -1028,7 +1028,7 @@ public class PlayActivity extends FragmentActivity implements SensorEventListene
     @Override
     public void onSensorChanged(SensorEvent event) {
         //LOGD(TAG, "onSensorChanged, event.values is: " + String.format("%f,%f,%f", event.values[0], event.values[1], event.values[2]));
-        
+
         if (mIsAutoScroll) {
             return;
             //throw new IllegalArgumentException("ccaa, mIsAutoScroll should not be true");  //not allow to switch during auto play mode
@@ -1040,12 +1040,6 @@ public class PlayActivity extends FragmentActivity implements SensorEventListene
             return;
         }
 
-
-        if (mIsResetRoll) {
-            mOriginalRoll = event.values[2];
-            mIsResetRoll = false;
-        }
-
         //range of values is 90 degrees to -90 degrees.
         float roll = event.values[2];
         float pitch = event.values[1];
@@ -1053,6 +1047,12 @@ public class PlayActivity extends FragmentActivity implements SensorEventListene
         if (Math.abs(pitch) >10 || Math.abs(roll) < 10 || Math.abs(roll) > 80) {
             //为了防止误触发
             return;
+        }
+
+
+        if (mIsResetRoll) {
+            mOriginalRoll = event.values[2];
+            mIsResetRoll = false;
         }
 
         int orientation = getOrientation();
