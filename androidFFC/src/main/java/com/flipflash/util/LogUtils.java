@@ -42,14 +42,14 @@ public class LogUtils {
 
     public static void LOGD(final String tag, String message) {
         //noinspection PointlessBooleanExpression,ConstantConditions
-        if (BuildConfig.DEBUG || Global.IS_DOGFOOD_BUILD || Log.isLoggable(tag, Log.DEBUG)) {
+        if ((BuildConfig.DEBUG || Log.isLoggable(tag, Log.DEBUG)) && Global.IS_DOGFOOD_BUILD) {
             Log.d(tag, message);
         }
     }
 
     public static void LOGD(final String tag, String message, Throwable cause) {
         //noinspection PointlessBooleanExpression,ConstantConditions
-        if (BuildConfig.DEBUG || Global.IS_DOGFOOD_BUILD || Log.isLoggable(tag, Log.DEBUG)) {
+        if ((BuildConfig.DEBUG || Log.isLoggable(tag, Log.DEBUG)) && Global.IS_DOGFOOD_BUILD) {
             Log.d(tag, message, cause);
         }
     }

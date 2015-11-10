@@ -9,7 +9,7 @@ import com.flipflash.android_ffc.R;
 
 public class Global {
 
-    public static final boolean   IS_DOGFOOD_BUILD =  true;  //是否开启debug模式
+    public static final boolean   IS_DOGFOOD_BUILD =  false;  //是否开启debug模式
 
     public static final String BucketPostfixAfterUserName = "55b5aa55673793805862";
 

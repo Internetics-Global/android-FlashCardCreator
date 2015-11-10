@@ -302,10 +302,11 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnTouchL
         LOGD(TAG, "onResume:");
         mIsTakeSnapshotAllNeeded = false;  //necessary
 
+        setContentViewVisibility();
+
         //need to be put onResume, see http://stackoverflow.com/questions/13721063/aftertextchanged-being-called-without-the-text-being-actually-changed
         setTextsListener();
 
-        resetResizingMonitorTimer();
 
         final View rootView = getActivity().getWindow().getDecorView().findViewById(android.R.id.content);
         rootView.getViewTreeObserver().addOnGlobalLayoutListener(keyboardVisibilityListener);
@@ -313,16 +314,25 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnTouchL
 
     }
 
+
     /*
-     * 监视resizing过程是否已经完成，如果已经完成，则显示内容
+     * 这里所谓的content view就是subheading, main, sub的parent view。
+     * 由于需要避免看到resizing的过程，我们的策略是先隐藏，然后resizing结束后显示
      */
-    private void resetResizingMonitorTimer() {
+    private void setContentViewVisibility() {
 
         if (mIsCreatingCard || isEditableMode()) {
             mContentBodyLinearLayout.setVisibility(View.VISIBLE); //默认是隐藏的
         } else {
             mContentBodyLinearLayout.setVisibility(View.INVISIBLE);
         }
+    }
+
+    /*
+     * 监视resizing过程是否已经完成，如果已经完成，则显示内容
+     * 与setContentViewVisibility配合使用。
+     */
+    private void resetResizingMonitorTimer() {
 
         if (isEditableMode() == false) {
 
@@ -807,13 +817,12 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnTouchL
                                             Intent.ACTION_PICK,
                                             android.provider.MediaStore.Images.Media.INTERNAL_CONTENT_URI),
                                     REQUEST_CODE_FROM_LOGO);
-                        }catch (Exception e) {
+                        } catch (Exception e) {
                             Toast.makeText(AppContext.getAppContext(),
                                     getString(R.string.DIALOG_NO_PHOTO_GALLERIES_FOUND),
                                     Toast.LENGTH_SHORT)
                                     .show();
                         }
-
 
 
                     } else {
@@ -1277,10 +1286,8 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnTouchL
     public void switchToQuestionViewWithOption(boolean ignoreResetTitleContent) {
 
         LOGD(TAG, "switchToQuestionViewWithOption");
-        if (mIsQuestionShowing == false) {
-            //我们仅仅是在从answer切换到question才，否则是在onResume中进行的
-            resetResizingMonitorTimer();
-        }
+
+        setContentViewVisibility();
 
         mIsSwitchingQuestionAnswerView = true;
         mIsQuestionShowing = true;
@@ -1291,6 +1298,8 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnTouchL
         updateQuestionViewTemplate();//updateQuestionContent，因为涉及到view的重定向
         updateQuestionContent();
         updateQuestionCSS();
+
+        resetResizingMonitorTimer();//必须放到updateAnswerCSS后，因为在play mode中，会在updateAnswerCSS中额外的setTextSize
 
         //hide placeholder image if play mode
         if (mIsPlayingCard) {
@@ -1315,7 +1324,7 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnTouchL
 
         LOGD(TAG, "switchToAnswerView:");
 
-        resetResizingMonitorTimer();
+        setContentViewVisibility();
 
         mIsSwitchingQuestionAnswerView = true;
         mIsQuestionShowing = false;
@@ -1326,6 +1335,8 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnTouchL
         updateAnswerViewTemplate(); //必须放在updateAnswerContent，因为涉及到view的重定向
         updateAnswerContent();
         updateAnswerCSS();
+
+        resetResizingMonitorTimer(); //必须放到updateAnswerCSS后，因为在play mode中，会在updateAnswerCSS中额外的setTextSize
 
         //hide placeholder image if play mode
         if (mIsPlayingCard) {
