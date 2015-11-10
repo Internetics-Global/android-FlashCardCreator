@@ -1,12 +1,10 @@
 package com.flipflash.fragment;
 
-import android.app.ActionBar;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
 import android.graphics.Bitmap;
 import android.graphics.Color;
@@ -79,6 +77,8 @@ import java.lang.reflect.Field;
 import java.net.URLDecoder;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Timer;
+import java.util.TimerTask;
 
 import cn.pedant.SweetAlert.SweetAlertDialog;
 
@@ -136,11 +136,6 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnTouchL
 
     private boolean mIsImage2Active = false; //我们有两个image(image和image2),这个变量用于区分
 
-    //用于
-    // 1. onStop时，是否需要进行写入到数据库；
-    // 2. resize完毕后，是否需要暂存prepareToSavingTextFontSizeInfo
-    private boolean mIsSaveNeededAfterResize = false;
-
     //用于auto resize 逻辑
     private ViewTreeObserver mVtoSubheading;
     private ViewTreeObserver mVtoMain;
@@ -169,6 +164,12 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnTouchL
     public final static  String TAG_SUBHEADING          = "1001";
     public final static  String TAG_MAIN                = "1002";
     public final static  String TAG_SUB                 = "1003";
+
+
+    /*
+     * triggerResizeTextToFitFrame永远只是在卡片不可编辑上进行
+     */
+    private Timer mResizeMonitorTimer;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -302,12 +303,56 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnTouchL
         mIsTakeSnapshotAllNeeded = false;  //necessary
 
         //need to be put onResume, see http://stackoverflow.com/questions/13721063/aftertextchanged-being-called-without-the-text-being-actually-changed
+        setTextsListener();
 
-        setEditTextListener();
+        setResizingMonitorTimer();
 
         final View rootView = getActivity().getWindow().getDecorView().findViewById(android.R.id.content);
         rootView.getViewTreeObserver().addOnGlobalLayoutListener(keyboardVisibilityListener);
 
+
+    }
+
+    private void setResizingMonitorTimer() {
+
+        if (isEditableMode() == false) {
+
+            if (mSubheading.getText().toString().length() == 0) {
+                flag_Subheading_ResizeFinished = true;
+            } else {
+                flag_Subheading_ResizeFinished = false;
+            }
+            if (mMain.getText().toString().length() == 0) {
+                flag_Main_ResizeFinished = true;
+            } else {
+                flag_Main_ResizeFinished = false;
+            }
+            if (mSub.getText().toString().length() == 0) {
+                flag_Sub_ResizeFinished = true;
+            } else {
+                flag_Sub_ResizeFinished = false;
+            }
+            mResizeMonitorTimer = new Timer();
+            mResizeMonitorTimer.scheduleAtFixedRate(new TimerTask() {
+                @Override
+                public void run() {
+                    if (flag_Subheading_ResizeFinished && flag_Main_ResizeFinished && flag_Sub_ResizeFinished) {
+                        LOGD(TAG, "onResume: Set content visible after resizing is finished");
+
+                        getActivity().runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                mContentBodyLinearLayout.setVisibility(View.VISIBLE);
+                            }
+                        });
+
+                        mResizeMonitorTimer.cancel();
+                    }
+
+                    LOGD(TAG, "run: " + flag_Subheading_ResizeFinished + " " + flag_Main_ResizeFinished + "  " +flag_Sub_ResizeFinished);
+                }
+            },0,50);
+        }
     }
 
     @Override
@@ -317,6 +362,10 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnTouchL
         LOGD(TAG, "onPause:");
 
         removeEditTextListener();
+
+        if (mResizeMonitorTimer != null) {
+            mResizeMonitorTimer.cancel();
+        }
 
         final View rootView = getActivity().getWindow().getDecorView().findViewById(android.R.id.content);
         if (Build.VERSION.SDK_INT < 16) {
@@ -332,15 +381,6 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnTouchL
         super.onStop();
 
         LOGD(TAG, "onStop: " + String.format("cardSN = %d", mCurrentCard.cardSN));
-
-        //当当前card移除时，比如进入下一卡片，如果进行过resize操作，则保存一下
-        if (((mCurrentPack.creatorID.equals(OpenUDID_manager.getOpenUDID())) == false) && (mIsSaveNeededAfterResize)) {
-            mIsSaveNeededAfterResize = false;
-            //prepareToSavingTextFontSizeInfo,由于resize后，会主动执行一下，所以这里没有必要了
-            mCurrentCard.save(AppContext.getAppContext());
-            LOGD(TAG, "onStop: Saving to database after triggerResizeTextToFitFrame");
-        }
-
 
     }
 
@@ -1300,8 +1340,10 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnTouchL
         LinearLayout creatorLayout = (LinearLayout) mContentView.findViewById(R.id.creator_layout);
 
         mContentBodyLinearLayout = (LinearLayout) mContentView.findViewById(R.id.card_content_body);
-        if (mIsCreatingCard || mIsPlayingCard == false) {
+        if (mIsCreatingCard || isEditableMode()) {
             mContentBodyLinearLayout.setVisibility(View.VISIBLE); //默认是隐藏的
+        } else {
+            mContentBodyLinearLayout.setVisibility(View.INVISIBLE);
         }
 
         createSubheading();
@@ -1390,7 +1432,7 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnTouchL
         }
 
         //EditorActionListener
-        setEditTextListener();
+        setTextsListener();
 
         //Image的重新OnClickListener
         setImageVideoClickListener();
@@ -1504,24 +1546,53 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnTouchL
     }
 
 
-    /**
-     * 在以下情况下被自动触发：
-     * 1. TextEdit的内容改变（TextWatcher）
-     * 2. 在布局时：ViewTreeObserver.OnGlobalLayoutListener
-     *
-     * maxLines不再使用
-     */
+
     private boolean flag_Subheading_OneoffIncrease;
     private boolean flag_Main_OneoffIncrease;
     private boolean flag_Sub_OneoffIncrease;
+
+    /*
+     *用来判断resize是否完成，如果因为text空，则设置成true
+     */
+    private boolean flag_Subheading_ResizeFinished;
+    private boolean flag_Main_ResizeFinished;
+    private boolean flag_Sub_ResizeFinished;
+
+    /**
+     * 前置条件：仅isEditableMode = true下情况下被自动触发，
+     * 具体包括：
+     * 1. TextEdit的内容改变（TextWatcher）
+     * 2. 在布局时：ViewTreeObserver.OnGlobalLayoutListener
+     * 3. 每次执行setTextSize
+     */
     private void triggerResizeTextToFitFrame(final EditText v, int targetLines) {
 
         synchronized (v) {
 
+            boolean isResized = false; //每次执行了setTextSize都会置成false;
+
             String tag = (String) v.getTag();
 
-            if (v.getText().length() == 0) {
+            if (isEditableMode()) {
+                LOGD(TAG, "triggerResizeTextToFitFrame: aborted since we don't do this in edit mode");
                 return;
+            }
+
+            if (v.getText().length() == 0) {
+                if (tag.equals(TAG_SUBHEADING)) {
+                    flag_Subheading_ResizeFinished = true;
+                    LOGD(TAG, "triggerResizeTextToFitFrame: return because subheading text is empty");
+                } else if (tag.equals(TAG_MAIN)) {
+                    flag_Main_ResizeFinished = true;
+                    LOGD(TAG, "triggerResizeTextToFitFrame: return because main text is empty");
+                } else if (tag.equals(TAG_SUB)) {
+                    flag_Sub_ResizeFinished = true;
+                    LOGD(TAG, "triggerResizeTextToFitFrame: return because sub text is empty");
+                }
+
+                return;
+            } else {
+                LOGD(TAG, "triggerResizeTextToFitFrame ***begin with content: " + v.getText().toString());
             }
 
 
@@ -1556,6 +1627,9 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnTouchL
 
                     float newTextSize = v.getTextSize() + (v.getTextSize())/3;
                     v.setTextSize(TypedValue.COMPLEX_UNIT_PX, newTextSize);
+                    isResized = true;
+
+                    LOGD(TAG, "triggerResizeTextToFitFrame: make size bigger and return");
 
                     return;
 
@@ -1564,80 +1638,67 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnTouchL
 
 
 
-            if (((textHeight > viewHeight) && (viewHeight > 1) && (noOfLines > 0)) || (noOfLines > targetLines && targetLines > 0)) {
+            if (((textHeight > viewHeight) && (viewHeight > 1) && (noOfLines > 0)) ||
+                    (noOfLines > targetLines && targetLines > 0)) {
 
-                int cursorPosition = v.getSelectionStart();
+                // resize action
+                float textSize = v.getTextSize();
+                float newTextSize = 0;
 
-                if ((mCurrentPack.creatorID.equals(OpenUDID_manager.getOpenUDID())) == false) {
-                    // resize action
-                    float textSize = v.getTextSize();
-                    float newTextSize = 0;
+                if (textSize > 200) {
+                    newTextSize = textSize - textSize/10;
+                    v.setTextSize(TypedValue.COMPLEX_UNIT_PX, newTextSize);
 
-                    if (textSize > 200) {
-                        newTextSize = textSize - textSize/10;
-                        v.setTextSize(TypedValue.COMPLEX_UNIT_PX, newTextSize);
-
-                    } else if ((textSize > 100) && (textSize <= 200)) {
-                        newTextSize = textSize - textSize/40;
-                        v.setTextSize(TypedValue.COMPLEX_UNIT_PX, newTextSize);
-                    } else if ((textSize > 50) && (textSize <= 100)) {
-                        newTextSize = textSize - textSize/50;
-                        v.setTextSize(TypedValue.COMPLEX_UNIT_PX, newTextSize);
-                    } else if ((textSize > 30) && (textSize <= 50)) {
-                        newTextSize = textSize - 1;
-                        v.setTextSize(TypedValue.COMPLEX_UNIT_PX, newTextSize);
-                    } else if (textSize <= 30) {
-                        newTextSize = textSize - 1;
-                        v.setTextSize(TypedValue.COMPLEX_UNIT_PX, newTextSize);
-                    } else {
-                    }
-
-
-                    //in case the font size still too big
-                    noOfLines = v.getLineCount();
-                    if ((targetLines > 0) && (targetLines < noOfLines)) {
-                        newTextSize = v.getTextSize() - 2;
-                        v.setTextSize(TypedValue.COMPLEX_UNIT_PX, newTextSize);
-                    } else {
-                    }
-
-
-                    //mIsSaveNeededAfterResize = true;
-
-
+                } else if ((textSize > 100) && (textSize <= 200)) {
+                    newTextSize = textSize - textSize/40;
+                    v.setTextSize(TypedValue.COMPLEX_UNIT_PX, newTextSize);
+                } else if ((textSize > 50) && (textSize <= 100)) {
+                    newTextSize = textSize - textSize/50;
+                    v.setTextSize(TypedValue.COMPLEX_UNIT_PX, newTextSize);
+                } else if ((textSize > 30) && (textSize <= 50)) {
+                    newTextSize = textSize - 1;
+                    v.setTextSize(TypedValue.COMPLEX_UNIT_PX, newTextSize);
                 } else {
-
-                    if (textHeight < viewHeight + lineHeight) {
-                        //we only do this during editable mode
-                        String text = v.getText().toString();
-                        int index = text.length() - 1;
-                        if (index > 0) {
-                            v.setText(text.substring(0, index));
-                            if (cursorPosition == index + 1) {
-                                v.setSelection(index);
-                            } else {
-                                v.setSelection(cursorPosition);
-                            }
-                        }
-                    }
+                    newTextSize = textSize - 1;
+                    v.setTextSize(TypedValue.COMPLEX_UNIT_PX, newTextSize);
                 }
+                isResized = true;
+
+                LOGD(TAG, "triggerResizeTextToFitFrame: make size smaller");
 
 
-            } else {
+                //in case the font size still too big
+                noOfLines = v.getLineCount();
+                if ((targetLines > 0) && (targetLines < noOfLines)) {
+                    newTextSize = v.getTextSize() - 2;
+                    v.setTextSize(TypedValue.COMPLEX_UNIT_PX, newTextSize);
+                    isResized = true;
 
+                    LOGD(TAG, "triggerResizeTextToFitFrame: make size smaller again");
 
-                //仅在如下情况起作用：
-                //1. read only
-                //2. mIsSaveNeededAfterResize
-                //3. 不再question/answer切换中
-                if (((mCurrentPack.creatorID.equals(OpenUDID_manager.getOpenUDID())) == false) && (mIsSaveNeededAfterResize) && (mIsSwitchingQuestionAnswerView == false)) {
-                    //mIsSaveNeededAfterResize = false;，不能置false，因为我们在onstop时需要写入数据库,虽然这样会导致被调用多次
-
-                    prepareToSavingTextFontSizeInfo();
                 }
-
 
             }
+
+            if (isResized) {
+                if (tag.equals(TAG_SUBHEADING)) {
+                    flag_Subheading_ResizeFinished = false;
+                } else if (tag.equals(TAG_MAIN)) {
+                    flag_Main_ResizeFinished = false;
+                } else if (tag.equals(TAG_SUB)) {
+                    flag_Sub_ResizeFinished = false;
+                }
+            } else {
+                if (tag.equals(TAG_SUBHEADING)) {
+                    flag_Subheading_ResizeFinished = true;
+                } else if (tag.equals(TAG_MAIN)) {
+                    flag_Main_ResizeFinished = true;
+                } else if (tag.equals(TAG_SUB)) {
+                    flag_Sub_ResizeFinished = true;
+                }
+            }
+
+            LOGD(TAG, "triggerResizeTextToFitFrame ***end");
         }
 
     }
@@ -1670,9 +1731,9 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnTouchL
     }
 
 
-    private void setEditTextListener() {
+    private void setTextsListener() {
 
-        LOGD(TAG, "setEditTextListener: cardSN=" + mCurrentCard.cardSN);
+        LOGD(TAG, "setTextsListener: cardSN=" + mCurrentCard.cardSN);
 
         if (mIsPlayingCard == false) {
             mSidebarTitle.setOnEditorActionListener(new TextView.OnEditorActionListener() {
@@ -1834,6 +1895,7 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnTouchL
 
             @Override
             public void afterTextChanged(Editable s) {
+                LOGD(TAG, "afterTextChanged: on subheading: " + s.toString());
                 int maxLines = 0;
                 if (mIsQuestionShowing) {
                     mCurrentCard.question.subheading = mSubheading.getText().toString();
@@ -1865,6 +1927,7 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnTouchL
 
             @Override
             public void afterTextChanged(Editable s) {
+                LOGD(TAG, "afterTextChanged: on main: " + s.toString());
                 int maxLines;
                 if (mIsQuestionShowing) {
                     mCurrentCard.question.main = mMain.getText().toString();
@@ -1896,6 +1959,7 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnTouchL
 
             @Override
             public void afterTextChanged(Editable s) {
+                LOGD(TAG, "afterTextChanged: on sub: " + s.toString());
                 int maxLines;
                 if (mIsQuestionShowing) {
                     mCurrentCard.question.sub = mSub.getText().toString();
