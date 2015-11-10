@@ -204,18 +204,6 @@ public class PlayActivity extends FragmentActivity implements SensorEventListene
             }
         }
 
-        Sensor accelerometer = mSensorManager.getDefaultSensor(Sensor.TYPE_ORIENTATION);
-
-        if (accelerometer != null) {
-            mSensorManager.registerListener(this, accelerometer, SensorManager.SENSOR_DELAY_GAME); //considering different hardware, we need to set the fastest value
-            mIsSensorAvailable = true;
-        } else {
-            mIsSensorAvailable = false;
-            LOGE(TAG, "onResume: No Sensor.TYPE_ORIENTATION exists");
-        }
-
-        mIsResetRoll = true;
-
         //check first card to determine whether to hide play sound button
         CardDetailFragment firstDetailFragment = ((CardDetailFragment) (mFragments.get(0)));
         String soundFile = firstDetailFragment.mCurrentCard.question.audioUriFormatStr;
@@ -792,6 +780,20 @@ public class PlayActivity extends FragmentActivity implements SensorEventListene
                 break;
         }
 
+
+        // Configure orientation sensor
+        // 我们把这个sensor的初始化逻辑放在这里，主要是为了防止误出发Q/A switch（比如加载card比较慢，然后用户又同时roll设备就会引起这个问题）
+        Sensor accelerometer = mSensorManager.getDefaultSensor(Sensor.TYPE_ORIENTATION);
+        if (accelerometer != null) {
+            mSensorManager.registerListener(PlayActivity.this, accelerometer, SensorManager.SENSOR_DELAY_GAME); //considering different hardware, we need to set the fastest value
+            mIsSensorAvailable = true;
+        } else {
+            mIsSensorAvailable = false;
+            LOGE(TAG, "onResume: No Sensor.TYPE_ORIENTATION exists");
+        }
+
+        mIsResetRoll = true;
+
     }
 
     private void executeAutoPlay() {
@@ -1024,10 +1026,11 @@ public class PlayActivity extends FragmentActivity implements SensorEventListene
 
     }
 
-
     @Override
     public void onSensorChanged(SensorEvent event) {
-        //LOGD(TAG, "onSensorChanged");
+        //LOGD(TAG, "onSensorChanged, event.values is: " + String.format("%f,%f,%f", event.values[0], event.values[1], event.values[2]));
+
+
 
         if (mIsAutoScroll) {
             return;
@@ -1046,10 +1049,12 @@ public class PlayActivity extends FragmentActivity implements SensorEventListene
             mIsResetRoll = false;
         }
 
-
         //range of values is 90 degrees to -90 degrees.
         float roll = event.values[2];
-        //Timber.tag(Global.debugTag).i( "roll angle =" + roll);
+        if (Math.abs(roll) <10 || Math.abs(roll) > 75) {
+            //为了防止误触发
+            return;
+        }
 
         int orientation = getOrientation();
         if (orientation == 0) {
