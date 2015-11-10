@@ -313,6 +313,9 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnTouchL
 
     }
 
+    /*
+     * 监视resizing过程是否已经完成，如果已经完成，则显示内容
+     */
     private void setResizingMonitorTimer() {
 
         if (isEditableMode() == false) {

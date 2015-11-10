@@ -51,7 +51,7 @@
         android:textColor="@android:color/white"
         android:background="@drawable/shape_play_countdown_circle"
         android:layout_width="220dp"
-        android:textSize="108sp"
+        android:textSize="165sp"
         android:visibility="gone"
         android:alpha="0.5"
         android:layout_height="220dp"
