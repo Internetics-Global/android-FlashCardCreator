@@ -422,7 +422,6 @@ public class MoreActivity extends Activity {
             Runtime.getRuntime().exec(
                     "logcat -f " + outputFile.getAbsolutePath());
         } catch (IOException e) {
-            // TODO Auto-generated catch block
             e.printStackTrace();
         } finally {
 

@@ -1603,25 +1603,25 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnTouchL
             String tag = (String) v.getTag();
 
             if (isEditableMode()) {
-                LOGD(TAG, "triggerResizeTextToFitFrame: aborted since we don't do this in edit mode");
+               // LOGD(TAG, "triggerResizeTextToFitFrame: aborted since we don't do this in edit mode");
                 return;
             }
 
             if (v.getText().length() == 0) {
                 if (tag.equals(TAG_SUBHEADING)) {
                     flag_Subheading_ResizeFinished = true;
-                    LOGD(TAG, "triggerResizeTextToFitFrame: return because subheading text is empty");
+                    //LOGD(TAG, "triggerResizeTextToFitFrame: return because subheading text is empty");
                 } else if (tag.equals(TAG_MAIN)) {
                     flag_Main_ResizeFinished = true;
-                    LOGD(TAG, "triggerResizeTextToFitFrame: return because main text is empty");
+                    //LOGD(TAG, "triggerResizeTextToFitFrame: return because main text is empty");
                 } else if (tag.equals(TAG_SUB)) {
                     flag_Sub_ResizeFinished = true;
-                    LOGD(TAG, "triggerResizeTextToFitFrame: return because sub text is empty");
+                    //LOGD(TAG, "triggerResizeTextToFitFrame: return because sub text is empty");
                 }
 
                 return;
             } else {
-                LOGD(TAG, "triggerResizeTextToFitFrame ***begin with content: " + v.getText().toString());
+                //LOGD(TAG, "triggerResizeTextToFitFrame ***begin with content: " + v.getText().toString());
             }
 
 
@@ -1658,7 +1658,7 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnTouchL
                     v.setTextSize(TypedValue.COMPLEX_UNIT_PX, newTextSize);
                     isResized = true;
 
-                    LOGD(TAG, "triggerResizeTextToFitFrame: make size bigger and return");
+                    //LOGD(TAG, "triggerResizeTextToFitFrame: make size bigger and return");
 
                     return;
 
@@ -1693,7 +1693,7 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnTouchL
                 }
                 isResized = true;
 
-                LOGD(TAG, "triggerResizeTextToFitFrame: make size smaller");
+                //LOGD(TAG, "triggerResizeTextToFitFrame: make size smaller");
 
 
                 //in case the font size still too big
@@ -1703,7 +1703,7 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnTouchL
                     v.setTextSize(TypedValue.COMPLEX_UNIT_PX, newTextSize);
                     isResized = true;
 
-                    LOGD(TAG, "triggerResizeTextToFitFrame: make size smaller again");
+                    //LOGD(TAG, "triggerResizeTextToFitFrame: make size smaller again");
 
                 }
 
@@ -1727,7 +1727,7 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnTouchL
                 }
             }
 
-            LOGD(TAG, "triggerResizeTextToFitFrame ***end");
+            //LOGD(TAG, "triggerResizeTextToFitFrame ***end");
         }
 
     }
@@ -4477,24 +4477,59 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnTouchL
 
                                 File toSaveFile = UIHelper.saveImageToCaches(scaledBitmap);
 
-                                //TODO:如果有视频，则要删除掉
-
                                 if (mIsImage2Active) {
                                     mImage2.setImageBitmap(scaledBitmap);
                                     if (mIsQuestionShowing) {
                                         mCurrentCard.question.imageUriFormatStr2 = FileOperationHelper.convertToUriFormatFile(toSaveFile);
+
+                                        if (StringUtils.isEmpty(mCurrentCard.question.movieUriFormatStr2) == false) {
+                                            File file = new File(FileOperationHelper.deleteUriSchemeHeader(mCurrentCard.question.movieUriFormatStr2));
+                                            boolean success = file.delete();
+                                            if (success == false) {
+                                                LOGE(TAG, "failure to delete mCurrentCard.question.movieUriFormatStr2");
+                                            }
+                                        }
+
                                         mCurrentCard.question.movieUriFormatStr2 = "";
                                     } else {
                                         mCurrentCard.answer.imageUriFormatStr2 = FileOperationHelper.convertToUriFormatFile(toSaveFile);
+
+                                        if (StringUtils.isEmpty(mCurrentCard.answer.movieUriFormatStr2) == false) {
+                                            File file = new File(FileOperationHelper.deleteUriSchemeHeader(mCurrentCard.answer.movieUriFormatStr2));
+                                            boolean success = file.delete();
+                                            if (success == false) {
+                                                LOGE(TAG, "failure to delete mCurrentCard.answer.movieUriFormatStr2");
+                                            }
+                                        }
+
                                         mCurrentCard.answer.movieUriFormatStr2 = "";
                                     }
                                 } else {
                                     mImage.setImageBitmap(scaledBitmap);
                                     if (mIsQuestionShowing) {
                                         mCurrentCard.question.imageUriFormatStr = FileOperationHelper.convertToUriFormatFile(toSaveFile);
+
+                                        if (StringUtils.isEmpty(mCurrentCard.question.movieUriFormatStr) == false) {
+                                            File file = new File(FileOperationHelper.deleteUriSchemeHeader(mCurrentCard.question.movieUriFormatStr));
+                                            boolean success = file.delete();
+                                            if (success == false) {
+                                                LOGE(TAG, "failure to delete mCurrentCard.question.movieUriFormatStr");
+                                            }
+
+                                        }
+
                                         mCurrentCard.question.movieUriFormatStr = "";
                                     } else {
                                         mCurrentCard.answer.imageUriFormatStr = FileOperationHelper.convertToUriFormatFile(toSaveFile);
+
+                                        if (StringUtils.isEmpty(mCurrentCard.answer.movieUriFormatStr) == false) {
+                                            File file = new File(FileOperationHelper.deleteUriSchemeHeader(mCurrentCard.answer.movieUriFormatStr));
+                                            boolean success = file.delete();
+                                            if (success == false) {
+                                                LOGE(TAG, "failure to delete mCurrentCard.answer.movieUriFormatStr");
+                                            }
+                                        }
+
                                         mCurrentCard.answer.movieUriFormatStr = "";
                                     }
                                 }
