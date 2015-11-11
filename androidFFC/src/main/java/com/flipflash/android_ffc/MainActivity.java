@@ -7,7 +7,6 @@ import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.res.Configuration;
 import android.content.res.TypedArray;
 import android.graphics.Color;
 import android.graphics.PixelFormat;
@@ -603,6 +602,16 @@ public class MainActivity extends FragmentActivity implements
             }
         }
 
+        Handler handler = new Handler();
+                handler.postDelayed(new Runnable() {
+
+                    @Override
+                    public void run() {
+                        mIsAllowedToShowPackList = true;
+                    }
+
+                }, 1000); // 2000ms delay
+
 
     }
 
@@ -659,6 +668,8 @@ public class MainActivity extends FragmentActivity implements
 
     public void showPackListView() {
 
+        LOGD(TAG, "showPackListView");
+
         if (mPopupWindow == null) {
             mPopupWindow = new PopupWindow(UIHelper.getScreenWidth(this)-50, getResources().getDimensionPixelSize(R.dimen.pack_list_window_height));
             mPopupWindow.setFocusable(true);
@@ -702,7 +713,6 @@ public class MainActivity extends FragmentActivity implements
             }
 
         } else {
-           dismissPackListPopupWindow();
         }
     }
 
@@ -752,6 +762,8 @@ public class MainActivity extends FragmentActivity implements
         LOGD(TAG, "onStart");
 
         EasyTracker.getInstance().activityStart(this);
+
+        //EventBus.getDefault().register(MainActivity.this);
     }
 
     @Override
@@ -761,6 +773,8 @@ public class MainActivity extends FragmentActivity implements
         LOGD(TAG, "onStop");
 
         EasyTracker.getInstance().activityStop(this);
+
+        //EventBus.getDefault().unregister(MainActivity.this);
     }
 
 
@@ -1581,12 +1595,17 @@ public class MainActivity extends FragmentActivity implements
     }
 
     public void showPackInfoView() {
+
+        LOGD(TAG, "showPackInfoView");
+
         mPackInfoLayout.setVisibility(View.VISIBLE);
         updatePackInfoView();
         findViewById(R.id.card_detail_container).setVisibility(View.GONE);
     }
 
     private void hidePackInfoView() {
+
+        LOGD(TAG, "hidePackInfoView");
 
         mPackInfoLayout.setVisibility(View.GONE);
         findViewById(R.id.card_detail_container).setVisibility(View.VISIBLE);
@@ -1844,6 +1863,7 @@ public class MainActivity extends FragmentActivity implements
             }
         }
     }
+
 
     /*
      * 由于默认的spinner不支持highlight，所以需要这样些

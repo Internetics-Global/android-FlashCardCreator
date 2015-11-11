@@ -256,6 +256,7 @@ public class UIHelper {
             bMap = ThumbnailUtils.createVideoThumbnail(path, MediaStore.Video.Thumbnails.MINI_KIND);
         }
 
+        //TODO: crash on xiaomi pad here
         Bitmap bmOverlay = Bitmap.createBitmap(bMap.getWidth(), bMap.getHeight(), bMap.getConfig());
         Canvas canvas = new Canvas(bmOverlay);
         canvas.drawBitmap(bMap, new Matrix(), null);
@@ -418,6 +419,9 @@ public class UIHelper {
     }
 
 
+    /*
+     * same as getScreenWidthDPUnit, but no context necessary
+     */
     public static float getScreenWidthDPUnit () {
 
         WindowManager wm = (WindowManager) AppContext.getAppContext().getSystemService(Context.WINDOW_SERVICE);
