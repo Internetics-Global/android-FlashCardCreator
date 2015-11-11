@@ -111,8 +111,7 @@ public class UIHelper {
 
 
         if (resultBitmap == null) {
-            //TODO: XXXX
-            new SweetAlertDialog(AppContext.getAppContext())
+            new SweetAlertDialog(activity)
                     .setTitleText(activity.getString(R.string.DIALOG_AlERT))
                     .setContentText(activity.getString(R.string.DIALOG_UNSUPPORTED_IMAGE_SOURCE))
                     .show();
@@ -254,6 +253,11 @@ public class UIHelper {
             String path = getRealPathFromURI(context,uri);
 
             bMap = ThumbnailUtils.createVideoThumbnail(path, MediaStore.Video.Thumbnails.MINI_KIND);
+        }
+
+        if (bMap == null) {
+            LOGE(TAG, "getVideoThumbnail: use default since can not fetch from:" + uri.toString());
+            bMap = BitmapFactory.decodeResource(context.getResources(), R.drawable.video_placeholder);
         }
 
         //TODO: crash on xiaomi pad here
