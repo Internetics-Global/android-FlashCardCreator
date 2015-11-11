@@ -6,6 +6,7 @@ import android.database.Cursor;
 import com.flipflash.android_ffc.R;
 import com.flipflash.helper.SQLiteHelper;
 import com.flipflash.util.AppContext;
+import com.flipflash.util.UIHelper;
 
 import java.util.HashMap;
 
@@ -48,7 +49,7 @@ public class CSS {
         mainAlignVertical = "";
         subAlignVertical = "";
 
-        int[] defaultSizeArray = AppContext.getAppContext().getResources().getIntArray(R.array.css_size_int);
+        int[] defaultSizeArray = UIHelper.getReferenceFontSizeArrayForCurrentDevice();
 
         if (isForQuestion) {
             subheadingSize = defaultSizeArray[0];

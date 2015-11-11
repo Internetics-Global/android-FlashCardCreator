@@ -24,6 +24,7 @@ import android.util.DisplayMetrics;
 import android.util.TypedValue;
 import android.view.Display;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.EditText;
 import android.widget.FrameLayout;
 
@@ -397,18 +398,34 @@ public class UIHelper {
      */
     public static int getActionbarHeight(Activity activity) {
         TypedArray styledAttributes = activity.getTheme().obtainStyledAttributes(
-                new int[] { android.R.attr.actionBarSize });
+                new int[]{android.R.attr.actionBarSize});
         int mActionBarHeight = (int) styledAttributes.getDimension(0, 0);
 
         return mActionBarHeight;
     }
 
+    /*
+     * see getReferenceFontSizeArrayForCurrentDevice and find out all popular devices width
+     */
     public static float getScreenWidthDPUnit (Activity activity) {
         DisplayMetrics metric = new DisplayMetrics();
         activity.getWindowManager().getDefaultDisplay().getMetrics(metric);
 
         float density  = metric.density;
         float dpWidth  = metric.widthPixels / density;
+
+        return dpWidth;
+    }
+
+
+    public static float getScreenWidthDPUnit () {
+
+        WindowManager wm = (WindowManager) AppContext.getAppContext().getSystemService(Context.WINDOW_SERVICE);
+        DisplayMetrics metrics = new DisplayMetrics();
+        wm.getDefaultDisplay().getMetrics(metrics);
+
+        float density  = metrics.density;
+        float dpWidth  = metrics.widthPixels / density;
 
         return dpWidth;
     }
@@ -440,7 +457,7 @@ public class UIHelper {
 
     public static Bitmap getResized400SizeBitmapFromPicasa(Context context, Uri url)
     {
-        Bitmap resizeBitmap = getResizedSizeBitmapFromPicasa(context,url,400);
+        Bitmap resizeBitmap = getResizedSizeBitmapFromPicasa(context, url, 400);
 
         return resizeBitmap;
     }
@@ -511,6 +528,88 @@ public class UIHelper {
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+
+    /* 与getBestFontSize配合使用
+     * 返回含义
+     * index = 0   <!-- for question subheading 默认大小 -->
+     * index = 1   <!-- for question main 默认大小，也是question缩放比例计算的参考 -->
+     * index = 2   <!-- for question sub 默认大小 -->
+     * index=  3   <!-- for answer subheading 默认大小 -->
+     * index = 4   <!-- for answer main 默认大小,也是answer缩放比例计算的参考 -->
+     * index = 5   <!-- for answer sub 默认大小 -->
+     * index = 6   <!-- 最大尺寸 -->
+     */
+    public static int[] getReferenceFontSizeArrayForCurrentDevice() {
+
+        float screenDPSize = getScreenWidthDPUnit();
+
+        if (screenDPSize <=480) {
+            int[] intArray = {10,12,10,10,12,10,40};
+            return intArray;
+
+        }else if (screenDPSize <=500) {
+            int[] intArray = {11,13,11,11,13,11,42};
+            return intArray;
+
+        } else if (screenDPSize <=590) {
+            int[] intArray = {13,15,13,13,15,13,44};
+            return intArray;
+
+        } else if (screenDPSize <=650) {
+            //<!--nexus5,s5 and galaxy note3,dp= 600;   jianguo dp = 640-->
+            int[] intArray = {14,16,14,14,16,14,46};
+            return intArray;
+
+        } else if (screenDPSize <=700) {
+            //<!--nexus6p,dp= 689-->   (not verified )
+            int[] intArray = {15,17,15,15,17,15,46};
+            return intArray;
+
+        } else if (screenDPSize <=800) {
+            int[] intArray = {16,18,16,16,18,16,50};
+            return intArray;
+
+        } else if (screenDPSize <=900) {
+            int[] intArray = {18,20,18,18,20,18,60};
+            return intArray;
+
+        } else if (screenDPSize <=950) {
+            int[] intArray = {20,22,20,20,22,20,80};
+            return intArray;
+
+        } else if (screenDPSize <=1000) {
+            //<!--nexus7, xperia tablet z,dp= 960-->
+            int[] intArray = {24,26,24,24,26,24,85};
+            return intArray;
+
+        } else if (screenDPSize <=1100) {
+            int[] intArray = {27,29,27,27,29,27,90};
+            return intArray;
+
+        } else if (screenDPSize <=1200) {
+            int[] intArray = {30,32,30,30,32,30,95};
+            return intArray;
+
+        } else if (screenDPSize <=1300) {
+            //<!--galaxy tab s2, nexus10: dp = 1280-->
+            int[] intArray = {34,36,34,34,36,34,100};
+            return intArray;
+
+        } else if (screenDPSize <=1400) {
+            int[] intArray = {40,42,40,40,42,40,110};
+            return intArray;
+
+        } else if (screenDPSize <=1500) {
+            int[] intArray = {44,46,44,44,6,44,110};
+            return intArray;
+
+        } else{
+            int[] intArray = {48,52,48,48,52,48,120};
+            return intArray;
+
+        }
+
     }
 
 

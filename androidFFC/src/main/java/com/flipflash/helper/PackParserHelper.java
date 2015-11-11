@@ -335,6 +335,8 @@ public class PackParserHelper {
         File questionJsonFile = new File(cardDirectory, "questionTextContent.json");
         File answerJsonFile = new File(cardDirectory, "answerTextContent.json");
 
+        int[] standardCSSArrary = UIHelper.getReferenceFontSizeArrayForCurrentDevice();
+
         //Question
         try {
 
@@ -576,8 +578,6 @@ public class PackParserHelper {
                 subSize = 0;
             }
 
-            int[] standardCSSArrary = AppContext.getAppContext().getResources().getIntArray(R.array.css_size_int);
-
             //step2: 根据平台不同进行初次缩放
 
             if (currentPack.platform.equals(UIHelper.getCurrentPlatform()) == true) {
@@ -726,9 +726,9 @@ public class PackParserHelper {
                 } else {
 
                     //字体根据mScreenWidthFromSharedDevice和当前平台的width进行一定比例的缩放
-                    float bestFontSizeFromSharedDevice = UIHelper.getBestFontSize(mScreenWidthFromSharedDevice);
+                    float baseFontSizeFromSharedDevice = UIHelper.getBestFontSize(mScreenWidthFromSharedDevice);
                     int baseFontSizeOnCurrentDevice = standardCSSArrary[1];
-                    float factor = baseFontSizeOnCurrentDevice/bestFontSizeFromSharedDevice;
+                    float factor = baseFontSizeOnCurrentDevice/baseFontSizeFromSharedDevice;
 
                     if (subheadingSize == 0) {
                         subheadingSize = standardCSSArrary[0];
@@ -961,11 +961,6 @@ public class PackParserHelper {
                 subSize = 0;
             }
 
-
-
-            int[] standardCSSArrary = AppContext.getAppContext().getResources().getIntArray(R.array.css_size_int);
-
-
             if (currentPack.platform.equals(UIHelper.getCurrentPlatform()) == true) {
                 if (subheadingSize >0) {
                     card.answer.css.subheadingSize = subheadingSize;
@@ -1113,9 +1108,9 @@ public class PackParserHelper {
                     //-----end scale down policy with error protection
                 } else {
 
-                    float bestFontSizeFromSharedDevice = UIHelper.getBestFontSize(mScreenWidthFromSharedDevice);
+                    float baseFontSizeFromSharedDevice = UIHelper.getBestFontSize(mScreenWidthFromSharedDevice);
                     int baseFontSizeOnCurrentDevice = standardCSSArrary[4];
-                    float factor = baseFontSizeOnCurrentDevice/bestFontSizeFromSharedDevice;
+                    float factor = baseFontSizeOnCurrentDevice/baseFontSizeFromSharedDevice;
 
 
                     if (subheadingSize  == 0) {

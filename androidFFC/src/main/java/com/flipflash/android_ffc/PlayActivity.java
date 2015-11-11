@@ -1835,7 +1835,7 @@ public class PlayActivity extends FragmentActivity implements SensorEventListene
                     public void run() {
                         HashMap<String, String> params = new HashMap<String, String>();
                         params.put(TextToSpeech.Engine.KEY_PARAM_UTTERANCE_ID, "stringId");//必不可少
-                        if (textToSpeechArray.size() > mTextToSpeechContentArrayIndex) {
+                        if (textToSpeechArray.size() > mTextToSpeechContentArrayIndex && (mTTS != null)) {
                             String text = textToSpeechArray.get(mTextToSpeechContentArrayIndex);
                             mTTS.speak(text, TextToSpeech.QUEUE_FLUSH, params);
                             LOGD(TAG, "TTS Speak text: " + text);
