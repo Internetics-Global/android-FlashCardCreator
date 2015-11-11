@@ -446,7 +446,7 @@ public class UIHelper {
         int height = metric.heightPixels;
         int densityDpi = metric.densityDpi;
         String returnStr = String.format("android-%d-%d-%d", width, height, densityDpi);
-        LOGE(TAG, "getCurrentPlatform: " + "current platform is: " + returnStr);
+        //LOGD(TAG, "getCurrentPlatform: " + "current platform is: " + returnStr);
         return returnStr;
     }
 

@@ -69,6 +69,7 @@ public class DropboxUploadHelper extends AsyncTask<Void, Long, Boolean> {
         mDialog.setMessage(mContext.getString(R.string.Indicator_Upload));
         mDialog.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
         mDialog.setProgress(0);
+        mDialog.setCanceledOnTouchOutside(false);
         mDialog.show();
     }
 

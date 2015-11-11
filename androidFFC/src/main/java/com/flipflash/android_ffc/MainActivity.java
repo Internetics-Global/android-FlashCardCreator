@@ -1727,6 +1727,7 @@ public class MainActivity extends FragmentActivity implements
                     if (mUploadProgressDialog == null) {
                         mUploadProgressDialog = new ProgressDialog(MainActivity.this);
                         mUploadProgressDialog.setMax(100);
+                        mUploadProgressDialog.setCanceledOnTouchOutside(false);
                         mUploadProgressDialog.setMessage(getString(R.string.Indicator_Upload));
                         mUploadProgressDialog.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
                     }

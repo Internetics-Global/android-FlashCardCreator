@@ -79,6 +79,7 @@ public class PackDownloadHelper extends AsyncTask<Void, Long, Boolean> {
                 mIsAllowPostExecute = false;
             }
         });
+        mDialog.setCanceledOnTouchOutside(false);
         mDialog.setCancelable(false);
         mDialog.show();
 

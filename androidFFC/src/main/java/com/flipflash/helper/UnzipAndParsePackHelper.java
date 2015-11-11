@@ -39,6 +39,7 @@ public class UnzipAndParsePackHelper extends AsyncTask<Void, Long, Boolean> {
         mDialog = new ProgressDialog(mContext);
         mDialog.setMessage("Unzipping and parsing....");
         mDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+        mDialog.setCanceledOnTouchOutside(false);
         mDialog.show();
     }
 
