@@ -302,8 +302,6 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnTouchL
         LOGD(TAG, "onResume:");
         mIsTakeSnapshotAllNeeded = false;  //necessary
 
-        setContentViewVisibility();
-
         //need to be put onResume, see http://stackoverflow.com/questions/13721063/aftertextchanged-being-called-without-the-text-being-actually-changed
         setTextsListener();
 
