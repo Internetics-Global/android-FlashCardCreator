@@ -1401,7 +1401,7 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnTouchL
 
                 //动态设置高度
                 float marginPx = TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 10 + 10, getResources().getDisplayMetrics());
-                View contentBodyBackground =  getActivity().findViewById(R.id.card_content_body_fr_with_background_image);
+                View contentBodyBackground =  mContentView.findViewById(R.id.card_content_body_fr_with_background_image);
                 mContentBodyLinearLayout.getLayoutParams().height = contentBodyBackground.getHeight() - (int)marginPx;
                 if (isEditableMode() == false) {
                     //不能scroll
@@ -1412,6 +1412,7 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnTouchL
                     scrollView.setEnabled(false);
                 }
                 mContentBodyLinearLayout.requestLayout();
+
                 contentBodyBackground.setVisibility(View.VISIBLE);
 
 

@@ -249,7 +249,7 @@ public class CreateEditFragment extends DialogFragment implements TextView.OnEdi
         }
 
         if ((mIsEditPack == false) && (checkExistingPackName(mPackNameEditText.getText().toString()))) {
-            new SweetAlertDialog(AppContext.getAppContext())
+            new SweetAlertDialog(getActivity())
                 .setTitleText(getResources().getString(R.string.DIALOG_AlERT))
                 .setContentText(getString(R.string.DIALOG_EXISTING_PACK_NAME))
                     .show();
