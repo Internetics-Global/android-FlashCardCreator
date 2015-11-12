@@ -48,10 +48,10 @@
 
 
     <TextView
-        android:textColor="@android:color/white"
+        android:textColor="@android:color/holo_red_dark"
         android:background="@drawable/shape_play_countdown_circle"
         android:layout_width="220dp"
-        android:textSize="165sp"
+        android:textSize="35sp"
         android:visibility="gone"
         android:alpha="0.5"
         android:layout_height="220dp"

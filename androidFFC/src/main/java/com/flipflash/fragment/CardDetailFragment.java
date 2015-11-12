@@ -1642,7 +1642,7 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnTouchL
      */
     private void triggerResizeTextToFitFrame(final EditText v, int targetLines) {
 
-        synchronized (v) {
+        synchronized (v) {   //TODO:  lint warning synchronization on local variable or method parameter
 
             boolean isResized = false; //每次执行了setTextSize都会置成false;
 

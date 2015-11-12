@@ -234,7 +234,7 @@ public class PackDownloadHelper extends AsyncTask<Void, Long, Boolean> {
 
     }
 
-
+    //TODO:  lint This Handler class should be static or leaks might occur (null)
     private final Handler mUnzipPackHandler = new Handler() {
 
         @Override

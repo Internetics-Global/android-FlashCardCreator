@@ -128,7 +128,12 @@ public class PlayActivity extends FragmentActivity implements SensorEventListene
 
     private boolean        mIsFixedDelayAutoScroll;  //用来区分是否是fixed delay 还是 smart  auto scroll
 
-    private int            mOneOffPlayType; //0, manually; 1, auto play; 2, auto play loop
+    /*
+     * 两种case。主要是为了最开始（startActivity)的逻辑判断，之后如果因为原因2改变赋值为-1
+     * 1. 在启动PlayActivity时直接传入：//0, manually; 1, auto play; 2, auto play loop
+     * 2. 如果用户改变了mAutoScrollImageButton或mDwellTimeSeekBar，则永久性变成-1
+     */
+    private int            mOneOffPlayType;
 
     /*
      * 当isAutoShowQuestionOnly = true时，intervalBetweenCardSeconds ＝ mPauseForAnswerSeekBar
@@ -705,10 +710,13 @@ public class PlayActivity extends FragmentActivity implements SensorEventListene
         LOGD(TAG, "isSmartDelay");
 
 
+        //mOneOffPlayType一旦被mAutoScrollImageButton或mDwellTimeSeekBar改变，自动赋值-1
         if (mOneOffPlayType == 1 || mOneOffPlayType == 2) {
             return true;
+        } else if (mOneOffPlayType == 0) {
+            return false;
         } else {
-            //我们不check else的状态
+            //这时mOneOffPlayType ＝ -1，则无法判断
         }
 
 
@@ -933,12 +941,14 @@ public class PlayActivity extends FragmentActivity implements SensorEventListene
 
     }
 
+    /*
+     * 在切换到下一张卡片， onPageScrolled会被调用多次;首次运行，即使不滑动，也会被调用
+    */
     @Override
     public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
         LOGD(TAG, "onPageScrolled");
         if ((mPosition != position) && (positionOffsetPixels == 0)) {
             LOGD(TAG, "onPageScrolled: "+ "onPageScrolled, page index=" + position + " .mPosition=" + mPosition);
-
 
             //主要目的是及时释放内存，以防内存不断增加导致crash
             if (position-2 >=0) {
@@ -953,7 +963,7 @@ public class PlayActivity extends FragmentActivity implements SensorEventListene
                 mFragments.set(position +2,cardDetailFragment);
             }
 
-           //不再需要执行如下，因为setOffscreenPageLimit已经建立了3个缓存（当前，前，后）
+
             if (mPosition >= 0 && mPosition <= mCurrentPack.cards.size() -1) {
                 ((CardDetailFragment) (mFragments.get(mPosition))).switchToQuestionViewWithOption(false);
             }
@@ -973,7 +983,6 @@ public class PlayActivity extends FragmentActivity implements SensorEventListene
 
             setActiveFragmentTag(position);
 
-
             playbackOnCard((CardDetailFragment) (mFragments.get(position)));
 
             if (isSmartDelay() == false) {
@@ -989,8 +998,6 @@ public class PlayActivity extends FragmentActivity implements SensorEventListene
                     mAutoSwitchQATimer.scheduleAtFixedRate(updateBall, dwellMilliSecondsOnQuestionOnly, K_Big_Enough_For_Endless_Repeated_Timer*1000);
                 }
             }
-
-
 
 
         } else {
@@ -1381,6 +1388,8 @@ public class PlayActivity extends FragmentActivity implements SensorEventListene
 
             if (mIsShuttingDown == false) {
 
+
+
                 if (mIsMuteSoundRecording == false) {
 
                     int durationForRecordedSound;
@@ -1430,7 +1439,11 @@ public class PlayActivity extends FragmentActivity implements SensorEventListene
             }
 
         } else {
-            AudioHelper.playAudio(cardDetailFragment,mIsMuteSoundRecording);
+
+
+            AudioHelper.playAudio(cardDetailFragment, mIsMuteSoundRecording);
+
+
 
         }
 

@@ -117,8 +117,22 @@ public class AudioHelper {
             audioFileStr = cardDetailFragment.mCurrentCard.answer.audioUriFormatStr;
         }
 
+        final  boolean   f_IsMute = isMute;
+        final  String    f_AudioFileStr = audioFileStr;
+
         if (audioFileStr.length() >0) {
-             playAudio(FileOperationHelper.deleteUriSchemeHeader(audioFileStr),isMute);
+            Thread thread = new Thread() {
+                @Override
+                public void run() {
+                    try {
+                        playAudio(FileOperationHelper.deleteUriSchemeHeader(f_AudioFileStr),f_IsMute);
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                }
+            };
+
+            thread.start();
         } else {
             //Toast.makeText(PlayActivity.this,"Not available audio file", Toast.LENGTH_LONG).show();
         }
@@ -188,6 +202,7 @@ public class AudioHelper {
             try {
                 isPlaying = mp.isPlaying();
             } catch (IllegalStateException e) {
+                e.printStackTrace();
             }
 
             if (isPlaying) {

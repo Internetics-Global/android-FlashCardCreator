@@ -1688,6 +1688,7 @@ public class MainActivity extends FragmentActivity implements
 
     }
 
+    //TODO:  lint This Handler class should be static or leaks might occur (null)
     private final Handler mDropboxUploadHandler = new Handler() {
         @Override
         public void handleMessage(Message msg) {
@@ -1713,7 +1714,7 @@ public class MainActivity extends FragmentActivity implements
         }
     };
 
-
+    //TODO: lint This Handler class should be static or leaks might occur (null)
     private final Handler mAmazonUploadHandler = new Handler() {
         @Override
         public void handleMessage(Message msg) {
