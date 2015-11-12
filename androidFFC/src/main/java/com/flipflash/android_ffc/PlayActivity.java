@@ -1002,6 +1002,8 @@ public class PlayActivity extends FragmentActivity implements SensorEventListene
 
         } else {
 
+            //一般滑动view pager，我们需要停止
+
             if (mTTSDelayHandler != null) {
                 mTTSDelayHandler.removeCallbacksAndMessages(null);
                 mTTSDelayHandler = null;
@@ -1010,6 +1012,15 @@ public class PlayActivity extends FragmentActivity implements SensorEventListene
             if (mPauseForAnswerHandler != null) {
                 mPauseForAnswerHandler.removeCallbacksAndMessages(null);
                 mPauseForAnswerHandler = null;
+            }
+
+            if (mText2Speech_AfterSoundRecording_Handler != null) {
+                mText2Speech_AfterSoundRecording_Handler.removeCallbacksAndMessages(null);
+                mText2Speech_AfterSoundRecording_Handler = null;
+            }
+
+            if (mTTS != null && mTTS.isSpeaking()) {
+                mTTS.stop();
             }
 
             //只会运行一次
