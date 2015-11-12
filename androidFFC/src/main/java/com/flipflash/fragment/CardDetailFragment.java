@@ -1386,6 +1386,10 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnTouchL
         LinearLayout creatorLayout = (LinearLayout) mContentView.findViewById(R.id.creator_layout);
 
         mContentBodyLinearLayout = (LinearLayout) mContentView.findViewById(R.id.card_content_body);
+        if (isEditableMode() || mIsCreatingCard) {
+            //在非edit模式下，我们是在resize结束后才显示的
+            mContentBodyLinearLayout.setVisibility(View.VISIBLE);
+        }
         mContentBodyListener = new ViewTreeObserver.OnGlobalLayoutListener() {
             @Override
             public void onGlobalLayout() {
@@ -1397,8 +1401,8 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnTouchL
 
                 //动态设置高度
                 float marginPx = TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 10 + 10, getResources().getDisplayMetrics());
-                View view =  getActivity().findViewById(R.id.card_content_body_fr_with_background_image);
-                mContentBodyLinearLayout.getLayoutParams().height = view.getHeight() - (int)marginPx;
+                View contentBodyBackground =  getActivity().findViewById(R.id.card_content_body_fr_with_background_image);
+                mContentBodyLinearLayout.getLayoutParams().height = contentBodyBackground.getHeight() - (int)marginPx;
                 if (isEditableMode() == false) {
                     //不能scroll
                     LinearLayout.LayoutParams params = (LinearLayout.LayoutParams) mContentBodyLinearLayout.getLayoutParams();
@@ -1408,7 +1412,7 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnTouchL
                     scrollView.setEnabled(false);
                 }
                 mContentBodyLinearLayout.requestLayout();
-                view.setVisibility(View.VISIBLE);
+                contentBodyBackground.setVisibility(View.VISIBLE);
 
 
 

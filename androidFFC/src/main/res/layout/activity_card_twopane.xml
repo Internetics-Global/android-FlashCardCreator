@@ -255,6 +255,7 @@
 
             </LinearLayout>
 
+            <!-- TODO:Optimize memory -->
             <FrameLayout
                     android:id="@+id/add_card_frame_layout"
                     android:layout_width="match_parent"
