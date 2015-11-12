@@ -144,6 +144,9 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnTouchL
     private ViewTreeObserver.OnGlobalLayoutListener mVtoMainListener;
     private ViewTreeObserver.OnGlobalLayoutListener mVtoSubListener;
 
+    //由于我们是动态布局（通过weight)，而ScrollView（见card.xml）中要求内容是确定的高度，而不是match_parent
+    private ViewTreeObserver.OnGlobalLayoutListener mContentBodyListener;
+
     //需要的理由：由于需要多次addTextChangedListener，而Android系统又不提供统一的remove的功能，
     private TextWatcher mSubheadingTextWatcher;
     private TextWatcher mMainTextWatcher;
@@ -385,6 +388,12 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnTouchL
 
         removeEditTextListener();
 
+        if (Build.VERSION.SDK_INT < 16) {
+            mContentBodyLinearLayout.getViewTreeObserver().removeGlobalOnLayoutListener(mContentBodyListener);
+        } else {
+            mContentBodyLinearLayout.getViewTreeObserver().removeOnGlobalLayoutListener(mContentBodyListener);
+        }
+
         if (mResizeMonitorTimer != null) {
             mResizeMonitorTimer.cancel();
         }
@@ -426,6 +435,8 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnTouchL
                     mKeyboardDidShowFlag = true;
                     keyboardDidShowNotification();
                 }
+
+                LOGD(TAG, "keyboard height is: " + heightDiff/dm.density);
 
             } else if (heightDiff == 0) {
                 mKeyboardDidShowFlag = false;
@@ -1374,6 +1385,25 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnTouchL
         LinearLayout creatorLayout = (LinearLayout) mContentView.findViewById(R.id.creator_layout);
 
         mContentBodyLinearLayout = (LinearLayout) mContentView.findViewById(R.id.card_content_body);
+        mContentBodyListener = new ViewTreeObserver.OnGlobalLayoutListener() {
+            @Override
+            public void onGlobalLayout() {
+                if (Build.VERSION.SDK_INT < 16) {
+                    mContentBodyLinearLayout.getViewTreeObserver().removeGlobalOnLayoutListener(mContentBodyListener);
+                } else {
+                    mContentBodyLinearLayout.getViewTreeObserver().removeOnGlobalLayoutListener(mContentBodyListener);
+                }
+
+                //动态设置高度
+                float marginPx = TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 10 + 10, getResources().getDisplayMetrics());
+                View view =  getActivity().findViewById(R.id.card_content_body_fr_with_background_image);
+                mContentBodyLinearLayout.getLayoutParams().height = view.getHeight() - (int)marginPx;
+                mContentBodyLinearLayout.requestLayout();
+                view.setVisibility(View.VISIBLE);
+
+            }
+        };
+        mContentBodyLinearLayout.getViewTreeObserver().addOnGlobalLayoutListener(mContentBodyListener);
 
         createSubheading();
         createMain();

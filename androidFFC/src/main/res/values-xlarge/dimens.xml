@@ -54,4 +54,6 @@
     <dimen name="pack_list_item_corner_width">10dp</dimen>
     <dimen name="sidebar_text_height">500dp</dimen>
 
+    <dimen name="keyboard_height">350dp</dimen>
+
 </resources>

@@ -60,4 +60,7 @@
     <dimen name="sidebar_text_height">400dp</dimen>
 
 
+    <dimen name="keyboard_height">250dp</dimen>
+
+
 </resources>

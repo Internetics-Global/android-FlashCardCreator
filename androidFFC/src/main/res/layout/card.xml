@@ -182,6 +182,8 @@
 
                 <FrameLayout
                     android:layout_width="match_parent"
+                    android:id="@+id/card_content_body_fr_with_background_image"
+                    android:visibility="invisible"
                     android:layout_height="0dp"
                     android:layout_weight="440">
 
@@ -193,14 +195,29 @@
                         android:adjustViewBounds="true"
                         android:src="@null" />
 
-                    <LinearLayout
-                        android:id="@+id/card_content_body"
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
+                    <ScrollView
                         android:layout_margin="10dp"
-                        android:visibility="invisible"
-                        android:orientation="vertical">
-                    </LinearLayout>
+                        android:scrollbars="none"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent">
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:orientation="vertical"
+                            android:layout_height="wrap_content">
+
+                            <LinearLayout
+                                android:id="@+id/card_content_body"
+                                android:layout_width="match_parent"
+                                android:layout_height="150dp"
+                                android:visibility="invisible"
+                                android:orientation="vertical"
+                                android:layout_marginBottom="@dimen/keyboard_height">
+                            </LinearLayout>
+
+                        </LinearLayout>
+
+                    </ScrollView>
 
                 </FrameLayout>
 

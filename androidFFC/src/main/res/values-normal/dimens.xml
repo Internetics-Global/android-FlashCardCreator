@@ -59,4 +59,6 @@
     <dimen name="sidebar_text_height">180dp</dimen>
 
 
+    <dimen name="keyboard_height">170dp</dimen>
+
 </resources>
