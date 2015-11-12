@@ -442,6 +442,8 @@ public class PlayActivity extends FragmentActivity implements SensorEventListene
 
         LOGD(TAG, "dwellTimeSeekBarProgressManuallyChanged");
 
+        mOneOffPlayType = -1;  //因为是one off的，所以一旦有新动作，需要重置
+
         stopAudio();
         stopTextToSpeech();
 
@@ -460,7 +462,6 @@ public class PlayActivity extends FragmentActivity implements SensorEventListene
             mIsFixedDelayAutoScroll = false;
         } else {
             mIsFixedDelayAutoScroll = true;
-            mOneOffPlayType = -1;  //因为是one off的，所以一旦有新动作，需要重置
         }
 
 
@@ -660,6 +661,8 @@ public class PlayActivity extends FragmentActivity implements SensorEventListene
 
         LOGD(TAG, "autoScrollImageButtonClicked");
 
+        mOneOffPlayType = -1; //因为是one off的，所以一旦有新动作，需要重置
+
         stopAudio();
         stopTextToSpeech();
 
@@ -683,8 +686,6 @@ public class PlayActivity extends FragmentActivity implements SensorEventListene
         } else {
 
             mIsFixedDelayAutoScroll = false;
-
-            mOneOffPlayType = -1; //因为是one off的，所以一旦有新动作，需要重置
 
             screenOff();
 
@@ -710,7 +711,7 @@ public class PlayActivity extends FragmentActivity implements SensorEventListene
         LOGD(TAG, "isSmartDelay");
 
 
-        //mOneOffPlayType一旦被mAutoScrollImageButton或mDwellTimeSeekBar改变，自动赋值-1
+        //用作start activity后的首次判断：mOneOffPlayType一旦被mAutoScrollImageButton或mDwellTimeSeekBar改变，自动赋值-1
         if (mOneOffPlayType == 1 || mOneOffPlayType == 2) {
             return true;
         } else if (mOneOffPlayType == 0) {
@@ -719,8 +720,8 @@ public class PlayActivity extends FragmentActivity implements SensorEventListene
             //这时mOneOffPlayType ＝ -1，则无法判断
         }
 
-
-        if (mDwellTimeSeekBar.getProgress() == Global.k_MIN_Auto_Play_Speed) {
+        //之后，用这个方法进行判断
+        if (mIsAutoScroll &&mDwellTimeSeekBar.getProgress() == Global.k_MIN_Auto_Play_Speed) {
             return true;
         } else {
             return false;
