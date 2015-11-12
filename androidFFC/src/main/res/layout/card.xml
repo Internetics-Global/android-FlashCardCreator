@@ -198,6 +198,7 @@
                     <ScrollView
                         android:layout_margin="10dp"
                         android:scrollbars="none"
+                        android:id="@+id/card_vertical_scrollview"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent">
 

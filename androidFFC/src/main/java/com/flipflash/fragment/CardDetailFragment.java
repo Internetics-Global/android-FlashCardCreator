@@ -40,6 +40,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
+import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -1398,8 +1399,18 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnTouchL
                 float marginPx = TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 10 + 10, getResources().getDisplayMetrics());
                 View view =  getActivity().findViewById(R.id.card_content_body_fr_with_background_image);
                 mContentBodyLinearLayout.getLayoutParams().height = view.getHeight() - (int)marginPx;
+                if (isEditableMode() == false) {
+                    //不能scroll
+                    LinearLayout.LayoutParams params = (LinearLayout.LayoutParams) mContentBodyLinearLayout.getLayoutParams();
+                    params.bottomMargin = 0;
+                    mContentBodyLinearLayout.setLayoutParams(params);
+                    ScrollView scrollView = (ScrollView) getActivity().findViewById(R.id.card_vertical_scrollview);
+                    scrollView.setEnabled(false);
+                }
                 mContentBodyLinearLayout.requestLayout();
                 view.setVisibility(View.VISIBLE);
+
+
 
             }
         };
