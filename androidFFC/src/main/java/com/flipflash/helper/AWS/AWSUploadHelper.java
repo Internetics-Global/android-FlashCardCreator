@@ -164,7 +164,7 @@ public class AWSUploadHelper {
             }
 
             if (succeeded == false) {
-                new SweetAlertDialog(AppContext.getAppContext(), SweetAlertDialog.ERROR_TYPE)
+                new SweetAlertDialog(mContext, SweetAlertDialog.ERROR_TYPE)
                     .setTitleText(mContext.getString(R.string.DIALOG_ERROR))
                     .setContentText(mContext.getString(R.string.DIALOG_FAILURE_TO_CREATE_BUCKET))
                     .show();

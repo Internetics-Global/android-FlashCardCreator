@@ -230,7 +230,7 @@ public class CreateEditFragment extends DialogFragment implements TextView.OnEdi
 
 
         if (mAdminPasswordEditText.getText().toString().equals(mConfirmAdminPasswordEditText.getText().toString()) == false) {
-            new SweetAlertDialog(AppContext.getAppContext())
+            new SweetAlertDialog(getActivity())
                     .setTitleText(getString(R.string.DIALOG_AlERT))
                     .setContentText(getString(R.string.DIALOG_WRONG_PASSWORD))
             .show();
@@ -240,7 +240,7 @@ public class CreateEditFragment extends DialogFragment implements TextView.OnEdi
 
         if (mAutoPlaySpeedSeekbar.getProgress() > Global.k_MAX_Auto_Play_Speed
                 || mAutoPlaySpeedSeekbar.getProgress() < Global.k_MIN_Auto_Play_Speed) {
-            new SweetAlertDialog(AppContext.getAppContext())
+            new SweetAlertDialog(getActivity())
                     .setTitleText(getString(R.string.DIALOG_AlERT))
                     .setContentText(String.format("The value of auto play speed should be between %d and %d seconds",
                             Global.k_MIN_Auto_Play_Speed,Global.k_MAX_Auto_Play_Speed))

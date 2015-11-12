@@ -205,7 +205,7 @@ public class CreateSoundFragment extends DialogFragment {
         if (result) {
             mDeleteButton.setVisibility(View.INVISIBLE);
         } else {
-            new SweetAlertDialog(AppContext.getAppContext())
+            new SweetAlertDialog(getActivity())
                     .setTitleText(getString(R.string.DIALOG_AlERT))
                     .setContentText("Fail to delete or file does not exit")
                     .show();

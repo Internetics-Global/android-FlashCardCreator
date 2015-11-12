@@ -881,7 +881,7 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnTouchL
                 if (isEditableMode()) {
                     showCreateSoundView();
                 } else {
-                    new SweetAlertDialog(AppContext.getAppContext())
+                    new SweetAlertDialog(getActivity())
                             .setTitleText(getString(R.string.DIALOG_AlERT))
                             .setContentText(getString(R.string.DIALOG_YOU_CAN_NOT_CHANGE_TEMPLATE_BACKGROUND))
                             .show();
@@ -964,7 +964,7 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnTouchL
                     }
 
                 } else {
-                    new SweetAlertDialog(AppContext.getAppContext())
+                    new SweetAlertDialog(getActivity())
                             .setTitleText(getString(R.string.DIALOG_AlERT))
                             .setContentText(getString(R.string.DIALOG_YOU_CAN_NOT_CHANGE_TEMPLATE_BACKGROUND))
                             .show();
@@ -1048,7 +1048,7 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnTouchL
                     @Override
                     public void onClick(View v) {
                         mIsImage2Active = true;
-                        new SweetAlertDialog(AppContext.getAppContext())
+                        new SweetAlertDialog(getActivity())
                                 .setTitleText(getString(R.string.DIALOG_AlERT))
                                 .setContentText(getString(R.string.DIALOG_VIDEO_PLAY_ONLY_AVAILABLE_IN_PLAY))
                                 .show();
@@ -1168,7 +1168,7 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnTouchL
                             answerQuickAction.show(mChangeTemplateImage);
                         }
                     } else {
-                        new SweetAlertDialog(AppContext.getAppContext())
+                        new SweetAlertDialog(getActivity())
                                 .setTitleText(getString(R.string.DIALOG_AlERT))
                                 .setContentText(getString(R.string.DIALOG_YOU_CAN_NOT_CHANGE_TEMPLATE_BACKGROUND))
                                 .show();
@@ -1401,7 +1401,7 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnTouchL
 
                 //动态设置高度
                 float marginPx = TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 10 + 10, getResources().getDisplayMetrics());
-                View contentBodyBackground =  mContentView.findViewById(R.id.card_content_body_fr_with_background_image);
+                View contentBodyBackground =  mContentView.findViewById(R.id.card_content_body_fr_with_background_image); //TODO:
                 mContentBodyLinearLayout.getLayoutParams().height = contentBodyBackground.getHeight() - (int)marginPx;
                 if (isEditableMode() == false) {
                     //不能scroll
@@ -4593,7 +4593,7 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnTouchL
                             }
 
                         } else {
-                            new SweetAlertDialog(AppContext.getAppContext(), SweetAlertDialog.ERROR_TYPE)
+                            new SweetAlertDialog(getActivity(), SweetAlertDialog.ERROR_TYPE)
                                     .setTitleText(getString(R.string.DIALOG_AlERT))
                                     .setContentText(getString(R.string.DIALOG_UNSUPPORTED_IMAGE_SOURCE))
                                     .show();

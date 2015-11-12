@@ -124,7 +124,7 @@ public class PackListFragment extends Fragment {
             @Override
             public void onClick(View v) {
 
-                new SweetAlertDialog(AppContext.getAppContext(), SweetAlertDialog.WARNING_TYPE)
+                new SweetAlertDialog(getActivity(), SweetAlertDialog.WARNING_TYPE)
                         .setTitleText(getString(R.string.DIALOG_AlERT))
                         .setContentText("Not implemented yet")
                         .setConfirmText(getString(R.string.DIALOG_CLOSE))
