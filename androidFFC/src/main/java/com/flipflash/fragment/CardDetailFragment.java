@@ -1500,7 +1500,9 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnTouchL
     public void resetVerticalScrollViewBottomMargin() {
         LOGD(TAG, "resetVerticalScrollViewBottomMargin");
         ScrollView scrollView = (ScrollView) mContentView.findViewById(R.id.card_vertical_scrollview);
-        scrollView.scrollTo(0,0);
+        if (scrollView.getScrollY() != 0) {
+            scrollView.setScrollY(0);
+        }
 
     }
 
@@ -2358,6 +2360,8 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnTouchL
     private void takeSnapshotCurrentCard() {
 
         boolean toggle = false;
+
+        resetVerticalScrollViewBottomMargin();
 
         if (isEditableMode()) {
             disableCardEditable();
