@@ -346,7 +346,7 @@ public class UIHelper {
         int outWidth = 400;
         int outHeight = (inHeight * outWidth) / inWidth;
 
-        Bitmap resizedBitmap = Bitmap.createScaledBitmap(bitmap, outWidth, outHeight, false);
+        Bitmap resizedBitmap = Bitmap.createScaledBitmap(bitmap, outWidth, outHeight, true);
 
         bitmap.recycle();
 
