@@ -47,8 +47,8 @@ import org.adw.library.widgets.discreteseekbar.internal.drawable.ThumbDrawable;
  * @hide
  */
 public class Marker extends ViewGroup implements MarkerDrawable.MarkerAnimationListener {
-    private static final int PADDING_DP = 4;
-    private static final int ELEVATION_DP = 8;
+    private static final int PADDING_DP = 3;
+    private static final int ELEVATION_DP = 2;
     private static final int SEPARATION_DP = 30;
     //The TextView to show the info
     private TextView mNumber;
@@ -125,6 +125,7 @@ public class Marker extends ViewGroup implements MarkerDrawable.MarkerAnimationL
         int hSpec = MeasureSpec.makeMeasureSpec(displayMetrics.heightPixels, MeasureSpec.AT_MOST);
         mNumber.measure(wSpec, hSpec);
         mWidth = Math.max(mNumber.getMeasuredWidth(), mNumber.getMeasuredHeight());
+        mWidth = mWidth + 10; //TODO:临时措施
         removeView(mNumber);
         addView(mNumber, new FrameLayout.LayoutParams(mWidth, mWidth, Gravity.LEFT | Gravity.TOP));
     }
@@ -151,9 +152,9 @@ public class Marker extends ViewGroup implements MarkerDrawable.MarkerAnimationL
     @Override
     protected void onLayout(boolean changed, int l, int t, int r, int b) {
         int left = getPaddingLeft();
-        int top = getPaddingTop();
+        int top = getPaddingTop() + 25; //TODO:临时解决方案
         int right = getWidth() - getPaddingRight();
-        int bottom = getHeight() - getPaddingBottom();
+        int bottom = getHeight() - getPaddingBottom() + 25;//TODO:临时解决方案
         //the TetView is always layout at the top
         mNumber.layout(left, top, left + mWidth, top + mWidth);
         //the MarkerDrawable uses the whole view, it will adapt itself...

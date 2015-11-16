@@ -144,4 +144,10 @@
         <item name="android:textSize">16dip</item>
     </style>
 
+    <style name="CustomSeekbarTextAppearance" parent="android:TextAppearance.Small">
+        <item name="android:textSize">9sp</item>
+        <item name="android:textColor">?android:attr/textColorPrimary</item>
+
+    </style>
+
 </resources>

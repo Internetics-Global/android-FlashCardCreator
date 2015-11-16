@@ -154,7 +154,7 @@ public class  DiscreteSeekBar extends View {
 
     private Rect mInvalidateRect = new Rect();
     private Rect mTempRect = new Rect();
-    private PopupIndicator mIndicator;
+    private PopupIndicator mIndicator;  //这个就是那个泡泡
     private AnimatorCompat mPositionAnimator;
     private float mAnimationPosition;
     private int mAnimationTarget;
@@ -182,7 +182,7 @@ public class  DiscreteSeekBar extends View {
         int thumbSize = (int) (density * ThumbDrawable.DEFAULT_SIZE_DP);
 
         //Extra pixels for a touch area of 48dp
-        int touchBounds = (int) (density * 32);
+        int touchBounds = (int) (density * 16); //TODO: 临时解决方案
         mAddedTouchBounds = (touchBounds - thumbSize) / 2;
 
 
@@ -523,6 +523,8 @@ public class  DiscreteSeekBar extends View {
             }
             updateFromDrawableState();
         }
+
+
     }
 
     @Override
@@ -561,6 +563,18 @@ public class  DiscreteSeekBar extends View {
         mTrack.draw(canvas);
         mScrubber.draw(canvas);
         mThumb.draw(canvas);
+
+        setPressed(true);
+    }
+
+    @Override
+    public void setVisibility(int visibility) {
+        super.setVisibility(visibility);
+        if (visibility == View.VISIBLE) {
+            setPressed(true);
+        } else {
+            setPressed(false);
+        }
     }
 
     @Override
@@ -599,7 +613,17 @@ public class  DiscreteSeekBar extends View {
             if (mNumericTransformer.useStringTransform()) {
                 mIndicator.setValue(mNumericTransformer.transformToString(value));
             } else {
+
                 mIndicator.setValue(convertValueToMessage(mNumericTransformer.transform(value)));
+
+//                //TODO: 临时措施
+//                if (this.getMax() == 60 && value == 4) {
+//                    mIndicator.setValue("Auto");
+//                } else if (this.getMax() == 9 && value == 0) {
+//                    mIndicator.setValue("None");
+//                } else {
+//                    mIndicator.setValue(convertValueToMessage(mNumericTransformer.transform(value)));
+//                }
             }
         }
     }

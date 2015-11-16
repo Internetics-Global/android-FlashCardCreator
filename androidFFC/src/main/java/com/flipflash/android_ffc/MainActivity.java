@@ -270,6 +270,8 @@ public class MainActivity extends FragmentActivity implements
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
 
+        LOGD(TAG, "onOptionsItemSelected: " + item.toString());
+
         switch (item.getItemId()) {
             case R.id.actionbar_add_pack: {
                 DialogFragment dialogFragment = new CreateEditFragment();
@@ -481,6 +483,8 @@ public class MainActivity extends FragmentActivity implements
 
     private void recordStopButtonClicked() {
 
+        LOGD(TAG, "recordStopButtonClicked");
+
         if (mRecordCountDownTimer != null) {
             mRecordCountDownTimer.cancel();
             mRecordCountDownTimer = null;
@@ -617,6 +621,8 @@ public class MainActivity extends FragmentActivity implements
 
     public void showTooltips() {
 
+        LOGD(TAG, "showTooltips");
+
         final Button addCardButton = (Button) this.findViewById(R.id.add_card_button);
         final Button shareButton = (Button) this.findViewById(R.id.tooltip_fake_actionbar_share);
         final Button settingButton = (Button) this.findViewById(R.id.tooltip_fake_actionbar_setting);
@@ -717,6 +723,7 @@ public class MainActivity extends FragmentActivity implements
     }
 
     public void dismissPackListPopupWindow() {
+        LOGD(TAG, "dismissPackListPopupWindow");
         if (mPopupWindow != null) {
             mPopupWindow.dismiss();
             mPopupWindow = null;
@@ -781,6 +788,7 @@ public class MainActivity extends FragmentActivity implements
     @Override
     protected void onPause() {
         super.onPause();
+        LOGD(TAG, "onPause");
         if ((mCSSToolbar != null) && (mCSSToolbar.getParent() != null)) {
             removeCSSToolbar();
             mIsNecessaryToRestoreCSSToolbar = true;
@@ -790,6 +798,8 @@ public class MainActivity extends FragmentActivity implements
     @Override
     protected void onDestroy() {
         super.onDestroy();
+
+        LOGD(TAG, "onDestroy");
 
         if (mRecordCountDownTimer != null) {
             mRecordCountDownTimer.cancel();
@@ -813,6 +823,8 @@ public class MainActivity extends FragmentActivity implements
      */
     @Override
     public void onItemSelected(int index) {
+
+        LOGD(TAG, "onItemSelected: " + index);
 
         if (index >= 0) {
             mCurrentCardIndex = index;
@@ -844,6 +856,7 @@ public class MainActivity extends FragmentActivity implements
      * @param card
      */
     private void prepareSnapOnShotSelectedCard(Pack pack, Card card) {
+        LOGD(TAG, "prepareSnapOnShotSelectedCard");
         CardDetailFragment snapshotCardDetailFragment = new CardDetailFragment();
         snapshotCardDetailFragment.setupParameters(pack, card, 3);
         getSupportFragmentManager().beginTransaction()
@@ -863,7 +876,7 @@ public class MainActivity extends FragmentActivity implements
      * @param exceptCard, except this
      */
     public void prepareSnapShotAllExceptCurrentCard(Pack pack, Card exceptCard) {
-
+        LOGD(TAG, "prepareSnapShotAllExceptCurrentCard");
         ArrayList<Card> cards = pack.cards;
         for (Card card : cards) {
             if (card.cardID != exceptCard.cardID) {
@@ -876,7 +889,7 @@ public class MainActivity extends FragmentActivity implements
      * This is called by CardDetailFragment which represent current showing card in detail
      */
     public void finishSnapShotAllExceptCurrent() {
-
+        LOGD(TAG, "finishSnapShotAllExceptCurrent");
         if (mArrayCardDetailFragments == null)
             return;
 
@@ -901,6 +914,7 @@ public class MainActivity extends FragmentActivity implements
     }
 
     public void finishSnapShot(CardDetailFragment fragment) {
+        LOGD(TAG, "finishSnapShot");
         if ((fragment == null) || (fragment.mCurrentCard == null)) {
             return;
         }
@@ -912,6 +926,8 @@ public class MainActivity extends FragmentActivity implements
 
 
     private void startCreateCard() {
+
+        LOGD(TAG, "startCreateCard");
 
         //mCurrentPack = CardListModel.getLatestCreatedPack();//don't need to do here
         boolean result = checkEntryConditionBeforeCreatingNewCard(mCurrentPack);
@@ -956,7 +972,7 @@ public class MainActivity extends FragmentActivity implements
     }
 
     private void saveNewCreatedCard() {
-
+        LOGD(TAG, "saveNewCreatedCard:");
         //1. do save action
         mCardDetailFragment.saveNewCreatedCard();
 
@@ -973,6 +989,7 @@ public class MainActivity extends FragmentActivity implements
     }
 
     private void dismissCardCreateWindow() {
+        LOGD(TAG, "dismissCardCreateWindow");
         getSupportFragmentManager().beginTransaction().remove(mCardDetailFragment).commit();
         FrameLayout addCardLayout = (FrameLayout) findViewById(R.id.add_card_frame_layout);
         addCardLayout.setVisibility(View.GONE);
@@ -998,7 +1015,7 @@ public class MainActivity extends FragmentActivity implements
     }
 
     private boolean checkEntryConditionBeforeCreatingNewCard(Pack currentPack) {
-
+        LOGD(TAG, "checkEntryConditionBeforeCreatingNewCard");
         //case1: check whether pack is empty or not
         if (currentPack == null) {
             Toast.makeText(getApplicationContext(), "Create a pack first before creating a new card", Toast.LENGTH_LONG).show();
@@ -1020,6 +1037,7 @@ public class MainActivity extends FragmentActivity implements
 
 
     private void onActionbarShareItemSelected() {
+        LOGD(TAG, "onActionbarShareItemSelected");
         if (mCurrentPack == null) {
             Toast.makeText(getApplicationContext(), "NO pack selected", Toast.LENGTH_LONG).show();
             return;
@@ -1038,7 +1056,7 @@ public class MainActivity extends FragmentActivity implements
     }
 
     private void parseUserAuth() {
-
+        LOGD(TAG, "parseUserAuth");
         mIsAllowedToShowPackList = false;
 
         ParseLoginBuilder loginBuilder = new ParseLoginBuilder(
@@ -1055,7 +1073,7 @@ public class MainActivity extends FragmentActivity implements
     }
 
     private void share() {
-
+        LOGD(TAG, "share");
         if (DropboxAuthHelper.sharedHelper(MainActivity.this).isLinked()) {
 
             if ((mCurrentPack.creatorID).equals(OpenUDID_manager.getOpenUDID())) {
@@ -1105,6 +1123,7 @@ public class MainActivity extends FragmentActivity implements
 
 
     private void setPasswordAndUpload() {
+        LOGD(TAG, "setPasswordAndUpload");
         final EditText passwordEditText = new EditText(this);
         passwordEditText.setInputType(InputType.TYPE_TEXT_FLAG_NO_SUGGESTIONS);
         passwordEditText.setSingleLine();
@@ -1276,6 +1295,8 @@ public class MainActivity extends FragmentActivity implements
             public void onClick(View v) {
 
                 mCardDetailFragment.dismissKeyboard();
+                mCardDetailFragment.resetVerticalScrollViewBottomMargin();
+
                 if (mSymbolBoxFragment!=null) {
                     mSymbolBoxFragment.hideSymbolBoxWithAnimation(true);
                 }
@@ -1305,6 +1326,8 @@ public class MainActivity extends FragmentActivity implements
                     mSymbolBoxFragment.hideSymbolBoxWithAnimation(true);
                 }
                 mCardDetailFragment.dismissKeyboard();
+                mCardDetailFragment.resetVerticalScrollViewBottomMargin();
+
                 removeCSSToolbar();
 
                 if (mIsCreatingCard) {
@@ -1409,7 +1432,7 @@ public class MainActivity extends FragmentActivity implements
 
 
     public void showCSSToolbar(CSS css,String tag) {
-
+        LOGD(TAG, "showCSSToolbar");
         CSS currentCSS = css;
 
         if ((mCSSToolbar != null) && (mCSSToolbar.getParent() != null)) {
@@ -1443,7 +1466,7 @@ public class MainActivity extends FragmentActivity implements
      * 高亮显示当前选中的spinner item
      */
     public void updateSpinnersHighlightedItem(CSS css,String tag) {
-
+        LOGD(TAG, "updateSpinnersHighlightedItem");
         CSS currentCSS = css;
 
         Spinner spinnerFont = (Spinner) mCSSToolbar.findViewById(R.id.spinner_font);
@@ -1547,10 +1570,7 @@ public class MainActivity extends FragmentActivity implements
 
     public boolean onKeyDown(int keyCode, KeyEvent event) {
 
-        if (mIsCreatingCard == true) {
-            dismissCardCreateWindow();
-            return false;
-        }
+        LOGD(TAG, "onKeyDown: keycode is " + keyCode + " key event is " + event.toString());
 
         if (((keyCode == KeyEvent.KEYCODE_BACK) ||
                 (keyCode == KeyEvent.KEYCODE_HOME))
@@ -1561,8 +1581,15 @@ public class MainActivity extends FragmentActivity implements
                 return false;
             }
 
+            if (mIsCreatingCard == true) {
+                dismissCardCreateWindow();
+                return false;
+            }
+
             dialog_Exit(MainActivity.this);
         }
+
+
         return false;
 
     }
@@ -1615,7 +1642,7 @@ public class MainActivity extends FragmentActivity implements
     }
 
     private void updatePackInfoView() {
-
+        LOGD(TAG, "updatePackInfoView");
         if (mCurrentPack == null) {
             hidePackInfoView();
             return;
@@ -1760,6 +1787,7 @@ public class MainActivity extends FragmentActivity implements
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
+        LOGD(TAG, "onActivityResult");
 
         //Parse暂时不支持区分sign up或sign in
         //https://github.com/ParsePlatform/ParseUI-Android/issues/79
