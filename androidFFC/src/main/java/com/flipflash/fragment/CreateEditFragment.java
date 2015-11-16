@@ -37,6 +37,7 @@ import com.flipflash.util.AppContext;
 import com.flipflash.util.Global;
 import com.flipflash.util.OpenUDID_manager;
 import com.flipflash.util.UIHelper;
+import com.squareup.leakcanary.RefWatcher;
 
 import org.adw.library.widgets.discreteseekbar.DiscreteSeekBar;
 
@@ -284,7 +285,7 @@ public class CreateEditFragment extends DialogFragment implements TextView.OnEdi
             defaultCard.packID = mCurrentPack.packID;
         }
 
-        PackRecordHelper.savePackUpdateRecord(AppContext.getAppContext(), mCurrentPack);
+        PackRecordHelper.savePackUpdateRecord(mCurrentPack);
 
 
         if (mAdminPasswordEditText.getText().toString().length() == 0) {
@@ -381,5 +382,13 @@ public class CreateEditFragment extends DialogFragment implements TextView.OnEdi
                 break;
         }
         return false;
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+
+//        RefWatcher refWatcher = AppContext.getRefWatcher(getActivity());
+//        refWatcher.watch(this);
     }
 }

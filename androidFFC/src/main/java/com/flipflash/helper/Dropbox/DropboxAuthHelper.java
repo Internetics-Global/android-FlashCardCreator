@@ -41,7 +41,7 @@ public class DropboxAuthHelper {
     }
 
 
-    private DropboxAuthHelper(Context context) {
+    public DropboxAuthHelper(Context context) {
         mContext = context;
 
         if (mApi == null) {

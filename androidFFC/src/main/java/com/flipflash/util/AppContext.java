@@ -15,6 +15,8 @@ import com.parse.Parse;
 import com.parse.ParseCrashReporting;
 import com.parse.ParseFacebookUtils;
 import com.parse.ParseTwitterUtils;
+import com.squareup.leakcanary.LeakCanary;
+import com.squareup.leakcanary.RefWatcher;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -28,10 +30,14 @@ public class AppContext extends Application {
     private static CognitoCachingCredentialsProvider mCredentialsProvider;
     private static AmazonS3Client                    mS3Client;
 
+    private RefWatcher refWatcher;
+
 
     @Override
     public void onCreate() {
         super.onCreate();
+
+//        refWatcher = LeakCanary.install(this);
 
         SimpleDateFormat s = new SimpleDateFormat("dd-MM-yyyy hh:mm:ss");
         String timestamp = s.format(new Date());
@@ -120,6 +126,12 @@ public class AppContext extends Application {
 
     public void removeProperty(String key) {
         AppConfig.sharedInstance().remove(key);
+    }
+
+
+    public static RefWatcher getRefWatcher(Context context) {
+        AppContext application = (AppContext) context.getApplicationContext();
+        return application.refWatcher;
     }
 
 }

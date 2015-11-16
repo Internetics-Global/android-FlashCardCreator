@@ -68,6 +68,7 @@ import com.flipflash.util.OpenUDID_manager;
 import com.flipflash.util.StringUtils;
 import com.flipflash.util.TipHelper;
 import com.flipflash.util.UIHelper;
+import com.squareup.leakcanary.RefWatcher;
 
 import net.londatiga.android.ActionItem;
 import net.londatiga.android.QuickAction;
@@ -475,6 +476,9 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnTouchL
         LOGD(TAG, "onDestroy: " + String.format("cardSN = %d", mCurrentCard.cardSN));
         super.onDestroy();
 
+//        RefWatcher refWatcher = AppContext.getRefWatcher(getActivity());
+//        refWatcher.watch(this);
+
         mImage.setImageURI(null);
         mImage2.setImageURI(null);
         mLogoImage.setImageURI(null);
@@ -727,7 +731,7 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnTouchL
                 }
             }
 
-            PackRecordHelper.savePackUpdateRecord(AppContext.getAppContext(), mCurrentPack);
+            PackRecordHelper.savePackUpdateRecord(mCurrentPack);
         }
 
     }
@@ -4080,7 +4084,7 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnTouchL
 
         ((MainActivity) getActivity()).removeCSSToolbar();
 
-        PackRecordHelper.savePackUpdateRecord(AppContext.getAppContext(), mCurrentPack);
+        PackRecordHelper.savePackUpdateRecord(mCurrentPack);
     }
 
     public void onGridViewItemClicked(String text) {

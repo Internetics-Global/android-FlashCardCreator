@@ -12,6 +12,8 @@ import android.view.animation.AlphaAnimation;
 import android.view.animation.Animation;
 
 import com.flipflash.android_ffc.R;
+import com.flipflash.util.AppContext;
+import com.squareup.leakcanary.RefWatcher;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -92,6 +94,13 @@ public class SymbolBoxFragment extends Fragment {
         return fList;
     }
 
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+
+//        RefWatcher refWatcher = AppContext.getRefWatcher(getActivity());
+//        refWatcher.watch(this);
+    }
 
     public class SymbolPageAdapter extends FragmentStatePagerAdapter {
 

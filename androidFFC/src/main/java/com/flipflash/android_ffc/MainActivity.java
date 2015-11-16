@@ -1078,7 +1078,7 @@ public class MainActivity extends FragmentActivity implements
 
             if ((mCurrentPack.creatorID).equals(OpenUDID_manager.getOpenUDID())) {
 
-                if (PackRecordHelper.checkUploadPackNecessary(MainActivity.this, mCurrentPack)) {
+                if (PackRecordHelper.checkUploadPackNecessary(mCurrentPack)) {
                     setPasswordAndUpload();
                 } else {
                     DropboxShareHelper dropboxShareHelper = new DropboxShareHelper(this,mCurrentPack,true);
@@ -1095,7 +1095,7 @@ public class MainActivity extends FragmentActivity implements
 
             if ((mCurrentPack.creatorID).equals(OpenUDID_manager.getOpenUDID())) {
 
-                if (PackRecordHelper.checkUploadPackNecessary(MainActivity.this, mCurrentPack)) {
+                if (PackRecordHelper.checkUploadPackNecessary(mCurrentPack)) {
                     setPasswordAndUpload();
                 } else {
                     if (DropboxAuthHelper.sharedHelper(MainActivity.this).isLinked()) {

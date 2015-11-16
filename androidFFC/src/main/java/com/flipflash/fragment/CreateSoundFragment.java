@@ -20,6 +20,7 @@ import com.flipflash.helper.AudioHelper;
 import com.flipflash.helper.FileOperationHelper;
 import com.flipflash.helper.PackRecordHelper;
 import com.flipflash.util.AppContext;
+import com.squareup.leakcanary.RefWatcher;
 
 import java.io.File;
 
@@ -191,6 +192,9 @@ public class CreateSoundFragment extends DialogFragment {
     @Override
     public void onDestroy() {
         super.onDestroy();
+
+//        RefWatcher refWatcher = AppContext.getRefWatcher(getActivity());
+//        refWatcher.watch(this);
     }
 
     private void deleteButtonClicked() {
@@ -265,7 +269,7 @@ public class CreateSoundFragment extends DialogFragment {
         }
 
 
-        PackRecordHelper.savePackUpdateRecord(AppContext.getAppContext(), mCurrentPack);
+        PackRecordHelper.savePackUpdateRecord(mCurrentPack);
 
         AudioHelper.isRecordFinished = false;
 

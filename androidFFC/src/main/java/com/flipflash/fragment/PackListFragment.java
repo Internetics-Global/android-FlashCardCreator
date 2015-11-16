@@ -42,6 +42,7 @@ import com.flipflash.util.Global;
 import com.flipflash.util.OpenUDID_manager;
 import com.flipflash.util.StringUtils;
 import com.flipflash.util.UIHelper;
+import com.squareup.leakcanary.RefWatcher;
 
 import java.io.FileNotFoundException;
 
@@ -490,8 +491,12 @@ public class PackListFragment extends Fragment {
     @Override
     public void onDestroy() {
         mGallery.setAdapter(null);
+        mGallery.setOnItemClickListener(null);
         super.onDestroy();
 
         LOGD(TAG, "onDestroy");
+
+//        RefWatcher refWatcher = AppContext.getRefWatcher(getActivity());
+//        refWatcher.watch(this);
     }
 }

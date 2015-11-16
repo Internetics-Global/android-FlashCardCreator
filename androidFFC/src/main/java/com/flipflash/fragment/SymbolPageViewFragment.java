@@ -16,6 +16,7 @@ import com.flipflash.helper.SymbolHelper;
 import com.flipflash.util.AppContext;
 import com.flipflash.util.FontCache;
 import com.flipflash.util.Global;
+import com.squareup.leakcanary.RefWatcher;
 
 import java.util.HashMap;
 import java.util.regex.Matcher;
@@ -199,5 +200,13 @@ public class SymbolPageViewFragment extends Fragment implements TextView.OnTouch
         ((MainActivity) getActivity()).mCardDetailFragment.onGridViewItemClicked(text);
 
         return false;
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+
+//        RefWatcher refWatcher = AppContext.getRefWatcher(getActivity());
+//        refWatcher.watch(this);
     }
 }
