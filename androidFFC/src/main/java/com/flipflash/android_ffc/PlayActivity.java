@@ -147,6 +147,8 @@ public class PlayActivity extends FragmentActivity implements SensorEventListene
 
     private AudioIntentReceiver mAudioIntentReceiver;
 
+    private Locale              mMatchedLocale;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -166,7 +168,10 @@ public class PlayActivity extends FragmentActivity implements SensorEventListene
 
         mSensorManager = (SensorManager) getSystemService(Context.SENSOR_SERVICE);
 
-        setupTextToSpeech();
+        if (AppConfig.sharedInstance().isTextToSpeech()) {
+            setupTextToSpeech();
+        }
+
 
         setupViews();
 
@@ -583,14 +588,17 @@ public class PlayActivity extends FragmentActivity implements SensorEventListene
 
         LOGD(TAG, "onDestroy");
 
-        mTTS.setOnUtteranceProgressListener(null);
-        utteranceProgressListener = null;
+        if (mTTS != null) {
+            mTTS.setOnUtteranceProgressListener(null);
+            utteranceProgressListener = null;
+        }
+        shutdownTextToSpeech();
 
         stopAllTimers();
 
         stopAllHandlers();
 
-        shutdownTextToSpeech();
+
 
         AudioHelper.cleanupAudioPlayResource();
         AudioHelper.cleanupRecorderResource();
@@ -1208,8 +1216,9 @@ public class PlayActivity extends FragmentActivity implements SensorEventListene
 
         LOGD(TAG, "setupTextToSpeech");
 
-        if (mTTS == null) {
+        mMatchedLocale = getText2SpeechLocale();
 
+        if (mTTS == null) {
 
             mTTS = new TextToSpeech(AppContext.getAppContext(),new TextToSpeech.OnInitListener() {
                 @Override
@@ -1217,9 +1226,7 @@ public class PlayActivity extends FragmentActivity implements SensorEventListene
                     if (status == TextToSpeech.SUCCESS) {
                         LOGD(TAG, "onInit: TTS Initialization Success");
 
-                        Locale matchedLocale = getText2SpeechLocale();
-
-                        mTTS.setLanguage(matchedLocale);
+                        mTTS.setLanguage(mMatchedLocale);
 
                         mTTS.setOnUtteranceProgressListener(utteranceProgressListener);
 
@@ -1231,9 +1238,6 @@ public class PlayActivity extends FragmentActivity implements SensorEventListene
                 }
             });
             mTTS.setSpeechRate((float) 0.7);
-
-
-
 
         }
 
