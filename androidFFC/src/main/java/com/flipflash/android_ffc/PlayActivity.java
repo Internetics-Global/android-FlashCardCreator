@@ -44,6 +44,7 @@ import com.flipflash.util.Global;
 import com.flipflash.util.StringUtils;
 import com.flipflash.util.UIHelper;
 import com.flipflash.util.VGViewPager;
+import com.squareup.leakcanary.RefWatcher;
 
 import org.adw.library.widgets.discreteseekbar.DiscreteSeekBar;
 
@@ -179,17 +180,17 @@ public class PlayActivity extends FragmentActivity implements SensorEventListene
         switch (mOneOffPlayType) {
             case 0:
                 mIsAutoScroll = false;
-                EnableUserInteraction();
+                enableUserInteraction();
                 break;
 
             case 1:
                 mIsAutoScroll = true;
-                DisableUserInteraction();
+                disableUserInteraction();
                 mDwellTimeSeekBar.setProgress(Global.kDefault_Auto_Play_Speed);
                 break;
             case 2:
                 mIsAutoScroll = true;
-                DisableUserInteraction();
+                disableUserInteraction();
                 mDwellTimeSeekBar.setProgress(Global.kDefault_Auto_Play_Speed);
                 break;
             default:
@@ -698,7 +699,7 @@ public class PlayActivity extends FragmentActivity implements SensorEventListene
 
             screenOff();
 
-            EnableUserInteraction();
+            enableUserInteraction();
             mIsAutoScroll = false;
             mAutoScrollImageButton.setImageDrawable(getResources().getDrawable(R.drawable.autoplay_off));
             mPager.stopAutoScroll();
@@ -830,7 +831,7 @@ public class PlayActivity extends FragmentActivity implements SensorEventListene
 
 
         screenOn();
-        DisableUserInteraction();
+        disableUserInteraction();
         mAutoScrollImageButton.setImageDrawable(getResources().getDrawable(R.drawable.autoplay_on));
 
         if (isSmartDelay()== false) {  //
@@ -917,11 +918,12 @@ public class PlayActivity extends FragmentActivity implements SensorEventListene
     }
 
 
-    private void EnableUserInteraction() {
+    private void enableUserInteraction() {
         mPager.disableAllTouchEvent(false);
     }
 
-    private void DisableUserInteraction() {
+
+    private void disableUserInteraction() {
         mPager.disableAllTouchEvent(true);
     }
 
@@ -954,23 +956,48 @@ public class PlayActivity extends FragmentActivity implements SensorEventListene
     /*
      * 在切换到下一张卡片， onPageScrolled会被调用多次;首次运行，即使不滑动，也会被调用
     */
+
     @Override
     public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
         LOGD(TAG, "onPageScrolled");
+
+
         if ((mPosition != position) && (positionOffsetPixels == 0)) {
+
+            if (mIsAutoScroll == false) {
+                disableUserInteraction();
+
+                Handler handler = new Handler();
+                handler.postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        enableUserInteraction();
+                    }
+                }, 650);
+            }
+
             LOGD(TAG, "onPageScrolled: "+ "onPageScrolled, page index=" + position + " .mPosition=" + mPosition);
 
             //主要目的是及时释放内存，以防内存不断增加导致crash
             if (position-2 >=0) {
                 CardDetailFragment cardDetailFragment = new CardDetailFragment();
-                cardDetailFragment.setupParameters(mCurrentPack, mCurrentPack.cards.get(position-2), 2);
-                mFragments.set(position-2,cardDetailFragment);
+                cardDetailFragment.setupParameters(mCurrentPack, mCurrentPack.cards.get(position - 2), 2);
+
+//                CardDetailFragment oldFragment = (CardDetailFragment) mFragments.get(position -2);
+//                RefWatcher refWatcher = AppContext.getRefWatcher(PlayActivity.this);
+//                refWatcher.watch(oldFragment);
+
+                mFragments.set(position - 2,cardDetailFragment);
             }
 
             if (position +2 <= mCurrentPack.cards.size() -1) {
                 CardDetailFragment cardDetailFragment = new CardDetailFragment();
                 cardDetailFragment.setupParameters(mCurrentPack, mCurrentPack.cards.get(position +2), 2);
                 mFragments.set(position +2,cardDetailFragment);
+
+//                CardDetailFragment oldFragment = (CardDetailFragment) mFragments.get(position + 2);
+//                RefWatcher refWatcher = AppContext.getRefWatcher(PlayActivity.this);
+//                refWatcher.watch(oldFragment);
             }
 
 
