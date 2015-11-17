@@ -82,7 +82,7 @@ public class Marker extends ViewGroup implements MarkerDrawable.MarkerAnimationL
                 R.style.DefaultIndicatorTextAppearance);
         mNumber = new TextView(context);
         //Add some padding to this textView so the bubble has some space to breath
-        mNumber.setPadding(padding, 0, padding, 0);
+        mNumber.setPadding(padding/2, 0, padding/2, 0); //TODO:临时措施
         mNumber.setTextAppearance(context, textAppearanceId);
         mNumber.setGravity(Gravity.CENTER);
         mNumber.setText(maxValue);
@@ -125,7 +125,7 @@ public class Marker extends ViewGroup implements MarkerDrawable.MarkerAnimationL
         int hSpec = MeasureSpec.makeMeasureSpec(displayMetrics.heightPixels, MeasureSpec.AT_MOST);
         mNumber.measure(wSpec, hSpec);
         mWidth = Math.max(mNumber.getMeasuredWidth(), mNumber.getMeasuredHeight());
-        mWidth = mWidth + 10; //TODO:临时措施
+        mWidth = mWidth + 20; //TODO:临时措施
         removeView(mNumber);
         addView(mNumber, new FrameLayout.LayoutParams(mWidth, mWidth, Gravity.LEFT | Gravity.TOP));
     }

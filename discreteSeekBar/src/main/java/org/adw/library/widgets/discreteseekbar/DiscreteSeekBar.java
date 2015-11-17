@@ -616,14 +616,15 @@ public class  DiscreteSeekBar extends View {
 
                 mIndicator.setValue(convertValueToMessage(mNumericTransformer.transform(value)));
 
-//                //TODO: 临时措施
-//                if (this.getMax() == 60 && value == 4) {
-//                    mIndicator.setValue("Auto");
-//                } else if (this.getMax() == 9 && value == 0) {
-//                    mIndicator.setValue("None");
-//                } else {
-//                    mIndicator.setValue(convertValueToMessage(mNumericTransformer.transform(value)));
-//                }
+                //TODO: 临时措施
+                if (this.getMax() == 60 && value == 4) {
+                    mIndicator.setValue("Auto");
+
+                } else if (this.getMax() == 9 && value == 0) {
+                    mIndicator.setValue("None");
+                } else {
+                    mIndicator.setValue(convertValueToMessage(mNumericTransformer.transform(value)));
+                }
             }
         }
     }
