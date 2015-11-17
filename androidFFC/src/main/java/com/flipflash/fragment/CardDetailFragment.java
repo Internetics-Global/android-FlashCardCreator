@@ -525,8 +525,8 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnTouchL
         LOGD(TAG, "onDestroy: " + String.format("cardSN = %d", mCurrentCard.cardSN));
         super.onDestroy();
 
-        RefWatcher refWatcher = AppContext.getRefWatcher(getActivity());
-        refWatcher.watch(this);
+//        RefWatcher refWatcher = AppContext.getRefWatcher(getActivity());
+//        refWatcher.watch(this);
 
         mImage.setImageURI(null);
         mImage2.setImageURI(null);

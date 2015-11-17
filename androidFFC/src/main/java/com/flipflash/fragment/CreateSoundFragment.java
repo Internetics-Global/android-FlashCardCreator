@@ -193,8 +193,8 @@ public class CreateSoundFragment extends DialogFragment {
     public void onDestroy() {
         super.onDestroy();
 
-        RefWatcher refWatcher = AppContext.getRefWatcher(getActivity());
-        refWatcher.watch(this);
+//        RefWatcher refWatcher = AppContext.getRefWatcher(getActivity());
+//        refWatcher.watch(this);
     }
 
     private void deleteButtonClicked() {
