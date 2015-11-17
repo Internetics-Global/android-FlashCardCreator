@@ -206,7 +206,7 @@ public class SymbolPageViewFragment extends Fragment implements TextView.OnTouch
     public void onDestroy() {
         super.onDestroy();
 
-//        RefWatcher refWatcher = AppContext.getRefWatcher(getActivity());
-//        refWatcher.watch(this);
+        RefWatcher refWatcher = AppContext.getRefWatcher(getActivity());
+        refWatcher.watch(this);
     }
 }

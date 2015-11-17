@@ -435,4 +435,12 @@ public class MoreActivity extends Activity {
 
         startActivity(Intent.createChooser(emailIntent, "Chooser Title"));
     }
+
+    @Override
+    protected void onDestroy() {
+        DropboxAuthHelper.cleanup(); //avoid memory leak
+        super.onDestroy();
+        LOGD(TAG, "onDestroy");
+
+    }
 }

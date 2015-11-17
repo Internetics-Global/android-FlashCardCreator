@@ -146,9 +146,6 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnTouchL
     private ViewTreeObserver.OnGlobalLayoutListener mVtoMainListener;
     private ViewTreeObserver.OnGlobalLayoutListener mVtoSubListener;
 
-    //由于我们是动态布局（通过weight)，而ScrollView（见card.xml）中要求内容是确定的高度，而不是match_parent
-    private ViewTreeObserver.OnGlobalLayoutListener mContentBodyListener;
-
     //需要的理由：由于需要多次addTextChangedListener，而Android系统又不提供统一的remove的功能，
     private TextWatcher mSubheadingTextWatcher;
     private TextWatcher mMainTextWatcher;
@@ -179,6 +176,8 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnTouchL
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+
+        LOGD(TAG, "onCreateView");
 
         if (Build.VERSION.SDK_INT >= 18) {
             getActivity().getWindow().setFlags(WindowManager.LayoutParams.FLAG_HARDWARE_ACCELERATED, WindowManager.LayoutParams.FLAG_HARDWARE_ACCELERATED);
@@ -302,6 +301,18 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnTouchL
     }
 
     @Override
+    public void onStop() {
+        super.onStop();
+
+        LOGD(TAG, "onStop: " + String.format("cardSN = %d", mCurrentCard.cardSN));
+
+    }
+
+
+    /*
+     * 与onPause匹配使用
+     */
+    @Override
     public void onResume() {
         super.onResume();
         LOGD(TAG, "onResume:");
@@ -310,11 +321,46 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnTouchL
         //need to be put onResume, see http://stackoverflow.com/questions/13721063/aftertextchanged-being-called-without-the-text-being-actually-changed
         setTextsListener();
 
+        mContentBodyLinearLayout.getViewTreeObserver().addOnGlobalLayoutListener(mContentBodyListener);
 
+        final View rootView = getRootView();
+        rootView.getViewTreeObserver().addOnGlobalLayoutListener(mKeyboardVisibilityListener);
+
+    }
+
+
+    @Override
+    public void onPause() {
+        super.onPause();
+
+        LOGD(TAG, "onPause:");
+
+        removeEditTextListener();
+
+        if (Build.VERSION.SDK_INT < 16) {
+            mContentBodyLinearLayout.getViewTreeObserver().removeGlobalOnLayoutListener(mContentBodyListener);
+        } else {
+            mContentBodyLinearLayout.getViewTreeObserver().removeOnGlobalLayoutListener(mContentBodyListener);
+        }
+
+        //会在switchToAnswerView和switchToQuestionViewWithOption重置，所以不需要在onResume进行设置
+        if (mResizeMonitorTimer != null) {
+            mResizeMonitorTimer.cancel();
+        }
+
+        final View rootView = getRootView();
+        if (Build.VERSION.SDK_INT < 16) {
+            rootView.getViewTreeObserver().removeGlobalOnLayoutListener(mKeyboardVisibilityListener);
+        } else {
+            rootView.getViewTreeObserver().removeOnGlobalLayoutListener(mKeyboardVisibilityListener);
+        }
+
+    }
+
+
+    private View getRootView() {
         final View rootView = getActivity().getWindow().getDecorView().findViewById(android.R.id.content);
-        rootView.getViewTreeObserver().addOnGlobalLayoutListener(keyboardVisibilityListener);
-
-
+        return rootView;
     }
 
 
@@ -376,55 +422,53 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnTouchL
                         mResizeMonitorTimer.cancel();
                     }
 
-                    LOGD(TAG, "run: " + flag_Subheading_ResizeFinished + " " + flag_Main_ResizeFinished + "  " +flag_Sub_ResizeFinished);
+                    LOGD(TAG, "run: " + flag_Subheading_ResizeFinished + " " + flag_Main_ResizeFinished + "  " + flag_Sub_ResizeFinished);
                 }
-            },0,50);
+            }, 0, 50);
         }
     }
 
-    @Override
-    public void onPause() {
-        super.onPause();
 
-        LOGD(TAG, "onPause:");
+    //由于我们是动态布局（通过weight)，而ScrollView（见card.xml）中要求内容是确定的高度，而不是match_parent
+    private ViewTreeObserver.OnGlobalLayoutListener mContentBodyListener = new ViewTreeObserver.OnGlobalLayoutListener() {
+        @Override
+        public void onGlobalLayout() {
+            if (Build.VERSION.SDK_INT < 16) {
+                mContentBodyLinearLayout.getViewTreeObserver().removeGlobalOnLayoutListener(this);
+            } else {
+                mContentBodyLinearLayout.getViewTreeObserver().removeOnGlobalLayoutListener(this);
+            }
 
-        removeEditTextListener();
+            //动态设置高度
+            float marginPx = TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 10 + 10, getResources().getDisplayMetrics());
+            //不能用getActivity.findViewById，因为有两个card_content_body_fr_with_background_image
+            View contentBodyBackground =  mContentView.findViewById(R.id.card_content_body_fr_with_background_image); //TODO:
+            mContentBodyLinearLayout.getLayoutParams().height = contentBodyBackground.getHeight() - (int)marginPx;
+            if (isEditableMode() == false) {
+                //不能scroll
+                LinearLayout.LayoutParams params = (LinearLayout.LayoutParams) mContentBodyLinearLayout.getLayoutParams();
+                params.bottomMargin = 0;
+                mContentBodyLinearLayout.setLayoutParams(params);
+                ScrollView scrollView = (ScrollView) getActivity().findViewById(R.id.card_vertical_scrollview);
+                scrollView.setEnabled(false);
+            }
+            mContentBodyLinearLayout.requestLayout();
 
-        if (Build.VERSION.SDK_INT < 16) {
-            mContentBodyLinearLayout.getViewTreeObserver().removeGlobalOnLayoutListener(mContentBodyListener);
-        } else {
-            mContentBodyLinearLayout.getViewTreeObserver().removeOnGlobalLayoutListener(mContentBodyListener);
+            contentBodyBackground.setVisibility(View.VISIBLE);
+
+
+
         }
-
-        if (mResizeMonitorTimer != null) {
-            mResizeMonitorTimer.cancel();
-        }
-
-        final View rootView = getActivity().getWindow().getDecorView().findViewById(android.R.id.content);
-        if (Build.VERSION.SDK_INT < 16) {
-            rootView.getViewTreeObserver().removeGlobalOnLayoutListener(keyboardVisibilityListener);
-        } else {
-            rootView.getViewTreeObserver().removeOnGlobalLayoutListener(keyboardVisibilityListener);
-        }
-
-    }
-
-    @Override
-    public void onStop() {
-        super.onStop();
-
-        LOGD(TAG, "onStop: " + String.format("cardSN = %d", mCurrentCard.cardSN));
-
-    }
+    };
 
 
     boolean mKeyboardDidDismissFlag = true;
     boolean mKeyboardDidShowFlag = false;
-    private ViewTreeObserver.OnGlobalLayoutListener keyboardVisibilityListener = new ViewTreeObserver.OnGlobalLayoutListener() {
+    private ViewTreeObserver.OnGlobalLayoutListener mKeyboardVisibilityListener = new ViewTreeObserver.OnGlobalLayoutListener() {
         @Override
         public void onGlobalLayout() {
 
-            final View rootView = getActivity().getWindow().getDecorView().findViewById(android.R.id.content);
+            final View rootView = getRootView();
 
             final int softKeyboardHeight = 100;
             Rect r = new Rect();
@@ -476,8 +520,8 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnTouchL
         LOGD(TAG, "onDestroy: " + String.format("cardSN = %d", mCurrentCard.cardSN));
         super.onDestroy();
 
-//        RefWatcher refWatcher = AppContext.getRefWatcher(getActivity());
-//        refWatcher.watch(this);
+        RefWatcher refWatcher = AppContext.getRefWatcher(getActivity());
+        refWatcher.watch(this);
 
         mImage.setImageURI(null);
         mImage2.setImageURI(null);
@@ -1394,37 +1438,6 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnTouchL
             //在非edit模式下，我们是在resize结束后才显示的
             mContentBodyLinearLayout.setVisibility(View.VISIBLE);
         }
-        mContentBodyListener = new ViewTreeObserver.OnGlobalLayoutListener() {
-            @Override
-            public void onGlobalLayout() {
-                if (Build.VERSION.SDK_INT < 16) {
-                    mContentBodyLinearLayout.getViewTreeObserver().removeGlobalOnLayoutListener(mContentBodyListener);
-                } else {
-                    mContentBodyLinearLayout.getViewTreeObserver().removeOnGlobalLayoutListener(mContentBodyListener);
-                }
-
-                //动态设置高度
-                float marginPx = TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 10 + 10, getResources().getDisplayMetrics());
-                //不能用getActivity.findViewById，因为有两个card_content_body_fr_with_background_image
-                View contentBodyBackground =  mContentView.findViewById(R.id.card_content_body_fr_with_background_image); //TODO:
-                mContentBodyLinearLayout.getLayoutParams().height = contentBodyBackground.getHeight() - (int)marginPx;
-                if (isEditableMode() == false) {
-                    //不能scroll
-                    LinearLayout.LayoutParams params = (LinearLayout.LayoutParams) mContentBodyLinearLayout.getLayoutParams();
-                    params.bottomMargin = 0;
-                    mContentBodyLinearLayout.setLayoutParams(params);
-                    ScrollView scrollView = (ScrollView) getActivity().findViewById(R.id.card_vertical_scrollview);
-                    scrollView.setEnabled(false);
-                }
-                mContentBodyLinearLayout.requestLayout();
-
-                contentBodyBackground.setVisibility(View.VISIBLE);
-
-
-
-            }
-        };
-        mContentBodyLinearLayout.getViewTreeObserver().addOnGlobalLayoutListener(mContentBodyListener);
 
         createSubheading();
         createMain();

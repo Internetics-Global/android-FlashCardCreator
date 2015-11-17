@@ -496,7 +496,7 @@ public class PackListFragment extends Fragment {
 
         LOGD(TAG, "onDestroy");
 
-//        RefWatcher refWatcher = AppContext.getRefWatcher(getActivity());
-//        refWatcher.watch(this);
+        RefWatcher refWatcher = AppContext.getRefWatcher(getActivity());
+        refWatcher.watch(this);
     }
 }

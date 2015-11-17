@@ -34,6 +34,7 @@ public class DropboxAuthHelper {
     private static DropboxAuthHelper mDropboxAuthHelper;
 
     public static DropboxAuthHelper sharedHelper(Context context) {
+
         if (mDropboxAuthHelper == null) {
             mDropboxAuthHelper = new DropboxAuthHelper(context);
         }
@@ -189,6 +190,12 @@ public class DropboxAuthHelper {
             // Still support using old OAuth 1 tokens.
             session.setAccessTokenPair(new AccessTokenPair(key, secret));
         }
+    }
+
+    public static void cleanup() {
+        mContext = null;
+        mApi = null;
+        mDropboxAuthHelper = null;
     }
 
 }

@@ -150,8 +150,8 @@ public class CardListFragment extends Fragment {
         super.onDestroy();
         getActivity().unregisterReceiver(mReceiver);
 
-//        RefWatcher refWatcher = AppContext.getRefWatcher(getActivity());
-//        refWatcher.watch(this);
+        RefWatcher refWatcher = AppContext.getRefWatcher(getActivity());
+        refWatcher.watch(this);
     }
 
 

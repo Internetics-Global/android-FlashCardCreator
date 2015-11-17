@@ -37,7 +37,7 @@ public class AppContext extends Application {
     public void onCreate() {
         super.onCreate();
 
-//        refWatcher = LeakCanary.install(this);
+        refWatcher = LeakCanary.install(this);
 
         SimpleDateFormat s = new SimpleDateFormat("dd-MM-yyyy hh:mm:ss");
         String timestamp = s.format(new Date());

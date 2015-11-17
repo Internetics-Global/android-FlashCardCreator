@@ -98,8 +98,8 @@ public class SymbolBoxFragment extends Fragment {
     public void onDestroy() {
         super.onDestroy();
 
-//        RefWatcher refWatcher = AppContext.getRefWatcher(getActivity());
-//        refWatcher.watch(this);
+        RefWatcher refWatcher = AppContext.getRefWatcher(getActivity());
+        refWatcher.watch(this);
     }
 
     public class SymbolPageAdapter extends FragmentStatePagerAdapter {
