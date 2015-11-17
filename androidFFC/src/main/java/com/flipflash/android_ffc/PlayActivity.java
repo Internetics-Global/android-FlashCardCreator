@@ -13,6 +13,7 @@ import android.hardware.SensorManager;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
+import android.os.Looper;
 import android.speech.tts.TextToSpeech;
 import android.speech.tts.UtteranceProgressListener;
 import android.support.v4.app.Fragment;
@@ -101,7 +102,7 @@ public class PlayActivity extends FragmentActivity implements SensorEventListene
     private int            mTextToSpeechContentArrayIndex;
     private TextToSpeech   mTTS;
 
-    private Handler        mTTSDelayHandler                             = new Handler();
+    private Handler        mTTSDelayHandler                             = new Handler();  //we don't use this function any more, but still keep here
     private Handler        mAutoHideControlPanelHandler                 = new Handler();
     private Handler        mPauseForAnswerHandler                       = new Handler();
     private Handler        mFirstTimeDelayHandler                       = new Handler();
@@ -1865,19 +1866,13 @@ public class PlayActivity extends FragmentActivity implements SensorEventListene
                     mTTSDelayHandler.removeCallbacksAndMessages(null);
                     mTTSDelayHandler = null;
                 }
-                mTTSDelayHandler = new Handler();
-                mTTSDelayHandler.postDelayed(new Runnable() {
-                    @Override
-                    public void run() {
-                        HashMap<String, String> params = new HashMap<String, String>();
-                        params.put(TextToSpeech.Engine.KEY_PARAM_UTTERANCE_ID, "stringId");//必不可少
-                        if (textToSpeechArray.size() > mTextToSpeechContentArrayIndex && (mTTS != null)) {
-                            String text = textToSpeechArray.get(mTextToSpeechContentArrayIndex);
-                            mTTS.speak(text, TextToSpeech.QUEUE_FLUSH, params);
-                            LOGD(TAG, "TTS Speak text: " + text);
-                        }
-                    }
-                }, 500);
+                HashMap<String, String> params = new HashMap<String, String>();
+                params.put(TextToSpeech.Engine.KEY_PARAM_UTTERANCE_ID, "stringId");//必不可少
+                if (textToSpeechArray.size() > mTextToSpeechContentArrayIndex && (mTTS != null)) {
+                    String text = textToSpeechArray.get(mTextToSpeechContentArrayIndex);
+                    mTTS.speak(text, TextToSpeech.QUEUE_FLUSH, params);
+                    LOGD(TAG, "TTS Speak text: " + text);
+                }
 
             } else {
 

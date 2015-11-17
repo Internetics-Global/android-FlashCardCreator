@@ -127,7 +127,12 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnTouchL
 
     public boolean mIsCreatingCard = false;
     private boolean mIsPlayingCard = false;
-    private boolean mIsSnapShotNotCurrent = false;//as to snapshot,we have different strategy on current showing card and other cards
+
+    /*
+     * true:表明正在进行snapshot
+     * we have different strategy on current showing card and other cards
+     */
+    private boolean mIsSnapShotNotCurrent = false;
     public boolean mIsQuestionShowing = true;
     private boolean mIsTakeSnapshotAllNeeded = false; //when fields that belong to current pack(like title) changes, it will be set true
 
@@ -2355,6 +2360,8 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnTouchL
      */
     public void takeSnapshotAll() {
 
+        LOGD(TAG, "takeSnapshotAll");
+
         mSemaphore = 0;
 
         //step1: take snapshot on current card
@@ -2371,6 +2378,8 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnTouchL
      * do NOT refresh card list view
      */
     private void takeSnapshotCurrentCard() {
+
+        LOGD(TAG, "takeSnapshotCurrentCard");
 
         boolean toggle = false;
 
@@ -4015,6 +4024,7 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnTouchL
     class ViewDidAppearTask extends AsyncTask<Integer, Integer, String> {
 
         final View cardView = mContentView.findViewById(R.id.card);
+        final View contentBodyBackground =  mContentView.findViewById(R.id.card_content_body_fr_with_background_image);
 
         @Override
         protected void onPreExecute() {
@@ -4024,7 +4034,7 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnTouchL
         @Override
         protected String doInBackground(Integer... params) {
 
-            while (cardView.getHeight() == 0 || cardView.getWidth() == 0) {
+            while (cardView.getHeight() == 0 || cardView.getWidth() == 0 || contentBodyBackground.getVisibility() != View.VISIBLE) {
                 try {
                     Thread.sleep(1);
                 } catch (InterruptedException e) {
