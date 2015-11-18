@@ -979,13 +979,6 @@ public class MainActivity extends FragmentActivity implements
         //2. dismiss windows
         dismissCardCreateWindow();
 
-        //3. notify CardListFragment view to update
-        Intent intent = new Intent();
-        intent.setAction(Global.BROADCAST_ACTION_UPDATE_MASTER_VIEW);
-        intent.putExtra(Global.KEY_FROM, Global.BROADCAST_EXTRA_FROM_NEW_CARD);
-        intent.putExtra(Global.KEY_CARD_INDEX, (mCurrentPack.cards.size() - 1));
-        sendBroadcast(intent);
-
     }
 
     private void dismissCardCreateWindow() {
@@ -1011,6 +1004,14 @@ public class MainActivity extends FragmentActivity implements
 
         mCardDetailFragment = null;
         TipHelper.hideEverthing(MainActivity.this);
+
+
+        //无论结果是cancel还是重新生成了一个新的card，都执行这个。这是因为MainActivity中永远只有一个mCardDetailFragment，在新建卡片的过程中，我们更改了mCardDetailFragment，当结束后我们需要restore
+        Intent intent = new Intent();
+        intent.setAction(Global.BROADCAST_ACTION_UPDATE_MASTER_VIEW);
+        intent.putExtra(Global.KEY_FROM, Global.BROADCAST_EXTRA_FROM_NEW_CARD);
+        intent.putExtra(Global.KEY_CARD_INDEX, (mCurrentPack.cards.size() - 1));
+        sendBroadcast(intent);
 
     }
 
