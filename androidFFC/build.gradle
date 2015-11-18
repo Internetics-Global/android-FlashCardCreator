@@ -111,6 +111,8 @@ dependencies {
     compile files('libs/ParseCrashReporting-1.8.3.jar')
     compile files('libs/ParseFacebookUtilsV4-1.10.1.jar')
     compile files('libs/ParseTwitterUtils-1.10.1.jar')
+
+    compile 'com.nostra13.universalimageloader:universal-image-loader:1.9.4'
 }
 
 

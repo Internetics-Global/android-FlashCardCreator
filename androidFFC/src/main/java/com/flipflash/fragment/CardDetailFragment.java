@@ -68,6 +68,7 @@ import com.flipflash.util.OpenUDID_manager;
 import com.flipflash.util.StringUtils;
 import com.flipflash.util.TipHelper;
 import com.flipflash.util.UIHelper;
+import com.nostra13.universalimageloader.core.ImageLoader;
 import com.squareup.leakcanary.RefWatcher;
 
 import net.londatiga.android.ActionItem;
@@ -214,8 +215,6 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnTouchL
 
 
         if (mIsSnapShotNotCurrent == true) {
-            mContentView.setVisibility(View.INVISIBLE);
-
             ViewDidAppearTask dTask = new ViewDidAppearTask();
             dTask.execute(100);
         }
@@ -447,8 +446,8 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnTouchL
             //动态设置高度
             float marginPx = TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 10 + 10, getResources().getDisplayMetrics());
             //不能用getActivity.findViewById，因为有两个card_content_body_fr_with_background_image
-            View contentBodyBackground =  mContentView.findViewById(R.id.card_content_body_fr_with_background_image); //TODO:
-            mContentBodyLinearLayout.getLayoutParams().height = contentBodyBackground.getHeight() - (int)marginPx;
+            View contentBodyBackground =  mContentView.findViewById(R.id.card_content_body_fr_with_background_image);
+            mContentBodyLinearLayout.getLayoutParams().height = contentBodyBackground.getHeight() - (int)marginPx;  //在ScrollView中，高度必须是一个固定值
             if (isEditableMode() == false) {
                 //不能scroll
                 LinearLayout.LayoutParams params = (LinearLayout.LayoutParams) mContentBodyLinearLayout.getLayoutParams();
@@ -460,8 +459,6 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnTouchL
             mContentBodyLinearLayout.requestLayout();
 
             contentBodyBackground.setVisibility(View.VISIBLE);
-
-
 
         }
     };
@@ -1625,10 +1622,11 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnTouchL
 
     private void createImage() {
         LOGD(TAG, "createImage");
-        String imagePathStr = FileOperationHelper.getQuestionImagePlaceholderImagePath();
 
         mImage = new ImageView(getActivity());
-        mImage.setImageURI(Uri.parse(imagePathStr));
+
+//        String imagePathStr = FileOperationHelper.getQuestionImagePlaceholderImagePath();
+//        mImage.setImageURI(Uri.parse(imagePathStr));
 
         mImage.setPadding(5,5,5,5);
 
@@ -1640,10 +1638,11 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnTouchL
 
     private void createImage2() {
         LOGD(TAG, "createImage2");
-        String imagePathStr = FileOperationHelper.getQuestionImagePlaceholderImagePath();
 
         mImage2 = new ImageView(getActivity());
-        mImage2.setImageURI(Uri.parse(imagePathStr));
+
+//        String imagePathStr = FileOperationHelper.getQuestionImagePlaceholderImagePath();
+//        mImage2.setImageURI(Uri.parse(imagePathStr));
 
         mImage2.setPadding(5, 5, 5, 5);
 
@@ -2169,10 +2168,12 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnTouchL
         } else {
             mSidebarTitle.setText(mCurrentPack.sidebarTitle);
         }
+
         mCardSN.setText(String.format("%d", mCurrentCard.cardSN));
 
         if (StringUtils.isEmpty(mCurrentPack.logoImageUriFormatStr) == false) {
-            mLogoImage.setImageURI(Uri.parse(mCurrentPack.logoImageUriFormatStr));
+            ImageLoader imageLoader = ImageLoader.getInstance();
+            imageLoader.displayImage(mCurrentPack.logoImageUriFormatStr, mLogoImage);
         }
 
         mCreator.setText(mCurrentPack.creatorNickName);
@@ -2208,12 +2209,13 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnTouchL
         mMain.setText(mCurrentCard.question.main);
         mSub.setText(mCurrentCard.question.sub);
 
+        ImageLoader imageLoader = ImageLoader.getInstance();
         if (StringUtils.isEmpty(mCurrentCard.question.imageUriFormatStr) == false) {
-            mImage.setImageURI(Uri.parse(mCurrentCard.question.imageUriFormatStr));
+            imageLoader.displayImage(mCurrentCard.question.imageUriFormatStr, mImage);
         }
 
         if (StringUtils.isEmpty(mCurrentCard.question.imageUriFormatStr2) == false) {
-            mImage2.setImageURI(Uri.parse(mCurrentCard.question.imageUriFormatStr2));
+             imageLoader.displayImage(mCurrentCard.question.imageUriFormatStr2, mImage2);
         }
 
         if (StringUtils.isEmpty(mCurrentCard.question.backgroundImageUriFormatStr) == false) {
@@ -2231,12 +2233,14 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnTouchL
         mMain.setText(mCurrentCard.answer.main);
         mSub.setText(mCurrentCard.answer.sub);
 
+        ImageLoader imageLoader = ImageLoader.getInstance();
+
         if (StringUtils.isEmpty(mCurrentCard.answer.imageUriFormatStr) == false) {
-            mImage.setImageURI(Uri.parse(mCurrentCard.answer.imageUriFormatStr));
+            imageLoader.displayImage(mCurrentCard.answer.imageUriFormatStr, mImage);
         }
 
         if (StringUtils.isEmpty(mCurrentCard.answer.imageUriFormatStr2) == false) {
-            mImage2.setImageURI(Uri.parse(mCurrentCard.answer.imageUriFormatStr2));
+            imageLoader.displayImage(mCurrentCard.answer.imageUriFormatStr2, mImage2);
         }
 
         if (StringUtils.isEmpty(mCurrentCard.answer.backgroundImageUriFormatStr) == false) {
@@ -4034,6 +4038,7 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnTouchL
         @Override
         protected String doInBackground(Integer... params) {
 
+
             while (cardView.getHeight() == 0 || cardView.getWidth() == 0 || contentBodyBackground.getVisibility() != View.VISIBLE) {
                 try {
                     Thread.sleep(1);
@@ -4193,7 +4198,7 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnTouchL
     private void setCardBackgroundImageWithBitmap(Bitmap bitmap) {
 
         if (bitmap == null) {
-            LOGD(TAG, "setCardBackgroundImageWithBitmap: null bitmap for setCardBackgroundImageWithBitmap");
+            LOGD(TAG, "setCardBackgroundImageWithBitmap: null bitmap");
             return;
         }
 
@@ -4218,16 +4223,15 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnTouchL
 
 
     private void setCardBackgroundImageWithUri(String uriString) {
-        File f = new File(FileOperationHelper.deleteUriSchemeHeader(uriString));
-        Drawable drawable = Drawable.createFromPath(f.getAbsolutePath());
-
-        if (drawable == null) {
-            LOGD(TAG, "setCardBackgroundImageWithUri: null drawable for setCardBackgroundImageWithUri");
+        LOGD(TAG, "setCardBackgroundImageWithUri: " + uriString);
+        RoundedBottomRightImageView backgroundImageView = (RoundedBottomRightImageView) mContentView.findViewById(R.id.card_background_image);
+        if (uriString == null) {
+            backgroundImageView.setImageBitmap(null);
         } else {
-            Bitmap bitmap = ((BitmapDrawable) drawable).getBitmap();
-
-            setCardBackgroundImageWithBitmap(bitmap);
+            ImageLoader imageLoader = ImageLoader.getInstance();
+            imageLoader.displayImage(uriString, backgroundImageView);
         }
+
     }
 
 

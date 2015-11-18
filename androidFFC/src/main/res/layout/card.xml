@@ -177,8 +177,7 @@
                         android:adjustViewBounds="true"
                         android:layout_gravity="center"
                         app:riv_corner_radius="15dp"
-                        android:background="@drawable/shape_image_round_corner"
-                        android:src="@drawable/question_placeholder_logo"/>
+                        android:background="@drawable/shape_image_round_corner"/>
                 </LinearLayout>
 
                 <FrameLayout

@@ -1449,7 +1449,7 @@ public class PlayActivity extends FragmentActivity implements SensorEventListene
                     }
 
                     if (durationForRecordedSound == 0) {
-                        textToSpeechAllContentNow(cardDetailFragment,isMuteText2Speech);
+                        text2SpeechAllContentNow(cardDetailFragment, isMuteText2Speech);
                     } else {
 
                         if ((AppConfig.sharedInstance().isTextToSpeech() == false) && (mIsAutoScroll == false) &&
@@ -1461,7 +1461,7 @@ public class PlayActivity extends FragmentActivity implements SensorEventListene
                                 public void run() {
 
                                     if (mIsShuttingDown == false) {
-                                        textToSpeechAllContentNow(cardDetailFragment,isMuteText2Speech);
+                                        text2SpeechAllContentNow(cardDetailFragment, isMuteText2Speech);
                                     }
                                 }
                             },durationForRecordedSound + 1000);  //这里1000（1秒）是适当的，因为mPauseForAnswerSeekBar或K_IntervalBetweenCardSeconds_ForQAOnly都远大于这个数
@@ -1478,7 +1478,7 @@ public class PlayActivity extends FragmentActivity implements SensorEventListene
                         mText2Speech_AfterSoundRecording_Handler = null;
                     }
 
-                    textToSpeechAllContentNow(cardDetailFragment,isMuteText2Speech);
+                    text2SpeechAllContentNow(cardDetailFragment, isMuteText2Speech);
                 }
             }
 
@@ -1537,7 +1537,7 @@ public class PlayActivity extends FragmentActivity implements SensorEventListene
     /*
      * isMuteText2Speech, if false, mute but still text2speech
      */
-    private void textToSpeechAllContentNow(CardDetailFragment cardDetailFragment,boolean isMuteText2Speech) {
+    private void text2SpeechAllContentNow(CardDetailFragment cardDetailFragment,boolean isMuteText2Speech) {
         LOGD(TAG, "textToSpeechAllContentNow");
 
         if (mIsShuttingDown) {
@@ -1563,7 +1563,7 @@ public class PlayActivity extends FragmentActivity implements SensorEventListene
             HashMap<String, String> params = new HashMap<String, String>();
             params.put(TextToSpeech.Engine.KEY_PARAM_UTTERANCE_ID, "stringId");//必不可少
             mTTS.speak(textToSpeechArray.get(0), TextToSpeech.QUEUE_FLUSH, params);
-            LOGD(TAG, "textToSpeechAllContentNow: "+ "speak" + textToSpeechArray.get(mTextToSpeechContentArrayIndex));
+            LOGD(TAG, "textToSpeechAllContentNow: "+ "speak" + textToSpeechArray.get(0));
 
         }  else {
             //playAudio(); //play audio after Text2Speech finished
@@ -1886,6 +1886,7 @@ public class PlayActivity extends FragmentActivity implements SensorEventListene
         @Override
         public void onDone(String utteranceId) {
             LOGD("UtteranceProgressListener", "onDone");
+
             //go to next
             mTextToSpeechContentArrayIndex ++;
 
