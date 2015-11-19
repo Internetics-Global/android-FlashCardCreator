@@ -213,13 +213,6 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnTouchL
         configureSoundRecordPlayImageView(); //play sound during play mode
         configureLogoImageView();
 
-
-        if (mIsSnapShotNotCurrent == true) {
-            ViewDidAppearTask dTask = new ViewDidAppearTask();
-            dTask.execute(100);
-        }
-
-
         return mContentView;
     }
 
@@ -433,10 +426,15 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnTouchL
     }
 
 
+
+
     //由于我们是动态布局（通过weight)，而ScrollView（见card.xml）中要求内容是确定的高度，而不是match_parent
     private ViewTreeObserver.OnGlobalLayoutListener mContentBodyListener = new ViewTreeObserver.OnGlobalLayoutListener() {
         @Override
         public void onGlobalLayout() {
+
+            LOGD(TAG, "mContentBodyListener onGlobalLayout with sn:" + mCardSN.getText());
+
             if (Build.VERSION.SDK_INT < 16) {
                 mContentBodyLinearLayout.getViewTreeObserver().removeGlobalOnLayoutListener(this);
             } else {
@@ -459,6 +457,19 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnTouchL
             mContentBodyLinearLayout.requestLayout();
 
             contentBodyBackground.setVisibility(View.VISIBLE);
+
+            if (mIsSnapShotNotCurrent) {
+                mIsSnapShotNotCurrent = false;
+                Handler handler = new Handler();
+                        handler.postDelayed(new Runnable() {
+
+                            @Override
+                            public void run() {
+                                takeSnapshotCurrentCard();
+                            }
+
+                        }, 450); // 450ms 在onGlobalLayout调用后，需要一段时间完成onDraw方法（比如setText), 450秒是个经验值，但是应该足够
+            }
 
         }
     };
@@ -4020,54 +4031,9 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnTouchL
     }
 
 
-
-    /**
-     * Check whether the view has appeared
-     * Since there's no iOS like ViewDidAppear method, we have to do here
-     */
-    class ViewDidAppearTask extends AsyncTask<Integer, Integer, String> {
-
-        final View cardView = mContentView.findViewById(R.id.card);
-        final View contentBodyBackground =  mContentView.findViewById(R.id.card_content_body_fr_with_background_image);
-
-        @Override
-        protected void onPreExecute() {
-            super.onPreExecute();
-        }
-
-        @Override
-        protected String doInBackground(Integer... params) {
-
-
-            while (cardView.getHeight() == 0 || cardView.getWidth() == 0 || contentBodyBackground.getVisibility() != View.VISIBLE) {
-                try {
-                    Thread.sleep(1);
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
-            }
-
-            return "Done";
-        }
-
-        @Override
-        protected void onProgressUpdate(Integer... progress) {
-            super.onProgressUpdate(progress);
-        }
-
-        @Override
-        protected void onPostExecute(String result) {
-            super.onPostExecute(result);
-            takeSnapshotCurrentCard();
-            mIsSnapShotNotCurrent = false;
-
-        }
-
-    }
-
-
-
     public void saveEditedCard() {
+
+        LOGD(TAG, "saveEditedCard");
 
         //step2: prepare update info in mast list view
         if (mIsTakeSnapshotAllNeeded && (mIsCreatingCard == false)) {

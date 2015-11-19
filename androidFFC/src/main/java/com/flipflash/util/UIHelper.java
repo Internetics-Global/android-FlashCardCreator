@@ -337,7 +337,7 @@ public class UIHelper {
             throw new IllegalStateException("loadBitmapFromView should have a view with size >0");
         }
 
-        Bitmap bitmap = Bitmap.createBitmap(inWidth, inHeight, Bitmap.Config.ARGB_8888);
+        Bitmap bitmap = Bitmap.createBitmap(inWidth, inHeight, Bitmap.Config.RGB_565);
         Canvas canvas = new Canvas(bitmap);
         v.draw(canvas);
 
