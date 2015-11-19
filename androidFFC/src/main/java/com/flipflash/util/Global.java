@@ -9,6 +9,11 @@ import com.flipflash.android_ffc.R;
 
 public class Global {
 
+    /**
+     *  In order to submit a version as soon as possible, we prepare this version and remove Amazon for client uploading
+     */
+    public static final boolean  FFC_WITHOUT_SUBSCRIPTION = true;
+
     public static final boolean   IS_DOGFOOD_BUILD =  true;  //是否开启debug模式
 
     public static final String BucketPostfixAfterUserName = "55b5aa55673793805862";

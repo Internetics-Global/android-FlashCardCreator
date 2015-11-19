@@ -126,6 +126,7 @@
             style="@style/option_item_rl" >
 
             <TextView
+                android:id="@+id/storage_provider_toggle_textview"
                 style="@style/option_item_text_parent"
                 android:text="@string/Table_Item_Amazon_Or_Dropbox"
                 android:textColor="@android:color/white"
@@ -141,6 +142,7 @@
 
 
         <View
+            android:id="@+id/rl_social_account_line"
             style="@style/h_line" />
 
         <RelativeLayout

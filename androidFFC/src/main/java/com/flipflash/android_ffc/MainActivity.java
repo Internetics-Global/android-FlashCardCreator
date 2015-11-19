@@ -503,6 +503,24 @@ public class MainActivity extends FragmentActivity implements
 
         LOGD(TAG, "onResume");
 
+        if (DropboxAuthHelper.sharedHelper(MainActivity.this).isAuthenticationSuccessful()) {
+
+            try {
+                // Mandatory call to complete the auth
+                DropboxAuthHelper.sharedHelper(MainActivity.this).finishAuthentication();
+
+                // Store it locally in our app for later use
+                DropboxAuthHelper.sharedHelper(MainActivity.this).storeAuth();
+
+                share();
+
+            } catch (IllegalStateException e) {
+                LOGD(TAG, "onResume: Error authenticating " + e);
+            }
+
+            return;
+        }
+
         if (mIsNecessaryToRestoreCSSToolbar) {
             initializeCSSToolbar();
             mIsNecessaryToRestoreCSSToolbar = false;
@@ -1044,14 +1062,22 @@ public class MainActivity extends FragmentActivity implements
             return;
         }
 
-        if (DropboxAuthHelper.sharedHelper(MainActivity.this).isLinked()) {
-            share();
-        } else {
-            ParseUser currentUser = ParseUser.getCurrentUser();
-            if (currentUser != null) {
+        if (Global.FFC_WITHOUT_SUBSCRIPTION) {
+            if (DropboxAuthHelper.sharedHelper(MainActivity.this).isLinked()) {
                 share();
             } else {
-                parseUserAuth();
+                DropboxAuthHelper.sharedHelper(MainActivity.this).startAuthentication();  //跳转到授权页，成功后，会到onResume进行处理。
+            }
+        } else {
+            if (DropboxAuthHelper.sharedHelper(MainActivity.this).isLinked()) {
+                share();
+            } else {
+                ParseUser currentUser = ParseUser.getCurrentUser();
+                if (currentUser != null) {
+                    share();
+                } else {
+                    parseUserAuth();
+                }
             }
         }
     }

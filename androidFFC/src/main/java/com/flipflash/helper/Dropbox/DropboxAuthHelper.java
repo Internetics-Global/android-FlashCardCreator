@@ -43,7 +43,7 @@ public class DropboxAuthHelper {
 
 
     public DropboxAuthHelper(Context context) {
-        mContext = context;
+        mContext = context.getApplicationContext(); //这样可以避免内存泄漏
 
         if (mApi == null) {
 

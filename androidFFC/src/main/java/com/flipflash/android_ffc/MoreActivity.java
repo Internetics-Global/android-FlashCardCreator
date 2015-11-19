@@ -18,6 +18,7 @@ import android.widget.TextView;
 import com.flipflash.UI.togglebutton.ToggleButton;
 import com.flipflash.helper.Dropbox.DropboxAuthHelper;
 import com.flipflash.util.AppConfig;
+import com.flipflash.util.Global;
 import com.parse.LogOutCallback;
 import com.parse.ParseException;
 import com.parse.ParseUser;
@@ -187,11 +188,13 @@ public class MoreActivity extends Activity {
                 } else {
                     DropboxAuthHelper.sharedHelper(MoreActivity.this).logOut();
 
-                    AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(
-                            MoreActivity.this);
-                    alertDialogBuilder.setTitle(R.string.DIALOG_AlERT);
-                    alertDialogBuilder
-                            .setMessage(R.string.DIALOG_USE_AMAZON_AS_STORAGE).show();
+                    if (Global.FFC_WITHOUT_SUBSCRIPTION == false) {
+                        AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(
+                                MoreActivity.this);
+                        alertDialogBuilder.setTitle(R.string.DIALOG_AlERT);
+                        alertDialogBuilder
+                                .setMessage(R.string.DIALOG_USE_AMAZON_AS_STORAGE).show();
+                    }
                 }
 
             }
@@ -205,42 +208,54 @@ public class MoreActivity extends Activity {
         });
 
 
-        findViewById(R.id.rl_social_account).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
+        if (Global.FFC_WITHOUT_SUBSCRIPTION) {
+            findViewById(R.id.rl_social_account_line).setVisibility(View.GONE);
+            findViewById(R.id.rl_social_account).setVisibility(View.GONE);
 
-                ParseUser currentUser = ParseUser.getCurrentUser();
+            TextView textView = (TextView) findViewById(R.id.storage_provider_toggle_textview);
+            textView.setText(R.string.Table_Item_Dropbox_Logged_In);
 
-                if (currentUser != null) {
-                    // User clicked to log out.
+        } else {
 
-                    final SweetAlertDialog pDialog = new SweetAlertDialog(MoreActivity.this, SweetAlertDialog.PROGRESS_TYPE);
-                    pDialog.getProgressHelper().setBarColor(Color.parseColor("#A5DC86"));
-                    pDialog.setTitleText("Logging out...");
-                    pDialog.setCancelable(false);
-                    pDialog.show();
+            findViewById(R.id.rl_social_account).setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
 
-                    ParseUser.logOutInBackground(new LogOutCallback() {
-                        @Override
-                        public void done(ParseException e) {
+                    ParseUser currentUser = ParseUser.getCurrentUser();
 
-                            mSocialAccountTextView.setText(R.string.Table_Item_Log_In_Social_Network);
+                    if (currentUser != null) {
+                        // User clicked to log out.
 
-                            pDialog.dismiss();
+                        final SweetAlertDialog pDialog = new SweetAlertDialog(MoreActivity.this, SweetAlertDialog.PROGRESS_TYPE);
+                        pDialog.getProgressHelper().setBarColor(Color.parseColor("#A5DC86"));
+                        pDialog.setTitleText("Logging out...");
+                        pDialog.setCancelable(false);
+                        pDialog.show();
 
-                            new SweetAlertDialog(MoreActivity.this, SweetAlertDialog.SUCCESS_TYPE)
-                                    .setTitleText(getString(R.string.DIALOG_AlERT))
-                                    .setContentText(getString(R.string.DIALOG_SOCIAL_MEDIA_LOG_OUT_SUCCESS))
-                                    .show();
+                        ParseUser.logOutInBackground(new LogOutCallback() {
+                            @Override
+                            public void done(ParseException e) {
 
-                        }
-                    });
+                                mSocialAccountTextView.setText(R.string.Table_Item_Log_In_Social_Network);
 
-                } else {
-                    parseUserAuth();
+                                pDialog.dismiss();
+
+                                new SweetAlertDialog(MoreActivity.this, SweetAlertDialog.SUCCESS_TYPE)
+                                        .setTitleText(getString(R.string.DIALOG_AlERT))
+                                        .setContentText(getString(R.string.DIALOG_SOCIAL_MEDIA_LOG_OUT_SUCCESS))
+                                        .show();
+
+                            }
+                        });
+
+                    } else {
+                        parseUserAuth();
+                    }
                 }
-            }
-        });
+            });
+        }
+
+
 
 
         findViewById(R.id.rl_send_log).setOnClickListener(new View.OnClickListener() {
@@ -300,7 +315,7 @@ public class MoreActivity extends Activity {
                     DropboxAuthHelper.sharedHelper(MoreActivity.this).storeAuth();
 
                 } catch (IllegalStateException e) {
-                    LOGW("ccaa", "Error authenticating", e);
+                    LOGD(TAG, "onResume: Error authenticating " + e);
                 }
 
                 mStorageProviderToggleButton.setToggleOn();
