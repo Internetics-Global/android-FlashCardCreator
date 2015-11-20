@@ -852,21 +852,75 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnTouchL
 
     private void showImageVideoSourceDialog() {
         new AlertDialog.Builder(getActivity())
-                .setTitle(R.string.Label_Select)
+                .setTitle(R.string.Title_Image_Copyright)
                 .setMessage(R.string.DIALOG_IMAGE_VIDEO_SELECTION)
-                .setPositiveButton(R.string.DIALOG_INSERT_YOUTUBE_URL, new DialogInterface.OnClickListener() {
+                .setNegativeButton(R.string.DIALOG_INSERT_YOUTUBE_URL, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         showYoutubeLinkageInputDialog();
                     }
                 })
-                .setNegativeButton(R.string.DIALOG_SELECT_FROM_LIBRARY, new DialogInterface.OnClickListener() {
+                .setNeutralButton(R.string.DIALOG_SELECT_FROM_LIBRARY, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         selectImageOrVideoFromLibrary();
                     }
                 })
+                .setPositiveButton(R.string.DIALOG_REMOVE_VIDEO_IMAGE, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+
+                        deleteImageAndVideo();
+
+                        if (mIsImage2Active) {
+                            String placeholderImagePath = FileOperationHelper.getQuestionImagePlaceholderImagePath();
+                            mImage2.setImageURI(Uri.parse(placeholderImagePath));
+                        } else {
+                            String placeholderImagePath = FileOperationHelper.getAnswerImagePlaceholderImagePath();
+                            mImage.setImageURI(Uri.parse(placeholderImagePath));
+                        }
+                    }
+                })
                 .show();
+    }
+
+    private void deleteImageAndVideo() {
+
+        String targetImage;
+        String targetVideo;
+        if (mIsImage2Active) {
+            if (mIsQuestionShowing) {
+                targetVideo = mCurrentCard.question.movieUriFormatStr2;
+                targetImage = mCurrentCard.question.imageUriFormatStr2;
+            } else {
+                targetVideo = mCurrentCard.answer.movieUriFormatStr2;
+                targetImage = mCurrentCard.answer.imageUriFormatStr2;
+            }
+        } else {
+            if (mIsQuestionShowing) {
+                targetVideo = mCurrentCard.question.movieUriFormatStr;
+                targetImage = mCurrentCard.question.imageUriFormatStr;
+            } else {
+                targetVideo = mCurrentCard.answer.movieUriFormatStr;
+                targetImage = mCurrentCard.answer.imageUriFormatStr;
+            }
+        }
+
+        if (StringUtils.isEmpty(targetImage) == false && targetImage.toLowerCase().contains("placeholder") == false) {
+            File file = new File(FileOperationHelper.deleteUriSchemeHeader(targetImage));
+            boolean success = file.delete();
+            if (success == false) {
+                LOGE(TAG, "failure to delete");
+            }
+        }
+
+        if (StringUtils.isEmpty(targetVideo) == false && targetVideo.toLowerCase().contains("placeholder") == false) {
+            File file = new File(FileOperationHelper.deleteUriSchemeHeader(targetVideo));
+            boolean success = file.delete();
+            if (success == false) {
+                LOGE(TAG, "failure to delete");
+            }
+        }
     }
 
 
@@ -976,7 +1030,7 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnTouchL
 
                     if (string.length() > 0) {
                         new AlertDialog.Builder(getActivity())
-                                .setTitle(R.string.Optional_Edit_Or_Remove)
+                                .setTitle(R.string.Title_Image_Copyright)
                                 .setPositiveButton(R.string.Optional_Remove_Background_Image, new DialogInterface.OnClickListener() {
                                     @Override
                                     public void onClick(DialogInterface dialog, int which) {
