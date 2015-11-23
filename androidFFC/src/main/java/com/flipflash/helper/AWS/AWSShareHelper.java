@@ -149,6 +149,7 @@ public class AWSShareHelper extends AsyncTask<Void, Long, Boolean> {
                             didDismissDownloadTimesDialog(9999);
                         }
                     })
+                    .setCancelable(false)
                     .show();
         }
     }

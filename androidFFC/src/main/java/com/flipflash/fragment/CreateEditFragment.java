@@ -1,7 +1,6 @@
 package com.flipflash.fragment;
 
 import android.app.Activity;
-import android.app.DialogFragment;
 import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
@@ -9,6 +8,7 @@ import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
+import android.support.v4.app.DialogFragment;
 import android.util.Base64;
 
 import android.view.KeyEvent;
@@ -43,8 +43,12 @@ import org.adw.library.widgets.discreteseekbar.DiscreteSeekBar;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.List;
 
 import cn.pedant.SweetAlert.SweetAlertDialog;
+import vn.tungdx.mediapicker.MediaItem;
+import vn.tungdx.mediapicker.MediaOptions;
+import vn.tungdx.mediapicker.activities.MediaPickerActivity;
 
 import static com.flipflash.util.LogUtils.LOGD;
 import static com.flipflash.util.LogUtils.LOGE;
@@ -129,18 +133,10 @@ public class CreateEditFragment extends DialogFragment implements TextView.OnEdi
 
             @Override
             public void onClick(View v) {
-                try {
-                    //注意这里:http://stackoverflow.com/questions/27762377/android-why-intent-extra-local-only-shows-google-photos
-                    startActivityForResult(
-                            new Intent(
-                                    Intent.ACTION_PICK,
-                                    android.provider.MediaStore.Images.Media.INTERNAL_CONTENT_URI),
-                            CODE_REQUEST_IMAGE_FROM_IMAGE_LIBRARY);
-                } catch (Exception e) {
-                    Toast.makeText(AppContext.getAppContext(),
-                            getString(R.string.DIALOG_NO_PHOTO_GALLERIES_FOUND),
-                            Toast.LENGTH_SHORT)
-                            .show();
+
+                MediaOptions options = MediaOptions.createDefault();
+                if (options != null) {
+                    MediaPickerActivity.open(CreateEditFragment.this,CODE_REQUEST_IMAGE_FROM_IMAGE_LIBRARY,options);
                 }
 
             }
@@ -339,7 +335,11 @@ public class CreateEditFragment extends DialogFragment implements TextView.OnEdi
             if (resultCode == Activity.RESULT_OK) {
 
                 Bitmap resultBitmap = null;
-                Uri selectedImageURI = data.getData();
+
+                List<MediaItem> mMediaSelectedList = MediaPickerActivity
+                        .getMediaItemSelected(data);
+                MediaItem item = mMediaSelectedList.get(0);//因为是单选，所以永远是第一个
+                Uri selectedImageURI = item.getUriOrigin();
 
                 //step1: get image
                 resultBitmap = UIHelper.bitmapFromUri(getActivity(),selectedImageURI,400);

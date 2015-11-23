@@ -72,6 +72,7 @@ public class PackDownloadHelper extends AsyncTask<Void, Long, Boolean> {
         } else {
             mDialog.setMessage(mContext.getString(R.string.Title_Downloading));
         }
+        mDialog.setCancelable(false);
         mDialog.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
         mDialog.setProgress(0);
         mDialog.setButton(mContext.getString(R.string.DIALOG_CANCEL), new DialogInterface.OnClickListener() {

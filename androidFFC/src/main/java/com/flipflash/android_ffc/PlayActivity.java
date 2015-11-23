@@ -169,11 +169,8 @@ public class PlayActivity extends FragmentActivity implements SensorEventListene
 
         mSensorManager = (SensorManager) getSystemService(Context.SENSOR_SERVICE);
 
-        if (AppConfig.sharedInstance().isTextToSpeech()) {
-            setupTextToSpeech();
-        }
-
-
+        setupTextToSpeech();
+        
         setupViews();
 
 

@@ -23,6 +23,7 @@ import android.text.Editable;
 import android.text.InputType;
 import android.text.TextWatcher;
 import android.util.DisplayMetrics;
+import android.util.Log;
 import android.util.TypedValue;
 import android.view.Gravity;
 import android.view.KeyEvent;
@@ -84,6 +85,9 @@ import java.util.Timer;
 import java.util.TimerTask;
 
 import cn.pedant.SweetAlert.SweetAlertDialog;
+import vn.tungdx.mediapicker.MediaItem;
+import vn.tungdx.mediapicker.MediaOptions;
+import vn.tungdx.mediapicker.activities.MediaPickerActivity;
 
 import static com.flipflash.util.LogUtils.LOGD;
 import static com.flipflash.util.LogUtils.LOGE;
@@ -651,40 +655,12 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnTouchL
 
     private void selectImageOrVideoFromLibrary() {
         if (mCurrentPack.creatorID.equals(OpenUDID_manager.getOpenUDID())) {
-            try {
-
-                final String galleryPackage1 = "com.android.gallery3d";
-                final String galleryPackage2 = "com.google.android.gallery3d";
-
-                boolean found = false;
-                Intent intent = new Intent(android.content.Intent.ACTION_GET_CONTENT);
-                intent.setType("video/*,image/*");
-                List<ResolveInfo> resInfo = getActivity().getPackageManager().queryIntentActivities(intent,0);
-                if (!resInfo.isEmpty()) {
-                    for (ResolveInfo info:resInfo) {
-                        if (info.activityInfo.packageName.toLowerCase().contains(galleryPackage1) ||
-                                info.activityInfo.packageName.toLowerCase().contains(galleryPackage2)) {
-                            intent.setPackage(info.activityInfo.packageName);
-                            found = true;
-                            break;
-                        }
-                    }
-
-                }
-
-                if (!found) {
-                    startActivityForResult(intent, REQUEST_CODE_FROM_IMAGE);
-                } else {
-                    startActivityForResult(Intent.createChooser(intent,"Select"),REQUEST_CODE_FROM_IMAGE);
-                }
-
-
-
-            } catch (Exception e) {
-                Toast.makeText(AppContext.getAppContext(),
-                        getString(R.string.DIALOG_NO_PHOTO_GALLERIES_FOUND),
-                        Toast.LENGTH_SHORT)
-                        .show();
+            MediaOptions.Builder builder = new MediaOptions.Builder();
+            MediaOptions options = builder.canSelectBothPhotoVideo()
+                    .canSelectMultiPhoto(false).canSelectMultiVideo(false)
+                    .build();
+            if (options != null) {
+                MediaPickerActivity.open(CardDetailFragment.this, REQUEST_CODE_FROM_IMAGE, options);
             }
         } else {
             if (mIsQuestionShowing) {
@@ -936,20 +912,10 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnTouchL
 
                 if (mIsPlayingCard == false) {
                     if (isEditableMode()) {
-                        try {
-                            startActivityForResult(
-                                    new Intent(
-                                            Intent.ACTION_PICK,
-                                            android.provider.MediaStore.Images.Media.INTERNAL_CONTENT_URI),
-                                    REQUEST_CODE_FROM_LOGO);
-                        } catch (Exception e) {
-                            Toast.makeText(AppContext.getAppContext(),
-                                    getString(R.string.DIALOG_NO_PHOTO_GALLERIES_FOUND),
-                                    Toast.LENGTH_SHORT)
-                                    .show();
+                        MediaOptions options = MediaOptions.createDefault();
+                        if (options != null) {
+                            MediaPickerActivity.open(CardDetailFragment.this, REQUEST_CODE_FROM_LOGO, options);
                         }
-
-
                     } else {
                         Intent intent = new Intent(getActivity(), WebViewActivity.class);
                         intent.putExtra("url", mCurrentPack.logoURL);
@@ -1048,33 +1014,17 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnTouchL
                                 .setNegativeButton(R.string.Optional_Change_Background_Image, new DialogInterface.OnClickListener() {
                                     @Override
                                     public void onClick(DialogInterface dialog, int which) {
-                                        try {
-                                            startActivityForResult(
-                                                    new Intent(
-                                                            Intent.ACTION_PICK,
-                                                            android.provider.MediaStore.Images.Media.INTERNAL_CONTENT_URI),
-                                                    REQUEST_CODE_FROM_BACKGROUND);
-                                        } catch (Exception e) {
-                                            Toast.makeText(AppContext.getAppContext(),
-                                                    getString(R.string.DIALOG_NO_PHOTO_GALLERIES_FOUND),
-                                                    Toast.LENGTH_SHORT)
-                                                    .show();
+                                        MediaOptions options = MediaOptions.createDefault();;
+                                        if (options != null) {
+                                            MediaPickerActivity.open(CardDetailFragment.this, REQUEST_CODE_FROM_BACKGROUND, options);
                                         }
                                     }
                                 })
                                 .show();
                     } else {
-                        try {
-                            startActivityForResult(
-                                    new Intent(
-                                            Intent.ACTION_PICK,
-                                            android.provider.MediaStore.Images.Media.INTERNAL_CONTENT_URI),
-                                    REQUEST_CODE_FROM_BACKGROUND);
-                        } catch (Exception e) {
-                            Toast.makeText(AppContext.getAppContext(),
-                                    getString(R.string.DIALOG_NO_PHOTO_GALLERIES_FOUND),
-                                    Toast.LENGTH_SHORT)
-                                    .show();
+                        MediaOptions options = MediaOptions.createDefault();;
+                        if (options != null) {
+                            MediaPickerActivity.open(CardDetailFragment.this, REQUEST_CODE_FROM_BACKGROUND, options);
                         }
                     }
 
@@ -4486,9 +4436,9 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnTouchL
 
         LOGD(TAG, "onActivityResult");
 
-        final int requestCodeFinal = requestCode;
-        final int resultCodeFinal = resultCode;
-        final Intent dataFinal = data;
+        final int requestCodeFinal   = requestCode;
+        final int resultCodeFinal    = resultCode;
+        final Intent  dataFinal      = data;
 
         //whatever RESULT_OK or RESULT_CANCELED, we need to do this first
         ((MainActivity) getActivity()).mIsAllowedToShowPackList = false;
@@ -4505,9 +4455,13 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnTouchL
 
                 if (resultCodeFinal == Activity.RESULT_OK) {
 
-                    Uri selectedURI = dataFinal.getData();
-
                     if (requestCodeFinal == REQUEST_CODE_FROM_BACKGROUND) {
+
+                        List<MediaItem> mMediaSelectedList = MediaPickerActivity
+                                .getMediaItemSelected(dataFinal);
+                        MediaItem item = mMediaSelectedList.get(0);//因为是单选，所以永远是第一个
+                        Uri selectedURI = item.getUriOrigin();
+
                         LOGD(TAG, "onActivityResult: ready to crop");
                         Intent intent = new Intent(getActivity(), CropActivity.class);
                         intent.putExtra("uri",selectedURI);
@@ -4518,6 +4472,12 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnTouchL
                         handleCrop(REQUEST_CODE_FROM_BACKGROUND_AFTER_CROPPED,resultCodeFinal,dataFinal);
 
                     } else {
+
+                        List<MediaItem> mMediaSelectedList = MediaPickerActivity
+                                .getMediaItemSelected(dataFinal);
+                        MediaItem item = mMediaSelectedList.get(0);//因为是单选，所以永远是第一个
+                        Uri selectedURI = item.getUriOrigin();
+
                         String decodeUriStr = "";
                         try {
                             decodeUriStr = URLDecoder.decode(selectedURI.toString(), "UTF-8");

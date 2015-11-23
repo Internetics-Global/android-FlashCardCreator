@@ -2,7 +2,6 @@ package com.flipflash.android_ffc;
 
 import android.app.Activity;
 import android.app.AlertDialog;
-import android.app.DialogFragment;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -15,6 +14,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
@@ -275,7 +275,7 @@ public class MainActivity extends FragmentActivity implements
         switch (item.getItemId()) {
             case R.id.actionbar_add_pack: {
                 DialogFragment dialogFragment = new CreateEditFragment();
-                dialogFragment.show(getFragmentManager(), "add_pack_fragment");
+                dialogFragment.show(getSupportFragmentManager(), "add_pack_fragment");
                 break;
             }
             case R.id.actionbar_edit:
@@ -1156,6 +1156,7 @@ public class MainActivity extends FragmentActivity implements
         passwordEditText.setSingleLine();
         new AlertDialog.Builder(this)
                 .setTitle(R.string.DIALOG_SET_PASSWORD)
+                .setCancelable(false)
                 .setIcon(android.R.drawable.ic_dialog_info)
                 .setView(passwordEditText)
                 .setPositiveButton(R.string.DIALOG_SET, new DialogInterface.OnClickListener() {
@@ -1782,6 +1783,7 @@ public class MainActivity extends FragmentActivity implements
                     if (mUploadProgressDialog == null) {
                         mUploadProgressDialog = new ProgressDialog(MainActivity.this);
                         mUploadProgressDialog.setMax(100);
+                        mUploadProgressDialog.setCancelable(false);
                         mUploadProgressDialog.setCanceledOnTouchOutside(false);
                         mUploadProgressDialog.setMessage(getString(R.string.Indicator_Upload));
                         mUploadProgressDialog.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);

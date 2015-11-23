@@ -89,6 +89,9 @@ public class DropboxAuthHelper {
         return b;
     }
 
+    /*
+     * 如果已经是logged in，返回false。只有startAuthentication发起后，并网页登陆成功后，才会一次性返回true
+     */
     public boolean isAuthenticationSuccessful() {
         AndroidAuthSession session = mApi.getSession();
         if (session.authenticationSuccessful()) {

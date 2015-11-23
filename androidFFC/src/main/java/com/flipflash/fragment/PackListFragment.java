@@ -1,7 +1,6 @@
 package com.flipflash.fragment;
 
 import android.app.AlertDialog;
-import android.app.DialogFragment;
 import android.content.ContentResolver;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -13,6 +12,7 @@ import android.graphics.Paint;
 import android.net.Uri;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
+import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
 import android.text.method.PasswordTransformationMethod;
 import android.util.Base64;
@@ -93,7 +93,7 @@ public class PackListFragment extends Fragment {
             public void onClick(View v) {
 
                 DialogFragment dialogFragment = new CreateEditFragment();
-                dialogFragment.show(getActivity().getFragmentManager(), "add_pack_fragment");
+                dialogFragment.show(getActivity().getSupportFragmentManager(), "add_pack_fragment");
                 ((ImageAdapter) mGallery.getAdapter()).notifyDataSetChanged();
                 ((MainActivity) getActivity()).dismissPackListPopupWindow();
 
@@ -206,7 +206,7 @@ public class PackListFragment extends Fragment {
 
         if (position ==0) {
             DialogFragment dialogFragment = new CreateEditFragment();
-            dialogFragment.show(getActivity().getFragmentManager(), "add_pack_fragment");
+            dialogFragment.show(getActivity().getSupportFragmentManager(), "add_pack_fragment");
             ((MainActivity) getActivity()).dismissPackListPopupWindow();
         } else {
             LOGD(TAG, "galleryItemClicked: " + "Index of pack in pack list is:" + position);
@@ -475,7 +475,7 @@ public class PackListFragment extends Fragment {
         CreateEditFragment dialogFragment = new CreateEditFragment();
         dialogFragment.setPack(currentPack);
         dialogFragment.setIsEditPack(true);
-        dialogFragment.show(getActivity().getFragmentManager(), "add_pack_fragment");
+        dialogFragment.show(getActivity().getSupportFragmentManager(), "add_pack_fragment");
         ((MainActivity) getActivity()).dismissPackListPopupWindow();
     }
 
