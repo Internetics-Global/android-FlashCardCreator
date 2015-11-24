@@ -912,10 +912,25 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnTouchL
 
                 if (mIsPlayingCard == false) {
                     if (isEditableMode()) {
-                        MediaOptions options = MediaOptions.createDefault();
-                        if (options != null) {
-                            MediaPickerActivity.open(CardDetailFragment.this, REQUEST_CODE_FROM_LOGO, options);
-                        }
+
+                        new AlertDialog.Builder(getActivity())
+                                .setTitle(R.string.Title_Image_Copyright)
+                                .setMessage(R.string.DIALOG_IMAGE_VIDEO_SELECTION)
+                                .setPositiveButton(R.string.DIALOG_SELECT_FROM_LIBRARY, new DialogInterface.OnClickListener() {
+                                    @Override
+                                    public void onClick(DialogInterface dialog, int which) {
+
+                                        MediaOptions options = MediaOptions.createDefault();
+                                        if (options != null) {
+                                            MediaPickerActivity.open(CardDetailFragment.this, REQUEST_CODE_FROM_LOGO, options);
+                                        }
+
+                                    }
+                                })
+                                .show();
+
+
+
                     } else {
                         Intent intent = new Intent(getActivity(), WebViewActivity.class);
                         intent.putExtra("url", mCurrentPack.logoURL);
