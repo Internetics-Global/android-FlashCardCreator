@@ -828,8 +828,8 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnTouchL
 
     private void showImageVideoSourceDialog() {
         new AlertDialog.Builder(getActivity())
-                .setTitle(R.string.Title_Image_Copyright)
-                .setMessage(R.string.DIALOG_IMAGE_VIDEO_SELECTION)
+                .setTitle(R.string.DIALOG_IMAGE_VIDEO_SELECTION)
+                .setMessage(R.string.Title_Image_Copyright)
                 .setNegativeButton(R.string.DIALOG_INSERT_YOUTUBE_URL, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
@@ -914,8 +914,8 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnTouchL
                     if (isEditableMode()) {
 
                         new AlertDialog.Builder(getActivity())
-                                .setTitle(R.string.Title_Image_Copyright)
-                                .setMessage(R.string.DIALOG_IMAGE_VIDEO_SELECTION)
+                                .setTitle(R.string.DIALOG_IMAGE_VIDEO_SELECTION)
+                                .setMessage(R.string.Title_Image_Copyright)
                                 .setPositiveButton(R.string.DIALOG_SELECT_FROM_LIBRARY, new DialogInterface.OnClickListener() {
                                     @Override
                                     public void onClick(DialogInterface dialog, int which) {
@@ -1011,7 +1011,8 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnTouchL
 
                     if (string.length() > 0) {
                         new AlertDialog.Builder(getActivity())
-                                .setTitle(R.string.Title_Image_Copyright)
+                                .setTitle(R.string.Optional_Edit_Or_Remove)
+                                .setMessage(R.string.Title_Image_Copyright)
                                 .setPositiveButton(R.string.Optional_Remove_Background_Image, new DialogInterface.OnClickListener() {
                                     @Override
                                     public void onClick(DialogInterface dialog, int which) {
@@ -1037,10 +1038,19 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnTouchL
                                 })
                                 .show();
                     } else {
-                        MediaOptions options = MediaOptions.createDefault();;
-                        if (options != null) {
-                            MediaPickerActivity.open(CardDetailFragment.this, REQUEST_CODE_FROM_BACKGROUND, options);
-                        }
+                        new AlertDialog.Builder(getActivity())
+                                .setTitle(R.string.DIALOG_SELECT_FROM_LIBRARY)
+                                .setMessage(R.string.Title_Image_Copyright)
+                                .setPositiveButton(R.string.DIALOG_SELECT_FROM_LIBRARY, new DialogInterface.OnClickListener() {
+                                    @Override
+                                    public void onClick(DialogInterface dialog, int which) {
+                                        MediaOptions options = MediaOptions.createDefault();;
+                                        if (options != null) {
+                                            MediaPickerActivity.open(CardDetailFragment.this, REQUEST_CODE_FROM_BACKGROUND, options);
+                                        }
+                                    }
+                                })
+                                .show();
                     }
 
                 } else {
