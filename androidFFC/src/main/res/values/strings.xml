@@ -53,6 +53,7 @@
     <string name="DIALOG_INSERT_YOUTUBE_URL">Insert a YouTube url</string>
     <string name="DIALOG_SELECT_FROM_LIBRARY">Select from library</string>
     <string name="DIALOG_REMOVE_VIDEO_IMAGE">Remove video/image</string>
+    <string name="DIALOG_REMOVE_LOGO_IMAGE">Remove logo image</string>
     <string name="DIALOG_INVALID_YOUTUBE_URL">Invalid YouTube url, it must be a full url - for example: http://www.youtube.com/watch?v=3-EaGGPGiJY</string>
 
     <string name="DIALOG_ARE_YOU_SURE_YOU_WANT_TO_EXIT">Are you sure you want to exit?</string>

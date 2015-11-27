@@ -11,6 +11,7 @@ import com.flipflash.android_ffc.R;
 import com.flipflash.util.AppConfig;
 import com.flipflash.util.AppContext;
 import com.flipflash.util.Global;
+import com.flipflash.util.StringUtils;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -20,6 +21,8 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.UUID;
+
+import static com.flipflash.util.LogUtils.LOGE;
 
 /*
  * Common file operations
@@ -136,6 +139,40 @@ public class FileOperationHelper {
             return returnStr;
         }
         return str;
+    }
+
+
+    /*
+     * delete file except it's a placeholder file
+     * 返回true: 成功delete或者没有进行delete操作
+     * 返回false: 没有成功delete
+     */
+    public  static boolean deleteFileExceptPlaceHolder(String fileName) {
+
+        if (StringUtils.isEmptyOrPlaceHolder(fileName)) {
+            return true;
+        }
+
+        if (fileName.endsWith("/")) {
+            //表明这只是一个目录，不是一个文件
+            return true;
+        }
+
+        File file;
+        int index = fileName.indexOf("://");
+        if (index == -1) {
+            //普通的file path
+            file = new File(fileName);
+        } else {
+            //uri格式
+            file = new File(deleteUriSchemeHeader(fileName));
+        }
+
+        boolean success = file.delete();
+
+
+        return success;
+
     }
 
     /*

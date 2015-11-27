@@ -80,6 +80,7 @@ import java.io.UnsupportedEncodingException;
 import java.lang.reflect.Field;
 import java.net.URLDecoder;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
@@ -851,9 +852,26 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnTouchL
                         if (mIsImage2Active) {
                             String placeholderImagePath = FileOperationHelper.getQuestionImagePlaceholderImagePath();
                             mImage2.setImageURI(Uri.parse(placeholderImagePath));
+                            if (mIsQuestionShowing) {
+                                mCurrentCard.question.imageUriFormatStr2 = "";
+                            } else {
+                                mCurrentCard.answer.imageUriFormatStr2 = "";
+                            }
                         } else {
                             String placeholderImagePath = FileOperationHelper.getAnswerImagePlaceholderImagePath();
                             mImage.setImageURI(Uri.parse(placeholderImagePath));
+                            if (mIsQuestionShowing) {
+                                mCurrentCard.question.imageUriFormatStr = "";
+                            } else {
+                                mCurrentCard.answer.imageUriFormatStr = "";
+                            }
+                        }
+
+                        if (mIsCreatingCard == false) {
+                            mCurrentCard.save(AppContext.getAppContext());
+                            if (mIsQuestionShowing) {
+                                takeSnapshotCurrentCard();
+                            }
                         }
                     }
                 })
@@ -882,20 +900,14 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnTouchL
             }
         }
 
-        if (StringUtils.isEmpty(targetImage) == false && targetImage.toLowerCase().contains("placeholder") == false) {
-            File file = new File(FileOperationHelper.deleteUriSchemeHeader(targetImage));
-            boolean success = file.delete();
-            if (success == false) {
-                LOGE(TAG, "failure to delete");
-            }
+        boolean success = FileOperationHelper.deleteFileExceptPlaceHolder(targetImage);
+        if (success == false) {
+            LOGE(TAG, "failure to delete: " + targetImage);
         }
 
-        if (StringUtils.isEmpty(targetVideo) == false && targetVideo.toLowerCase().contains("placeholder") == false) {
-            File file = new File(FileOperationHelper.deleteUriSchemeHeader(targetVideo));
-            boolean success = file.delete();
-            if (success == false) {
-                LOGE(TAG, "failure to delete");
-            }
+        success = FileOperationHelper.deleteFileExceptPlaceHolder(targetVideo);
+        if (success == false) {
+            LOGE(TAG, "failure to delete: " + targetVideo);
         }
     }
 
@@ -916,13 +928,37 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnTouchL
                         new AlertDialog.Builder(getActivity())
                                 .setTitle(R.string.DIALOG_IMAGE_VIDEO_SELECTION)
                                 .setMessage(R.string.Title_Image_Copyright)
-                                .setPositiveButton(R.string.DIALOG_SELECT_FROM_LIBRARY, new DialogInterface.OnClickListener() {
+                                .setNegativeButton(R.string.DIALOG_SELECT_FROM_LIBRARY, new DialogInterface.OnClickListener() {
                                     @Override
                                     public void onClick(DialogInterface dialog, int which) {
 
                                         MediaOptions options = MediaOptions.createDefault();
                                         if (options != null) {
                                             MediaPickerActivity.open(CardDetailFragment.this, REQUEST_CODE_FROM_LOGO, options);
+                                        }
+
+                                    }
+                                })
+                                .setPositiveButton(R.string.DIALOG_REMOVE_LOGO_IMAGE, new DialogInterface.OnClickListener() {
+                                    @Override
+                                    public void onClick(DialogInterface dialog, int which) {
+
+                                        boolean success = FileOperationHelper.deleteFileExceptPlaceHolder(mCurrentPack.logoImageUriFormatStr);
+                                        if (success == false) {
+                                            LOGE(TAG, "failure to delete: " + mCurrentPack.logoImageUriFormatStr);
+                                        }
+
+                                        String placeholderImagePath = FileOperationHelper.getLogoPlaceholderImagePath();
+                                        ImageLoader imageLoader = ImageLoader.getInstance();
+                                        imageLoader.displayImage(placeholderImagePath, mLogoImage);
+                                        mCurrentPack.logoImageUriFormatStr = "";
+
+                                        //step5:save logic if not creating a new card
+                                        if (mIsCreatingCard) {
+                                            //we will do that when we click the save button
+                                        } else {
+                                            mCurrentPack.save(AppContext.getAppContext());
+                                            takeSnapshotAll();
                                         }
 
                                     }
@@ -1025,6 +1061,13 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnTouchL
                                             mCurrentCard.answer.backgroundImageUriFormatStr = "";
                                         }
                                         setCardBackgroundImageDefault();
+
+                                        if (mIsCreatingCard == false) {
+                                            mCurrentCard.save(AppContext.getAppContext());
+                                            if (mIsQuestionShowing) {
+                                                takeSnapshotCurrentCard();
+                                            }
+                                        }
                                     }
                                 })
                                 .setNegativeButton(R.string.Optional_Change_Background_Image, new DialogInterface.OnClickListener() {
@@ -1403,11 +1446,11 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnTouchL
 
         //hide placeholder image if play mode
         if (mIsPlayingCard) {
-            if (mCurrentCard.question.imageUriFormatStr.contains("placeholder")) {
+            if (StringUtils.isEmptyOrPlaceHolder(mCurrentCard.question.imageUriFormatStr)) {
                 mImage.setVisibility(View.INVISIBLE);
             }
 
-            if (mCurrentCard.question.imageUriFormatStr2.contains("placeholder")) {
+            if (StringUtils.isEmptyOrPlaceHolder(mCurrentCard.question.imageUriFormatStr2)) {
                 mImage2.setVisibility(View.INVISIBLE);
             }
         }
@@ -1440,11 +1483,11 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnTouchL
 
         //hide placeholder image if play mode
         if (mIsPlayingCard) {
-            if (mCurrentCard.answer.imageUriFormatStr.contains("placeholder")) {
+            if (StringUtils.isEmptyOrPlaceHolder(mCurrentCard.answer.imageUriFormatStr)) {
                 mImage.setVisibility(View.INVISIBLE);
             }
 
-            if (mCurrentCard.answer.imageUriFormatStr2.contains("placeholder")) {
+            if (StringUtils.isEmpty(mCurrentCard.answer.imageUriFormatStr2)) {
                 mImage2.setVisibility(View.INVISIBLE);
             }
         }
@@ -2203,6 +2246,9 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnTouchL
      * question和answer上有些内容是一样的，我们不需要做两次，所以把通用的内容的更新放在这个方法中
      */
     private void updateCommonContent() {
+
+        ImageLoader imageLoader = ImageLoader.getInstance();
+
         if (mCurrentPack.sidebarTitle.contains("null")) {
             mSidebarTitle.setText("");
         } else {
@@ -2212,7 +2258,6 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnTouchL
         mCardSN.setText(String.format("%d", mCurrentCard.cardSN));
 
         if (StringUtils.isEmpty(mCurrentPack.logoImageUriFormatStr) == false) {
-            ImageLoader imageLoader = ImageLoader.getInstance();
             imageLoader.displayImage(mCurrentPack.logoImageUriFormatStr, mLogoImage);
         }
 
@@ -2233,8 +2278,16 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnTouchL
         }
 
 
-        //Invisible if logo is a placeholder
-        if ((mIsPlayingCard) && (mCurrentPack.logoImageUriFormatStr.contains("placeholder") == true)) {
+        boolean isPlaceHolderLogoImage =  StringUtils.isEmptyOrPlaceHolder(mCurrentPack.logoImageUriFormatStr);
+        if (isPlaceHolderLogoImage) {
+            String placeholderImagePath = FileOperationHelper.getLogoPlaceholderImagePath();
+            imageLoader.displayImage(placeholderImagePath,mLogoImage);
+
+        } else {
+            imageLoader.displayImage(mCurrentPack.logoImageUriFormatStr, mLogoImage);
+        }
+
+        if (mIsPlayingCard && isPlaceHolderLogoImage) {
             mLogoImage.setVisibility(View.INVISIBLE);
         }
 
@@ -2439,7 +2492,7 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnTouchL
         }
 
         //hide logo image if its placeholder
-        if (mCurrentPack.logoImageUriFormatStr.contains("placeholder") == true) {
+        if (StringUtils.isEmptyOrPlaceHolder(mCurrentPack.logoImageUriFormatStr)) {
             mLogoImage.setVisibility(View.INVISIBLE);
         }
 
@@ -4576,24 +4629,18 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnTouchL
                                     if (mIsQuestionShowing) {
                                         mCurrentCard.question.imageUriFormatStr2 = FileOperationHelper.convertToUriFormatFile(toSaveFile);
 
-                                        if (StringUtils.isEmpty(mCurrentCard.question.movieUriFormatStr2) == false) {
-                                            File file = new File(FileOperationHelper.deleteUriSchemeHeader(mCurrentCard.question.movieUriFormatStr2));
-                                            boolean success = file.delete();
-                                            if (success == false) {
-                                                LOGE(TAG, "failure to delete mCurrentCard.question.movieUriFormatStr2");
-                                            }
+                                        boolean success = FileOperationHelper.deleteFileExceptPlaceHolder(mCurrentCard.question.movieUriFormatStr2);
+                                        if (success == false) {
+                                            LOGE(TAG, "failure to delete: " + mCurrentCard.question.movieUriFormatStr2);
                                         }
 
                                         mCurrentCard.question.movieUriFormatStr2 = "";
                                     } else {
                                         mCurrentCard.answer.imageUriFormatStr2 = FileOperationHelper.convertToUriFormatFile(toSaveFile);
 
-                                        if (StringUtils.isEmpty(mCurrentCard.answer.movieUriFormatStr2) == false) {
-                                            File file = new File(FileOperationHelper.deleteUriSchemeHeader(mCurrentCard.answer.movieUriFormatStr2));
-                                            boolean success = file.delete();
-                                            if (success == false) {
-                                                LOGE(TAG, "failure to delete mCurrentCard.answer.movieUriFormatStr2");
-                                            }
+                                        boolean success = FileOperationHelper.deleteFileExceptPlaceHolder(mCurrentCard.answer.movieUriFormatStr2);
+                                        if (success == false) {
+                                            LOGE(TAG, "failure to delete: " + mCurrentCard.answer.movieUriFormatStr2);
                                         }
 
                                         mCurrentCard.answer.movieUriFormatStr2 = "";
@@ -4603,25 +4650,18 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnTouchL
                                     if (mIsQuestionShowing) {
                                         mCurrentCard.question.imageUriFormatStr = FileOperationHelper.convertToUriFormatFile(toSaveFile);
 
-                                        if (StringUtils.isEmpty(mCurrentCard.question.movieUriFormatStr) == false) {
-                                            File file = new File(FileOperationHelper.deleteUriSchemeHeader(mCurrentCard.question.movieUriFormatStr));
-                                            boolean success = file.delete();
-                                            if (success == false) {
-                                                LOGE(TAG, "failure to delete mCurrentCard.question.movieUriFormatStr");
-                                            }
-
+                                        boolean success = FileOperationHelper.deleteFileExceptPlaceHolder(mCurrentCard.question.movieUriFormatStr);
+                                        if (success == false) {
+                                            LOGE(TAG, "failure to delete: " + mCurrentCard.question.movieUriFormatStr);
                                         }
 
                                         mCurrentCard.question.movieUriFormatStr = "";
                                     } else {
                                         mCurrentCard.answer.imageUriFormatStr = FileOperationHelper.convertToUriFormatFile(toSaveFile);
 
-                                        if (StringUtils.isEmpty(mCurrentCard.answer.movieUriFormatStr) == false) {
-                                            File file = new File(FileOperationHelper.deleteUriSchemeHeader(mCurrentCard.answer.movieUriFormatStr));
-                                            boolean success = file.delete();
-                                            if (success == false) {
-                                                LOGE(TAG, "failure to delete mCurrentCard.answer.movieUriFormatStr");
-                                            }
+                                        boolean success = FileOperationHelper.deleteFileExceptPlaceHolder(mCurrentCard.answer.movieUriFormatStr);
+                                        if (success == false) {
+                                            LOGE(TAG, "failure to delete: " + mCurrentCard.answer.movieUriFormatStr);
                                         }
 
                                         mCurrentCard.answer.movieUriFormatStr = "";

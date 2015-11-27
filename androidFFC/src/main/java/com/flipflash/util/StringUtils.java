@@ -44,6 +44,19 @@ public class StringUtils {
         return timeDateStr;
     }
 
+    public static boolean isEmptyOrPlaceHolder(String input) {
+        if (isEmpty(input)) {
+            return true;
+        }
+
+        if (input.toLowerCase().contains("placeholder")) {
+            return true;
+        }
+
+        return false;
+    }
+
+
 
     public static boolean isEmpty(String input) {
         if (input == null || "".equals(input))
