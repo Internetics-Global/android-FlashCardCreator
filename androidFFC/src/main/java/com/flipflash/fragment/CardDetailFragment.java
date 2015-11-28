@@ -2084,14 +2084,17 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnTouchL
 
             @Override
             public void afterTextChanged(Editable s) {
-                //LOGD(TAG, "afterTextChanged: on subheading: " + s.toString());
-                int maxLines = 0;
+
+                int maxLines = mSubheading.getLineCount();
+
+                //LOGD(TAG, "afterTextChanged: on subheading: " + s.toString() + " with line count = " + maxLines);
+
                 if (mIsQuestionShowing) {
                     mCurrentCard.question.subheading = mSubheading.getText().toString();
-                    maxLines = mCurrentCard.question.lineNoSubheading;
+                    mCurrentCard.question.lineNoSubheading =  maxLines;
                 } else {
                     mCurrentCard.answer.subheading = mSubheading.getText().toString();
-                    maxLines = mCurrentCard.answer.lineNoSubheading;
+                    mCurrentCard.answer.lineNoSubheading =  maxLines;
                 }
 
                 if (isEditableMode() == false) {
@@ -2116,14 +2119,16 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnTouchL
 
             @Override
             public void afterTextChanged(Editable s) {
-                //LOGD(TAG, "afterTextChanged: on main: " + s.toString());
-                int maxLines;
+                int maxLines = mMain.getLineCount();
+
+                //LOGD(TAG, "afterTextChanged: on main: " + s.toString() + " with line count = " + maxLines);
+
                 if (mIsQuestionShowing) {
                     mCurrentCard.question.main = mMain.getText().toString();
-                    maxLines = mCurrentCard.question.lineNoMain;
+                    mCurrentCard.question.lineNoMain =  maxLines;
                 } else {
                     mCurrentCard.answer.main = mMain.getText().toString();
-                    maxLines = mCurrentCard.answer.lineNoMain;
+                    mCurrentCard.answer.lineNoMain =  maxLines;
                 }
 
                 if (isEditableMode() == false) {
@@ -2148,14 +2153,16 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnTouchL
 
             @Override
             public void afterTextChanged(Editable s) {
-                //LOGD(TAG, "afterTextChanged: on sub: " + s.toString());
-                int maxLines;
+                int maxLines = mSub.getLineCount();
+
+                //LOGD(TAG, "afterTextChanged: on sub: " + s.toString() + " with line count = " + maxLines);
+
                 if (mIsQuestionShowing) {
                     mCurrentCard.question.sub = mSub.getText().toString();
-                    maxLines = mCurrentCard.question.lineNoSub;
+                    mCurrentCard.question.lineNoSub =  maxLines;
                 } else {
                     mCurrentCard.answer.sub = mSub.getText().toString();
-                    maxLines = mCurrentCard.answer.lineNoSub;
+                    mCurrentCard.answer.lineNoSub =  maxLines;
                 }
 
                 if (isEditableMode() == false) {
