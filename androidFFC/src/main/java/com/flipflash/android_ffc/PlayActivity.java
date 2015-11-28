@@ -27,6 +27,7 @@ import android.view.MotionEvent;
 import android.view.Surface;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.ViewTreeObserver;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.ImageButton;
@@ -74,12 +75,9 @@ public class PlayActivity extends FragmentActivity implements SensorEventListene
     private SensorManager     mSensorManager;
     private boolean           mIsSensorAvailable;
 
-    private float             mOriginalRoll = 0;
-    private boolean           mIsResetRoll = false;
-    private boolean           mEnableA = true;
-    private boolean           mEnableB = true;
-
     private VGViewPager       mPager;
+
+    private ViewGroup         mBaseView;
 
     private boolean             mIsScrollStop = true;
 
@@ -149,6 +147,12 @@ public class PlayActivity extends FragmentActivity implements SensorEventListene
     private AudioIntentReceiver mAudioIntentReceiver;
 
     private Locale              mMatchedLocale;
+
+    /**
+     *  ROTATION RELATED
+     */
+    boolean      _isDeviceRotating;
+    boolean      _isRotationJustFinish;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -249,6 +253,8 @@ public class PlayActivity extends FragmentActivity implements SensorEventListene
 
         }, 4000);
 
+        mBaseView.getViewTreeObserver().addOnGlobalLayoutListener(mRotationChangeListener);
+
 
     }
 
@@ -259,11 +265,19 @@ public class PlayActivity extends FragmentActivity implements SensorEventListene
         LOGD(TAG, "onPause");
 
         unregisterReceiver(mAudioIntentReceiver);
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
+            mBaseView.getViewTreeObserver().removeOnGlobalLayoutListener(mRotationChangeListener);
+        } else {
+            mBaseView.getViewTreeObserver().removeGlobalOnLayoutListener(mRotationChangeListener);
+        }
     }
 
     private void setupViews() {
 
         LOGD(TAG, "setupViews");
+
+        mBaseView = (ViewGroup) findViewById(R.id.play_baseview);
 
         mFragments = getFragments();
         FCCPageAdapter pageAdapter = new FCCPageAdapter(getSupportFragmentManager(), mFragments);
@@ -365,8 +379,7 @@ public class PlayActivity extends FragmentActivity implements SensorEventListene
         mPager.setAdapter(pageAdapter);
         mPager.setOnPageChangeListener(this);
 
-        View baseView = findViewById(R.id.play_baseview);
-        baseView.setOnClickListener(new View.OnClickListener() {
+        mBaseView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 switchControlPanelVisibility();
@@ -807,7 +820,6 @@ public class PlayActivity extends FragmentActivity implements SensorEventListene
             mIsSensorAvailable = false;
             LOGE(TAG, "onResume: No Sensor.TYPE_ORIENTATION exists");
         }
-        mIsResetRoll = true;
 
     }
 
@@ -1077,14 +1089,25 @@ public class PlayActivity extends FragmentActivity implements SensorEventListene
 
     }
 
+    private final float  UP_THRESHOLD_RADIUS = 0.3f;
+    private final float  DOWN_THRESHOLD_RADIUS = -0.15f;
+
+    private boolean      resetRoll    = true;
+    private boolean      upSwitchFlag    = false;
+    private boolean      downSwitchFlag    = false;
+    private boolean      isQASwitching    = false;
+    private int          downCount = 0;
+
+    /**
+     *  Timeout logic
+     */
+    private long        _startDateForTimeout = System.currentTimeMillis();
+    private float       _lowestRollDegree = 0;
+    private float       _highestRollDegree = 0;
+
     @Override
     public void onSensorChanged(SensorEvent event) {
         //LOGD(TAG, "onSensorChanged, event.values is: " + String.format("%f,%f,%f", event.values[0], event.values[1], event.values[2]));
-
-        if (mIsAutoScroll) {
-            return;
-            //throw new IllegalArgumentException("ccaa, mIsAutoScroll should not be true");  //not allow to switch during auto play mode
-        }
 
         CardDetailFragment currentCardDetailFragment = getCurrentCardDetailFragment();
         if ((currentCardDetailFragment == null) || (currentCardDetailFragment.mCardSN == null))  {
@@ -1092,44 +1115,123 @@ public class PlayActivity extends FragmentActivity implements SensorEventListene
             return;
         }
 
-        //range of values is 90 degrees to -90 degrees.
-        float roll = event.values[2];
-        float pitch = event.values[1];
-        float azimuth = event.values[0];
-        if (Math.abs(pitch) >10 || Math.abs(roll) < 10 || Math.abs(roll) > 80) {
-            //为了防止误触发
-            return;
+        if (mIsAutoScroll == false && mOneOffPlayType == 0 ) {
+
+            //范围-90到90
+            //Anroid: home在左边，屏幕在右边时: 上边靠近身体这边负数，远离身体正数 （home在右边，屏幕在左边时，相反）
+            //iOS:    home在左边，屏幕在右边时: 上边靠近身体这边正数，远离身体负数。与Android刚好相反。
+            //越是垂直，越是绝对数大，这在iOS和Android是一致的
+            float rollRadius = (float)((event.values[2]) *3.14/180);
+
+            int orientation = getOrientation();
+            //LOGD(TAG, "onSensorChanged: oritention is: " + orientation + ";rollRadius = " + rollRadius);
+
+            if (_lowestRollDegree == 0) {
+                _lowestRollDegree = rollRadius;
+                _highestRollDegree = rollRadius;
+            }
+            if (rollRadius > _highestRollDegree) {
+                _highestRollDegree = rollRadius;
+            }
+            if (rollRadius < _lowestRollDegree) {
+                _lowestRollDegree = rollRadius;
+            }
+
+            long methodFinish = System.currentTimeMillis();;
+            long executionTime = methodFinish - _startDateForTimeout;
+            if (executionTime > 2 * 1000) {
+
+                if (_highestRollDegree < _lowestRollDegree + 6) {
+                    resetRoll = true;
+
+                    //[iConsole log:@"Timeout for flip function, reset now"];
+                }
+
+                _lowestRollDegree = 0;
+                _highestRollDegree = 0;
+                _startDateForTimeout = System.currentTimeMillis();;;
+
+
+
+            }
+
+            if (_isDeviceRotating) {
+                return;
+            }
+
+            if (isQASwitching) {
+                return;
+            }
+
+            if (_isRotationJustFinish) {
+                _isRotationJustFinish = false;
+                resetRoll = true;
+            }
+
+            if (resetRoll == true) {
+
+                resetRoll = false;
+
+                downCount = 0;
+
+                downSwitchFlag = true;
+                upSwitchFlag = false;
+
+            }
+
+            if (orientation == 0) {
+                //(home在右边，UIDeviceOrientationLandscapeleft)
+                if (rollRadius > UP_THRESHOLD_RADIUS && upSwitchFlag) {
+                    if (downCount == 1) {
+
+                        downCount = 0;
+
+                        upSwitchFlag = false;
+                        downSwitchFlag = true;
+
+                        isQASwitching = true;
+                        switchQuestionAnswerViewManually(true);
+                        isQASwitching = false;
+
+                    }
+
+                } else if (rollRadius < DOWN_THRESHOLD_RADIUS && downSwitchFlag) {
+                    downCount = 1;
+
+                    upSwitchFlag = true;
+                    downSwitchFlag = false;
+
+                } else {
+                    //do nothing
+                }
+
+            } else if (orientation == 1) {
+                if (rollRadius < -UP_THRESHOLD_RADIUS && upSwitchFlag) {
+                    if (downCount == 1) {
+
+                        downCount = 0;
+
+                        upSwitchFlag = false;
+                        downSwitchFlag = true;
+
+                        isQASwitching = true;
+                        switchQuestionAnswerViewManually(true);
+                        isQASwitching = false;
+                    }
+
+                } else if (rollRadius > -DOWN_THRESHOLD_RADIUS && downSwitchFlag) {
+                    downCount = 1;
+
+                    upSwitchFlag = true;
+                    downSwitchFlag = false;
+
+                } else {
+                    //do nothing
+                }
+            }
+
+
         }
-
-
-        if (mIsResetRoll) {
-            mOriginalRoll = event.values[2];
-            mIsResetRoll = false;
-        }
-
-        int orientation = getOrientation();
-        if (orientation == 0) {
-            if ((roll - mOriginalRoll > 12.0) && (mEnableA)) {
-                switchQuestionAnswerViewManually(true);
-                mEnableA = false;
-            }
-            if (roll - mOriginalRoll < 0) {
-                mEnableA = true;
-            }
-
-        } else if ((orientation == 1) && (mEnableB)) {
-            if (roll - mOriginalRoll < -12.0) {
-                switchQuestionAnswerViewManually(true);
-                mEnableB = false;
-            }
-
-            if (roll - mOriginalRoll > 0) {
-                mEnableB = true;
-            }
-        }
-
-
-
     }
 
 
@@ -1659,12 +1761,12 @@ public class PlayActivity extends FragmentActivity implements SensorEventListene
         if (orientation == Configuration.ORIENTATION_LANDSCAPE) {
             if ((rotation == Surface.ROTATION_0)
                     || (rotation == Surface.ROTATION_90)) {
-                return 0; //landscape (for nexus 7, camera is left side of screen)
+                return 0; //landscape (home在右边，UIDeviceOrientationLandscapeleft)
             }
 
             if ((rotation == Surface.ROTATION_180)
                     || (rotation == Surface.ROTATION_270)) {
-                return 1; //reverse landscape   (for nexus 7, camera is right side of screen)
+                return 1; //reverse landscape   (home在左边，UIDeviceOrientationLandscapeRight)
             }
 
         }
@@ -1870,6 +1972,7 @@ public class PlayActivity extends FragmentActivity implements SensorEventListene
         stopTextToSpeech();
     }
 
+
     private UtteranceProgressListener utteranceProgressListener = new UtteranceProgressListener() {
         @Override
         public void onStart(String utteranceId) {
@@ -1926,6 +2029,23 @@ public class PlayActivity extends FragmentActivity implements SensorEventListene
         public void onError(String utteranceId) {
             LOGD("UtteranceProgressListener", "onError");
 
+        }
+    };
+
+    /*
+     * 触发当：
+     * 1. view created
+     * 2. 切换到下一个卡片或QA switch
+     * 3. 或者landscape到reverse landscape
+     */
+    private ViewTreeObserver.OnGlobalLayoutListener mRotationChangeListener = new ViewTreeObserver.OnGlobalLayoutListener() {
+        @Override
+        public void onGlobalLayout() {
+            LOGD(TAG, "onGlobalLayout");
+
+            //但是我们无法确定是否在rotating,只能确定它的确经过了一个rotation动作
+
+            resetRoll = true;
         }
     };
 
