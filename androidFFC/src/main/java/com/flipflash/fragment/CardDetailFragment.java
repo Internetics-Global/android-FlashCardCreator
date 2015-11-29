@@ -3007,6 +3007,10 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnTouchL
 
         mContentBodyLinearLayout.setOrientation(LinearLayout.VERTICAL);
         mImage.setVisibility(View.VISIBLE);
+
+        String placeholderImagePath = FileOperationHelper.getQuestionImagePlaceholderImagePath();
+        mImage.setImageURI(Uri.parse(placeholderImagePath));
+
         mImage2.setVisibility(View.INVISIBLE);
         mSubheading.setVisibility(View.INVISIBLE);
         mMain.setVisibility(View.INVISIBLE);
@@ -3029,6 +3033,10 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnTouchL
 
         mContentBodyLinearLayout.setOrientation(LinearLayout.HORIZONTAL);
         mImage.setVisibility(View.VISIBLE);
+
+        String placeholderImagePath = FileOperationHelper.getQuestionImagePlaceholderImagePath();
+        mImage.setImageURI(Uri.parse(placeholderImagePath));
+
         mImage2.setVisibility(View.INVISIBLE);
         mSubheading.setVisibility(View.VISIBLE);
         mMain.setVisibility(View.VISIBLE);
@@ -3095,6 +3103,10 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnTouchL
 
         mContentBodyLinearLayout.setOrientation(LinearLayout.HORIZONTAL);
         mImage.setVisibility(View.VISIBLE);
+
+        String placeholderImagePath = FileOperationHelper.getQuestionImagePlaceholderImagePath();
+        mImage.setImageURI(Uri.parse(placeholderImagePath));
+
         mImage2.setVisibility(View.INVISIBLE);
         mSubheading.setVisibility(View.VISIBLE);
         mMain.setVisibility(View.VISIBLE);
@@ -3151,6 +3163,10 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnTouchL
 
         mContentBodyLinearLayout.setOrientation(LinearLayout.VERTICAL);
         mImage.setVisibility(View.VISIBLE);
+
+        String placeholderImagePath = FileOperationHelper.getQuestionImagePlaceholderImagePath();
+        mImage.setImageURI(Uri.parse(placeholderImagePath));
+
         mImage2.setVisibility(View.INVISIBLE);
         mSubheading.setVisibility(View.VISIBLE);
         mMain.setVisibility(View.VISIBLE);
@@ -3252,7 +3268,14 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnTouchL
 
         mContentBodyLinearLayout.setOrientation(LinearLayout.HORIZONTAL);
         mImage.setVisibility(View.VISIBLE);
+
+        String placeholderImagePath = FileOperationHelper.getQuestionImagePlaceholderImagePath();
+        mImage.setImageURI(Uri.parse(placeholderImagePath));
+
         mImage2.setVisibility(View.VISIBLE);
+
+        mImage2.setImageURI(Uri.parse(placeholderImagePath));
+
         mSubheading.setVisibility(View.VISIBLE);
         mMain.setVisibility(View.INVISIBLE);
         mSub.setVisibility(View.INVISIBLE);
@@ -3319,6 +3342,10 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnTouchL
 
         mContentBodyLinearLayout.setOrientation(LinearLayout.HORIZONTAL);
         mImage.setVisibility(View.VISIBLE);
+
+        String placeholderImagePath = FileOperationHelper.getQuestionImagePlaceholderImagePath();
+        mImage.setImageURI(Uri.parse(placeholderImagePath));
+
         mImage2.setVisibility(View.INVISIBLE);
         mSubheading.setVisibility(View.VISIBLE);
         mMain.setVisibility(View.VISIBLE);
@@ -3489,6 +3516,10 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnTouchL
 
         mContentBodyLinearLayout.setOrientation(LinearLayout.HORIZONTAL);
         mImage.setVisibility(View.VISIBLE);
+
+        String placeholderImagePath = FileOperationHelper.getQuestionImagePlaceholderImagePath();
+        mImage.setImageURI(Uri.parse(placeholderImagePath));
+
         mImage2.setVisibility(View.INVISIBLE);
         mSubheading.setVisibility(View.VISIBLE);
         mMain.setVisibility(View.VISIBLE);
@@ -3555,6 +3586,10 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnTouchL
 
         mContentBodyLinearLayout.setOrientation(LinearLayout.HORIZONTAL);
         mImage.setVisibility(View.VISIBLE);
+
+        String placeholderImagePath = FileOperationHelper.getQuestionImagePlaceholderImagePath();
+        mImage.setImageURI(Uri.parse(placeholderImagePath));
+
         mImage2.setVisibility(View.INVISIBLE);
         mSubheading.setVisibility(View.VISIBLE);
         mMain.setVisibility(View.VISIBLE);
@@ -3632,7 +3667,14 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnTouchL
 
         mContentBodyLinearLayout.setOrientation(LinearLayout.HORIZONTAL);
         mImage.setVisibility(View.VISIBLE);
+
+        String placeholderImagePath = FileOperationHelper.getQuestionImagePlaceholderImagePath();
+        mImage.setImageURI(Uri.parse(placeholderImagePath));
+
         mImage2.setVisibility(View.VISIBLE);
+
+        mImage2.setImageURI(Uri.parse(placeholderImagePath));
+
         mSubheading.setVisibility(View.VISIBLE);
         mMain.setVisibility(View.VISIBLE);
         mSub.setVisibility(View.INVISIBLE);
@@ -3710,6 +3752,10 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnTouchL
 
         mContentBodyLinearLayout.setOrientation(LinearLayout.HORIZONTAL);
         mImage.setVisibility(View.VISIBLE);
+
+        String placeholderImagePath = FileOperationHelper.getQuestionImagePlaceholderImagePath();
+        mImage.setImageURI(Uri.parse(placeholderImagePath));
+
         mImage2.setVisibility(View.INVISIBLE);
         mSubheading.setVisibility(View.VISIBLE);
         mMain.setVisibility(View.VISIBLE);
