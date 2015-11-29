@@ -4664,6 +4664,8 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnTouchL
                                     mCurrentPack.save(AppContext.getAppContext());
                                     ((MainActivity) getActivity()).setMaskButtonForContentUpdating();
                                     takeSnapshotAll();
+                                } else {
+                                    mIsTakeSnapshotAllNeeded= true;
                                 }
 
                             } else if (requestCodeFinal == REQUEST_CODE_FROM_IMAGE) {
