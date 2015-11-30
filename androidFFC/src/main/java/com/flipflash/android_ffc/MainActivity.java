@@ -884,9 +884,8 @@ public class MainActivity extends FragmentActivity implements
             return null;
         }
 
+        User.reset(getApplicationContext(),true);
         ArrayList packs = User.defaultUser(getApplicationContext()).packs;
-        packs.clear(); //重新从数据库取，TODO:这种做法不是优雅，需要改进
-        packs = User.defaultUser(getApplicationContext()).packs;
         Iterator<Pack> iterator = packs.iterator();
         while (iterator.hasNext()) {
             Pack item = iterator.next();

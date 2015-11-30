@@ -86,9 +86,8 @@ public class CardListModel {
 
     public static Pack updateCurrentPack(Pack currentPack) {
         Pack returnPack = null;
+        User.reset(AppContext.getAppContext(),true);
         ArrayList<Pack> packs = User.defaultUser(AppContext.getAppContext()).packs;
-        packs.clear(); //用于从数据库重新获取一份，而不是直接用内存中的数据
-        packs = User.defaultUser(AppContext.getAppContext()).packs;
 
         for (int i = 0; i < packs.size(); i++) {
             if (packs.get(i).packID == currentPack.packID) {

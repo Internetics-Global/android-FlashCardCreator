@@ -67,6 +67,7 @@ public class PackListFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+        User.reset(AppContext.getAppContext(),true);
         mUser = User.defaultUser(AppContext.getAppContext());
 
         SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(AppContext.getAppContext());

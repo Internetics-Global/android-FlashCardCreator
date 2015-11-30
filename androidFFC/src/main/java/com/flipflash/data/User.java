@@ -25,6 +25,8 @@ public class User {
 
     private static User defaultUser;
 
+    private static boolean mIsReset;
+
 
     public User() {
         super();
@@ -32,11 +34,25 @@ public class User {
         this.packs = new ArrayList<Pack>();
     }
 
+    /*
+     * 用于重置内存中的数据
+     */
+    public static void reset(Context context,boolean isReset) {
+
+        if (isReset) {
+            mIsReset = true;
+            defaultUser(context);
+            mIsReset = false; //一旦reset后，置false
+        }
+
+
+    }
+
 
     public static User defaultUser(Context context) {
         gloalContext = context;
 
-        if ((defaultUser == null)||(defaultUser.packs.size() == 0))  {
+        if ((defaultUser == null)||(defaultUser.packs.size() == 0) || mIsReset)  {
             HashMap<String, Object> dataDict = new HashMap<String, Object>();
             SQLiteDatabase db = SQLiteHelper.defaultDatabase(context);
             String query = String.format("SELECT * FROM Users_Tables WHERE user_id=%d", Global.USER_ID);
