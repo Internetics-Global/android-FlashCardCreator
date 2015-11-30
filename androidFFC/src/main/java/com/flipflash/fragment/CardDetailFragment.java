@@ -69,6 +69,7 @@ import com.flipflash.util.OpenUDID_manager;
 import com.flipflash.util.StringUtils;
 import com.flipflash.util.TipHelper;
 import com.flipflash.util.UIHelper;
+import com.nostra13.universalimageloader.core.DisplayImageOptions;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.squareup.leakcanary.RefWatcher;
 
@@ -177,6 +178,9 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnTouchL
     public final static  String TAG_SUBHEADING          = "1001";
     public final static  String TAG_MAIN                = "1002";
     public final static  String TAG_SUB                 = "1003";
+
+
+    private DisplayImageOptions mDisplayImageOptions;
 
 
     /*
@@ -950,7 +954,7 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnTouchL
 
                                         String placeholderImagePath = FileOperationHelper.getLogoPlaceholderImagePath();
                                         ImageLoader imageLoader = ImageLoader.getInstance();
-                                        imageLoader.displayImage(placeholderImagePath, mLogoImage);
+                                        imageLoader.displayImage(placeholderImagePath, mLogoImage,mDisplayImageOptions);
                                         mCurrentPack.logoImageUriFormatStr = "";
 
                                         //step5:save logic if not creating a new card
@@ -1500,6 +1504,13 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnTouchL
      * 用于inflate后
      */
     private void getAllViews() {
+
+        if (mDisplayImageOptions == null) {
+            mDisplayImageOptions = new DisplayImageOptions.Builder()
+                    .showImageOnLoading(R.drawable.stub_image_for_universal_image_loader)
+                    .build();
+        }
+
         mSidebarTitle = (FCCEditText) mContentView.findViewById(R.id.sidebar_title);
         FrameLayout.LayoutParams params = (FrameLayout.LayoutParams) mSidebarTitle.getLayoutParams();
         double cardHeightDPUnit = UIHelper.getCardHeightDPUnit(getActivity());
@@ -2265,7 +2276,7 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnTouchL
         mCardSN.setText(String.format("%d", mCurrentCard.cardSN));
 
         if (StringUtils.isEmpty(mCurrentPack.logoImageUriFormatStr) == false) {
-            imageLoader.displayImage(mCurrentPack.logoImageUriFormatStr, mLogoImage);
+            imageLoader.displayImage(mCurrentPack.logoImageUriFormatStr, mLogoImage,mDisplayImageOptions);
         }
 
         mCreator.setText(mCurrentPack.creatorNickName);
@@ -2288,10 +2299,10 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnTouchL
         boolean isPlaceHolderLogoImage =  StringUtils.isEmptyOrPlaceHolder(mCurrentPack.logoImageUriFormatStr);
         if (isPlaceHolderLogoImage) {
             String placeholderImagePath = FileOperationHelper.getLogoPlaceholderImagePath();
-            imageLoader.displayImage(placeholderImagePath,mLogoImage);
+            imageLoader.displayImage(placeholderImagePath,mLogoImage,mDisplayImageOptions);
 
         } else {
-            imageLoader.displayImage(mCurrentPack.logoImageUriFormatStr, mLogoImage);
+            imageLoader.displayImage(mCurrentPack.logoImageUriFormatStr, mLogoImage,mDisplayImageOptions);
         }
 
         if (mIsPlayingCard && isPlaceHolderLogoImage) {
@@ -2311,11 +2322,11 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnTouchL
 
         ImageLoader imageLoader = ImageLoader.getInstance();
         if (StringUtils.isEmpty(mCurrentCard.question.imageUriFormatStr) == false) {
-            imageLoader.displayImage(mCurrentCard.question.imageUriFormatStr, mImage);
+            imageLoader.displayImage(mCurrentCard.question.imageUriFormatStr, mImage,mDisplayImageOptions);
         }
 
         if (StringUtils.isEmpty(mCurrentCard.question.imageUriFormatStr2) == false) {
-             imageLoader.displayImage(mCurrentCard.question.imageUriFormatStr2, mImage2);
+             imageLoader.displayImage(mCurrentCard.question.imageUriFormatStr2, mImage2,mDisplayImageOptions);
         }
 
         if (StringUtils.isEmpty(mCurrentCard.question.backgroundImageUriFormatStr) == false) {
@@ -2336,11 +2347,11 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnTouchL
         ImageLoader imageLoader = ImageLoader.getInstance();
 
         if (StringUtils.isEmpty(mCurrentCard.answer.imageUriFormatStr) == false) {
-            imageLoader.displayImage(mCurrentCard.answer.imageUriFormatStr, mImage);
+            imageLoader.displayImage(mCurrentCard.answer.imageUriFormatStr, mImage,mDisplayImageOptions);
         }
 
         if (StringUtils.isEmpty(mCurrentCard.answer.imageUriFormatStr2) == false) {
-            imageLoader.displayImage(mCurrentCard.answer.imageUriFormatStr2, mImage2);
+            imageLoader.displayImage(mCurrentCard.answer.imageUriFormatStr2, mImage2,mDisplayImageOptions);
         }
 
         if (StringUtils.isEmpty(mCurrentCard.answer.backgroundImageUriFormatStr) == false) {
@@ -4330,7 +4341,7 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnTouchL
             backgroundImageView.setImageBitmap(null);
         } else {
             ImageLoader imageLoader = ImageLoader.getInstance();
-            imageLoader.displayImage(uriString, backgroundImageView);
+            imageLoader.displayImage(uriString, backgroundImageView,mDisplayImageOptions);
         }
 
     }
