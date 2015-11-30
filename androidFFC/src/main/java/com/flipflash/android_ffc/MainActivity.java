@@ -19,6 +19,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 import android.text.InputType;
+import android.util.Log;
 import android.util.TypedValue;
 import android.view.Gravity;
 import android.view.KeyEvent;
@@ -47,6 +48,7 @@ import android.widget.Toast;
 
 import com.flipflash.UI.ScaleHelper;
 import com.flipflash.data.CSS;
+import com.flipflash.data.User;
 import com.github.lzyzsd.circleprogress.DonutProgress;
 import com.google.analytics.tracking.android.EasyTracker;
 import com.flipflash.cryptor.CryptoHelper;
@@ -86,6 +88,7 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -844,6 +847,12 @@ public class MainActivity extends FragmentActivity implements
 
         LOGD(TAG, "onItemSelected: " + index);
 
+        //比如，我们在create a new card中改变了数据，但是结果没有保存，这时就不能直接从内存中读取，而且是要放弃这部分内容，从数据库取
+        mCurrentPack = reloadPackFromDatabase(mCurrentPack);
+        if (mCurrentPack == null) {
+            throw new IllegalStateException("mCurrentPack should not be null");
+        }
+
         if (index >= 0) {
             mCurrentCardIndex = index;
             if (mCurrentPack.cards.size() > mCurrentCardIndex) {
@@ -866,6 +875,29 @@ public class MainActivity extends FragmentActivity implements
         }
 
         hidePackInfoView();
+    }
+
+
+    private Pack reloadPackFromDatabase(Pack currentPack) {
+
+        if (currentPack == null) {
+            return null;
+        }
+
+        ArrayList packs = User.defaultUser(getApplicationContext()).packs;
+        packs.clear(); //重新从数据库取，TODO:这种做法不是优雅，需要改进
+        packs = User.defaultUser(getApplicationContext()).packs;
+        Iterator<Pack> iterator = packs.iterator();
+        while (iterator.hasNext()) {
+            Pack item = iterator.next();
+            if (item.packID == currentPack.packID) {
+                return item;
+            }
+        }
+
+        return null;
+
+
     }
 
 

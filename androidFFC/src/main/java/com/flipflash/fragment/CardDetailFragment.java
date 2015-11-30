@@ -929,45 +929,66 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnTouchL
                 if (mIsPlayingCard == false) {
                     if (isEditableMode()) {
 
-                        new AlertDialog.Builder(getActivity())
-                                .setTitle(R.string.DIALOG_IMAGE_VIDEO_SELECTION)
-                                .setMessage(R.string.Title_Image_Copyright)
-                                .setNegativeButton(R.string.DIALOG_SELECT_FROM_LIBRARY, new DialogInterface.OnClickListener() {
-                                    @Override
-                                    public void onClick(DialogInterface dialog, int which) {
+                        if (StringUtils.isEmptyOrPlaceHolder(mCurrentPack.logoImageUriFormatStr)) {
 
-                                        MediaOptions options = MediaOptions.createDefault();
-                                        if (options != null) {
-                                            MediaPickerActivity.open(CardDetailFragment.this, REQUEST_CODE_FROM_LOGO, options);
+                            new AlertDialog.Builder(getActivity())
+                                    .setTitle(R.string.DIALOG_IMAGE_VIDEO_SELECTION)
+                                    .setMessage(R.string.Title_Image_Copyright)
+                                    .setNegativeButton(R.string.DIALOG_SELECT_FROM_LIBRARY, new DialogInterface.OnClickListener() {
+                                        @Override
+                                        public void onClick(DialogInterface dialog, int which) {
+
+                                            MediaOptions options = MediaOptions.createDefault();
+                                            if (options != null) {
+                                                MediaPickerActivity.open(CardDetailFragment.this, REQUEST_CODE_FROM_LOGO, options);
+                                            }
+
                                         }
+                                    })
+                                    .show();
+                        } else {
+                            new AlertDialog.Builder(getActivity())
+                                    .setTitle(R.string.DIALOG_IMAGE_VIDEO_SELECTION)
+                                    .setMessage(R.string.Title_Image_Copyright)
+                                    .setNegativeButton(R.string.DIALOG_SELECT_FROM_LIBRARY, new DialogInterface.OnClickListener() {
+                                        @Override
+                                        public void onClick(DialogInterface dialog, int which) {
 
-                                    }
-                                })
-                                .setPositiveButton(R.string.DIALOG_REMOVE_LOGO_IMAGE, new DialogInterface.OnClickListener() {
-                                    @Override
-                                    public void onClick(DialogInterface dialog, int which) {
+                                            MediaOptions options = MediaOptions.createDefault();
+                                            if (options != null) {
+                                                MediaPickerActivity.open(CardDetailFragment.this, REQUEST_CODE_FROM_LOGO, options);
+                                            }
 
-                                        boolean success = FileOperationHelper.deleteFileExceptPlaceHolder(mCurrentPack.logoImageUriFormatStr);
-                                        if (success == false) {
-                                            LOGE(TAG, "failure to delete: " + mCurrentPack.logoImageUriFormatStr);
                                         }
+                                    })
+                                    .setPositiveButton(R.string.DIALOG_REMOVE_LOGO_IMAGE, new DialogInterface.OnClickListener() {
+                                        @Override
+                                        public void onClick(DialogInterface dialog, int which) {
 
-                                        String placeholderImagePath = FileOperationHelper.getLogoPlaceholderImagePath();
-                                        ImageLoader imageLoader = ImageLoader.getInstance();
-                                        imageLoader.displayImage(placeholderImagePath, mLogoImage,mDisplayImageOptions);
-                                        mCurrentPack.logoImageUriFormatStr = "";
+                                            String placeholderImagePath = FileOperationHelper.getLogoPlaceholderImagePath();
+                                            ImageLoader imageLoader = ImageLoader.getInstance();
+                                            imageLoader.displayImage(placeholderImagePath, mLogoImage,mDisplayImageOptions);
+                                            mCurrentPack.logoImageUriFormatStr = "";
 
-                                        //step5:save logic if not creating a new card
-                                        if (mIsCreatingCard) {
-                                            //we will do that when we click the save button
-                                        } else {
-                                            mCurrentPack.save(AppContext.getAppContext());
-                                            takeSnapshotAll();
+                                            //step5:save logic if not creating a new card
+                                            if (mIsCreatingCard) {
+                                                //we will do that when we click the save button
+                                                mIsTakeSnapshotAllNeeded = true;
+                                            } else {
+
+                                                boolean success = FileOperationHelper.deleteFileExceptPlaceHolder(mCurrentPack.logoImageUriFormatStr);
+                                                if (success == false) {
+                                                    LOGE(TAG, "failure to delete: " + mCurrentPack.logoImageUriFormatStr);
+                                                }
+
+                                                mCurrentPack.save(AppContext.getAppContext());
+                                                takeSnapshotAll();
+                                            }
+
                                         }
-
-                                    }
-                                })
-                                .show();
+                                    })
+                                    .show();
+                        }
 
 
 
