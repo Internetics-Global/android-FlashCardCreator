@@ -5,6 +5,7 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 
 import com.flipflash.helper.SQLiteHelper;
+import com.flipflash.util.AppContext;
 import com.flipflash.util.Global;
 
 import java.util.ArrayList;
@@ -178,5 +179,20 @@ public class User {
 
         return packs;
 
+    }
+
+
+    public static Pack getPack(Context context,int packID) {
+        reset(context,true);
+        Pack returnPack = null;
+        ArrayList<Pack> packs = User.defaultUser(context).packs;
+
+        for (int i = 0; i < packs.size(); i++) {
+            if (packs.get(i).packID == packID) {
+                returnPack = packs.get(i);
+                return returnPack;
+            }
+        }
+        return returnPack;
     }
 }

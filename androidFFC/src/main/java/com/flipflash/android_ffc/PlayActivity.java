@@ -36,6 +36,7 @@ import android.widget.Toast;
 
 import com.flipflash.data.Card;
 import com.flipflash.data.Pack;
+import com.flipflash.data.User;
 import com.flipflash.fragment.CardDetailFragment;
 import com.flipflash.helper.AudioHelper;
 import com.flipflash.model.CardListModel;
@@ -169,7 +170,7 @@ public class PlayActivity extends FragmentActivity implements SensorEventListene
 
         int packID = getIntent().getIntExtra("packID", -1);
         mOneOffPlayType = getIntent().getIntExtra("oneOffPlayType", -1);
-        mCurrentPack = CardListModel.getPack(packID);
+        mCurrentPack = User.getPack(AppContext.getAppContext(),packID);
 
         mSensorManager = (SensorManager) getSystemService(Context.SENSOR_SERVICE);
 

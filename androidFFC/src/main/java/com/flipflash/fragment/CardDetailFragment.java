@@ -986,6 +986,7 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnTouchL
                                                 }
 
                                                 mCurrentPack.save(AppContext.getAppContext());
+                                                ((MainActivity) getActivity()).setMaskButtonForContentUpdating();
                                                 takeSnapshotAll();
                                             }
 
@@ -2477,6 +2478,8 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnTouchL
      */
     public void saveNewCreatedCard() {
 
+        mCurrentPack.addCard(AppContext.getAppContext(), mCurrentCard);
+
         if (mIsTakeSnapshotAllNeeded) {
             ((MainActivity) getActivity()).setMaskButtonForContentUpdating();
             takeSnapshotAll();
@@ -2486,8 +2489,19 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnTouchL
             takeSnapshotCurrentCard();
         }
 
-        mCurrentPack.addCard(AppContext.getAppContext(), mCurrentCard);
+        mCurrentCard.save(AppContext.getAppContext()); //虽然前面的addCard也包含了save动作，但是实际上没有包含新的截图，所以需要重新来一次
+
         LOGD(TAG, "saveNewCreatedCard: finish execution of saveNewCreatedCard");
+
+
+        if (mIsTakeSnapshotAllNeeded == false) {
+            Intent intent = new Intent();
+            intent.setAction(Global.BROADCAST_ACTION_UPDATE_MASTER_VIEW);
+            intent.putExtra(Global.KEY_FROM, Global.BROADCAST_EXTRA_FROM_CURRENT_PACK_UPDATE);
+            getActivity().sendBroadcast(intent);
+        } else {
+            //会在takeSnapshotCurrentCard中执行上面的逻辑，所以不需要在这里处理。
+        }
 
         mIsTakeSnapshotAllNeeded = false;
 
@@ -2566,10 +2580,10 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnTouchL
         //Notify master list view to update
         mSemaphore++;
         if (mSemaphore == mCurrentPack.cards.size()) {
-            Intent intent = new Intent();
-            intent.setAction(Global.BROADCAST_ACTION_UPDATE_MASTER_VIEW);
-            intent.putExtra(Global.KEY_FROM, Global.BROADCAST_EXTRA_FROM_CURRENT_PACK_UPDATE);
-            getActivity().sendBroadcast(intent);
+//            Intent intent = new Intent();
+//            intent.setAction(Global.BROADCAST_ACTION_UPDATE_MASTER_VIEW);
+//            intent.putExtra(Global.KEY_FROM, Global.BROADCAST_EXTRA_FROM_CURRENT_PACK_UPDATE);
+//            getActivity().sendBroadcast(intent);
             mSemaphore = 0;
 
             ((MainActivity) getActivity()).finishSnapShotAllExceptCurrent();

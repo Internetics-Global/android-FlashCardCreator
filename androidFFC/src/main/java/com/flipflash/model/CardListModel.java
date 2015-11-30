@@ -84,20 +84,6 @@ public class CardListModel {
         return latestPack;
     }
 
-    public static Pack updateCurrentPack(Pack currentPack) {
-        Pack returnPack = null;
-        User.reset(AppContext.getAppContext(),true);
-        ArrayList<Pack> packs = User.defaultUser(AppContext.getAppContext()).packs;
-
-        for (int i = 0; i < packs.size(); i++) {
-            if (packs.get(i).packID == currentPack.packID) {
-                returnPack = packs.get(i);
-                return returnPack;
-            }
-        }
-
-        return returnPack;
-    }
 
     public static Card updateCurrentCard(Card currentCard) {
         Card returnCard = null;
@@ -121,17 +107,6 @@ public class CardListModel {
         return returnCard;
     }
 
-    public static Pack getPack(int packID) {
-        Pack returnPack = null;
-        ArrayList<Pack> packs = User.defaultUser(AppContext.getAppContext()).packs;
 
-        for (int i = 0; i < packs.size(); i++) {
-            if (packs.get(i).packID == packID) {
-                returnPack = packs.get(i);
-                return returnPack;
-            }
-        }
-        return returnPack;
-    }
 
 }

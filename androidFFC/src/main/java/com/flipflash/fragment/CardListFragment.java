@@ -21,6 +21,7 @@ import com.flipflash.android_ffc.MainActivity;
 import com.flipflash.android_ffc.R;
 import com.flipflash.data.Card;
 import com.flipflash.data.Pack;
+import com.flipflash.data.User;
 import com.flipflash.model.CardListModel;
 import com.flipflash.util.AppContext;
 import com.flipflash.util.Global;
@@ -305,10 +306,10 @@ public class CardListFragment extends Fragment {
                     //still use current pack
                 }else if (extraFrom.equals(Global.BROADCAST_EXTRA_FROM_NEW_CARD)) {
                     extraCardIndex = intent.getExtras().getInt(Global.KEY_CARD_INDEX);
-                    mCurrentPack = CardListModel.updateCurrentPack(mCurrentPack);
+                    mCurrentPack = User.getPack(AppContext.getAppContext(),mCurrentPack.packID);
                 } else if (extraFrom.equals(Global.BROADCAST_EXTRA_FROM_CURRENT_PACK_UPDATE)) {
                     extraCardIndex = -1;
-                    mCurrentPack = CardListModel.updateCurrentPack(mCurrentPack);
+                    mCurrentPack = User.getPack(AppContext.getAppContext(),mCurrentPack.packID);
                 } else if (extraFrom.equals(Global.BROADCAST_EXTRA_FROM_PACK_SELECTED)) {
                     extraCardIndex = 0;
                     int packIndex = intent.getExtras().getInt("indexOfPack");
@@ -318,9 +319,8 @@ public class CardListFragment extends Fragment {
                     mCurrentPack = CardListModel.getLatestCreatedPack();
                     ((MainActivity)getActivity()).showPackListView();
                 } else if (extraFrom.equals(Global.BROADCAST_EXTRA_FROM_SNAPSHOT_ALL)) {
-                    Bundle bundle = intent.getBundleExtra("BUNDLE");
-                    extraCardIndex = bundle.getInt("EXTRA_INDEX");
-                    mCurrentPack = CardListModel.getPack(bundle.getInt("EXTRA_PACK_ID"));
+                    mCurrentPack = User.getPack(AppContext.getAppContext(),mCurrentPack.packID);
+                    extraCardIndex = mCurrentPack.cards.size() -1;
                 }
 
                 ((MainActivity)getActivity()).packIDForMasterViewPack = mCurrentPack.packID;

@@ -444,7 +444,7 @@ public class MainActivity extends FragmentActivity implements
 
             case R.id.actionbar_add_card_cancel:
                 LOGD(TAG, "onOptionsItemSelected: Cancel button is clicked");
-                dismissCardCreateWindow();
+                dismissCardCreateWindowWithNotifyMasterView(true);
                 break;
 
             case R.id.actionbar_add_card_save:
@@ -848,7 +848,7 @@ public class MainActivity extends FragmentActivity implements
         LOGD(TAG, "onItemSelected: " + index);
 
         //比如，我们在create a new card中改变了数据，但是结果没有保存，这时就不能直接从内存中读取，而且是要放弃这部分内容，从数据库取
-        mCurrentPack = reloadPackFromDatabase(mCurrentPack);
+        mCurrentPack = User.getPack(AppContext.getAppContext(),mCurrentPack.packID);
         if (mCurrentPack == null) {
             throw new IllegalStateException("mCurrentPack should not be null");
         }
@@ -877,27 +877,6 @@ public class MainActivity extends FragmentActivity implements
         hidePackInfoView();
     }
 
-
-    private Pack reloadPackFromDatabase(Pack currentPack) {
-
-        if (currentPack == null) {
-            return null;
-        }
-
-        User.reset(getApplicationContext(),true);
-        ArrayList packs = User.defaultUser(getApplicationContext()).packs;
-        Iterator<Pack> iterator = packs.iterator();
-        while (iterator.hasNext()) {
-            Pack item = iterator.next();
-            if (item.packID == currentPack.packID) {
-                return item;
-            }
-        }
-
-        return null;
-
-
-    }
 
 
     /**
@@ -939,25 +918,19 @@ public class MainActivity extends FragmentActivity implements
      */
     public void finishSnapShotAllExceptCurrent() {
         LOGD(TAG, "finishSnapShotAllExceptCurrent");
-        if (mArrayCardDetailFragments == null)
-            return;
-
-        for (CardDetailFragment cardDetailFragment : mArrayCardDetailFragments) {
-            getSupportFragmentManager().beginTransaction().remove(cardDetailFragment).commitAllowingStateLoss();
+        if (mArrayCardDetailFragments != null) {
+            for (CardDetailFragment cardDetailFragment : mArrayCardDetailFragments) {
+                getSupportFragmentManager().beginTransaction().remove(cardDetailFragment).commitAllowingStateLoss();
+            }
+            mArrayCardDetailFragments.clear();
+            mArrayCardDetailFragments = null;
         }
-
-        mArrayCardDetailFragments.clear();
-        mArrayCardDetailFragments = null;
 
         //we don't need to consider "during creating card" since we have disabled that
         //this used to free memory since we "except current" in finishSnapShotAllExceptCurrent
         Intent intent = new Intent();
         intent.setAction(Global.BROADCAST_ACTION_UPDATE_MASTER_VIEW);
         intent.putExtra(Global.KEY_FROM, Global.BROADCAST_EXTRA_FROM_SNAPSHOT_ALL);
-        Bundle extraBundle = new Bundle();
-        extraBundle.putInt("EXTRA_PACK_ID", mCurrentPack.packID);
-        extraBundle.putInt("EXTRA_INDEX", mCurrentCardIndex);
-        intent.putExtra("BUNDLE", extraBundle);
         sendBroadcast(intent);
 
     }
@@ -997,7 +970,7 @@ public class MainActivity extends FragmentActivity implements
         mMasterMaskButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                dismissCardCreateWindow();
+                dismissCardCreateWindowWithNotifyMasterView(true);
 
             }
         });
@@ -1026,11 +999,11 @@ public class MainActivity extends FragmentActivity implements
         mCardDetailFragment.saveNewCreatedCard();
 
         //2. dismiss windows
-        dismissCardCreateWindow();
+        dismissCardCreateWindowWithNotifyMasterView(false); //因为我们在saveNewCreatedCard会做notify master view的动作，所以这里不再需要做了
 
     }
 
-    private void dismissCardCreateWindow() {
+    private void dismissCardCreateWindowWithNotifyMasterView(boolean IsNotifyMasterView) {
         LOGD(TAG, "dismissCardCreateWindow");
         getSupportFragmentManager().beginTransaction().remove(mCardDetailFragment).commit();
         FrameLayout addCardLayout = (FrameLayout) findViewById(R.id.add_card_frame_layout);
@@ -1055,12 +1028,13 @@ public class MainActivity extends FragmentActivity implements
         TipHelper.hideEverthing(MainActivity.this);
 
 
-        //无论结果是cancel还是重新生成了一个新的card，都执行这个。这是因为MainActivity中永远只有一个mCardDetailFragment，在新建卡片的过程中，我们更改了mCardDetailFragment，当结束后我们需要restore
-        Intent intent = new Intent();
-        intent.setAction(Global.BROADCAST_ACTION_UPDATE_MASTER_VIEW);
-        intent.putExtra(Global.KEY_FROM, Global.BROADCAST_EXTRA_FROM_NEW_CARD);
-        intent.putExtra(Global.KEY_CARD_INDEX, (mCurrentPack.cards.size() - 1));
-        sendBroadcast(intent);
+        if (IsNotifyMasterView) {
+            Intent intent = new Intent();
+            intent.setAction(Global.BROADCAST_ACTION_UPDATE_MASTER_VIEW);
+            intent.putExtra(Global.KEY_FROM, Global.BROADCAST_EXTRA_FROM_NEW_CARD);
+            intent.putExtra(Global.KEY_CARD_INDEX, (mCurrentPack.cards.size() - 1));
+            sendBroadcast(intent);
+        }
 
     }
 
@@ -1390,7 +1364,7 @@ public class MainActivity extends FragmentActivity implements
                 removeCSSToolbar();
 
                 if (mIsCreatingCard) {
-                    dismissCardCreateWindow();
+                    dismissCardCreateWindowWithNotifyMasterView(true);
                 }
 
 
@@ -1641,7 +1615,7 @@ public class MainActivity extends FragmentActivity implements
             }
 
             if (mIsCreatingCard == true) {
-                dismissCardCreateWindow();
+                dismissCardCreateWindowWithNotifyMasterView(true);
                 return false;
             }
 
