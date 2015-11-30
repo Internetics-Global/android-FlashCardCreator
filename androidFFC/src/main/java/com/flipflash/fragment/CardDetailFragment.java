@@ -71,6 +71,7 @@ import com.flipflash.util.TipHelper;
 import com.flipflash.util.UIHelper;
 import com.nostra13.universalimageloader.core.DisplayImageOptions;
 import com.nostra13.universalimageloader.core.ImageLoader;
+import com.nostra13.universalimageloader.core.assist.ImageSize;
 import com.squareup.leakcanary.RefWatcher;
 
 import net.londatiga.android.ActionItem;
@@ -743,7 +744,10 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnTouchL
                 resultCode == Activity.RESULT_OK) {
 
             Uri selectedURI = data.getParcelableExtra("cropped_image_uri");
-            Bitmap scaledBitmap = UIHelper.bitmapFromUri(getActivity(), selectedURI, 1024);
+
+            ImageSize targetSize = new ImageSize(1024, 1024);
+            ImageLoader imageLoader = ImageLoader.getInstance();
+            Bitmap scaledBitmap = imageLoader.loadImageSync(selectedURI.toString(),targetSize);
 
             if (scaledBitmap == null) {
                 LOGE(TAG, "handleCrop, scaledBitmap = null");
@@ -4680,7 +4684,10 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnTouchL
 
                         } else if (StringUtils.isEmpty(decodeUriStr) == false) {   //images
                             if (requestCodeFinal == REQUEST_CODE_FROM_LOGO) {
-                                Bitmap scaledBitmap = UIHelper.bitmapFromUri(getActivity(), selectedURI, 100);
+
+                                ImageSize targetSize = new ImageSize(100, 100);
+                                ImageLoader imageLoader = ImageLoader.getInstance();
+                                Bitmap scaledBitmap = imageLoader.loadImageSync(selectedURI.toString(),targetSize);
 
                                 if (scaledBitmap == null) {
                                     LOGE(TAG, "handleCrop, scaledBitmap = null");
@@ -4702,7 +4709,9 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnTouchL
 
                             } else if (requestCodeFinal == REQUEST_CODE_FROM_IMAGE) {
 
-                                Bitmap scaledBitmap = UIHelper.bitmapFromUri(getActivity(), selectedURI, 400);
+                                ImageSize targetSize = new ImageSize(400, 400);
+                                ImageLoader imageLoader = ImageLoader.getInstance();
+                                Bitmap scaledBitmap = imageLoader.loadImageSync(selectedURI.toString(),targetSize);
 
                                 if (scaledBitmap == null) {
                                     LOGE(TAG, "handleCrop, scaledBitmap = null");

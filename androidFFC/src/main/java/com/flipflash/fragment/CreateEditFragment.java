@@ -37,6 +37,8 @@ import com.flipflash.util.AppContext;
 import com.flipflash.util.Global;
 import com.flipflash.util.OpenUDID_manager;
 import com.flipflash.util.UIHelper;
+import com.nostra13.universalimageloader.core.ImageLoader;
+import com.nostra13.universalimageloader.core.assist.ImageSize;
 import com.squareup.leakcanary.RefWatcher;
 
 import org.adw.library.widgets.discreteseekbar.DiscreteSeekBar;
@@ -344,7 +346,9 @@ public class CreateEditFragment extends DialogFragment implements TextView.OnEdi
                 Uri selectedImageURI = item.getUriOrigin();
 
                 //step1: get image
-                resultBitmap = UIHelper.bitmapFromUri(getActivity(),selectedImageURI,400);
+                ImageSize targetSize = new ImageSize(400, 400);
+                ImageLoader imageLoader = ImageLoader.getInstance();
+                resultBitmap = imageLoader.loadImageSync(selectedImageURI.toString(),targetSize);
 
                 if (resultBitmap == null) {
                     LOGD(TAG, "onActivityResult: resultBitmap is null");

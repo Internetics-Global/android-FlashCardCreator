@@ -42,6 +42,7 @@ import com.flipflash.util.Global;
 import com.flipflash.util.OpenUDID_manager;
 import com.flipflash.util.StringUtils;
 import com.flipflash.util.UIHelper;
+import com.nostra13.universalimageloader.core.ImageLoader;
 import com.squareup.leakcanary.RefWatcher;
 
 import java.io.FileNotFoundException;
@@ -292,6 +293,8 @@ public class PackListFragment extends Fragment {
                         Bitmap bitmap = BitmapFactory.decodeStream(cResolver
                                 .openInputStream(dataUri));
                         coverImageView.setImageBitmap(bitmap);
+                        ImageLoader imageLoader = ImageLoader.getInstance();
+                        imageLoader.displayImage(dataUri.toString(), coverImageView);
                     } catch (FileNotFoundException e) {
                         e.printStackTrace();
                     }
