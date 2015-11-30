@@ -3,8 +3,16 @@ package com.flipflash.android_ffc;
 import android.app.Activity;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
+import android.provider.Settings;
+import android.util.Log;
+import android.view.MotionEvent;
+import android.view.View;
 import android.view.WindowManager;
 import android.widget.TextView;
+
+import com.flipflash.util.Global;
+
+import cn.pedant.SweetAlert.SweetAlertDialog;
 
 public class AboutActivity extends Activity {
     private static final String TAG = AboutActivity.class.getName();
@@ -23,7 +31,43 @@ public class AboutActivity extends Activity {
         } catch (PackageManager.NameNotFoundException e) {
             e.printStackTrace();
         }
+
+        findViewById(R.id.textView).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                didClick();
+            }
+        });
+
     }
 
+    private int tapCount = 0;
+    private void didClick() {
+        Log.d("ccaa","Tap down count:" + tapCount);
+        if (tapCount == 4) {
+            tapCount = 0;
 
+            if (Global.IS_DOGFOOD_BUILD) {
+                Global.IS_DOGFOOD_BUILD = false;
+
+                new SweetAlertDialog(AboutActivity.this,SweetAlertDialog.NORMAL_TYPE)
+                        .setTitleText("Alert")
+                        .setContentText("Log is disabled (Force quit and launch disable log function")
+                        .show();
+
+            } else {
+
+                Global.IS_DOGFOOD_BUILD = true;
+
+                new SweetAlertDialog(AboutActivity.this,SweetAlertDialog.NORMAL_TYPE)
+                        .setTitleText("Alert")
+                        .setContentText("Log is enabled (Force quit and launch disable log function")
+                        .show();
+            }
+
+        } else {
+            tapCount++;
+        }
+
+    }
 }
