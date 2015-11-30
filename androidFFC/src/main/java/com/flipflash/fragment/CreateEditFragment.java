@@ -198,6 +198,8 @@ public class CreateEditFragment extends DialogFragment implements TextView.OnEdi
 
         } else {
             mCurrentPack = new Pack();
+
+            mAutoPlaySpeedSeekbar.setProgress(Global.kDefault_Auto_Play_Speed);
         }
 
         return mContentView;
