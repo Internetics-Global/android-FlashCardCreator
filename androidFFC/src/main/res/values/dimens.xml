@@ -67,6 +67,7 @@
     <dimen name="sidebar_text_height">180dp</dimen>
 
     <dimen name="keyboard_height">255dp</dimen>
+    <dimen name="image_rounded_corner">5dp</dimen>
 
 
 </resources>
