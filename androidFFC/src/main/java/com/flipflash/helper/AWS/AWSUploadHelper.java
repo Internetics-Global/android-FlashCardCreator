@@ -114,12 +114,7 @@ public class AWSUploadHelper {
 
             AmazonS3 s3client = AppContext.getS3Client();
 
-            String expectedBucketName = ParseUser.getCurrentUser().getUsername().toLowerCase(); //bucket name必须是low case的，这是aws要求的
-
-            expectedBucketName = expectedBucketName.replace(" ","");
-
-            //AWS对于bucket是有命名要求的：http://docs.rightscale.com/faq/clouds/aws/What_are_valid_S3_bucket_names.html
-            expectedBucketName = String.format("%s-%s",expectedBucketName,Global.BucketPostfixAfterUserName);
+            String expectedBucketName = AWSUtils.getFullBucketName();
 
             boolean succeeded = true;
             try {
@@ -164,6 +159,9 @@ public class AWSUploadHelper {
                         "communicate with S3, " +
                         "such as not being able to access the network.");
                 System.out.println("Error Message: " + ace.getMessage());
+            } catch (Exception ex) {
+                succeeded = false;
+                ex.printStackTrace();
             }
 
             if (succeeded == false) {
