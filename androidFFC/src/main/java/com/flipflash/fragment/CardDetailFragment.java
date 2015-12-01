@@ -180,6 +180,11 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnTouchL
     public final static  String TAG_MAIN                = "1002";
     public final static  String TAG_SUB                 = "1003";
 
+    public final static  String TAG_TITLE                 = "4001";
+    public final static  String TAG_CREATOR               = "4002";
+    public final static  String TAG_JOB_TITLE             = "4003";
+    public final static  String TAG_SIDE_BAR_TITLE        =  "4004";
+
 
     private DisplayImageOptions mDisplayImageOptions;
 
@@ -323,7 +328,6 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnTouchL
     public void onResume() {
         super.onResume();
         LOGD(TAG, "onResume:");
-        mIsTakeSnapshotAllNeeded = false;  //necessary
 
         //need to be put onResume, see http://stackoverflow.com/questions/13721063/aftertextchanged-being-called-without-the-text-being-actually-changed
         setTextsListener();
@@ -1538,6 +1542,7 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnTouchL
         }
 
         mSidebarTitle = (FCCEditText) mContentView.findViewById(R.id.sidebar_title);
+        mSidebarTitle.setTag(TAG_SIDE_BAR_TITLE);
         FrameLayout.LayoutParams params = (FrameLayout.LayoutParams) mSidebarTitle.getLayoutParams();
         double cardHeightDPUnit = UIHelper.getCardHeightDPUnit(getActivity());
         double cardSNHeightPXUnit = getResources().getDimensionPixelSize(R.dimen.cardsn_size) +  getResources().getDimensionPixelSize(R.dimen.cardsn_top_margin);
@@ -1549,9 +1554,12 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnTouchL
 
 
         mTitle = (FCCEditText) mContentView.findViewById(R.id.title);
+        mTitle.setTag(TAG_TITLE);
         mTitleBackground = (LinearLayout) mContentView.findViewById(R.id.title_background_linearlayout);
         mCreator = (FCCEditText) mContentView.findViewById(R.id.creator);
+        mCreator.setTag(TAG_CREATOR);
         mJobTitle = (FCCEditText) mContentView.findViewById(R.id.job_title);
+        mJobTitle.setTag(TAG_JOB_TITLE);
 
         LinearLayout creatorLayout = (LinearLayout) mContentView.findViewById(R.id.creator_layout);
 
@@ -2022,7 +2030,9 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnTouchL
                 public void afterTextChanged(Editable s) {
                     if (mIsQuestionShowing) {
                         mCurrentPack.questionTitle = mTitle.getText().toString();
-                        if ((!mIsPlayingCard)) {
+                        //之所以做这个逻辑是因为即便是setText也会call这个方法，这在初始化card中将成为灾难
+                        if ((!mIsPlayingCard)
+                                && (TAG_TITLE.equals(getCurrentFocusedViewTag()))) {
                             mIsTakeSnapshotAllNeeded = true;
                         }
                     } else {
@@ -2031,6 +2041,8 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnTouchL
                     LOGD(TAG, "afterTextChanged: mTitle has changed");
                 }
             };
+
+
             mTitle.addTextChangedListener(mTitleTextWatcher);
 
             if (mCreatorTextWatcher != null) {
@@ -2048,7 +2060,9 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnTouchL
                 @Override
                 public void afterTextChanged(Editable s) {
                     mCurrentPack.creatorNickName = mCreator.getText().toString();
-                    if ((!mIsPlayingCard)) {
+                    //之所以做这个逻辑是因为即便是setText也会call这个方法，这在初始化card中将成为灾难
+                    if ((!mIsPlayingCard)
+                            &&(TAG_CREATOR.equals(getCurrentFocusedViewTag()))) {
                         mIsTakeSnapshotAllNeeded = true;
                     }
 
@@ -2070,10 +2084,15 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnTouchL
                 public void onTextChanged(CharSequence s, int start, int before, int count) {
                 }
 
+
+
                 @Override
                 public void afterTextChanged(Editable s) {
+
                     mCurrentPack.jobTitle = mJobTitle.getText().toString();
-                    if ((!mIsPlayingCard)) {
+                    //之所以做这个逻辑是因为即便是setText也会call这个方法，这在初始化card中将成为灾难
+                    if ((!mIsPlayingCard)
+                            && (TAG_JOB_TITLE.equals(getCurrentFocusedViewTag()))) {
                         mIsTakeSnapshotAllNeeded = true;
                     }
 
@@ -2097,8 +2116,10 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnTouchL
 
                 @Override
                 public void afterTextChanged(Editable s) {
+                    //之所以做这个逻辑是因为即便是setText也会call这个方法，这在初始化card中将成为灾难
                     mCurrentPack.sidebarTitle = mSidebarTitle.getText().toString();
-                    if ((!mIsPlayingCard)) {
+                    if ((!mIsPlayingCard)
+                            && (TAG_SIDE_BAR_TITLE.equals(getCurrentFocusedViewTag()))) {
                         mIsTakeSnapshotAllNeeded = true;
                     }
 
@@ -2288,6 +2309,22 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnTouchL
         mVtoSub = mSub.getViewTreeObserver();
         mVtoSub.addOnGlobalLayoutListener(mVtoSubListener);
 
+    }
+
+    /*
+     *我们尽量避免输出null
+     */
+    private String getCurrentFocusedViewTag() {
+        View view = getActivity().getCurrentFocus();
+        if (view == null) {
+            return "";
+        } else {
+            if (view instanceof FCCEditText){
+                return (String) view.getTag();
+            } else {
+                return "";
+            }
+        }
     }
 
 
