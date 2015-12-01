@@ -185,7 +185,12 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnTouchL
     public final static  String TAG_JOB_TITLE             = "4003";
     public final static  String TAG_SIDE_BAR_TITLE        =  "4004";
 
-
+    /*
+     * triggerResizeTextToFitFrame中有诸多的限制条件，比如仅允许non-editable条件下。
+     * 这个标志位主要是为了不必需要的执行，而仅允许执行updateQuestionCSS(updateAnswerCSS)中setTextSize的执行后才执行
+     * 这个标志位一旦true，则不再false,因为我们的triggerResizeTextToFitFrame中仅仅在non-editabble中执行
+     */
+    private boolean      mAllowToTriggerResizeTextToFitFrame = false;
     private DisplayImageOptions mDisplayImageOptions;
 
 
@@ -1780,7 +1785,10 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnTouchL
     }
 
 
-    //由于这是一个one off的标志，所以必须设置最后改变文字内容的地方，也就是这里
+    /*
+     * 由于这是一个one off的标志，所以必须设置最后改变文字内容的地方，也就是这里
+     * 之所以设立这个标志，主要是OnGlobalLayoutListener经常会被执行多次，而我们只需要increase size一次，具体见triggerResizeTextToFitFrame
+     */
     private boolean flag_Subheading_OneoffIncrease;
     private boolean flag_Main_OneoffIncrease;
     private boolean flag_Sub_OneoffIncrease;
@@ -1792,12 +1800,8 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnTouchL
     private boolean flag_Main_ResizeFinished;
     private boolean flag_Sub_ResizeFinished;
 
-    /**
-     * 前置条件：仅isEditableMode = true下情况下被自动触发，
-     * 具体包括：
-     * 1. TextEdit的内容改变（TextWatcher）
-     * 2. 在布局时：ViewTreeObserver.OnGlobalLayoutListener
-     * 3. 每次执行setTextSize
+    /**仅在non-editable条件下工作
+     * 为了提高执行效率，仅仅当setTextSize自动引起的ViewTreeObserver.OnGlobalLayoutListener下触发（OnGlobalLayoutListener的触发可以通过setText或setTextSize)。
      */
     private void triggerResizeTextToFitFrame(final EditText v, int targetLines) {
 
@@ -1809,6 +1813,10 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnTouchL
 
             if (isEditableMode()) {
                // LOGD(TAG, "triggerResizeTextToFitFrame: aborted since we don't do this in edit mode");
+                return;
+            }
+
+            if (mAllowToTriggerResizeTextToFitFrame == false) {
                 return;
             }
 
@@ -1831,8 +1839,8 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnTouchL
 
 
             //特殊逻辑，历史原因,sample pack中的这部分内容的line number不正确，需要二次修正
-            if (v.getText().toString().contains("Knee how ma")) {
-                targetLines = 5;
+            if (v.getText().toString().contains("When referring")) {
+                Log.d("ccaa","coming the magic");
             }
 
 
@@ -1859,11 +1867,11 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnTouchL
                         flag_Sub_OneoffIncrease = true;
                     }
 
-                    float newTextSize = v.getTextSize() + (v.getTextSize())/3;
+                    float newTextSize = v.getTextSize() + (v.getTextSize())/2; //这个值跟Global.scaleInPlayMode相关，我们的策略是尽可能大，这样可以通过后续的down size进行修正；否则就没有机会
                     v.setTextSize(TypedValue.COMPLEX_UNIT_PX, newTextSize);
                     isResized = true;
 
-                    //LOGD(TAG, "triggerResizeTextToFitFrame: make size bigger and return");
+                    LOGD(TAG, "triggerResizeTextToFitFrame: make  bigger. Check if running > 1 with text " + v.getText());
 
                     return;
 
@@ -2160,9 +2168,9 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnTouchL
                     maxLines = mCurrentCard.answer.lineNoSubheading;
                 }
 
-                if (isEditableMode() == false) {
-                    triggerResizeTextToFitFrame(mSubheading, maxLines);
-                }
+//                if (isEditableMode() == false) {
+//                    triggerResizeTextToFitFrame(mSubheading, maxLines);
+//                }
 
             }
         };
@@ -2194,9 +2202,9 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnTouchL
                     maxLines = mCurrentCard.answer.lineNoMain;
                 }
 
-                if (isEditableMode() == false) {
-                    triggerResizeTextToFitFrame(mMain, maxLines);
-                }
+//                if (isEditableMode() == false) {
+//                    triggerResizeTextToFitFrame(mMain, maxLines);
+//                }
 
             }
         };
@@ -2228,9 +2236,9 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnTouchL
                     maxLines = mCurrentCard.answer.lineNoSub;
                 }
 
-                if (isEditableMode() == false) {
-                    triggerResizeTextToFitFrame(mSub, maxLines);
-                }
+//                if (isEditableMode() == false) {
+//                    triggerResizeTextToFitFrame(mSub, maxLines);
+//                }
 
             }
         };
@@ -3985,6 +3993,7 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnTouchL
         flag_Main_OneoffIncrease = false;
         flag_Sub_OneoffIncrease = false;
 
+        mAllowToTriggerResizeTextToFitFrame = true;
         mSubheading.setTextSize((mCurrentCard.question.css.subheadingSize * scaleVal));
         mMain.setTextSize((mCurrentCard.question.css.mainSize * scaleVal));
         mSub.setTextSize((mCurrentCard.question.css.subSize * scaleVal));

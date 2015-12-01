@@ -14,7 +14,7 @@ public class Global {
      */
     public static final boolean  FFC_WITHOUT_SUBSCRIPTION = false;
 
-    public static       boolean   IS_DOGFOOD_BUILD =  false;  //是否开启debug模式
+    public static       boolean   IS_DOGFOOD_BUILD =  true;  //是否开启debug模式
 
     public static final String BucketPostfixAfterUserName = "55b5aa55673793805862";
 
@@ -86,7 +86,7 @@ public class Global {
 
     //ratio between editing mode and play mode;
     //TODO: 这个逻辑需要重新考虑过
-    public static float   scaleInPlayMode = 1.2f;
+    public static float   scaleInPlayMode = 1.2f; //通过调整这个数值，可以用来验证triggerResizeTextToFitFrame的有效性
     public static float   ratioOfCardInPlayMode = 1.45f;  //注意，这个值同play.xml中的soulwolf:widthRatio="1.45" 一致
 
     //ie, image2, logoImage的tag，用在VGViewPager
