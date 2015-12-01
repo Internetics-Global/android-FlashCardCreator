@@ -2122,16 +2122,16 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnTouchL
             @Override
             public void afterTextChanged(Editable s) {
 
-                int maxLines = mSubheading.getLineCount();
+                int maxLines;
 
                 //LOGD(TAG, "afterTextChanged: on subheading: " + s.toString() + " with line count = " + maxLines);
 
                 if (mIsQuestionShowing) {
                     mCurrentCard.question.subheading = mSubheading.getText().toString();
-                    mCurrentCard.question.lineNoSubheading =  maxLines;
+                    maxLines = mCurrentCard.question.lineNoSubheading;
                 } else {
                     mCurrentCard.answer.subheading = mSubheading.getText().toString();
-                    mCurrentCard.answer.lineNoSubheading =  maxLines;
+                    maxLines = mCurrentCard.answer.lineNoSubheading;
                 }
 
                 if (isEditableMode() == false) {
@@ -2156,16 +2156,16 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnTouchL
 
             @Override
             public void afterTextChanged(Editable s) {
-                int maxLines = mMain.getLineCount();
+                int maxLines;
 
                 //LOGD(TAG, "afterTextChanged: on main: " + s.toString() + " with line count = " + maxLines);
 
                 if (mIsQuestionShowing) {
                     mCurrentCard.question.main = mMain.getText().toString();
-                    mCurrentCard.question.lineNoMain =  maxLines;
+                    maxLines = mCurrentCard.question.lineNoMain;
                 } else {
                     mCurrentCard.answer.main = mMain.getText().toString();
-                    mCurrentCard.answer.lineNoMain =  maxLines;
+                    maxLines = mCurrentCard.answer.lineNoMain;
                 }
 
                 if (isEditableMode() == false) {
@@ -2190,16 +2190,16 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnTouchL
 
             @Override
             public void afterTextChanged(Editable s) {
-                int maxLines = mSub.getLineCount();
+                int maxLines;
 
                 //LOGD(TAG, "afterTextChanged: on sub: " + s.toString() + " with line count = " + maxLines);
 
                 if (mIsQuestionShowing) {
                     mCurrentCard.question.sub = mSub.getText().toString();
-                    mCurrentCard.question.lineNoSub =  maxLines;
+                    maxLines = mCurrentCard.question.lineNoSub;
                 } else {
                     mCurrentCard.answer.sub = mSub.getText().toString();
-                    mCurrentCard.answer.lineNoSub =  maxLines;
+                    maxLines = mCurrentCard.answer.lineNoSub;
                 }
 
                 if (isEditableMode() == false) {
