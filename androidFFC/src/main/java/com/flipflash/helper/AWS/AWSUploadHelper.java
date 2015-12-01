@@ -1,5 +1,6 @@
 package com.flipflash.helper.AWS;
 
+import android.app.Activity;
 import android.content.Context;
 import android.os.Handler;
 import android.support.annotation.NonNull;
@@ -166,10 +167,15 @@ public class AWSUploadHelper {
             }
 
             if (succeeded == false) {
-                new SweetAlertDialog(mContext, SweetAlertDialog.ERROR_TYPE)
-                    .setTitleText(mContext.getString(R.string.DIALOG_ERROR))
-                    .setContentText(mContext.getString(R.string.DIALOG_FAILURE_TO_CREATE_BUCKET))
-                    .show();
+                ((Activity)mContext).runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        new SweetAlertDialog(mContext, SweetAlertDialog.ERROR_TYPE)
+                                .setTitleText(mContext.getString(R.string.DIALOG_ERROR))
+                                .setContentText(mContext.getString(R.string.DIALOG_FAILURE_TO_CREATE_BUCKET))
+                                .show();
+                    }
+                });
                 return;
             }
 
