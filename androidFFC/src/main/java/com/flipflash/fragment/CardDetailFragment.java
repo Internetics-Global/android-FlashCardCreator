@@ -1772,7 +1772,7 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnTouchL
     }
 
 
-
+    //由于这是一个one off的标志，所以必须设置最后改变文字内容的地方，也就是这里
     private boolean flag_Subheading_OneoffIncrease;
     private boolean flag_Main_OneoffIncrease;
     private boolean flag_Sub_OneoffIncrease;
@@ -1867,27 +1867,32 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnTouchL
             if (((textHeight > viewHeight) && (viewHeight > 1) && (noOfLines > 0)) ||
                     (noOfLines > targetLines && targetLines > 0)) {
 
+                boolean highAccuracy = false;
+                if (noOfLines - targetLines == 1) {
+                    highAccuracy = true;
+                }
+
                 // resize action
                 float textSize = v.getTextSize();
                 float newTextSize = 0;
 
-                if (textSize > 200) {
-                    newTextSize = textSize - textSize/10;
-                    v.setTextSize(TypedValue.COMPLEX_UNIT_PX, newTextSize);
-
-                } else if ((textSize > 100) && (textSize <= 200)) {
-                    newTextSize = textSize - textSize/40;
-                    v.setTextSize(TypedValue.COMPLEX_UNIT_PX, newTextSize);
-                } else if ((textSize > 50) && (textSize <= 100)) {
-                    newTextSize = textSize - textSize/50;
-                    v.setTextSize(TypedValue.COMPLEX_UNIT_PX, newTextSize);
-                } else if ((textSize > 30) && (textSize <= 50)) {
-                    newTextSize = textSize - 1;
-                    v.setTextSize(TypedValue.COMPLEX_UNIT_PX, newTextSize);
+                if (highAccuracy) {
+                    newTextSize = textSize - 4;
                 } else {
-                    newTextSize = textSize - 1;
-                    v.setTextSize(TypedValue.COMPLEX_UNIT_PX, newTextSize);
+                    if (textSize > 200) {
+                        newTextSize = textSize - textSize/10;
+                    } else if ((textSize > 100) && (textSize <= 200)) {
+                        newTextSize = textSize - textSize/40;
+                    } else if ((textSize > 50) && (textSize <= 100)) {
+                        newTextSize = textSize - textSize/50;
+                    } else if ((textSize > 30) && (textSize <= 50)) {
+                        newTextSize = textSize - 1;
+                    } else {
+                        newTextSize = textSize - 1;
+                    }
                 }
+                v.setTextSize(TypedValue.COMPLEX_UNIT_PX, newTextSize);
+
                 isResized = true;
 
                 //LOGD(TAG, "triggerResizeTextToFitFrame: make size smaller");
@@ -3939,9 +3944,16 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnTouchL
             scaleVal = (float) 1.0;
         }
 
+        //由于这是一个one off的标志，所以必须设置最后改变文字内容的地方，也就是这里
+        flag_Subheading_OneoffIncrease = false;
+        flag_Main_OneoffIncrease = false;
+        flag_Sub_OneoffIncrease = false;
+
         mSubheading.setTextSize((mCurrentCard.question.css.subheadingSize * scaleVal));
         mMain.setTextSize((mCurrentCard.question.css.mainSize * scaleVal));
         mSub.setTextSize((mCurrentCard.question.css.subSize * scaleVal));
+
+
 
         //step3: color
         mSubheading.setTextColor(StringUtils.convertColorStringToInt(mCurrentCard.question.css.subheadingColor));
@@ -3974,6 +3986,12 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnTouchL
         mSub.setGravity(StringUtils.convertGravityStringToInt(mCurrentCard.answer.css.subAlign) | StringUtils.convertVerticalGravityStringToInt(mCurrentCard.answer.css.subAlignVertical));
 
         //step2: size
+
+        //由于这是一个one off的标志，所以必须设置最后改变文字内容的地方，也就是这里
+        flag_Subheading_OneoffIncrease = false;
+        flag_Main_OneoffIncrease = false;
+        flag_Sub_OneoffIncrease = false;
+
         mSubheading.setTextSize((mCurrentCard.answer.css.subheadingSize * scaleVal));
         mMain.setTextSize((mCurrentCard.answer.css.mainSize * scaleVal));
         mSub.setTextSize((mCurrentCard.answer.css.subSize * scaleVal));
