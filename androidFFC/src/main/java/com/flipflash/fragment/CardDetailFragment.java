@@ -2500,10 +2500,13 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnTouchL
 
 
         if (mIsTakeSnapshotAllNeeded == false) {
+            //如果只是新建一个卡片，而不需要截图，则创建新卡片后，定位到那个新卡片
             Intent intent = new Intent();
             intent.setAction(Global.BROADCAST_ACTION_UPDATE_MASTER_VIEW);
-            intent.putExtra(Global.KEY_FROM, Global.BROADCAST_EXTRA_FROM_CURRENT_PACK_UPDATE);
+            intent.putExtra(Global.KEY_FROM, Global.BROADCAST_EXTRA_FROM_NEW_CARD);
+            intent.putExtra(Global.KEY_CARD_INDEX, (mCurrentPack.cards.size() - 1));
             getActivity().sendBroadcast(intent);
+
         } else {
             //会在takeSnapshotCurrentCard中执行上面的逻辑，所以不需要在这里处理。
         }
