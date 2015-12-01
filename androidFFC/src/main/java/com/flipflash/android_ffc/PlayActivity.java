@@ -1091,7 +1091,7 @@ public class PlayActivity extends FragmentActivity implements SensorEventListene
     }
 
     private final float  UP_THRESHOLD_RADIUS = 0.3f;
-    private final float  DOWN_THRESHOLD_RADIUS = -0.15f;
+    private final float  DOWN_THRESHOLD_RADIUS = -0.3f;
 
     private boolean      resetRoll    = true;
     private boolean      upSwitchFlag    = false;
