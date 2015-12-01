@@ -53,6 +53,7 @@ import org.adw.library.widgets.discreteseekbar.DiscreteSeekBar;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Locale;
 import java.util.MissingResourceException;
@@ -280,7 +281,9 @@ public class PlayActivity extends FragmentActivity implements SensorEventListene
 
         mBaseView = (ViewGroup) findViewById(R.id.play_baseview);
 
-        mFragments = getFragments();
+        if (mFragments == null) {
+            mFragments = getFragments();
+        }
         FCCPageAdapter pageAdapter = new FCCPageAdapter(getSupportFragmentManager(), mFragments);
         mPager = (VGViewPager) findViewById(R.id.viewpager);
         mPager.setStopScrollWhenTouch(false);
@@ -990,8 +993,9 @@ public class PlayActivity extends FragmentActivity implements SensorEventListene
 
             //主要目的是及时释放内存，以防内存不断增加导致crash
             if (position-2 >=0) {
+                Card targetCard = getShuffleCardIndexWithPageNumber(position-2);
                 CardDetailFragment cardDetailFragment = new CardDetailFragment();
-                cardDetailFragment.setupParameters(mCurrentPack, mCurrentPack.cards.get(position - 2), 2);
+                cardDetailFragment.setupParameters(mCurrentPack, targetCard, 2);
 
 //                CardDetailFragment oldFragment = (CardDetailFragment) mFragments.get(position -2);
 //                RefWatcher refWatcher = AppContext.getRefWatcher(PlayActivity.this);
@@ -1001,8 +1005,9 @@ public class PlayActivity extends FragmentActivity implements SensorEventListene
             }
 
             if (position +2 <= mCurrentPack.cards.size() -1) {
+                Card targetCard = getShuffleCardIndexWithPageNumber(position + 2);
                 CardDetailFragment cardDetailFragment = new CardDetailFragment();
-                cardDetailFragment.setupParameters(mCurrentPack, mCurrentPack.cards.get(position +2), 2);
+                cardDetailFragment.setupParameters(mCurrentPack, targetCard, 2);
                 mFragments.set(position +2,cardDetailFragment);
 
 //                CardDetailFragment oldFragment = (CardDetailFragment) mFragments.get(position + 2);
@@ -1747,6 +1752,28 @@ public class PlayActivity extends FragmentActivity implements SensorEventListene
         }
 
         return fList;
+    }
+
+    /*
+     * Shuffle后，不能再根据mCurrentPack.cards.get(pageNumber)来获取正确的mCurrentCard，而是需要如下的方法
+     */
+    private Card getShuffleCardIndexWithPageNumber(int pageNumber) {
+        if (mFragments == null) {
+            mFragments = getFragments();
+        }
+
+        int targetCardID = ((CardDetailFragment)mFragments.get(pageNumber)).mCurrentCard.cardID;
+
+        Iterator<Card> iterator = mCurrentPack.cards.iterator();
+        while (iterator.hasNext()) {
+            Card item = iterator.next();
+            if (item.cardID == targetCardID) {
+                return item;
+            }
+        }
+
+        throw  new IllegalStateException("Should not be here ");
+
     }
 
     /**
