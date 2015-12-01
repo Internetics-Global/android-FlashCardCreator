@@ -2483,18 +2483,16 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnTouchL
      */
     public void saveNewCreatedCard() {
 
-        mCurrentPack.addCard(AppContext.getAppContext(), mCurrentCard);
+        mCurrentPack.addCard(AppContext.getAppContext(), mCurrentCard); //新截图没有包含
 
         if (mIsTakeSnapshotAllNeeded) {
             ((MainActivity) getActivity()).setMaskButtonForContentUpdating();
-            takeSnapshotAll();
+            takeSnapshotAll(); //在这里会自动save包含新截图的数据
             mCurrentPack.save(AppContext.getAppContext());
 
         } else {
-            takeSnapshotCurrentCard();
+            takeSnapshotCurrentCard();//在这里会自动save包含新截图的数据
         }
-
-        mCurrentCard.save(AppContext.getAppContext()); //虽然前面的addCard也包含了save动作，但是实际上没有包含新的截图，所以需要重新来一次
 
         LOGD(TAG, "saveNewCreatedCard: finish execution of saveNewCreatedCard");
 
@@ -2577,9 +2575,7 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnTouchL
             enableCardEditable();
         }
 
-        if (mIsCreatingCard == false) {
-            mCurrentCard.save(AppContext.getAppContext());
-        }
+        mCurrentCard.save(AppContext.getAppContext());
 
         if (toggle == true) {
             switchToAnswerView(false);
