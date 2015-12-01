@@ -81,7 +81,7 @@ public class CardListFragment extends Fragment {
 
 
     public interface Callbacks {
-        public void onItemSelected(int index);
+        public void onItemSelected(int index,boolean isManuallyClicked);
 
     }
 
@@ -255,7 +255,7 @@ public class CardListFragment extends Fragment {
                 @Override
                 public void onClick(View v) {
                     LOGD(TAG, "onClick: " +  "card item is clicked:" + position);
-                    mCallbacks.onItemSelected(position);
+                    mCallbacks.onItemSelected(position,true);
                     ((FCCdapter) adapter).setSelectedPosition(position);
                     adapter.notifyDataSetChanged();
                 }
@@ -308,8 +308,8 @@ public class CardListFragment extends Fragment {
                     extraCardIndex = intent.getExtras().getInt(Global.KEY_CARD_INDEX);
                     mCurrentPack = User.getPack(AppContext.getAppContext(),mCurrentPack.packID);
                 } else if (extraFrom.equals(Global.BROADCAST_EXTRA_FROM_CURRENT_PACK_UPDATE)) {
-                    extraCardIndex = -1;
                     mCurrentPack = User.getPack(AppContext.getAppContext(),mCurrentPack.packID);
+                    extraCardIndex = -1;
                 } else if (extraFrom.equals(Global.BROADCAST_EXTRA_FROM_PACK_SELECTED)) {
                     extraCardIndex = 0;
                     int packIndex = intent.getExtras().getInt("indexOfPack");
@@ -424,7 +424,7 @@ public class CardListFragment extends Fragment {
         if ((mCardArrayList.size() > 0) && (selectedItemIndex >= 0)) {
 
 
-            mCallbacks.onItemSelected(selectedItemIndex);
+            mCallbacks.onItemSelected(selectedItemIndex, false);
             ((FCCdapter) adapter).setSelectedPosition(selectedItemIndex);
             adapter.notifyDataSetChanged();
             mDSLVListView.smoothScrollToPosition(selectedItemIndex);
@@ -432,7 +432,7 @@ public class CardListFragment extends Fragment {
             //do nothing
         } else {
             //Clear detail view
-            mCallbacks.onItemSelected(-1);
+            mCallbacks.onItemSelected(-1,false);
         }
 
         ((MainActivity) getActivity()).clearMaskButtonForContentUpdating();

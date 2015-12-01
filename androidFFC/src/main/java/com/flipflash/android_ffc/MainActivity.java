@@ -843,14 +843,18 @@ public class MainActivity extends FragmentActivity implements
      * @param index (index<0) is used to clear master and detail views
      */
     @Override
-    public void onItemSelected(int index) {
+    public void onItemSelected(int index, boolean isManuallyClicked) {
 
         LOGD(TAG, "onItemSelected: " + index);
 
-        //比如，我们在create a new card中改变了数据，但是结果没有保存，这时就不能直接从内存中读取，而且是要放弃这部分内容，从数据库取
-        mCurrentPack = User.getPack(AppContext.getAppContext(),mCurrentPack.packID);
-        if (mCurrentPack == null) {
-            throw new IllegalStateException("mCurrentPack should not be null");
+        if (isManuallyClicked) {
+            if (mCurrentPack == null) {
+                //由于读取sqlite的效率很低，所以除非万不得已，我们直接内存取
+                mCurrentPack = User.getPack(AppContext.getAppContext(),mCurrentPack.packID);
+            }
+        } else {
+            //比如，我们在create a new card中改变了数据，但是结果没有保存，这时就不能直接从内存中读取，而且是要放弃这部分内容，从数据库取
+            mCurrentPack = User.getPack(AppContext.getAppContext(),mCurrentPack.packID);
         }
 
         if (index >= 0) {
