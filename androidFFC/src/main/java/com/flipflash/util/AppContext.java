@@ -71,7 +71,7 @@ public class AppContext extends Application {
         mS3Client = new AmazonS3Client(mCredentialsProvider);
 
         // Setup Parse
-        ParseCrashReporting.enable(this);
+        //ParseCrashReporting.enable(this);
         Parse.enableLocalDatastore(this);
         Parse.initialize(this);
         // Parse的app_key和app_id是在Manifest中进行设置
@@ -153,12 +153,12 @@ public class AppContext extends Application {
         config.diskCacheSize(50 * 1024 * 1024); // 50 MiB
         config.tasksProcessingOrder(QueueProcessingType.LIFO);
 
-        if (Global.IS_DOGFOOD_BUILD) {
-            config.writeDebugLogs(); // Remove for release app
-        } else {
-            L.writeDebugLogs(false);
-            L.writeLogs(false);
-        }
+//        if (Global.IS_DOGFOOD_BUILD) {
+//            config.writeDebugLogs(); // Remove for release app
+//        } else {
+//            L.writeDebugLogs(false);
+//            L.writeLogs(false);
+//        }
 
         // Initialize ImageLoader with configuration.
         ImageLoader.getInstance().init(config.build());

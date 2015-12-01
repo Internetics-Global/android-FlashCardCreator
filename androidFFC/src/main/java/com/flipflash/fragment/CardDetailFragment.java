@@ -2038,7 +2038,7 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnTouchL
                     } else {
                         mCurrentPack.answerTitle = mTitle.getText().toString();
                     }
-                    LOGD(TAG, "afterTextChanged: mTitle has changed");
+                    //LOGD(TAG, "afterTextChanged: mTitle has changed");
                 }
             };
 
@@ -2066,7 +2066,7 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnTouchL
                         mIsTakeSnapshotAllNeeded = true;
                     }
 
-                    LOGD(TAG, "afterTextChanged: mCreator has changed");
+                    //LOGD(TAG, "afterTextChanged: mCreator has changed");
 
                 }
             };
@@ -2096,7 +2096,7 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnTouchL
                         mIsTakeSnapshotAllNeeded = true;
                     }
 
-                    LOGD(TAG, "afterTextChanged: mJobTitle has changed");
+                    //LOGD(TAG, "afterTextChanged: mJobTitle has changed");
 
                 }
             };
@@ -2123,7 +2123,7 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnTouchL
                         mIsTakeSnapshotAllNeeded = true;
                     }
 
-                    LOGD(TAG, "afterTextChanged: mSidebarTitle has changed");
+                    //LOGD(TAG, "afterTextChanged: mSidebarTitle has changed");
 
                 }
             };

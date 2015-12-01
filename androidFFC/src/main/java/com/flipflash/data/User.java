@@ -3,6 +3,7 @@ package com.flipflash.data;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.util.Log;
 
 import com.flipflash.helper.SQLiteHelper;
 import com.flipflash.util.AppContext;
@@ -168,11 +169,11 @@ public class User {
 
         if ((sortType == 0) || (sortType == 1)) {
             for (int i =0;i<packs.size();i++) {
-                LOGD(TAG, "sortPacks: " + "Create date: " + packs.get(i).createDate);
+                //LOGD(TAG, "sortPacks: " + "Create date: " + packs.get(i).createDate);
             }
         } else {
             for (int i =0;i<packs.size();i++) {
-                LOGD(TAG, "sortPacks: "+ "Last Visit date: " + packs.get(i).lastVistDate);
+                //LOGD(TAG, "sortPacks: "+ "Last Visit date: " + packs.get(i).lastVistDate);
             }
         }
 
@@ -183,6 +184,9 @@ public class User {
 
 
     public static Pack getPack(Context context,int packID) {
+
+        long startTime = System.currentTimeMillis();
+
         reset(context,true);
         Pack returnPack = null;
         ArrayList<Pack> packs = User.defaultUser(context).packs;
@@ -190,9 +194,18 @@ public class User {
         for (int i = 0; i < packs.size(); i++) {
             if (packs.get(i).packID == packID) {
                 returnPack = packs.get(i);
+
+                long stopTime = System.currentTimeMillis();
+                long elapsedTime = stopTime - startTime;
+                Log.d("SQLite","getPack: execute time(mill) is " + elapsedTime);
+
                 return returnPack;
             }
         }
+
+
+
+
         return returnPack;
     }
 }
