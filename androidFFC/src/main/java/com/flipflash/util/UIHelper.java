@@ -553,67 +553,67 @@ public class UIHelper {
         float screenDPSize = getScreenWidthDPUnit();
 
         if (screenDPSize <=480) {
-            int[] intArray = {11,13,11,11,13,11,40};
+            int[] intArray = {13,11,11,13,11,11,40};
             return intArray;
 
         }else if (screenDPSize <=500) {
-            int[] intArray = {12,14,12,12,14,12,42};
+            int[] intArray = {14,12,12,14,12,12,42};
             return intArray;
 
         } else if (screenDPSize <=590) {
-            int[] intArray = {14,16,14,14,16,14,44};
+            int[] intArray = {16,14,14,16,14,14,44};
             return intArray;
 
         } else if (screenDPSize <=650) {
             //<!--nexus5,s5 and galaxy note3,dp= 600;   jianguo dp = 640-->
-            int[] intArray = {15,17,15,15,17,15,46};
+            int[] intArray = {17,15,15,17,15,15,46};
             return intArray;
 
         } else if (screenDPSize <=700) {
             //<!--nexus6p,dp= 689-->   (not verified )
-            int[] intArray = {16,18,16,16,18,16,46};
+            int[] intArray = {18,16,16,18,16,16,46};
             return intArray;
 
         } else if (screenDPSize <=800) {
-            int[] intArray = {17,19,17,17,19,17,50};
+            int[] intArray = {19,17,17,19,17,17,50};
             return intArray;
 
         } else if (screenDPSize <=900) {
-            int[] intArray = {20,22,20,20,22,20,60};
+            int[] intArray = {22,20,20,22,20,20,60};
             return intArray;
 
         } else if (screenDPSize <=950) {
-            int[] intArray = {22,24,22,22,24,22,80};
+            int[] intArray = {24,22,22,24,22,22,80};
             return intArray;
 
         } else if (screenDPSize <=1000) {
             //<!--nexus7, xperia tablet z,dp= 960-->
-            int[] intArray = {26,28,26,26,28,26,85};
+            int[] intArray = {28,26,26,28,26,26,85};
             return intArray;
 
         } else if (screenDPSize <=1100) {
-            int[] intArray = {28,30,28,28,30,28,90};
+            int[] intArray = {30,28,28,30,28,28,90};
             return intArray;
 
         } else if (screenDPSize <=1200) {
-            int[] intArray = {30,32,30,30,32,30,95};
+            int[] intArray = {32,30,30,32,30,30,95};
             return intArray;
 
         } else if (screenDPSize <=1300) {
             //<!--galaxy tab s2, nexus10: dp = 1280-->
-            int[] intArray = {36,38,36,36,38,36,100};
+            int[] intArray = {38,36,36,38,36,36,100};
             return intArray;
 
         } else if (screenDPSize <=1400) {
-            int[] intArray = {40,42,40,40,42,40,110};
+            int[] intArray = {42,40,40,42,40,40,110};
             return intArray;
 
         } else if (screenDPSize <=1500) {
-            int[] intArray = {44,46,44,44,6,44,110};
+            int[] intArray = {46,44,44,46,44,44,110};
             return intArray;
 
         } else{
-            int[] intArray = {48,52,48,48,52,48,120};
+            int[] intArray = {52,48,48,52,48,48,120};
             return intArray;
 
         }
