@@ -3957,8 +3957,6 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnTouchL
      */
     private void updateQuestionCSS() {
 
-        mTitle.setTextColor(Color.parseColor("#0910FF"));
-
         //step1: alignment
         mSubheading.setGravity(StringUtils.convertGravityStringToInt(mCurrentCard.question.css.subheadingAlign) | StringUtils.convertVerticalGravityStringToInt(mCurrentCard.question.css.subheadingAlignVertical));
         mMain.setGravity(StringUtils.convertGravityStringToInt(mCurrentCard.question.css.mainAlign) | StringUtils.convertVerticalGravityStringToInt(mCurrentCard.question.css.mainAlignVertical));
@@ -4006,8 +4004,6 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnTouchL
         } else {
             scaleVal = (float) 1.0;
         }
-
-        mTitle.setTextColor(Color.RED);
 
         //step1: alignment
         mSubheading.setGravity(StringUtils.convertGravityStringToInt(mCurrentCard.answer.css.subheadingAlign) | StringUtils.convertVerticalGravityStringToInt(mCurrentCard.answer.css.subheadingAlignVertical));
