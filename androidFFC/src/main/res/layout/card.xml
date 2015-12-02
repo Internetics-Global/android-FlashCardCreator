@@ -166,7 +166,7 @@
                         android:layout_gravity="bottom"
                         android:src="@drawable/selector_edit_link_button"/>
 
-                    <com.makeramen.roundedimageview.RoundedImageView
+                    <ImageView
                         android:id="@+id/logo_image"
                         android:layout_height="wrap_content"
                         android:layout_width="0dp"
@@ -175,8 +175,7 @@
                         android:layout_marginRight="10dp"
                         android:scaleType="fitCenter"
                         android:adjustViewBounds="true"
-                        android:layout_gravity="center"
-                        app:riv_corner_radius="@dimen/image_rounded_corner"/>
+                        android:layout_gravity="center"/>
                 </LinearLayout>
 
                 <FrameLayout
