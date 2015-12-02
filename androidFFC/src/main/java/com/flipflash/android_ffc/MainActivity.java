@@ -1007,11 +1007,17 @@ public class MainActivity extends FragmentActivity implements
 
     }
 
+    public void removeAddCardLayoutIfExisting () {
+
+        FrameLayout addCardLayout = (FrameLayout) findViewById(R.id.add_card_frame_layout);
+        if (addCardLayout != null) {
+            addCardLayout.setVisibility(View.GONE);
+        }
+    }
+
     private void dismissCardCreateWindowWithNotifyMasterView(boolean IsNotifyMasterView) {
         LOGD(TAG, "dismissCardCreateWindow");
         getSupportFragmentManager().beginTransaction().remove(mCardDetailFragment).commit();
-        FrameLayout addCardLayout = (FrameLayout) findViewById(R.id.add_card_frame_layout);
-        addCardLayout.setVisibility(View.GONE);
 
         Button masterMaskButton = (Button) findViewById(R.id.master_view_mask);
         masterMaskButton.setVisibility(View.INVISIBLE);
@@ -1599,8 +1605,18 @@ public class MainActivity extends FragmentActivity implements
 
     }
 
-    public void clearMaskButtonForContentUpdating() {
+    public void cleanMaskButtonAndNewCardLayout() {
         mMasterViewUpdatingLayout.setVisibility(View.INVISIBLE);
+
+        Handler handler = new Handler();
+                handler.postDelayed(new Runnable() {
+
+                    @Override
+                    public void run() {
+                        removeAddCardLayoutIfExisting();
+                    }
+
+                }, 600); // 5000ms delay
     }
 
 
