@@ -879,6 +879,17 @@ public class MainActivity extends FragmentActivity implements
         }
 
         hidePackInfoView();
+
+        //这种情况适合于在新建一个卡片后，为了避免flashing（显示老的，然后新的），我们要确保新的mCardDetailFragment上去后才remove掉
+        Handler handler = new Handler();
+                handler.postDelayed(new Runnable() {
+
+                    @Override
+                    public void run() {
+                        removeAddCardLayoutIfExisting();
+                    }
+
+                }, 200);
     }
 
 
@@ -1605,18 +1616,8 @@ public class MainActivity extends FragmentActivity implements
 
     }
 
-    public void cleanMaskButtonAndNewCardLayout() {
+    public void hideMasterViewUpdatingLayout() {
         mMasterViewUpdatingLayout.setVisibility(View.INVISIBLE);
-
-        Handler handler = new Handler();
-                handler.postDelayed(new Runnable() {
-
-                    @Override
-                    public void run() {
-                        removeAddCardLayoutIfExisting();
-                    }
-
-                }, 600); // 5000ms delay
     }
 
 
