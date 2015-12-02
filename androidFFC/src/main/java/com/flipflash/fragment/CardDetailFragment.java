@@ -2358,10 +2358,11 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnTouchL
         mCreator.setText(mCurrentPack.creatorNickName);
         mJobTitle.setText(mCurrentPack.jobTitle);
 
-        int sidebarBGResourceID = (StringUtils.convertTemplateBackgroundStringToResourceID(mCurrentCard.templateBackground))[1];
-        mSidebarBackground.setBackgroundResource(sidebarBGResourceID);
-        int titleBGResourceID = (StringUtils.convertTemplateBackgroundStringToResourceID(mCurrentCard.templateBackground))[2];
-        mTitleBackground.setBackgroundResource(titleBGResourceID);
+        int colorResourceID[] = (StringUtils.convertTemplateBackgroundStringToResourceID(mCurrentCard.templateBackground));
+        mSidebarBackground.setBackgroundResource(colorResourceID[1]);
+        mTitleBackground.setBackgroundResource(colorResourceID[2]);
+        mCardSN.setBackgroundResource(colorResourceID[3]);
+        mTitle.setTextColor(colorResourceID[4]);
 
         if (!mIsPlayingCard) {
             if (mIsQuestionShowing) {
@@ -2645,33 +2646,15 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnTouchL
      * @param cardColorTemplateIndex
      */
     public void cardColorTemplateSelectedPostAction(int cardColorTemplateIndex) {
-        switch (cardColorTemplateIndex) {
-            case 0:
-                mSidebarBackground.setBackgroundResource(R.drawable.shape_card_blue_left_corner);
-                mTitleBackground.setBackgroundResource(R.drawable.card_title_bg_blue);
-                break;
-            case 1:
-                mSidebarBackground.setBackgroundResource(R.drawable.shape_card_coffee_left_corner);
-                mTitleBackground.setBackgroundResource(R.drawable.card_title_bg_coffee);
-                break;
-            case 2:
-                mSidebarBackground.setBackgroundResource(R.drawable.shape_card_gray_left_corner);
-                mTitleBackground.setBackgroundResource(R.drawable.card_title_bg_gray);
-                break;
-            case 3:
-                mSidebarBackground.setBackgroundResource(R.drawable.shape_card_purple_left_corner);
-                mTitleBackground.setBackgroundResource(R.drawable.card_title_bg_purple);
-                break;
-            case 4:
-                mSidebarBackground.setBackgroundResource(R.drawable.shape_card_red_left_corner);
-                mTitleBackground.setBackgroundResource(R.drawable.card_title_bg_red);
-                break;
-            default:
-                LOGE(TAG, "cardColorTemplateSelectedPostAction: Out of range");
-        }
 
         String templateBackground = StringUtils.convertTemplateBackgroundIndexToString(cardColorTemplateIndex);
         mCurrentCard.templateBackground = templateBackground;
+
+        int colorResourceID[] = (StringUtils.convertTemplateBackgroundStringToResourceID(templateBackground));
+        mSidebarBackground.setBackgroundResource(colorResourceID[1]);
+        mTitleBackground.setBackgroundResource(colorResourceID[2]);
+        mCardSN.setBackgroundResource(colorResourceID[3]);
+        mTitle.setTextColor(colorResourceID[4]);
 
 
         if (!mIsCreatingCard) {
@@ -2683,6 +2666,7 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnTouchL
             takeSnapshotAll();
         }
     }
+
 
     /**
      * determine whether the card is editable or not

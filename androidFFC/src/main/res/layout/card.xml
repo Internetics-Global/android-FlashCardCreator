@@ -53,8 +53,8 @@
                 android:layout_width="@dimen/cardsn_size"
                 android:text="1"
                 android:gravity="center"
-                android:background="@drawable/cardsn_bg"
-                android:textColor="@android:color/black"
+                android:background="@drawable/card_sn_bg_blue"
+                android:textColor="@android:color/white"
                 android:textSize="@dimen/cardsn_text_size"
                 />
 

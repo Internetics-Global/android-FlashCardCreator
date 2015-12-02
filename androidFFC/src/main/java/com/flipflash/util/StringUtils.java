@@ -120,38 +120,53 @@ public class StringUtils {
      * In order to be compatible with iOS version
      */
     public static int[] convertTemplateBackgroundStringToResourceID(String templateBackground) {
-        int[] resourceID = {0, 0, 0};
+        int[] resourceID = {0, 0, 0, 0, 0};
 
-        if (templateBackground.equals("card_background_blue.png")) {
+        if (templateBackground.toLowerCase().contains("blue")) {
             resourceID[0] = 0;
             resourceID[1] = R.drawable.shape_card_blue_left_corner;
             resourceID[2] = R.drawable.card_title_bg_blue;
-        } else if (templateBackground.equals("card_background_coffee.png")) {
+            resourceID[3] = R.drawable.card_sn_bg_blue;
+            resourceID[4] = Color.BLUE;
+        } else if (templateBackground.toLowerCase().contains("coffee")) {
             resourceID[0] = 1;
             resourceID[1] = R.drawable.shape_card_coffee_left_corner;
             resourceID[2] = R.drawable.card_title_bg_coffee;
-        } else if (templateBackground.equals("card_background_gray.png")) {
+            resourceID[3] = R.drawable.card_sn_bg_coffee;
+            resourceID[4] = Color.rgb(128,0,0);
+        } else if (templateBackground.toLowerCase().contains("gray")) {
             resourceID[0] = 2;
             resourceID[1] = R.drawable.shape_card_gray_left_corner;
             resourceID[2] = R.drawable.card_title_bg_gray;
-        } else if (templateBackground.equals("card_background_purple.png")) {
+            resourceID[3] = R.drawable.card_sn_bg_gray;
+            resourceID[4] = Color.rgb(40,40,40);
+        } else if (templateBackground.toLowerCase().contains("purple")) {
             resourceID[0] = 3;
             resourceID[1] = R.drawable.shape_card_purple_left_corner;
             resourceID[2] = R.drawable.card_title_bg_purple;
-        } else if (templateBackground.equals("card_background_red.png")) {
+            resourceID[3] = R.drawable.card_sn_bg_purple;
+            resourceID[4] = Color.rgb(128,0,128);
+        } else if (templateBackground.toLowerCase().contains("red")) {
             resourceID[0] = 4;
             resourceID[1] = R.drawable.shape_card_red_left_corner;
             resourceID[2] = R.drawable.card_title_bg_red;
+            resourceID[3] = R.drawable.card_sn_bg_red;
+            resourceID[4] = Color.RED;
         } else {
             resourceID[0] = 0;
             resourceID[1] = R.drawable.shape_card_blue_left_corner;
             resourceID[2] = R.drawable.card_title_bg_blue;
+            resourceID[3] = R.drawable.card_sn_bg_blue;
+            resourceID[4] = Color.BLUE;
         }
 
         return resourceID;
     }
 
 
+    /*
+     * In order to be compatibile with iOS
+     */
     public static String convertTemplateBackgroundIndexToString(int index) {
         String result;
 
