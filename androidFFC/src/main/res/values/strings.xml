@@ -41,7 +41,7 @@
     <string name="DIALOG_DELETE_PACK">Are you sure you want to delete?</string>
     <string name="DIALOG_DELETE_CARD">Are you sure you want to delete?</string>
     <string name="DIALOG_FAIL_TO_LOG_DROPBOX">Dropbox is not linked</string>
-    <string name="DIALOG_DOWNLOAD_LINK_ERROR">Check your download linkage or Dropbox sever is temporarily unavailable</string>
+    <string name="DIALOG_DOWNLOAD_LINK_ERROR">Unable to download. Please check you have the correct code and please check your internet connection.</string>
     <string name="DIALOG_CREATE_ZIPPED_SHARE_FILE_FAILED">Failure to create zipped share file.</string>
     <string name="DIALOG_ENCRPT_ZIPPED_SHARE_FILED_FAILED">Failure to encrypt zipped share file.</string>
     <string name="DIALOG_REDIRECT_SERVICE_UNAVAILABLE">Redirect service is not available now, please try again</string>
