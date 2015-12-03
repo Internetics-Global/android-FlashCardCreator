@@ -75,7 +75,9 @@
                   android:screenOrientation="sensorLandscape"/>
         <activity android:name="com.flipflash.android_ffc.WebViewActivity"
                   android:screenOrientation="sensorLandscape"/>
-        <activity android:name="com.flipflash.android_ffc.AppStart" android:theme="@android:style/Theme.NoTitleBar.Fullscreen" android:screenOrientation="landscape">
+        <activity android:name="com.flipflash.android_ffc.AppStart"
+                  android:theme="@android:style/Theme.NoTitleBar.Fullscreen"
+                  android:screenOrientation="sensorLandscape">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
                 <category android:name="android.intent.category.LAUNCHER"/>

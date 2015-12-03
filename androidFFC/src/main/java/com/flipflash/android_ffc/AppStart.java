@@ -3,6 +3,8 @@ package com.flipflash.android_ffc;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
+import android.util.Log;
 import android.view.View;
 import android.view.animation.AlphaAnimation;
 import android.view.animation.Animation;
@@ -10,35 +12,24 @@ import android.view.animation.Animation;
 public class AppStart extends Activity {
     private static final String TAG = AppStart.class.getName();
 
+    long startTime;
+
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        final View view = View.inflate(this, R.layout.start, null);
-        setContentView(view);
 
-        //fade effect
-        AlphaAnimation aa = new AlphaAnimation(0.3f, 1.0f);
-        aa.setDuration(200);
-        view.startAnimation(aa);
-        aa.setAnimationListener(new Animation.AnimationListener() {
-            @Override
-            public void onAnimationEnd(Animation arg0) {
-                redirectTo();
-            }
+        setContentView(R.layout.start);
 
-            @Override
-            public void onAnimationRepeat(Animation animation) {
-            }
-
-            @Override
-            public void onAnimationStart(Animation animation) {
-            }
-
-        });
+        mHandler.sendEmptyMessageDelayed(0,400);
     }
 
-    private void redirectTo() {
-        Intent intent = new Intent(this, MainActivity.class);
-        startActivity(intent);
-        finish();
-    }
+
+    private Handler mHandler = new Handler() {
+        public void handleMessage(android.os.Message msg) {
+            Intent intent = new Intent(AppStart.this, MainActivity.class);
+            startActivity(intent);
+            overridePendingTransition(R.anim.push_up_in, R.anim.push_up_out);
+            finish();
+        }
+    };
+
 }
