@@ -65,7 +65,16 @@ public class PackDownloadHelper extends AsyncTask<Void, Long, Boolean> {
 
         mDownloadURL = downloadURL;
         mSavedFilePath = downloadedZipFile;
+
         mDialog = new ProgressDialog(context);
+
+    }
+
+    @Override
+    protected void onPreExecute() {
+        super.onPreExecute();
+
+
         mDialog.setMax(100);
         if (mIsFromExamplePackDownload) {
             mDialog.setMessage(mContext.getResources().getString(R.string.DIALOG_DOWNLOAD_EXAMPLE_PACK_FIRST));
@@ -83,8 +92,6 @@ public class PackDownloadHelper extends AsyncTask<Void, Long, Boolean> {
         mDialog.setCanceledOnTouchOutside(false);
         mDialog.setCancelable(false);
         mDialog.show();
-
-
     }
 
     @Override
