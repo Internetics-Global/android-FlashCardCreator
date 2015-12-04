@@ -435,7 +435,6 @@ public class CardListFragment extends Fragment {
             mCallbacks.onItemSelected(-1,false);
         }
 
-        ((MainActivity) getActivity()).hideMasterViewUpdatingLayout();
     }
 
 }

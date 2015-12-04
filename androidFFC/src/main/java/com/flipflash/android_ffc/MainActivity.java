@@ -132,9 +132,9 @@ public class MainActivity extends FragmentActivity implements
     public  PopupWindow       mPopupWindow;
     private View              mCSSToolbar;
     private Button            mMasterMaskButton;
-    private View              mMasterViewUpdatingLayout;
 
     private ProgressDialog    mUploadProgressDialog;
+    private ProgressDialog    mSnapShotDialog;
 
     private ArrayList<CardDetailFragment> mArrayCardDetailFragments;   //Special for snapshot(not include current card)
 
@@ -202,7 +202,6 @@ public class MainActivity extends FragmentActivity implements
         });
 
         mMasterMaskButton = (Button) findViewById(R.id.master_view_mask);
-        mMasterViewUpdatingLayout = findViewById(R.id.master_view_updating_layout);
 
         //step6: set info view
         mPackInfoLayout = (LinearLayout) findViewById(R.id.pack_info_layout);
@@ -340,7 +339,7 @@ public class MainActivity extends FragmentActivity implements
                                             @Override
                                             public void onClick(DialogInterface dialog, int which) {
                                                 dialog.dismiss();
-                                                setMaskButtonForContentUpdating();
+                                                showSnapShotProgressDialog();
                                                 mCardDetailFragment.cardColorTemplateSelectedPostAction(which);
                                             }
                                         })
@@ -930,6 +929,9 @@ public class MainActivity extends FragmentActivity implements
      */
     public void prepareSnapShotAllExceptCurrentCard(Pack pack, Card exceptCard) {
         LOGD(TAG, "prepareSnapShotAllExceptCurrentCard");
+
+        showSnapShotProgressDialog();
+
         ArrayList<Card> cards = pack.cards;
         for (Card card : cards) {
             if (card.cardID != exceptCard.cardID) {
@@ -950,6 +952,8 @@ public class MainActivity extends FragmentActivity implements
             mArrayCardDetailFragments.clear();
             mArrayCardDetailFragments = null;
         }
+
+        dismissSnapShotProgressDialog();
 
         //we don't need to consider "during creating card" since we have disabled that
         //this used to free memory since we "except current" in finishSnapShotAllExceptCurrent
@@ -1621,17 +1625,6 @@ public class MainActivity extends FragmentActivity implements
     }
 
 
-    public void setMaskButtonForContentUpdating() {
-        mMasterViewUpdatingLayout.setVisibility(View.VISIBLE);
-
-    }
-
-    public void hideMasterViewUpdatingLayout() {
-        mMasterViewUpdatingLayout.setVisibility(View.INVISIBLE);
-    }
-
-
-
     public boolean onKeyDown(int keyCode, KeyEvent event) {
 
         LOGD(TAG, "onKeyDown: keycode is " + keyCode + " key event is " + event.toString());
@@ -1780,6 +1773,45 @@ public class MainActivity extends FragmentActivity implements
 
     }
 
+
+    public void showSnapShotProgressDialog() {
+
+        if (mSnapShotDialog == null) {
+            mSnapShotDialog = new ProgressDialog(MainActivity.this);
+            mSnapShotDialog.setMax(100);
+            mSnapShotDialog.setCancelable(false);
+            mSnapShotDialog.setCanceledOnTouchOutside(false);
+            mSnapShotDialog.setMessage(getString(R.string.DIALOG_APPLY_TO_ALL_CARD));
+            mSnapShotDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+        }
+
+        if (mSnapShotDialog.isShowing() == false) {
+            mSnapShotDialog.show();
+        }
+    }
+
+    public void dismissSnapShotProgressDialog() {
+        mSnapShotDialog.dismiss();
+    }
+
+
+    private void updateScreenshotProgressDialogWithProgress(int progress) {
+
+        final int finalProgress = progress;
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                if (mSnapShotDialog.isShowing() == false) {
+                    mSnapShotDialog.show();
+                }
+                mSnapShotDialog.setProgress(finalProgress);
+            }
+        });
+    }
+
+
+
+
     //TODO:  lint This Handler class should be static or leaks might occur (null)
     private final Handler mDropboxUploadHandler = new Handler() {
         @Override
@@ -1805,6 +1837,9 @@ public class MainActivity extends FragmentActivity implements
             }
         }
     };
+
+
+
 
     //TODO: lint This Handler class should be static or leaks might occur (null)
     private final Handler mAmazonUploadHandler = new Handler() {

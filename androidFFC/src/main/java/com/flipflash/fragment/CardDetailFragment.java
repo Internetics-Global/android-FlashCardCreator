@@ -996,7 +996,7 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnTouchL
                                                 }
 
                                                 mCurrentPack.save(AppContext.getAppContext());
-                                                ((MainActivity) getActivity()).setMaskButtonForContentUpdating();
+                                                ((MainActivity)getActivity()).showSnapShotProgressDialog();
                                                 takeSnapshotAll();
                                             }
 
@@ -2533,7 +2533,7 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnTouchL
         mCurrentPack.addCard(AppContext.getAppContext(), mCurrentCard); //新截图没有包含
 
         if (mIsTakeSnapshotAllNeeded) {
-            ((MainActivity) getActivity()).setMaskButtonForContentUpdating();
+            ((MainActivity)getActivity()).showSnapShotProgressDialog();
             takeSnapshotAll(); //在这里会自动save包含新截图的数据
             mCurrentPack.save(AppContext.getAppContext());
 
@@ -4266,7 +4266,7 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnTouchL
 
         //step2: prepare update info in mast list view
         if (mIsTakeSnapshotAllNeeded && (mIsCreatingCard == false)) {
-            ((MainActivity) getActivity()).setMaskButtonForContentUpdating();
+            ((MainActivity) getActivity()).showSnapShotProgressDialog();
         }
 
         //step3:
@@ -4761,7 +4761,7 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnTouchL
 
                                 if (mIsCreatingCard == false) {
                                     mCurrentPack.save(AppContext.getAppContext());
-                                    ((MainActivity) getActivity()).setMaskButtonForContentUpdating();
+                                    ((MainActivity) getActivity()).showSnapShotProgressDialog();
                                     takeSnapshotAll();
                                 } else {
                                     mIsTakeSnapshotAllNeeded= true;
