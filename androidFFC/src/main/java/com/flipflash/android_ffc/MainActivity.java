@@ -445,6 +445,7 @@ public class MainActivity extends FragmentActivity implements
             case R.id.actionbar_add_card_cancel:
                 LOGD(TAG, "onOptionsItemSelected: Cancel button is clicked");
                 dismissCardCreateWindowWithNotifyMasterView(true);
+                mIsCreatingCard = false;
                 break;
 
             case R.id.actionbar_add_card_save:
@@ -994,6 +995,7 @@ public class MainActivity extends FragmentActivity implements
         mMasterMaskButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                mIsCreatingCard = false;
                 dismissCardCreateWindowWithNotifyMasterView(true);
 
             }
@@ -1644,6 +1646,7 @@ public class MainActivity extends FragmentActivity implements
             }
 
             if (mIsCreatingCard == true) {
+                mIsCreatingCard = false;
                 dismissCardCreateWindowWithNotifyMasterView(true);
                 return false;
             }
