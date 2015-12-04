@@ -309,7 +309,7 @@ public class CardListFragment extends Fragment {
                     mCurrentPack = User.getPack(AppContext.getAppContext(),mCurrentPack.packID);
                 } else if (extraFrom.equals(Global.BROADCAST_EXTRA_FROM_CURRENT_PACK_UPDATE)) {
                     mCurrentPack = User.getPack(AppContext.getAppContext(),mCurrentPack.packID);
-                    extraCardIndex = -1;
+                    extraCardIndex = intent.getExtras().getInt(Global.KEY_CARD_INDEX);;
                 } else if (extraFrom.equals(Global.BROADCAST_EXTRA_FROM_PACK_SELECTED)) {
                     extraCardIndex = 0;
                     int packIndex = intent.getExtras().getInt("indexOfPack");

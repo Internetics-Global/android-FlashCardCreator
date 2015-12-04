@@ -778,6 +778,7 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnTouchL
                     Intent intent = new Intent();
                     intent.setAction(Global.BROADCAST_ACTION_UPDATE_MASTER_VIEW);
                     intent.putExtra(Global.KEY_FROM, Global.BROADCAST_EXTRA_FROM_CURRENT_PACK_UPDATE);
+                    intent.putExtra(Global.KEY_CARD_INDEX, mCurrentCard.cardSN - 1);
                     getActivity().sendBroadcast(intent);
                 }
             }
@@ -4305,6 +4306,7 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnTouchL
             Intent intent = new Intent();
             intent.setAction(Global.BROADCAST_ACTION_UPDATE_MASTER_VIEW);
             intent.putExtra(Global.KEY_FROM, Global.BROADCAST_EXTRA_FROM_CURRENT_PACK_UPDATE);
+            intent.putExtra(Global.KEY_CARD_INDEX, mCurrentCard.cardSN - 1);
             getActivity().sendBroadcast(intent);
         }
 
@@ -4735,6 +4737,7 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnTouchL
                                     Intent intent = new Intent();
                                     intent.setAction(Global.BROADCAST_ACTION_UPDATE_MASTER_VIEW);
                                     intent.putExtra(Global.KEY_FROM, Global.BROADCAST_EXTRA_FROM_CURRENT_PACK_UPDATE);
+                                    intent.putExtra(Global.KEY_CARD_INDEX, mCurrentCard.cardSN - 1);
                                     getActivity().sendBroadcast(intent);
                                 }
                             }
@@ -4828,6 +4831,7 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnTouchL
                                         Intent intent = new Intent();
                                         intent.setAction(Global.BROADCAST_ACTION_UPDATE_MASTER_VIEW);
                                         intent.putExtra(Global.KEY_FROM, Global.BROADCAST_EXTRA_FROM_CURRENT_PACK_UPDATE);
+                                        intent.putExtra(Global.KEY_CARD_INDEX, mCurrentCard.cardSN - 1);
                                         getActivity().sendBroadcast(intent);
                                     }
                                 }
