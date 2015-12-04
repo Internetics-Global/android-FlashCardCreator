@@ -438,7 +438,7 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnTouchL
                         mResizeMonitorTimer.cancel();
                     }
 
-                    LOGD(TAG, "run: " + flag_Subheading_ResizeFinished + " " + flag_Main_ResizeFinished + "  " + flag_Sub_ResizeFinished);
+                    //LOGD(TAG, "run: " + flag_Subheading_ResizeFinished + " " + flag_Main_ResizeFinished + "  " + flag_Sub_ResizeFinished);
                 }
             }, 0, 50);
         }

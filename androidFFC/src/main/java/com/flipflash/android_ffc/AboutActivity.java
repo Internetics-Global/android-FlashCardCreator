@@ -52,7 +52,7 @@ public class AboutActivity extends Activity {
 
                 new SweetAlertDialog(AboutActivity.this,SweetAlertDialog.NORMAL_TYPE)
                         .setTitleText("Alert")
-                        .setContentText("Log is disabled (Force quit and launch disable log function")
+                        .setContentText("Log is disabled")
                         .show();
 
             } else {
@@ -61,7 +61,7 @@ public class AboutActivity extends Activity {
 
                 new SweetAlertDialog(AboutActivity.this,SweetAlertDialog.NORMAL_TYPE)
                         .setTitleText("Alert")
-                        .setContentText("Log is enabled (Force quit and launch disable log function")
+                        .setContentText("Log is enabled")
                         .show();
             }
 
