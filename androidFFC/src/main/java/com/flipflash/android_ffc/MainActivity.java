@@ -170,6 +170,8 @@ public class MainActivity extends FragmentActivity implements
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+        ((AppContext)(AppContext.getAppContext())).addActivity(this);
+
         LOGD(TAG, "onCreate: ");
 
         //Step1: check table and default user
@@ -1711,10 +1713,7 @@ public class MainActivity extends FragmentActivity implements
                 new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int which) {
 
-                        Intent intent = new Intent(Intent.ACTION_MAIN);
-                        intent.addCategory(Intent.CATEGORY_HOME);
-                        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                        startActivity(intent);
+                        ((AppContext)AppContext.getAppContext()).exit();
                     }
                 });
 

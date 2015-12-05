@@ -4,6 +4,11 @@ import android.app.Activity;
 import android.os.Bundle;
 import android.widget.VideoView;
 
+import com.flipflash.util.AppContext;
+
+import static com.flipflash.util.LogUtils.LOGD;
+import static com.flipflash.util.LogUtils.LOGE;
+
 
 /**
  * Created by bournewang on 4/9/14.
@@ -14,6 +19,9 @@ public class VideoViewActivity extends Activity {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        ((AppContext)(AppContext.getAppContext())).addActivity(this);
+
         setContentView(R.layout.video_play);
 
 

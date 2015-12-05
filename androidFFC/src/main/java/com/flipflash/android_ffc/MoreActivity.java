@@ -18,6 +18,7 @@ import android.widget.TextView;
 import com.flipflash.UI.togglebutton.ToggleButton;
 import com.flipflash.helper.Dropbox.DropboxAuthHelper;
 import com.flipflash.util.AppConfig;
+import com.flipflash.util.AppContext;
 import com.flipflash.util.Global;
 import com.parse.LogOutCallback;
 import com.parse.ParseException;
@@ -49,6 +50,10 @@ public class MoreActivity extends Activity {
 
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        ((AppContext)(AppContext.getAppContext())).addActivity(this);
+
+        LOGD(TAG, "onCreate");
 
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
 

@@ -9,6 +9,8 @@ import android.view.View;
 import android.view.animation.AlphaAnimation;
 import android.view.animation.Animation;
 
+import com.flipflash.util.AppContext;
+
 public class AppStart extends Activity {
     private static final String TAG = AppStart.class.getName();
 
@@ -16,6 +18,8 @@ public class AppStart extends Activity {
 
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        ((AppContext)(AppContext.getAppContext())).addActivity(this);
 
         setContentView(R.layout.start);
 

@@ -1,5 +1,6 @@
 package com.flipflash.util;
 
+import android.app.Activity;
 import android.app.Application;
 import android.content.Context;
 import android.content.pm.PackageInfo;
@@ -25,6 +26,8 @@ import com.squareup.leakcanary.RefWatcher;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.LinkedList;
+import java.util.List;
 import java.util.UUID;
 import static com.flipflash.util.LogUtils.LOGD;
 
@@ -34,6 +37,8 @@ public class AppContext extends Application {
     private static Context                           mContext;
     private static CognitoCachingCredentialsProvider mCredentialsProvider;
     private static AmazonS3Client                    mS3Client;
+
+    private List<Activity> mList = new LinkedList<Activity>();
 
     private RefWatcher refWatcher;
 
@@ -162,6 +167,31 @@ public class AppContext extends Application {
 
         // Initialize ImageLoader with configuration.
         ImageLoader.getInstance().init(config.build());
+    }
+
+
+    // add Activity
+    public void addActivity(Activity activity) {
+        mList.add(activity);
+    }
+
+    public void exit() {
+        try {
+            for (Activity activity : mList) {
+                if (activity != null)
+                    activity.finish();
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            System.exit(0);
+        }
+    }
+
+    @Override
+    public void onLowMemory() {
+        super.onLowMemory();
+        System.gc();
     }
 
 }

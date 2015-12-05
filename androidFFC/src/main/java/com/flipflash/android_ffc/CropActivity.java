@@ -14,6 +14,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 
+import com.flipflash.util.AppContext;
 import com.flipflash.util.UIHelper;
 import com.isseiaoki.simplecropview.CropImageView;
 
@@ -37,6 +38,8 @@ public class CropActivity extends Activity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        ((AppContext)(AppContext.getAppContext())).addActivity(this);
 
         LOGD(TAG, "onCreate");
 

@@ -10,6 +10,10 @@ import android.widget.RelativeLayout;
 import com.flipflash.util.AppConfig;
 import com.flipflash.util.AppContext;
 
+
+import static com.flipflash.util.LogUtils.LOGD;
+import static com.flipflash.util.LogUtils.LOGE;
+
 /**
  * Created by BourneWang on 5/12/2015.
  */
@@ -19,9 +23,15 @@ public class PlayOptionActivity extends Activity {
     Button checkAuto;
     Button checkAutoLoop;
 
+    private static final String TAG = PlayActivity.class.getName();
+
 
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        ((AppContext)(AppContext.getAppContext())).addActivity(this);
+
+        LOGD(TAG, "onCreate:");
 
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
 

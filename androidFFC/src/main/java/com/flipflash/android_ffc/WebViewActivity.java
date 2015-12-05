@@ -9,6 +9,11 @@ import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.Toast;
 
+import static com.flipflash.util.LogUtils.LOGD;
+import static com.flipflash.util.LogUtils.LOGE;
+
+import com.flipflash.util.AppContext;
+
 public class WebViewActivity extends Activity {
     private static final String TAG = WebViewActivity.class.getName();
 
@@ -19,6 +24,8 @@ public class WebViewActivity extends Activity {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        ((AppContext)(AppContext.getAppContext())).addActivity(this);
+        LOGD(TAG, "onCreate");
         requestWindowFeature(Window.FEATURE_PROGRESS);
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
 

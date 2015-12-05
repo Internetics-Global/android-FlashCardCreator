@@ -160,6 +160,8 @@ public class PlayActivity extends FragmentActivity implements SensorEventListene
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+        ((AppContext)(AppContext.getAppContext())).addActivity(this);
+
         LOGD(TAG, "onCreate");
 
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
