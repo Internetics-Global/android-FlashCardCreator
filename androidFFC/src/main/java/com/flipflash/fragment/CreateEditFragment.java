@@ -3,18 +3,22 @@ package com.flipflash.fragment;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.content.res.Configuration;
 import android.database.Cursor;
 import android.graphics.Bitmap;
+import android.graphics.Rect;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.support.v4.app.DialogFragment;
 import android.util.Base64;
 
+import android.util.DisplayMetrics;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.ViewTreeObserver;
 import android.view.Window;
 import android.view.WindowManager;
 import android.view.inputmethod.EditorInfo;
@@ -204,6 +208,32 @@ public class CreateEditFragment extends DialogFragment implements TextView.OnEdi
             mAutoPlaySpeedSeekbar.setProgress(Global.kDefault_Auto_Play_Speed);
         }
 
+
+        mAutoPlaySpeedSeekbar.setNumericTransformer(new DiscreteSeekBar.NumericTransformer() {
+            @Override
+            public int transform(int value) {
+                return value;
+            }
+
+            @Override
+            public String transformToString(int value) {
+                return "Auto";
+            }
+
+            @Override
+            public boolean useStringTransform() {
+
+                if (mAutoPlaySpeedSeekbar.getProgress() == 4) {
+                    return true;
+                } else {
+                    return false;
+                }
+
+            }
+        });
+
+
+
         return mContentView;
     }
 
@@ -224,7 +254,22 @@ public class CreateEditFragment extends DialogFragment implements TextView.OnEdi
         params.height = getResources().getDimensionPixelSize(R.dimen.add_pack_window_height);
         mContentView.setLayoutParams(params);
 
+        final View rootView = getActivity().getWindow().getDecorView().findViewById(android.R.id.content);
+        rootView.getViewTreeObserver().addOnGlobalLayoutListener(keyboardVisibilityListener);
 
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+
+        final View rootView = getActivity().getWindow().getDecorView().findViewById(android.R.id.content);
+        rootView.getViewTreeObserver().removeOnGlobalLayoutListener(keyboardVisibilityListener);
+    }
+
+    @Override
+    public void onConfigurationChanged(Configuration newConfig) {
+        super.onConfigurationChanged(newConfig);
     }
 
     private void save() {
@@ -396,5 +441,57 @@ public class CreateEditFragment extends DialogFragment implements TextView.OnEdi
 
 //        RefWatcher refWatcher = AppContext.getRefWatcher(getActivity());
 //        refWatcher.watch(this);
+    }
+
+
+
+    boolean mKeyboardDidDismissFlag = true;
+    boolean mKeyboardDidShowFlag = false;
+    private ViewTreeObserver.OnGlobalLayoutListener keyboardVisibilityListener = new ViewTreeObserver.OnGlobalLayoutListener() {
+        @Override
+        public void onGlobalLayout() {
+
+            final View rootView = getActivity().getWindow().getDecorView().findViewById(android.R.id.content);
+
+            final int softKeyboardHeight = 100;
+            Rect r = new Rect();
+            rootView.getWindowVisibleDisplayFrame(r);
+            DisplayMetrics dm = rootView.getResources().getDisplayMetrics();
+            int heightDiff = rootView.getBottom() - r.bottom;
+            if (heightDiff > softKeyboardHeight * dm.density) {
+                mKeyboardDidDismissFlag = false;
+                if (mKeyboardDidShowFlag == false) {
+                    mKeyboardDidShowFlag = true;
+                    keyboardDidShowNotification();
+                }
+
+            } else if (heightDiff == 0) {
+                mKeyboardDidShowFlag = false;
+                if (mKeyboardDidDismissFlag == false) {
+                    // 意味着，keyboard刚刚关闭
+                    mKeyboardDidDismissFlag = true;
+
+                    keyboardDidHideNotification();
+
+                }
+            }
+
+        }
+    };
+
+    private void keyboardDidHideNotification() {
+
+        LOGD(TAG, "keyboardDidHideNotification: ");
+
+        mAutoPlaySpeedSeekbar.setAlwaysShowIndicator(true);
+
+    }
+
+    private void keyboardDidShowNotification() {
+
+        LOGD(TAG, "keyboardDidShowNotification");
+
+        mAutoPlaySpeedSeekbar.setAlwaysShowIndicator(false);
+
     }
 }

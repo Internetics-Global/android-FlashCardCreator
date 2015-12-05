@@ -25,6 +25,7 @@
         app:dsb_min="2"
         app:dsb_max="20"
         app:dsb_value="4"
+        app:dsb_alwaysShowIndicator="true"
         app:dsb_indicatorColor = "@android:color/holo_orange_dark"
         app:dsb_progressColor="@android:color/holo_orange_dark"
         app:dsb_trackColor="@android:color/white"

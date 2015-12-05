@@ -25,6 +25,7 @@ import android.os.Build;
 import android.support.v4.view.ViewCompat;
 import android.util.AttributeSet;
 import android.util.DisplayMetrics;
+import android.util.TypedValue;
 import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
@@ -39,7 +40,7 @@ import org.adw.library.widgets.discreteseekbar.internal.drawable.ThumbDrawable;
 /**
  * {@link android.view.ViewGroup} to be used as the real indicator.
  * <p>
- * I've used this to be able to acomodate the TextView
+ * I've used this to be able to accommodate the TextView
  * and the {@link org.adw.library.widgets.discreteseekbar.internal.drawable.MarkerDrawable}
  * with the required positions and offsets
  * </p>
@@ -47,9 +48,9 @@ import org.adw.library.widgets.discreteseekbar.internal.drawable.ThumbDrawable;
  * @hide
  */
 public class Marker extends ViewGroup implements MarkerDrawable.MarkerAnimationListener {
-    private static final int PADDING_DP = 3;
-    private static final int ELEVATION_DP = 2;
-    private static final int SEPARATION_DP = 30;
+    private static final int PADDING_DP = 4;
+    private static final int ELEVATION_DP = 8;
+    private static final int SEPARATION_DP = 25;
     //The TextView to show the info
     private TextView mNumber;
     //The max width of this View
@@ -75,14 +76,14 @@ public class Marker extends ViewGroup implements MarkerDrawable.MarkerAnimationL
         super(context, attrs, defStyleAttr);
         DisplayMetrics displayMetrics = context.getResources().getDisplayMetrics();
         TypedArray a = context.obtainStyledAttributes(attrs, R.styleable.DiscreteSeekBar,
-                R.attr.discreteSeekBarStyle, R.style.DefaultSeekBar);
+                R.attr.discreteSeekBarStyle, R.style.Widget_DiscreteSeekBar);
 
         int padding = (int) (PADDING_DP * displayMetrics.density) * 2;
         int textAppearanceId = a.getResourceId(R.styleable.DiscreteSeekBar_dsb_indicatorTextAppearance,
-                R.style.DefaultIndicatorTextAppearance);
+                R.style.Widget_DiscreteIndicatorTextAppearance);
         mNumber = new TextView(context);
         //Add some padding to this textView so the bubble has some space to breath
-        mNumber.setPadding(padding/2, 0, padding/2, 0); //TODO:临时措施
+        mNumber.setPadding(padding/2, 0, padding/2, 0);
         mNumber.setTextAppearance(context, textAppearanceId);
         mNumber.setGravity(Gravity.CENTER);
         mNumber.setText(maxValue);
@@ -124,8 +125,9 @@ public class Marker extends ViewGroup implements MarkerDrawable.MarkerAnimationL
         int wSpec = MeasureSpec.makeMeasureSpec(displayMetrics.widthPixels, MeasureSpec.AT_MOST);
         int hSpec = MeasureSpec.makeMeasureSpec(displayMetrics.heightPixels, MeasureSpec.AT_MOST);
         mNumber.measure(wSpec, hSpec);
-        mWidth = Math.max(mNumber.getMeasuredWidth(), mNumber.getMeasuredHeight());
-        mWidth = mWidth + 20; //TODO:临时措施
+
+        mWidth = (int)TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 30, displayMetrics);
+
         removeView(mNumber);
         addView(mNumber, new FrameLayout.LayoutParams(mWidth, mWidth, Gravity.LEFT | Gravity.TOP));
     }
@@ -140,7 +142,7 @@ public class Marker extends ViewGroup implements MarkerDrawable.MarkerAnimationL
     protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
         measureChildren(widthMeasureSpec, heightMeasureSpec);
         int widthSize = mWidth + getPaddingLeft() + getPaddingRight();
-        int heightSize = mWidth + getPaddingTop() + getPaddingBottom();
+        int heightSize = mWidth/3 * 2 + getPaddingTop() + getPaddingBottom();
         //This diff is the basic calculation of the difference between
         //a square side size and its diagonal
         //this helps us account for the visual offset created by MarkerDrawable
@@ -152,11 +154,11 @@ public class Marker extends ViewGroup implements MarkerDrawable.MarkerAnimationL
     @Override
     protected void onLayout(boolean changed, int l, int t, int r, int b) {
         int left = getPaddingLeft();
-        int top = getPaddingTop() + 25; //TODO:临时解决方案
+        int top = getPaddingTop();
         int right = getWidth() - getPaddingRight();
-        int bottom = getHeight() - getPaddingBottom() + 25;//TODO:临时解决方案
+        int bottom = getHeight() - getPaddingBottom();
         //the TetView is always layout at the top
-        mNumber.layout(left, top, left + mWidth, top + mWidth);
+        mNumber.layout(left, top, left + mWidth, top + mWidth/3*2);
         //the MarkerDrawable uses the whole view, it will adapt itself...
         // or it seems so...
         mMarkerDrawable.setBounds(left, top, right, bottom);

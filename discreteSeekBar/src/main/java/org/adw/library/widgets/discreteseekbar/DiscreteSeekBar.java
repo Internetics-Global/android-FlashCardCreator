@@ -21,12 +21,12 @@ import android.content.res.ColorStateList;
 import android.content.res.TypedArray;
 import android.graphics.Canvas;
 import android.graphics.Color;
-import android.graphics.PorterDuff;
 import android.graphics.Rect;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.os.Parcel;
 import android.os.Parcelable;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.graphics.drawable.DrawableCompat;
 import android.support.v4.view.MotionEventCompat;
@@ -49,7 +49,7 @@ import org.adw.library.widgets.discreteseekbar.internal.drawable.TrackRectDrawab
 import java.util.Formatter;
 import java.util.Locale;
 
-public class  DiscreteSeekBar extends View {
+public class DiscreteSeekBar extends View {
 
     /**
      * Interface to propagate seekbar change event
@@ -65,6 +65,7 @@ public class  DiscreteSeekBar extends View {
         public void onProgressChanged(DiscreteSeekBar seekBar, int value, boolean fromUser);
 
         public void onStartTrackingTouch(DiscreteSeekBar seekBar);
+
         public void onStopTrackingTouch(DiscreteSeekBar seekBar);
     }
 
@@ -128,9 +129,10 @@ public class  DiscreteSeekBar extends View {
     private static final int FOCUSED_STATE = android.R.attr.state_focused;
     private static final int PROGRESS_ANIMATION_DURATION = 250;
     private static final int INDICATOR_DELAY_FOR_TAPS = 150;
+    private static final int DEFAULT_THUMB_COLOR = 0xff009688;
     private ThumbDrawable mThumb;
-    private Drawable mTrack;
-    private Drawable mScrubber;
+    private TrackRectDrawable mTrack;
+    private TrackRectDrawable mScrubber;
     private Drawable mRipple;
 
     private int mTrackHeight;
@@ -143,6 +145,8 @@ public class  DiscreteSeekBar extends View {
     private int mKeyProgressIncrement = 1;
     private boolean mMirrorForRtl = false;
     private boolean mAllowTrackClick = true;
+    private boolean mIndicatorPopupEnabled = true;
+    private boolean mAlwaysShowIndicator = false;
     //We use our own Formatter to avoid creating new instances on every progress change
     Formatter mFormatter;
     private String mIndicatorFormatter;
@@ -154,24 +158,23 @@ public class  DiscreteSeekBar extends View {
 
     private Rect mInvalidateRect = new Rect();
     private Rect mTempRect = new Rect();
-    private PopupIndicator mIndicator;  //这个就是那个泡泡
+    private PopupIndicator mIndicator;
     private AnimatorCompat mPositionAnimator;
     private float mAnimationPosition;
     private int mAnimationTarget;
     private float mDownX;
     private float mTouchSlop;
 
-
     public DiscreteSeekBar(Context context) {
         this(context, null);
     }
 
     public DiscreteSeekBar(Context context, AttributeSet attrs) {
-        this(context, attrs, R.style.DefaultSeekBar);
+        this(context, attrs, R.attr.discreteSeekBarStyle);
     }
 
-    public DiscreteSeekBar(Context context, AttributeSet attrs, int defStyle) {
-        super(context, attrs, defStyle);
+    public DiscreteSeekBar(Context context, AttributeSet attrs, int defStyleAttr) {
+        super(context, attrs, defStyleAttr);
         setFocusable(true);
         setWillNotDraw(false);
 
@@ -182,19 +185,19 @@ public class  DiscreteSeekBar extends View {
         int thumbSize = (int) (density * ThumbDrawable.DEFAULT_SIZE_DP);
 
         //Extra pixels for a touch area of 48dp
-        int touchBounds = (int) (density * 16); //TODO: 临时解决方案
+        int touchBounds = (int) (density * 32);
         mAddedTouchBounds = (touchBounds - thumbSize) / 2;
 
-
         TypedArray a = context.obtainStyledAttributes(attrs, R.styleable.DiscreteSeekBar,
-                R.attr.discreteSeekBarStyle, defStyle);
+                defStyleAttr, R.style.Widget_DiscreteSeekBar);
 
         int max = 100;
         int min = 0;
         int value = 0;
         mMirrorForRtl = a.getBoolean(R.styleable.DiscreteSeekBar_dsb_mirrorForRtl, mMirrorForRtl);
         mAllowTrackClick = a.getBoolean(R.styleable.DiscreteSeekBar_dsb_allowTrackClickToDrag, mAllowTrackClick);
-
+        mAlwaysShowIndicator = a.getBoolean(R.styleable.DiscreteSeekBar_dsb_alwaysShowIndicator, mAlwaysShowIndicator);
+        mIndicatorPopupEnabled = a.getBoolean(R.styleable.DiscreteSeekBar_dsb_indicatorPopupEnabled, mIndicatorPopupEnabled);
         int indexMax = R.styleable.DiscreteSeekBar_dsb_max;
         int indexMin = R.styleable.DiscreteSeekBar_dsb_min;
         int indexValue = R.styleable.DiscreteSeekBar_dsb_value;
@@ -233,14 +236,14 @@ public class  DiscreteSeekBar extends View {
         ColorStateList progressColor = a.getColorStateList(R.styleable.DiscreteSeekBar_dsb_progressColor);
         ColorStateList rippleColor = a.getColorStateList(R.styleable.DiscreteSeekBar_dsb_rippleColor);
         boolean editMode = isInEditMode();
-        if (editMode && rippleColor == null) {
+        if (editMode || rippleColor == null) {
             rippleColor = new ColorStateList(new int[][]{new int[]{}}, new int[]{Color.DKGRAY});
         }
-        if (editMode && trackColor == null) {
+        if (editMode || trackColor == null) {
             trackColor = new ColorStateList(new int[][]{new int[]{}}, new int[]{Color.GRAY});
         }
-        if (editMode && progressColor == null) {
-            progressColor = new ColorStateList(new int[][]{new int[]{}}, new int[]{0xff009688});
+        if (editMode || progressColor == null) {
+            progressColor = new ColorStateList(new int[][]{new int[]{}}, new int[]{DEFAULT_THUMB_COLOR});
         }
         mRipple = SeekBarCompat.getRipple(rippleColor);
         if (isLollipopOrGreater) {
@@ -258,14 +261,13 @@ public class  DiscreteSeekBar extends View {
         mScrubber = shapeDrawable;
         mScrubber.setCallback(this);
 
-        ThumbDrawable thumbDrawable = new ThumbDrawable(progressColor, thumbSize);
-        mThumb = thumbDrawable;
+        mThumb = new ThumbDrawable(progressColor, thumbSize);
         mThumb.setCallback(this);
         mThumb.setBounds(0, 0, mThumb.getIntrinsicWidth(), mThumb.getIntrinsicHeight());
 
 
         if (!editMode) {
-            mIndicator = new PopupIndicator(context, attrs, defStyle, convertValueToMessage(mMax));
+            mIndicator = new PopupIndicator(context, attrs, defStyleAttr, convertValueToMessage(mMax));
             mIndicator.setListener(mFloaterListener);
         }
         a.recycle();
@@ -381,32 +383,20 @@ public class  DiscreteSeekBar extends View {
      * @see #setMin(int)
      */
     public void setProgress(int progress) {
-        setProgress(progress, false, false);
+        setProgress(progress, false);
     }
 
-    /*
-     * Modified by ccaa
-     * Background: 由于不支持类似iOS的continuous mode，在一次sliding的action导致多次被触发onProgressChanged
-     * 改进后，onProgressChanged仅当sliding action结束后
-     */
-    private void setProgress(int value, boolean fromUser, boolean isTouchEventUp) {
+    private void setProgress(int value, boolean fromUser) {
         value = Math.max(mMin, Math.min(mMax, value));
         if (isAnimationRunning()) {
             mPositionAnimator.cancel();
         }
 
-        if (isTouchEventUp) {
+        if (mValue != value) {
             mValue = value;
             notifyProgress(value, fromUser);
             updateProgressMessage(value);
             updateThumbPosFromCurrentProgress();
-        } else {
-            if (mValue != value) {
-                mValue = value;
-                notifyProgress(value, fromUser);
-                updateProgressMessage(value);
-                updateThumbPosFromCurrentProgress();
-            }
         }
     }
 
@@ -426,19 +416,54 @@ public class  DiscreteSeekBar extends View {
      * @param listener The seek bar notification listener
      * @see DiscreteSeekBar.OnProgressChangeListener
      */
-    public void setOnProgressChangeListener(OnProgressChangeListener listener) {
+    public void setOnProgressChangeListener(@Nullable OnProgressChangeListener listener) {
         mPublicChangeListener = listener;
     }
 
     /**
      * Sets the color of the seek thumb, as well as the color of the popup indicator.
      *
-     * @param startColor The color the seek thumb will be changed to
-     * @param endColor   The color the popup indicator will be changed to
+     * @param thumbColor     The color the seek thumb will be changed to
+     * @param indicatorColor The color the popup indicator will be changed to
+     *                       The indicator will animate from thumbColor to indicatorColor
+     *                       when opening
      */
-    public void setThumbColor(int startColor, int endColor) {
-        mThumb.setColorStateList(ColorStateList.valueOf(startColor));
-        mIndicator.setColors(startColor, endColor);
+    public void setThumbColor(int thumbColor, int indicatorColor) {
+        mThumb.setColorStateList(ColorStateList.valueOf(thumbColor));
+        mIndicator.setColors(indicatorColor, thumbColor);
+    }
+
+    /**
+     * Sets the color of the seek thumb, as well as the color of the popup indicator.
+     *
+     * @param thumbColorStateList The ColorStateList the seek thumb will be changed to
+     * @param indicatorColor      The color the popup indicator will be changed to
+     *                            The indicator will animate from thumbColorStateList(pressed state) to indicatorColor
+     *                            when opening
+     */
+    public void setThumbColor(@NonNull ColorStateList thumbColorStateList, int indicatorColor) {
+        mThumb.setColorStateList(thumbColorStateList);
+        //we use the "pressed" color to morph the indicator from it to its own color
+        int thumbColor = thumbColorStateList.getColorForState(new int[]{PRESSED_STATE}, thumbColorStateList.getDefaultColor());
+        mIndicator.setColors(indicatorColor, thumbColor);
+    }
+
+    /**
+     * Sets the color of the seekbar scrubber
+     *
+     * @param color The color the track  scrubber will be changed to
+     */
+    public void setScrubberColor(int color) {
+        mScrubber.setColorStateList(ColorStateList.valueOf(color));
+    }
+
+    /**
+     * Sets the color of the seekbar scrubber
+     *
+     * @param colorStateList The ColorStateList the track scrubber will be changed to
+     */
+    public void setScrubberColor(@NonNull ColorStateList colorStateList) {
+        mScrubber.setColorStateList(colorStateList);
     }
 
     /**
@@ -446,12 +471,39 @@ public class  DiscreteSeekBar extends View {
      *
      * @param color The color the track will be changed to
      */
-    public void setScrubberColor(int color) {
-        mScrubber.setColorFilter(color, PorterDuff.Mode.SRC_ATOP);
+    public void setTrackColor(int color) {
+        mTrack.setColorStateList(ColorStateList.valueOf(color));
+    }
+
+    /**
+     * Sets the color of the seekbar scrubber
+     *
+     * @param colorStateList The ColorStateList the track will be changed to
+     */
+    public void setTrackColor(@NonNull ColorStateList colorStateList) {
+        mTrack.setColorStateList(colorStateList);
+    }
+
+    /**
+     * If {@code enabled} is false the indicator won't appear. By default popup indicator is
+     * enabled.
+     */
+    public void setIndicatorPopupEnabled(boolean enabled) {
+        this.mIndicatorPopupEnabled = enabled;
+    }
+
+
+    public boolean alwaysShowIndicator() {
+        return mAlwaysShowIndicator;
+    }
+
+    public void setAlwaysShowIndicator(boolean show) {
+        this.mAlwaysShowIndicator = show;
+        updateFromDrawableState();
     }
 
     private void notifyProgress(int value, boolean fromUser) {
-        if (mPublicChangeListener != null && mIsDragging == false) {
+        if (mPublicChangeListener != null) {
             mPublicChangeListener.onProgressChanged(DiscreteSeekBar.this, value, fromUser);
         }
         onValueChanged(value);
@@ -523,8 +575,6 @@ public class  DiscreteSeekBar extends View {
             }
             updateFromDrawableState();
         }
-
-
     }
 
     @Override
@@ -563,18 +613,6 @@ public class  DiscreteSeekBar extends View {
         mTrack.draw(canvas);
         mScrubber.draw(canvas);
         mThumb.draw(canvas);
-
-        setPressed(true);
-    }
-
-    @Override
-    public void setVisibility(int visibility) {
-        super.setVisibility(visibility);
-        if (visibility == View.VISIBLE) {
-            setPressed(true);
-        } else {
-            setPressed(false);
-        }
     }
 
     @Override
@@ -594,7 +632,7 @@ public class  DiscreteSeekBar extends View {
                 pressed = true;
             }
         }
-        if (isEnabled() && (focused || pressed)) {
+        if (isEnabled() && (focused || pressed) && mIndicatorPopupEnabled || mAlwaysShowIndicator) {
             //We want to add a small delay here to avoid
             //poping in/out on simple taps
             removeCallbacks(mShowIndicatorRunnable);
@@ -613,18 +651,7 @@ public class  DiscreteSeekBar extends View {
             if (mNumericTransformer.useStringTransform()) {
                 mIndicator.setValue(mNumericTransformer.transformToString(value));
             } else {
-
                 mIndicator.setValue(convertValueToMessage(mNumericTransformer.transform(value)));
-
-                //TODO: 临时措施
-                if (this.getMax() == 60 && value == 4) {
-                    mIndicator.setValue("Auto");
-
-                } else if (this.getMax() == 9 && value == 0) {
-                    mIndicator.setValue("None");
-                } else {
-                    mIndicator.setValue(convertValueToMessage(mNumericTransformer.transform(value)));
-                }
             }
         }
     }
@@ -675,9 +702,8 @@ public class  DiscreteSeekBar extends View {
                 }
                 break;
             case MotionEvent.ACTION_UP:
-                stopDragging();
-                updateDragging(event);
             case MotionEvent.ACTION_CANCEL:
+                stopDragging();
                 break;
         }
         return true;
@@ -821,7 +847,7 @@ public class  DiscreteSeekBar extends View {
             scale = 1f - scale;
         }
         int progress = Math.round((scale * (mMax - mMin)) + mMin);
-        setProgress(progress, true, MotionEvent.ACTION_UP == ev.getAction());
+        setProgress(progress, true);
     }
 
     private void updateProgressFromAnimation(float scale) {
@@ -917,7 +943,10 @@ public class  DiscreteSeekBar extends View {
 
     private void showFloater() {
         if (!isInEditMode()) {
-            mThumb.animateToPressed();
+            if (!mAlwaysShowIndicator) {
+                mThumb.animateToPressed();
+            }
+
             mIndicator.showIndicator(this, mThumb.getBounds());
             notifyBubble(true);
         }
@@ -977,7 +1006,7 @@ public class  DiscreteSeekBar extends View {
         CustomState customState = (CustomState) state;
         setMin(customState.min);
         setMax(customState.max);
-        setProgress(customState.progress, false, false);
+        setProgress(customState.progress, false);
         super.onRestoreInstanceState(customState.getSuperState());
     }
 

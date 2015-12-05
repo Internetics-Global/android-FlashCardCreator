@@ -29,6 +29,7 @@
         app:dsb_progressColor="@android:color/holo_orange_dark"
         app:dsb_trackColor="@android:color/white"
         app:dsb_indicatorTextAppearance="@style/CustomSeekbarTextAppearance"
+        app:dsb_alwaysShowIndicator="true"
         app:dsb_indicatorFormatter="%d"/>
 
     <TextView

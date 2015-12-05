@@ -341,6 +341,29 @@ public class PlayActivity extends FragmentActivity implements SensorEventListene
             mDwellTimeSeekBar.setProgress(mCurrentPack.autoPlaySpeed);
         }
 
+        mDwellTimeSeekBar.setNumericTransformer(new DiscreteSeekBar.NumericTransformer() {
+            @Override
+            public int transform(int value) {
+                return value;
+            }
+
+            @Override
+            public String transformToString(int value) {
+                return "Auto";
+            }
+
+            @Override
+            public boolean useStringTransform() {
+
+                if (mDwellTimeSeekBar.getProgress() == 4) {
+                    return true;
+                } else {
+                    return false;
+                }
+
+            }
+        });
+
 
         mPauseForAnswerSeekBar = (DiscreteSeekBar) findViewById(R.id.pause_for_answer_seek_bar).findViewById(R.id.seekbar);
 

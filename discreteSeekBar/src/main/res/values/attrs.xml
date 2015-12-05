@@ -17,7 +17,9 @@
 
 <resources>
     <!-- DiscreteSeekBar specific attributes -->
-    <attr name="discreteSeekBarStyle" format="reference"/>
+    <declare-styleable name="Theme">
+      <attr name="discreteSeekBarStyle" format="reference"/>
+    </declare-styleable>
     <declare-styleable name="DiscreteSeekBar">
         <attr name="dsb_min" format="integer|dimension"/>
         <attr name="dsb_max" format="integer|dimension"/>
@@ -31,5 +33,7 @@
         <attr name="dsb_indicatorElevation" format="dimension"/>
         <attr name="dsb_indicatorFormatter" format="string|reference"/>
         <attr name="dsb_rippleColor" format="color|reference"/>
+        <attr name="dsb_alwaysShowIndicator" format="boolean"/>
+        <attr name="dsb_indicatorPopupEnabled" format="boolean"/>
     </declare-styleable>
 </resources>
