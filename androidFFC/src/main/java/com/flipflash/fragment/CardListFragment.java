@@ -52,8 +52,11 @@ public class CardListFragment extends Fragment {
     //Adapter
     private SimpleDragSortCursorAdapter adapter;
 
-    //Modular related
+    /*
+     * 这个值的更新很重要，始终保证与SQlite中一致
+     */
     public Pack mCurrentPack;
+
     private List<HashMap<String, Object>> mCardArrayList;
 
     //Callback
@@ -63,8 +66,6 @@ public class CardListFragment extends Fragment {
     private int mActivatedPosition = ListView.INVALID_POSITION;
 
     public boolean mIsListViewEditable = false;
-
-    public boolean mIsListViewUpdating = false;
 
     MasterFragmentReceiver mReceiver;
 
@@ -81,7 +82,12 @@ public class CardListFragment extends Fragment {
 
 
     public interface Callbacks {
-        public void onItemSelected(int index,boolean isManuallyClicked);
+
+        /*
+         * selectedCardIndex = cardSN -1
+         * 有两种来源：手动点击；比如card内容更新后的card list的更新回调
+         */
+        public void onItemSelected(int selectedCardIndex,Pack currentPack,boolean isManuallyClicked);
 
     }
 
@@ -101,7 +107,6 @@ public class CardListFragment extends Fragment {
 
         mDSLVListView = (DragSortListView) mContentView.findViewById(android.R.id.list);
         mDSLVListView.setAdapter(adapter);
-
         mDSLVListView.setDividerHeight(0);
 
         mDSLVListView.setRemoveListener(new DragSortListView.RemoveListener() {
@@ -255,7 +260,11 @@ public class CardListFragment extends Fragment {
                 @Override
                 public void onClick(View v) {
                     LOGD(TAG, "onClick: " +  "card item is clicked:" + position);
-                    mCallbacks.onItemSelected(position,true);
+
+                    //这一步是必要的，因为有可能右边的卡片没有save（左边与右边的mCurrentPack是引用关系，不是独立的）。这时如果不重新去，就会有问题
+                    mCurrentPack = User.getPack(AppContext.getAppContext(),mCurrentPack.packID);
+
+                    mCallbacks.onItemSelected(position,mCurrentPack,true);
                     ((FCCdapter) adapter).setSelectedPosition(position);
                     adapter.notifyDataSetChanged();
                 }
@@ -307,9 +316,6 @@ public class CardListFragment extends Fragment {
                 }else if (extraFrom.equals(Global.BROADCAST_EXTRA_FROM_NEW_CARD)) {
                     extraCardIndex = intent.getExtras().getInt(Global.KEY_CARD_INDEX);
                     mCurrentPack = User.getPack(AppContext.getAppContext(),mCurrentPack.packID);
-                } else if (extraFrom.equals(Global.BROADCAST_EXTRA_FROM_CURRENT_PACK_UPDATE)) {
-                    mCurrentPack = User.getPack(AppContext.getAppContext(),mCurrentPack.packID);
-                    extraCardIndex = intent.getExtras().getInt(Global.KEY_CARD_INDEX);;
                 } else if (extraFrom.equals(Global.BROADCAST_EXTRA_FROM_PACK_SELECTED)) {
                     extraCardIndex = 0;
                     int packIndex = intent.getExtras().getInt("indexOfPack");
@@ -320,7 +326,7 @@ public class CardListFragment extends Fragment {
                     ((MainActivity)getActivity()).showPackListView();
                 } else if (extraFrom.equals(Global.BROADCAST_EXTRA_FROM_SNAPSHOT_ALL)) {
                     mCurrentPack = User.getPack(AppContext.getAppContext(),mCurrentPack.packID);
-                    extraCardIndex = mCurrentPack.cards.size() -1;
+                    extraCardIndex = intent.getExtras().getInt(Global.KEY_CARD_INDEX);;
                 }
 
                 ((MainActivity)getActivity()).packIDForMasterViewPack = mCurrentPack.packID;
@@ -424,7 +430,7 @@ public class CardListFragment extends Fragment {
         if ((mCardArrayList.size() > 0) && (selectedItemIndex >= 0)) {
 
 
-            mCallbacks.onItemSelected(selectedItemIndex, false);
+            mCallbacks.onItemSelected(selectedItemIndex, mCurrentPack,false);
             ((FCCdapter) adapter).setSelectedPosition(selectedItemIndex);
             adapter.notifyDataSetChanged();
             mDSLVListView.smoothScrollToPosition(selectedItemIndex);
@@ -432,7 +438,7 @@ public class CardListFragment extends Fragment {
             //do nothing
         } else {
             //Clear detail view
-            mCallbacks.onItemSelected(-1,false);
+            mCallbacks.onItemSelected(-1,mCurrentPack,false);
         }
 
     }

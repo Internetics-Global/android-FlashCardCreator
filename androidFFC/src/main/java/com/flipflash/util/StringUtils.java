@@ -120,44 +120,55 @@ public class StringUtils {
      * In order to be compatible with iOS version
      */
     public static int[] convertTemplateBackgroundStringToResourceID(String templateBackground) {
-        int[] resourceID = {0, 0, 0, 0, 0};
+
+        /*
+         * index =4: question title color
+         * index =5: answer title color
+         */
+        int[] resourceID = {0, 0, 0, 0, 0,0};
 
         if (templateBackground.toLowerCase().contains("blue")) {
             resourceID[0] = 0;
             resourceID[1] = R.drawable.shape_card_blue_left_corner;
             resourceID[2] = R.drawable.card_title_bg_blue;
             resourceID[3] = R.drawable.card_sn_bg_blue;
-            resourceID[4] = Color.BLUE;
+            resourceID[4] = Color.BLUE;  //question title color
+            resourceID[5] = Color.RED; //answer title color
         } else if (templateBackground.toLowerCase().contains("coffee")) {
             resourceID[0] = 1;
             resourceID[1] = R.drawable.shape_card_coffee_left_corner;
             resourceID[2] = R.drawable.card_title_bg_coffee;
             resourceID[3] = R.drawable.card_sn_bg_coffee;
-            resourceID[4] = Color.rgb(128,0,0);
+            resourceID[4] = Color.BLUE;
+            resourceID[5] = Color.RED;
         } else if (templateBackground.toLowerCase().contains("gray")) {
             resourceID[0] = 2;
             resourceID[1] = R.drawable.shape_card_gray_left_corner;
             resourceID[2] = R.drawable.card_title_bg_gray;
             resourceID[3] = R.drawable.card_sn_bg_gray;
-            resourceID[4] = Color.rgb(40,40,40);
+            resourceID[4] = Color.BLUE;
+            resourceID[5] = Color.RED;
         } else if (templateBackground.toLowerCase().contains("purple")) {
             resourceID[0] = 3;
             resourceID[1] = R.drawable.shape_card_purple_left_corner;
             resourceID[2] = R.drawable.card_title_bg_purple;
             resourceID[3] = R.drawable.card_sn_bg_purple;
-            resourceID[4] = Color.rgb(128,0,128);
+            resourceID[4] = Color.BLUE;
+            resourceID[5] = Color.RED;
         } else if (templateBackground.toLowerCase().contains("red")) {
             resourceID[0] = 4;
             resourceID[1] = R.drawable.shape_card_red_left_corner;
             resourceID[2] = R.drawable.card_title_bg_red;
             resourceID[3] = R.drawable.card_sn_bg_red;
-            resourceID[4] = Color.RED;
+            resourceID[4] = Color.BLUE;
+            resourceID[5] = Color.RED;
         } else {
             resourceID[0] = 0;
             resourceID[1] = R.drawable.shape_card_blue_left_corner;
             resourceID[2] = R.drawable.card_title_bg_blue;
             resourceID[3] = R.drawable.card_sn_bg_blue;
             resourceID[4] = Color.BLUE;
+            resourceID[5] = Color.RED;
         }
 
         return resourceID;

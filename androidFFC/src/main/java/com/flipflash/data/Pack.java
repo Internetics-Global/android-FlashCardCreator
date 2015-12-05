@@ -19,7 +19,7 @@ import static com.flipflash.util.LogUtils.LOGD;
 import static com.flipflash.util.LogUtils.LOGE;
 import static com.flipflash.util.LogUtils.LOGW;
 
-public class Pack {
+public class Pack implements Cloneable {
     private static final String TAG = Pack.class.getName();
 
     public int packID;
@@ -260,5 +260,18 @@ No new card included
         card.packID = packID;
         cards.add(card);
         card.save(context);
+    }
+
+    // 这只是一个浅copy，而实际上，我们也只需要浅拷贝（这个方法用在create a new pack中）
+    @Override
+    public Object clone() {
+        Pack sc = null;
+        try
+        {
+            sc = (Pack) super.clone();
+        } catch (CloneNotSupportedException e){
+            e.printStackTrace();
+        }
+        return sc;
     }
 }

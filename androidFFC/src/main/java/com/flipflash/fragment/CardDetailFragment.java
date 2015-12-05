@@ -5,16 +5,12 @@ import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.pm.ResolveInfo;
 import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.graphics.Rect;
 import android.graphics.Typeface;
-import android.graphics.drawable.BitmapDrawable;
-import android.graphics.drawable.Drawable;
 import android.media.MediaMetadataRetriever;
 import android.net.Uri;
-import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
@@ -72,7 +68,6 @@ import com.flipflash.util.UIHelper;
 import com.nostra13.universalimageloader.core.DisplayImageOptions;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.assist.ImageSize;
-import com.squareup.leakcanary.RefWatcher;
 
 import net.londatiga.android.ActionItem;
 import net.londatiga.android.QuickAction;
@@ -82,7 +77,6 @@ import java.io.UnsupportedEncodingException;
 import java.lang.reflect.Field;
 import java.net.URLDecoder;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
@@ -142,12 +136,18 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnTouchL
      */
     private boolean mIsSnapShotNotCurrent = false;
     public boolean mIsQuestionShowing = true;
-    private boolean mIsTakeSnapshotAllNeeded = false; //when fields that belong to current pack(like title) changes, it will be set true
 
-    private static int mSemaphore = 0; //used to indicate all snapshots are done
 
-    //切换过程中
-    private boolean mIsSwitchingQuestionAnswerView = false;
+    /*
+     * 用于标识是否需要snapshot all。如果是当前fragment是发起方，切需要snapshot all，则当前fragment的这个值= true，其它fragment则为false
+     */
+    private boolean mIsTakeSnapshotAllNeeded = false;
+
+    /*
+     * -1,表示永远不需要disable snapshot all功能，否则用于同步
+     * 需要设置成-1当：save已经存在的开片;save一个新创建的卡片，但是不需要snapshot all
+     */
+    private static int mSnapshotAllCardsSemaphore = 0; //used to indicate all snapshots are done
 
     private boolean mIsImage2Active = false; //我们有两个image(image和image2),这个变量用于区分
 
@@ -775,11 +775,6 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnTouchL
                 mCurrentCard.save(AppContext.getAppContext());
                 if (mIsQuestionShowing) {
                     takeSnapshotCurrentCard();
-                    Intent intent = new Intent();
-                    intent.setAction(Global.BROADCAST_ACTION_UPDATE_MASTER_VIEW);
-                    intent.putExtra(Global.KEY_FROM, Global.BROADCAST_EXTRA_FROM_CURRENT_PACK_UPDATE);
-                    intent.putExtra(Global.KEY_CARD_INDEX, mCurrentCard.cardSN - 1);
-                    getActivity().sendBroadcast(intent);
                 }
             }
 
@@ -996,7 +991,6 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnTouchL
                                                 }
 
                                                 mCurrentPack.save(AppContext.getAppContext());
-                                                ((MainActivity)getActivity()).showSnapShotProgressDialog();
                                                 takeSnapshotAll();
                                             }
 
@@ -1472,11 +1466,14 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnTouchL
 
         setContentViewVisibility();
 
-        mIsSwitchingQuestionAnswerView = true;
         mIsQuestionShowing = true;
         if (!ignoreResetTitleContent) {
             mTitle.setText(mCurrentPack.questionTitle);
         }
+
+        //set title color
+        int colorResourceID[] = (StringUtils.convertTemplateBackgroundStringToResourceID(mCurrentCard.templateBackground));
+        mTitle.setTextColor(colorResourceID[4]);
 
         updateQuestionViewTemplate();//updateQuestionContent，因为涉及到view的重定向
         updateQuestionContent();
@@ -1495,7 +1492,6 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnTouchL
             }
         }
 
-        mIsSwitchingQuestionAnswerView = false;
 
     }
 
@@ -1509,11 +1505,14 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnTouchL
 
         setContentViewVisibility();
 
-        mIsSwitchingQuestionAnswerView = true;
         mIsQuestionShowing = false;
         if (!ignoreResetTitleContent) {
             mTitle.setText(mCurrentPack.answerTitle);
         }
+
+        //set title color
+        int colorResourceID[] = (StringUtils.convertTemplateBackgroundStringToResourceID(mCurrentCard.templateBackground));
+        mTitle.setTextColor(colorResourceID[5]);
 
         updateAnswerViewTemplate(); //必须放在updateAnswerContent，因为涉及到view的重定向
         updateAnswerContent();
@@ -1531,8 +1530,6 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnTouchL
                 mImage2.setVisibility(View.INVISIBLE);
             }
         }
-
-        mIsSwitchingQuestionAnswerView = false;
     }
 
 
@@ -2363,7 +2360,12 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnTouchL
         mSidebarBackground.setBackgroundResource(colorResourceID[1]);
         mTitleBackground.setBackgroundResource(colorResourceID[2]);
         mCardSN.setBackgroundResource(colorResourceID[3]);
-        mTitle.setTextColor(colorResourceID[4]);
+
+        if (mIsQuestionShowing) {
+            mTitle.setTextColor(colorResourceID[4]);
+        } else {
+            mTitle.setTextColor(colorResourceID[5]);
+        }
 
         if (!mIsPlayingCard) {
             if (mIsQuestionShowing) {
@@ -2530,30 +2532,18 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnTouchL
      */
     public void saveNewCreatedCard() {
 
+        LOGD(TAG, "saveNewCreatedCard: ");
+
         mCurrentPack.addCard(AppContext.getAppContext(), mCurrentCard); //新截图没有包含
 
         if (mIsTakeSnapshotAllNeeded) {
-            ((MainActivity)getActivity()).showSnapShotProgressDialog();
-            takeSnapshotAll(); //在这里会自动save包含新截图的数据
+            mSnapshotAllCardsSemaphore = 0;
+            takeSnapshotAll(); //在这里会自动save包含新截图的数据，在之前必须先保存新增的卡片，即执行mCurrentPack.addCard
             mCurrentPack.save(AppContext.getAppContext());
 
         } else {
+            mSnapshotAllCardsSemaphore = -1;  //表明不需要snapshot all cards,最多只是当前的
             takeSnapshotCurrentCard();//在这里会自动save包含新截图的数据
-        }
-
-        LOGD(TAG, "saveNewCreatedCard: finish execution of saveNewCreatedCard");
-
-
-        if (mIsTakeSnapshotAllNeeded == false) {
-            //如果只是新建一个卡片，而不需要截图，则创建新卡片后，定位到那个新卡片
-            Intent intent = new Intent();
-            intent.setAction(Global.BROADCAST_ACTION_UPDATE_MASTER_VIEW);
-            intent.putExtra(Global.KEY_FROM, Global.BROADCAST_EXTRA_FROM_NEW_CARD);
-            intent.putExtra(Global.KEY_CARD_INDEX, (mCurrentPack.cards.size() - 1));
-            getActivity().sendBroadcast(intent);
-
-        } else {
-            //会在takeSnapshotCurrentCard中执行上面的逻辑，所以不需要在这里处理。
         }
 
         mIsTakeSnapshotAllNeeded = false;
@@ -2562,6 +2552,7 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnTouchL
     }
 
     /**
+     * 支持仅有一个card的情况
      * Snap all the cards under current pack
      * take care of notification updating master list view
      */
@@ -2569,24 +2560,22 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnTouchL
 
         LOGD(TAG, "takeSnapshotAll");
 
-        mSemaphore = 0;
+        ((MainActivity) getActivity()).showSnapShotProgressDialog();
 
         //step1: take snapshot on current card
         takeSnapshotCurrentCard();
 
         //step2: take snapshot on others card under current pack
-        ((MainActivity) getActivity()).prepareSnapShotAllExceptCurrentCard(mCurrentPack, mCurrentCard);
+        ((MainActivity) getActivity()).prepareDataForSnapShotAllExceptCurrentCard(mCurrentPack, mCurrentCard);
     }
 
 
     /**
-     * do save when editing current card
-     * do NOT save when creating a new card
-     * do NOT refresh card list view
+     * 凡是call这个方法的，都会自动导致更新card list view。这也是从MainActivity或CardDetailFragment回调更新card list view的唯一途径
      */
     private void takeSnapshotCurrentCard() {
 
-        LOGD(TAG, "takeSnapshotCurrentCard");
+        LOGD(TAG, "takeSnapshotCurrentCard with cardSN = " + mCurrentCard.cardSN);
 
         boolean toggle = false;
 
@@ -2628,16 +2617,23 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnTouchL
             switchToAnswerView(false);
         }
 
-        //Notify master list view to update
-        mSemaphore++;
-        if (mSemaphore == mCurrentPack.cards.size()) {
-//            Intent intent = new Intent();
-//            intent.setAction(Global.BROADCAST_ACTION_UPDATE_MASTER_VIEW);
-//            intent.putExtra(Global.KEY_FROM, Global.BROADCAST_EXTRA_FROM_CURRENT_PACK_UPDATE);
-//            getActivity().sendBroadcast(intent);
-            mSemaphore = 0;
+        
+        if (mCurrentPack.cards.size() > 1) {
 
-            ((MainActivity) getActivity()).finishSnapShotAllExceptCurrent();
+            if (mSnapshotAllCardsSemaphore == -1) {
+                //表示不需要snapshot所有卡片
+                ((MainActivity) getActivity()).cleanupDataForSnapShotAllExceptCurrent(); //并通知更新card list view
+            } else {
+                //表示需要同步snapshot所有卡片后执行
+                mSnapshotAllCardsSemaphore++;
+                if (mSnapshotAllCardsSemaphore == mCurrentPack.cards.size()) {
+                    mSnapshotAllCardsSemaphore = 0;
+                    ((MainActivity) getActivity()).cleanupDataForSnapShotAllExceptCurrent(); //并通知更新card list view
+                }
+            }
+        } else {
+            //如果只有一个卡片，则直接结束，并并通知更新card list view
+            ((MainActivity) getActivity()).cleanupDataForSnapShotAllExceptCurrent();
         }
 
     }
@@ -2655,7 +2651,12 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnTouchL
         mSidebarBackground.setBackgroundResource(colorResourceID[1]);
         mTitleBackground.setBackgroundResource(colorResourceID[2]);
         mCardSN.setBackgroundResource(colorResourceID[3]);
-        mTitle.setTextColor(colorResourceID[4]);
+
+        if (mIsQuestionShowing) {
+            mTitle.setTextColor(colorResourceID[4]);
+        } else {
+            mTitle.setTextColor(colorResourceID[5]);
+        }
 
 
         if (!mIsCreatingCard) {
@@ -4260,9 +4261,18 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnTouchL
     }
 
 
+    /*
+     * 同saveNewCreatedCard所区别。这是的卡片是已经存在的，而不是正在创建的
+     */
     public void saveEditedCard() {
 
         LOGD(TAG, "saveEditedCard");
+
+        if (mIsCreatingCard) {
+            throw new IllegalStateException("saveEditedCard should never be called when mIsCreatingCard = true");
+        }
+
+        mSnapshotAllCardsSemaphore = -1; //表明不需要snapshot all cards,最多只是当前的
 
         //step2: prepare update info in mast list view
         if (mIsTakeSnapshotAllNeeded && (mIsCreatingCard == false)) {
@@ -4301,14 +4311,6 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnTouchL
         ((MainActivity) getActivity()).mIsEdittingCard = false;
         getActivity().invalidateOptionsMenu();
 
-        //Update master view (cover image)
-        if ((mIsTakeSnapshotAllNeeded == false) && (mIsCreatingCard == false)) {
-            Intent intent = new Intent();
-            intent.setAction(Global.BROADCAST_ACTION_UPDATE_MASTER_VIEW);
-            intent.putExtra(Global.KEY_FROM, Global.BROADCAST_EXTRA_FROM_CURRENT_PACK_UPDATE);
-            intent.putExtra(Global.KEY_CARD_INDEX, mCurrentCard.cardSN - 1);
-            getActivity().sendBroadcast(intent);
-        }
 
         ((MainActivity) getActivity()).removeCSSToolbar();
 
@@ -4734,11 +4736,6 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnTouchL
                                 mCurrentCard.save(AppContext.getAppContext());
                                 if (mIsQuestionShowing) {
                                     takeSnapshotCurrentCard();
-                                    Intent intent = new Intent();
-                                    intent.setAction(Global.BROADCAST_ACTION_UPDATE_MASTER_VIEW);
-                                    intent.putExtra(Global.KEY_FROM, Global.BROADCAST_EXTRA_FROM_CURRENT_PACK_UPDATE);
-                                    intent.putExtra(Global.KEY_CARD_INDEX, mCurrentCard.cardSN - 1);
-                                    getActivity().sendBroadcast(intent);
                                 }
                             }
 
@@ -4761,7 +4758,6 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnTouchL
 
                                 if (mIsCreatingCard == false) {
                                     mCurrentPack.save(AppContext.getAppContext());
-                                    ((MainActivity) getActivity()).showSnapShotProgressDialog();
                                     takeSnapshotAll();
                                 } else {
                                     mIsTakeSnapshotAllNeeded= true;
@@ -4828,11 +4824,6 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnTouchL
                                     mCurrentCard.save(AppContext.getAppContext());
                                     if (mIsQuestionShowing) {
                                         takeSnapshotCurrentCard();
-                                        Intent intent = new Intent();
-                                        intent.setAction(Global.BROADCAST_ACTION_UPDATE_MASTER_VIEW);
-                                        intent.putExtra(Global.KEY_FROM, Global.BROADCAST_EXTRA_FROM_CURRENT_PACK_UPDATE);
-                                        intent.putExtra(Global.KEY_CARD_INDEX, mCurrentCard.cardSN - 1);
-                                        getActivity().sendBroadcast(intent);
                                     }
                                 }
                             }

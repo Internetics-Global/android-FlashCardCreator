@@ -183,6 +183,9 @@ public class User {
     }
 
 
+    /*
+     * 重新到数据库取
+     */
     public static Pack getPack(Context context,int packID) {
 
         long startTime = System.currentTimeMillis();

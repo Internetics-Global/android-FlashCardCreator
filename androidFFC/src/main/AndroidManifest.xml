@@ -24,7 +24,7 @@
     <application
         android:name="com.flipflash.util.AppContext"
         android:allowBackup="false"
-        android:hardwareAccelerated="false"
+        android:hardwareAccelerated="true"
         android:largeHeap="true"
         android:icon="@drawable/fcc_launcher"
         tools:replace="icon, label,android:allowBackup"

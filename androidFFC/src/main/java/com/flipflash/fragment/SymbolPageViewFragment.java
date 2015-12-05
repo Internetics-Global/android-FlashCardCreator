@@ -197,7 +197,7 @@ public class SymbolPageViewFragment extends Fragment implements TextView.OnTouch
 
         String text = ((TextView)v).getText().toString();
 
-        ((MainActivity) getActivity()).mCardDetailFragment.onGridViewItemClicked(text);
+        ((MainActivity) getActivity()).getActiveCardDetailFragment().onGridViewItemClicked(text);
 
         return false;
     }

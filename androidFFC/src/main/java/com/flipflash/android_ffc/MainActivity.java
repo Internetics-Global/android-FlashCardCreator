@@ -19,7 +19,6 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 import android.text.InputType;
-import android.util.Log;
 import android.util.TypedValue;
 import android.view.Gravity;
 import android.view.KeyEvent;
@@ -31,8 +30,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewTreeObserver;
 import android.view.WindowManager;
-import android.view.animation.AlphaAnimation;
-import android.view.animation.Animation;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -46,6 +43,8 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.daimajia.androidanimations.library.Techniques;
+import com.daimajia.androidanimations.library.YoYo;
 import com.flipflash.UI.ScaleHelper;
 import com.flipflash.data.CSS;
 import com.flipflash.data.User;
@@ -79,6 +78,7 @@ import com.flipflash.util.OpenUDID_manager;
 import com.flipflash.util.StringUtils;
 import com.flipflash.util.TipHelper;
 import com.flipflash.util.UIHelper;
+import com.nineoldandroids.animation.Animator;
 import com.parse.ParseException;
 import com.parse.ParseUser;
 import com.parse.SaveCallback;
@@ -88,7 +88,6 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -109,7 +108,12 @@ public class MainActivity extends FragmentActivity implements
 
     private static final int LOGIN_REQUEST = 0;
 
+    /*
+     * createNewCardButtonClicked时：true
+     * 仅有当dismissCardCreateWindow的动画完成后，才置false
+     */
     private boolean           mIsCreatingCard = false;
+
     public  boolean           mIsEdittingCard = false;
 
     /*
@@ -139,9 +143,14 @@ public class MainActivity extends FragmentActivity implements
     private ArrayList<CardDetailFragment> mArrayCardDetailFragments;   //Special for snapshot(not include current card)
 
     /*
-     * Master通过getSupportFragmentManager().beginTransaction().replace 初始化mCardDetailFragment
+     * 所有非new create card的fragment，实际中用getActiveCardDetailFragment进行区分
      */
     public  CardDetailFragment   mCardDetailFragment;
+
+    /*
+     * 仅仅new create card的fragment，注意与mCardDetailFragment区分，实际中，用getActiveCardDetailFragment进行区分
+     */
+    public  CardDetailFragment   mNewCardDetailFragment;
 
     public  SymbolBoxFragment    mSymbolBoxFragment;
     private Button               mSymbolKeyboardSwitchButton;
@@ -195,13 +204,21 @@ public class MainActivity extends FragmentActivity implements
             @Override
             public void onClick(View view) {
                 LOGD(TAG, "onClick: add card button  is clicked");
-                startCreateCard();
+                createNewCardButtonClicked();
                 TipHelper.hideEverthing(MainActivity.this);
 
             }
         });
 
         mMasterMaskButton = (Button) findViewById(R.id.master_view_mask);
+
+        mMasterMaskButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dismissCardCreateWindow();
+
+            }
+        });
 
         //step6: set info view
         mPackInfoLayout = (LinearLayout) findViewById(R.id.pack_info_layout);
@@ -268,11 +285,17 @@ public class MainActivity extends FragmentActivity implements
 
 
 
-
+    /*
+     * 包含两种：
+     * 1. 标准（pack list, new pack, edit, ...)
+     * 2. 只有save/cancel，用于create a new card
+     */
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
 
         LOGD(TAG, "onOptionsItemSelected: " + item.toString());
+
+        final CardDetailFragment activeCardDetailFragment = getActiveCardDetailFragment();
 
         switch (item.getItemId()) {
             case R.id.actionbar_add_pack: {
@@ -323,7 +346,7 @@ public class MainActivity extends FragmentActivity implements
                             .show();
 
                 }  else {
-                    if (mCardDetailFragment == null) {
+                    if (activeCardDetailFragment == null) {
                         Toast.makeText(getApplicationContext(), getString(R.string.DIALOG_SELECT_CARD_BEFOREHAND), Toast.LENGTH_SHORT).show();
                         break;
                     }
@@ -340,7 +363,7 @@ public class MainActivity extends FragmentActivity implements
                                             public void onClick(DialogInterface dialog, int which) {
                                                 dialog.dismiss();
                                                 showSnapShotProgressDialog();
-                                                mCardDetailFragment.cardColorTemplateSelectedPostAction(which);
+                                                activeCardDetailFragment.cardColorTemplateSelectedPostAction(which);
                                             }
                                         })
 
@@ -443,8 +466,7 @@ public class MainActivity extends FragmentActivity implements
 
             case R.id.actionbar_add_card_cancel:
                 LOGD(TAG, "onOptionsItemSelected: Cancel button is clicked");
-                dismissCardCreateWindowWithNotifyMasterView(true);
-                mIsCreatingCard = false;
+                dismissCardCreateWindow();
                 break;
 
             case R.id.actionbar_add_card_save:
@@ -457,8 +479,8 @@ public class MainActivity extends FragmentActivity implements
                 boolean isAllowToShowTooltip = AppConfig.sharedInstance().isAllowToShowTooltip();
                 if (isAllowToShowTooltip == false) {
                     AppConfig.sharedInstance().setAllowToShowTooltip(true);
-                    if (mCardDetailFragment != null) {
-                        mCardDetailFragment.showTooltips();
+                    if (activeCardDetailFragment != null) {
+                        activeCardDetailFragment.showTooltips();
                         showTooltips();
                     } else {
                         showTooltips();
@@ -484,7 +506,26 @@ public class MainActivity extends FragmentActivity implements
     }
 
 
+    public CardDetailFragment getActiveCardDetailFragment() {
+        CardDetailFragment target;
+
+        if (mIsCreatingCard) {
+            target = mNewCardDetailFragment;
+        } else {
+            target = mCardDetailFragment;
+        }
+
+//        if (target == null) {
+//            throw new IllegalStateException("getActiveCardDetailFragment should return a non-null value");
+//        }
+
+        return target;
+    }
+
+
     private void recordStopButtonClicked() {
+
+        final CardDetailFragment activeCardDetailFragment = getActiveCardDetailFragment();
 
         LOGD(TAG, "recordStopButtonClicked");
 
@@ -495,7 +536,7 @@ public class MainActivity extends FragmentActivity implements
 
         AudioHelper.isRecordFinished = true;
 
-        mCardDetailFragment.showCreateSoundView();
+        activeCardDetailFragment.showCreateSoundView();
 
         findViewById(R.id.record_button_background_mask_layout).setVisibility(View.INVISIBLE);
     }
@@ -840,25 +881,23 @@ public class MainActivity extends FragmentActivity implements
 
     /**
      * 来自 CardListFragment onItemSelected
-     * @param index (index<0) is used to clear master and detail views
      */
     @Override
-    public void onItemSelected(int index, boolean isManuallyClicked) {
+    public void onItemSelected(int selectedCardIndex,Pack currentPack,boolean isManuallyClicked) {
 
-        LOGD(TAG, "onItemSelected: " + index);
+        LOGD(TAG, "onItemSelected: " + selectedCardIndex);
 
-        if (isManuallyClicked) {
-            if (mCurrentPack == null) {
-                //由于读取sqlite的效率很低，所以除非万不得已，我们直接内存取
-                mCurrentPack = User.getPack(AppContext.getAppContext(),mCurrentPack.packID);
-            }
-        } else {
-            //比如，我们在create a new card中改变了数据，但是结果没有保存，这时就不能直接从内存中读取，而且是要放弃这部分内容，从数据库取
-            mCurrentPack = User.getPack(AppContext.getAppContext(),mCurrentPack.packID);
+        if (currentPack == null) {
+            throw new IllegalStateException("when onItemSelected is called, currentPack should never be null");
         }
 
-        if (index >= 0) {
-            mCurrentCardIndex = index;
+        //CardListFragment中的mCurrentPack始终于SQLite一样，决定了这里的mCurrentPack
+        //因为是引用关系，所以这里的mCurrentPack一旦改变，也会影响CardListFragment中的mCurrentPack。一旦这改变保存到Sqlite，则重新从SQlite取一次，保证严格一致
+        //create new card中的因为是通过shadow copy过去的，所以不用担心影响到
+        mCurrentPack = currentPack;
+
+        if (selectedCardIndex >= 0) {
+            mCurrentCardIndex = selectedCardIndex;
             if (mCurrentPack.cards.size() > mCurrentCardIndex) {
                 mCurrentCard = mCurrentPack.cards.get(mCurrentCardIndex);
                 mCardDetailFragment = new CardDetailFragment();
@@ -880,24 +919,6 @@ public class MainActivity extends FragmentActivity implements
 
         hidePackInfoView();
 
-
-        if (mIsCreatingCard) {
-
-            mIsCreatingCard = false;
-
-            //这种情况适合于在新建一个卡片后，为了避免flashing（显示老的，然后新的），我们要确保新的mCardDetailFragment上去后才remove掉
-            Handler handler = new Handler();
-            handler.postDelayed(new Runnable() {
-
-                @Override
-                public void run() {
-                    removeAddCardLayoutIfExisting();
-                }
-
-            }, 200);
-        } else {
-            removeAddCardLayoutIfExisting();
-        }
 
     }
 
@@ -922,15 +943,14 @@ public class MainActivity extends FragmentActivity implements
 
 
     /**
+     * 支持仅有一个或多个card的情况
      * This is called by CardDetailFragment which represent current showing card in detail
      *
      * @param pack,       snapshot all the cards in this pack
      * @param exceptCard, except this
      */
-    public void prepareSnapShotAllExceptCurrentCard(Pack pack, Card exceptCard) {
-        LOGD(TAG, "prepareSnapShotAllExceptCurrentCard");
-
-        showSnapShotProgressDialog();
+    public void prepareDataForSnapShotAllExceptCurrentCard(Pack pack, Card exceptCard) {
+        LOGD(TAG, "prepareDataForSnapShotAllExceptCurrentCard");
 
         ArrayList<Card> cards = pack.cards;
         for (Card card : cards) {
@@ -941,10 +961,20 @@ public class MainActivity extends FragmentActivity implements
     }
 
     /**
-     * This is called by CardDetailFragment which represent current showing card in detail
+     * 支持仅有一个或多个card的情况
+     * 两种情况：创建的新卡片，编辑的卡片
      */
-    public void finishSnapShotAllExceptCurrent() {
-        LOGD(TAG, "finishSnapShotAllExceptCurrent");
+    public void cleanupDataForSnapShotAllExceptCurrent() {
+        LOGD(TAG, "finishDataForSnapShotAllExceptCurrent");
+
+        //确保这个方法不被误用
+        StackTraceElement[] stacktrace = Thread.currentThread().getStackTrace();
+        StackTraceElement e = stacktrace[3];//maybe this number needs to be corrected
+        String methodName = e.getMethodName();
+        if (methodName.equals("takeSnapshotCurrentCard") == false) {
+           throw  new IllegalStateException("cleanupDataForSnapShotAllExceptCurrent only can be called by takeSnapshotCurrentCard") ;
+        }
+
         if (mArrayCardDetailFragments != null) {
             for (CardDetailFragment cardDetailFragment : mArrayCardDetailFragments) {
                 getSupportFragmentManager().beginTransaction().remove(cardDetailFragment).commitAllowingStateLoss();
@@ -955,28 +985,26 @@ public class MainActivity extends FragmentActivity implements
 
         dismissSnapShotProgressDialog();
 
-        //we don't need to consider "during creating card" since we have disabled that
-        //this used to free memory since we "except current" in finishSnapShotAllExceptCurrent
+
         Intent intent = new Intent();
         intent.setAction(Global.BROADCAST_ACTION_UPDATE_MASTER_VIEW);
         intent.putExtra(Global.KEY_FROM, Global.BROADCAST_EXTRA_FROM_SNAPSHOT_ALL);
-        sendBroadcast(intent);
 
-    }
-
-    public void finishSnapShot(CardDetailFragment fragment) {
-        LOGD(TAG, "finishSnapShot");
-        if ((fragment == null) || (fragment.mCurrentCard == null)) {
-            return;
+        if (mIsCreatingCard) {
+            intent.putExtra(Global.KEY_CARD_INDEX,mCurrentPack.cards.size()-1);
+        } else {
+            intent.putExtra(Global.KEY_CARD_INDEX,mCurrentCard.cardSN-1);
         }
 
-        getSupportFragmentManager().beginTransaction().remove(fragment).commitAllowingStateLoss();
+        sendBroadcast(intent);
 
-        LOGD(TAG, "finishSnapShot: " + String.format("FinishSnapShot on cardSN = %d", fragment.mCurrentCard.cardID));
+        if (mIsCreatingCard) {
+            dismissCardCreateWindow();
+        }
+
     }
 
-
-    private void startCreateCard() {
+    private void createNewCardButtonClicked() {
 
         LOGD(TAG, "startCreateCard");
 
@@ -988,48 +1016,41 @@ public class MainActivity extends FragmentActivity implements
 
         hidePackInfoView();
 
+        Pack shadowCopyPack = (Pack) mCurrentPack.clone();
+        mNewCardDetailFragment = new CardDetailFragment();
+        mNewCardDetailFragment.setupParameters(shadowCopyPack, null, 1);
+        if (shadowCopyPack.cards.size() >0) {
+            //History of reason, we put templateBackground in Card, rather than Pack. It's not a good design practce anyway.
+            mNewCardDetailFragment.mCurrentCard.templateBackground =  shadowCopyPack.cards.get(0).templateBackground;
+        }
+
+        getSupportFragmentManager().beginTransaction()
+                .replace(R.id.add_card_frame_layout, mNewCardDetailFragment)
+                .commitAllowingStateLoss();
+
         FrameLayout addCardLayout = (FrameLayout) findViewById(R.id.add_card_frame_layout);
         addCardLayout.setVisibility(View.VISIBLE);
 
         mMasterMaskButton.setVisibility(View.VISIBLE);
-        final Animation animAlphaUp = new AlphaAnimation(0.0f, 1.0f);
-        animAlphaUp.setDuration(500);
-        mMasterMaskButton.startAnimation(animAlphaUp);
+        YoYo.with(Techniques.FadeIn)
+                .duration(460)
+                .playOn(mMasterMaskButton);
 
-        mMasterMaskButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                mIsCreatingCard = false;
-                dismissCardCreateWindowWithNotifyMasterView(true);
+        YoYo.with(Techniques.SlideInRight)
+                .duration(460)
+                .playOn(findViewById(R.id.add_card_frame_layout));
 
-            }
-        });
-
-
-        mCardDetailFragment = new CardDetailFragment();
-        mCardDetailFragment.setupParameters(mCurrentPack, null, 1);
-        if (mCurrentPack.cards.size() >0) {
-            //History of reason, we put templateBackground in Card, rather than Pack. It's not a good design practce anyway.
-            mCardDetailFragment.mCurrentCard.templateBackground =  mCurrentPack.cards.get(0).templateBackground;
-        }
-
-        getSupportFragmentManager().beginTransaction()
-                .setCustomAnimations(R.anim.in_from_right, R.anim.out_to_right)
-                .replace(R.id.add_card_frame_layout, mCardDetailFragment)
-                .commitAllowingStateLoss();
 
         mIsCreatingCard = true;
+
         invalidateOptionsMenu();
 
     }
 
     private void saveNewCreatedCard() {
         LOGD(TAG, "saveNewCreatedCard:");
-        //1. do save action
-        mCardDetailFragment.saveNewCreatedCard();
+        mNewCardDetailFragment.saveNewCreatedCard(); //will call dismissCardCreateWindow(); in this
 
-        //2. dismiss windows
-        dismissCardCreateWindowWithNotifyMasterView(false); //因为我们在saveNewCreatedCard会做notify master view的动作，所以这里不再需要做了
 
     }
 
@@ -1041,35 +1062,82 @@ public class MainActivity extends FragmentActivity implements
         }
     }
 
-    private void dismissCardCreateWindowWithNotifyMasterView(boolean IsNotifyMasterView) {
+    public void dismissCardCreateWindow() {
         LOGD(TAG, "dismissCardCreateWindow");
-        getSupportFragmentManager().beginTransaction().remove(mCardDetailFragment).commit();
+        getSupportFragmentManager().beginTransaction().remove(mNewCardDetailFragment).commit();
 
-        Button masterMaskButton = (Button) findViewById(R.id.master_view_mask);
-        masterMaskButton.setVisibility(View.INVISIBLE);
-        final Animation animAlphaUp = new AlphaAnimation(1.0f, 0.0f);
-        animAlphaUp.setDuration(500);
-        masterMaskButton.startAnimation(animAlphaUp);
+        YoYo.with(Techniques.FadeOut)
+                .duration(460)
+                .withListener(new Animator.AnimatorListener() {
+                    @Override
+                    public void onAnimationStart(Animator animation) {
 
-        invalidateOptionsMenu();
+                    }
+
+                    @Override
+                    public void onAnimationEnd(Animator animation) {
+
+                        mMasterMaskButton.setVisibility(View.INVISIBLE);
+
+                        mIsCreatingCard = false;
+
+                        invalidateOptionsMenu();
+
+                    }
+
+                    @Override
+                    public void onAnimationCancel(Animator animation) {
+
+                        mMasterMaskButton.setVisibility(View.INVISIBLE);
+
+                        mIsCreatingCard = false;
+
+                        invalidateOptionsMenu();
+
+                    }
+
+                    @Override
+                    public void onAnimationRepeat(Animator animation) {
+
+                    }
+                })
+                .playOn(mMasterMaskButton);
+
+        final FrameLayout addCardLayout = (FrameLayout) findViewById(R.id.add_card_frame_layout);
+        YoYo.with(Techniques.SlideOutRight)
+                .duration(460)
+                .withListener(new Animator.AnimatorListener() {
+                    @Override
+                    public void onAnimationStart(Animator animation) {
+
+                    }
+
+                    @Override
+                    public void onAnimationEnd(Animator animation) {
+                        addCardLayout.setVisibility(View.GONE);
+                    }
+
+                    @Override
+                    public void onAnimationCancel(Animator animation) {
+
+                    }
+
+                    @Override
+                    public void onAnimationRepeat(Animator animation) {
+
+                    }
+                })
+                .playOn(addCardLayout);
 
         removeCSSToolbar();
+
         InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
         if ( imm.isActive( ) ) {
             imm.hideSoftInputFromWindow(mMasterMaskButton.getApplicationWindowToken(), 0);
         }
 
-        mCardDetailFragment = null;
+        mNewCardDetailFragment = null;
         TipHelper.hideEverthing(MainActivity.this);
-
-
-        if (IsNotifyMasterView) {
-            Intent intent = new Intent();
-            intent.setAction(Global.BROADCAST_ACTION_UPDATE_MASTER_VIEW);
-            intent.putExtra(Global.KEY_FROM, Global.BROADCAST_EXTRA_FROM_NEW_CARD);
-            intent.putExtra(Global.KEY_CARD_INDEX, (mCurrentPack.cards.size() - 1));
-            sendBroadcast(intent);
-        }
 
     }
 
@@ -1362,8 +1430,10 @@ public class MainActivity extends FragmentActivity implements
             @Override
             public void onClick(View v) {
 
-                mCardDetailFragment.dismissKeyboard();
-                mCardDetailFragment.resetVerticalScrollViewBottomMargin();
+                final CardDetailFragment activeCardDetailFragment = getActiveCardDetailFragment();
+
+                activeCardDetailFragment.dismissKeyboard();
+                activeCardDetailFragment.resetVerticalScrollViewBottomMargin();
 
                 if (mSymbolBoxFragment!=null) {
                     mSymbolBoxFragment.hideSymbolBoxWithAnimation(true);
@@ -1378,9 +1448,9 @@ public class MainActivity extends FragmentActivity implements
                     handler.postDelayed(new Runnable() {
                         @Override
                         public void run() {
-                            mCardDetailFragment.saveEditedCard();
+                            activeCardDetailFragment.saveEditedCard();
                         }
-                    },1000);
+                    },500);//之所以需要有个延迟，因为需要时间去关闭键盘和reset vertical scroll view
 
                 }
             }
@@ -1390,16 +1460,18 @@ public class MainActivity extends FragmentActivity implements
             @Override
             public void onClick(View v) {
 
+                final CardDetailFragment activeCardDetailFragment = getActiveCardDetailFragment();
+
                 if (mSymbolBoxFragment!=null) {
                     mSymbolBoxFragment.hideSymbolBoxWithAnimation(true);
                 }
-                mCardDetailFragment.dismissKeyboard();
-                mCardDetailFragment.resetVerticalScrollViewBottomMargin();
+                activeCardDetailFragment.dismissKeyboard();
+                activeCardDetailFragment.resetVerticalScrollViewBottomMargin();
 
                 removeCSSToolbar();
 
                 if (mIsCreatingCard) {
-                    dismissCardCreateWindowWithNotifyMasterView(true);
+                    dismissCardCreateWindow();
                 }
 
 
@@ -1410,11 +1482,14 @@ public class MainActivity extends FragmentActivity implements
         mSymbolKeyboardSwitchButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
+                final CardDetailFragment activeCardDetailFragment = getActiveCardDetailFragment();
+
                 InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
                 imm.toggleSoftInput(InputMethodManager.SHOW_IMPLICIT, InputMethodManager.HIDE_NOT_ALWAYS);
                 if (mIsKeyboardVisible) {
 
-                    if (mCardDetailFragment.isCurrentFocusedCardContentTextUsingDefaultFont() == false){
+                    if (activeCardDetailFragment.isCurrentFocusedCardContentTextUsingDefaultFont() == false){
                         Toast.makeText(getApplicationContext(),R.string.DIALOG_SYMBOL_NOT_SUPPORTED_BY_FONT,Toast.LENGTH_LONG).show();
                     } else {
                         setAsSymbolStatus();
@@ -1434,9 +1509,12 @@ public class MainActivity extends FragmentActivity implements
         spinnerFont.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+
+                final CardDetailFragment activeCardDetailFragment = getActiveCardDetailFragment();
+
                 if (position > 0) //this is necessary, since default will be automatically executed
                 {
-                    mCardDetailFragment.updateCSS(3, position - 1);
+                    activeCardDetailFragment.updateCSS(3, position - 1);
                 }
 
 
@@ -1451,8 +1529,10 @@ public class MainActivity extends FragmentActivity implements
         spinnerAlign.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+
+                final CardDetailFragment activeCardDetailFragment = getActiveCardDetailFragment();
                 if (position > 0) //this is necessary, since default will be automatically executed
-                    mCardDetailFragment.updateCSS(0, position - 1);
+                    activeCardDetailFragment.updateCSS(0, position - 1);
             }
 
             @Override
@@ -1463,8 +1543,9 @@ public class MainActivity extends FragmentActivity implements
         spinnerSize.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                final CardDetailFragment activeCardDetailFragment = getActiveCardDetailFragment();
                 if (position > 0)
-                    mCardDetailFragment.updateCSS(1, position - 1);
+                    activeCardDetailFragment.updateCSS(1, position - 1);
             }
 
             @Override
@@ -1475,8 +1556,9 @@ public class MainActivity extends FragmentActivity implements
         spinnerColor.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                final CardDetailFragment activeCardDetailFragment = getActiveCardDetailFragment();
                 if (position > 0)
-                    mCardDetailFragment.updateCSS(2, position - 1);
+                    activeCardDetailFragment.updateCSS(2, position - 1);
             }
 
             @Override
@@ -1639,8 +1721,7 @@ public class MainActivity extends FragmentActivity implements
             }
 
             if (mIsCreatingCard == true) {
-                mIsCreatingCard = false;
-                dismissCardCreateWindowWithNotifyMasterView(true);
+                dismissCardCreateWindow();
                 return false;
             }
 
@@ -1776,6 +1857,9 @@ public class MainActivity extends FragmentActivity implements
 
     public void showSnapShotProgressDialog() {
 
+        LOGD(TAG, "showSnapShotProgressDialog");
+
+        //TODO: 我们暂时没有提供进度条功能，以后加
         if (mSnapShotDialog == null) {
             mSnapShotDialog = new ProgressDialog(MainActivity.this);
             mSnapShotDialog.setMax(100);
@@ -1791,10 +1875,15 @@ public class MainActivity extends FragmentActivity implements
     }
 
     public void dismissSnapShotProgressDialog() {
-        mSnapShotDialog.dismiss();
+
+        LOGD(TAG, "dismissSnapShotProgressDialog");
+
+        if (mSnapShotDialog != null && mSnapShotDialog.isShowing()) {
+            mSnapShotDialog.dismiss();
+        }
     }
 
-
+    //TODO: 我们暂时没有提供进度条功能，以后加
     private void updateScreenshotProgressDialogWithProgress(int progress) {
 
         final int finalProgress = progress;
