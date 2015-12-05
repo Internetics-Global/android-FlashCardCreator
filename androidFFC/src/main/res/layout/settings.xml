@@ -13,6 +13,21 @@
         android:layout_height="wrap_content"
         android:orientation="vertical" >
 
+
+        <View
+            style="@style/h_line" />
+
+        <RelativeLayout
+            android:id="@+id/rl_play_option"
+            style="@style/option_item_rl" >
+
+            <TextView
+                style="@style/option_item_text_parent"
+                android:text= "@string/NavigationBarItem_More_Play_Option"
+                android:textColor="@android:color/white"
+                android:textSize="16dp" />
+        </RelativeLayout>
+
         <View
             style="@style/h_line"/>
 

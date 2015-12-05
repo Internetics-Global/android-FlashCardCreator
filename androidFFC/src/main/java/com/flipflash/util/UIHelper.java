@@ -48,6 +48,14 @@ public class UIHelper {
 
     private static final String TAG = UIHelper.class.getName();
 
+
+    public static float convertDpToPixel(float dp){
+        Resources resources = AppContext.getAppContext().getResources();
+        DisplayMetrics metrics = resources.getDisplayMetrics();
+        float px = dp * (metrics.densityDpi / 160f);
+        return px;
+    }
+
     public static int getPixels(int dipValue) {
 
         Resources r = AppContext.getAppContext().getResources();

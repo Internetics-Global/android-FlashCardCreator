@@ -253,4 +253,21 @@ public class AppConfig {
 
 
 
+    public int getPlayOption() {
+        String str = appConfig.get(Global.PLAY_OPTION);
+
+        if (str == null) {
+            return 0;
+        }
+
+        return Integer.parseInt(str);
+    }
+
+    public void setPlayOption(int playOption) {
+        String val = String.format("%d",playOption);
+        appConfig.set(Global.PLAY_OPTION, val);
+    }
+
+
+
 }

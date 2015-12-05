@@ -73,6 +73,8 @@
         </activity>
         <activity android:name="com.flipflash.android_ffc.MoreActivity"
                   android:screenOrientation="sensorLandscape"/>
+        <activity android:name="com.flipflash.android_ffc.PlayOptionActivity"
+                  android:screenOrientation="sensorLandscape"/>
         <activity android:name="com.flipflash.android_ffc.WebViewActivity"
                   android:screenOrientation="sensorLandscape"/>
         <activity android:name="com.flipflash.android_ffc.AppStart"

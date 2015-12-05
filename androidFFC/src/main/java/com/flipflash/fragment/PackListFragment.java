@@ -418,56 +418,17 @@ public class PackListFragment extends Fragment {
 
         final Pack currentPack = mUser.packs.get(position -1);
 
-        new AlertDialog.Builder(getActivity())
-                .setTitle(R.string.Label_Select)
-                .setMessage(R.string.Label_Please_Select)
-                .setNegativeButton(R.string.Optional_Play_Manually, new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
+        AppConfig.sharedInstance().setPackIDForLastSelected(currentPack.packID);
 
-                        AppConfig.sharedInstance().setPackIDForLastSelected(currentPack.packID);
+        int playOption = AppConfig.sharedInstance().getPlayOption();
 
-                        Intent intent = new Intent(getActivity(), PlayActivity.class);
-                        intent.putExtra("packID", currentPack.packID);
-                        intent.putExtra("oneOffPlayType", 0);  //manually
-                        startActivity(intent);
+        Intent intent = new Intent(getActivity(), PlayActivity.class);
+        intent.putExtra("packID", currentPack.packID);
+        intent.putExtra("oneOffPlayType", playOption);  //manually
+        startActivity(intent);
 
-                        ((MainActivity) getActivity()).mIsAllowedToShowPackList = false;
-                        ((MainActivity) getActivity()).dismissPackListPopupWindow();
-                    }
-                })
-                .setNeutralButton(R.string.Optional_Auto_Play, new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-
-                        AppConfig.sharedInstance().setPackIDForLastSelected(currentPack.packID);
-
-
-                        Intent intent = new Intent(getActivity(), PlayActivity.class);
-                        intent.putExtra("packID", currentPack.packID);
-                        intent.putExtra("oneOffPlayType", 1);  //manually
-                        startActivity(intent);
-
-                        ((MainActivity) getActivity()).mIsAllowedToShowPackList = false;
-                        ((MainActivity) getActivity()).dismissPackListPopupWindow();
-                    }
-                })
-                .setPositiveButton(R.string.Optional_Auto_Play_Loop, new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-
-                        AppConfig.sharedInstance().setPackIDForLastSelected(currentPack.packID);
-
-                        Intent intent = new Intent(getActivity(), PlayActivity.class);
-                        intent.putExtra("packID", currentPack.packID);
-                        intent.putExtra("oneOffPlayType", 2);  //manually
-                        startActivity(intent);
-
-                        ((MainActivity) getActivity()).mIsAllowedToShowPackList = false;
-                        ((MainActivity) getActivity()).dismissPackListPopupWindow();
-                    }
-                })
-                .show();
+        ((MainActivity) getActivity()).mIsAllowedToShowPackList = false;
+        ((MainActivity) getActivity()).dismissPackListPopupWindow();
 
     }
 

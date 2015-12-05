@@ -134,6 +134,7 @@
     <string name="NavigationBarItem_More_Logo_In">Login</string>
     <string name="NavigationBarItem_More_Help">Help</string>
     <string name="NavigationBarItem_More_About">About</string>
+    <string name="NavigationBarItem_More_Play_Option">Manual/Auto Play</string>
     <string name="ToolbarItem_Answer">Answer</string>
     <string name="ToolbarItem_Question">Question</string>
     <string name="Keyboard_Done">Done</string>

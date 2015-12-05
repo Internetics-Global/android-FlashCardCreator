@@ -376,46 +376,14 @@ public class MainActivity extends FragmentActivity implements
                 mIsAllowedToShowPackList = false;
                 break;
 
-            case R.id.actionbar_play_auto:
-                if (mCurrentPack.cards.size() > 0) {
-                    Intent intent = new Intent(MainActivity.this, PlayActivity.class);
-                    intent.putExtra("packID", mCurrentPack.packID);
-                    intent.putExtra("oneOffPlayType",1);  //manually
-                    startActivity(intent);
-                    mIsAllowedToShowPackList = false;
-                }  else {
+            case R.id.actionbar_play:
 
-                    new AlertDialog.Builder(this)
-                            .setTitle(getString(R.string.DIALOG_AlERT))
-                            .setMessage(getString(R.string.DIALOG_NO_CARD_AVAILABLE))
-                            .setPositiveButton(getString(R.string.DIALOG_OK), null)
-                            .show();
-                }
-                break;
-
-            case R.id.actionbar_play_auto_loop:
-                if (mCurrentPack.cards.size() > 0) {
-                    Intent intent = new Intent(MainActivity.this, PlayActivity.class);
-                    intent.putExtra("packID", mCurrentPack.packID);
-                    intent.putExtra("oneOffPlayType",2);  //manually
-                    startActivity(intent);
-                    mIsAllowedToShowPackList = false;
-                }  else {
-
-                    new AlertDialog.Builder(this)
-                            .setTitle(getString(R.string.DIALOG_AlERT))
-                            .setMessage(getString(R.string.DIALOG_NO_CARD_AVAILABLE))
-                            .setPositiveButton(getString(R.string.DIALOG_OK), null)
-                            .show();
-                }
-                break;
-
-            case R.id.actionbar_play_manually:
+                int playOption = AppConfig.sharedInstance().getPlayOption();
 
                 if ((mCurrentPack != null) && (mCurrentPack.cards.size() > 0)) {
                     Intent intent = new Intent(MainActivity.this, PlayActivity.class);
                     intent.putExtra("packID", mCurrentPack.packID);
-                    intent.putExtra("oneOffPlayType",0);  //manually
+                    intent.putExtra("oneOffPlayType",playOption);  //manually
                     startActivity(intent);
                     mIsAllowedToShowPackList = false;
                 }  else {
