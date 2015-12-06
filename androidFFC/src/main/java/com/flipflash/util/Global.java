@@ -18,8 +18,8 @@ public class Global {
 
     public static final String BucketPostfixAfterUserName = "55b5aa55673793805862";
 
-    //public static final String    SAMPLE_URL = "https://s3.amazonaws.com/internetics.flashcardcreator/Pack1440729625-2043618070.zip?from=Flipflashcards&type=demo";
-    public static final String    SAMPLE_URL = "http://7o51o0.com1.z0.glb.clouddn.com/Pack1440729625-2043618324.zip";
+    public static final String    SAMPLE_URL = "https://s3.amazonaws.com/internetics.flashcardcreator/Pack1440729625-2043618070.zip?from=Flipflashcards&type=demo";
+    //public static final String    SAMPLE_URL = "http://7o51o0.com1.z0.glb.clouddn.com/Pack1440729625-2043618324.zip";
 
     public static final String  DATABASE_NAME = "FlashCardCreator-Local.db";
     public static final int     DATABASE_VERSION = 1;  // you need to update this when changing
