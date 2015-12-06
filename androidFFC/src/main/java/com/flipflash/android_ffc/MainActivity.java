@@ -170,8 +170,6 @@ public class MainActivity extends FragmentActivity implements
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        ((AppContext)(AppContext.getAppContext())).addActivity(this);
-
         LOGD(TAG, "onCreate: ");
 
         //Step1: check table and default user
@@ -1713,7 +1711,11 @@ public class MainActivity extends FragmentActivity implements
                 new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int which) {
 
-                        ((AppContext)AppContext.getAppContext()).exit();
+                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
+                            finishAffinity();
+                        } else {
+                            System.exit(0);
+                        }
                     }
                 });
 

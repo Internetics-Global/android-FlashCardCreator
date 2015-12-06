@@ -160,8 +160,6 @@ public class PlayActivity extends FragmentActivity implements SensorEventListene
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        ((AppContext)(AppContext.getAppContext())).addActivity(this);
-
         LOGD(TAG, "onCreate");
 
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
@@ -1887,9 +1885,9 @@ public class PlayActivity extends FragmentActivity implements SensorEventListene
         View controlPanelView = findViewById(R.id.play_control_panel);
         controlPanelView.setVisibility(View.INVISIBLE);
 
-        //TODO: 临时方法，因为controlPanelView的hide，并不会导致mDwellTimeSeekBar可见性变化（很奇怪是吧，但是事实就是这样）
-        mDwellTimeSeekBar.setVisibility(View.INVISIBLE);
-        mPauseForAnswerSeekBar.setVisibility(View.INVISIBLE);
+        mDwellTimeSeekBar.setAlwaysShowIndicator(false);
+        mPauseForAnswerSeekBar.setAlwaysShowIndicator(false);
+
     }
 
     private void showControlPanel() {
@@ -1897,9 +1895,8 @@ public class PlayActivity extends FragmentActivity implements SensorEventListene
         View controlPanelView = findViewById(R.id.play_control_panel);
         controlPanelView.setVisibility(View.VISIBLE);
 
-        //TODO: 临时方法，因为controlPanelView的hide，并不会导致mDwellTimeSeekBar可见性变化（很奇怪是吧，但是事实就是这样）
-        mDwellTimeSeekBar.setVisibility(View.VISIBLE);
-        mPauseForAnswerSeekBar.setVisibility(View.VISIBLE);
+        mDwellTimeSeekBar.setAlwaysShowIndicator(true);
+        mPauseForAnswerSeekBar.setAlwaysShowIndicator(true);
     }
 
     private boolean isControlPanelVisible() {

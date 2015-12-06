@@ -29,8 +29,6 @@ public class PlayOptionActivity extends Activity {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        ((AppContext)(AppContext.getAppContext())).addActivity(this);
-
         LOGD(TAG, "onCreate:");
 
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);

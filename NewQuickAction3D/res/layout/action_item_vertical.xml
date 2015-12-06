@@ -9,8 +9,12 @@
 
     <ImageView
             android:id="@+id/iv_icon"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"/>
+            android:scaleType="centerCrop"
+            android:layout_width="117dp"
+            android:layout_marginLeft="25dp"
+            android:layout_marginRight="25dp"
+            android:layout_marginBottom="10dp"
+            android:layout_height="83dp"/>
 
     <TextView
             android:id="@+id/tv_title"

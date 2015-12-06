@@ -123,6 +123,8 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnTouchL
     private RadioButton mAnswerRadioButton;
     private RadioGroup mRadioGroup;
 
+    private RoundedBottomRightImageView mBackgroundImageView;
+
     private InputMethodManager mIMM;
 
     public EditText mCurrentFocusedCardContentText;  // only applicable to subheading, main and sub text
@@ -754,7 +756,7 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnTouchL
 
             Uri selectedURI = data.getParcelableExtra("cropped_image_uri");
 
-            ImageSize targetSize = new ImageSize(1024, 1024);
+            ImageSize targetSize = new ImageSize(1024, 1024); //但是最终是一个小于这个大小的图片（因为最终需要防止图片变形）
             ImageLoader imageLoader = ImageLoader.getInstance();
             Bitmap scaledBitmap = imageLoader.loadImageSync(selectedURI.toString(),targetSize);
 
@@ -764,7 +766,7 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnTouchL
             }
 
             File toSaveFile = UIHelper.saveImageToCaches(scaledBitmap);
-            setCardBackgroundImageWithBitmap(scaledBitmap);
+            mBackgroundImageView.setImageBitmap(scaledBitmap);
             if (mIsQuestionShowing) {
                 mCurrentCard.question.backgroundImageUriFormatStr = FileOperationHelper.convertToUriFormatFile(toSaveFile);
             } else {
@@ -864,7 +866,8 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnTouchL
 
                         if (mIsImage2Active) {
                             String placeholderImagePath = FileOperationHelper.getQuestionImagePlaceholderImagePath();
-                            mImage2.setImageURI(Uri.parse(placeholderImagePath));
+                            ImageLoader imageLoader = ImageLoader.getInstance();
+                            imageLoader.displayImage(placeholderImagePath, mImage2);
                             if (mIsQuestionShowing) {
                                 mCurrentCard.question.imageUriFormatStr2 = "";
                             } else {
@@ -872,7 +875,8 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnTouchL
                             }
                         } else {
                             String placeholderImagePath = FileOperationHelper.getAnswerImagePlaceholderImagePath();
-                            mImage.setImageURI(Uri.parse(placeholderImagePath));
+                            ImageLoader imageLoader = ImageLoader.getInstance();
+                            imageLoader.displayImage(placeholderImagePath, mImage);
                             if (mIsQuestionShowing) {
                                 mCurrentCard.question.imageUriFormatStr = "";
                             } else {
@@ -1232,23 +1236,45 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnTouchL
      * 配置template change imageview的click listner
      */
     private void configureChangeTemplateView() {
-        ActionItem questionActionItem0 = new ActionItem(0, null, getResources().getDrawable(R.drawable.question_templatescreenshot0));
-        ActionItem questionActionItem1 = new ActionItem(1, null, getResources().getDrawable(R.drawable.question_templatescreenshot1));
-        ActionItem questionActionItem2 = new ActionItem(2, null, getResources().getDrawable(R.drawable.question_templatescreenshot2));
-        ActionItem questionActionItem3 = new ActionItem(3, null, getResources().getDrawable(R.drawable.question_templatescreenshot3));
-        ActionItem questionActionItem4 = new ActionItem(4, null, getResources().getDrawable(R.drawable.question_templatescreenshot4));
-        ActionItem questionActionItem5 = new ActionItem(5, null, getResources().getDrawable(R.drawable.question_templatescreenshot5));
-        ActionItem questionActionItem6 = new ActionItem(6, null, getResources().getDrawable(R.drawable.question_templatescreenshot6));
-        ActionItem questionActionItem7 = new ActionItem(7, null, getResources().getDrawable(R.drawable.question_templatescreenshot7));
-        ActionItem questionActionItem8 = new ActionItem(7, null, getResources().getDrawable(R.drawable.question_templatescreenshot8));
-        ActionItem questionActionItem9 = new ActionItem(7, null, getResources().getDrawable(R.drawable.question_templatescreenshot9));
-        ActionItem questionActionItem10 = new ActionItem(7, null, getResources().getDrawable(R.drawable.question_templatescreenshot10));
-        ActionItem questionActionItem11 = new ActionItem(7, null, getResources().getDrawable(R.drawable.question_templatescreenshot11));
-        ActionItem questionActionItem12 = new ActionItem(7, null, getResources().getDrawable(R.drawable.question_templatescreenshot12));
-        ActionItem questionActionItem13 = new ActionItem(7, null, getResources().getDrawable(R.drawable.question_templatescreenshot13));
-        ActionItem questionActionItem14 = new ActionItem(7, null, getResources().getDrawable(R.drawable.question_templatescreenshot14));
-        ActionItem questionActionItem15 = new ActionItem(7, null, getResources().getDrawable(R.drawable.question_templatescreenshot15));
-        ActionItem questionActionItem16 = new ActionItem(7, null, getResources().getDrawable(R.drawable.question_templatescreenshot16));
+
+        if (mChangeTemplateImage == null) {
+            throw  new IllegalStateException("mChangeTemplateImage should not be null in configureChangeTemplateView");
+        }
+
+        if (isEditableMode() == false) {
+
+            mChangeTemplateImage.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    new SweetAlertDialog(getActivity())
+                            .setTitleText(getString(R.string.DIALOG_AlERT))
+                            .setContentText(getString(R.string.DIALOG_YOU_CAN_NOT_CHANGE_TEMPLATE_BACKGROUND))
+                            .show();
+
+                }
+            });
+
+        } else {
+
+            mChangeTemplateImage.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if (mIsQuestionShowing) {
+                        showQuestionAction();
+                    } else {
+                        showAnswerAction();
+                    }
+
+                }
+            });
+        }
+
+
+    }
+
+    private void showAnswerAction() {
+
+        QuickAction answerQuickAction = new QuickAction(getActivity(), QuickAction.VERTICAL);
 
         ActionItem answerActionItem0 = new ActionItem(0, null, getResources().getDrawable(R.drawable.answer_templatescreenshot0));
         ActionItem answerActionItem1 = new ActionItem(1, null, getResources().getDrawable(R.drawable.answer_templatescreenshot1));
@@ -1268,36 +1294,6 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnTouchL
         ActionItem answerActionItem15 = new ActionItem(7, null, getResources().getDrawable(R.drawable.answer_templatescreenshot15));
         ActionItem answerActionItem16 = new ActionItem(7, null, getResources().getDrawable(R.drawable.answer_templatescreenshot16));
 
-        final QuickAction questionQuickAction = new QuickAction(getActivity(), QuickAction.VERTICAL);
-        final QuickAction answerQuickAction = new QuickAction(getActivity(), QuickAction.VERTICAL);
-
-//        questionQuickAction.setBackgroundDrawable(getResources().getDrawable(R.drawable.shape_darkgray_no_corner));
-//        answerQuickAction.setBackgroundDrawable(getResources().getDrawable(R.drawable.shape_darkgray_no_corner));
-
-
-        questionQuickAction.addActionItem(questionActionItem0);
-        questionQuickAction.addActionItem(questionActionItem1);
-        questionQuickAction.addActionItem(questionActionItem2);
-        questionQuickAction.addActionItem(questionActionItem3);
-        questionQuickAction.addActionItem(questionActionItem4);
-        questionQuickAction.addActionItem(questionActionItem5);
-        questionQuickAction.addActionItem(questionActionItem6);
-        questionQuickAction.addActionItem(questionActionItem7);
-        questionQuickAction.addActionItem(questionActionItem8);
-        questionQuickAction.addActionItem(questionActionItem9);
-        questionQuickAction.addActionItem(questionActionItem10);
-        questionQuickAction.addActionItem(questionActionItem11);
-        questionQuickAction.addActionItem(questionActionItem12);
-        questionQuickAction.addActionItem(questionActionItem13);
-        questionQuickAction.addActionItem(questionActionItem14);
-        questionQuickAction.addActionItem(questionActionItem15);
-        questionQuickAction.addActionItem(questionActionItem16);
-        questionQuickAction.setOnActionItemClickListener(new QuickAction.OnActionItemClickListener() {
-            @Override
-            public void onItemClick(QuickAction source, int pos, int actionId) {
-                changeTemplateActionItemClicked(pos);
-            }
-        });
 
         answerQuickAction.addActionItem(answerActionItem0);
         answerQuickAction.addActionItem(answerActionItem1);
@@ -1316,6 +1312,7 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnTouchL
         answerQuickAction.addActionItem(answerActionItem14);
         answerQuickAction.addActionItem(answerActionItem15);
         answerQuickAction.addActionItem(answerActionItem16);
+
         answerQuickAction.setOnActionItemClickListener(new QuickAction.OnActionItemClickListener() {
             @Override
             public void onItemClick(QuickAction source, int pos, int actionId) {
@@ -1323,29 +1320,69 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnTouchL
             }
         });
 
+        answerQuickAction.setOnDismissListener(new QuickAction.OnDismissListener() {
+            @Override
+            public void onDismiss() {
+            }
+        });
 
-        if (mChangeTemplateImage != null) {
-            mChangeTemplateImage.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    if (isEditableMode()) {
-                        if (mIsQuestionShowing) {
-                            questionQuickAction.show(mChangeTemplateImage);
-                        } else {
-                            answerQuickAction.show(mChangeTemplateImage);
-                        }
-                    } else {
-                        new SweetAlertDialog(getActivity())
-                                .setTitleText(getString(R.string.DIALOG_AlERT))
-                                .setContentText(getString(R.string.DIALOG_YOU_CAN_NOT_CHANGE_TEMPLATE_BACKGROUND))
-                                .show();
-                    }
+        answerQuickAction.show(mChangeTemplateImage);
+    }
 
-                }
-            });
-        }
+    private void showQuestionAction() {
+
+        QuickAction questionQuickAction = new QuickAction(getActivity(), QuickAction.VERTICAL);
+
+        ActionItem questionActionItem0 = new ActionItem(0, null, getResources().getDrawable(R.drawable.question_templatescreenshot0));
+        ActionItem questionActionItem1 = new ActionItem(1, null, getResources().getDrawable(R.drawable.question_templatescreenshot1));
+        ActionItem questionActionItem2 = new ActionItem(2, null, getResources().getDrawable(R.drawable.question_templatescreenshot2));
+        ActionItem questionActionItem3 = new ActionItem(3, null, getResources().getDrawable(R.drawable.question_templatescreenshot3));
+        ActionItem questionActionItem4 = new ActionItem(4, null, getResources().getDrawable(R.drawable.question_templatescreenshot4));
+        ActionItem questionActionItem5 = new ActionItem(5, null, getResources().getDrawable(R.drawable.question_templatescreenshot5));
+        ActionItem questionActionItem6 = new ActionItem(6, null, getResources().getDrawable(R.drawable.question_templatescreenshot6));
+        ActionItem questionActionItem7 = new ActionItem(7, null, getResources().getDrawable(R.drawable.question_templatescreenshot7));
+        ActionItem questionActionItem8 = new ActionItem(7, null, getResources().getDrawable(R.drawable.question_templatescreenshot8));
+        ActionItem questionActionItem9 = new ActionItem(7, null, getResources().getDrawable(R.drawable.question_templatescreenshot9));
+        ActionItem questionActionItem10 = new ActionItem(7, null, getResources().getDrawable(R.drawable.question_templatescreenshot10));
+        ActionItem questionActionItem11 = new ActionItem(7, null, getResources().getDrawable(R.drawable.question_templatescreenshot11));
+        ActionItem questionActionItem12 = new ActionItem(7, null, getResources().getDrawable(R.drawable.question_templatescreenshot12));
+        ActionItem questionActionItem13 = new ActionItem(7, null, getResources().getDrawable(R.drawable.question_templatescreenshot13));
+        ActionItem questionActionItem14 = new ActionItem(7, null, getResources().getDrawable(R.drawable.question_templatescreenshot14));
+        ActionItem questionActionItem15 = new ActionItem(7, null, getResources().getDrawable(R.drawable.question_templatescreenshot15));
+        ActionItem questionActionItem16 = new ActionItem(7, null, getResources().getDrawable(R.drawable.question_templatescreenshot16));
+
+        questionQuickAction.addActionItem(questionActionItem0);
+        questionQuickAction.addActionItem(questionActionItem1);
+        questionQuickAction.addActionItem(questionActionItem2);
+        questionQuickAction.addActionItem(questionActionItem3);
+        questionQuickAction.addActionItem(questionActionItem4);
+        questionQuickAction.addActionItem(questionActionItem5);
+        questionQuickAction.addActionItem(questionActionItem6);
+        questionQuickAction.addActionItem(questionActionItem7);
+        questionQuickAction.addActionItem(questionActionItem8);
+        questionQuickAction.addActionItem(questionActionItem9);
+        questionQuickAction.addActionItem(questionActionItem10);
+        questionQuickAction.addActionItem(questionActionItem11);
+        questionQuickAction.addActionItem(questionActionItem12);
+        questionQuickAction.addActionItem(questionActionItem13);
+        questionQuickAction.addActionItem(questionActionItem14);
+        questionQuickAction.addActionItem(questionActionItem15);
+        questionQuickAction.addActionItem(questionActionItem16);
+
+        questionQuickAction.setOnActionItemClickListener(new QuickAction.OnActionItemClickListener() {
+            @Override
+            public void onItemClick(QuickAction source, int pos, int actionId) {
+                changeTemplateActionItemClicked(pos);
+            }
+        });
+        questionQuickAction.setOnDismissListener(new QuickAction.OnDismissListener() {
+            @Override
+            public void onDismiss() {
+            }
+        });
 
 
+        questionQuickAction.show(mChangeTemplateImage);
     }
 
     /**
@@ -1571,6 +1608,8 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnTouchL
             //在非edit模式下，我们是在resize结束后才显示的
             mContentBodyLinearLayout.setVisibility(View.VISIBLE);
         }
+
+        mBackgroundImageView = (RoundedBottomRightImageView) mContentView.findViewById(R.id.card_background_image);
 
         createSubheading();
         createMain();
@@ -2401,15 +2440,15 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnTouchL
         mSub.setText(mCurrentCard.question.sub);
 
         ImageLoader imageLoader = ImageLoader.getInstance();
-        if (StringUtils.isEmpty(mCurrentCard.question.imageUriFormatStr) == false) {
+        if (StringUtils.isEmpty(mCurrentCard.question.imageUriFormatStr) == false && (mImage.getVisibility() == View.VISIBLE)) {
             imageLoader.displayImage(mCurrentCard.question.imageUriFormatStr, mImage,mDisplayImageOptions);
         }
 
-        if (StringUtils.isEmpty(mCurrentCard.question.imageUriFormatStr2) == false) {
+        if (StringUtils.isEmpty(mCurrentCard.question.imageUriFormatStr2) == false && (mImage2.getVisibility() == View.VISIBLE)) {
              imageLoader.displayImage(mCurrentCard.question.imageUriFormatStr2, mImage2,mDisplayImageOptions);
         }
 
-        if (StringUtils.isEmpty(mCurrentCard.question.backgroundImageUriFormatStr) == false) {
+        if (StringUtils.isEmpty(mCurrentCard.question.backgroundImageUriFormatStr) == false && (mBackgroundImageView.getVisibility() == View.VISIBLE)) {
             setCardBackgroundImageWithUri(mCurrentCard.question.backgroundImageUriFormatStr);
         } else {
             setCardBackgroundImageDefault();
@@ -2426,15 +2465,15 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnTouchL
 
         ImageLoader imageLoader = ImageLoader.getInstance();
 
-        if (StringUtils.isEmpty(mCurrentCard.answer.imageUriFormatStr) == false) {
+        if (StringUtils.isEmpty(mCurrentCard.answer.imageUriFormatStr) == false && (mImage.getVisibility() == View.VISIBLE)) {
             imageLoader.displayImage(mCurrentCard.answer.imageUriFormatStr, mImage,mDisplayImageOptions);
         }
 
-        if (StringUtils.isEmpty(mCurrentCard.answer.imageUriFormatStr2) == false) {
+        if (StringUtils.isEmpty(mCurrentCard.answer.imageUriFormatStr2) == false && (mImage2.getVisibility() == View.VISIBLE)) {
             imageLoader.displayImage(mCurrentCard.answer.imageUriFormatStr2, mImage2,mDisplayImageOptions);
         }
 
-        if (StringUtils.isEmpty(mCurrentCard.answer.backgroundImageUriFormatStr) == false) {
+        if (StringUtils.isEmpty(mCurrentCard.answer.backgroundImageUriFormatStr) == false && (mBackgroundImageView.getVisibility() == View.VISIBLE)) {
             setCardBackgroundImageWithUri(mCurrentCard.answer.backgroundImageUriFormatStr);
         } else {
             setCardBackgroundImageDefault();
@@ -2953,11 +2992,11 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnTouchL
         removeAllSubViewsInContentBody();
 
         mContentBodyLinearLayout.setOrientation(LinearLayout.VERTICAL);
-        mImage.setVisibility(View.INVISIBLE);
-        mImage2.setVisibility(View.INVISIBLE);
+        mImage.setVisibility(View.GONE);
+        mImage2.setVisibility(View.GONE);
         mSubheading.setVisibility(View.VISIBLE);
         mMain.setVisibility(View.VISIBLE);
-        mSub.setVisibility(View.INVISIBLE);
+        mSub.setVisibility(View.GONE);
 
         //subheading
         LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,
@@ -2984,8 +3023,8 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnTouchL
         removeAllSubViewsInContentBody();
 
         mContentBodyLinearLayout.setOrientation(LinearLayout.VERTICAL);
-        mImage.setVisibility(View.INVISIBLE);
-        mImage2.setVisibility(View.INVISIBLE);
+        mImage.setVisibility(View.GONE);
+        mImage2.setVisibility(View.GONE);
         mSubheading.setVisibility(View.VISIBLE);
         mMain.setVisibility(View.VISIBLE);
         mSub.setVisibility(View.VISIBLE);
@@ -3029,9 +3068,9 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnTouchL
         removeAllSubViewsInContentBody();
 
         mContentBodyLinearLayout.setOrientation(LinearLayout.VERTICAL);
-        mImage.setVisibility(View.INVISIBLE);
-        mImage2.setVisibility(View.INVISIBLE);
-        mSubheading.setVisibility(View.INVISIBLE);
+        mImage.setVisibility(View.GONE);
+        mImage2.setVisibility(View.GONE);
+        mSubheading.setVisibility(View.GONE);
         mMain.setVisibility(View.VISIBLE);
         mSub.setVisibility(View.VISIBLE);
 
@@ -3062,9 +3101,9 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnTouchL
         removeAllSubViewsInContentBody();
 
         mContentBodyLinearLayout.setOrientation(LinearLayout.VERTICAL);
-        mImage.setVisibility(View.INVISIBLE);
-        mImage2.setVisibility(View.INVISIBLE);
-        mSubheading.setVisibility(View.INVISIBLE);
+        mImage.setVisibility(View.GONE);
+        mImage2.setVisibility(View.GONE);
+        mSubheading.setVisibility(View.GONE);
         mMain.setVisibility(View.VISIBLE);
         mSub.setVisibility(View.VISIBLE);
 
@@ -3094,11 +3133,11 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnTouchL
         removeAllSubViewsInContentBody();
 
         mContentBodyLinearLayout.setOrientation(LinearLayout.VERTICAL);
-        mImage.setVisibility(View.INVISIBLE);
-        mImage2.setVisibility(View.INVISIBLE);
-        mSubheading.setVisibility(View.INVISIBLE);
+        mImage.setVisibility(View.GONE);
+        mImage2.setVisibility(View.GONE);
+        mSubheading.setVisibility(View.GONE);
         mMain.setVisibility(View.VISIBLE);
-        mSub.setVisibility(View.INVISIBLE);
+        mSub.setVisibility(View.GONE);
 
         //main
         LinearLayout.LayoutParams params;
@@ -3120,12 +3159,13 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnTouchL
         mImage.setVisibility(View.VISIBLE);
 
         String placeholderImagePath = FileOperationHelper.getQuestionImagePlaceholderImagePath();
-        mImage.setImageURI(Uri.parse(placeholderImagePath));
+        ImageLoader imageLoader = ImageLoader.getInstance();
+        imageLoader.displayImage(placeholderImagePath, mImage);
 
-        mImage2.setVisibility(View.INVISIBLE);
-        mSubheading.setVisibility(View.INVISIBLE);
-        mMain.setVisibility(View.INVISIBLE);
-        mSub.setVisibility(View.INVISIBLE);
+        mImage2.setVisibility(View.GONE);
+        mSubheading.setVisibility(View.GONE);
+        mMain.setVisibility(View.GONE);
+        mSub.setVisibility(View.GONE);
 
         //mImage
         LinearLayout.LayoutParams params;
@@ -3146,12 +3186,13 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnTouchL
         mImage.setVisibility(View.VISIBLE);
 
         String placeholderImagePath = FileOperationHelper.getQuestionImagePlaceholderImagePath();
-        mImage.setImageURI(Uri.parse(placeholderImagePath));
+        ImageLoader imageLoader = ImageLoader.getInstance();
+        imageLoader.displayImage(placeholderImagePath, mImage);
 
-        mImage2.setVisibility(View.INVISIBLE);
+        mImage2.setVisibility(View.GONE);
         mSubheading.setVisibility(View.VISIBLE);
         mMain.setVisibility(View.VISIBLE);
-        mSub.setVisibility(View.INVISIBLE);
+        mSub.setVisibility(View.GONE);
 
 
         //左布局
@@ -3216,12 +3257,13 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnTouchL
         mImage.setVisibility(View.VISIBLE);
 
         String placeholderImagePath = FileOperationHelper.getQuestionImagePlaceholderImagePath();
-        mImage.setImageURI(Uri.parse(placeholderImagePath));
+        ImageLoader imageLoader = ImageLoader.getInstance();
+        imageLoader.displayImage(placeholderImagePath, mImage);
 
-        mImage2.setVisibility(View.INVISIBLE);
+        mImage2.setVisibility(View.GONE);
         mSubheading.setVisibility(View.VISIBLE);
         mMain.setVisibility(View.VISIBLE);
-        mSub.setVisibility(View.INVISIBLE);
+        mSub.setVisibility(View.GONE);
 
 
         //左布局
@@ -3276,9 +3318,10 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnTouchL
         mImage.setVisibility(View.VISIBLE);
 
         String placeholderImagePath = FileOperationHelper.getQuestionImagePlaceholderImagePath();
-        mImage.setImageURI(Uri.parse(placeholderImagePath));
+        ImageLoader imageLoader = ImageLoader.getInstance();
+        imageLoader.displayImage(placeholderImagePath, mImage);
 
-        mImage2.setVisibility(View.INVISIBLE);
+        mImage2.setVisibility(View.GONE);
         mSubheading.setVisibility(View.VISIBLE);
         mMain.setVisibility(View.VISIBLE);
         mSub.setVisibility(View.VISIBLE);
@@ -3381,15 +3424,16 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnTouchL
         mImage.setVisibility(View.VISIBLE);
 
         String placeholderImagePath = FileOperationHelper.getQuestionImagePlaceholderImagePath();
-        mImage.setImageURI(Uri.parse(placeholderImagePath));
+        ImageLoader imageLoader = ImageLoader.getInstance();
+        imageLoader.displayImage(placeholderImagePath, mImage);
 
         mImage2.setVisibility(View.VISIBLE);
 
-        mImage2.setImageURI(Uri.parse(placeholderImagePath));
+        imageLoader.displayImage(placeholderImagePath, mImage2);
 
         mSubheading.setVisibility(View.VISIBLE);
-        mMain.setVisibility(View.INVISIBLE);
-        mSub.setVisibility(View.INVISIBLE);
+        mMain.setVisibility(View.GONE);
+        mSub.setVisibility(View.GONE);
 
 
         //左布局
@@ -3455,12 +3499,13 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnTouchL
         mImage.setVisibility(View.VISIBLE);
 
         String placeholderImagePath = FileOperationHelper.getQuestionImagePlaceholderImagePath();
-        mImage.setImageURI(Uri.parse(placeholderImagePath));
+        ImageLoader imageLoader = ImageLoader.getInstance();
+        imageLoader.displayImage(placeholderImagePath, mImage);
 
-        mImage2.setVisibility(View.INVISIBLE);
+        mImage2.setVisibility(View.GONE);
         mSubheading.setVisibility(View.VISIBLE);
         mMain.setVisibility(View.VISIBLE);
-        mSub.setVisibility(View.INVISIBLE);
+        mSub.setVisibility(View.GONE);
 
 
         //左布局
@@ -3524,9 +3569,9 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnTouchL
         removeAllSubViewsInContentBody();
 
         mContentBodyLinearLayout.setOrientation(LinearLayout.HORIZONTAL);
-        mImage.setVisibility(View.INVISIBLE);
-        mImage2.setVisibility(View.INVISIBLE);
-        mSubheading.setVisibility(View.INVISIBLE);
+        mImage.setVisibility(View.GONE);
+        mImage2.setVisibility(View.GONE);
+        mSubheading.setVisibility(View.GONE);
         mMain.setVisibility(View.VISIBLE);
         mSub.setVisibility(View.VISIBLE);
 
@@ -3575,9 +3620,9 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnTouchL
         removeAllSubViewsInContentBody();
 
         mContentBodyLinearLayout.setOrientation(LinearLayout.HORIZONTAL);
-        mImage.setVisibility(View.INVISIBLE);
-        mImage2.setVisibility(View.INVISIBLE);
-        mSubheading.setVisibility(View.INVISIBLE);
+        mImage.setVisibility(View.GONE);
+        mImage2.setVisibility(View.GONE);
+        mSubheading.setVisibility(View.GONE);
         mMain.setVisibility(View.VISIBLE);
         mSub.setVisibility(View.VISIBLE);
 
@@ -3629,12 +3674,13 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnTouchL
         mImage.setVisibility(View.VISIBLE);
 
         String placeholderImagePath = FileOperationHelper.getQuestionImagePlaceholderImagePath();
-        mImage.setImageURI(Uri.parse(placeholderImagePath));
+        ImageLoader imageLoader = ImageLoader.getInstance();
+        imageLoader.displayImage(placeholderImagePath, mImage);
 
-        mImage2.setVisibility(View.INVISIBLE);
+        mImage2.setVisibility(View.GONE);
         mSubheading.setVisibility(View.VISIBLE);
         mMain.setVisibility(View.VISIBLE);
-        mSub.setVisibility(View.INVISIBLE);
+        mSub.setVisibility(View.GONE);
 
 
         //左布局
@@ -3699,9 +3745,10 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnTouchL
         mImage.setVisibility(View.VISIBLE);
 
         String placeholderImagePath = FileOperationHelper.getQuestionImagePlaceholderImagePath();
-        mImage.setImageURI(Uri.parse(placeholderImagePath));
+        ImageLoader imageLoader = ImageLoader.getInstance();
+        imageLoader.displayImage(placeholderImagePath, mImage);
 
-        mImage2.setVisibility(View.INVISIBLE);
+        mImage2.setVisibility(View.GONE);
         mSubheading.setVisibility(View.VISIBLE);
         mMain.setVisibility(View.VISIBLE);
         mSub.setVisibility(View.VISIBLE);
@@ -3780,15 +3827,16 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnTouchL
         mImage.setVisibility(View.VISIBLE);
 
         String placeholderImagePath = FileOperationHelper.getQuestionImagePlaceholderImagePath();
-        mImage.setImageURI(Uri.parse(placeholderImagePath));
+        ImageLoader imageLoader = ImageLoader.getInstance();
+        imageLoader.displayImage(placeholderImagePath, mImage);
 
         mImage2.setVisibility(View.VISIBLE);
 
-        mImage2.setImageURI(Uri.parse(placeholderImagePath));
+        imageLoader.displayImage(placeholderImagePath, mImage2);
 
         mSubheading.setVisibility(View.VISIBLE);
         mMain.setVisibility(View.VISIBLE);
-        mSub.setVisibility(View.INVISIBLE);
+        mSub.setVisibility(View.GONE);
 
 
         //左布局
@@ -3865,9 +3913,10 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnTouchL
         mImage.setVisibility(View.VISIBLE);
 
         String placeholderImagePath = FileOperationHelper.getQuestionImagePlaceholderImagePath();
-        mImage.setImageURI(Uri.parse(placeholderImagePath));
+        ImageLoader imageLoader = ImageLoader.getInstance();
+        imageLoader.displayImage(placeholderImagePath, mImage);
 
-        mImage2.setVisibility(View.INVISIBLE);
+        mImage2.setVisibility(View.GONE);
         mSubheading.setVisibility(View.VISIBLE);
         mMain.setVisibility(View.VISIBLE);
         mSub.setVisibility(View.VISIBLE);
@@ -4416,52 +4465,24 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnTouchL
     }
 
 
-    /*
-      Be sure to have exact size of bitamp with card, othervise, the rounded size could vary;
-     */
-    private void setCardBackgroundImageWithBitmap(Bitmap bitmap) {
-
-        if (bitmap == null) {
-            LOGD(TAG, "setCardBackgroundImageWithBitmap: null bitmap");
-            return;
-        }
-
-        //set background image
-
-// 我们comment掉，因为有一种更好的解决方法（注释掉的方法执行效率较低）
-//        int width = UIHelper.getCardBackgroundWidth(getActivity(),mIsPlayingCard);
-//        int height = UIHelper.getCardBackgroundHeight(getActivity(),mIsPlayingCard);
-//
-//        Bitmap resizedBitmap = UIHelper.resizedBitmapWithScaleToFit(bitmap,width,height);
-//
-//        width = resizedBitmap.getWidth();
-//        height = resizedBitmap.getHeight();
-//
-//        int pixel = getResources().getDimensionPixelSize(R.dimen.card_round_corner);
-//        Bitmap bottomRightCornerBitmap = UIHelper.getRoundedBottomRightCornerBitmap(resizedBitmap,pixel);
-
-        RoundedBottomRightImageView backgroundImageView = (RoundedBottomRightImageView) mContentView.findViewById(R.id.card_background_image);
-        backgroundImageView.setImageBitmap(bitmap);
-
-    }
-
 
     private void setCardBackgroundImageWithUri(String uriString) {
         LOGD(TAG, "setCardBackgroundImageWithUri: " + uriString);
-        RoundedBottomRightImageView backgroundImageView = (RoundedBottomRightImageView) mContentView.findViewById(R.id.card_background_image);
         if (uriString == null) {
-            backgroundImageView.setImageBitmap(null);
+            mBackgroundImageView.setImageBitmap(null);
         } else {
             ImageLoader imageLoader = ImageLoader.getInstance();
-            imageLoader.displayImage(uriString, backgroundImageView,mDisplayImageOptions);
+//            imageLoader.displayImage(uriString,mBackgroundImageView,mDisplayImageOptions); //这里必须用同步，因为实践中发现,screenshot可能会得到没有load到图片的case，因为displayImage是异步执行
+            //TODO:这里最好是测量view大小，然后根据大小进行处理。
+            Bitmap bitmap = imageLoader.loadImageSync(uriString,mDisplayImageOptions);
+            mBackgroundImageView.setImageBitmap(bitmap);
         }
 
     }
 
 
     private void setCardBackgroundImageDefault() {
-        RoundedBottomRightImageView backgroundImageView = (RoundedBottomRightImageView) mContentView.findViewById(R.id.card_background_image);
-        backgroundImageView.setImageBitmap(null);
+        mBackgroundImageView.setImageBitmap(null);
 
     }
 

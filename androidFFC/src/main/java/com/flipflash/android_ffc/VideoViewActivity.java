@@ -20,8 +20,6 @@ public class VideoViewActivity extends Activity {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        ((AppContext)(AppContext.getAppContext())).addActivity(this);
-
         setContentView(R.layout.video_play);
 
 

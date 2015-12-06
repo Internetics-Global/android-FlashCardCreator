@@ -39,8 +39,6 @@ public class CropActivity extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        ((AppContext)(AppContext.getAppContext())).addActivity(this);
-
         LOGD(TAG, "onCreate");
 
         setContentView(R.layout.crop_edit);

@@ -19,8 +19,6 @@ public class AppStart extends Activity {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        ((AppContext)(AppContext.getAppContext())).addActivity(this);
-
         setContentView(R.layout.start);
 
         mHandler.sendEmptyMessageDelayed(0,400);

@@ -38,8 +38,6 @@ public class AppContext extends Application {
     private static CognitoCachingCredentialsProvider mCredentialsProvider;
     private static AmazonS3Client                    mS3Client;
 
-    private List<Activity> mList = new LinkedList<Activity>();
-
     private RefWatcher refWatcher;
 
 
@@ -169,29 +167,5 @@ public class AppContext extends Application {
         ImageLoader.getInstance().init(config.build());
     }
 
-
-    // add Activity
-    public void addActivity(Activity activity) {
-        mList.add(activity);
-    }
-
-    public void exit() {
-        try {
-            for (Activity activity : mList) {
-                if (activity != null)
-                    activity.finish();
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        } finally {
-            System.exit(0);
-        }
-    }
-
-    @Override
-    public void onLowMemory() {
-        super.onLowMemory();
-        System.gc();
-    }
 
 }
