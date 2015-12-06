@@ -2595,7 +2595,29 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnTouchL
             mLogoImage.setVisibility(View.INVISIBLE);
         }
 
+        if (toggle == true) {
+            Handler handler = new Handler();
+                    handler.postDelayed(new Runnable() {
+
+                        @Override
+                        public void run() {
+                            beginScreenshot(true);
+                        }
+
+                    }, 1);
+        } else {
+            beginScreenshot(false);
+        }
+
+    }
+
+
+    /*
+     * toggleBackNecessary is used to determine whether to go back to answer view finally
+     */
+    private void beginScreenshot(boolean toggleBackNecessary) {
         View cardView = mContentView.findViewById(R.id.card);
+
         Bitmap bitmap = UIHelper.loadBitmapFromView(cardView);
         File savedFile = UIHelper.saveImageToCaches(bitmap);
         if (bitmap != null && !bitmap.isRecycled()) {
@@ -2613,11 +2635,11 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnTouchL
 
         mCurrentCard.save(AppContext.getAppContext());
 
-        if (toggle == true) {
+        if (toggleBackNecessary == true) {
             switchToAnswerView(false);
         }
 
-        
+
         if (mCurrentPack.cards.size() > 1) {
 
             if (mSnapshotAllCardsSemaphore == -1) {
@@ -2635,7 +2657,6 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnTouchL
             //如果只有一个卡片，则直接结束，并并通知更新card list view
             ((MainActivity) getActivity()).cleanupDataForSnapShotAllExceptCurrent();
         }
-
     }
 
     /**
@@ -2829,6 +2850,8 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnTouchL
 
         updateContentViewsPointers(templateID);
 
+        mContentBodyLinearLayout.requestLayout();
+
     }
 
     private void updateAnswerViewTemplate() {
@@ -2919,6 +2942,9 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnTouchL
         }
 
         updateContentViewsPointers(templateID);
+
+
+        mContentBodyLinearLayout.requestLayout();
     }
 
 
@@ -3935,7 +3961,7 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnTouchL
         int n = mContentBodyLinearLayout.getChildCount();
         for (int i = 0; i < n; i++) {
             View item = mContentBodyLinearLayout.getChildAt(i);
-            if (item.getClass().isInstance(ViewGroup.class)) {
+            if (ViewGroup.class.isInstance(item)) {
                 int m = ((ViewGroup) item).getChildCount();
                 if (m > 0) {
                     ((ViewGroup)item).removeAllViews();

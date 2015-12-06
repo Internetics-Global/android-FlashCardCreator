@@ -941,7 +941,7 @@ public class MainActivity extends FragmentActivity implements
         StackTraceElement[] stacktrace = Thread.currentThread().getStackTrace();
         StackTraceElement e = stacktrace[3];//maybe this number needs to be corrected
         String methodName = e.getMethodName();
-        if (methodName.equals("takeSnapshotCurrentCard") == false) {
+        if (methodName.equals("beginScreenshot") == false) {
            throw  new IllegalStateException("cleanupDataForSnapShotAllExceptCurrent only can be called by takeSnapshotCurrentCard") ;
         }
 
