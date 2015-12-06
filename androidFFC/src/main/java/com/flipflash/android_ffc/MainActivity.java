@@ -30,6 +30,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewTreeObserver;
 import android.view.WindowManager;
+import android.view.animation.Interpolator;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -43,9 +44,12 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.daimajia.androidanimations.library.BaseViewAnimator;
 import com.daimajia.androidanimations.library.Techniques;
 import com.daimajia.androidanimations.library.YoYo;
 import com.flipflash.UI.ScaleHelper;
+import com.flipflash.UI.SlideInRightWithoutAlphaAnimator;
+import com.flipflash.UI.SlideOutRightWithoutAlphaAnimator;
 import com.flipflash.data.CSS;
 import com.flipflash.data.User;
 import com.github.lzyzsd.circleprogress.DonutProgress;
@@ -1000,11 +1004,12 @@ public class MainActivity extends FragmentActivity implements
         addCardLayout.setVisibility(View.VISIBLE);
 
         mMasterMaskButton.setVisibility(View.VISIBLE);
+
         YoYo.with(Techniques.FadeIn)
                 .duration(460)
                 .playOn(mMasterMaskButton);
 
-        YoYo.with(Techniques.SlideInRight)
+        YoYo.with(new SlideInRightWithoutAlphaAnimator())
                 .duration(460)
                 .playOn(findViewById(R.id.add_card_frame_layout));
 
@@ -1032,7 +1037,6 @@ public class MainActivity extends FragmentActivity implements
 
     public void dismissCardCreateWindow() {
         LOGD(TAG, "dismissCardCreateWindow");
-        getSupportFragmentManager().beginTransaction().remove(mNewCardDetailFragment).commit();
 
         YoYo.with(Techniques.FadeOut)
                 .duration(460)
@@ -1072,7 +1076,7 @@ public class MainActivity extends FragmentActivity implements
                 .playOn(mMasterMaskButton);
 
         final FrameLayout addCardLayout = (FrameLayout) findViewById(R.id.add_card_frame_layout);
-        YoYo.with(Techniques.SlideOutRight)
+        YoYo.with(new SlideOutRightWithoutAlphaAnimator())
                 .duration(460)
                 .withListener(new Animator.AnimatorListener() {
                     @Override
@@ -1083,10 +1087,16 @@ public class MainActivity extends FragmentActivity implements
                     @Override
                     public void onAnimationEnd(Animator animation) {
                         addCardLayout.setVisibility(View.GONE);
+                        getSupportFragmentManager().beginTransaction().remove(mNewCardDetailFragment).commit();
+                        mNewCardDetailFragment = null;
                     }
 
                     @Override
                     public void onAnimationCancel(Animator animation) {
+
+                        addCardLayout.setVisibility(View.GONE);
+                        getSupportFragmentManager().beginTransaction().remove(mNewCardDetailFragment).commit();
+                        mNewCardDetailFragment = null;
 
                     }
 
@@ -1104,7 +1114,6 @@ public class MainActivity extends FragmentActivity implements
             imm.hideSoftInputFromWindow(mMasterMaskButton.getApplicationWindowToken(), 0);
         }
 
-        mNewCardDetailFragment = null;
         TipHelper.hideEverthing(MainActivity.this);
 
     }
