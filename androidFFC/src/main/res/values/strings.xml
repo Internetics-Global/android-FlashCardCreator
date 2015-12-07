@@ -28,6 +28,7 @@
     <string name="DIALOG_ENTER_VALID_URL">Input a valid URL/Email</string>
     <string name="DIALOG_APPLY_TO_ALL_CARD">Apply to all cards...</string>
     <string name="DIALOG_SET_PASSWORD">Set a password</string>
+    <string name="DIALOG_ENTER_PASSWORD">Enter a password</string>
     <string name="DIALOG_AlERT">Alert</string>
     <string name="DIALOG_CLOSE">Close</string>
     <string name="DIALOG_OK">OK</string>

@@ -171,7 +171,7 @@ public class PackDownloadHelper extends AsyncTask<Void, Long, Boolean> {
                     passwordEditText.setSingleLine(true);
                     passwordEditText.setInputType(InputType.TYPE_TEXT_FLAG_NO_SUGGESTIONS);
                     new AlertDialog.Builder(mContext)
-                            .setTitle(R.string.DIALOG_SET_PASSWORD)
+                            .setTitle(R.string.DIALOG_ENTER_PASSWORD)
                             .setIcon(android.R.drawable.ic_dialog_info)
                             .setView(passwordEditText)
                             .setPositiveButton(R.string.DIALOG_DONE, new DialogInterface.OnClickListener() {
