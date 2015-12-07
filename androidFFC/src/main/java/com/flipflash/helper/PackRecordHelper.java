@@ -47,31 +47,38 @@ public class PackRecordHelper {
      */
     public static boolean checkUploadPackNecessary(Pack currentPack) {
 
-        boolean result;
-
-        SharedPreferences prefs = AppContext.getAppContext().getSharedPreferences(String.format("%d", currentPack.packID), 0);
-
-        String updateDateStr = prefs.getString(Global.updateDate_Property,"");
-        String shareDateStr = prefs.getString(Global.shareDate_Property,"");
-
-        if (updateDateStr.length() == 0) {
-            // this happens when the packed is downloaded.
-            savePackUpdateRecord(currentPack);
+        if (true) {
+            //之所以disable这个逻辑，因为这个会引起误解，不如用户没有改变任何的数据，但是想改变max downloaded和password。
+            // 所以，这里索性无论何种情况，都重新来一次upload的所有流程。
             return true;
-        }
-
-        if (shareDateStr.length() ==0) {
-            return true;
-        }
-
-        Date updateDate = StringUtils.toDate(updateDateStr);
-        Date shareDate = StringUtils.toDate(shareDateStr);
-        if (updateDate.before(shareDate)) {
-            result = false; //don't need to upload pack again
         } else {
-            result = true;
-        }
 
-        return result;
+            boolean result;
+
+            SharedPreferences prefs = AppContext.getAppContext().getSharedPreferences(String.format("%d", currentPack.packID), 0);
+
+            String updateDateStr = prefs.getString(Global.updateDate_Property,"");
+            String shareDateStr = prefs.getString(Global.shareDate_Property,"");
+
+            if (updateDateStr.length() == 0) {
+                // this happens when the packed is downloaded.
+                savePackUpdateRecord(currentPack);
+                return true;
+            }
+
+            if (shareDateStr.length() ==0) {
+                return true;
+            }
+
+            Date updateDate = StringUtils.toDate(updateDateStr);
+            Date shareDate = StringUtils.toDate(shareDateStr);
+            if (updateDate.before(shareDate)) {
+                result = false; //don't need to upload pack again
+            } else {
+                result = true;
+            }
+
+            return result;
+        }
     }
 }
