@@ -972,8 +972,6 @@ public class MainActivity extends FragmentActivity implements
             mArrayCardDetailFragments = null;
         }
 
-        dismissSnapShotProgressDialog();
-
 
         Intent intent = new Intent();
         intent.setAction(Global.BROADCAST_ACTION_UPDATE_MASTER_VIEW);
@@ -986,6 +984,8 @@ public class MainActivity extends FragmentActivity implements
         }
 
         sendBroadcast(intent);
+
+        dismissSnapShotProgressDialog();
 
         if (mIsCreatingCard) {
             dismissCardCreateWindow();
