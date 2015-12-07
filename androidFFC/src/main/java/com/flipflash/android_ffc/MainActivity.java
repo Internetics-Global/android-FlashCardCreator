@@ -47,6 +47,7 @@ import android.widget.Toast;
 import com.daimajia.androidanimations.library.BaseViewAnimator;
 import com.daimajia.androidanimations.library.Techniques;
 import com.daimajia.androidanimations.library.YoYo;
+import com.dropbox.client2.android.AuthActivity;
 import com.flipflash.UI.ScaleHelper;
 import com.flipflash.UI.SlideInRightWithoutAlphaAnimator;
 import com.flipflash.UI.SlideOutRightWithoutAlphaAnimator;
@@ -521,12 +522,16 @@ public class MainActivity extends FragmentActivity implements
 
         if (DropboxAuthHelper.sharedHelper(MainActivity.this).isAuthenticationSuccessful()) {
 
+            LOGD(TAG, "onResume: isAuthenticationSuccessful, now try to finishAuthentication and storeAuth");
+
             try {
                 // Mandatory call to complete the auth
                 DropboxAuthHelper.sharedHelper(MainActivity.this).finishAuthentication();
 
                 // Store it locally in our app for later use
                 DropboxAuthHelper.sharedHelper(MainActivity.this).storeAuth();
+
+                AuthActivity.result = null;
 
                 share();
 

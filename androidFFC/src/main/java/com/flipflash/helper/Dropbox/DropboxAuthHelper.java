@@ -8,6 +8,7 @@ import com.dropbox.client2.android.AndroidAuthSession;
 import com.dropbox.client2.session.AccessTokenPair;
 import com.dropbox.client2.session.AppKeyPair;
 import com.dropbox.client2.session.Session;
+import com.flipflash.util.AppContext;
 
 /**
  * All Dropbox AndroidAuthSession and DropboxAPI related
@@ -33,17 +34,20 @@ public class DropboxAuthHelper {
 
     private static DropboxAuthHelper mDropboxAuthHelper;
 
+    /*
+     * context没用
+     */
     public static DropboxAuthHelper sharedHelper(Context context) {
 
         if (mDropboxAuthHelper == null) {
-            mDropboxAuthHelper = new DropboxAuthHelper(context);
+            mDropboxAuthHelper = new DropboxAuthHelper();
         }
         return mDropboxAuthHelper;
     }
 
 
-    public DropboxAuthHelper(Context context) {
-        mContext = context.getApplicationContext(); //这样可以避免内存泄漏
+    private DropboxAuthHelper() {
+        mContext = AppContext.getAppContext();
 
         if (mApi == null) {
 

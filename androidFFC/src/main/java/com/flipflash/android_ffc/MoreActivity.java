@@ -15,6 +15,7 @@ import android.view.WindowManager;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import com.dropbox.client2.android.AuthActivity;
 import com.flipflash.UI.togglebutton.ToggleButton;
 import com.flipflash.helper.Dropbox.DropboxAuthHelper;
 import com.flipflash.util.AppConfig;
@@ -331,6 +332,8 @@ public class MoreActivity extends Activity {
 
                     // Store it locally in our app for later use
                     DropboxAuthHelper.sharedHelper(MoreActivity.this).storeAuth();
+
+                    AuthActivity.result = null;
 
                 } catch (IllegalStateException e) {
                     LOGD(TAG, "onResume: Error authenticating " + e);
