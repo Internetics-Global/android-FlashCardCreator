@@ -366,9 +366,19 @@ public class MainActivity extends FragmentActivity implements
                                         new DialogInterface.OnClickListener() {
                                             @Override
                                             public void onClick(DialogInterface dialog, int which) {
+                                                final int finalWhich = which;
                                                 dialog.dismiss();
                                                 showSnapShotProgressDialog();
-                                                activeCardDetailFragment.cardColorTemplateSelectedPostAction(which);
+                                                Handler handler = new Handler();  //如果没有这里的handler，则progress dialog可能无法出现
+                                                        handler.postDelayed(new Runnable() {
+
+                                                            @Override
+                                                            public void run() {
+                                                                //do something on UI thread
+                                                                activeCardDetailFragment.cardColorTemplateSelectedPostAction(finalWhich);
+                                                            }
+
+                                                        }, 10); // 5000ms delay
                                             }
                                         })
 
