@@ -270,14 +270,17 @@ public class DropboxShareHelper extends AsyncTask<Void, Long, Boolean> {
 
         new AlertDialog.Builder(mActivity)
                 .setTitle("Share")
-                .setItems(new String[] {"Facebook","Twitter","Email","Copy to clipboard"}, new DialogInterface.OnClickListener() {
+                .setItems(new String[] {"Facebook","Twitter","Email","Copy","Exit"}, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         dialog.dismiss();
-                        String shareLink = mCurrentPack.shareLink;
-                        shareActionOnItemSelected(which,shareLink);
+                        if (which != 4) {
+                            String shareLink = mCurrentPack.shareLink;
+                            shareActionOnItemSelected(which,shareLink);
+                        }
                     }
                 })
+                .setCancelable(false)
                 .show();
     }
 
