@@ -813,6 +813,8 @@ public class MainActivity extends FragmentActivity implements
 
         LOGD(TAG, "onStop");
 
+        dismissPackListPopupWindow();
+
         EasyTracker.getInstance().activityStop(this);
 
         //EventBus.getDefault().unregister(MainActivity.this);
