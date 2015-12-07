@@ -195,8 +195,16 @@ public class MoreActivity extends Activity {
                         AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(
                                 MoreActivity.this);
                         alertDialogBuilder.setTitle(R.string.DIALOG_AlERT);
+                        alertDialogBuilder.setPositiveButton(R.string.DIALOG_CLOSE,null);
                         alertDialogBuilder
                                 .setMessage(R.string.DIALOG_USE_AMAZON_AS_STORAGE).show();
+                    } else {
+                        AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(
+                                MoreActivity.this);
+                        alertDialogBuilder.setTitle(R.string.DIALOG_AlERT);
+                        alertDialogBuilder.setPositiveButton(R.string.DIALOG_CLOSE,null);
+                        alertDialogBuilder
+                                .setMessage(R.string.DIALOG_FAIL_TO_LOG_DROPBOX).show();
                     }
                 }
 
