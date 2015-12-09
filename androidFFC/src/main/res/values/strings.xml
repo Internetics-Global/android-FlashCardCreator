@@ -114,6 +114,8 @@
 
     <string name="DIALOG_UNSUPPORTED_IMAGE_SOURCE">Unsupported image source, please select another image</string>
 
+    <string name="DIALOG_ONLY_ALPHANUMBER_PERMITTED">Only alphanumeric characters are permitted</string>
+
     <string name="NavigationBarItem_Packs">Packs</string>
     <string name="NavigationBarItem_Create">Create</string>
     <string name="NavigationBarItem_Edit"> Edit </string>

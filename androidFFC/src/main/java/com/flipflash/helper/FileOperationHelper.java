@@ -8,6 +8,7 @@ import android.provider.MediaStore;
 import android.support.v4.content.CursorLoader;
 
 import com.flipflash.android_ffc.R;
+import com.flipflash.data.Pack;
 import com.flipflash.util.AppConfig;
 import com.flipflash.util.AppContext;
 import com.flipflash.util.Global;
@@ -20,6 +21,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
+import java.util.Random;
 import java.util.UUID;
 
 import static com.flipflash.util.LogUtils.LOGE;
@@ -119,8 +121,9 @@ public class FileOperationHelper {
     /**
      * All the pack zips will be unique
      */
-    public static File generateUniquePackZipFilePathForUploading() {
-        String string = String.format("pack%s.zip", UUID.randomUUID().toString());
+    public static File generateUniquePackZipFilePathForUploading(Pack pack) {
+        String packName = pack.packName == null? "":pack.packName;
+        String string = String.format("%s%d.zip", packName,(int)(System.currentTimeMillis()/1000), (new Random()).nextInt());
         File tempFile = new File((uploadPackDirectory()), string);
         return tempFile;
     }

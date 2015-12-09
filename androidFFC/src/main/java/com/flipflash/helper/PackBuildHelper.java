@@ -144,8 +144,8 @@ public class PackBuildHelper {
         packFiles.add(jsonPackFile);
 
         File packZipFile;
-        if (StringUtils.isEmpty(currentPack.fileNameOnAWS)) {
-            packZipFile = FileOperationHelper.generateUniquePackZipFilePathForUploading();
+        if (StringUtils.isEmpty(currentPack.fileNameOnAWS) || currentPack.fileNameOnAWS.toLowerCase().startsWith("pack")) {
+            packZipFile = FileOperationHelper.generateUniquePackZipFilePathForUploading(currentPack);
             currentPack.fileNameOnAWS = packZipFile.getName();
             currentPack.save(mActivity);
         } else {

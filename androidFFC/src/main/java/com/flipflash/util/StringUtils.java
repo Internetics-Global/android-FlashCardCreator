@@ -71,6 +71,11 @@ public class StringUtils {
         return true;
     }
 
+    public static boolean isAlphanumeric(String string) {
+        Pattern pattern = Pattern.compile("[A-Za-z0-9 _]*");
+        return pattern.matcher(string).matches();
+    }
+
     /**
      * Used to diff whether it's a resource ID or not
      * return true if numeric

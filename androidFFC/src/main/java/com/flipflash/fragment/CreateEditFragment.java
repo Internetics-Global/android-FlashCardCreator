@@ -40,6 +40,7 @@ import com.flipflash.util.AppConfig;
 import com.flipflash.util.AppContext;
 import com.flipflash.util.Global;
 import com.flipflash.util.OpenUDID_manager;
+import com.flipflash.util.StringUtils;
 import com.flipflash.util.UIHelper;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.assist.ImageSize;
@@ -298,6 +299,15 @@ public class CreateEditFragment extends DialogFragment implements TextView.OnEdi
             new SweetAlertDialog(getActivity())
                 .setTitleText(getResources().getString(R.string.DIALOG_AlERT))
                 .setContentText(getString(R.string.DIALOG_EXISTING_PACK_NAME))
+                    .show();
+            return;
+        }
+
+
+        if (StringUtils.isAlphanumeric(mPackNameEditText.getText().toString()) == false || StringUtils.isEmpty(mPackNameEditText.getText().toString())) {
+            new SweetAlertDialog(getActivity())
+                    .setTitleText(getResources().getString(R.string.DIALOG_AlERT))
+                    .setContentText(getString(R.string.DIALOG_ONLY_ALPHANUMBER_PERMITTED))
                     .show();
             return;
         }
