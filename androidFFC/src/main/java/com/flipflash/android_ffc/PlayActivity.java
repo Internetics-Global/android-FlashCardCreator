@@ -13,7 +13,6 @@ import android.hardware.SensorManager;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
-import android.os.Looper;
 import android.speech.tts.TextToSpeech;
 import android.speech.tts.UtteranceProgressListener;
 import android.support.v4.app.Fragment;
@@ -21,7 +20,6 @@ import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
 import android.support.v4.view.ViewPager;
-import android.util.Log;
 import android.view.KeyEvent;
 import android.view.MotionEvent;
 import android.view.Surface;
@@ -34,19 +32,18 @@ import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.flipflash.UI.FFCRatioFrameLayout;
 import com.flipflash.data.Card;
 import com.flipflash.data.Pack;
 import com.flipflash.data.User;
 import com.flipflash.fragment.CardDetailFragment;
 import com.flipflash.helper.AudioHelper;
-import com.flipflash.model.CardListModel;
 import com.flipflash.util.AppConfig;
 import com.flipflash.util.AppContext;
 import com.flipflash.util.Global;
 import com.flipflash.util.StringUtils;
 import com.flipflash.util.UIHelper;
-import com.flipflash.util.VGViewPager;
-import com.squareup.leakcanary.RefWatcher;
+import com.flipflash.UI.VGViewPager;
 
 import org.adw.library.widgets.discreteseekbar.DiscreteSeekBar;
 
@@ -955,12 +952,15 @@ public class PlayActivity extends FragmentActivity implements SensorEventListene
 
 
     private void enableUserInteraction() {
-        mPager.disableAllTouchEvent(false);
+
+        FFCRatioFrameLayout layout = (FFCRatioFrameLayout) findViewById(R.id.play_ratio_layout);
+        layout.disableAllTouchEvent(false);
     }
 
 
     private void disableUserInteraction() {
-        mPager.disableAllTouchEvent(true);
+        FFCRatioFrameLayout layout = (FFCRatioFrameLayout) findViewById(R.id.play_ratio_layout);
+        layout.disableAllTouchEvent(true);
     }
 
     private void screenOn() {

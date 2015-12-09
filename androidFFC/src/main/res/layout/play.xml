@@ -6,7 +6,8 @@
                 android:background="@drawable/w2048"
                 android:layout_height="match_parent">
 
-    <net.soulwolf.widget.ratiolayout.widget.RatioFrameLayout
+    <com.flipflash.UI.FFCRatioFrameLayout
+        android:id="@+id/play_ratio_layout"
         soulwolf:widthRatio="1.45"
         soulwolf:heightRatio="1"
         soulwolf:datumRatio="datumHeight"
@@ -16,7 +17,7 @@
         android:layout_width="fill_parent"
         android:layout_height="fill_parent">
 
-        <com.flipflash.util.VGViewPager
+        <com.flipflash.UI.VGViewPager
             android:id="@+id/viewpager"
             android:layout_width="fill_parent"
             android:paddingLeft="0dp"
@@ -25,7 +26,7 @@
             android:paddingBottom="0dp"
             android:layout_height="fill_parent" />
 
-    </net.soulwolf.widget.ratiolayout.widget.RatioFrameLayout>
+    </com.flipflash.UI.FFCRatioFrameLayout>
 
     <View
             android:id="@+id/play_mask"

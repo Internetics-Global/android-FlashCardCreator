@@ -1,4 +1,4 @@
-package com.flipflash.util;
+package com.flipflash.UI;
 
 import android.content.Context;
 import android.util.AttributeSet;
@@ -9,6 +9,7 @@ import android.widget.LinearLayout;
 
 import com.flipflash.UI.autoscrollviewpager.AutoScrollViewPager;
 import com.flipflash.android_ffc.R;
+import com.flipflash.util.Global;
 
 import static com.flipflash.util.LogUtils.LOGD;
 
@@ -23,8 +24,6 @@ public class VGViewPager extends AutoScrollViewPager {
 
     private static final String TAG = VGViewPager.class.getName();
 
-    private boolean isDisableTouchEvent = false;
-
     protected OnViewPagerClickListener mOnViewPagerItemClickListener;
 
     public VGViewPager(Context context) {
@@ -35,57 +34,59 @@ public class VGViewPager extends AutoScrollViewPager {
         super(context, attrs);
     }
 
+
+    /*
+     * 作用：决定touch event是否可以向下传递：传递到sub view中
+     */
     @Override
     public boolean onInterceptTouchEvent(MotionEvent event) {
         LOGD(TAG, "onInterceptTouchEvent: " + event.toString());
-        if (isDisableTouchEvent) {
-            return true; //防止传递给sub view
-        } else {
-            super.onInterceptTouchEvent(event);
-            int[] location = new int[2];
-            this.getLocationOnScreen(location);
-            float hitXInScreen =  event.getX() + location[0];
-            float hitYInScreen =  event.getY() + location[1];
 
 
-            //由于ViewPager包含多个card，而通过findViewById会只获取到第一个，这样就会出现问题（比如当前显示第二个卡片，但是这里就会获取到第一个）
-            ImageView logo_image = (ImageView)findViewWithTag(Global.mLogoImage_Showing);
-            if ((logo_image != null) && isViewContains(logo_image,hitXInScreen,hitYInScreen)) {
-                LOGD(TAG, "onInterceptTouchEvent: touch location in logo_image");
+        super.onInterceptTouchEvent(event);
+        int[] location = new int[2];
+        this.getLocationOnScreen(location);
+        float hitXInScreen =  event.getX() + location[0];
+        float hitYInScreen =  event.getY() + location[1];
+
+
+        //由于ViewPager包含多个card，而通过findViewById会只获取到第一个，这样就会出现问题（比如当前显示第二个卡片，但是这里就会获取到第一个）
+        ImageView logo_image = (ImageView)findViewWithTag(Global.mLogoImage_Showing);
+        if ((logo_image != null) && isViewContains(logo_image,hitXInScreen,hitYInScreen)) {
+            LOGD(TAG, "onInterceptTouchEvent: touch location in logo_image");
+            return false;
+        }
+
+        //当image包含视频时，isEnabled() = true
+        ImageView image = (ImageView)findViewWithTag(Global.mImage_Showing);
+        if ((image != null) && (image.getVisibility() == VISIBLE) && (image.isEnabled() == true)) {
+            if (isViewContains(image, hitXInScreen, hitYInScreen)) {
+                Boolean bool = image.isEnabled();
+                LOGD(TAG, "onInterceptTouchEvent: " + "touch location in image，enable=  "+bool);
                 return false;
             }
+        }
 
-            ImageView image = (ImageView)findViewWithTag(Global.mImage_Showing);
-            if ((image != null) && (image.getVisibility() == VISIBLE) && (image.isEnabled() == true)) {
-                if (isViewContains(image, hitXInScreen, hitYInScreen)) {
-                    Boolean bool = image.isEnabled();
-                    LOGD(TAG, "onInterceptTouchEvent: " + "touch location in image，enable=  "+bool);
-                    return false;
-                }
-            }
-
-            ImageView image2 = (ImageView)findViewWithTag(Global.mImage2_Showing);
-            if ((image2 != null) && (image2.getVisibility() == VISIBLE) && (image2.isEnabled() == true)) {
-                if (isViewContains(image2, hitXInScreen, hitYInScreen)) {
-                    Boolean bool = image2.isEnabled();
-                    LOGD(TAG, "onInterceptTouchEvent: "+ "touch location in image2，enable=  "+bool);
-                    return false;
-                }
-            }
-
-
-            LinearLayout creatorLayout = (LinearLayout) findViewById(R.id.creator_layout);
-            if (isViewContains(creatorLayout,hitXInScreen,hitYInScreen)) {
-                LOGD(TAG, "onInterceptTouchEvent: touch location in creatorLayout");
+        //当image包含视频时，isEnabled() = true
+        ImageView image2 = (ImageView)findViewWithTag(Global.mImage2_Showing);
+        if ((image2 != null) && (image2.getVisibility() == VISIBLE) && (image2.isEnabled() == true)) {
+            if (isViewContains(image2, hitXInScreen, hitYInScreen)) {
+                Boolean bool = image2.isEnabled();
+                LOGD(TAG, "onInterceptTouchEvent: "+ "touch location in image2，enable=  "+bool);
                 return false;
             }
-
-            LOGD(TAG, "onInterceptTouchEvent: finally return true");
-
-            return true;
         }
 
 
+        LinearLayout creatorLayout = (LinearLayout) findViewById(R.id.creator_layout);
+        if (isViewContains(creatorLayout,hitXInScreen,hitYInScreen)) {
+            LOGD(TAG, "onInterceptTouchEvent: touch location in creatorLayout");
+            return false;
+        }
+
+        LOGD(TAG, "onInterceptTouchEvent: finally return true");
+
+        return true;
 
     }
 
@@ -109,14 +110,13 @@ public class VGViewPager extends AutoScrollViewPager {
     private boolean isSwipeAction = false;
     private static int swipeActionCount = 0;
 
+
+    /*
+     * 作用：决定touch event是否可以向上传递：parent view
+     */
     @Override
     public boolean onTouchEvent(MotionEvent ev) {
         super.onTouchEvent(ev);
-
-        if (isDisableTouchEvent) {
-            LOGD(TAG, "onTouchEvent: returned because of isDisableTouchEvent = YES");
-            return false;  //防止传递给手势处理
-        }
 
         switch (ev.getAction()) {
             case MotionEvent.ACTION_DOWN:
@@ -152,7 +152,7 @@ public class VGViewPager extends AutoScrollViewPager {
                 break;
         }
 
-        return false;
+        return true;
 
     }
 
@@ -169,12 +169,6 @@ public class VGViewPager extends AutoScrollViewPager {
     public void setOnViewPagerClickListener(OnViewPagerClickListener listener)
     {
         mOnViewPagerItemClickListener = listener;
-    }
-
-
-    public void disableAllTouchEvent(boolean isDisableTouchEvent) {
-        LOGD(TAG, "disableAllTouchEvent");
-        this.isDisableTouchEvent = isDisableTouchEvent;
     }
 
 }
