@@ -296,7 +296,7 @@ public class PackListFragment extends Fragment {
                         ImageLoader imageLoader = ImageLoader.getInstance();
                         imageLoader.displayImage(dataUri.toString(), coverImageView);
                     } catch (FileNotFoundException e) {
-                        e.printStackTrace();
+                        //e.printStackTrace();
                     }
                 }
 
