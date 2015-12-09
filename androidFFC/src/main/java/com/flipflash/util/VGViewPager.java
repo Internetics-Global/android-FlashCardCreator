@@ -120,11 +120,11 @@ public class VGViewPager extends AutoScrollViewPager {
 
         switch (ev.getAction()) {
             case MotionEvent.ACTION_DOWN:
-                LOGD(TAG, "onTouchEvent: ACTION_DOWN");
+                //LOGD(TAG, "onTouchEvent: ACTION_DOWN");
                 isSwipeAction = false;
                 return true;
             case MotionEvent.ACTION_MOVE:
-                LOGD(TAG, "onTouchEvent: ACTION_MOVE");
+                //LOGD(TAG, "onTouchEvent: ACTION_MOVE");
                 swipeActionCount++; //check how long the button is pressed
                 if(swipeActionCount> 5){
                     isSwipeAction = true;
@@ -132,7 +132,7 @@ public class VGViewPager extends AutoScrollViewPager {
                 requestDisallowInterceptTouchEvent(true);
                 break;
             case MotionEvent.ACTION_UP:
-                LOGD(TAG, "onTouchEvent: ACTION_UP");
+                //LOGD(TAG, "onTouchEvent: ACTION_UP");
                 requestDisallowInterceptTouchEvent(false);
                 if (isSwipeAction == false && swipeActionCount <3) {
                     if (mOnViewPagerItemClickListener != null) {
@@ -143,12 +143,12 @@ public class VGViewPager extends AutoScrollViewPager {
                 isSwipeAction = false;
                 break;
             case MotionEvent.ACTION_CANCEL:
-                LOGD(TAG, "onTouchEvent: ACTION_CANCEL");
+                //LOGD(TAG, "onTouchEvent: ACTION_CANCEL");
                 requestDisallowInterceptTouchEvent(false);
                 isSwipeAction =false;
                 break;
             default:
-                LOGD(TAG, "onTouchEvent: other action");
+                //LOGD(TAG, "onTouchEvent: other action");
                 break;
         }
 

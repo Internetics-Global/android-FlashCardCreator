@@ -422,7 +422,7 @@ public class PlayActivity extends FragmentActivity implements SensorEventListene
                         hideControlPanel();
                     }
 
-                }, 3000);
+                }, 4000);
             }
         });
 
@@ -995,7 +995,7 @@ public class PlayActivity extends FragmentActivity implements SensorEventListene
 
     @Override
     public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
-        LOGD(TAG, "onPageScrolled");
+        //LOGD(TAG, "onPageScrolled");
 
 
         if ((mPosition != position) && (positionOffsetPixels == 0)) {
@@ -1012,7 +1012,7 @@ public class PlayActivity extends FragmentActivity implements SensorEventListene
                 }, 650);
             }
 
-            LOGD(TAG, "onPageScrolled: "+ "onPageScrolled, page index=" + position + " .mPosition=" + mPosition);
+            //LOGD(TAG, "onPageScrolled: "+ "onPageScrolled, page index=" + position + " .mPosition=" + mPosition);
 
             //主要目的是及时释放内存，以防内存不断增加导致crash
             if (position-2 >=0) {
@@ -1313,6 +1313,7 @@ public class PlayActivity extends FragmentActivity implements SensorEventListene
 
         if (isManually) { //在fixed delay或smart delay的auto scroll中，都是不允许手动切换question/answer view的
             stopAllHandlers();
+            resetAutoHideControlPanelHandler(); //这个必要，因为stopAllHandlers中disable了，这时如果control panel is visible，就无法自动关闭了。
             stopAllTimers();
         }
 
