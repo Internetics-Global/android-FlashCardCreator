@@ -2,7 +2,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="horizontal"
     android:background="#ff5e5e5e"
-    android:layout_width="480dp"
+    android:layout_width="470dp"
     android:layout_height="30dp">
     
     <ImageButton
@@ -40,7 +40,7 @@
         android:id="@+id/auto_play_dwell_time_seek_bar"
         layout="@layout/auto_play_dwell_time_seek_bar"
         android:layout_marginLeft="0dp"
-        android:layout_width="100dp"
+        android:layout_width="110dp"
         android:layout_marginTop="0dp"
         android:layout_height="30dp" />
 
@@ -61,7 +61,7 @@
         android:id="@+id/pause_for_answer_seek_bar"
         layout="@layout/pause_for_answer_seek_bar"
         android:layout_marginLeft="0dp"
-        android:layout_width="120dp"
+        android:layout_width="103dp"
         android:layout_marginTop="0dp"
         android:layout_height="30dp" />
 
@@ -79,6 +79,7 @@
         android:background="@android:color/transparent"
         android:src="@drawable/play25_dimmed"
         android:layout_marginLeft="5dp"
+        android:layout_marginRight="5dp"
         android:layout_marginTop="5dp"
         android:layout_width="20dp"
         android:layout_height="20dp" />
