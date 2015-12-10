@@ -656,17 +656,18 @@ public class UIHelper {
         } else if (screenDPSize >=800) {
             val= 28;
         } else if (screenDPSize >=700) {
-            val= 24;
+            val= 26;
         } else if (screenDPSize >=600) {
-            val= 20;
+            //For example, JianGuo dp width = 640
+            val= 24;
         } else if (screenDPSize >=500) {
-            val= 16;
+            val= 22;
         } else if (screenDPSize >=450) {
-            val= 14;
+            val= 20;
         } else if (screenDPSize >=350) {
-            val= 12;
+            val= 18;
         } else {
-            val= 11;
+            val= 16;
         }
         return (val);
     }

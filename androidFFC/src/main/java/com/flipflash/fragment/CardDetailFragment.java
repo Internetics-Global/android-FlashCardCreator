@@ -1831,7 +1831,7 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnTouchL
     private boolean flag_Sub_OneoffIncrease;
 
     /*
-     *用来判断resize是否完成，如果因为text空，则设置成true
+     *用来判断resize是否完成，如果因为text空，则设置成true。需要以下三个都是true，才算最终完成
      */
     private boolean flag_Subheading_ResizeFinished;
     private boolean flag_Main_ResizeFinished;
@@ -1841,6 +1841,14 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnTouchL
      * 为了提高执行效率，仅仅当setTextSize自动引起的ViewTreeObserver.OnGlobalLayoutListener下触发（OnGlobalLayoutListener的触发可以通过setText或setTextSize)。
      */
     private void triggerResizeTextToFitFrame(final EditText v, int targetLines) {
+
+        //debug code:
+//        if (true) {
+//            flag_Subheading_ResizeFinished = true;
+//            flag_Main_ResizeFinished = true;
+//            flag_Sub_ResizeFinished = true;
+//            return;
+//        }
 
         synchronized (v) {   //TODO:  lint warning synchronization on local variable or method parameter
 
@@ -1876,8 +1884,8 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnTouchL
 
 
             //特殊逻辑，历史原因,sample pack中的这部分内容的line number不正确，需要二次修正
-            if (v.getText().toString().contains("When referring")) {
-                Log.d("ccaa","coming the magic");
+            if (v.getText().toString().contains("General knowledge")) {
+                Log.d("ccaa","coming the magic, textsize = " + v.getTextSize());
             }
 
 
