@@ -1823,8 +1823,9 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnTouchL
 
 
     /*
-     * 由于这是一个one off的标志，所以必须设置最后改变文字内容的地方，也就是这里
-     * 之所以设立这个标志，主要是OnGlobalLayoutListener经常会被执行多次，而我们只需要increase size一次，具体见triggerResizeTextToFitFrame
+     * 最初想法这是一个one off的标志。当字体太小时，我们给予一个足够大的字体，这时可以认为这样只需要做一次。
+     * 但是实际中发现，这样会导致字体太大（同时文字又在合理的frame内），所以最后的做法是，这不再是一个一次性的标志，而是用来标志：字体增大的动作是否已经完成。
+     * 返回true: 当字体增加的动作已经彻底完成，或压根不需要做这个动作
      */
     private boolean flag_Subheading_OneoffIncrease;
     private boolean flag_Main_OneoffIncrease;
@@ -1901,8 +1902,42 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnTouchL
 
             } else {
                 //In case it's too small
-                //只允许一次，尽可能大，这样可以通过后续的缩小进行
                 if (noOfLines < targetLines && noOfLines > 0) {
+
+                    boolean highAccuracy = false;
+                    if (targetLines - noOfLines == 1) {
+                        highAccuracy = true;
+                    }
+
+                    // resize action
+                    float textSize = v.getTextSize();
+                    float newTextSize = 0;
+                    float delta;
+
+                    if (highAccuracy) {
+                        delta = 0.3f;
+                    } else {
+                        if (textSize > 200) {
+                            delta = textSize/10;
+                        } else if ((textSize > 100) && (textSize <= 200)) {
+                            delta = textSize/40;
+                        } else if ((textSize > 50) && (textSize <= 100)) {
+                            delta = textSize/50;
+                        } else if ((textSize > 30) && (textSize <= 50)) {
+                            delta = 0.5f;
+                        } else {
+                            delta = 1;
+                        }
+                    }
+                    newTextSize = textSize + delta;
+                    v.setTextSize(TypedValue.COMPLEX_UNIT_PX, newTextSize);
+                    isResized = true;
+
+                    //LOGD(TAG, "triggerResizeTextToFitFrame: make  bigger. Check if running > 1 with text " + v.getText() + " noOfLines= " + noOfLines + " targetLines= " + targetLines + " textSize=" +textSize + " delta = " + delta);
+
+                    return;
+
+                } else {
 
                     if (tag.equals(TAG_SUBHEADING)) {
                         flag_Subheading_OneoffIncrease = true;
@@ -1911,15 +1946,6 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnTouchL
                     } else if (tag.equals(TAG_SUB)) {
                         flag_Sub_OneoffIncrease = true;
                     }
-
-                    float newTextSize = v.getTextSize() + (v.getTextSize())/2; //这个值跟Global.scaleInPlayMode相关，我们的策略是尽可能大，这样可以通过后续的down size进行修正；否则就没有机会
-                    v.setTextSize(TypedValue.COMPLEX_UNIT_PX, newTextSize);
-                    isResized = true;
-
-                    LOGD(TAG, "triggerResizeTextToFitFrame: make  bigger. Check if running > 1 with text " + v.getText());
-
-                    return;
-
                 }
             }
 
@@ -1929,34 +1955,36 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnTouchL
                     (noOfLines > targetLines && targetLines > 0)) {
 
                 boolean highAccuracy = false;
-                if (noOfLines - targetLines == 1) {
+                if (noOfLines - targetLines <= 1) {
                     highAccuracy = true;
                 }
 
                 // resize action
                 float textSize = v.getTextSize();
                 float newTextSize = 0;
+                float delta;
 
                 if (highAccuracy) {
-                    newTextSize = textSize - 4;
+                    delta = 0.3f;
                 } else {
                     if (textSize > 200) {
-                        newTextSize = textSize - textSize/10;
+                        delta = textSize/10;
                     } else if ((textSize > 100) && (textSize <= 200)) {
-                        newTextSize = textSize - textSize/40;
+                        delta = textSize/40;
                     } else if ((textSize > 50) && (textSize <= 100)) {
-                        newTextSize = textSize - textSize/50;
+                        delta = textSize/50;
                     } else if ((textSize > 30) && (textSize <= 50)) {
-                        newTextSize = textSize - 1;
+                        delta = 0.5f;
                     } else {
-                        newTextSize = textSize - 1;
+                        delta = 1;
                     }
                 }
+                newTextSize = textSize - delta;
                 v.setTextSize(TypedValue.COMPLEX_UNIT_PX, newTextSize);
 
                 isResized = true;
 
-                //LOGD(TAG, "triggerResizeTextToFitFrame: make size smaller");
+                //LOGD(TAG, "triggerResizeTextToFitFrame: make size smaller on " + v.getText() + " noOfLines= " + noOfLines + " targetLines= " + targetLines + " textSize=" +textSize + " delta = " + delta);
 
 
                 //in case the font size still too big
@@ -1966,7 +1994,7 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnTouchL
                     v.setTextSize(TypedValue.COMPLEX_UNIT_PX, newTextSize);
                     isResized = true;
 
-                    //LOGD(TAG, "triggerResizeTextToFitFrame: make size smaller again");
+                    LOGD(TAG, "triggerResizeTextToFitFrame: make size smaller again on " + v.getText());
 
                 }
 
