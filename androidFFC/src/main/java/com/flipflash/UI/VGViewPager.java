@@ -116,45 +116,14 @@ public class VGViewPager extends AutoScrollViewPager {
      */
     @Override
     public boolean onTouchEvent(MotionEvent ev) {
-        super.onTouchEvent(ev);
 
-        switch (ev.getAction()) {
-            case MotionEvent.ACTION_DOWN:
-                //LOGD(TAG, "onTouchEvent: ACTION_DOWN");
-                isSwipeAction = false;
-                return true;
-            case MotionEvent.ACTION_MOVE:
-                //LOGD(TAG, "onTouchEvent: ACTION_MOVE");
-                swipeActionCount++; //check how long the button is pressed
-                if(swipeActionCount> 5){
-                    isSwipeAction = true;
-                }
-                requestDisallowInterceptTouchEvent(true);
-                break;
-            case MotionEvent.ACTION_UP:
-                //LOGD(TAG, "onTouchEvent: ACTION_UP");
-                requestDisallowInterceptTouchEvent(false);
-                if (isSwipeAction == false && swipeActionCount <3) {
-                    if (mOnViewPagerItemClickListener != null) {
-                        mOnViewPagerItemClickListener.OnViewPagerClickListener();
-                    }
-                }
-                swipeActionCount = 0;
-                isSwipeAction = false;
-                break;
-            case MotionEvent.ACTION_CANCEL:
-                //LOGD(TAG, "onTouchEvent: ACTION_CANCEL");
-                requestDisallowInterceptTouchEvent(false);
-                isSwipeAction =false;
-                break;
-            default:
-                //LOGD(TAG, "onTouchEvent: other action");
-                break;
-        }
+        super.onTouchEvent(ev);  //从源代码可以看到，这个必不可少，而实践中也发现如果少了这个，就无法滑动了。
 
         return true;
 
     }
+
+
 
 
     @Override

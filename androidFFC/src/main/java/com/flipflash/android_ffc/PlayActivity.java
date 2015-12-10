@@ -33,6 +33,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.flipflash.UI.FFCRatioFrameLayout;
+import com.flipflash.UI.OnSwipeTouchListener;
 import com.flipflash.data.Card;
 import com.flipflash.data.Pack;
 import com.flipflash.data.User;
@@ -63,7 +64,7 @@ import static com.flipflash.util.LogUtils.LOGD;
 import static com.flipflash.util.LogUtils.LOGE;
 
 
-public class PlayActivity extends FragmentActivity implements SensorEventListener,VGViewPager.OnViewPagerClickListener, ViewPager.OnPageChangeListener{
+public class PlayActivity extends FragmentActivity implements SensorEventListener, ViewPager.OnPageChangeListener{
 
     private static final String TAG = PlayActivity.class.getName();
 
@@ -284,7 +285,7 @@ public class PlayActivity extends FragmentActivity implements SensorEventListene
         FCCPageAdapter pageAdapter = new FCCPageAdapter(getSupportFragmentManager(), mFragments);
         mPager = (VGViewPager) findViewById(R.id.viewpager);
         mPager.setStopScrollWhenTouch(false);
-        mPager.setOnViewPagerClickListener(this);
+        mPager.setOnTouchListener(mSwipeTouchListener);
 
         mCyclePlayImageButton = (ImageButton) findViewById(R.id.cycle_play_image_button);
         mCyclePlayImageButton.setOnClickListener(new View.OnClickListener() {
@@ -971,22 +972,6 @@ public class PlayActivity extends FragmentActivity implements SensorEventListene
     private void screenOff() {
         LOGD(TAG, "screenOff");
         getWindow().clearFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
-    }
-
-    @Override
-    public void OnViewPagerClickListener() {
-
-        LOGD(TAG, "OnViewPagerClickListener");
-
-        if (mIsAutoScroll == false) {
-
-            //showControlPanel();
-
-            switchQuestionAnswerViewManually(true);  //not allow to switch during auto play mode
-
-            //resetAutoHideControlPanelHandler();
-        }
-
     }
 
     /*
@@ -2145,4 +2130,49 @@ public class PlayActivity extends FragmentActivity implements SensorEventListene
             }
         }
     }
+
+
+    private OnSwipeTouchListener mSwipeTouchListener = new OnSwipeTouchListener(AppContext.getAppContext()) {
+        @Override
+        public void onSwipeLeft() {
+            super.onSwipeLeft();
+
+            //实际中，我们没有用到，而是让view pager自身处理左右滑动的回调
+
+        }
+
+        @Override
+        public void onSwipeRight() {
+            super.onSwipeRight();
+
+            //实际中，我们没有用到，而是让view pager自身处理左右滑动的回调
+        }
+
+        @Override
+        public void onSwipeTop() {
+            super.onSwipeTop();
+
+            if (mIsAutoScroll == false) {
+                switchQuestionAnswerViewManually(true);  //not allow to switch during auto play mode
+            }
+        }
+
+        @Override
+        public void onSwipeBottom() {
+            super.onSwipeBottom();
+
+            if (mIsAutoScroll == false) {
+                switchQuestionAnswerViewManually(true);  //not allow to switch during auto play mode
+            }
+        }
+
+        @Override
+        public void onSimpleTapConfirmed() {
+            super.onSimpleTapConfirmed();
+
+            if (mIsAutoScroll == false) {
+                switchQuestionAnswerViewManually(true);  //not allow to switch during auto play mode
+            }
+        }
+    };
 }
