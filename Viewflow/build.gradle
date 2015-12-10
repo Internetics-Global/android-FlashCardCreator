@@ -1,9 +1,9 @@
 buildscript {
     repositories {
-        mavenCentral()
+        jcenter()
     }
     dependencies {
-        classpath 'com.android.tools.build:gradle:1.2.3'
+        classpath 'com.android.tools.build:gradle:2.0.0-alpha2'
     }
 }
 apply plugin: 'com.android.library'
@@ -16,7 +16,7 @@ android {
         }
     }
     compileSdkVersion 20
-    buildToolsVersion '20.0.0'
+    buildToolsVersion '23.0.2'
     lintOptions {
         abortOnError false
     }
