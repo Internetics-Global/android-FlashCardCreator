@@ -299,7 +299,7 @@ public class PackParserHelper {
             pack.lastVistDate = Global.currentTimeSeconds();
 
             if (pack.platform.contains("iPhone") == true) {
-                mScreenWidthFromSharedDevice = 640;
+                mScreenWidthFromSharedDevice = 480; //无论是iPhone5S还是4都是这个
             } else if (pack.platform.contains("iPad") == true) {
                 mScreenWidthFromSharedDevice = 1024;
             } else {
@@ -726,9 +726,11 @@ public class PackParserHelper {
                 } else {
 
                     //字体根据mScreenWidthFromSharedDevice和当前平台的width进行一定比例的缩放
+                    //最完美的做法是根据card size进行比较，但是改动会很大
                     float baseFontSizeFromSharedDevice = UIHelper.getBestFontSize(mScreenWidthFromSharedDevice);
-                    int baseFontSizeOnCurrentDevice = standardCSSArrary[1];
+                    int baseFontSizeOnCurrentDevice = standardCSSArrary[0];
                     float factor = baseFontSizeOnCurrentDevice/baseFontSizeFromSharedDevice;
+
 
                     if (subheadingSize == 0) {
                         subheadingSize = standardCSSArrary[0];
@@ -1108,8 +1110,9 @@ public class PackParserHelper {
                     //-----end scale down policy with error protection
                 } else {
 
+                    //最完美的做法是根据card size进行比较，但是改动会很大
                     float baseFontSizeFromSharedDevice = UIHelper.getBestFontSize(mScreenWidthFromSharedDevice);
-                    int baseFontSizeOnCurrentDevice = standardCSSArrary[4];
+                    int baseFontSizeOnCurrentDevice = standardCSSArrary[3];
                     float factor = baseFontSizeOnCurrentDevice/baseFontSizeFromSharedDevice;
 
 

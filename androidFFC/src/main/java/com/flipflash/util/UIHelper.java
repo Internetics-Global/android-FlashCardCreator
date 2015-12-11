@@ -565,33 +565,33 @@ public class UIHelper {
             return intArray;
 
         }else if (screenDPSize <=500) {
-            int[] intArray = {14,12,12,14,12,12,42};
+            int[] intArray = {15,13,13,15,13,13,42};
             return intArray;
 
         } else if (screenDPSize <=590) {
-            int[] intArray = {16,14,14,16,14,14,44};
+            int[] intArray = {17,15,15,17,17,15,44};
             return intArray;
 
         } else if (screenDPSize <=650) {
             //<!--nexus5,s5 and galaxy note3,dp= 600;   jianguo dp = 640-->
-            int[] intArray = {17,15,15,17,15,15,46};
+            int[] intArray = {19,17,17,19,17,17,46};
             return intArray;
 
         } else if (screenDPSize <=700) {
             //<!--nexus6p,dp= 689-->   (not verified )
-            int[] intArray = {18,16,16,18,16,16,46};
+            int[] intArray = {20,18,18,20,18,18,46};
             return intArray;
 
         } else if (screenDPSize <=800) {
-            int[] intArray = {19,17,17,19,17,17,50};
+            int[] intArray = {22,20,20,22,20,20,50};
             return intArray;
 
         } else if (screenDPSize <=900) {
-            int[] intArray = {22,20,20,22,20,20,60};
+            int[] intArray = {24,22,22,24,22,22,60};
             return intArray;
 
         } else if (screenDPSize <=950) {
-            int[] intArray = {24,22,22,24,22,22,80};
+            int[] intArray = {25,23,23,25,23,23,80};
             return intArray;
 
         } else if (screenDPSize <=1000) {
@@ -663,11 +663,12 @@ public class UIHelper {
         } else if (screenDPSize >=500) {
             val= 22;
         } else if (screenDPSize >=450) {
-            val= 20;
+            //这里是iPhone的指标。
+            val= 17;
         } else if (screenDPSize >=350) {
-            val= 18;
+            val= 15;
         } else {
-            val= 16;
+            val= 14;
         }
         return (val);
     }
