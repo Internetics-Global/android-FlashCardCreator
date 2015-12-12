@@ -2234,20 +2234,8 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnTouchL
                 if (mIsQuestionShowing) {
                     mCurrentCard.question.subheading = mSubheading.getText().toString();
 
-                    if (mSubheading.getLineCount() == 0 && StringUtils.isEmpty(mSubheading.getText().toString()) == false ) {  //之所以加这个逻辑，因为在初始化赋值时，这个会被调用
-
-                    } else {
-                        mCurrentCard.question.lineNoSubheading = mSubheading.getLineCount();
-                    }
-
                 } else {
                     mCurrentCard.answer.subheading = mSubheading.getText().toString();
-
-                    if (mSubheading.getLineCount() == 0 && StringUtils.isEmpty(mSubheading.getText().toString()) == false ) { //之所以加这个逻辑，因为在初始化赋值时，这个会被调用
-
-                    } else {
-                        mCurrentCard.answer.lineNoSubheading = mSubheading.getLineCount();
-                    }
                 }
 
             }
@@ -2273,20 +2261,8 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnTouchL
                 if (mIsQuestionShowing) {
                     mCurrentCard.question.main = mMain.getText().toString();
 
-                    if (mMain.getLineCount() == 0 && StringUtils.isEmpty(mMain.getText().toString()) == false ) { //之所以加这个逻辑，因为在初始化赋值时，这个会被调用
-
-                    } else {
-                        mCurrentCard.question.lineNoMain = mMain.getLineCount();
-                    }
-
                 } else {
                     mCurrentCard.answer.main = mMain.getText().toString();
-
-                    if (mMain.getLineCount() == 0 && StringUtils.isEmpty(mMain.getText().toString()) == false ) { //之所以加这个逻辑，因为在初始化赋值时，这个会被调用
-
-                    } else {
-                        mCurrentCard.answer.lineNoMain = mMain.getLineCount();
-                    }
 
                 }
 
@@ -2313,21 +2289,8 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnTouchL
                 if (mIsQuestionShowing) {
                     mCurrentCard.question.sub = mSub.getText().toString();
 
-                    if (mSub.getLineCount() == 0 && StringUtils.isEmpty(mSub.getText().toString()) == false ) { //之所以加这个逻辑，因为在初始化赋值时，这个会被调用
-
-                    } else {
-                        mCurrentCard.question.lineNoSub = mSub.getLineCount();
-                    }
-
-
                 } else {
                     mCurrentCard.answer.sub = mSub.getText().toString();
-
-                    if (mSub.getLineCount() == 0 && StringUtils.isEmpty(mSub.getText().toString()) == false ) { //之所以加这个逻辑，因为在初始化赋值时，这个会被调用
-  
-                    } else {
-                        mCurrentCard.answer.lineNoSub = mSub.getLineCount();
-                    }
                 }
 
             }
@@ -2348,8 +2311,17 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnTouchL
                 int maxLines;
                 if (mIsQuestionShowing) {
                     maxLines = mCurrentCard.question.lineNoSubheading;
+
+                    if (isEditableMode()) {
+                        mCurrentCard.question.lineNoSubheading = mSubheading.getLineCount();
+                    }
+
                 } else {
                     maxLines = mCurrentCard.answer.lineNoSubheading;
+
+                    if (isEditableMode()) {
+                        mCurrentCard.answer.lineNoSubheading = mSubheading.getLineCount();
+                    }
                 }
 
                 //我们不允许在可编辑情况下进行自动resize，因为这是没有必要的
@@ -2373,10 +2345,19 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnTouchL
             public void onGlobalLayout() {
                 int maxLines;
                 if (mIsQuestionShowing) {
-                    ;
+
                     maxLines = mCurrentCard.question.lineNoMain;
+
+                    if (isEditableMode()) {
+                        mCurrentCard.question.lineNoMain = mMain.getLineCount();
+                    }
+
                 } else {
                     maxLines = mCurrentCard.answer.lineNoMain;
+
+                    if (isEditableMode()) {
+                        mCurrentCard.answer.lineNoMain = mMain.getLineCount();
+                    }
                 }
 
                 //我们不允许在可编辑情况下进行自动resize，因为这是没有必要的
@@ -2399,10 +2380,18 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnTouchL
             public void onGlobalLayout() {
                 int maxLines;
                 if (mIsQuestionShowing) {
-                    ;
                     maxLines = mCurrentCard.question.lineNoSub;
+
+                    if (isEditableMode()) {
+                        mCurrentCard.question.lineNoSub = mSub.getLineCount();
+                    }
+
                 } else {
                     maxLines = mCurrentCard.answer.lineNoSub;
+
+                    if (isEditableMode()) {
+                        mCurrentCard.answer.lineNoSub = mSub.getLineCount();
+                    }
                 }
 
                 //我们不允许在可编辑情况下进行自动resize，因为这是没有必要的
