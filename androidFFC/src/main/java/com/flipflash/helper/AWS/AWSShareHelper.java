@@ -235,7 +235,7 @@ public class AWSShareHelper extends AsyncTask<Void, Long, Boolean> {
 
 
     private void shareActionOnItemSelected (int position,String shareLink) {
-        String finalPostString = "I've just created a pack of Flash Cards with Flip Flash Cards app! ( " + shareLink +" ) Check it out!";
+        String finalPostString = "I've just created a pack of Flash Cards with Flip Flash Cards app! ( " + shareLink +" ) Check it out! Get the Flip Flash Cards app http://www.apple.com";
         switch (position) {
             case 0: {
                 shareToFacebook(shareLink);
@@ -301,13 +301,13 @@ public class AWSShareHelper extends AsyncTask<Void, Long, Boolean> {
 
         final FacebookFacade facebook = new FacebookFacade(mActivity, "430339350417672");
         if (facebook.isAuthorized()) {
-            facebook.publishMessage("I've just created a pack of Flash Cards with Flip Flash Cards app! ( " + shareLink +" ) Check it out!");
+            facebook.publishMessage("I've just created a pack of Flash Cards with Flip Flash Cards app! ( " + shareLink +" ) Check it out! Get the Flip Flash Cards app http://www.apple.com");
         } else {
             // Start authentication dialog and publish message after successful authentication
             facebook.authorize(new AuthListener() {
                 @Override
                 public void onAuthSucceed() {
-                    facebook.publishMessage("I've just created a pack of Flash Cards with Flip Flash Cards app! ( " + shareLink +" ) Check it out!");
+                    facebook.publishMessage("I've just created a pack of Flash Cards with Flip Flash Cards app! ( " + shareLink +" ) Check it out! Get the Flip Flash Cards app http://www.apple.com");
                 }
 
                 @Override
