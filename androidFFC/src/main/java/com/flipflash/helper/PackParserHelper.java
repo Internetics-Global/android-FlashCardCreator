@@ -28,6 +28,10 @@ public class PackParserHelper {
 
     private static final String TAG = PackParserHelper.class.getName();
 
+    private static final int    IPHONE_WIDTH              = 480;
+    private static final int    IPAD_WIDTH                = 1024;
+    private static final int    ZAPFINO_RATIO_FROM_IOS    = 2;  //如果是zapfino字体，并且来着iOS，则需要额外增加，见evernote这篇文章的分析"各个平台之间的字体字面大小与实际大小的区别"
+
     /*
       iPhone ＝ 640
       iPad   = 1024
@@ -299,9 +303,9 @@ public class PackParserHelper {
             pack.lastVistDate = Global.currentTimeSeconds();
 
             if (pack.platform.contains("iPhone") == true) {
-                mScreenWidthFromSharedDevice = 480; //无论是iPhone5S还是4都是这个
+                mScreenWidthFromSharedDevice = IPHONE_WIDTH;  //iPhone
             } else if (pack.platform.contains("iPad") == true) {
-                mScreenWidthFromSharedDevice = 1024;
+                mScreenWidthFromSharedDevice = IPAD_WIDTH; //iPad
             } else {
                 temp = (String) obj.get("screen_width");
                 if ((temp != null) && (StringUtils.isNumeric(temp))) {
@@ -732,20 +736,47 @@ public class PackParserHelper {
                     float factor = baseFontSizeOnCurrentDevice/baseFontSizeFromSharedDevice;
 
 
+
                     if (subheadingSize == 0) {
                         subheadingSize = standardCSSArrary[0];
                     }
-                    card.question.css.subheadingSize = (int)(subheadingSize * factor);
+
+                    //zapfino且来源为iOS的特殊逻辑
+                    if (card.question.css.subheadingFont.toLowerCase().contains("zapfino")
+                            && (mScreenWidthFromSharedDevice == IPAD_WIDTH || mScreenWidthFromSharedDevice == IPHONE_WIDTH)) {
+                        card.question.css.subheadingSize = (int)(subheadingSize * factor * ZAPFINO_RATIO_FROM_IOS);
+                    } else {
+                        card.question.css.subheadingSize = (int)(subheadingSize * factor);
+                    }
+
 
                     if (mainSize == 0) {
                        mainSize = standardCSSArrary[1];
                     }
-                    card.question.css.mainSize = (int)(mainSize * factor);
+
+                    //zapfino且来源为iOS的特殊逻辑
+                    if (card.question.css.mainFont.toLowerCase().contains("zapfino")
+                            && (mScreenWidthFromSharedDevice == IPAD_WIDTH || mScreenWidthFromSharedDevice == IPHONE_WIDTH)) {
+                        card.question.css.mainSize = (int)(mainSize * factor * ZAPFINO_RATIO_FROM_IOS);
+                    } else {
+                        card.question.css.mainSize = (int)(mainSize * factor);
+                    }
+
 
                     if (subSize == 0) {
                         subSize = standardCSSArrary[2];
                     }
-                    card.question.css.subSize = (int) (subSize * factor);
+
+                    //zapfino且来源为iOS的特殊逻辑
+                    if (card.question.css.subFont.toLowerCase().contains("zapfino")
+                            && (mScreenWidthFromSharedDevice == IPAD_WIDTH || mScreenWidthFromSharedDevice == IPHONE_WIDTH)) {
+                        card.question.css.subSize = (int) (subSize * factor * ZAPFINO_RATIO_FROM_IOS);
+                    } else {
+                        card.question.css.subSize = (int) (subSize * factor);
+                    }
+
+
+
 
                 }
             }
@@ -1115,21 +1146,42 @@ public class PackParserHelper {
                     int baseFontSizeOnCurrentDevice = standardCSSArrary[3];
                     float factor = baseFontSizeOnCurrentDevice/baseFontSizeFromSharedDevice;
 
-
                     if (subheadingSize  == 0) {
                       subheadingSize = standardCSSArrary[3];
                     }
-                    card.answer.css.subheadingSize = (int)(subheadingSize * factor);
+
+                    //zapfino且来源为iOS的特殊逻辑
+                    if (card.answer.css.subheadingFont.toLowerCase().contains("zapfino")
+                            && (mScreenWidthFromSharedDevice == IPAD_WIDTH || mScreenWidthFromSharedDevice == IPHONE_WIDTH)) {
+                        card.answer.css.subheadingSize = (int)(subheadingSize * factor * ZAPFINO_RATIO_FROM_IOS);
+                    } else {
+                        card.answer.css.subheadingSize = (int)(subheadingSize * factor);
+                    }
+
 
                     if (mainSize == 0) {
                         mainSize = standardCSSArrary[4];
                     }
-                    card.answer.css.mainSize = (int)(mainSize * factor);
+
+                    //zapfino且来源为iOS的特殊逻辑
+                    if (card.answer.css.mainFont.toLowerCase().contains("zapfino")
+                            && (mScreenWidthFromSharedDevice == IPAD_WIDTH || mScreenWidthFromSharedDevice == IPHONE_WIDTH)) {
+                        card.answer.css.mainSize = (int)(mainSize * factor * ZAPFINO_RATIO_FROM_IOS);
+                    } else {
+                        card.answer.css.mainSize = (int)(mainSize * factor);
+                    }
 
                     if (subSize == 0) {
                        subSize = standardCSSArrary[5];
                     }
-                    card.answer.css.subSize = (int) (subSize * factor);
+
+                    //zapfino且来源为iOS的特殊逻辑
+                    if (card.answer.css.subFont.toLowerCase().contains("zapfino")
+                            && (mScreenWidthFromSharedDevice == IPAD_WIDTH || mScreenWidthFromSharedDevice == IPHONE_WIDTH)) {
+                        card.answer.css.subSize = (int) (subSize * factor * ZAPFINO_RATIO_FROM_IOS);
+                    } else {
+                        card.answer.css.subSize = (int) (subSize * factor);
+                    }
 
                 }
             }
