@@ -258,10 +258,8 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnTouchL
         }
 
 
-        //we have to disable because of performance issue
         if (mIsCreatingCard) {
-            mSidebarTitle.setEnabled(false);
-            mTitle.setEnabled(false);
+            mTitle.setEnabled(false); //same as iOS
         }
 
         if (mIsPlayingCard || mIsCreatingCard) {
@@ -2061,7 +2059,11 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnTouchL
                 @Override
                 public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
                     if (actionId == EditorInfo.IME_ACTION_DONE) {
-                        saveEditedCard();
+                        if ((mIsPlayingCard == false) && (mIsCreatingCard == false)) {
+                            saveEditedCard();
+                        } else {
+                        }
+                        mIsTakeSnapshotAllNeeded = true;
                     }
                     return false;
                 }
@@ -2070,7 +2072,11 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnTouchL
                 @Override
                 public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
                     if (actionId == EditorInfo.IME_ACTION_DONE) {
-                        saveEditedCard();
+                        if ((mIsPlayingCard == false) && (mIsCreatingCard == false)) {
+                            saveEditedCard();
+                        } else {
+                        }
+                        mIsTakeSnapshotAllNeeded = true;
                     }
                     return false;
                 }
@@ -2079,7 +2085,11 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnTouchL
                 @Override
                 public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
                     if (actionId == EditorInfo.IME_ACTION_DONE) {
-                        saveEditedCard();
+                        if ((mIsPlayingCard == false) && (mIsCreatingCard == false)) {
+                            saveEditedCard();
+                        } else {
+                        }
+                        mIsTakeSnapshotAllNeeded = true;
                     }
                     return false;
                 }
@@ -2089,7 +2099,11 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnTouchL
                 @Override
                 public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
                     if (actionId == EditorInfo.IME_ACTION_DONE) {
-                        saveEditedCard();
+                        if ((mIsPlayingCard == false) && (mIsCreatingCard == false)) {
+                            saveEditedCard();
+                        } else {
+                        }
+                        mIsTakeSnapshotAllNeeded = true;
                     }
                     return false;
                 }
