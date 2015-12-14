@@ -46,7 +46,7 @@ public class FontHelper {
         if ((fontStr == null) || (fontStr.length() == 0)) {
             return (FontCache.get(Global.fontName_Default, context));
         }
-        else if (fontStr.equalsIgnoreCase("Helvetica-Bold")) {
+        else if (fontStr.equalsIgnoreCase("Papyrus")) {
             return (FontCache.get(Global.fontName_Papyrus, context));
         }
         else if (fontStr.equalsIgnoreCase("Courier-Bold")) {
