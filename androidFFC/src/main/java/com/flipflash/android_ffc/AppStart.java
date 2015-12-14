@@ -49,6 +49,9 @@ public class AppStart extends Activity {
         float dpWidth = displayMetrics.widthPixels / displayMetrics.density;
 
         LOGD(TAG, "collectDeviceInfoForDebugging: device width = " + dpWidth + " height = " + dpHeight);
+
+        float density = getResources().getDisplayMetrics().density;
+        LOGD(TAG, "desnity * dp = px, here density = " + density);
     }
 
 }
