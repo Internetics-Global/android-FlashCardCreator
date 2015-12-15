@@ -49,7 +49,7 @@ public class FontHelper {
         else if (fontStr.equalsIgnoreCase("Papyrus")) {
             return (FontCache.get(Global.fontName_Papyrus, context));
         }
-        else if (fontStr.equalsIgnoreCase("Courier-Bold")) {
+        else if (fontStr.equalsIgnoreCase("Courier")) {
             return (FontCache.get(Global.fontName_Courier, context));
         }
         else if (fontStr.equalsIgnoreCase("Chalkduster")) {
