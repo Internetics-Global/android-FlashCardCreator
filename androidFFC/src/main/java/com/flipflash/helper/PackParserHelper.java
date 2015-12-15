@@ -30,7 +30,12 @@ public class PackParserHelper {
 
     private static final int    IPHONE_WIDTH              = 480;
     private static final int    IPAD_WIDTH                = 1024;
-    private static final int    ZAPFINO_RATIO_FROM_IOS    = 2;  //如果是zapfino字体，并且来着iOS，则需要额外增加，见evernote这篇文章的分析"各个平台之间的字体字面大小与实际大小的区别"
+
+    /**
+     ** Calibration
+     *  Different text size have different margin and occupaction, see this article in my evernote: "(different text size  difference margin; different device, different text size)"
+     */
+    private static final int    ZAPFINO_RATIO_FROM_IOS    = 2;
 
     /*
       iPhone ＝ 640
