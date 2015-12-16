@@ -353,7 +353,7 @@ public class DropboxShareHelper extends AsyncTask<Void, Long, Boolean> {
 
         final FacebookFacade facebook = new FacebookFacade(mActivity, "430339350417672");
         if (facebook.isAuthorized()) {
-            facebook.publishMessage("I've just created a pack of Flash Cards with Flash Card Creator app! ( " + shareLink +" ) Check it out! Get the Flip Flash Cards app http://www.apple.com");
+            facebook.publishMessage("I've just created a pack of Flash Cards with Flip Flash Cards! ( " + shareLink +" ) Check it out! Get the Flip Flash Cards app http://www.apple.com");
         } else {
             // Start authentication dialog and publish message after successful authentication
             facebook.authorize(new AuthListener() {
