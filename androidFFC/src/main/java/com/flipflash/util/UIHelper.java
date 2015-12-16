@@ -275,8 +275,8 @@ public class UIHelper {
 
         Bitmap playIconBitmap = BitmapFactory.decodeResource(context.getResources(), R.drawable.play_big);
 
-        int left = (int)(bMap.getWidth() *0.3);
-        int right = (int)(bMap.getWidth() *0.7);
+        int left = (int)(bMap.getWidth() *0.4);
+        int right = (int)(bMap.getWidth() *0.6);
         Rect rect = new Rect(left,left,right,right);
         canvas.drawBitmap(playIconBitmap,null,rect,null);
 

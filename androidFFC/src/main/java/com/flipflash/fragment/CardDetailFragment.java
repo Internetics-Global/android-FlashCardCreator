@@ -1798,6 +1798,8 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnTouchL
 
         mImage.setPadding(5,5,5,5);
 
+//        mImage.setBackgroundColor(Color.RED);
+
         if (isEditableMode() && (mIsPlayingCard == false)) {
             mImage.setBackgroundResource(R.drawable.shape_imageview_editable);
         }
@@ -1808,6 +1810,8 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnTouchL
         LOGD(TAG, "createImage2");
 
         mImage2 = new ImageView(getActivity());
+
+//        mImage2.setBackgroundColor(Color.RED);
 
 //        String imagePathStr = FileOperationHelper.getQuestionImagePlaceholderImagePath();
 //        mImage2.setImageURI(Uri.parse(imagePathStr));

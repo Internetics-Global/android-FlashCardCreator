@@ -48,6 +48,7 @@ import com.flipflash.UI.VGViewPager;
 
 import org.adw.library.widgets.discreteseekbar.DiscreteSeekBar;
 
+import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
@@ -814,6 +815,7 @@ public class PlayActivity extends FragmentActivity implements SensorEventListene
                 mIsAutoScroll = false;
                 CardDetailFragment currentCardDetailFragment = getCurrentCardDetailFragment();
                 playbackOnCard(currentCardDetailFragment);
+                mPager.mCardDetailFragmentWeakReference = new WeakReference<>(currentCardDetailFragment);
 
                 break;
             }
@@ -1027,6 +1029,9 @@ public class PlayActivity extends FragmentActivity implements SensorEventListene
             if (mPosition >= 0 && mPosition <= mCurrentPack.cards.size() -1) {
                 ((CardDetailFragment) (mFragments.get(mPosition))).switchToQuestionViewWithOption(false);
             }
+
+
+            mPager.mCardDetailFragmentWeakReference = new WeakReference<>((CardDetailFragment) mFragments.get(position));
 
             //update icon
             String soundFile = ((CardDetailFragment) (mFragments.get(position))).mCurrentCard.question.audioUriFormatStr;
@@ -1309,6 +1314,7 @@ public class PlayActivity extends FragmentActivity implements SensorEventListene
 
 
         currentCardDetailFragment.switchQuestionAnswerView();
+
 
         //hide or show play recorded voice
         String soundFile;
@@ -1731,6 +1737,7 @@ public class PlayActivity extends FragmentActivity implements SensorEventListene
     private CardDetailFragment getCurrentCardDetailFragment () {
        // LOGD(TAG, "getCurrentCardDetailFragment");
         CardDetailFragment cardDetailFragment = (CardDetailFragment) (mFragments.get(mPosition));
+
         return cardDetailFragment;
     }
 
