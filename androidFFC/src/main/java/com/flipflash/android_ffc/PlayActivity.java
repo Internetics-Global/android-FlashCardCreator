@@ -20,6 +20,7 @@ import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
 import android.support.v4.view.ViewPager;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.MotionEvent;
 import android.view.Surface;
@@ -839,9 +840,14 @@ public class PlayActivity extends FragmentActivity implements SensorEventListene
 
         // Configure orientation sensor
         // 我们把这个sensor的初始化逻辑放在这里，主要是为了防止误出发Q/A switch（比如加载card比较慢，然后用户又同时roll设备就会引起这个问题）
-        Sensor accelerometer = mSensorManager.getDefaultSensor(Sensor.TYPE_ORIENTATION);
-        if (accelerometer != null) {
-            mSensorManager.registerListener(PlayActivity.this, accelerometer, SensorManager.SENSOR_DELAY_GAME); //considering different hardware, we need to set the fastest value
+//        Sensor orientationSensor = mSensorManager.getDefaultSensor(Sensor.TYPE_ORIENTATION);
+        Sensor accelSensor = mSensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
+        Sensor magSensor = mSensorManager.getDefaultSensor(Sensor.TYPE_MAGNETIC_FIELD);
+
+        if (accelSensor != null && magSensor != null) {
+//            mSensorManager.registerListener(PlayActivity.this, orientationSensor, SensorManager.SENSOR_DELAY_GAME); //considering different hardware, we need to set the fastest value
+            mSensorManager.registerListener(PlayActivity.this, accelSensor, SensorManager.SENSOR_DELAY_GAME);
+            mSensorManager.registerListener(PlayActivity.this, magSensor, SensorManager.SENSOR_DELAY_GAME);
             mIsSensorAvailable = true;
         } else {
             mIsSensorAvailable = false;
@@ -1124,9 +1130,54 @@ public class PlayActivity extends FragmentActivity implements SensorEventListene
     private float       _lowestRollDegree = 0;
     private float       _highestRollDegree = 0;
 
+    float[] mGravity;
+    float[] mGeomagnetic;
+
     @Override
     public void onSensorChanged(SensorEvent event) {
         //LOGD(TAG, "onSensorChanged, event.values is: " + String.format("%f,%f,%f", event.values[0], event.values[1], event.values[2]));
+
+        switch (event.sensor.getType()) {
+            case Sensor.TYPE_ORIENTATION: {
+                //roll(event.values[2]); 其中event.values[2]是度单位，需要转换成radius，其余则不需要改变
+                break;
+            }
+            case Sensor.TYPE_ACCELEROMETER: {
+                mGravity = event.values;
+                break;
+            }
+            case Sensor.TYPE_MAGNETIC_FIELD: {
+                mGeomagnetic = event.values;
+                break;
+            }
+            default:{
+
+            }
+        }
+
+        if (mGravity != null && mGeomagnetic != null) {
+            float R[] = new float[9];
+            float I[] = new float[9];
+            boolean success = SensorManager.getRotationMatrix(R, I, mGravity, mGeomagnetic);
+            if (success) {
+                float orientation[] = new float[3];
+                SensorManager.getOrientation(R, orientation);
+                float rollVal = orientation[2]; // orientation contains: azimut, pitch and roll
+
+                roll( - rollVal); //这里有个负数，注意
+            }
+        }
+
+    }
+
+
+    /*
+     * 弧度和度的关系：rollRadius = (float)(rollDegress *3.14/180);
+     * 以下方法如果是通过TYPE_ORIENTATION，也可直接使用
+     */
+    private void roll(float rollRadius) {
+
+        Log.d("PPMM","roll value is " + rollRadius);
 
         CardDetailFragment currentCardDetailFragment = getCurrentCardDetailFragment();
         if ((currentCardDetailFragment == null) || (currentCardDetailFragment.mCardSN == null))  {
@@ -1140,7 +1191,6 @@ public class PlayActivity extends FragmentActivity implements SensorEventListene
             //Anroid: home在左边，屏幕在右边时: 上边靠近身体这边负数，远离身体正数 （home在右边，屏幕在左边时，相反）
             //iOS:    home在左边，屏幕在右边时: 上边靠近身体这边正数，远离身体负数。与Android刚好相反。
             //越是垂直，越是绝对数大，这在iOS和Android是一致的
-            float rollRadius = (float)((event.values[2]) *3.14/180);
 
             int orientation = getOrientation();
             //LOGD(TAG, "onSensorChanged: oritention is: " + orientation + ";rollRadius = " + rollRadius);
