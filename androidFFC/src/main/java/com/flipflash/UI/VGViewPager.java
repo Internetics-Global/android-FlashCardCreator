@@ -72,13 +72,16 @@ public class VGViewPager extends AutoScrollViewPager {
 
             CardDetailFragment cardDetailFragment = mCardDetailFragmentWeakReference.get();
             boolean isYoutube = false;
-            if (cardDetailFragment.mIsQuestionShowing) {
-                if (cardDetailFragment.mCurrentCard.question.movieUriFormatStr.toLowerCase().contains("youtube")) {
-                    isYoutube = true;
-                }
-            } else {
-                if (cardDetailFragment.mCurrentCard.answer.movieUriFormatStr.toLowerCase().contains("youtube")) {
-                    isYoutube = true;
+
+            if (cardDetailFragment!=null) {
+                if (cardDetailFragment.mIsQuestionShowing) {
+                    if (cardDetailFragment.mCurrentCard.question.movieUriFormatStr.toLowerCase().contains("youtube")) {
+                        isYoutube = true;
+                    }
+                } else {
+                    if (cardDetailFragment.mCurrentCard.answer.movieUriFormatStr.toLowerCase().contains("youtube")) {
+                        isYoutube = true;
+                    }
                 }
             }
 
@@ -107,13 +110,16 @@ public class VGViewPager extends AutoScrollViewPager {
 
             CardDetailFragment cardDetailFragment = mCardDetailFragmentWeakReference.get();
             boolean isYoutube = false;
-            if (cardDetailFragment.mIsQuestionShowing) {
-                if (cardDetailFragment.mCurrentCard.question.movieUriFormatStr2.toLowerCase().contains("youtube")) {
-                    isYoutube = true;
-                }
-            } else {
-                if (cardDetailFragment.mCurrentCard.answer.movieUriFormatStr2.toLowerCase().contains("youtube")) {
-                    isYoutube = true;
+
+            if (cardDetailFragment != null) {
+                if (cardDetailFragment.mIsQuestionShowing) {
+                    if (cardDetailFragment.mCurrentCard.question.movieUriFormatStr2.toLowerCase().contains("youtube")) {
+                        isYoutube = true;
+                    }
+                } else {
+                    if (cardDetailFragment.mCurrentCard.answer.movieUriFormatStr2.toLowerCase().contains("youtube")) {
+                        isYoutube = true;
+                    }
                 }
             }
 
