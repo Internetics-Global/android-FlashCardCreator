@@ -82,6 +82,16 @@ public class YoutubeFragment extends DialogFragment {
         webView.loadData(playVideo, "text/html", "utf-8");
     }
 
+    @Override
+    public void onStop() {
+        super.onStop();
+
+        WebView webView = (WebView) mContentView.findViewById(R.id.youtube_webview);
+        webView.onPause();
+
+
+    }
+
     public String getYoutubeLink() {
         return mYoutubeLink;
     }
