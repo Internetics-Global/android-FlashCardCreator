@@ -14,6 +14,7 @@ import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
+import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
 import android.text.Editable;
 import android.text.InputType;
@@ -599,15 +600,20 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnTouchL
 
         if (targetStr.length() > 0) {
 
-            if (Build.FINGERPRINT.startsWith("generic")) {
-                Toast.makeText(AppContext.getAppContext(), "Don't support to play on simulator", Toast.LENGTH_LONG).show();
-                return;
-            }
+//            if (Build.FINGERPRINT.startsWith("generic")) {
+//                Toast.makeText(AppContext.getAppContext(), "Don't support to play on simulator", Toast.LENGTH_LONG).show();
+//                return;
+//            }
 
             if (targetStr.contains("http://") || targetStr.contains("https://")) {
-                Intent i = new Intent(Intent.ACTION_VIEW);
-                i.setData(Uri.parse(targetStr));
-                startActivity(i);
+//                Intent i = new Intent(Intent.ACTION_VIEW);
+//                i.setData(Uri.parse(targetStr));
+//                startActivity(i);
+
+                //youtube link
+                YoutubeFragment dialogFragment = new YoutubeFragment();
+                dialogFragment.setYoutubeLink(targetStr);
+                dialogFragment.show(getActivity().getSupportFragmentManager(), "youtube_fragment");
 
             } else {
                 String videoPath = FileOperationHelper.deleteUriSchemeHeader(targetStr);

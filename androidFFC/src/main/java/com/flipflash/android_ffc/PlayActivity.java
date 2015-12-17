@@ -1177,7 +1177,7 @@ public class PlayActivity extends FragmentActivity implements SensorEventListene
      */
     private void roll(float rollRadius) {
 
-        Log.d("PPMM","roll value is " + rollRadius);
+        //Log.d("PPMM","roll value is " + rollRadius);
 
         CardDetailFragment currentCardDetailFragment = getCurrentCardDetailFragment();
         if ((currentCardDetailFragment == null) || (currentCardDetailFragment.mCardSN == null))  {
