@@ -1865,7 +1865,7 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnTouchL
 
             String tag = (String) v.getTag();
 
-            if (isEditableMode()) {
+            if (isEditableMode() && mIsPlayingCard == false) {
                 //我们不允许在可编辑情况下进行自动resize，因为这是没有必要的
                // LOGD(TAG, "triggerResizeTextToFitFrame: aborted since we don't do this in edit mode");
                 return;

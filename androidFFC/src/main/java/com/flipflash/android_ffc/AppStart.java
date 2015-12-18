@@ -11,6 +11,7 @@ import android.view.animation.AlphaAnimation;
 import android.view.animation.Animation;
 
 import com.flipflash.util.AppContext;
+import com.flipflash.util.Global;
 
 import java.util.Random;
 
@@ -47,6 +48,16 @@ public class AppStart extends Activity {
         DisplayMetrics displayMetrics = getResources().getDisplayMetrics();
         float dpHeight = displayMetrics.heightPixels / displayMetrics.density;
         float dpWidth = displayMetrics.widthPixels / displayMetrics.density;
+
+        //cardDPHeightInEditMode = screen height -  actionbarHeight -  card top margin - card bottom margin -segment height - segment bottom margin
+        float cardDPHeightInEditMode = dpHeight - 40 - 10 - 10 - 24 - 10;
+        float cardDPHeightInPlayMode = dpHeight - 10 - 10;
+        float ratio = cardDPHeightInPlayMode/cardDPHeightInEditMode;
+        if (ratio >Global.scaleInPlayMode) {
+            Global.scaleInPlayMode = ratio;  //默认值是1.2，如果比这个数值更大，才进行赋值。这种情况只有在小屏手机中才有这个问题
+        }
+
+
 
         LOGD(TAG, "collectDeviceInfoForDebugging: device width = " + dpWidth + " height = " + dpHeight);
 

@@ -86,10 +86,16 @@ public class Global {
     public static final String sortType = "sort_Type";
 
 
-    //ratio between editing mode and play mode;
-    //TODO: 这个逻辑需要重新考虑过
-    public static float   scaleInPlayMode = 1.2f; //通过调整这个数值，可以用来验证triggerResizeTextToFitFrame的有效性
-    public static float   ratioOfCardInPlayMode = 1.45f;  //注意，这个值同play.xml中的soulwolf:widthRatio="1.45" 一致
+    /*
+     * 字体放大系统（edit mode vs play mode），在AppStart中进行初始化。
+     * 通过调整这个数值，可以用来验证triggerResizeTextToFitFrame的有效性
+     */
+    public static float   scaleInPlayMode = 1.2f;
+
+    /*
+     * 注意，这个值同play.xml中的soulwolf:widthRatio="1.45" 一致
+     */
+    public static float   ratioOfCardInPlayMode = 1.45f;
 
     //ie, image2, logoImage的tag，用在VGViewPager
     public static final String mImage_Showing = "mImage_Showing";
