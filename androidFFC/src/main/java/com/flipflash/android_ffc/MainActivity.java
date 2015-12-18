@@ -238,6 +238,15 @@ public class MainActivity extends FragmentActivity implements
 
     }
 
+    public boolean getPackInfoLayoutVisible() {
+        LinearLayout         packInfoLayout = (LinearLayout) findViewById(R.id.pack_info_layout);
+        if (packInfoLayout != null & packInfoLayout.getVisibility() == View.VISIBLE) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {

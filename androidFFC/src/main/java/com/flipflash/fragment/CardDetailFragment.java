@@ -4750,6 +4750,10 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnTouchL
             return;
         }
 
+        if (((MainActivity)getActivity()).getPackInfoLayoutVisible() ) {
+            return;
+        }
+
         Handler handler = new Handler();
         handler.postDelayed(new Runnable() {
 
