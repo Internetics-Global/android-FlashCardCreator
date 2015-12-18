@@ -89,7 +89,7 @@
 
             <ImageView
                 android:id="@+id/play_record_button"
-                android:layout_marginLeft="15dp"
+                android:layout_marginLeft="10dp"
                 android:layout_height= "24dp"
                 android:layout_width="24dp"
                 android:layout_gravity="center_vertical"
