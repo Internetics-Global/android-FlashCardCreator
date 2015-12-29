@@ -327,8 +327,13 @@ public class PackListFragment extends Fragment {
 
                 if (currentPack.packID == AppConfig.sharedInstance().getPackIDForLastSelected()) {
                     itemLayout.setBackgroundResource(R.drawable.shape_pack_list_item_selected_border_green);
+
+                    convertView.findViewById(R.id.pack_lock_image).setVisibility(View.VISIBLE);
+
                 } else {
                     itemLayout.setBackgroundResource(0);
+
+                    convertView.findViewById(R.id.pack_lock_image).setVisibility(View.GONE);
                 }
 
             }

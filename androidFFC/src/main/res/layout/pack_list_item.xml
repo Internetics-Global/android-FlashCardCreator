@@ -52,6 +52,19 @@
             android:src="@drawable/play">
         </ImageView>
 
+
+        <ImageView
+            android:layout_gravity="right|top"
+            android:layout_marginRight="5dp"
+            android:layout_marginTop="5dp"
+            android:id="@+id/pack_lock_image"
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:scaleType="fitCenter"
+            android:src="@drawable/lock">
+
+        </ImageView>
+
     </FrameLayout>
 
     <LinearLayout
