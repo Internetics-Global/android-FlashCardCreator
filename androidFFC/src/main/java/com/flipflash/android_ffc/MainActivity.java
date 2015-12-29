@@ -1807,7 +1807,7 @@ public class MainActivity extends FragmentActivity implements
         packCoverTextView.setText(String.format("%s:%d", getString(R.string.Title_Total_Number_Card),mCurrentPack.cards.size()));
 
         TextView  shareCodeTextView = (TextView) findViewById(R.id.pack_info_share_code);
-        if (StringUtils.isEmpty(mCurrentPack.shareLink) == false) {
+        if (StringUtils.isEmpty(mCurrentPack.shareLink) == false && ((mCurrentPack.creatorID).equals(OpenUDID_manager.getOpenUDID()))) {
             Uri uri = Uri.parse(mCurrentPack.shareLink);
             shareCodeTextView.setText(String.format("%s: %s",getString(R.string.Title_Share_Code),uri.getLastPathSegment()));
         } else {
