@@ -204,8 +204,8 @@ public class PackBuildHelper {
         try {
             file = new FileWriter(savedPath, false);
             file.write(summary.toJSONString());
-            System.out.println("Successfully Copied JSON Object to File...");
-            System.out.println("\nJSON Object: " + summary);
+           // System.out.println("Successfully Copied JSON Object to File...");
+           // System.out.println("\nJSON Object: " + summary);
             file.flush();
             file.close();
         } catch (IOException e) {
@@ -277,8 +277,8 @@ public class PackBuildHelper {
         try {
             file = new FileWriter(savedPath, false);
             file.write(obj.toJSONString());
-            System.out.println("Successfully Copied JSON Object to File...");
-            System.out.println("\nJSON Object: " + obj);
+            //System.out.println("Successfully Copied JSON Object to File...");
+            //System.out.println("\nJSON Object: " + obj);
             file.flush();
             file.close();
         } catch (IOException e) {
@@ -346,8 +346,8 @@ public class PackBuildHelper {
         try {
             file = new FileWriter(savedPath, false);
             file.write(obj.toJSONString());
-            System.out.println("Successfully Copied JSON Object to File...");
-            System.out.println("\nJSON Object: " + obj);
+            //System.out.println("Successfully Copied JSON Object to File...");
+            //System.out.println("\nJSON Object: " + obj);
             file.flush();
             file.close();
         } catch (IOException e) {

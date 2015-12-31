@@ -10,6 +10,7 @@ import android.content.res.TypedArray;
 import android.graphics.Color;
 import android.graphics.PixelFormat;
 import android.net.Uri;
+import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
@@ -30,7 +31,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewTreeObserver;
 import android.view.WindowManager;
-import android.view.animation.Interpolator;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -44,7 +44,6 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.daimajia.androidanimations.library.BaseViewAnimator;
 import com.daimajia.androidanimations.library.Techniques;
 import com.daimajia.androidanimations.library.YoYo;
 import com.dropbox.client2.android.AuthActivity;
@@ -52,7 +51,6 @@ import com.flipflash.UI.ScaleHelper;
 import com.flipflash.UI.SlideInRightWithoutAlphaAnimator;
 import com.flipflash.UI.SlideOutRightWithoutAlphaAnimator;
 import com.flipflash.data.CSS;
-import com.flipflash.data.User;
 import com.github.lzyzsd.circleprogress.DonutProgress;
 import com.google.analytics.tracking.android.EasyTracker;
 import com.flipflash.cryptor.CryptoHelper;
@@ -144,6 +142,7 @@ public class MainActivity extends FragmentActivity implements
 
     private ProgressDialog    mUploadProgressDialog;
     private ProgressDialog    mSnapShotDialog;
+    private ProgressDialog    mZipAndEncryptDialog;
 
     private ArrayList<CardDetailFragment> mArrayCardDetailFragments;   //Special for snapshot(not include current card)
 
@@ -1273,7 +1272,7 @@ public class MainActivity extends FragmentActivity implements
                 .setCancelable(false)
                 .setIcon(android.R.drawable.ic_dialog_info)
                 .setView(passwordEditText)
-                .setPositiveButton(R.string.DIALOG_SET, new DialogInterface.OnClickListener() {
+                .setNegativeButton(R.string.DIALOG_SET, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
 
@@ -1281,59 +1280,35 @@ public class MainActivity extends FragmentActivity implements
                         imm.hideSoftInputFromWindow(passwordEditText.getWindowToken(), 0);
 
                         String password = passwordEditText.getText().toString();
-                        File file = PackBuildHelper.createPackZipFile(MainActivity.this, mCurrentPack, password);
-                        if (file == null) {
-                            Toast.makeText(getApplicationContext(), "Failed to zip pack", Toast.LENGTH_LONG).show();
-                        } else {
-
-                            boolean result = CryptoHelper.encryptFileWithSameOutput(file);
-                            if (result == false) {
-                                Toast.makeText(getApplicationContext(), "Failed to encrypt pack", Toast.LENGTH_LONG).show();
-                            } else {
-                                //步骤： upload -- > 设置最大分享数 --> 创建短连接 --> 分享
-                                if (DropboxAuthHelper.sharedHelper(MainActivity.this).isLinked()) {
-                                    mDropboxUploadHelper = new DropboxUploadHelper(MainActivity.this, Global.DROPBOX_FOLDER, file,mDropboxUploadHandler);
-                                    mDropboxUploadHelper.execute();
-                                } else {
-                                    mAmazonUploadHelper = new AWSUploadHelper(MainActivity.this, mAmazonUploadHandler);
-                                    mAmazonUploadHelper.upload(file);
-                                }
-                            }
-                        }
+                        passwordSetAlertViewClickedWithPassword(password);
 
                     }
                 })
-                .setNegativeButton(R.string.Keyboard_No_Needed, new DialogInterface.OnClickListener() {
+                .setNeutralButton(R.string.Keyboard_No_Needed, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
 
                         InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
                         imm.hideSoftInputFromWindow(passwordEditText.getWindowToken(), 0);
 
-                        File file = PackBuildHelper.createPackZipFile(MainActivity.this, mCurrentPack, "");
-                        if (file == null) {
-                            Toast.makeText(getApplicationContext(), R.string.DIALOG_CREATE_ZIPPED_SHARE_FILE_FAILED, Toast.LENGTH_LONG).show();
-                        } else {
-
-                            boolean result = CryptoHelper.encryptFileWithSameOutput(file);
-                            if (result == false) {
-                                Toast.makeText(getApplicationContext(), R.string.DIALOG_ENCRPT_ZIPPED_SHARE_FILED_FAILED, Toast.LENGTH_LONG).show();
-                            } else {
-                                //步骤： upload -- > 设置最大分享数 --> 创建短连接 --> 分享
-                                if (DropboxAuthHelper.sharedHelper(MainActivity.this).isLinked()) {
-                                    mDropboxUploadHelper = new DropboxUploadHelper(MainActivity.this, Global.DROPBOX_FOLDER, file, mDropboxUploadHandler);
-                                    mDropboxUploadHelper.execute();
-                                } else {
-                                    mAmazonUploadHelper = new AWSUploadHelper(MainActivity.this, mAmazonUploadHandler);
-                                    mAmazonUploadHelper.upload(file);
-                                }
-
-                            }
-                        }
+                        passwordSetAlertViewClickedWithPassword("");
 
                     }
                 })
+                .setPositiveButton(R.string.DIALOG_CANCEL, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+                        imm.hideSoftInputFromWindow(passwordEditText.getWindowToken(), 0);
+                    }
+                })
                 .show();
+    }
+
+    public void passwordSetAlertViewClickedWithPassword(String password) {
+
+        ZippingAndEncryptTask myTask = new ZippingAndEncryptTask(password);
+        myTask.execute("ZippingAndEncryptTask");
     }
 
 
@@ -1955,6 +1930,15 @@ public class MainActivity extends FragmentActivity implements
                         mUploadProgressDialog.setCanceledOnTouchOutside(false);
                         mUploadProgressDialog.setMessage(getString(R.string.Indicator_Upload));
                         mUploadProgressDialog.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
+                        mUploadProgressDialog.setButton(DialogInterface.BUTTON_NEGATIVE, getString(R.string.DIALOG_CANCEL), new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                dialog.dismiss();
+                                if (mAmazonUploadHelper != null) {
+                                    mAmazonUploadHelper.stop();
+                                }
+                            }
+                        });
                     }
 
                     if (flag == 0) {
@@ -2121,6 +2105,78 @@ public class MainActivity extends FragmentActivity implements
             }
 
             return itemView;
+        }
+    }
+
+
+
+    public class ZippingAndEncryptTask extends AsyncTask<String, Void, Integer> {
+
+        private String  mPassword;
+        private File    mZippedFile;
+
+        public ZippingAndEncryptTask(String password) {
+            mPassword = password;
+        }
+
+        @Override
+        protected void onPreExecute() {
+
+            if (mZipAndEncryptDialog == null) {
+                mZipAndEncryptDialog = new ProgressDialog(MainActivity.this);
+                mZipAndEncryptDialog.setMax(100);
+                mZipAndEncryptDialog.setCancelable(false);
+                mZipAndEncryptDialog.setCanceledOnTouchOutside(false);
+                mZipAndEncryptDialog.setMessage(getString(R.string.Indicator_Share_Process_Processing));
+                mZipAndEncryptDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+            }
+
+            if (mZipAndEncryptDialog.isShowing() == false) {
+                mZipAndEncryptDialog.show();
+            }
+
+        }
+
+        @Override
+        protected Integer doInBackground(String... params) {
+
+            mZippedFile = PackBuildHelper.createPackZipFile(MainActivity.this, mCurrentPack, mPassword);
+            if (mZippedFile == null) {
+                return -1;
+
+            } else {
+                boolean result = CryptoHelper.encryptFileWithSameOutput(mZippedFile);
+                if (result == false) {
+                    return -2;
+
+                } else {
+                    return 0;
+                }
+            }
+        }
+
+        @Override
+        protected void onPostExecute(Integer integer) {
+
+            if (mZipAndEncryptDialog != null && mZipAndEncryptDialog.isShowing()) {
+                mZipAndEncryptDialog.dismiss();
+            }
+
+            if (integer == -1) {
+                Toast.makeText(getApplicationContext(), R.string.DIALOG_CREATE_ZIPPED_SHARE_FILE_FAILED, Toast.LENGTH_LONG).show();
+            } else if (integer == -2) {
+                Toast.makeText(getApplicationContext(), R.string.DIALOG_ENCRPT_ZIPPED_SHARE_FILED_FAILED, Toast.LENGTH_LONG).show();
+            } else {
+
+                //步骤： upload -- > 设置最大分享数 --> 创建短连接 --> 分享
+                if (DropboxAuthHelper.sharedHelper(MainActivity.this).isLinked()) {
+                    mDropboxUploadHelper = new DropboxUploadHelper(MainActivity.this, Global.DROPBOX_FOLDER, mZippedFile, mDropboxUploadHandler);
+                    mDropboxUploadHelper.execute();
+                } else {
+                    mAmazonUploadHelper = new AWSUploadHelper(MainActivity.this, mAmazonUploadHandler);
+                    mAmazonUploadHelper.upload(mZippedFile);
+                }
+            }
         }
     }
 

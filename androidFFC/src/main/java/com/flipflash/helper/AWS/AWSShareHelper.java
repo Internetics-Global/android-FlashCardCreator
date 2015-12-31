@@ -2,6 +2,7 @@ package com.flipflash.helper.AWS;
 
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.app.ProgressDialog;
 import android.app.Service;
 import android.content.ClipData;
 import android.content.ClipboardManager;
@@ -58,6 +59,8 @@ public class AWSShareHelper extends AsyncTask<Void, Long, Boolean> {
      */
     private boolean    mIsDirectShare;
 
+    private ProgressDialog mDialog = null;
+
 
     public AWSShareHelper(Activity activity, Pack currentPack, Boolean isDirectShare) {
 
@@ -68,6 +71,20 @@ public class AWSShareHelper extends AsyncTask<Void, Long, Boolean> {
         mActivity         = activity;
         mCurrentPack      = currentPack;
         mIsDirectShare    = isDirectShare;
+
+
+        //与Dropbox不同的是，我们只需要生成短链接，但是实际中也是发现这也可能有几秒，所以是必须的
+        if (StringUtils.isEmpty(mCurrentPack.shareLink)) {
+            mDialog = new ProgressDialog(activity);
+            mDialog.setMax(100);
+            mDialog.setMessage(activity.getString(R.string.Indicator_Share_Process_Processing));
+            mDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+            mDialog.setProgress(0);
+            mDialog.setCancelable(false);
+            mDialog.setCanceledOnTouchOutside(false);
+            mDialog.show();
+        }
+
     }
 
 
@@ -116,6 +133,10 @@ public class AWSShareHelper extends AsyncTask<Void, Long, Boolean> {
     protected void onPostExecute(Boolean aBoolean) {
         super.onPostExecute(aBoolean);
 
+        if (mDialog != null) {
+            mDialog.dismiss();
+        }
+
         if (mIsDirectShare) {
             share();
         } else {
@@ -129,7 +150,7 @@ public class AWSShareHelper extends AsyncTask<Void, Long, Boolean> {
                     .setTitle(R.string.DIALOG_SET_MAX_NUMBER_OF_DOWNLOADS)
                     .setIcon(android.R.drawable.ic_dialog_info)
                     .setView(editText)
-                    .setPositiveButton(R.string.DIALOG_OK, new DialogInterface.OnClickListener() {
+                    .setNeutralButton(R.string.DIALOG_OK, new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
 
@@ -147,6 +168,14 @@ public class AWSShareHelper extends AsyncTask<Void, Long, Boolean> {
                             InputMethodManager imm =(InputMethodManager)mActivity.getSystemService(Context.INPUT_METHOD_SERVICE);
                             imm.hideSoftInputFromWindow(editText.getWindowToken(),0);
                             didDismissDownloadTimesDialog(9999);
+                        }
+                    })
+                    .setPositiveButton(R.string.DIALOG_CANCEL, new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            InputMethodManager imm =(InputMethodManager)mActivity.getSystemService(Context.INPUT_METHOD_SERVICE);
+                            imm.hideSoftInputFromWindow(editText.getWindowToken(),0);
+
                         }
                     })
                     .setCancelable(false)

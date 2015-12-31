@@ -132,7 +132,7 @@
     <string name="Table_Item_Amazon_Or_Dropbox">Use Dropbox Storage</string>
     <string name="UIButton_Save_Card">Save</string>
     <string name="Indicator_Upload">Uploading first…</string>
-    <string name="Indicator_Create_Share_Link">Then create share linkage...</string>
+    <string name="Indicator_Share_Process_Processing">Then create share linkage...</string>
     <string name="Tip_Open_Pack_Viewer">Open pack viewer</string>
     <string name="Tip_Edit_Pack">Edit a pack</string>
     <string name="Tip_Create_New_Pack">Create a new pack</string>

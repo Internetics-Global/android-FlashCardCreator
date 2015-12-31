@@ -2,6 +2,7 @@ package com.flipflash.helper.Dropbox;
 
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.app.ProgressDialog;
 import android.app.Service;
 import android.content.ClipData;
 import android.content.ClipboardManager;
@@ -61,6 +62,8 @@ public class DropboxShareHelper extends AsyncTask<Void, Long, Boolean> {
     private Activity mActivity;
     private Pack     mCurrentPack;
 
+    private final ProgressDialog mDialog;
+
     /**
      * true: 没有经过上传，设密码等，直接share (upload逻辑在S3UploadHelper）
      */
@@ -77,6 +80,17 @@ public class DropboxShareHelper extends AsyncTask<Void, Long, Boolean> {
         mActivity = activity;
         mCurrentPack = currentPack;
         mIsDirectShare= isDirectShare;
+
+
+        mDialog = new ProgressDialog(activity);
+        mDialog.setMax(100);
+        mDialog.setMessage(activity.getString(R.string.Indicator_Share_Process_Processing));
+        mDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+        mDialog.setProgress(0);
+        mDialog.setCancelable(false);
+        //与iOS不同的是，我们这里是不允许cancel的，原因在于：dropbox的share linkage生成，shorted linkage但都是不可中断的
+        mDialog.setCanceledOnTouchOutside(false);
+        mDialog.show();
     }
 
 
@@ -135,6 +149,10 @@ public class DropboxShareHelper extends AsyncTask<Void, Long, Boolean> {
     protected void onPostExecute(Boolean aBoolean) {
         super.onPostExecute(aBoolean);
 
+        if (mDialog != null) {
+            mDialog.dismiss();
+        }
+
         if (mIsDirectShare) {
             share();
         } else {
@@ -148,7 +166,7 @@ public class DropboxShareHelper extends AsyncTask<Void, Long, Boolean> {
                     .setTitle(R.string.DIALOG_SET_MAX_NUMBER_OF_DOWNLOADS)
                     .setIcon(android.R.drawable.ic_dialog_info)
                     .setView(editText)
-                    .setPositiveButton(R.string.DIALOG_OK, new DialogInterface.OnClickListener() {
+                    .setNeutralButton(R.string.DIALOG_OK, new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
 
@@ -169,6 +187,15 @@ public class DropboxShareHelper extends AsyncTask<Void, Long, Boolean> {
                             didDismissDownloadTimesDialog(9999);
                         }
                     })
+                    .setPositiveButton(R.string.DIALOG_CANCEL, new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            InputMethodManager imm =(InputMethodManager)mActivity.getSystemService(Context.INPUT_METHOD_SERVICE);
+                            imm.hideSoftInputFromWindow(editText.getWindowToken(),0);
+
+                        }
+                    })
+                    .setCancelable(false)
                     .show();
         }
     }

@@ -245,7 +245,7 @@
 
     <string name="Indicator_Upload">Uploading first…</string>
     <string name="Indicator_Creating_Short_Linkage">Creating short linkage</string>
-    <string name="Indicator_Create_Share_Link">Processing the pack...</string>
+    <string name="Indicator_Share_Process_Processing">Processing the pack...</string>
     <string name="Indicator_Creating_Share_Linkage_Failure">Fail to create share linkage</string>
 
     <string name="Tip_Open_Pack_Viewer">Open pack viewer</string>

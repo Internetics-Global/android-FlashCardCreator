@@ -4,6 +4,7 @@ package com.flipflash.helper.Dropbox;
 
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.os.AsyncTask;
 import android.os.Handler;
 import android.support.annotation.NonNull;
@@ -46,6 +47,8 @@ public class DropboxUploadHelper extends AsyncTask<Void, Long, Boolean> {
 
     private String mErrorMsg;
 
+    private UploadRequest mUploadRequest;
+
     public DropboxUploadHelper(Context context, String dropboxPath,
                                File file,@NonNull Handler handler) {
 
@@ -70,6 +73,18 @@ public class DropboxUploadHelper extends AsyncTask<Void, Long, Boolean> {
         mDialog.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
         mDialog.setProgress(0);
         mDialog.setCancelable(false);
+        mDialog.setButton(DialogInterface.BUTTON_NEGATIVE, mContext.getString(R.string.DIALOG_CANCEL), new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.dismiss();
+
+                new Thread(new Runnable() {
+                    @Override
+                          public void run() {
+                             mUploadRequest.abort();
+                        } }).start();
+            }
+        });
         mDialog.setCanceledOnTouchOutside(false);
         mDialog.show();
     }
@@ -80,7 +95,7 @@ public class DropboxUploadHelper extends AsyncTask<Void, Long, Boolean> {
             // By creating a request, we get a handle to the putFile operation,
             // so we can cancel it later if we want to
             FileInputStream fis = new FileInputStream(mFile);
-            UploadRequest request = mApi.putFileOverwriteRequest(mFilePathInDropbox, fis, mFile.length(),
+            mUploadRequest = mApi.putFileOverwriteRequest(mFilePathInDropbox, fis, mFile.length(),
                     new ProgressListener() {
                         @Override
                         public long progressInterval() {
@@ -94,8 +109,8 @@ public class DropboxUploadHelper extends AsyncTask<Void, Long, Boolean> {
                         }
                     });
 
-            if (request != null) {
-                request.upload();
+            if (mUploadRequest != null) {
+                mUploadRequest.upload();
                 return true;
             }
 
