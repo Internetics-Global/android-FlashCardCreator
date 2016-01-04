@@ -1,5 +1,6 @@
 package com.flipflash.android_ffc;
 
+import android.app.ActionBar;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
@@ -166,9 +167,11 @@ public class MainActivity extends FragmentActivity implements
     private AWSUploadHelper      mAmazonUploadHelper ;
     private DropboxUploadHelper  mDropboxUploadHelper ;
 
-    private DonutProgress      mRecordStopProgress;
-    private Button             mRecordStopButton;
-    private Timer              mRecordCountDownTimer;
+    private DonutProgress        mRecordStopProgress;
+    private Button               mRecordStopButton;
+    private Timer                mRecordCountDownTimer;
+
+    private TextView             mCustomTitleTextView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -232,6 +235,14 @@ public class MainActivity extends FragmentActivity implements
         mSymbolBoxFragment = (SymbolBoxFragment) getSupportFragmentManager().findFragmentById(R.id.fragment_symbol_box);
 
         mIsFromRestartApp = true;
+
+        LayoutInflater mInflater = LayoutInflater.from(this);
+        View mCustomView = mInflater.inflate(R.layout.title_on_actionbar, null);
+        mCustomTitleTextView = (TextView) mCustomView.findViewById(R.id.title_text);
+        mCustomTitleTextView.setText("My Own Title");
+        ActionBar actionBar = getActionBar();
+        actionBar.setCustomView(mCustomView);
+        actionBar.setDisplayShowCustomEnabled(true);
 
         EasyTracker.getInstance().setContext(this);
 
@@ -493,6 +504,7 @@ public class MainActivity extends FragmentActivity implements
 
     public void setCurrentPack(Pack mCurrentPack) {
         this.mCurrentPack = mCurrentPack;
+        mCustomTitleTextView.setText(mCurrentPack.packName);
         updatePackInfoView();
     }
 
@@ -895,6 +907,7 @@ public class MainActivity extends FragmentActivity implements
         //因为是引用关系，所以这里的mCurrentPack一旦改变，也会影响CardListFragment中的mCurrentPack。一旦这改变保存到Sqlite，则重新从SQlite取一次，保证严格一致
         //create new card中的因为是通过shadow copy过去的，所以不用担心影响到
         mCurrentPack = currentPack;
+        mCustomTitleTextView.setText(mCurrentPack.packName);
 
         if (selectedCardIndex >= 0) {
             mCurrentCardIndex = selectedCardIndex;
