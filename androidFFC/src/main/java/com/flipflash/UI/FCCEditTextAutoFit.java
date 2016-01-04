@@ -3,6 +3,7 @@ package com.flipflash.UI;
 import android.content.Context;
 import android.graphics.Paint;
 import android.util.AttributeSet;
+import android.util.DisplayMetrics;
 import android.util.Log;
 import android.util.TypedValue;
 import android.widget.TextView;
@@ -51,18 +52,20 @@ public class FCCEditTextAutoFit extends FCCEditText {
         int   targetWidth = textWidth - this.getPaddingLeft() - this.getPaddingRight();
         float measuredTextWidth = mTestPaint.measureText(text);
 
-        while(measuredTextWidth >= targetWidth) {
+
+
+        while(measuredTextWidth >= targetWidth && (size >=6)) {
             size -= DELTA;
             mTestPaint.setTextSize(size);
             measuredTextWidth = mTestPaint.measureText(text);
-            Log.d("refitText", "refitText measuredTextWidth = " + measuredTextWidth + " targetWidth = " + targetWidth + " size = " + size);
+            //Log.d("refitText", "refitText measuredTextWidth = " + measuredTextWidth + " targetWidth = " + targetWidth + " size = " + size);
 
             this.setTextSize(TypedValue.COMPLEX_UNIT_PX, size);
         }
 
-        Log.d("refitText","do nothing");
 
     }
+
 
 
     @Override
@@ -75,6 +78,5 @@ public class FCCEditTextAutoFit extends FCCEditText {
     protected void onLayout(boolean changed, int left, int top, int right, int bottom) {
         super.onLayout(changed, left, top, right, bottom);
         refitText(getText().toString(), this.getWidth());
-        Log.d("refitText","onLayout:" + getText() + "width = " + this.getWidth());
     }
 }
