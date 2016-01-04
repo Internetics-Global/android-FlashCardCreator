@@ -19,7 +19,7 @@
             android:layout_height="match_parent"
             android:orientation="vertical">
 
-            <EditText
+            <com.flipflash.UI.FCCEditTextAutoFit
                 android:layout_marginTop="5dp"
                 android:id="@+id/fragment_add_pack_pack_name"
                 android:layout_width="match_parent"
@@ -33,9 +33,9 @@
                 android:textSize="@dimen/add_pack_edit_text_size"
                 android:ems="10">
                 <requestFocus/>
-            </EditText>
+            </com.flipflash.UI.FCCEditTextAutoFit>
 
-            <EditText
+            <com.flipflash.UI.FCCEditTextAutoFit
                 android:layout_marginTop="5dp"
                 android:id="@+id/fragment_add_pack_sidebar_title"
                 android:layout_width="match_parent"
@@ -50,7 +50,7 @@
                 android:ems="10"/>
 
 
-            <EditText
+            <com.flipflash.UI.FCCEditTextAutoFit
                 android:layout_marginTop="5dp"
                 android:id="@+id/fragment_add_pack_creator"
                 android:layout_width="match_parent"
@@ -64,7 +64,7 @@
                 android:hint="@string/Label_Creator"
                 android:ems="10"/>
 
-            <EditText
+            <com.flipflash.UI.FCCEditTextAutoFit
                 android:layout_marginTop="5dp"
                 android:id="@+id/fragment_add_pack_job_title"
                 android:layout_width="match_parent"

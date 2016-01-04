@@ -30,7 +30,7 @@
             android:orientation="vertical">
 
             <!-- sidebar_text_height，这只是一个大概，实际中通过程序精确计算过 -->
-            <com.flipflash.UI.FCCEditText
+            <com.flipflash.UI.FCCEditTextAutoFit
                 android:id="@+id/sidebar_title"
                 android:layout_width="@dimen/sidebar_text_height"
                 android:layout_height="match_parent"
@@ -120,10 +120,11 @@
                             android:editable="false"
                             android:textColor="#ff4a4a4a"
                             />
-                        <com.flipflash.UI.FCCEditText
+                        <com.flipflash.UI.FCCEditTextAutoFit
                             android:id="@+id/creator"
                             android:textCursorDrawable="@null"
                             android:layout_height="0dp"
+                            android:minHeight="20dp"
                             android:layout_gravity="bottom"
                             android:layout_width="fill_parent"
                             android:layout_weight="160"
@@ -138,10 +139,11 @@
                             android:background="@drawable/shape_edittext_editable"
                             android:textColor="#ff4a4a4a"
                             />
-                        <com.flipflash.UI.FCCEditText
+                        <com.flipflash.UI.FCCEditTextAutoFit
                             android:id="@+id/job_title"
                             android:textCursorDrawable="@null"
                             android:layout_height="0dp"
+                            android:minHeight="20dp"
                             android:layout_gravity="bottom"
                             android:layout_marginTop="5dp"
                             android:layout_width="fill_parent"
