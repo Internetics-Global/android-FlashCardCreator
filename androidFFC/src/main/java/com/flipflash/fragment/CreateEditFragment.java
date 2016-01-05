@@ -97,6 +97,10 @@ public class CreateEditFragment extends DialogFragment implements TextView.OnEdi
 
         mContentView = inflater.inflate(R.layout.fragment_add_pack, container);
         getDialog().getWindow().requestFeature(Window.FEATURE_NO_TITLE);
+        getDialog().getWindow().setFlags(
+                WindowManager.LayoutParams.FLAG_FULLSCREEN,
+                WindowManager.LayoutParams.FLAG_FULLSCREEN);
+
         getDialog().getWindow().setSoftInputMode(
                 WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN);
 
