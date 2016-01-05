@@ -3,10 +3,8 @@ package com.flipflash.UI;
 import android.content.Context;
 import android.graphics.Paint;
 import android.util.AttributeSet;
-import android.util.DisplayMetrics;
 import android.util.Log;
 import android.util.TypedValue;
-import android.widget.TextView;
 
 /**
  * 注意，FCCEditTextAutoFit只适合于需要根据输入自动shrink的场景，比如creator, sidebar, job  title等，
@@ -74,9 +72,11 @@ public class FCCEditTextAutoFit extends FCCEditText {
     }
 
 
+    //onSizeChanged is called when setTextSize, setText
     @Override
-    protected void onLayout(boolean changed, int left, int top, int right, int bottom) {
-        super.onLayout(changed, left, top, right, bottom);
-        refitText(getText().toString(), this.getWidth());
+    protected void onSizeChanged (int w, int h, int oldw, int oldh) {
+        if (w != oldw) {
+            refitText(this.getText().toString(), w);
+        }
     }
 }
