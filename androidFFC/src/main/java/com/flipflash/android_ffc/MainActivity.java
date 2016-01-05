@@ -239,7 +239,7 @@ public class MainActivity extends FragmentActivity implements
         LayoutInflater mInflater = LayoutInflater.from(this);
         View mCustomView = mInflater.inflate(R.layout.title_on_actionbar, null);
         mCustomTitleTextView = (TextView) mCustomView.findViewById(R.id.title_text);
-        mCustomTitleTextView.setText("My Own Title");
+        mCustomTitleTextView.setText("");
         ActionBar actionBar = getActionBar();
         actionBar.setCustomView(mCustomView);
         actionBar.setDisplayShowCustomEnabled(true);
@@ -504,7 +504,9 @@ public class MainActivity extends FragmentActivity implements
 
     public void setCurrentPack(Pack mCurrentPack) {
         this.mCurrentPack = mCurrentPack;
-        mCustomTitleTextView.setText(mCurrentPack.packName);
+        if (mCurrentPack != null) {
+            mCustomTitleTextView.setText(mCurrentPack.packName);
+        }
         updatePackInfoView();
     }
 
