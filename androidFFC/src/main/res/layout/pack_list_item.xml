@@ -16,6 +16,8 @@
         android:textColor="#FFFFFF"
         android:gravity="center"
         android:singleLine="true"
+        android:ellipsize="end"
+        android:editable="false"
         android:background="@android:color/transparent"
         android:layout_marginTop="10dp">
 
