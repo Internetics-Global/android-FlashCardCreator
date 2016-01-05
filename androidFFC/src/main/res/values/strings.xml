@@ -18,13 +18,12 @@
 
     <string name="DIALOG_TITLE_NO_NETWORK">No internet connection</string>
     <string name="DIALOG_PLEASE_CHECK_YOUR_NETWORK">Please check your internet settings.</string>
-    <string name="DIALOG_DOWNLOAD_PACK">Downloading FFC sample cards</string>
+    <string name="DIALOG_DOWNLOAD_PACK">Downloading Flip Flash Cards Sample Cards</string>
     <string name="DIALOG_DOWNLOAD_PACK_FROM_FRIENDS">Downloading pack from </string>
     <string name="DIALOG_YOU_CAN_NOT_CHANGE_TEMPLATE_BACKGROUND">You can only make changes to cards you have created yourself.</string>
     <string name="DIALOG_EXISTING_PACK_NAME">Existing pack name, please input a different one</string>
     <string name="NOT_ALLOW_CREATE_CARD_THAT_IS_NOT_YOU">You cannot create a card in pack you haven\'t created yourself.</string>
     <string name="DIALOG_NEED_TO_CREATE_PACK_FIRST">Create a group first before creating a new card</string>
-    <string name="DIALOG_DOWNLOAD_EXAMPLE_PACK_FIRST">Downloading FFC sample cards</string>
     <string name="DIALOG_ENTER_VALID_URL">Input a valid URL/Email</string>
     <string name="DIALOG_APPLY_TO_ALL_CARD">Apply to all cards...</string>
     <string name="DIALOG_SET_PASSWORD">Set a password?</string>

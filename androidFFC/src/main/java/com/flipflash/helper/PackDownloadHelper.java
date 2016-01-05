@@ -77,7 +77,7 @@ public class PackDownloadHelper extends AsyncTask<Void, Long, Boolean> {
 
         mDialog.setMax(100);
         if (mIsFromExamplePackDownload) {
-            mDialog.setMessage(mContext.getResources().getString(R.string.DIALOG_DOWNLOAD_EXAMPLE_PACK_FIRST));
+            mDialog.setMessage(mContext.getResources().getString(R.string.DIALOG_DOWNLOAD_PACK));
         } else {
             mDialog.setMessage(mContext.getString(R.string.Title_Downloading));
         }
