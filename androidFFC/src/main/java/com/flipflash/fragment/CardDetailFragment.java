@@ -4578,25 +4578,25 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnTouchL
             Question question = mCurrentCard.question;
             if (question.subheading.length() > 0) {
 
-                arrayList.add(replaceBasicSymbol(question.subheading));
+                arrayList.add(replaceBasicSymbol(addNewLineCharactersIntoStr(question.subheading)));
             }
             if (question.main.length() > 0) {
-                arrayList.add(replaceBasicSymbol(question.main));
+                arrayList.add(replaceBasicSymbol(addNewLineCharactersIntoStr(question.main)));
             }
             if (question.sub.length() > 0) {
-                arrayList.add(replaceBasicSymbol(question.sub));
+                arrayList.add(replaceBasicSymbol(addNewLineCharactersIntoStr(question.sub)));
             }
 
         } else {
             Answer answer = mCurrentCard.answer;
             if (answer.subheading.length() > 0) {
-                arrayList.add(replaceBasicSymbol(answer.subheading));
+                arrayList.add(replaceBasicSymbol(addNewLineCharactersIntoStr(answer.subheading)));
             }
             if (answer.main.length() > 0) {
-                arrayList.add(replaceBasicSymbol(answer.main));
+                arrayList.add(replaceBasicSymbol(addNewLineCharactersIntoStr(answer.main)));
             }
             if (answer.sub.length() > 0) {
-                arrayList.add(replaceBasicSymbol(answer.sub));
+                arrayList.add(replaceBasicSymbol(addNewLineCharactersIntoStr(answer.sub)));
             }
         }
 
@@ -4605,6 +4605,29 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnTouchL
         }
 
         return arrayList;
+    }
+
+    /*
+     * 故事的背景：iOS在text2speech中行与行之间的朗读是间隔的（.5秒左右），但是Android是没有的，所以这里认为的制造一个间隔
+     */
+    private String addNewLineCharactersIntoStr(String origionalStr) {
+        if (StringUtils.isEmpty(origionalStr)) {
+            return origionalStr;
+        }
+
+        String resultStr = "";
+
+        String[] array = origionalStr.split("(?<=\n)|(?=\n)");  //默认split是干掉\n，而我们希望保留任何\n
+        for (String item: array) {
+            if (item.equals("\n") == false) {
+                item = item + "\n";
+            }
+            resultStr = resultStr + item;
+
+        }
+
+        return resultStr;
+
     }
 
 
