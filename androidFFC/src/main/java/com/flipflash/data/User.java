@@ -90,40 +90,40 @@ public class User {
     }
 
     public void addPack(Pack pack) {
-        Boolean isExist = false;
-        int     indexExit = -1;
+        int     packIDToBeRemoved = -1;
+
         for (int i = 0; i < packs.size(); i++) {
             if (packs.get(i).packID == pack.packID) {
-                isExist = true;
-                indexExit = i;
+                packIDToBeRemoved = pack.packID;
                 LOGE(TAG, "addPack: addPack failure because already existence");
                 break;
             }
         }
 
-        pack.userID = this.userID;
-        if (isExist) {
-            packs.remove(indexExit);
+        if (packIDToBeRemoved != -1) {
+            removePackWithPackID(packIDToBeRemoved);
         }
 
+        pack.userID = this.userID;
         packs.add(pack);
         pack.save(gloalContext);
     }
 
-    public void removePack(Pack pack) {
 
-        int i = 0;
+    public void removePackWithPackID(int packID) {
+
+        Pack targetPack = null;
         for (Pack item: packs) {
-            if (item.packID == pack.packID) {
-                packs.remove(i);
+            if (item.packID == packID) {
+                targetPack = item;
                 break;
             }
-
-            i++;
         }
 
-
-        pack.destroy(gloalContext);
+        if (targetPack != null) {
+            packs.remove(targetPack);
+            targetPack.destroy(gloalContext);
+        }
     }
 
     public ArrayList<Pack> sortPacks(int sortType) {

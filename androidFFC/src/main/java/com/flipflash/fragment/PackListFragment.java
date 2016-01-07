@@ -365,7 +365,7 @@ public class PackListFragment extends Fragment {
                             ViewGroup.LayoutParams params = editButton.getLayoutParams();
                             params.width = params.width + UIHelper.getPixels(60);
                             editButton.setLayoutParams(params);
-                            mUser.removePack(currentPack);
+                            mUser.removePackWithPackID(currentPack.packID);
                             mUser.sortPacks(mSortType);
                             ((ImageAdapter) mGallery.getAdapter()).notifyDataSetChanged();
                         }

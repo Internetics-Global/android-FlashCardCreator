@@ -255,7 +255,7 @@ public class PackParserHelper {
 
             if (obj.containsKey("pack_id")) {
                 pack.packID = Integer.parseInt((String)(obj.get("pack_id")));
-                User.defaultUser(context).removePack(pack);
+                User.defaultUser(context).removePackWithPackID(pack.packID);
             } else {
                 pack.packID = Global.generateNoRepeatInt();;
             }
