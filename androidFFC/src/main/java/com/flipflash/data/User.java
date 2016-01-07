@@ -90,18 +90,18 @@ public class User {
     }
 
     public void addPack(Pack pack) {
-        int     packIDToBeRemoved = -1;
+        boolean     existing = false;
 
         for (int i = 0; i < packs.size(); i++) {
             if (packs.get(i).packID == pack.packID) {
-                packIDToBeRemoved = pack.packID;
+                existing = true;
                 LOGE(TAG, "addPack: addPack failure because already existence");
                 break;
             }
         }
 
-        if (packIDToBeRemoved != -1) {
-            removePackWithPackID(packIDToBeRemoved);
+        if (existing) {
+            removePackWithPackID(pack.packID);
         }
 
         pack.userID = this.userID;
