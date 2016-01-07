@@ -123,7 +123,10 @@ public class FileOperationHelper {
      */
     public static File generateUniquePackZipFilePathForUploading(Pack pack) {
         String packName = pack.packName == null? "":pack.packName;
-        String string = String.format("%s%d%d.zip", packName,(int)(System.currentTimeMillis()/1000),Math.abs((new Random()).nextInt()));
+
+        String purifiedPackName = StringUtils.removeAllCharactersExceptAlphanumericFromString(packName);
+
+        String string = String.format("%s%d%d.zip", purifiedPackName,(int)(System.currentTimeMillis()/1000),Math.abs((new Random()).nextInt()));
         File tempFile = new File((uploadPackDirectory()), string);
         return tempFile;
     }

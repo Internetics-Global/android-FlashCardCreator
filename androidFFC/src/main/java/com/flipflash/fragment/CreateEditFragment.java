@@ -308,13 +308,13 @@ public class CreateEditFragment extends DialogFragment implements TextView.OnEdi
         }
 
 
-        if (StringUtils.isAlphanumeric(mPackNameEditText.getText().toString()) == false || StringUtils.isEmpty(mPackNameEditText.getText().toString())) {
-            new SweetAlertDialog(getActivity())
-                    .setTitleText(getResources().getString(R.string.DIALOG_AlERT))
-                    .setContentText(getString(R.string.DIALOG_ONLY_ALPHANUMBER_PERMITTED))
-                    .show();
-            return;
-        }
+//        if (StringUtils.isAlphanumeric(mPackNameEditText.getText().toString()) == false || StringUtils.isEmpty(mPackNameEditText.getText().toString())) {
+//            new SweetAlertDialog(getActivity())
+//                    .setTitleText(getResources().getString(R.string.DIALOG_AlERT))
+//                    .setContentText(getString(R.string.DIALOG_ONLY_ALPHANUMBER_PERMITTED))
+//                    .show();
+//            return;
+//        }
 
         mCurrentPack.packName = mPackNameEditText.getText().toString();
         mCurrentPack.sidebarTitle = mSidebarTitleEditText.getText().toString();

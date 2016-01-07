@@ -371,4 +371,14 @@ public class StringUtils {
     }
 
 
+    public static String removeAllCharactersExceptAlphanumericFromString(String str) {
+        if (isEmpty(str)) {
+            return "";
+        }
+
+        String resultString = str.replaceAll("[^A-Za-z0-9]", "");
+        return resultString;
+    }
+
+
 }

@@ -32,7 +32,7 @@ public class AWSUtils {
         }
 
         String expectedBucketName = ParseUser.getCurrentUser().getUsername().toLowerCase(); //bucket name必须是low case的，这是aws要求的
-        expectedBucketName = expectedBucketName.replace(" ","");
+        expectedBucketName = StringUtils.removeAllCharactersExceptAlphanumericFromString(expectedBucketName);
         //AWS对于bucket是有命名要求的：http://docs.rightscale.com/faq/clouds/aws/What_are_valid_S3_bucket_names.html
         expectedBucketName = String.format("%s-%s",expectedBucketName, Global.BucketPostfixAfterUserName);
 
