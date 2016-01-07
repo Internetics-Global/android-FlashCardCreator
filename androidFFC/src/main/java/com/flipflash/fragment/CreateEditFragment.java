@@ -276,9 +276,9 @@ public class CreateEditFragment extends DialogFragment implements TextView.OnEdi
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
 
-
-                            mCoverImageView.setImageBitmap(null);
                             mCurrentPack.coverImageUriFormatStr = FileOperationHelper.getPackCoverDefaultImagePath();
+                            String imagePath = mCurrentPack.coverImageUriFormatStr;
+                            mCoverImageView.setImageURI(Uri.parse(imagePath));
 
                         }
                     })
