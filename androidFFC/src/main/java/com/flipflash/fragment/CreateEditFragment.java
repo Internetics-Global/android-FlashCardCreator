@@ -1,7 +1,9 @@
 package com.flipflash.fragment;
 
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.database.Cursor;
@@ -145,10 +147,7 @@ public class CreateEditFragment extends DialogFragment implements TextView.OnEdi
             @Override
             public void onClick(View v) {
 
-                MediaOptions options = MediaOptions.createDefault();
-                if (options != null) {
-                    MediaPickerActivity.open(CreateEditFragment.this,CODE_REQUEST_IMAGE_FROM_IMAGE_LIBRARY,options);
-                }
+                didClickedImageSelectionButton();
 
             }
         });
@@ -241,6 +240,53 @@ public class CreateEditFragment extends DialogFragment implements TextView.OnEdi
 
         return mContentView;
     }
+
+
+    private void didClickedImageSelectionButton() {
+
+        if (mIsEditPack == false) {
+
+            new AlertDialog.Builder(getActivity())
+                    .setTitle(R.string.DIALOG_IMAGE_SELECTION)
+                    .setMessage(R.string.Title_Image_Copyright)
+                    .setNegativeButton(R.string.DIALOG_SELECT_FROM_LIBRARY, new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            MediaOptions options = MediaOptions.createDefault();
+                            if (options != null) {
+                                MediaPickerActivity.open(CreateEditFragment.this,CODE_REQUEST_IMAGE_FROM_IMAGE_LIBRARY,options);
+                            }
+                        }
+                    })
+                    .show();
+        } else {
+            new AlertDialog.Builder(getActivity())
+                    .setTitle(R.string.Optional_Edit_Or_Remove)
+                    .setMessage(R.string.Title_Image_Copyright)
+                    .setNegativeButton(R.string.DIALOG_SELECT_FROM_LIBRARY, new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            MediaOptions options = MediaOptions.createDefault();
+                            if (options != null) {
+                                MediaPickerActivity.open(CreateEditFragment.this,CODE_REQUEST_IMAGE_FROM_IMAGE_LIBRARY,options);
+                            }
+                        }
+                    })
+                    .setPositiveButton(R.string.DIALOG_REMOVE_IMAGE, new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+
+
+                            mCoverImageView.setImageBitmap(null);
+                            mCurrentPack.coverImageUriFormatStr = FileOperationHelper.getPackCoverDefaultImagePath();
+
+                        }
+                    })
+                    .show();
+        }
+
+    }
+
 
     public void setPack(Pack pack) {
         this.mCurrentPack = pack;
