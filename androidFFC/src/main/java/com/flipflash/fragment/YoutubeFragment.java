@@ -14,6 +14,7 @@ import android.webkit.WebView;
 import android.widget.Button;
 
 import com.flipflash.android_ffc.R;
+import com.flipflash.util.StringUtils;
 
 import java.net.URL;
 
@@ -73,8 +74,7 @@ public class YoutubeFragment extends DialogFragment {
         //webView.setWebViewClient(new WebViewClient());
         //webView.loadUrl("http://www.google.com");
 
-        Uri youtubeURL = Uri.parse(mYoutubeLink);
-        String youtubeIDStr = youtubeURL.getQueryParameter("v"); //For example: https://www.youtube.com/watch?v=COvnHv42T-A
+        String youtubeIDStr = StringUtils.getYouTubeIDFromLink(mYoutubeLink);
 
         String embeddedYoutubeLink = String.format("https://www.youtube.com/embed/%s",youtubeIDStr);   //For example, https://www.youtube.com/embed/_rgzmQ_vpSo
 
@@ -91,6 +91,7 @@ public class YoutubeFragment extends DialogFragment {
 
 
     }
+
 
     public String getYoutubeLink() {
         return mYoutubeLink;

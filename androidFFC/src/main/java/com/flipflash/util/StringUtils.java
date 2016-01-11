@@ -363,7 +363,10 @@ public class StringUtils {
         if ((str.contains("http://www.youtube.com/"))
                 || (str.contains("http://m.youtube.com/"))
                       || (str.contains("https://www.youtube.com/"))
-                             || (str.contains("https://m.youtube.com/"))) {
+                             || (str.contains("https://m.youtube.com/"))
+                             || (str.contains("http://youtu.be/"))
+                             || (str.contains("https://youtu.be/")))
+        {
             return true;
         } else {
             return false;
@@ -380,5 +383,20 @@ public class StringUtils {
         return resultString;
     }
 
+    public static String getYouTubeIDFromLink(String youtubeLink) {
+        if (StringUtils.isEmpty(youtubeLink)) {
+            return "";
+        }  else if (youtubeLink.toLowerCase().contains("youtube.com")) {
+            Uri youtubeURL = Uri.parse(youtubeLink);
+            String youtubeIDStr = youtubeURL.getQueryParameter("v");
+            return youtubeIDStr;
+        } else{
+            Uri youtubeURL = Uri.parse(youtubeLink);
+            String youtubeIDStr = youtubeURL.getLastPathSegment();
+            return youtubeIDStr;
+
+        }
+
+    }
 
 }
