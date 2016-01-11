@@ -114,7 +114,7 @@ public class Global {
     public static final int kDEFAULT_CountDown_Slider_Value = 3;
 
     //Dropbox folder to save Flip Flash Cards
-    public static final String DROPBOX_FOLDER = "/FlashCardCreator2016/";
+    public static final String DROPBOX_FOLDER = "/FlipFlashCardsPacks/";
 
 
     /**
