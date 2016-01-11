@@ -80,8 +80,8 @@ public class AppContext extends Application {
         // Parse的app_key和app_id是在Manifest中进行设置
 
         //Twitter
-        ParseTwitterUtils.initialize("spW6th3vldJVq5Zjnud3Lg",
-                "CZHdQXJIVGtLlBnvh6T1eEZ2WJgWPSfNUdju6jXEs");
+        ParseTwitterUtils.initialize("uptcC5DVVmMPE25rwNDoVyG7q",
+                "ciAdhaC2lF1hkZqnYmfoUowcBhnQN2rfcYuKoV7D9ImK8tWZzo");
 
         //Facebook
         ParseFacebookUtils.initialize(this);
