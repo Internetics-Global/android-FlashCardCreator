@@ -67,7 +67,7 @@ public class AppContext extends Application {
         // Setup Amazon Cognito
         mCredentialsProvider = new CognitoCachingCredentialsProvider(
                 mContext, // Context
-                "us-east-1:55b5aa55-921e-49d0-b4d3-673793805862", // Identity Pool ID
+                "us-east-1:19efa782-177f-476a-a62b-c504d5ddcd76", // Identity Pool ID
                 Regions.US_EAST_1 // Region
         );
 
