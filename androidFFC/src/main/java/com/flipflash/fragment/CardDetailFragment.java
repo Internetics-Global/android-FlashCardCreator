@@ -949,7 +949,7 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnTouchL
                         if (StringUtils.isEmptyOrPlaceHolder(mCurrentPack.logoImageUriFormatStr)) {
 
                             new AlertDialog.Builder(getActivity())
-                                    .setTitle(R.string.DIALOG_IMAGE_VIDEO_SELECTION)
+                                    .setTitle(R.string.DIALOG_LOGO_IMAGE_SELECTION)
                                     .setMessage(R.string.Title_Image_Copyright)
                                     .setNegativeButton(R.string.DIALOG_SELECT_FROM_LIBRARY, new DialogInterface.OnClickListener() {
                                         @Override
@@ -965,7 +965,7 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnTouchL
                                     .show();
                         } else {
                             new AlertDialog.Builder(getActivity())
-                                    .setTitle(R.string.DIALOG_IMAGE_VIDEO_SELECTION)
+                                    .setTitle(R.string.DIALOG_LOGO_IMAGE_SELECTION)
                                     .setMessage(R.string.Title_Image_Copyright)
                                     .setNegativeButton(R.string.DIALOG_SELECT_FROM_LIBRARY, new DialogInterface.OnClickListener() {
                                         @Override
@@ -1089,7 +1089,7 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnTouchL
 
                     if (string.length() > 0) {
                         new AlertDialog.Builder(getActivity())
-                                .setTitle(R.string.Optional_Edit_Or_Remove)
+                                .setTitle(R.string.DIALOG_BACKGROUND_IMAGE_SELECTION)
                                 .setMessage(R.string.Title_Image_Copyright)
                                 .setPositiveButton(R.string.Optional_Remove_Background_Image, new DialogInterface.OnClickListener() {
                                     @Override
@@ -1124,7 +1124,7 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnTouchL
                                 .show();
                     } else {
                         new AlertDialog.Builder(getActivity())
-                                .setTitle(R.string.DIALOG_SELECT_FROM_LIBRARY)
+                                .setTitle(R.string.DIALOG_BACKGROUND_IMAGE_SELECTION)
                                 .setMessage(R.string.Title_Image_Copyright)
                                 .setPositiveButton(R.string.DIALOG_SELECT_FROM_LIBRARY, new DialogInterface.OnClickListener() {
                                     @Override

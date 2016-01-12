@@ -49,8 +49,11 @@
     <string name="DIALOG_PACK_IS_BEING_USED">The pack is currently being used</string>
     <string name="DIALOG_SHARE_FUNCTION_FORBIDDEN_BY_CREATOR">Share function is forbidden by the pack creator</string>
 
-    <string name="DIALOG_IMAGE_VIDEO_SELECTION">Image/video selection</string>
+    <string name="DIALOG_IMAGE_VIDEO_SELECTION">Image/video/video link selection</string>
     <string name="DIALOG_IMAGE_SELECTION">Image selection</string>
+    <string name="DIALOG_PACK_LIST_IMAGE_SELECTION">Pack list image selection</string>
+    <string name="DIALOG_LOGO_IMAGE_SELECTION">Logo image selection</string>
+    <string name="DIALOG_BACKGROUND_IMAGE_SELECTION">Background image selection</string>
     <string name="DIALOG_INSERT_YOUTUBE_URL">Insert a YouTube url</string>
     <string name="DIALOG_SELECT_FROM_LIBRARY">Select from library</string>
     <string name="DIALOG_REMOVE_VIDEO_IMAGE">Remove video/image</string>
