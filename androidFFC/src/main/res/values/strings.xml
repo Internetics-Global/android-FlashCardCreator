@@ -271,6 +271,9 @@
     <string name="Tip_Create_Card">Create a new card</string>
     <string name="Tip_Image">Click to select an image/video from library, or insert a YouTube video linkage</string>
 
+    <string name="Tip_Share_Message_Pre">I\'ve just created a pack of Flash Cards with Flip Flash Cards app!</string>
+    <string name="Tip_Share_Message_Post">Check it out! Get the Flip Flash Cards app </string>
+
 
     <string name="Copyright">Flip Flash Cards has been developed by Flip Flash Cards Pty Ltd in conjunction with development team Internetics Pty Ltd.\n\nCopyright Flip Flash Cards 2015. All rights reserved.\n\nFor information on how to use the application, please click the (i) information button above.\n\nPlease submit any technical feedback to fcc@internetics.net.au\n\nThank you for your interest in the Flip Flash Cards app and Flip Flash Cards Pty Ltd.</string>
     <string name="Record_Introduction_Text">When you click “Record” you have a maximum of 30 seconds to record your message. \n\nClick “Stop” when ready to stop recording.\n\nYou can then click “Play” to hear it, or “Save” to save it to the card.</string>

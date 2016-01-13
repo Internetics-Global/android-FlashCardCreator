@@ -1,5 +1,6 @@
 package com.flipflash.util;
 
+import android.content.Context;
 import android.graphics.Color;
 import android.net.Uri;
 import android.view.Gravity;
@@ -396,6 +397,17 @@ public class StringUtils {
             return youtubeIDStr;
 
         }
+
+    }
+
+
+    public static String getShareMessage(Context context, String shareLink) {
+
+        String preStr = context.getString(R.string.Tip_Share_Message_Pre);
+        String postStr = context.getString(R.string.Tip_Share_Message_Post);
+
+        String message = String.format("%s ( %s ) %s %s",preStr,shareLink,postStr,Global.K_AppStore_Link);
+        return message;
 
     }
 

@@ -313,7 +313,7 @@ public class DropboxShareHelper extends AsyncTask<Void, Long, Boolean> {
 
 
     private void shareActionOnItemSelected (int position,String shareLink) {
-        String finalPostString = "I've just created a pack of Flash Cards with the Flip Flash Cards! ( " + shareLink +" ) Check it out! Get the Flip Flash Cards app http://www.apple.com";
+        String finalPostString = StringUtils.getShareMessage(mActivity,shareLink);
         switch (position) {
             case 0: {
                 shareToFacebook(shareLink);
@@ -380,13 +380,15 @@ public class DropboxShareHelper extends AsyncTask<Void, Long, Boolean> {
 
         final FacebookFacade facebook = new FacebookFacade(mActivity, "430339350417672");
         if (facebook.isAuthorized()) {
-            facebook.publishMessage("I've just created a pack of Flash Cards with Flip Flash Cards! ( " + shareLink +" ) Check it out! Get the Flip Flash Cards app http://www.apple.com");
+            String message = StringUtils.getShareMessage(mActivity,shareLink);
+            facebook.publishMessage(message);
         } else {
             // Start authentication dialog and publish message after successful authentication
             facebook.authorize(new AuthListener() {
                 @Override
                 public void onAuthSucceed() {
-                    facebook.publishMessage("I've just created a pack of Flash Cards with Flip Flash Cards app! ( " + shareLink +" ) Check it out! Get the Flip Flash Cards app http://www.apple.com");
+                    String message = StringUtils.getShareMessage(mActivity,shareLink);
+                    facebook.publishMessage(message);
                 }
 
                 @Override

@@ -117,6 +117,9 @@ public class Global {
     public static final String DROPBOX_FOLDER = "/FlipFlashCardsPacks/";
 
 
+    public static final String K_AppStore_Link = "<please provide link on Google Play>";
+
+
     /**
      * detect network
      *
