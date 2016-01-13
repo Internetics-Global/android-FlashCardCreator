@@ -249,7 +249,19 @@ public class PackDownloadHelper extends AsyncTask<Void, Long, Boolean> {
         public void handleMessage(Message msg) {
             super.handleMessage(msg);
 
-            unzipPackTaskFinished();
+            if (msg.what == UnzipAndParsePackHelper.UNZIP_SUCCEED) {
+                unzipPackTaskFinished();
+            }  else {
+                AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(
+                        mContext);
+                alertDialogBuilder.setTitle(R.string.DIALOG_WARN);
+                alertDialogBuilder
+                        .setMessage(R.string.DIALOG_WRONG_PASSWORD)
+                        .setPositiveButton(R.string.DIALOG_CLOSE,null).
+                        show();
+            }
+
+
         }
     };
 
