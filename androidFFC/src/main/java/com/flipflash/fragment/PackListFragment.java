@@ -127,11 +127,9 @@ public class PackListFragment extends Fragment {
             @Override
             public void onClick(View v) {
 
-                new SweetAlertDialog(getActivity(), SweetAlertDialog.WARNING_TYPE)
-                        .setTitleText(getString(R.string.DIALOG_AlERT))
-                        .setContentText("Not implemented yet")
-                        .setConfirmText(getString(R.string.DIALOG_CLOSE))
-                        .show();
+                Intent intent = new Intent(getActivity(), WebViewActivity.class);
+                intent.putExtra("url", " http://www.flipflashcards.com/packs");
+                startActivity(intent);
             }
         });
 
@@ -140,7 +138,7 @@ public class PackListFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(getActivity(), WebViewActivity.class);
-                intent.putExtra("url", "http://www.youtube.com.au");
+                intent.putExtra("url", "http://www.flipflashcards.com/newuser");
                 startActivity(intent);
             }
         });
