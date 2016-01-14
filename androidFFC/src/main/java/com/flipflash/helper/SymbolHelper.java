@@ -9,7 +9,7 @@ package com.flipflash.helper;
  */
 public class SymbolHelper {
 
-    private static final String TAG = SymbolHelper.class.getName();
+    private static final String TAG = SymbolHelper.class.getSimpleName();
 
     /**
      * 这是3个特殊的symbol，占用了普通的两倍距离，且有不同的含义

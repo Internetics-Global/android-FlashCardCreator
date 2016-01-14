@@ -91,7 +91,7 @@ import static com.flipflash.util.LogUtils.LOGD;
 import static com.flipflash.util.LogUtils.LOGE;
 
 public class CardDetailFragment extends Fragment implements FCCEditText.OnTouchListener {
-    private static final String TAG = CardDetailFragment.class.getName();
+    private static final String TAG = CardDetailFragment.class.getSimpleName();
 
     public Card mCurrentCard;
     public Pack mCurrentPack;

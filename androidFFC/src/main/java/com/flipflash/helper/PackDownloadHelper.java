@@ -38,7 +38,7 @@ import static com.flipflash.util.LogUtils.LOGE;
  */
 public class PackDownloadHelper extends AsyncTask<Void, Long, Boolean> {
 
-    private static final String TAG = PackDownloadHelper.class.getName();
+    private static final String TAG = PackDownloadHelper.class.getSimpleName();
 
     private Context mContext;
     private String mDownloadURL;

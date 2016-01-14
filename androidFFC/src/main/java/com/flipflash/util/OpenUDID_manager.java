@@ -26,7 +26,7 @@ import static com.flipflash.util.LogUtils.LOGE;
 
 
 public class OpenUDID_manager implements ServiceConnection {
-    private static final String TAG = OpenUDID_manager.class.getName();
+    private static final String TAG = OpenUDID_manager.class.getSimpleName();
 
     public final static String PREF_KEY = "openudid";
     public final static String PREFS_NAME = "openudid_prefs";

@@ -19,7 +19,7 @@ import static com.flipflash.util.LogUtils.LOGE;
  */
 public class AudioHelper {
 
-    private static final String TAG = AudioHelper.class.getName();
+    private static final String TAG = AudioHelper.class.getSimpleName();
 
     private static MediaRecorder mRecorder;
     private static MediaPlayer   mp;

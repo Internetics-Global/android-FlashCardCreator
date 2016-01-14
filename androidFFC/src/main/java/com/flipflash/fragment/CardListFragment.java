@@ -43,7 +43,7 @@ import static com.flipflash.util.LogUtils.LOGD;
  * the order of card shown in CardListFragment is consisitent with cardSN order
  */
 public class CardListFragment extends Fragment {
-    private static final String TAG = CardListFragment.class.getName();
+    private static final String TAG = CardListFragment.class.getSimpleName();
 
     //View related
     public View mContentView;

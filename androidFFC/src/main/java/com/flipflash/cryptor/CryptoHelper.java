@@ -26,7 +26,7 @@ import java.io.InputStreamReader;
  */
 public class CryptoHelper {
 
-    private static final String TAG = CryptoHelper.class.getName();
+    private static final String TAG = CryptoHelper.class.getSimpleName();
 
     private final static String password = "@$4245dfsfer42r4243sfds";
 

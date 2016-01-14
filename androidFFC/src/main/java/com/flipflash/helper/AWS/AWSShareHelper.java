@@ -49,7 +49,7 @@ import static com.flipflash.util.LogUtils.LOGD;
 
 public class AWSShareHelper extends AsyncTask<Void, Long, Boolean> {
 
-    private static final String TAG = AWSShareHelper.class.getName();
+    private static final String TAG = AWSShareHelper.class.getSimpleName();
 
     private Activity   mActivity;
     private Pack       mCurrentPack;

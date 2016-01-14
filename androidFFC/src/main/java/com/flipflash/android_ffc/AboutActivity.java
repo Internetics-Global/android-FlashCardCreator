@@ -16,7 +16,7 @@ import com.flipflash.util.Global;
 import cn.pedant.SweetAlert.SweetAlertDialog;
 
 public class AboutActivity extends Activity {
-    private static final String TAG = AboutActivity.class.getName();
+    private static final String TAG = AboutActivity.class.getSimpleName();
 
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

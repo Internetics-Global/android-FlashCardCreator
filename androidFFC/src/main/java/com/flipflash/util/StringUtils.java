@@ -16,7 +16,7 @@ import java.util.regex.Pattern;
 
 public class StringUtils {
 
-    private static final String TAG = StringUtils.class.getName();
+    private static final String TAG = StringUtils.class.getSimpleName();
 
     private final static SimpleDateFormat dateFormater = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 

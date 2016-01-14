@@ -19,7 +19,7 @@ import static com.flipflash.util.LogUtils.LOGD;
  */
 public class SQLiteHelper {
 
-    private static final String TAG = SQLiteHelper.class.getName();
+    private static final String TAG = SQLiteHelper.class.getSimpleName();
 
     private static DBOpenHelper dbOpenHelper = null;
 

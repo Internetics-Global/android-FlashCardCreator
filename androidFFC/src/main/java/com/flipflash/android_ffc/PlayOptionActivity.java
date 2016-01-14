@@ -23,7 +23,7 @@ public class PlayOptionActivity extends Activity {
     Button checkAuto;
     Button checkAutoLoop;
 
-    private static final String TAG = PlayActivity.class.getName();
+    private static final String TAG = PlayActivity.class.getSimpleName();
 
 
     public void onCreate(Bundle savedInstanceState) {

@@ -13,7 +13,7 @@ import android.widget.ImageView;
  */
 public class FCCImageView extends ImageView {
 
-    private static final String TAG = FCCImageView.class.getName();
+    private static final String TAG = FCCImageView.class.getSimpleName();
 
     public FCCImageView(Context context) {
         super(context);

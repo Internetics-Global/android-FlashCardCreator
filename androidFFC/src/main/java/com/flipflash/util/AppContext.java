@@ -32,7 +32,7 @@ import java.util.UUID;
 import static com.flipflash.util.LogUtils.LOGD;
 
 public class AppContext extends Application {
-    private static final String TAG = AppContext.class.getName();
+    private static final String TAG = AppContext.class.getSimpleName();
 
     private static Context                           mContext;
     private static CognitoCachingCredentialsProvider mCredentialsProvider;

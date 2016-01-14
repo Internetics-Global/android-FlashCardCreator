@@ -15,7 +15,7 @@ import static com.flipflash.util.LogUtils.LOGE;
 import com.flipflash.util.AppContext;
 
 public class WebViewActivity extends Activity {
-    private static final String TAG = WebViewActivity.class.getName();
+    private static final String TAG = WebViewActivity.class.getSimpleName();
 
     private WebView mWebview;
 

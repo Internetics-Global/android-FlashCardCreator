@@ -18,7 +18,7 @@ import static com.flipflash.util.LogUtils.LOGW;
 
 public class Card {
 
-    private static final String TAG = Card.class.getName();
+    private static final String TAG = Card.class.getSimpleName();
 
     public int cardID;
     public int packID;

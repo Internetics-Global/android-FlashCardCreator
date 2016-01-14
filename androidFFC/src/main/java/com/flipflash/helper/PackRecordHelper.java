@@ -19,7 +19,7 @@ import java.util.Date;
  */
 public class PackRecordHelper {
 
-    private static final String TAG = PackRecordHelper.class.getName();
+    private static final String TAG = PackRecordHelper.class.getSimpleName();
 
     public static void savePackUploadRecord(Pack currentPack) {
 

@@ -46,7 +46,7 @@ import static com.flipflash.util.LogUtils.LOGE;
 
 public class UIHelper {
 
-    private static final String TAG = UIHelper.class.getName();
+    private static final String TAG = UIHelper.class.getSimpleName();
 
 
     public static float convertDpToPixel(float dp){

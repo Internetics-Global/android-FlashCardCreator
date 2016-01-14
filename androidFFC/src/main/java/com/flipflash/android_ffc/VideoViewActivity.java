@@ -14,7 +14,7 @@ import static com.flipflash.util.LogUtils.LOGE;
  * Created by bournewang on 4/9/14.
  */
 public class VideoViewActivity extends Activity {
-    private static final String TAG = VideoViewActivity.class.getName();
+    private static final String TAG = VideoViewActivity.class.getSimpleName();
 
     @Override
     public void onCreate(Bundle savedInstanceState) {

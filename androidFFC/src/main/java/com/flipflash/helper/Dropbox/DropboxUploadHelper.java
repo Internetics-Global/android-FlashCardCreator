@@ -33,7 +33,7 @@ import java.io.FileNotFoundException;
  */
 public class DropboxUploadHelper extends AsyncTask<Void, Long, Boolean> {
 
-    private static final String TAG = DropboxUploadHelper.class.getName();
+    private static final String TAG = DropboxUploadHelper.class.getSimpleName();
 
     private final Handler     mHandler;
 

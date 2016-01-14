@@ -26,7 +26,7 @@ import static com.flipflash.util.LogUtils.LOGE;
 
 public class PackBuildHelper {
 
-    private static final String TAG = PackBuildHelper.class.getName();
+    private static final String TAG = PackBuildHelper.class.getSimpleName();
 
     private static Activity mActivity;
 

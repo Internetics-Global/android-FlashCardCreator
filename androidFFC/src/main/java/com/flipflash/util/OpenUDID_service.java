@@ -22,7 +22,7 @@ import android.os.IBinder;
 
 public class OpenUDID_service extends Service {
 
-    private static final String TAG = OpenUDID_service.class.getName();
+    private static final String TAG = OpenUDID_service.class.getSimpleName();
 
     @Override
     public IBinder onBind(Intent arg0) {

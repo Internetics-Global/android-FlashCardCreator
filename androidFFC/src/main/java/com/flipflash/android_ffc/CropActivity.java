@@ -31,7 +31,7 @@ import static com.flipflash.util.LogUtils.LOGD;
  */
 public class CropActivity extends Activity {
 
-    private static final String TAG = CropActivity.class.getName();
+    private static final String TAG = CropActivity.class.getSimpleName();
 
     private CropImageView cropImageView;
 

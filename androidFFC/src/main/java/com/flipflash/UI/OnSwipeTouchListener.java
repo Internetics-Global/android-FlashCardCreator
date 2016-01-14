@@ -15,7 +15,7 @@ import static com.flipflash.util.LogUtils.LOGE;
  */
 public class OnSwipeTouchListener implements OnTouchListener {
 
-    private static final String TAG = OnSwipeTouchListener.class.getName();
+    private static final String TAG = OnSwipeTouchListener.class.getSimpleName();
 
     private final GestureDetector gestureDetector;
 

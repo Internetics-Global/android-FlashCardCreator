@@ -15,7 +15,7 @@ import java.util.List;
 
 public class CardListModel {
 
-    private static final String TAG = CardListModel.class.getName();
+    private static final String TAG = CardListModel.class.getSimpleName();
 
     /**
      * Return card list for current pack

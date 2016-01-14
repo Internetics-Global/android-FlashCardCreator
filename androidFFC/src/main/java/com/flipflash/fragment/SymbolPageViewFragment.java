@@ -33,7 +33,7 @@ import javax.annotation.Nullable;
  */
 public class SymbolPageViewFragment extends Fragment implements TextView.OnTouchListener {
 
-    private static final String TAG = SymbolPageViewFragment.class.getName();
+    private static final String TAG = SymbolPageViewFragment.class.getSimpleName();
 
     public View               mContentView;
 

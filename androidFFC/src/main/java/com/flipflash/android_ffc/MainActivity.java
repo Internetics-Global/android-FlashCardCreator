@@ -108,7 +108,7 @@ import cn.pedant.SweetAlert.SweetAlertDialog;
 public class MainActivity extends FragmentActivity implements
         CardListFragment.Callbacks {
 
-    private static final String TAG = MainActivity.class.getName();
+    private static final String TAG = MainActivity.class.getSimpleName();
 
     private static final int LOGIN_REQUEST = 0;
 

@@ -17,7 +17,7 @@ import java.util.zip.ZipOutputStream;
  */
 public class ZipFileHelper {
 
-    private static final String TAG = ZipFileHelper.class.getName();
+    private static final String TAG = ZipFileHelper.class.getSimpleName();
 
     /*
     * @param zipFileName new created zip file name (full path)

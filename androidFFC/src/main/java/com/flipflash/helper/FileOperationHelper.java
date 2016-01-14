@@ -31,7 +31,7 @@ import static com.flipflash.util.LogUtils.LOGE;
  */
 public class FileOperationHelper {
 
-    private static final String TAG = FileOperationHelper.class.getName();
+    private static final String TAG = FileOperationHelper.class.getSimpleName();
 
     private static int resourceID[] = {R.drawable.question_placeholder_logo,
             R.drawable.question_placeholder_content,

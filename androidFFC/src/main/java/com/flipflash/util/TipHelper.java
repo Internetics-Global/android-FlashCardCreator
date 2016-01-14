@@ -12,7 +12,7 @@ import it.sephiroth.android.library.tooltip.TooltipManager;
  */
 public class TipHelper {
 
-    private static final String TAG = TipHelper.class.getName();
+    private static final String TAG = TipHelper.class.getSimpleName();
 
     private static final int POINTER_SIZE = 10;
 

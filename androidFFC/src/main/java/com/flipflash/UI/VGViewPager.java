@@ -30,7 +30,7 @@ public class VGViewPager extends AutoScrollViewPager {
      */
     public WeakReference<CardDetailFragment> mCardDetailFragmentWeakReference;
 
-    private static final String TAG = VGViewPager.class.getName();
+    private static final String TAG = VGViewPager.class.getSimpleName();
 
     protected OnViewPagerClickListener mOnViewPagerItemClickListener;
 

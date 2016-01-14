@@ -41,7 +41,7 @@ import static com.flipflash.util.LogUtils.LOGD;
 
 public class MoreActivity extends Activity {
 
-    private static final String TAG = MoreActivity.class.getName();
+    private static final String TAG = MoreActivity.class.getSimpleName();
 
     private static final int LOGIN_REQUEST = 0;
 

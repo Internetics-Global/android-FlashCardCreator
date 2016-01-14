@@ -14,7 +14,7 @@ import com.flipflash.android_ffc.R;
  */
 public class RoundedBottomRightImageView extends ImageView{
 
-    private static final String TAG = RoundedBottomRightImageView.class.getName();
+    private static final String TAG = RoundedBottomRightImageView.class.getSimpleName();
 
     public static float radius = 250;//default value
 

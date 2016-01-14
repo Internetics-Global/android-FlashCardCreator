@@ -26,7 +26,7 @@ import static com.flipflash.util.LogUtils.LOGE;
 
 public class PackParserHelper {
 
-    private static final String TAG = PackParserHelper.class.getName();
+    private static final String TAG = PackParserHelper.class.getSimpleName();
 
     private static final int    IPHONE_WIDTH              = 480;
     private static final int    IPAD_WIDTH                = 1024;

@@ -12,7 +12,7 @@ import java.util.HashMap;
 
 public class CSS {
 
-    private static final String TAG = CSS.class.getName();
+    private static final String TAG = CSS.class.getSimpleName();
 
     public int cssID;
     public String subheadingAlign;

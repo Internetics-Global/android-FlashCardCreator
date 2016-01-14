@@ -54,7 +54,7 @@ import static com.flipflash.util.LogUtils.LOGD;
 
 public class PackListFragment extends Fragment {
 
-    private static final String TAG = PackListFragment.class.getName();
+    private static final String TAG = PackListFragment.class.getSimpleName();
 
     private SmoothGallery mGallery;
 

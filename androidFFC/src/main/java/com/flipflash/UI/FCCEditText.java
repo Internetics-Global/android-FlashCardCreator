@@ -9,7 +9,7 @@ import static com.flipflash.util.LogUtils.LOGE;
 
 public class FCCEditText extends EditText {
 
-    private static final String TAG = FCCEditText.class.getName();
+    private static final String TAG = FCCEditText.class.getSimpleName();
 
     public OnKeyboardCloseListener mCallbacks;
 

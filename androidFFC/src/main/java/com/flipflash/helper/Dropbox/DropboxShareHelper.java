@@ -57,7 +57,7 @@ import static com.flipflash.util.LogUtils.LOGD;
  */
 public class DropboxShareHelper extends AsyncTask<Void, Long, Boolean> {
 
-    private static final String TAG = DropboxShareHelper.class.getName();
+    private static final String TAG = DropboxShareHelper.class.getSimpleName();
 
     private Activity mActivity;
     private Pack     mCurrentPack;

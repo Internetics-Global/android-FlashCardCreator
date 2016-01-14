@@ -63,7 +63,7 @@ import static com.flipflash.util.LogUtils.LOGD;
 import static com.flipflash.util.LogUtils.LOGE;
 
 public class CreateEditFragment extends DialogFragment implements TextView.OnEditorActionListener {
-    private static final String TAG = CreateEditFragment.class.getName();
+    private static final String TAG = CreateEditFragment.class.getSimpleName();
 
     private View mContentView;
     private Pack mCurrentPack;

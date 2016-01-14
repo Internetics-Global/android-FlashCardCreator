@@ -13,7 +13,7 @@ import static com.flipflash.util.LogUtils.LOGD;
  */
 public class FFCRatioFrameLayout extends RatioFrameLayout {
 
-    private static final String TAG = VGViewPager.class.getName();
+    private static final String TAG = VGViewPager.class.getSimpleName();
 
     private boolean isDisableTouchEvent = false;
 

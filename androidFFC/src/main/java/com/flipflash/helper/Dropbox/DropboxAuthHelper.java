@@ -15,7 +15,7 @@ import com.flipflash.util.AppContext;
  */
 public class DropboxAuthHelper {
 
-    private static final String TAG = DropboxAuthHelper.class.getName();
+    private static final String TAG = DropboxAuthHelper.class.getSimpleName();
 
     private static Context mContext;
     final static private Session.AccessType ACCESS_TYPE = Session.AccessType.DROPBOX;

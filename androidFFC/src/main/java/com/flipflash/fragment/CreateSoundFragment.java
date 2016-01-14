@@ -30,7 +30,7 @@ import cn.pedant.SweetAlert.SweetAlertDialog;
  * Created by bournewang on 4/16/14.
  */
 public class CreateSoundFragment extends DialogFragment {
-    private static final String TAG = CreateSoundFragment.class.getName();
+    private static final String TAG = CreateSoundFragment.class.getSimpleName();
 
     public View mContentView;
 

@@ -20,7 +20,7 @@ import static com.flipflash.util.LogUtils.LOGE;
 import static com.flipflash.util.LogUtils.LOGW;
 
 public class Pack implements Cloneable {
-    private static final String TAG = Pack.class.getName();
+    private static final String TAG = Pack.class.getSimpleName();
 
     public int packID;
     public String packName;

@@ -67,7 +67,7 @@ import static com.flipflash.util.LogUtils.LOGE;
 
 public class PlayActivity extends FragmentActivity implements SensorEventListener, ViewPager.OnPageChangeListener{
 
-    private static final String TAG = PlayActivity.class.getName();
+    private static final String TAG = PlayActivity.class.getSimpleName();
 
     private Pack              mCurrentPack;
     private int               mPosition = 0;

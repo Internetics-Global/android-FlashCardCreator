@@ -20,7 +20,7 @@ import static com.flipflash.util.LogUtils.LOGE;
 
 
 public class AppStart extends Activity {
-    private static final String TAG = AppStart.class.getName();
+    private static final String TAG = AppStart.class.getSimpleName();
 
     long startTime;
 

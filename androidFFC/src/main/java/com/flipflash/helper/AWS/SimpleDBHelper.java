@@ -35,7 +35,7 @@ import java.util.List;
 
 public class SimpleDBHelper {
 
-	private static final String TAG = SimpleDBHelper.class.getName();
+	private static final String TAG = SimpleDBHelper.class.getSimpleName();
 
 	private static String nextToken = null;
 	private static int prevNumDomains = 0;

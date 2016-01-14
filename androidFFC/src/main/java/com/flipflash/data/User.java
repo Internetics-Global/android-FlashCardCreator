@@ -18,7 +18,7 @@ import static com.flipflash.util.LogUtils.LOGD;
 import static com.flipflash.util.LogUtils.LOGE;
 
 public class User {
-    private static final String TAG = User.class.getName();
+    private static final String TAG = User.class.getSimpleName();
 
     public int userID;
     public String nickName;

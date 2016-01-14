@@ -11,7 +11,7 @@ import com.flipflash.util.UIHelper;
  */
 public class ScaleHelper {
 
-    private static final String TAG = ScaleHelper.class.getName();
+    private static final String TAG = ScaleHelper.class.getSimpleName();
 
     public static String[]  nominalSizeArray(Activity activity) {
 

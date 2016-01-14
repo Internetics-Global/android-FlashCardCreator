@@ -16,7 +16,7 @@ import static com.flipflash.util.LogUtils.LOGE;
 
 public class Answer {
 
-    private static final String TAG = Answer.class.getName();
+    private static final String TAG = Answer.class.getSimpleName();
 
     public int answerID;
     public int cardID;

@@ -33,7 +33,7 @@ import static com.flipflash.util.LogUtils.LOGE;
  */
 public class AWSUploadHelper {
 
-    private static final String TAG = AWSUploadHelper.class.getName();
+    private static final String TAG = AWSUploadHelper.class.getSimpleName();
 
     private TransferManager   mTransferManager;
     private final Handler     mHandler;
