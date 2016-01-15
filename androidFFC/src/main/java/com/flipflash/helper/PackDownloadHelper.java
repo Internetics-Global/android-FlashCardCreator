@@ -87,6 +87,9 @@ public class PackDownloadHelper extends AsyncTask<Void, Long, Boolean> {
         mDialog.setButton(mContext.getString(R.string.DIALOG_CANCEL), new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int which) {
                 mIsAllowPostExecute = false;
+                Global.isNotAllowDownloadSamplePack = true;
+
+
             }
         });
         mDialog.setCanceledOnTouchOutside(false);

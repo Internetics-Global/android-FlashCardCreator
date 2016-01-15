@@ -77,6 +77,9 @@ public class Global {
     //tooltip related
     public static final String isAllowToShowTooltip = "isAllowToShowTooltip";
 
+    //download sample pack related
+    public static  boolean   isNotAllowDownloadSamplePack = false;
+
     //Amazon SimpleDB
     public static final String amazon_sdb_domain_name = "flashcardcreator";
     public static int currentAmazonSimpleDBItemDownloadCount = -1;

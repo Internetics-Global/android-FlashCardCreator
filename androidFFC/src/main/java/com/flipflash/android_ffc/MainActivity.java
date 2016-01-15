@@ -584,7 +584,7 @@ public class MainActivity extends FragmentActivity implements
 
         boolean isReachable = Global.apiReachable(MainActivity.this);
 
-        if ((!isDownloaded) && (isReachable) && (mIsFromRestartApp)) {
+        if ((!isDownloaded) && (isReachable) && (mIsFromRestartApp) && Global.isNotAllowDownloadSamplePack == false) {
             mIsFromRestartApp = false;
             String downloableShareLink = Global.SAMPLE_URL;
             File downloadedZipFile = new File(FileOperationHelper.downloadedPackDirectory(), "downloadedPackZip.zip");
