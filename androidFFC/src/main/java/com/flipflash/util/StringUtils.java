@@ -1,6 +1,7 @@
 package com.flipflash.util;
 
 import android.content.Context;
+import android.database.DatabaseUtils;
 import android.graphics.Color;
 import android.net.Uri;
 import android.view.Gravity;
@@ -109,17 +110,8 @@ public class StringUtils {
 
 
     public static String stringDecodeForSQlite(String str) {
-        String returnStr = str;
-        String tempStr;
-
-        try {
-            tempStr = (URLDecoder.decode(str.replaceAll("%", "<percentage>"), "UTF-8"));
-            returnStr = tempStr.replaceAll("<percentage>", "%");
-        } catch (UnsupportedEncodingException e) {
-            e.printStackTrace();
-        }
-
-        return returnStr;
+        //we don't need to escape and directly return the origional one since we are using binging text way
+        return str;
     }
 
     /**
