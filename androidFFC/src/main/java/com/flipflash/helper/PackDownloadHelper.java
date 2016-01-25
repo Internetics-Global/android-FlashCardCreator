@@ -153,7 +153,7 @@ public class PackDownloadHelper extends AsyncTask<Void, Long, Boolean> {
     protected void onProgressUpdate(Long... progress) {
         int percent = (int) (100.0 * (double) progress[0] / mFileLen + 0.5);
         if (percent >= 100) {
-            mDialog.setMessage(mContext.getString(R.string.DIALOG_NOW_DECRYPTING));
+            mDialog.setMessage(mContext.getString(R.string.Indicator_Share_Process_Processing));
         } else {
             mDialog.setProgress(percent);
         }
