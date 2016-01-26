@@ -1480,7 +1480,7 @@ public class MainActivity extends FragmentActivity implements
             public void onClick(View v) {
 
                 final CardDetailFragment activeCardDetailFragment = getActiveCardDetailFragment();
-
+                final int selectionStart = activeCardDetailFragment.mCurrentFocusedCardContentText.getSelectionStart();
                 InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
                 imm.toggleSoftInput(InputMethodManager.SHOW_IMPLICIT, InputMethodManager.HIDE_NOT_ALWAYS);
                 if (mIsKeyboardVisible) {
@@ -1490,6 +1490,16 @@ public class MainActivity extends FragmentActivity implements
                     } else {
                         setAsSymbolStatus();
                         mIsKeyboardVisible = false;
+
+                        Handler handler = new Handler();
+                                handler.postDelayed(new Runnable() {
+
+                                    @Override
+                                    public void run() {
+                                        activeCardDetailFragment.mCurrentFocusedCardContentText.setSelection(selectionStart);
+                                    }
+
+                                }, 400);
                     }
 
 
