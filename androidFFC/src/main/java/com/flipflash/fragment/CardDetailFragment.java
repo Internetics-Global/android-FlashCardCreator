@@ -4684,6 +4684,8 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnTouchL
 
         String squareRootStr = " square root ";
 
+        str = str.replaceAll("([a-zA-Z])\\-([a-zA-Z])","$1$2");  //remove - if between two letter like X-ray
+
         resultStr = str.replace("+", plusStr);
         resultStr = resultStr.replace("⨯", timesStr);
         resultStr = resultStr.replace("÷", dividedByStr);
