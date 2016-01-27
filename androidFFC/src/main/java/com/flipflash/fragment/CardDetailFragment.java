@@ -4628,7 +4628,7 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnTouchL
         String[] array = origionalStr.split("(?<=\n)|(?=\n)");  //默认split是干掉\n，而我们希望保留任何\n
         for (String item: array) {
             if (item.equals("\n") == false) {
-                item = item + "\n";
+                item = item + "\n\n";
             }
             resultStr = resultStr + item;
 
