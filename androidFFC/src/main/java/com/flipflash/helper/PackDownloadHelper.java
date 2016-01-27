@@ -49,7 +49,7 @@ public class PackDownloadHelper extends AsyncTask<Void, Long, Boolean> {
 
     private String mDownloadedLinkage;
 
-    private boolean mIsAllowPostExecute = true;
+    private boolean mIsAllowPostExecute = true;  //实际上有更好的方法,见这个方法:cancel (boolean mayInterruptIfRunning)
 
     public boolean mIsFromExamplePackDownload = false;
 
@@ -65,6 +65,7 @@ public class PackDownloadHelper extends AsyncTask<Void, Long, Boolean> {
 
         mDownloadURL = downloadURL;
         mSavedFilePath = downloadedZipFile;
+
 
         mDialog = new ProgressDialog(context);
 
@@ -96,6 +97,7 @@ public class PackDownloadHelper extends AsyncTask<Void, Long, Boolean> {
         mDialog.setCancelable(false);
         mDialog.show();
     }
+
 
     @Override
     protected Boolean doInBackground(Void... params) {
@@ -159,9 +161,29 @@ public class PackDownloadHelper extends AsyncTask<Void, Long, Boolean> {
         }
     }
 
+    //onCancelled(Object) being invoked on the UI thread.
+    @Override
+    protected void onCancelled() {
+        super.onCancelled();
+
+        mIsAllowPostExecute = false;
+
+        if (mDialog != null && mDialog.isShowing()) {
+            mDialog.dismiss();
+        }
+    }
+
+    //onCancelled(Object) is called, onPostExecute is never executed, see focument
     @Override
     protected void onPostExecute(Boolean result) {
 
+        //实际上不需要这么做,可以用cancel (boolean mayInterruptIfRunning),
+        //http://developer.android.com/intl/zh-cn/reference/android/os/AsyncTask.html
+        if (mIsAllowPostExecute == false) {
+            return;
+        }
+
+        //当mIsAllowPostExecute = false时,mDialog确保被关闭通过:1. onCancelled; 2. mDialog.setButton
         mDialog.dismiss();
 
         if (result) {

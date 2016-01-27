@@ -174,6 +174,8 @@ public class MainActivity extends FragmentActivity implements
 
     private TextView             mCustomTitleTextView;
 
+    private PackDownloadHelper   mPackDownloadHelper;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -257,6 +259,7 @@ public class MainActivity extends FragmentActivity implements
             return false;
         }
     }
+
 
 
     @Override
@@ -589,10 +592,13 @@ public class MainActivity extends FragmentActivity implements
             mIsFromRestartApp = false;
             String downloableShareLink = Global.SAMPLE_URL;
             File downloadedZipFile = new File(FileOperationHelper.downloadedPackDirectory(), "downloadedPackZip.zip");
-            PackDownloadHelper packDownloadHelper = new PackDownloadHelper(MainActivity.this, downloableShareLink, downloadedZipFile.toString());
-            packDownloadHelper.mIsFromExamplePackDownload = true;
-            packDownloadHelper.execute();
-            return;
+            if (mPackDownloadHelper != null) {
+                mPackDownloadHelper.cancel(true);
+                mPackDownloadHelper = null;
+            }
+            mPackDownloadHelper = new PackDownloadHelper(MainActivity.this, downloableShareLink, downloadedZipFile.toString());
+            mPackDownloadHelper.mIsFromExamplePackDownload = true;
+            mPackDownloadHelper.execute();
         }
 
         //Step2: call from other app or Dropbox log in
@@ -636,8 +642,13 @@ public class MainActivity extends FragmentActivity implements
                     if (mIsAllowDownload) {
                         String downloableShareLink = data.toString().replace("fcc", "https").replace("www", "dl");
                         File downloadedZipFile = new File(FileOperationHelper.downloadedPackDirectory(), "downloadedPackZip.zip");
-                        PackDownloadHelper packDownloadHelper = new PackDownloadHelper(MainActivity.this, downloableShareLink, downloadedZipFile.toString());
-                        packDownloadHelper.execute();
+
+                        if (mPackDownloadHelper != null) {
+                            mPackDownloadHelper.cancel(true);
+                            mPackDownloadHelper = null;
+                        }
+                        mPackDownloadHelper = new PackDownloadHelper(MainActivity.this, downloableShareLink, downloadedZipFile.toString());
+                        mPackDownloadHelper.execute();
                     }   else {
                         Toast.makeText(getApplicationContext(), R.string.DIALOG_REACH_MAX_DOWNLOAD_LIMIT, Toast.LENGTH_LONG).show();
                     }
@@ -860,6 +871,11 @@ public class MainActivity extends FragmentActivity implements
         super.onStop();
 
         LOGD(TAG, "onStop");
+
+        if (mPackDownloadHelper != null) {
+            mPackDownloadHelper.cancel(true);
+            mPackDownloadHelper = null;
+        }
 
         dismissPackListPopupWindow();
 
