@@ -23,6 +23,7 @@ import com.flipflash.data.Card;
 import com.flipflash.data.Pack;
 import com.flipflash.data.User;
 import com.flipflash.model.CardListModel;
+import com.flipflash.util.AppConfig;
 import com.flipflash.util.AppContext;
 import com.flipflash.util.Global;
 import com.mobeta.android.dslv.DragSortListView;
@@ -423,17 +424,20 @@ public class CardListFragment extends Fragment {
         MatrixCursor cursor = rebuildCursor();
         adapter.changeCursor(cursor);
 
-        //Step3: Send back currenPack to activity
+        //Step3: Send back currentPack to activity
         ((MainActivity) getActivity()).setCurrentPack(mCurrentPack);
 
         //Step4: Update detail view
         if ((mCardArrayList.size() > 0) && (selectedItemIndex >= 0)) {
 
+            AppConfig.sharedInstance().setPackIDForLastSelected(mCurrentPack.packID);
 
             mCallbacks.onItemSelected(selectedItemIndex, mCurrentPack,false);
             ((FCCdapter) adapter).setSelectedPosition(selectedItemIndex);
             adapter.notifyDataSetChanged();
             mDSLVListView.smoothScrollToPosition(selectedItemIndex);
+
+
         } else if (selectedItemIndex == -1) {
             //do nothing
         } else {

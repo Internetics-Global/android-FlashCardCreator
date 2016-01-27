@@ -54,7 +54,7 @@ public class Global {
     public static final String updateDate_Property = "updated_date";
 
     //Used to highlight current selected pack in pack list
-    public static final String lastCreatedPackID = "lastCreatedPackID";
+    public static final String lastSelectedPackID = "lastSelectedPackID";
 
     //Used to judge whether need to download example pack again
     public static final String isExamplePackDownloadedSBefore_Property = "is_example_pack_downloaded_before";
