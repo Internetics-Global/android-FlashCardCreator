@@ -4684,12 +4684,12 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnTouchL
 
         String squareRootStr = " square root ";
 
-        str = str.replaceAll("([a-zA-Z])\\-([a-zA-Z])","$1$2");  //remove - if between two letter like X-ray
-
         resultStr = str.replace("+", plusStr);
         resultStr = resultStr.replace("⨯", timesStr);
         resultStr = resultStr.replace("÷", dividedByStr);
-        resultStr = resultStr.replace("-", minusStr);
+
+        String minus = Character.toString((char)0x2212);  //minus
+        resultStr = resultStr.replace(minus, minusStr);
 
         resultStr = resultStr.replace("cm²", squareCentimetresStr);
         resultStr = resultStr.replace("cm³", cubicCentimetresStr);
@@ -4734,6 +4734,8 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnTouchL
         resultStr = resultStr.replace("√", squareRootStr);
 
         resultStr = resultStr.replace(" = ", equalsStr);// , not unicode  //need to put the last
+
+        resultStr = resultStr.replaceAll("([a-zA-Z])\\-([a-zA-Z])","$1$2");  //remove - if between two letter like X-ray
 
 
         return resultStr;
