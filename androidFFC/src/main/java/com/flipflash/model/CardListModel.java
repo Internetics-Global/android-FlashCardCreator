@@ -5,6 +5,7 @@ import android.net.Uri;
 import com.flipflash.data.Card;
 import com.flipflash.data.Pack;
 import com.flipflash.data.User;
+import com.flipflash.util.AppConfig;
 import com.flipflash.util.AppContext;
 
 import java.util.ArrayList;
@@ -52,6 +53,20 @@ public class CardListModel {
 
     public static ArrayList<Pack> getAllPacks() {
         return User.defaultUser(AppContext.getAppContext()).packs;
+    }
+
+    public static Pack getLastSelectedPack() {
+
+        int packID = AppConfig.sharedInstance().getPackIDForLastSelected();
+        ArrayList<Pack> packs = getAllPacks();
+        for (Pack pack : packs) {
+            if (pack.packID == packID) {
+                return pack;
+            }
+        }
+
+        return null;
+
     }
 
     public static Pack getLastPack() {

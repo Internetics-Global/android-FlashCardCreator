@@ -70,7 +70,7 @@ public class CardListFragment extends Fragment {
     MasterFragmentReceiver mReceiver;
 
     public CardListFragment() {
-        mCurrentPack = CardListModel.getLatestCreatedPack();
+        mCurrentPack = CardListModel.getLastSelectedPack();
 
         if (mCurrentPack != null) {
             mCardArrayList = CardListModel.getCardList(mCurrentPack);
