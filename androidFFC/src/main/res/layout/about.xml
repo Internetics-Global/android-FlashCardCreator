@@ -18,7 +18,7 @@
                     android:layout_width="fill_parent"
                     android:layout_weight="100"
                     android:layout_height="0dp"
-                    android:text="Flip Flash Cards app has been developed by Flip Flash Cards Pty Ltd in conjunction with development team Internetics Pty Ltd.\n\nCopyright Flip Flash Cards 2013. All rights reserved.For information on how to use the application, please click the (i) information button above.\nPlease submit any technical feedback to fcc@internetics.net.au\n\nThank you for your interest in the Flip Flash Cards app and Flip Flash Cards Pty Ltd."
+                    android:text= "@string/Copyright"
                     android:layout_gravity="center"
                     android:singleLine="false"
                     android:gravity="center"
