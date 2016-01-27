@@ -598,6 +598,7 @@ public class MainActivity extends FragmentActivity implements
             mPackDownloadHelper = new PackDownloadHelper(MainActivity.this, downloableShareLink, downloadedZipFile.toString());
             mPackDownloadHelper.mIsFromExamplePackDownload = true;
             mPackDownloadHelper.execute();
+            return;
         }
 
         //Step2: call from other app or Dropbox log in
@@ -648,6 +649,7 @@ public class MainActivity extends FragmentActivity implements
                         }
                         mPackDownloadHelper = new PackDownloadHelper(MainActivity.this, downloableShareLink, downloadedZipFile.toString());
                         mPackDownloadHelper.execute();
+                        
                     }   else {
                         Toast.makeText(getApplicationContext(), R.string.DIALOG_REACH_MAX_DOWNLOAD_LIMIT, Toast.LENGTH_LONG).show();
                     }
