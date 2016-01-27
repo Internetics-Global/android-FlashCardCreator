@@ -21,6 +21,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 import android.text.InputType;
+import android.util.DisplayMetrics;
 import android.util.TypedValue;
 import android.view.Gravity;
 import android.view.KeyEvent;
@@ -691,6 +692,13 @@ public class MainActivity extends FragmentActivity implements
     }
 
     public void showTooltips() {
+
+        //we don't allow to show when screen is too small
+        DisplayMetrics displayMetrics = getResources().getDisplayMetrics();
+        float dpWidth = displayMetrics.widthPixels / displayMetrics.density;
+        if (dpWidth < 900) {
+            return;
+        }
 
         LOGD(TAG, "showTooltips");
 
