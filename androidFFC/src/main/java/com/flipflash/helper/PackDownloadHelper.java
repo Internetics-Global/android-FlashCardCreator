@@ -49,6 +49,8 @@ public class PackDownloadHelper extends AsyncTask<Void, Long, Boolean> {
 
     private String mDownloadedLinkage;
 
+    private boolean isDownloading;
+
     private boolean mIsAllowPostExecute = true;  //实际上有更好的方法,见这个方法:cancel (boolean mayInterruptIfRunning)
 
     public boolean mIsFromExamplePackDownload = false;
@@ -71,10 +73,15 @@ public class PackDownloadHelper extends AsyncTask<Void, Long, Boolean> {
 
     }
 
+    public boolean isDownloading() {
+        return isDownloading;
+    }
+
     @Override
     protected void onPreExecute() {
         super.onPreExecute();
 
+        isDownloading = true;
 
         mDialog.setMax(100);
         if (mIsFromExamplePackDownload) {
@@ -171,11 +178,15 @@ public class PackDownloadHelper extends AsyncTask<Void, Long, Boolean> {
         if (mDialog != null && mDialog.isShowing()) {
             mDialog.dismiss();
         }
+
+        isDownloading = false;
     }
 
     //onCancelled(Object) is called, onPostExecute is never executed, see focument
     @Override
     protected void onPostExecute(Boolean result) {
+
+        isDownloading = false;
 
         //实际上不需要这么做,可以用cancel (boolean mayInterruptIfRunning),
         //http://developer.android.com/intl/zh-cn/reference/android/os/AsyncTask.html

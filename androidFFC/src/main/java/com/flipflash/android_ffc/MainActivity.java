@@ -585,7 +585,6 @@ public class MainActivity extends FragmentActivity implements
 
         //Step1: download sample pack first
         boolean isDownloaded = AppConfig.sharedInstance().isExamplePackDownloadedBefore();
-
         boolean isReachable = Global.apiReachable(MainActivity.this);
 
         if ((!isDownloaded) && (isReachable) && (mIsFromRestartApp) && Global.isNotAllowDownloadSamplePack == false) {
@@ -659,7 +658,8 @@ public class MainActivity extends FragmentActivity implements
         getIntent().setData(null); //in case it will be recalled time and time
 
         //Used to show pack list
-        if (mIsAllowedToShowPackList) {
+        if (mIsAllowedToShowPackList &&
+                ((mPackDownloadHelper != null && mPackDownloadHelper.isDownloading() == false) || (mPackDownloadHelper == null))) {
 
             final View appMainView = findViewById(R.id.app_main);
 
