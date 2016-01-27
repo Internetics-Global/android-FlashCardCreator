@@ -111,7 +111,7 @@ public class PackListFragment extends Fragment {
         // Set the adapter to our custom adapter (below)
         mGallery.setAdapter(new ImageAdapter(getActivity()));
         if (mUser.packs.size() >0) {
-            mGallery.setSelection(1); //when set this, everytime after notifyDataSetChanged finishe, getView(1) will be called one more
+            mGallery.setSelection(1); //when set this, every time after notifyDataSetChanged finish, getView(1) will be called one more
         }
         mGallery.setOnItemClickListener(new OnItemClickListener() {
             public void onItemClick(AdapterView<?> parent, View v, int position, long id) {
@@ -421,17 +421,32 @@ public class PackListFragment extends Fragment {
 
         final Pack currentPack = mUser.packs.get(position -1);
 
-        AppConfig.sharedInstance().setPackIDForLastSelected(currentPack.packID);
-
+        //play
         int playOption = AppConfig.sharedInstance().getPlayOption();
+        Intent intentPlay = new Intent(getActivity(), PlayActivity.class);
+        intentPlay.putExtra("packID", currentPack.packID);
+        intentPlay.putExtra("oneOffPlayType", playOption);  //manually
+        startActivity(intentPlay);
 
-        Intent intent = new Intent(getActivity(), PlayActivity.class);
-        intent.putExtra("packID", currentPack.packID);
-        intent.putExtra("oneOffPlayType", playOption);  //manually
-        startActivity(intent);
+
+        //update master list view
+        Intent intentList = new Intent();
+        intentList.setAction(Global.BROADCAST_ACTION_UPDATE_MASTER_VIEW);
+        intentList.putExtra(Global.KEY_FROM, Global.BROADCAST_EXTRA_FROM_PACK_SELECTED);
+        intentList.putExtra("indexOfPack",  position-1);
+        getActivity().sendBroadcast(intentList);
+
+        ((MainActivity) getActivity()).showPackInfoView();
+
+        //update meta info
+        currentPack.lastVistDate = Global.currentTimeSeconds();
+        currentPack.save(AppContext.getAppContext());
+        AppConfig.sharedInstance().setPackIDForLastSelected(currentPack.packID);
 
         ((MainActivity) getActivity()).mIsAllowedToShowPackList = false;
         ((MainActivity) getActivity()).dismissPackListPopupWindow();
+
+
 
     }
 
