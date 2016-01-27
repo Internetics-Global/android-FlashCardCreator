@@ -623,8 +623,8 @@ public class MainActivity extends FragmentActivity implements
                     }
                 }.start();
 
-                int timeoutCount = 0;    //set timeout = 5 second
-                final int kTimeoutThreshold = 250;
+                int timeoutCount = 0;    //set timeout = 10 second
+                final int kTimeoutThreshold = 500;
                 while ((mSemaphore == false) && (timeoutCount <kTimeoutThreshold)) {
                     try {
                         Thread.sleep(20);
