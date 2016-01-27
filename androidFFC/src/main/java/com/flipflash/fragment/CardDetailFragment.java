@@ -429,14 +429,17 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnTouchL
                     if (flag_Subheading_ResizeFinished && flag_Main_ResizeFinished && flag_Sub_ResizeFinished) {
                         LOGD(TAG, "onResume: Set content visible after resizing is finished. cardSN: " + mCardSN.getText());
 
-                        getActivity().runOnUiThread(new Runnable() {
-                            @Override
-                            public void run() {
-                                mContentBodyLinearLayout.setVisibility(View.VISIBLE);
-                            }
-                        });
+                        if (getActivity() != null) {
 
-                        mResizeMonitorTimer.cancel();
+                            getActivity().runOnUiThread(new Runnable() {
+                                @Override
+                                public void run() {
+                                    mContentBodyLinearLayout.setVisibility(View.VISIBLE);
+                                }
+                            });
+
+                            mResizeMonitorTimer.cancel();
+                        }
                     }
 
                     //LOGD(TAG, "run: " + flag_Subheading_ResizeFinished + " " + flag_Main_ResizeFinished + "  " + flag_Sub_ResizeFinished);
