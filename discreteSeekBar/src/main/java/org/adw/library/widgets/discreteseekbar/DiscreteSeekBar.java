@@ -632,14 +632,22 @@ public class DiscreteSeekBar extends View {
                 pressed = true;
             }
         }
-        if (isEnabled() && (focused || pressed) && mIndicatorPopupEnabled || mAlwaysShowIndicator) {
-            //We want to add a small delay here to avoid
-            //poping in/out on simple taps
-            removeCallbacks(mShowIndicatorRunnable);
-            postDelayed(mShowIndicatorRunnable, INDICATOR_DELAY_FOR_TAPS);
-        } else {
+
+        if (mAlwaysShowIndicator == false) {
             hideFloater();
+        } else {
+
+            if (isEnabled() && (focused || pressed) && mIndicatorPopupEnabled || mAlwaysShowIndicator) {
+                //We want to add a small delay here to avoid
+                //poping in/out on simple taps
+                removeCallbacks(mShowIndicatorRunnable);
+                postDelayed(mShowIndicatorRunnable, INDICATOR_DELAY_FOR_TAPS);
+            } else {
+                hideFloater();
+            }
         }
+
+
         mThumb.setState(state);
         mTrack.setState(state);
         mScrubber.setState(state);
