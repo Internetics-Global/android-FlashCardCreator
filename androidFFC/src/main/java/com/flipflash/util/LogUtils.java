@@ -21,7 +21,7 @@ import android.util.Log;
 import com.flipflash.android_ffc.BuildConfig;
 
 public class LogUtils {
-    private static final String LOG_PREFIX = "iosched_";
+    private static final String LOG_PREFIX = "ffc";
     private static final int LOG_PREFIX_LENGTH = LOG_PREFIX.length();
     private static final int MAX_LOG_TAG_LENGTH = 23;
 
@@ -42,54 +42,84 @@ public class LogUtils {
 
     public static void LOGD(final String tag, String message) {
         //noinspection PointlessBooleanExpression,ConstantConditions
-        if ((BuildConfig.DEBUG || Log.isLoggable(tag, Log.DEBUG)) && Global.IS_DOGFOOD_BUILD) {
-            Log.d(tag, message);
+
+        String newTag = makeLogTag(tag);
+
+        if ((BuildConfig.DEBUG || Log.isLoggable(newTag, Log.DEBUG)) && Global.IS_DOGFOOD_BUILD) {
+            Log.d(newTag, message);
         }
     }
 
     public static void LOGD(final String tag, String message, Throwable cause) {
         //noinspection PointlessBooleanExpression,ConstantConditions
-        if ((BuildConfig.DEBUG || Log.isLoggable(tag, Log.DEBUG)) && Global.IS_DOGFOOD_BUILD) {
-            Log.d(tag, message, cause);
+
+        String newTag = makeLogTag(tag);
+
+        if ((BuildConfig.DEBUG || Log.isLoggable(newTag, Log.DEBUG)) && Global.IS_DOGFOOD_BUILD) {
+            Log.d(newTag, message, cause);
         }
     }
 
     public static void LOGV(final String tag, String message) {
         //noinspection PointlessBooleanExpression,ConstantConditions
-        if (BuildConfig.DEBUG && Log.isLoggable(tag, Log.VERBOSE)) {
-            Log.v(tag, message);
+
+        String newTag = makeLogTag(tag);
+
+        if (BuildConfig.DEBUG && Log.isLoggable(newTag, Log.VERBOSE)) {
+            Log.v(newTag, message);
         }
     }
 
     public static void LOGV(final String tag, String message, Throwable cause) {
         //noinspection PointlessBooleanExpression,ConstantConditions
-        if (BuildConfig.DEBUG && Log.isLoggable(tag, Log.VERBOSE)) {
-            Log.v(tag, message, cause);
+
+        String newTag = makeLogTag(tag);
+
+        if (BuildConfig.DEBUG && Log.isLoggable(newTag, Log.VERBOSE)) {
+            Log.v(newTag, message, cause);
         }
     }
 
     public static void LOGI(final String tag, String message) {
-        Log.i(tag, message);
+
+        String newTag = makeLogTag(tag);
+
+        Log.i(newTag, message);
     }
 
     public static void LOGI(final String tag, String message, Throwable cause) {
-        Log.i(tag, message, cause);
+
+        String newTag = makeLogTag(tag);
+
+        Log.i(newTag, message, cause);
     }
 
     public static void LOGW(final String tag, String message) {
-        Log.w(tag, message);
+
+        String newTag = makeLogTag(tag);
+
+        Log.w(newTag, message);
     }
 
     public static void LOGW(final String tag, String message, Throwable cause) {
-        Log.w(tag, message, cause);
+
+        String newTag = makeLogTag(tag);
+
+        Log.w(newTag, message, cause);
     }
 
     public static void LOGE(final String tag, String message) {
-        Log.e(tag, message);
+
+        String newTag = makeLogTag(tag);
+
+        Log.e(newTag, message);
     }
 
     public static void LOGE(final String tag, String message, Throwable cause) {
-        Log.e(tag, message, cause);
+
+        String newTag = makeLogTag(tag);
+
+        Log.e(newTag, message, cause);
     }
 
     private LogUtils() {
