@@ -1,6 +1,7 @@
 package com.flipflash.helper;
 
 import android.app.Activity;
+import android.content.pm.PackageManager;
 
 import com.flipflash.data.Card;
 import com.flipflash.data.Pack;
@@ -198,6 +199,14 @@ public class PackBuildHelper {
 
         summary.put("share_link", pack.shareLink);
         summary.put("file_name_on_aws", pack.fileNameOnAWS);
+
+        int versionCode = -1;
+        try {
+            versionCode = mActivity.getPackageManager().getPackageInfo(mActivity.getPackageName(), 0).versionCode;
+        } catch (PackageManager.NameNotFoundException e) {
+            e.printStackTrace();
+        }
+        summary.put("language_name", String.format("%d",versionCode));  //language_name这个字段暂时不用,我们用来保存build信息,以debug用.与iOS不一样的是,这个不存到sqlite
 
         FileWriter file;
         File savedPath = FileOperationHelper.getUploadPackJsonFile();
