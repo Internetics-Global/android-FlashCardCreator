@@ -540,7 +540,7 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnTouchL
 
         restoreDefaultCursorPosition();
 
-        ((MainActivity) getActivity()).removeCSSToolbar();
+        //((MainActivity) getActivity()).removeCSSToolbar();
 
     }
 

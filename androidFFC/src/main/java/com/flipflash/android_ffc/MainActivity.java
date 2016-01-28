@@ -1101,6 +1101,33 @@ public class MainActivity extends FragmentActivity implements
 
     }
 
+    private void cssSaveToolbarButtonClicked() {
+
+        final CardDetailFragment activeCardDetailFragment = getActiveCardDetailFragment();
+
+        activeCardDetailFragment.dismissKeyboard();
+        activeCardDetailFragment.resetVerticalScrollViewBottomMargin();
+
+        if (mSymbolBoxFragment!=null && mSymbolBoxFragment.isSymbolBoxVisible()) {
+            mSymbolBoxFragment.hideSymbolBoxWithAnimation(true);
+        }
+        removeCSSToolbar();
+
+        if (mIsCreatingCard) {
+            saveNewCreatedCard();
+        } else {
+
+            Handler handler = new Handler();
+            handler.postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    activeCardDetailFragment.saveEditedCard();
+                }
+            },500);//之所以需要有个延迟，因为需要时间去关闭键盘和reset vertical scroll view
+
+        }
+    }
+
     public void removeAddCardLayoutIfExisting () {
 
         FrameLayout addCardLayout = (FrameLayout) findViewById(R.id.add_card_frame_layout);
@@ -1452,34 +1479,12 @@ public class MainActivity extends FragmentActivity implements
         spinnerColor.setSelection(0);
         spinnerSize.setSelection(0);
 
-        Button cssSaveButton = (Button) mCSSToolbar.findViewById(R.id.csstoolbar_save_btn);
+        final Button cssSaveButton = (Button) mCSSToolbar.findViewById(R.id.csstoolbar_save_btn);
         cssSaveButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
-                final CardDetailFragment activeCardDetailFragment = getActiveCardDetailFragment();
-
-                activeCardDetailFragment.dismissKeyboard();
-                activeCardDetailFragment.resetVerticalScrollViewBottomMargin();
-
-                if (mSymbolBoxFragment!=null) {
-                    mSymbolBoxFragment.hideSymbolBoxWithAnimation(true);
-                }
-                removeCSSToolbar();
-
-                if (mIsCreatingCard) {
-                    saveNewCreatedCard();
-                } else {
-
-                    Handler handler = new Handler();
-                    handler.postDelayed(new Runnable() {
-                        @Override
-                        public void run() {
-                            activeCardDetailFragment.saveEditedCard();
-                        }
-                    },500);//之所以需要有个延迟，因为需要时间去关闭键盘和reset vertical scroll view
-
-                }
+                cssSaveToolbarButtonClicked();
             }
         });
         Button cssCancelButton = (Button) mCSSToolbar.findViewById(R.id.csstoolbar_close_btn);
