@@ -4586,25 +4586,61 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnTouchL
             Question question = mCurrentCard.question;
             if (question.subheading.length() > 0) {
 
-                arrayList.add(replaceBasicSymbol(addNewLineCharactersIntoStr(question.subheading)));
+                String str = replaceBasicSymbol(question.subheading);
+
+                String[] array = str.split("(?<=\n)|(?=\n)");
+
+                for (String itemStr :array) {
+                    arrayList.add(itemStr);
+                }
             }
             if (question.main.length() > 0) {
-                arrayList.add(replaceBasicSymbol(addNewLineCharactersIntoStr(question.main)));
+                String str = replaceBasicSymbol(question.main);
+
+                String[] array = str.split("(?<=\n)|(?=\n)");
+
+                for (String itemStr :array) {
+                    arrayList.add(itemStr);
+                }
             }
             if (question.sub.length() > 0) {
-                arrayList.add(replaceBasicSymbol(addNewLineCharactersIntoStr(question.sub)));
+                String str = replaceBasicSymbol(question.sub);
+
+                String[] array = str.split("(?<=\n)|(?=\n)");
+
+                for (String itemStr :array) {
+                    arrayList.add(itemStr);
+                }
             }
 
         } else {
             Answer answer = mCurrentCard.answer;
             if (answer.subheading.length() > 0) {
-                arrayList.add(replaceBasicSymbol(addNewLineCharactersIntoStr(answer.subheading)));
+                String str = replaceBasicSymbol(answer.subheading);
+
+                String[] array = str.split("(?<=\n)|(?=\n)");
+
+                for (String itemStr :array) {
+                    arrayList.add(itemStr);
+                }
             }
             if (answer.main.length() > 0) {
-                arrayList.add(replaceBasicSymbol(addNewLineCharactersIntoStr(answer.main)));
+                String str = replaceBasicSymbol(answer.main);
+
+                String[] array = str.split("(?<=\n)|(?=\n)");
+
+                for (String itemStr :array) {
+                    arrayList.add(itemStr);
+                }
             }
             if (answer.sub.length() > 0) {
-                arrayList.add(replaceBasicSymbol(addNewLineCharactersIntoStr(answer.sub)));
+                String str = replaceBasicSymbol(answer.sub);
+
+                String[] array = str.split("(?<=\n)|(?=\n)");
+
+                for (String itemStr :array) {
+                    arrayList.add(itemStr);
+                }
             }
         }
 
@@ -4623,18 +4659,20 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnTouchL
             return origionalStr;
         }
 
-        String resultStr = "";
+//加\n在模拟器上可以看到停顿,但是在device上则没有任何效果,所以comment out this logic
+//        String resultStr = "";
+//
+//        String[] array = origionalStr.split("(?<=\n)|(?=\n)");  //默认split是干掉\n，而我们希望保留任何\n
+//        for (String item: array) {
+//            if (item.equals("\n") == false) {
+////                item = item + "\n\n";
+//                  item = item + "";
+//            }
+//            resultStr = resultStr + item;
+//
+//        }
 
-        String[] array = origionalStr.split("(?<=\n)|(?=\n)");  //默认split是干掉\n，而我们希望保留任何\n
-        for (String item: array) {
-            if (item.equals("\n") == false) {
-                item = item + "\n\n";
-            }
-            resultStr = resultStr + item;
-
-        }
-
-        return resultStr;
+        return origionalStr;
 
     }
 
