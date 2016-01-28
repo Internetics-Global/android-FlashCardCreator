@@ -1091,6 +1091,11 @@ public class MainActivity extends FragmentActivity implements
 
     private void saveNewCreatedCard() {
         LOGD(TAG, "saveNewCreatedCard:");
+
+        if (mSymbolBoxFragment!=null && mSymbolBoxFragment.isSymbolBoxVisible()) {
+            mSymbolBoxFragment.hideSymbolBoxWithAnimation(true);
+        }
+
         mNewCardDetailFragment.saveNewCreatedCard(); //will call dismissCardCreateWindow(); in this
 
 
