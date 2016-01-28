@@ -14,6 +14,7 @@ import android.hardware.SensorManager;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
+import android.os.HandlerThread;
 import android.speech.tts.TextToSpeech;
 import android.speech.tts.UtteranceProgressListener;
 import android.support.v4.app.Fragment;
@@ -22,6 +23,7 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.util.DisplayMetrics;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.MotionEvent;
 import android.view.Surface;
@@ -156,6 +158,9 @@ public class PlayActivity extends FragmentActivity implements SensorEventListene
      */
     boolean      _isDeviceRotating;
     boolean      _isRotationJustFinish;
+
+    private HandlerThread mSensorThread;
+    private Handler       mSensorHandler;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -649,6 +654,15 @@ public class PlayActivity extends FragmentActivity implements SensorEventListene
 
         LOGD(TAG, "onDestroy");
 
+        if (mSensorThread != null) {
+            mSensorThread.quit();
+        }
+
+        if (mSensorHandler != null) {
+            mSensorHandler.removeCallbacksAndMessages(null);
+            mSensorHandler = null;
+        }
+
         if (mTTS != null) {
             mTTS.setOnUtteranceProgressListener(null);
             utteranceProgressListener = null;
@@ -868,9 +882,15 @@ public class PlayActivity extends FragmentActivity implements SensorEventListene
         Sensor magSensor = mSensorManager.getDefaultSensor(Sensor.TYPE_MAGNETIC_FIELD);
 
         if (accelSensor != null && magSensor != null) {
-//            mSensorManager.registerListener(PlayActivity.this, orientationSensor, SensorManager.SENSOR_DELAY_GAME); //considering different hardware, we need to set the fastest value
-            mSensorManager.registerListener(PlayActivity.this, accelSensor, SensorManager.SENSOR_DELAY_GAME);
-            mSensorManager.registerListener(PlayActivity.this, magSensor, SensorManager.SENSOR_DELAY_GAME);
+
+            mSensorThread = new HandlerThread("sensorThread");
+            mSensorThread.start();
+            mSensorHandler = new Handler(mSensorThread.getLooper());
+            mSensorManager.registerListener(PlayActivity.this, accelSensor,
+                    SensorManager.SENSOR_DELAY_GAME, mSensorHandler);
+            mSensorManager.registerListener(PlayActivity.this, magSensor,
+                    SensorManager.SENSOR_DELAY_GAME, mSensorHandler);
+
             mIsSensorAvailable = true;
         } else {
             mIsSensorAvailable = false;
@@ -1158,7 +1178,8 @@ public class PlayActivity extends FragmentActivity implements SensorEventListene
 
     @Override
     public void onSensorChanged(SensorEvent event) {
-        //LOGD(TAG, "onSensorChanged, event.values is: " + String.format("%f,%f,%f", event.values[0], event.values[1], event.values[2]));
+
+        LOGD("onSensorChanged", "onSensorChanged, event.values is: " + String.format("%f,%f,%f", event.values[0], event.values[1], event.values[2]));
 
         switch (event.sensor.getType()) {
             case Sensor.TYPE_ORIENTATION: {
@@ -1167,10 +1188,12 @@ public class PlayActivity extends FragmentActivity implements SensorEventListene
             }
             case Sensor.TYPE_ACCELEROMETER: {
                 mGravity = event.values;
+
                 break;
             }
             case Sensor.TYPE_MAGNETIC_FIELD: {
                 mGeomagnetic = event.values;
+
                 break;
             }
             default:{
@@ -1179,6 +1202,7 @@ public class PlayActivity extends FragmentActivity implements SensorEventListene
         }
 
         if (mGravity != null && mGeomagnetic != null) {
+
             float R[] = new float[9];
             float I[] = new float[9];
             boolean success = SensorManager.getRotationMatrix(R, I, mGravity, mGeomagnetic);
@@ -1200,7 +1224,7 @@ public class PlayActivity extends FragmentActivity implements SensorEventListene
      */
     private void roll(float rollRadius) {
 
-        //Log.d("PPMM","roll value is " + rollRadius);
+        LOGD("roll","rollVal:" + rollRadius);
 
         CardDetailFragment currentCardDetailFragment = getCurrentCardDetailFragment();
         if ((currentCardDetailFragment == null) || (currentCardDetailFragment.mCardSN == null))  {
@@ -1211,12 +1235,12 @@ public class PlayActivity extends FragmentActivity implements SensorEventListene
         if (mIsAutoScroll == false && mOneOffPlayType == 0 ) {
 
             //范围-90到90
-            //Anroid: home在左边，屏幕在右边时: 上边靠近身体这边负数，远离身体正数 （home在右边，屏幕在左边时，相反）
+            //Android: home在左边，屏幕在右边时: 上边靠近身体这边负数，远离身体正数 （home在右边，屏幕在左边时，相反）
             //iOS:    home在左边，屏幕在右边时: 上边靠近身体这边正数，远离身体负数。与Android刚好相反。
             //越是垂直，越是绝对数大，这在iOS和Android是一致的
 
             int orientation = getOrientation();
-            //LOGD(TAG, "onSensorChanged: oritention is: " + orientation + ";rollRadius = " + rollRadius);
+            //LOGD(TAG, "onSensorChanged: oriention is: " + orientation + ";rollRadius = " + rollRadius);
 
             if (_lowestRollDegree == 0) {
                 _lowestRollDegree = rollRadius;
@@ -1282,8 +1306,14 @@ public class PlayActivity extends FragmentActivity implements SensorEventListene
                         downSwitchFlag = true;
 
                         isQASwitching = true;
-                        switchQuestionAnswerViewManually(true);
-                        isQASwitching = false;
+
+                        runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                switchQuestionAnswerViewManually(true);
+                                isQASwitching = false;
+                            }
+                        });
 
                     }
 
@@ -1307,8 +1337,14 @@ public class PlayActivity extends FragmentActivity implements SensorEventListene
                         downSwitchFlag = true;
 
                         isQASwitching = true;
-                        switchQuestionAnswerViewManually(true);
-                        isQASwitching = false;
+
+                        runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                switchQuestionAnswerViewManually(true);
+                                isQASwitching = false;
+                            }
+                        });
                     }
 
                 } else if (rollRadius > -DOWN_THRESHOLD_RADIUS && downSwitchFlag) {
@@ -1324,6 +1360,7 @@ public class PlayActivity extends FragmentActivity implements SensorEventListene
 
 
         }
+
     }
 
 
