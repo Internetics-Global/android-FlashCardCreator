@@ -1972,7 +1972,7 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnTouchL
                     (noOfLines > targetLines && targetLines > 0)) {
 
                 boolean highAccuracy = false;
-                if (noOfLines - targetLines <= 1) {
+                if (noOfLines - targetLines <= 1 && (textHeight-viewHeight <10)) { //textHeight-viewHeight <10的限定原因是因为实际发现,如果没有这个,就会造成性能问题
                     highAccuracy = true;
                 }
 
@@ -1982,7 +1982,7 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnTouchL
                 float delta;
 
                 if (highAccuracy) {
-                    delta = 0.3f;
+                    delta = 0.45f;
                 } else {
                     if (textSize > 200) {
                         delta = textSize/10;
@@ -2001,7 +2001,7 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnTouchL
 
                 isResized = true;
 
-                //LOGD(TAG, "triggerResizeTextToFitFrame: make size smaller on " + v.getText() + " noOfLines= " + noOfLines + " targetLines= " + targetLines + " textSize=" +textSize + " delta = " + delta);
+                LOGD(TAG, "triggerResizeTextToFitFrame: make size smaller on " + v.getText() + " noOfLines= " + noOfLines + " targetLines= " + targetLines + " textSize=" +textSize + " delta = " + delta);
 
 
                 //in case the font size still too big
