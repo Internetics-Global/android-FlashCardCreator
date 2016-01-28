@@ -2815,7 +2815,7 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnTouchL
      * @return
      */
     private boolean isEditableMode() {
-        if ((mCurrentPack.creatorID).equals(OpenUDID_manager.getOpenUDID())) {
+        if ((mCurrentPack != null) && (mCurrentPack.creatorID).equals(OpenUDID_manager.getOpenUDID())) {
             return true;
         } else {
             return false;
