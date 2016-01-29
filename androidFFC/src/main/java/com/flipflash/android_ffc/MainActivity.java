@@ -799,6 +799,14 @@ public class MainActivity extends FragmentActivity implements
                         Toast.makeText(getApplicationContext(), R.string.DIALOG_REACH_MAX_DOWNLOAD_LIMIT, Toast.LENGTH_LONG).show();
                     }
                 }
+            } else {
+
+                new AlertDialog.Builder(MainActivity.this)
+                        .setTitle(getResources().getString(R.string.DIALOG_TITLE_NO_NETWORK))
+                        .setMessage(getResources().getString(R.string.DIALOG_PLEASE_CHECK_YOUR_NETWORK))
+                        .setPositiveButton(getResources().getString(R.string.DIALOG_OK), null)
+                        .show();
+
             }
         } else {
 
@@ -808,10 +816,9 @@ public class MainActivity extends FragmentActivity implements
             }
 
 
-            new AlertDialog.Builder(MainActivity.this)
-                    .setTitle(getResources().getString(R.string.DIALOG_TITLE_NO_NETWORK))
-                    .setMessage(getResources().getString(R.string.DIALOG_PLEASE_CHECK_YOUR_NETWORK))
-                    .setPositiveButton(getResources().getString(R.string.DIALOG_OK), null)
+            new SweetAlertDialog(MainActivity.this)
+                    .setTitleText(getString(R.string.DIALOG_AlERT))
+                    .setContentText(getString(R.string.Title_Share_Code_Not_Right))
                     .show();
         }
     }
