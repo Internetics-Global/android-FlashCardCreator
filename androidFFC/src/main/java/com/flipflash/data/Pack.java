@@ -45,7 +45,11 @@ public class Pack implements Cloneable {
     public int    createDate;
     public int    autoPlaySpeed;
 
-    public boolean isAllowShare;
+    /*
+     * 由于我们无法再扩展数据库字段,所以这个字段实际上我们没用到,而是通过share preference字段本地存储.
+     * 这部分逻辑同iOS不一样,需要注意
+     */
+//    public boolean isAllowShare;
 
     public ArrayList<Card> cards;
 
@@ -68,8 +72,6 @@ public class Pack implements Cloneable {
         fileNameOnAWS = "";
         logoImageUriFormatStr = FileOperationHelper.getLogoPlaceholderImagePath();
         coverImageUriFormatStr = FileOperationHelper.getPackCoverDefaultImagePath();
-
-        isAllowShare = true;
     }
 
 

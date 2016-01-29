@@ -965,6 +965,8 @@ public class MainActivity extends FragmentActivity implements
             maxNo = 1000000; //as big as possible
         }
 
+        Global.maxDownloadableNoForCurrentDownloadingPack = maxNo;
+
 
         if ((Global.currentAmazonSimpleDBItemDownloadCount < maxNo)  || (maxNo == 0)) {  //maxNo = 0 means no record in AmazonSDB
             result = true;
@@ -1366,6 +1368,19 @@ public class MainActivity extends FragmentActivity implements
             Toast.makeText(getApplicationContext(), "NO pack selected", Toast.LENGTH_LONG).show();
             return;
         }
+
+        //check whether to allow to share
+        String str = AppConfig.sharedInstance().get(String.format("isAllowShare_%d",mCurrentPack.packID));
+        boolean isAllowToShare = "1".equals(str);
+        if (isAllowToShare == false && (mCurrentPack.creatorID.equals(OpenUDID_manager.getOpenUDID()) == false)) {
+
+            new SweetAlertDialog(MainActivity.this, SweetAlertDialog.NORMAL_TYPE)
+                    .setTitleText(getString(R.string.DIALOG_AlERT))
+                    .setContentText(getString(R.string.DIALOG_SHARE_FUNCTION_FORBIDDEN_BY_CREATOR))
+                    .show();
+            return;
+        }
+
 
         if (Global.FFC_WITHOUT_SUBSCRIPTION) {
             if (DropboxAuthHelper.sharedHelper(MainActivity.this).isLinked()) {

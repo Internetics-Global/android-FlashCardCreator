@@ -124,6 +124,12 @@ public class Global {
     public static final String K_AppStore_Link = "<please provide link on Google Play>";
 
 
+    /*
+     * latest downloaded pack
+     */
+    public static       int   maxDownloadableNoForCurrentDownloadingPack = 0;
+
+
     /**
      * detect network
      *

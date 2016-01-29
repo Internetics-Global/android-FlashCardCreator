@@ -7,8 +7,10 @@ import com.flipflash.android_ffc.R;
 import com.flipflash.data.Card;
 import com.flipflash.data.Pack;
 import com.flipflash.data.User;
+import com.flipflash.util.AppConfig;
 import com.flipflash.util.AppContext;
 import com.flipflash.util.Global;
+import com.flipflash.util.OpenUDID_manager;
 import com.flipflash.util.StringUtils;
 import com.flipflash.util.UIHelper;
 
@@ -199,6 +201,16 @@ public class PackParserHelper {
         resultPack.coverImageUriFormatStr = FileOperationHelper.convertToUriFormatFile(newFile);
         newFile = FileOperationHelper.copyImageVideoToImagesFolder(getLogoImageFullPath(resultPack.logoImageUriFormatStr, resultPack.cards.size() - 1));//be careful, we set logoImageUriFormatStr from last card in parseCardJsonFiles
         resultPack.logoImageUriFormatStr = FileOperationHelper.convertToUriFormatFile(newFile);
+
+        //once we download the pack, we need to do this as soon as possible
+        if ((resultPack.creatorID.equals(OpenUDID_manager.getOpenUDID())) == false && Global.maxDownloadableNoForCurrentDownloadingPack == 1) {
+            AppConfig.sharedInstance().set(String.format("isAllowShare_%d",resultPack.packID),String.format("%d",0));
+
+        } else {
+            AppConfig.sharedInstance().set(String.format("isAllowShare_%d",resultPack.packID),String.format("%d",1));
+        }
+
+
         User.defaultUser(AppContext.getAppContext()).addPack(resultPack);
 
         return resultPack;
