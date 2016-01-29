@@ -70,7 +70,7 @@ public class AWSShareHelper extends AsyncTask<Void, Long, Boolean> {
 
             new SweetAlertDialog(activity)
                 .setTitleText(activity.getString(R.string.DIALOG_AlERT))
-                .setContentText("The pack version is too old. Please ask the creator to share the pack again")
+                .setContentText("The pack version is out of date. Please ask the pack owner to recompile their pack")
                 .show();
             return;
         }
