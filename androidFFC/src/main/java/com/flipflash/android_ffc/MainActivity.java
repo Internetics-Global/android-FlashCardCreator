@@ -1950,9 +1950,8 @@ public class MainActivity extends FragmentActivity implements
         }
 
         ImageView packCoverImageView = (ImageView) findViewById(R.id.pack_info_cover_image);
-        if (mCurrentPack.coverImageUriFormatStr.contains("default")
-                || mCurrentPack.coverImageUriFormatStr.contains("placeholder")
-                     || mCurrentPack.coverImageUriFormatStr.length() == 0) {
+        if (StringUtils.isEmptyOrPlaceHolder(mCurrentPack.coverImageUriFormatStr) ||
+                StringUtils.isValidImageFile(mCurrentPack.coverImageUriFormatStr) == false) {
             packCoverImageView.setImageDrawable(getResources().getDrawable(R.drawable.default_pack_cover_image_transparent));
         } else {
             packCoverImageView.setImageURI(Uri.parse(mCurrentPack.coverImageUriFormatStr));

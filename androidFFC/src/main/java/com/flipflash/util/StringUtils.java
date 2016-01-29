@@ -7,7 +7,11 @@ import android.net.Uri;
 import android.view.Gravity;
 
 import com.flipflash.android_ffc.R;
+import com.flipflash.helper.FileOperationHelper;
 
+import org.apache.commons.io.FileUtils;
+
+import java.io.File;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.net.HttpURLConnection;
@@ -61,6 +65,10 @@ public class StringUtils {
             return true;
         }
 
+        if (input.toLowerCase().contains("default")) {
+            return true;
+        }
+
         return false;
     }
 
@@ -77,6 +85,25 @@ public class StringUtils {
             }
         }
         return true;
+    }
+
+    /*
+     * used to differentiate between file and directory
+     */
+    public static boolean isValidImageFile(String pathStr) {
+
+        if (isEmpty(pathStr)) {
+            return false;
+        }
+
+        if (pathStr.contains(".jpg") || pathStr.contains(".jpeg")
+                || pathStr.contains(".png") || pathStr.contains(".bmp") ||
+                pathStr.contains(".gif")) {
+            return true;
+        }
+
+        return false;
+
     }
 
     public static boolean isAlphanumeric(String string) {
