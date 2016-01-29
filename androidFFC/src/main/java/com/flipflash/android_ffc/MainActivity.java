@@ -148,6 +148,8 @@ public class MainActivity extends FragmentActivity implements
     private ProgressDialog    mSnapShotDialog;
     private ProgressDialog    mZipAndEncryptDialog;
 
+    private ProgressDialog    mUnshortenProgressDialog;
+
     private ArrayList<CardDetailFragment> mArrayCardDetailFragments;   //Special for snapshot(not include current card)
 
     /*
@@ -458,7 +460,21 @@ public class MainActivity extends FragmentActivity implements
 
                                 final String codeString = codeEditText.getText().toString();
 
+                                InputMethodManager imm = (InputMethodManager) getSystemService(
+                                        Context.INPUT_METHOD_SERVICE);
+                                imm.hideSoftInputFromWindow(codeEditText.getWindowToken(), 0);
+
                                 if (StringUtils.isEmpty(codeString) == false) {
+
+                                    if (mUnshortenProgressDialog == null) {
+                                        mUnshortenProgressDialog = new ProgressDialog(MainActivity.this);
+                                        mUnshortenProgressDialog.setMax(100);
+                                        mUnshortenProgressDialog.setCancelable(false);
+                                        mUnshortenProgressDialog.setCanceledOnTouchOutside(false);
+                                        mUnshortenProgressDialog.setMessage(getString(R.string.Title_Process_Share_Code));
+                                        mUnshortenProgressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+                                    }
+                                    mUnshortenProgressDialog.show();
 
                                     ExecutorService taskExecutor = Executors.newSingleThreadExecutor();
                                     taskExecutor.execute(new Runnable() {
@@ -472,6 +488,12 @@ public class MainActivity extends FragmentActivity implements
                                                 runOnUiThread(new Runnable() {
                                                     @Override
                                                     public void run() {
+
+                                                        if (mUnshortenProgressDialog !=null) {
+                                                            mUnshortenProgressDialog.dismiss();
+                                                            mUnshortenProgressDialog = null;
+                                                        }
+
                                                         new SweetAlertDialog(MainActivity.this)
                                                             .setTitleText(getString(R.string.DIALOG_AlERT))
                                                             .setContentText(getString(R.string.Title_Share_Code_Not_Right))
@@ -722,8 +744,15 @@ public class MainActivity extends FragmentActivity implements
                     }
                 }
 
+
+                if (mUnshortenProgressDialog !=null) {
+                    mUnshortenProgressDialog.dismiss();
+                    mUnshortenProgressDialog = null;
+                }
+
                 if (timeoutCount == kTimeoutThreshold) {
                     Toast.makeText(getApplicationContext(), R.string.DIALOG_NETWORK_TIMEOUT, Toast.LENGTH_LONG).show();
+
                     return;
                 } else {
                     if (mIsAllowDownload) {
@@ -743,6 +772,13 @@ public class MainActivity extends FragmentActivity implements
                 }
             }
         } else {
+
+            if (mUnshortenProgressDialog !=null) {
+                mUnshortenProgressDialog.dismiss();
+                mUnshortenProgressDialog = null;
+            }
+
+
             if (packUri != null) {
                 new SweetAlertDialog(MainActivity.this)
                         .setTitleText(getString(R.string.DIALOG_AlERT))
