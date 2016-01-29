@@ -253,6 +253,15 @@ public class MainActivity extends FragmentActivity implements
 
         EasyTracker.getInstance().setContext(this);
 
+        if (Global.apiReachableWithAlert(MainActivity.this) == false) {
+            new AlertDialog.Builder(MainActivity.this)
+                    .setTitle(getResources().getString(R.string.DIALOG_TITLE_NO_NETWORK))
+                    .setMessage(getResources().getString(R.string.DIALOG_PLEASE_CHECK_YOUR_NETWORK))
+                    .setPositiveButton(getResources().getString(R.string.DIALOG_OK), null)
+                    .show();
+
+        }
+
     }
 
     public boolean getPackInfoLayoutVisible() {
@@ -441,6 +450,14 @@ public class MainActivity extends FragmentActivity implements
             case R.id.actionbar_share_pack:
                 if (Global.apiReachableWithAlert(MainActivity.this)) {
                     onActionbarShareItemSelected();
+                } else {
+
+                    new AlertDialog.Builder(MainActivity.this)
+                            .setTitle(getResources().getString(R.string.DIALOG_TITLE_NO_NETWORK))
+                            .setMessage(getResources().getString(R.string.DIALOG_PLEASE_CHECK_YOUR_NETWORK))
+                            .setPositiveButton(getResources().getString(R.string.DIALOG_OK), null)
+                            .show();
+
                 }
                 break;
 
@@ -457,6 +474,16 @@ public class MainActivity extends FragmentActivity implements
                         .setPositiveButton(R.string.DIALOG_DONE, new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
+
+                                if (Global.apiReachableWithAlert(MainActivity.this) == false) {
+                                    new AlertDialog.Builder(MainActivity.this)
+                                            .setTitle(getResources().getString(R.string.DIALOG_TITLE_NO_NETWORK))
+                                            .setMessage(getResources().getString(R.string.DIALOG_PLEASE_CHECK_YOUR_NETWORK))
+                                            .setPositiveButton(getResources().getString(R.string.DIALOG_OK), null)
+                                            .show();
+                                    return;
+
+                                }
 
                                 final String codeString = codeEditText.getText().toString();
 
@@ -662,7 +689,9 @@ public class MainActivity extends FragmentActivity implements
 
         //Step2: call from other app or Dropbox log in
         Uri packUri = getIntent().getData();
-        downloadPack(packUri);
+        if (packUri != null) {
+            downloadPack(packUri);
+        }
         getIntent().setData(null); //in case it will be recalled time and time
 
         //Used to show pack list
@@ -779,12 +808,11 @@ public class MainActivity extends FragmentActivity implements
             }
 
 
-            if (packUri != null) {
-                new SweetAlertDialog(MainActivity.this)
-                        .setTitleText(getString(R.string.DIALOG_AlERT))
-                        .setContentText(getString(R.string.Title_Share_Code_Not_Right))
-                        .show();
-            }
+            new AlertDialog.Builder(MainActivity.this)
+                    .setTitle(getResources().getString(R.string.DIALOG_TITLE_NO_NETWORK))
+                    .setMessage(getResources().getString(R.string.DIALOG_PLEASE_CHECK_YOUR_NETWORK))
+                    .setPositiveButton(getResources().getString(R.string.DIALOG_OK), null)
+                    .show();
         }
     }
 
