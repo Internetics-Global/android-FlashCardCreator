@@ -7,8 +7,8 @@ public class Dropbox_Constant {
     /**
      * Dropbox key and secret
      */
-    public final static String APP_KEY = "rl7510fe1641dyl";
-    public final static String APP_SECRET = "3twb9tcccje56kg";
+    public final static String APP_KEY = "656kygg6ny4d7l6";
+    public final static String APP_SECRET = "1836olwd9ofq4uv";
 
     public final static int        UPLOAD_SUCCEED  = 0;
     public final static int        UPLOAD_FAILED   = 1;
