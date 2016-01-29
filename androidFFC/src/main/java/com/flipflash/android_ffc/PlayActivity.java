@@ -1217,6 +1217,11 @@ public class PlayActivity extends FragmentActivity implements SensorEventListene
 
     }
 
+    /*
+     * IF a card has just been flipped THEN don't allow flip card function to flip for 1 to 1.5 seconds
+
+     */
+    private long last_Flip_Time = 0;
 
     /*
      * 弧度和度的关系：rollRadius = (float)(rollDegress *3.14/180);
@@ -1225,6 +1230,11 @@ public class PlayActivity extends FragmentActivity implements SensorEventListene
     private void roll(float rollRadius) {
 
         LOGD("roll","rollVal:" + rollRadius);
+
+        if (System.currentTimeMillis() - last_Flip_Time < 1000) {
+            return;
+        }
+
 
         CardDetailFragment currentCardDetailFragment = getCurrentCardDetailFragment();
         if ((currentCardDetailFragment == null) || (currentCardDetailFragment.mCardSN == null))  {
@@ -1310,6 +1320,7 @@ public class PlayActivity extends FragmentActivity implements SensorEventListene
                         runOnUiThread(new Runnable() {
                             @Override
                             public void run() {
+                                last_Flip_Time = System.currentTimeMillis();
                                 switchQuestionAnswerViewManually(true);
                                 isQASwitching = false;
                             }
@@ -1341,6 +1352,7 @@ public class PlayActivity extends FragmentActivity implements SensorEventListene
                         runOnUiThread(new Runnable() {
                             @Override
                             public void run() {
+                                last_Flip_Time = System.currentTimeMillis();
                                 switchQuestionAnswerViewManually(true);
                                 isQASwitching = false;
                             }
