@@ -8,12 +8,18 @@ import android.view.Gravity;
 
 import com.flipflash.android_ffc.R;
 
+import java.io.IOException;
 import java.io.UnsupportedEncodingException;
+import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.net.URLDecoder;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.regex.Pattern;
+
+import static com.flipflash.util.LogUtils.LOGD;
 
 public class StringUtils {
 
@@ -400,6 +406,26 @@ public class StringUtils {
 
         String message = String.format("%s ( %s ) %s %s",preStr,shareLink,postStr,Global.K_AppStore_Link);
         return message;
+
+    }
+
+
+    public static String getUnshortedURL(String shortedURL) {
+        String location = null;
+        try {
+            final URL url = new URL(shortedURL);
+            final HttpURLConnection urlConnection = (HttpURLConnection) url.openConnection();
+            urlConnection.setInstanceFollowRedirects(false); //this is very important
+            location = urlConnection.getHeaderField("location");
+            LOGD(TAG, "getUnshortedURL: " + "unshortened url is: " + location);
+
+        } catch (MalformedURLException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        return location;
 
     }
 

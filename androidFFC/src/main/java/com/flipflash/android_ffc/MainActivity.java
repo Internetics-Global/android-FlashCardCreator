@@ -95,6 +95,8 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Timer;
 import java.util.TimerTask;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 import static com.flipflash.util.LogUtils.LOGD;
 import static com.flipflash.util.LogUtils.LOGE;
@@ -453,12 +455,47 @@ public class MainActivity extends FragmentActivity implements
                         .setPositiveButton(R.string.DIALOG_DONE, new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
-                                String codeString = codeEditText.getText().toString();
-                                if ((codeString != null) && (codeString.length() > 0)) {
-                                    String finalURL = "http://tinyurl.com/" + codeString;
-                                    Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(finalURL));
-                                    startActivity(browserIntent);
+
+                                final String codeString = codeEditText.getText().toString();
+
+                                if (StringUtils.isEmpty(codeString) == false) {
+
+                                    ExecutorService taskExecutor = Executors.newSingleThreadExecutor();
+                                    taskExecutor.execute(new Runnable() {
+                                        @Override
+                                        public void run() {
+
+                                            String shortenURL = String.format("%s%s",Global.TINYURL_SHORTED_BASE_URL,codeString);
+                                            String wholeURL = StringUtils.getUnshortedURL(shortenURL);
+                                            if (wholeURL == null) {
+
+                                                runOnUiThread(new Runnable() {
+                                                    @Override
+                                                    public void run() {
+                                                        new SweetAlertDialog(MainActivity.this)
+                                                            .setTitleText(getString(R.string.DIALOG_AlERT))
+                                                            .setContentText(getString(R.string.Title_Share_Code_Not_Right))
+                                                            .show();
+                                                    }
+                                                });
+
+
+                                            } else {
+
+                                                final Uri packUri = Uri.parse(wholeURL);
+
+                                                runOnUiThread(new Runnable() {
+                                                    @Override
+                                                    public void run() {
+                                                        downloadPack(packUri);
+                                                    }
+                                                });
+                                            }
+                                        }
+                                    });
                                 }
+
+
                             }
                         })
                         .setNegativeButton(R.string.DIALOG_CANCEL, new DialogInterface.OnClickListener() {
@@ -602,61 +639,8 @@ public class MainActivity extends FragmentActivity implements
         }
 
         //Step2: call from other app or Dropbox log in
-        Uri data = getIntent().getData();
-        if ((data != null) && (data.getScheme().equalsIgnoreCase("fcc"))) {
-
-            mIsAllowedToShowPackList = false;
-
-            //for download (not include sample pack
-            if (Global.apiReachableWithAlert(MainActivity.this)) {
-
-                String packFileName = data.getLastPathSegment();
-                Global.currentAmazonSimpleDBItemName = packFileName.substring(0,packFileName.indexOf(".zip"));
-                mSemaphore = false;
-
-                //The reason why we design this is: network operation could not be done on main thread
-                new Thread()
-                {
-                    @Override
-                    public void run() {
-                        mIsAllowDownload = checkDownloadable(Global.currentAmazonSimpleDBItemName);
-                        mSemaphore = true;
-                    }
-                }.start();
-
-                int timeoutCount = 0;    //set timeout = 10 second
-                final int kTimeoutThreshold = 500;
-                while ((mSemaphore == false) && (timeoutCount <kTimeoutThreshold)) {
-                    try {
-                        Thread.sleep(20);
-                        timeoutCount ++;
-                    } catch (InterruptedException e) {
-                        e.printStackTrace();
-                    }
-                }
-
-                if (timeoutCount == kTimeoutThreshold) {
-                    Toast.makeText(getApplicationContext(), R.string.DIALOG_NETWORK_TIMEOUT, Toast.LENGTH_LONG).show();
-                    return;
-                } else {
-                    if (mIsAllowDownload) {
-                        String downloableShareLink = data.toString().replace("fcc", "https").replace("www", "dl");
-                        File downloadedZipFile = new File(FileOperationHelper.downloadedPackDirectory(), "downloadedPackZip.zip");
-
-                        if (mPackDownloadHelper != null) {
-                            mPackDownloadHelper.cancel(true);
-                            mPackDownloadHelper = null;
-                        }
-                        mPackDownloadHelper = new PackDownloadHelper(MainActivity.this, downloableShareLink, downloadedZipFile.toString());
-                        mPackDownloadHelper.execute();
-                        
-                    }   else {
-                        Toast.makeText(getApplicationContext(), R.string.DIALOG_REACH_MAX_DOWNLOAD_LIMIT, Toast.LENGTH_LONG).show();
-                    }
-                }
-            }
-        }
-
+        Uri packUri = getIntent().getData();
+        downloadPack(packUri);
         getIntent().setData(null); //in case it will be recalled time and time
 
         //Used to show pack list
@@ -702,6 +686,70 @@ public class MainActivity extends FragmentActivity implements
                 }, 1000); // 2000ms delay
 
 
+    }
+
+    private void downloadPack(Uri packUri) {
+
+        if ((packUri != null) && (packUri.getScheme().equalsIgnoreCase("fcc"))) {
+
+            mIsAllowedToShowPackList = false;
+
+            //for download (not include sample pack
+            if (Global.apiReachableWithAlert(MainActivity.this)) {
+
+                String packFileName = packUri.getLastPathSegment();
+                Global.currentAmazonSimpleDBItemName = packFileName.substring(0,packFileName.indexOf(".zip"));
+                mSemaphore = false;
+
+                //The reason why we design this is: network operation could not be done on main thread
+                new Thread()
+                {
+                    @Override
+                    public void run() {
+                        mIsAllowDownload = checkDownloadable(Global.currentAmazonSimpleDBItemName);
+                        mSemaphore = true;
+                    }
+                }.start();
+
+                int timeoutCount = 0;    //set timeout = 10 second
+                final int kTimeoutThreshold = 500;
+                while ((mSemaphore == false) && (timeoutCount <kTimeoutThreshold)) {
+                    try {
+                        Thread.sleep(20);
+                        timeoutCount ++;
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+                }
+
+                if (timeoutCount == kTimeoutThreshold) {
+                    Toast.makeText(getApplicationContext(), R.string.DIALOG_NETWORK_TIMEOUT, Toast.LENGTH_LONG).show();
+                    return;
+                } else {
+                    if (mIsAllowDownload) {
+                        String downloableShareLink = packUri.toString().replace("fcc", "https").replace("www", "dl");
+                        File downloadedZipFile = new File(FileOperationHelper.downloadedPackDirectory(), "downloadedPackZip.zip");
+
+                        if (mPackDownloadHelper != null) {
+                            mPackDownloadHelper.cancel(true);
+                            mPackDownloadHelper = null;
+                        }
+                        mPackDownloadHelper = new PackDownloadHelper(MainActivity.this, downloableShareLink, downloadedZipFile.toString());
+                        mPackDownloadHelper.execute();
+
+                    }   else {
+                        Toast.makeText(getApplicationContext(), R.string.DIALOG_REACH_MAX_DOWNLOAD_LIMIT, Toast.LENGTH_LONG).show();
+                    }
+                }
+            }
+        } else {
+            if (packUri != null) {
+                new SweetAlertDialog(MainActivity.this)
+                        .setTitleText(getString(R.string.DIALOG_AlERT))
+                        .setContentText(getString(R.string.Title_Share_Code_Not_Right))
+                        .show();
+            }
+        }
     }
 
     public void showTooltips() {

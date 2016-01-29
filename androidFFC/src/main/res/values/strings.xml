@@ -215,6 +215,7 @@
     <string name="Title_HANDSET_CHANGE_MESSAGE">In order to play normally, please exit and reenter play mode</string>
     <string name="Title_Downloading">Downloading...</string>
     <string name="Title_Image_Copyright">Images may be subject to copyright. Confirm your rights before uploading.</string>
+    <string name="Title_Share_Code_Not_Right">The share code is not recognized, please check</string>
 
     <string name="Optional_Play_Manually">Play Manually</string>
     <string name="Optional_Auto_Play">Auto Play</string>

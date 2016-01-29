@@ -109,7 +109,7 @@ public class DropboxShareHelper extends AsyncTask<Void, Long, Boolean> {
 
                     DropboxAPI.DropboxLink link = DropboxAuthHelper.sharedHelper(mActivity).getDropboxAPI().share(filePathInDropbox);
                     String shortedShareLink = link.url;
-                    String shareLink = getUnshortedURL(shortedShareLink);
+                    String shareLink = StringUtils.getUnshortedURL(shortedShareLink);
                     if (shareLink == null) {
                         return false;
                     }
@@ -222,27 +222,6 @@ public class DropboxShareHelper extends AsyncTask<Void, Long, Boolean> {
         }.start();
 
         share();
-    }
-
-
-
-    public static String getUnshortedURL(String shortedURL) {
-        String location = null;
-        try {
-            final URL url = new URL(shortedURL);
-            final HttpURLConnection urlConnection = (HttpURLConnection) url.openConnection();
-            urlConnection.setInstanceFollowRedirects(false); //this is very important
-            location = urlConnection.getHeaderField("location");
-            LOGD(TAG, "getUnshortedURL: " + "unshortened url is: " + location);
-
-        } catch (MalformedURLException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
-        return location;
-
     }
 
 

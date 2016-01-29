@@ -73,6 +73,7 @@ public class Global {
 
     //used to generate a redirected URL
     public static final String URL_REDIRECT_API = "http://tinyurl.com/api-create.php?url=";
+    public static final String TINYURL_SHORTED_BASE_URL = "http://tinyurl.com/";
 
     //tooltip related
     public static final String isAllowToShowTooltip = "isAllowToShowTooltip";
