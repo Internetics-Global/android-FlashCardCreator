@@ -44,6 +44,8 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.List;
 
+import cn.pedant.SweetAlert.SweetAlertDialog;
+
 import static com.flipflash.util.LogUtils.LOGD;
 
 
@@ -65,7 +67,12 @@ public class AWSShareHelper extends AsyncTask<Void, Long, Boolean> {
     public AWSShareHelper(Activity activity, Pack currentPack, Boolean isDirectShare) {
 
         if (currentPack == null || StringUtils.isEmpty(currentPack.fileNameOnAWS)) {
-            throw  new IllegalArgumentException("currentPack.fileNameOnAWS should be set before");
+
+            new SweetAlertDialog(activity)
+                .setTitleText(activity.getString(R.string.DIALOG_AlERT))
+                .setContentText("The pack version is too old. Please ask the creator to share the pack again")
+                .show();
+            return;
         }
 
         mActivity         = activity;
@@ -248,17 +255,20 @@ public class AWSShareHelper extends AsyncTask<Void, Long, Boolean> {
 
     public void share() {
 
-        new AlertDialog.Builder(mActivity)
-                .setTitle("Share")
-                .setItems(new String[] {"Facebook","Twitter","Email",mActivity.getString(R.string.Title_Copy_To_Clipboard)}, new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        dialog.dismiss();
-                        String shareLink = mCurrentPack.shareLink;
-                        shareActionOnItemSelected(which,shareLink);
-                    }
-                })
-                .show();
+        if (mCurrentPack != null) {
+
+            new AlertDialog.Builder(mActivity)
+                    .setTitle("Share")
+                    .setItems(new String[] {"Facebook","Twitter","Email",mActivity.getString(R.string.Title_Copy_To_Clipboard)}, new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            dialog.dismiss();
+                            String shareLink = mCurrentPack.shareLink;
+                            shareActionOnItemSelected(which,shareLink);
+                        }
+                    })
+                    .show();
+        }
     }
 
 
