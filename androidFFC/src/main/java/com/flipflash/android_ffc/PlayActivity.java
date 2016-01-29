@@ -887,9 +887,9 @@ public class PlayActivity extends FragmentActivity implements SensorEventListene
             mSensorThread.start();
             mSensorHandler = new Handler(mSensorThread.getLooper());
             mSensorManager.registerListener(PlayActivity.this, accelSensor,
-                    SensorManager.SENSOR_DELAY_GAME, mSensorHandler);
+                    SensorManager.SENSOR_DELAY_FASTEST, mSensorHandler);
             mSensorManager.registerListener(PlayActivity.this, magSensor,
-                    SensorManager.SENSOR_DELAY_GAME, mSensorHandler);
+                    SensorManager.SENSOR_DELAY_FASTEST, mSensorHandler);
 
             mIsSensorAvailable = true;
         } else {
