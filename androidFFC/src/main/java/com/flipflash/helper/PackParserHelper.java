@@ -13,6 +13,7 @@ import com.flipflash.util.Global;
 import com.flipflash.util.OpenUDID_manager;
 import com.flipflash.util.StringUtils;
 import com.flipflash.util.UIHelper;
+import com.orhanobut.hawk.Hawk;
 
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
@@ -22,6 +23,7 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
+import java.util.HashMap;
 
 import static com.flipflash.util.LogUtils.LOGD;
 import static com.flipflash.util.LogUtils.LOGE;
@@ -284,17 +286,28 @@ public class PackParserHelper {
                 pack.jobTitle = "";
             }
 
+            //实际中,这个share_link不一定有值,因为share_link只有在第二次upload时才会写入到meta中,第一次upload是没有的
             if (obj.containsKey("share_link")) {
                 pack.shareLink = (String) obj.get("share_link");
             } else {
                 pack.shareLink = "";
             }
 
+            //实际中,file_name_on_aws 不一定有值,因为 file_name_on_aws 只有在第二次upload时才会写入到meta中,第一次upload是没有的
             if (obj.containsKey("file_name_on_aws")) {
                 pack.fileNameOnAWS = (String) obj.get("file_name_on_aws");
             } else {
                 pack.fileNameOnAWS = "";
             }
+
+
+            //根据如上的解释,我们需要保存download link
+            HashMap savedDownloadLinkageDict = Hawk.get("savedDownloadLinkage");
+            if (savedDownloadLinkageDict == null) {
+                savedDownloadLinkageDict = new HashMap();
+            }
+            savedDownloadLinkageDict.put(String.format("%d",pack.packID),Global.fccURLForCurrentDownloadingPack);
+            Hawk.put("savedDownloadLinkage",savedDownloadLinkageDict);
 
 
             if (obj.containsKey("restore_password")) {
@@ -333,6 +346,7 @@ public class PackParserHelper {
                 }
             }
             LOGD(TAG, "parsePackJsonFile: " + "screenWith from shared device is " + mScreenWidthFromSharedDevice);
+
 
 
         } catch (FileNotFoundException e) {

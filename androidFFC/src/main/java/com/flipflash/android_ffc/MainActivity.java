@@ -655,7 +655,7 @@ public class MainActivity extends FragmentActivity implements
 
                 AuthActivity.result = null;
 
-                share();
+                shareToDropbox();
 
             } catch (IllegalStateException e) {
                 LOGD(TAG, "onResume: Error authenticating " + e);
@@ -785,6 +785,9 @@ public class MainActivity extends FragmentActivity implements
                     return;
                 } else {
                     if (mIsAllowDownload) {
+
+                        Global.fccURLForCurrentDownloadingPack =  packUri.toString();  //必须是ffc://这种形式,而不是http://
+
                         String downloableShareLink = packUri.toString().replace("fcc", "https").replace("www", "dl");
                         File downloadedZipFile = new File(FileOperationHelper.downloadedPackDirectory(), "downloadedPackZip.zip");
 
@@ -1384,17 +1387,17 @@ public class MainActivity extends FragmentActivity implements
 
         if (Global.FFC_WITHOUT_SUBSCRIPTION) {
             if (DropboxAuthHelper.sharedHelper(MainActivity.this).isLinked()) {
-                share();
+                shareToDropbox();
             } else {
                 DropboxAuthHelper.sharedHelper(MainActivity.this).startAuthentication();  //跳转到授权页，成功后，会到onResume进行处理。
             }
         } else {
             if (DropboxAuthHelper.sharedHelper(MainActivity.this).isLinked()) {
-                share();
+                shareToDropbox();
             } else {
                 ParseUser currentUser = ParseUser.getCurrentUser();
                 if (currentUser != null) {
-                    share();
+                    shareToAWS();
                 } else {
                     parseUserAuth();
                 }
@@ -1420,50 +1423,40 @@ public class MainActivity extends FragmentActivity implements
     }
 
     private void share() {
-        LOGD(TAG, "share");
+
         if (DropboxAuthHelper.sharedHelper(MainActivity.this).isLinked()) {
+            shareToDropbox();
+        } else {
+            shareToAWS();
+        }
 
-            if ((mCurrentPack.creatorID).equals(OpenUDID_manager.getOpenUDID())) {
+    }
 
-                if (PackRecordHelper.checkUploadPackNecessary(mCurrentPack)) {
-                    setPasswordAndUpload();
-                } else {
-                    DropboxShareHelper dropboxShareHelper = new DropboxShareHelper(this,mCurrentPack,true);
-                    dropboxShareHelper.execute();
-                }
+    private void shareToDropbox() {
+        LOGD(TAG, "share");
 
-            } else {
-                AWSShareHelper AWSShareHelper = new AWSShareHelper(this,mCurrentPack,true);
-                AWSShareHelper.share();
+        if ((mCurrentPack.creatorID).equals(OpenUDID_manager.getOpenUDID())) {
 
-            }
+            setPasswordAndUpload();
 
         } else {
+            DropboxShareHelper dropboxShareHelper = new DropboxShareHelper(this,mCurrentPack,true);
+            dropboxShareHelper.share();
 
-            if ((mCurrentPack.creatorID).equals(OpenUDID_manager.getOpenUDID())) {
+        }
+    }
 
-                if (PackRecordHelper.checkUploadPackNecessary(mCurrentPack)) {
-                    setPasswordAndUpload();
-                } else {
-                    if (DropboxAuthHelper.sharedHelper(MainActivity.this).isLinked()) {
-                        DropboxShareHelper dropboxShareHelper = new DropboxShareHelper(this,mCurrentPack,true);
-                        dropboxShareHelper.execute();
-                    } else {
-                        AWSShareHelper AWSShareHelper = new AWSShareHelper(this,mCurrentPack,true);
-                        AWSShareHelper.share();
-                    }
-                }
 
-            } else {
-                if (DropboxAuthHelper.sharedHelper(MainActivity.this).isLinked()) {
-                    DropboxShareHelper dropboxShareHelper = new DropboxShareHelper(this,mCurrentPack,true);
-                    dropboxShareHelper.execute();
-                } else {
-                    AWSShareHelper AWSShareHelper = new AWSShareHelper(this,mCurrentPack,true);
-                    AWSShareHelper.share();
-                }
+    private void shareToAWS() {
+        LOGD(TAG, "share");
 
-            }
+        if ((mCurrentPack.creatorID).equals(OpenUDID_manager.getOpenUDID())) {
+
+            setPasswordAndUpload();
+
+        } else {
+            AWSShareHelper AWSShareHelper = new AWSShareHelper(this,mCurrentPack,true);
+            AWSShareHelper.share();
 
         }
     }

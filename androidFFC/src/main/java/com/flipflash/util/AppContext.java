@@ -16,6 +16,7 @@ import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
 import com.nostra13.universalimageloader.core.assist.QueueProcessingType;
 import com.nostra13.universalimageloader.utils.L;
 import com.orhanobut.hawk.Hawk;
+import com.orhanobut.hawk.HawkBuilder;
 import com.orhanobut.hawk.LogLevel;
 import com.parse.Parse;
 import com.parse.ParseCrashReporting;
@@ -88,7 +89,11 @@ public class AppContext extends Application {
         //facebook_app_id 是在Manifest中进行设置
 
         //Key-value storage
-        Hawk.initWithoutEncryption(mContext, LogLevel.NONE);
+        Hawk.init(this)
+                .setEncryptionMethod(HawkBuilder.EncryptionMethod.NO_ENCRYPTION)
+                .setStorage(HawkBuilder.newSqliteStorage(this))
+                .setLogLevel(LogLevel.NONE)
+                .build();
 
         //facebook debug framework
         Stetho.initialize(

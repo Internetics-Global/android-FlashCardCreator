@@ -128,6 +128,7 @@ public class Global {
      * latest downloaded pack
      */
     public static       int   maxDownloadableNoForCurrentDownloadingPack = 0;
+    public static       String   fccURLForCurrentDownloadingPack = "";
 
 
     /**

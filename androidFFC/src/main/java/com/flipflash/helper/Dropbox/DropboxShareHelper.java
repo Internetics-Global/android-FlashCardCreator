@@ -32,6 +32,7 @@ import com.nostra13.socialsharing.common.AuthListener;
 import com.nostra13.socialsharing.common.PostListener;
 import com.nostra13.socialsharing.facebook.FacebookEvents;
 import com.nostra13.socialsharing.facebook.FacebookFacade;
+import com.orhanobut.hawk.Hawk;
 
 import org.apache.http.HttpResponse;
 import org.apache.http.HttpStatus;
@@ -48,6 +49,9 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.HashMap;
 import java.util.List;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.TimeUnit;
 
 import static com.flipflash.util.LogUtils.LOGD;
 
@@ -62,7 +66,7 @@ public class DropboxShareHelper extends AsyncTask<Void, Long, Boolean> {
     private Activity mActivity;
     private Pack     mCurrentPack;
 
-    private final ProgressDialog mDialog;
+    private ProgressDialog mDialog;
 
     /**
      * true: 没有经过上传，设密码等，直接share (upload逻辑在S3UploadHelper）
@@ -73,18 +77,23 @@ public class DropboxShareHelper extends AsyncTask<Void, Long, Boolean> {
 
     public DropboxShareHelper(Activity activity, Pack currentPack, Boolean isDirectShare) {
 
-        if (currentPack == null || StringUtils.isEmpty(currentPack.fileNameOnAWS)) {
-            throw  new IllegalArgumentException("currentPack.fileNameOnAWS should be set before");
+        if (currentPack == null) {
+            throw  new IllegalArgumentException("currentPack should not be null");
         }
 
         mActivity = activity;
         mCurrentPack = currentPack;
         mIsDirectShare= isDirectShare;
 
+    }
 
-        mDialog = new ProgressDialog(activity);
+    @Override
+    protected void onPreExecute() {
+        super.onPreExecute();
+
+        mDialog = new ProgressDialog(mActivity);
         mDialog.setMax(100);
-        mDialog.setMessage(activity.getString(R.string.Indicator_Share_Process_Processing));
+        mDialog.setMessage(mActivity.getString(R.string.Indicator_Share_Process_Processing));
         mDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
         mDialog.setProgress(0);
         mDialog.setCancelable(false);
@@ -93,10 +102,9 @@ public class DropboxShareHelper extends AsyncTask<Void, Long, Boolean> {
         mDialog.show();
     }
 
-
     /*
-    URL shorten
-     */
+        URL shorten
+         */
     @Override
     protected Boolean doInBackground(Void... params) {
         try {
@@ -227,6 +235,7 @@ public class DropboxShareHelper extends AsyncTask<Void, Long, Boolean> {
 
     String generateRedirectedURL(String url){
 
+
         String responseString= "";
 
         String wholeURL = Global.URL_REDIRECT_API + url;
@@ -271,23 +280,48 @@ public class DropboxShareHelper extends AsyncTask<Void, Long, Boolean> {
     public void share() {
 
         if (StringUtils.isEmpty(mCurrentPack.shareLink)) {
-            throw new IllegalArgumentException("mCurrentPack.shareLink should not be empty");
+
+            HashMap savedDownloadLinkageDict = Hawk.get("savedDownloadLinkage");
+            final String ffcURL = (String) savedDownloadLinkageDict.get(String.format("%d",mCurrentPack.packID));
+
+            if (ffcURL == null) {
+                throw new IllegalArgumentException("ffcURL should be saved after download pack");
+            }
+
+            ExecutorService taskExecutor = Executors.newCachedThreadPool();
+            taskExecutor.execute(new Runnable() {
+                @Override
+                public void run() {
+                    mCurrentPack.shareLink = generateRedirectedURL(ffcURL); //由于网络任务不允许在主线程
+                }
+            });
+            taskExecutor.shutdown();
+            try {
+                taskExecutor.awaitTermination(Long.MAX_VALUE, TimeUnit.NANOSECONDS);
+            } catch (InterruptedException e) {
+
+            }
         }
 
-        new AlertDialog.Builder(mActivity)
-                .setTitle("Share")
-                .setItems(new String[] {"Facebook","Twitter","Email","Copy","Exit"}, new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        dialog.dismiss();
-                        if (which != 4) {
-                            String shareLink = mCurrentPack.shareLink;
-                            shareActionOnItemSelected(which,shareLink);
+        if (mCurrentPack.shareLink != null) {
+            new AlertDialog.Builder(mActivity)
+                    .setTitle("Share")
+                    .setItems(new String[] {"Facebook","Twitter","Email","Copy","Exit"}, new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            dialog.dismiss();
+                            if (which != 4) {
+                                shareActionOnItemSelected(which,mCurrentPack.shareLink);
+                            }
                         }
-                    }
-                })
-                .setCancelable(false)
-                .show();
+                    })
+                    .setCancelable(false)
+                    .show();
+        } else {
+            Toast.makeText(AppContext.getAppContext(), R.string.DIALOG_REDIRECT_SERVICE_UNAVAILABLE, Toast.LENGTH_LONG).show();
+        }
+
+
     }
 
 
