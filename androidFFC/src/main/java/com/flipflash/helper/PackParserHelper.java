@@ -205,12 +205,17 @@ public class PackParserHelper {
         resultPack.logoImageUriFormatStr = FileOperationHelper.convertToUriFormatFile(newFile);
 
         //once we download the pack, we need to do this as soon as possible
+        HashMap dict = Hawk.get("isAllowShare");
+        if (dict == null) {
+            dict = new HashMap();
+        }
         if ((resultPack.creatorID.equals(OpenUDID_manager.getOpenUDID())) == false && Global.maxDownloadableNoForCurrentDownloadingPack == 1) {
-            AppConfig.sharedInstance().set(String.format("isAllowShare_%d",resultPack.packID),String.format("%d",0));
+            dict.put(String.format("%d",resultPack.packID),Boolean.valueOf(false));
 
         } else {
-            AppConfig.sharedInstance().set(String.format("isAllowShare_%d",resultPack.packID),String.format("%d",1));
+            dict.put(String.format("%d",resultPack.packID),Boolean.valueOf(true));
         }
+        Hawk.put("isAllowShare",dict);
 
 
         User.defaultUser(AppContext.getAppContext()).addPack(resultPack);

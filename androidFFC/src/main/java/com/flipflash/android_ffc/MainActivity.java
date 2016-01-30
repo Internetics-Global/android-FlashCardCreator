@@ -84,6 +84,7 @@ import com.flipflash.util.StringUtils;
 import com.flipflash.util.TipHelper;
 import com.flipflash.util.UIHelper;
 import com.nineoldandroids.animation.Animator;
+import com.orhanobut.hawk.Hawk;
 import com.parse.ParseException;
 import com.parse.ParseUser;
 import com.parse.SaveCallback;
@@ -1373,8 +1374,14 @@ public class MainActivity extends FragmentActivity implements
         }
 
         //check whether to allow to share
-        String str = AppConfig.sharedInstance().get(String.format("isAllowShare_%d",mCurrentPack.packID));
-        boolean isAllowToShare = "1".equals(str);
+        HashMap dict = Hawk.get("isAllowShare");
+        boolean isAllowToShare;
+        if (dict == null) {
+            isAllowToShare = true;
+        } else {
+            Boolean b = ((Boolean) dict.get(String.format("%d",mCurrentPack.packID)));
+            isAllowToShare = (b == null)? true : b.booleanValue();
+        }
         if (isAllowToShare == false && (mCurrentPack.creatorID.equals(OpenUDID_manager.getOpenUDID()) == false)) {
 
             new SweetAlertDialog(MainActivity.this, SweetAlertDialog.NORMAL_TYPE)
