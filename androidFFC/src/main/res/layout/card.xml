@@ -196,7 +196,7 @@
                         android:src="@null" />
 
                     <ScrollView
-                        android:layout_margin="10dp"
+                        android:layout_margin="8dp"
                         android:scrollbars="none"
                         android:id="@+id/card_vertical_scrollview"
                         android:scrollX="0dp"
