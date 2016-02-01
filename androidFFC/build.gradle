@@ -34,7 +34,7 @@ android {
         versionProps.store(versionPropsFile.newWriter(), null)
 
         defaultConfig {
-            applicationId "com.internectics.android_flashcardcreator"
+            applicationId "com.flipflashcards.FFC_Android"
             minSdkVersion 15
             targetSdkVersion 20
             versionCode code

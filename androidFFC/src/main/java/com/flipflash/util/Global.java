@@ -121,7 +121,7 @@ public class Global {
     public static final String DROPBOX_FOLDER = "/FlipFlashCardsPacks/";
 
 
-    public static final String K_AppStore_Link = "<please provide link on Google Play>";
+    public static final String K_AppStore_Link = "https://play.google.com/store/apps/details?id=com.flipflashcards.FFC_Android";
 
 
     /*
