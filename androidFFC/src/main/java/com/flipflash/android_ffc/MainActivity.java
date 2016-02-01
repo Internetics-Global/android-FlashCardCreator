@@ -920,12 +920,28 @@ public class MainActivity extends FragmentActivity implements
             View popupLayout =  mPopupWindow.getContentView();
             if (popupLayout == null) {
                 LayoutInflater inflater = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-                popupLayout = inflater.inflate(R.layout.pack_list, null, false);
-                if (popupLayout != null) {
-                    mPopupWindow.setContentView(popupLayout);
+
+                if (mPopupWindow.getContentView() != null) {
+
+                    LOGD(TAG, "mPopupWindow.getContentView() != null");
+
+//                    new SweetAlertDialog(MainActivity.this)
+//                        .setTitleText("Debug purpose")
+//                        .setContentText("mPopupWindow.getContentView() != null")
+//                        .show();
+
+
                 } else {
-                    LOGE(TAG, "showPackListView: Failed to inflate, please check");
+
+                    popupLayout = inflater.inflate(R.layout.pack_list, null, false);
+                    if (popupLayout != null) {
+                        mPopupWindow.setContentView(popupLayout);
+                    } else {
+                        LOGE(TAG, "showPackListView: Failed to inflate, please check");
+                    }
                 }
+
+
             }
 
             View actionbarPacks = findViewById(R.id.actionbar_packs);
@@ -944,6 +960,7 @@ public class MainActivity extends FragmentActivity implements
         LOGD(TAG, "dismissPackListPopupWindow");
         if (mPopupWindow != null) {
             mPopupWindow.dismiss();
+            mPopupWindow.setContentView(null);
             mPopupWindow = null;
         }
     }
