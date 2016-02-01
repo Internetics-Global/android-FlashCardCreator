@@ -960,7 +960,7 @@ public class MainActivity extends FragmentActivity implements
         LOGD(TAG, "dismissPackListPopupWindow");
         if (mPopupWindow != null) {
             mPopupWindow.dismiss();
-            mPopupWindow.setContentView(null);
+//            mPopupWindow.setContentView(null);
             mPopupWindow = null;
         }
     }
