@@ -128,7 +128,7 @@ public class PackListFragment extends Fragment {
             public void onClick(View v) {
 
                 Intent intent = new Intent(getActivity(), WebViewActivity.class);
-                intent.putExtra("url", " http://www.flipflashcards.com/packs");
+                intent.putExtra("url", "http://www.flipflashcards.com/packs");
                 startActivity(intent);
             }
         });

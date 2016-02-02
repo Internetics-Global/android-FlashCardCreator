@@ -53,6 +53,7 @@ import com.flipflash.UI.ScaleHelper;
 import com.flipflash.UI.SlideInRightWithoutAlphaAnimator;
 import com.flipflash.UI.SlideOutRightWithoutAlphaAnimator;
 import com.flipflash.data.CSS;
+import com.flipflash.event.WebViewMessageEvent;
 import com.github.lzyzsd.circleprogress.DonutProgress;
 import com.google.analytics.tracking.android.EasyTracker;
 import com.flipflash.cryptor.CryptoHelper;
@@ -103,6 +104,7 @@ import static com.flipflash.util.LogUtils.LOGD;
 import static com.flipflash.util.LogUtils.LOGE;
 
 import cn.pedant.SweetAlert.SweetAlertDialog;
+import de.greenrobot.event.EventBus;
 
 /**
  * MainActivity is the entry for whole app
@@ -262,6 +264,8 @@ public class MainActivity extends FragmentActivity implements
                     .show();
 
         }
+
+        EventBus.getDefault().register(MainActivity.this);
 
     }
 
@@ -1007,7 +1011,6 @@ public class MainActivity extends FragmentActivity implements
 
         EasyTracker.getInstance().activityStart(this);
 
-        //EventBus.getDefault().register(MainActivity.this);
     }
 
     @Override
@@ -1024,8 +1027,6 @@ public class MainActivity extends FragmentActivity implements
         dismissPackListPopupWindow();
 
         EasyTracker.getInstance().activityStop(this);
-
-        //EventBus.getDefault().unregister(MainActivity.this);
     }
 
 
@@ -1058,6 +1059,8 @@ public class MainActivity extends FragmentActivity implements
             mDropboxUploadHelper.cancel(true);
             mDropboxUploadHelper = null;
         }
+
+        EventBus.getDefault().unregister(MainActivity.this);
     }
 
 
@@ -2389,6 +2392,18 @@ public class MainActivity extends FragmentActivity implements
                 }
             }
         }
+
+
+
+    }
+
+
+    public void onEventMainThread(WebViewMessageEvent event) {
+
+        String urlStr = event.ffcURLToDownload;
+        final Uri packUri = Uri.parse(urlStr);
+        downloadPack(packUri);
+
     }
 
 

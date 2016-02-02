@@ -1,10 +1,12 @@
 package com.flipflash.android_ffc;
 
 import android.app.Activity;
+import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.view.Window;
 import android.view.WindowManager;
 import android.webkit.WebChromeClient;
+import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.Toast;
@@ -12,7 +14,10 @@ import android.widget.Toast;
 import static com.flipflash.util.LogUtils.LOGD;
 import static com.flipflash.util.LogUtils.LOGE;
 
+import com.flipflash.event.WebViewMessageEvent;
 import com.flipflash.util.AppContext;
+
+import de.greenrobot.event.EventBus;
 
 public class WebViewActivity extends Activity {
     private static final String TAG = WebViewActivity.class.getSimpleName();
@@ -50,7 +55,21 @@ public class WebViewActivity extends Activity {
         if (mURL == null) {
             mURL = "http://www.flipflashcards.com.au";
         }
+
+
+        mWebview.getSettings().setCacheMode(WebSettings.LOAD_NO_CACHE);
         mWebview.loadUrl(mURL);
+        mWebview.setWebViewClient(new WebViewClient(){
+            @Override
+            public void onPageStarted(WebView view, String url, Bitmap favicon) {
+                super.onPageStarted(view, url, favicon);
+
+                if (url.contains("fcc://")) {
+                    EventBus.getDefault().post(new WebViewMessageEvent(url));
+                    finish();
+                }
+            }
+        });
     }
 
 }
