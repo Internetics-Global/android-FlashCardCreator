@@ -1,15 +1,24 @@
 ECLIPSE ANDROID PROJECT IMPORT SUMMARY
 ======================================
 
+Ignored Files:
+--------------
+The following files were *not* copied into the new Gradle project; you
+should evaluate whether these are still needed in your project and if
+so manually move them:
+
+* aidl/
+* aidl/ILicenseResultListener.aidl
+* aidl/ILicensingService.aidl
+
 Moved Files:
 ------------
 Android Gradle projects use a different directory structure than ADT
 Eclipse projects. Here's how the projects were restructured:
 
-* AndroidManifest.xml => simpleSocialSharing/src/main/AndroidManifest.xml
-* assets/ => simpleSocialSharing/src/main/assets
-* res/ => simpleSocialSharing/src/main/res
-* src/ => simpleSocialSharing/src/main/java/
+* AndroidManifest.xml => lvl/src/main/AndroidManifest.xml
+* res/ => lvl/src/main/res
+* src/ => lvl/src/main/java/
 
 Next Steps:
 -----------
