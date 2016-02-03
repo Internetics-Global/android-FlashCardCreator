@@ -90,7 +90,7 @@ public class AppContext extends Application {
 
         //Key-value storage
         Hawk.init(this)
-                .setEncryptionMethod(HawkBuilder.EncryptionMethod.NO_ENCRYPTION)
+                .setEncryptionMethod(HawkBuilder.EncryptionMethod.MEDIUM)
                 .setStorage(HawkBuilder.newSqliteStorage(this))
                 .setLogLevel(LogLevel.NONE)
                 .build();

@@ -27,6 +27,7 @@ public class AppStart extends Activity {
     private LicenseCheckerCallback mLicenseCheckerCallback;
     private LicenseChecker         mChecker;
 
+    //key不是随意的,比如你手动更改其中的内容,就会crash app
     private static final String BASE64_PUBLIC_KEY = "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAh35nQt2ttqMr0RsfhS3vqDQiaaBnNLyZ3n20owNpzGMOAClyK7UpST2MALzZT7G3pOwGuxQB7fHUPXDeI4ZVrcPB0m0ZeBwJ+5xe3isxdwQMVkZkAFJnCsfrthAjBUBvxJ1w/RX8HyQs9Pqts3XVZRiDu3Pc3RVwmIjQUx8Kksoy8ks79BLmed3Ar9tG+JVjWuOtUzoGQz+1LjetNVQlg7wfLXQuGfDT+k+rO/lt62SyPr0bSS4Fj6JwBlBN8f7fM2x44/UFQV0w/zwGnDJrSLP/bMD5UJ2rXBnbJe3D0gaSK9OBg1wuSbIUrUES8FDImju3ZqxyS16pFFQKLU8qvQIDAQAB";
     // Generate 20 random bytes
     private static final byte[] SALT = new byte[] {
@@ -62,6 +63,12 @@ public class AppStart extends Activity {
 
     }
 
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+
+        mChecker.onDestroy();
+    }
 
     private Handler mHandler = new Handler() {
         public void handleMessage(android.os.Message msg) {
@@ -171,26 +178,30 @@ public class AppStart extends Activity {
                 //your app has to be on the market and if it already is, you have to have a version code number which is greater or equal than the one already published.
 
                 //only enable when debugging
-                runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
+                if (false) {
+                    runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
 
-                        AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(
-                                AppStart.this);
-                        alertDialogBuilder.setTitle(getString(R.string.DIALOG_AlERT));
-                        alertDialogBuilder.setMessage("LicenseCheckerCallback.ERROR_NOT_MARKET_MANAGED");
-                        alertDialogBuilder.setNegativeButton("Continue", new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialog, int which) {
+                            AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(
+                                    AppStart.this);
+                            alertDialogBuilder.setTitle(getString(R.string.DIALOG_AlERT));
+                            alertDialogBuilder.setMessage("LicenseCheckerCallback.ERROR_NOT_MARKET_MANAGED");
+                            alertDialogBuilder.setNegativeButton("Continue", new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
 
-                                mHandler.sendEmptyMessageDelayed(0,200);
+                                    mHandler.sendEmptyMessageDelayed(0, 200);
 
-                            }
-                        });
-                        alertDialogBuilder
-                                .show();
-                    }
-                });
+                                }
+                            });
+                            alertDialogBuilder
+                                    .show();
+                        }
+                    });
+                } else {
+                    mHandler.sendEmptyMessageDelayed(0, 200);
+                }
 
 
 
