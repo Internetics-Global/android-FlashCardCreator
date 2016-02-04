@@ -67,7 +67,9 @@ public class AppStart extends Activity {
     protected void onDestroy() {
         super.onDestroy();
 
-        mChecker.onDestroy();
+        if (mChecker != null) {
+            mChecker.onDestroy();
+        }
     }
 
     private Handler mHandler = new Handler() {
