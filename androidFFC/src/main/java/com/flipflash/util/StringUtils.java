@@ -431,7 +431,7 @@ public class StringUtils {
         String preStr = context.getString(R.string.Tip_Share_Message_Pre);
         String postStr = context.getString(R.string.Tip_Share_Message_Post);
 
-        String message = String.format("%s ( %s ) %s %s",preStr,shareLink,postStr,Global.K_AppStore_Link);
+        String message = String.format("%s%s%s%s",preStr,shareLink,postStr,Global.K_AppStore_Link);
         return message;
 
     }
