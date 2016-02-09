@@ -1,0 +1,86 @@
+# Add project specific ProGuard rules here.
+# By default, the flags in this file are appended to flags specified
+# in /Users/BourneWang/Documents/sdk/tools/proguard/proguard-android.txt
+# You can edit the include path and order by changing the proguardFiles
+# directive in build.gradle.
+#
+# For more details, see
+#   http://developer.android.com/guide/developing/tools/proguard.html
+
+# Add any project specific keep options here:
+
+# If your project uses WebView with JS, uncomment the following
+# and specify the fully qualified class name to the JavaScript interface
+# class:
+#-keepclassmembers class fqcn.of.javascript.interface.for.webview {
+#   public *;
+#}
+
+# 不提示warnning  (一般是与keep class一起组合使用),没有这个,也会导致failure
+-dontwarn com.squareup.**
+
+
+# Keep picasso
+# 不混淆某个包所有类或某个类class、某个接口interface, 不混淆指定类则把**换成类名
+-keep class com.squareup.picasso.** { *; }
+# 不混淆类及其成员
+-keepclasseswithmembers class * {
+    @com.squareup.picasso.** *;
+}
+# 不混淆类的成员
+-keepclassmembers class * {
+    @com.squareup.picasso.** *;
+}
+
+# related to Eventbus: Your ProGuard configuration is probably renaming onEvent(), as it thinks that it is safe to rename.
+# http://stackoverflow.com/questions/30877843/eventbus-exception-when-proj-is-built-subscriber-class-has-no-public-methods-c
+-keepclassmembers class ** {
+    public void onEvent*(**);
+}
+
+# 用到反射及注解需要加上下面三个规则:http://proguard.sourceforge.net/manual/attributes.html
+-keepattributes Signature
+-keepattributes *Annotation*
+-keepattributes EnclosingMethod
+
+# Preserve all native method names and the names of their classes.
+-keepclasseswithmembernames class * {
+  native <methods>;
+}
+
+
+
+#不混淆Parcelable的子类，防止android.os.BadParcelableException
+-keep class * implements android.os.Parcelable {
+  public static final android.os.Parcelable$Creator *;
+}
+
+#不混淆Serializable的子类
+# Explicitly preserve all serialization members. The Serializable interface
+# is only a marker interface, so it wouldn't save them.
+-keepclassmembers class * implements java.io.Serializable {
+  static final long serialVersionUID;
+  private static final java.io.ObjectStreamField[] serialPersistentFields;
+  private void writeObject(java.io.ObjectOutputStream);
+  private void readObject(java.io.ObjectInputStream);
+  java.lang.Object writeReplace();
+  java.lang.Object readResolve();
+}
+
+
+# AWS and Apache related
+# This line is very important since it could crash the app: https://github.com/aws/aws-sdk-android/issues/23
+-keep class com.amazonaws.** { *; }
+-keep class org.apache.** { *; }
+-keep class com.fasterxml.jackson.** { *; }
+-dontwarn org.apache.http.**
+-dontwarn com.fasterxml.**
+
+
+# related Hawk
+-dontwarn rx.**
+-keep class com.google.gson.** { *; }
+
+# Parse
+-dontwarn com.parse.**
+-keep class com.parse.** { *; }
