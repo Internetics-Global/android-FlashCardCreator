@@ -84,3 +84,13 @@
 # Parse
 -dontwarn com.parse.**
 -keep class com.parse.** { *; }
+
+# SweetAlert, to avoid crash: https://github.com/pedant/sweet-alert-dialog/issues/6
+-keep class cn.pedant.SweetAlert.Rotate3dAnimation {
+  public <init>(...);
+}
+
+# See source code to check
+-keep class com.flipflash.fragment.CardDetailFragment {
+  void beginScreenshot(boolean);
+}
