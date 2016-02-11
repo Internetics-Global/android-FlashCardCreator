@@ -1678,6 +1678,7 @@ public class PlayActivity extends FragmentActivity implements SensorEventListene
             mText2Speech_Delay_Handler.removeCallbacksAndMessages(null);
         }
 
+
         if (AppConfig.sharedInstance().isTextToSpeech() || isSmartDelay()) {
 
             final boolean isMuteText2Speech;  //Text2Speech is still on, but mute
@@ -2178,6 +2179,12 @@ public class PlayActivity extends FragmentActivity implements SensorEventListene
     private UtteranceProgressListener utteranceProgressListener = new UtteranceProgressListener() {
         @Override
         public void onStart(String utteranceId) {
+
+            //我们在Q/A切换过程中不允许执行
+            if (mIsSwitchQuestionAnswerViewManually_Processing) {
+                return;
+            }
+
             LOGD("UtteranceProgressListener", "onStart");
 
         }
@@ -2187,7 +2194,14 @@ public class PlayActivity extends FragmentActivity implements SensorEventListene
          */
         @Override
         public void onDone(String utteranceId) {
+
+            //我们在Q/A切换过程中不允许执行
+            if (mIsSwitchQuestionAnswerViewManually_Processing) {
+                return;
+            }
+
             LOGD("UtteranceProgressListener", "onDone");
+
 
             //go to next
             mTextToSpeechContentArrayIndex ++;
