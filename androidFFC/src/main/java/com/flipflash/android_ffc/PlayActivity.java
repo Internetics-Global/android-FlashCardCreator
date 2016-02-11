@@ -114,6 +114,11 @@ public class PlayActivity extends FragmentActivity implements SensorEventListene
     private Handler        mFirstPageDelay_AutoDelayMode_Handler        = new Handler();
     private Handler        mText2Speech_AfterSoundRecording_Handler     = new Handler();
 
+
+    //我们在1秒后才开始Text2Speech.而不是切换Q/A或next card后立马进行
+    private final int      K_Text2Speech_Delay_MilliSecond              = 1000;
+    private Handler        mText2Speech_Delay_Handler                   = new Handler();
+
     /**
      *  与iPhone不同的是，我们不需要这个
      */
@@ -599,6 +604,11 @@ public class PlayActivity extends FragmentActivity implements SensorEventListene
         if (mTTSDelayHandler !=null) {
             mTTSDelayHandler.removeCallbacksAndMessages(null);
             mTTSDelayHandler = null;
+        }
+
+        if (mText2Speech_Delay_Handler !=null) {
+            mText2Speech_Delay_Handler.removeCallbacksAndMessages(null);
+            mText2Speech_Delay_Handler = null;
         }
 
         if (mPauseForAnswerHandler !=null) {
@@ -1663,6 +1673,11 @@ public class PlayActivity extends FragmentActivity implements SensorEventListene
         AudioHelper.unmuteTTS(); //我们需要确保这时音频的音量是可用的。
         AudioHelper.stopAndCleanAudio();
 
+        //需要确保remove delay的工作
+        if (mText2Speech_Delay_Handler != null) {
+            mText2Speech_Delay_Handler.removeCallbacksAndMessages(null);
+        }
+
         if (AppConfig.sharedInstance().isTextToSpeech() || isSmartDelay()) {
 
             final boolean isMuteText2Speech;  //Text2Speech is still on, but mute
@@ -1691,7 +1706,15 @@ public class PlayActivity extends FragmentActivity implements SensorEventListene
                     }
 
                     if (durationForRecordedSound == 0) {
-                        text2SpeechAllContentNow(cardDetailFragment, isMuteText2Speech);
+
+                        mText2Speech_Delay_Handler = new Handler();
+                        mText2Speech_Delay_Handler.postDelayed(new Runnable() {
+                            @Override
+                            public void run() {
+                                text2SpeechAllContentNow(cardDetailFragment, isMuteText2Speech);
+                            }
+                        },K_Text2Speech_Delay_MilliSecond);
+
                     } else {
 
                         if ((AppConfig.sharedInstance().isTextToSpeech() == false) && (mIsAutoScroll == false) &&
@@ -1703,7 +1726,15 @@ public class PlayActivity extends FragmentActivity implements SensorEventListene
                                 public void run() {
 
                                     if (mIsShuttingDown == false) {
-                                        text2SpeechAllContentNow(cardDetailFragment, isMuteText2Speech);
+
+                                        mText2Speech_Delay_Handler = new Handler();
+                                        mText2Speech_Delay_Handler.postDelayed(new Runnable() {
+                                            @Override
+                                            public void run() {
+                                                text2SpeechAllContentNow(cardDetailFragment, isMuteText2Speech);
+                                            }
+                                        },K_Text2Speech_Delay_MilliSecond);
+
                                     }
                                 }
                             },durationForRecordedSound + 1000);  //这里1000（1秒）是适当的，因为mPauseForAnswerSeekBar或K_IntervalBetweenCardSeconds_ForQAOnly都远大于这个数
@@ -1720,7 +1751,13 @@ public class PlayActivity extends FragmentActivity implements SensorEventListene
                         mText2Speech_AfterSoundRecording_Handler = null;
                     }
 
-                    text2SpeechAllContentNow(cardDetailFragment, isMuteText2Speech);
+                    mText2Speech_Delay_Handler = new Handler();
+                    mText2Speech_Delay_Handler.postDelayed(new Runnable() {
+                        @Override
+                        public void run() {
+                            text2SpeechAllContentNow(cardDetailFragment, isMuteText2Speech);
+                        }
+                    },K_Text2Speech_Delay_MilliSecond);
                 }
             }
 
