@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.provider.Settings;
 import android.util.DisplayMetrics;
+import android.util.Log;
 
 import com.flipflash.util.Global;
 import com.google.android.vending.licensing.AESObfuscator;
@@ -169,6 +170,8 @@ public class AppStart extends Activity {
         @Override
         public void applicationError(final int errorCode) {
 
+            Log.d("lvl","applicationError with errorCode = " + errorCode);
+
             if (isFinishing()) {
                 // Don't update UI if Activity is finishing.
                 return;
@@ -181,7 +184,7 @@ public class AppStart extends Activity {
                 //your app has to be on the market and if it already is, you have to have a version code number which is greater or equal than the one already published.
 
                 //only enable when debugging
-                if (false) {
+                if (true) {
                     runOnUiThread(new Runnable() {
                         @Override
                         public void run() {
@@ -198,6 +201,7 @@ public class AppStart extends Activity {
 
                                 }
                             });
+                            alertDialogBuilder.setCancelable(false);
                             alertDialogBuilder
                                     .show();
                         }
@@ -229,8 +233,6 @@ public class AppStart extends Activity {
 
             }
 
-            LOGD(TAG, "applicationError with errorCode = " + errorCode);
-
         }
 
 
@@ -242,6 +244,7 @@ public class AppStart extends Activity {
         AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(
                 AppStart.this);
         alertDialogBuilder.setTitle(title);
+        alertDialogBuilder.setCancelable(false);
         alertDialogBuilder.setNegativeButton(getString(R.string.DIALOG_CLOSE), new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {

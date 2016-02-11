@@ -276,9 +276,9 @@
     <string name="Tip_Share_Message_Pre">I\'ve just created a pack of Flash Cards with Flip Flash Cards app! ( </string>
     <string name="Tip_Share_Message_Post"> ) Get the app: </string>
 
-    <string name="LVL_Retry">Restart to check again</string>
+    <string name="LVL_Retry">Failure to connect  licensing server. Restart to try again</string>
     <string name="LVL_Not_Licenced">Unauthorised source of the app, please download it from Google Play</string>
-    <string name="LVL_Not_Market_Managed">You app haven't been released to Google Play</string>
+    <string name="LVL_Not_Market_Managed">The app needs to been released to Google Play first</string>
 
 
 
