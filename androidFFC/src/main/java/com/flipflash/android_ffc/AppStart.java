@@ -58,6 +58,7 @@ public class AppStart extends Activity {
                         BASE64_PUBLIC_KEY  // Your public licensing key.
                 );
                 mChecker.checkAccess(mLicenseCheckerCallback);
+//                mHandler.sendEmptyMessageDelayed(0,200);
             }
         }
 
@@ -138,7 +139,7 @@ public class AppStart extends Activity {
                     @Override
                     public void run() {
 
-                        String message = "Unauthorised source of the app, please download it from Google Play";
+                        String message = getString(R.string.LVL_Not_Licenced);
                         showDialogAndExit(getString(R.string.DIALOG_WARN),message);
                     }
                 });
@@ -146,7 +147,7 @@ public class AppStart extends Activity {
             } else if (Policy.RETRY == reason) {
 
                 // If the reason received from the policy is RETRY, it was probably
-                // due to a loss of connection with the service,这就是为什么你需要前置Reachability检测的原因
+                // Due to a recoverable local or server error, such as when the network is not available to send the request,这就是为什么你需要前置Reachability检测的原因
 
                 LOGD(TAG, "Policy.RETRY");
 
@@ -154,7 +155,7 @@ public class AppStart extends Activity {
                     @Override
                     public void run() {
 
-                        String message = "Unauthorised source of the app, or restart to check again";
+                        String message = getString(R.string.LVL_Retry);
                         showDialogAndExit(getString(R.string.DIALOG_WARN),message);
                     }
                 });
@@ -188,7 +189,7 @@ public class AppStart extends Activity {
                             AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(
                                     AppStart.this);
                             alertDialogBuilder.setTitle(getString(R.string.DIALOG_AlERT));
-                            alertDialogBuilder.setMessage("LicenseCheckerCallback.ERROR_NOT_MARKET_MANAGED");
+                            alertDialogBuilder.setMessage(getString(R.string.LVL_Not_Market_Managed));
                             alertDialogBuilder.setNegativeButton("Continue", new DialogInterface.OnClickListener() {
                                 @Override
                                 public void onClick(DialogInterface dialog, int which) {
@@ -220,7 +221,7 @@ public class AppStart extends Activity {
                     @Override
                     public void run() {
 
-                        String message = "Unauthorised source of the app, please download it from Google Play";
+                        String message = getString(R.string.LVL_Not_Licenced);
                         showDialogAndExit(getString(R.string.DIALOG_ERROR),message);
 
                     }
