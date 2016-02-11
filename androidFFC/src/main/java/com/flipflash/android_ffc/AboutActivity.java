@@ -41,6 +41,13 @@ public class AboutActivity extends Activity {
             }
         });
 
+        findViewById(R.id.version).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                didClick2();
+            }
+        });
+
     }
 
     private int tapCount = 0;
@@ -69,6 +76,33 @@ public class AboutActivity extends Activity {
 
         } else {
             tapCount++;
+        }
+
+    }
+
+
+    private int tapCount2 = 0;
+    private void didClick2() {
+        if (tapCount2 == 4) {
+            tapCount2 = 0;
+
+            Global.checkLineNumberWhenResizeTextToFitFrame = !(Global.checkLineNumberWhenResizeTextToFitFrame);
+
+            if (Global.checkLineNumberWhenResizeTextToFitFrame) {
+                new SweetAlertDialog(AboutActivity.this,SweetAlertDialog.NORMAL_TYPE)
+                        .setTitleText("Alert")
+                        .setContentText("Line No consistency check is enabled")
+                        .show();
+            } else {
+                new SweetAlertDialog(AboutActivity.this,SweetAlertDialog.NORMAL_TYPE)
+                        .setTitleText("Alert")
+                        .setContentText("Line No consistency check is disabled")
+                        .show();
+            }
+
+
+        } else {
+            tapCount2++;
         }
 
     }

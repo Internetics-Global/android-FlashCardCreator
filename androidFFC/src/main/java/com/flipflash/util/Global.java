@@ -130,6 +130,11 @@ public class Global {
     public static       int   maxDownloadableNoForCurrentDownloadingPack = 0;
     public static       String   fccURLForCurrentDownloadingPack = "";
 
+    /*
+     * 后门程序,用于是否关闭line number check
+     */
+    public static       boolean   checkLineNumberWhenResizeTextToFitFrame = true;
+
 
     /**
      * detect network

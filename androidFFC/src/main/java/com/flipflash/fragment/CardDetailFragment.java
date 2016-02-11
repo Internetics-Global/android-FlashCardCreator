@@ -1854,8 +1854,7 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnTouchL
      */
     private void triggerResizeTextToFitFrame(final EditText v, int targetLines) {
 
-        //TODO: since there's a bug in iOS, we have to disable this logic temporarily;
-        if (mIsQuestionShowing == false) {
+        if (Global.checkLineNumberWhenResizeTextToFitFrame == false) {
             targetLines = -1;
         }
 
