@@ -2400,9 +2400,19 @@ public class MainActivity extends FragmentActivity implements
 
     public void onEventMainThread(WebViewMessageEvent event) {
 
+        mIsAllowedToShowPackList = false;
+
         String urlStr = event.ffcURLToDownload;
         final Uri packUri = Uri.parse(urlStr);
-        downloadPack(packUri);
+        Handler handler = new Handler();
+                handler.postDelayed(new Runnable() {
+
+                    @Override
+                    public void run() {
+                        downloadPack(packUri);
+                    }
+
+                }, 500); // 5000ms delay
 
     }
 
