@@ -120,7 +120,19 @@ public class AppStart extends Activity {
             }
 
             Hawk.put("LVLCheckPass",Boolean.valueOf(true));
-            mHandler.sendEmptyMessageDelayed(0,200);
+
+
+            AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(
+                    AppStart.this);
+            alertDialogBuilder.setTitle(getString(R.string.DIALOG_AlERT));
+            alertDialogBuilder.setNegativeButton(getString(R.string.DIALOG_CLOSE), new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    mHandler.sendEmptyMessageDelayed(0,100);
+                }
+            });
+            alertDialogBuilder
+                    .setMessage(R.string.LVL_Licence_Granted).show();
         }
 
 
@@ -196,11 +208,11 @@ public class AppStart extends Activity {
                                     AppStart.this);
                             alertDialogBuilder.setTitle(getString(R.string.DIALOG_AlERT));
                             alertDialogBuilder.setMessage(getString(R.string.LVL_Not_Market_Managed));
-                            alertDialogBuilder.setNegativeButton("Continue", new DialogInterface.OnClickListener() {
+                            alertDialogBuilder.setNegativeButton("Dismiss", new DialogInterface.OnClickListener() {
                                 @Override
                                 public void onClick(DialogInterface dialog, int which) {
 
-                                    mHandler.sendEmptyMessageDelayed(0, 200);
+                                    finish();
 
                                 }
                             });
