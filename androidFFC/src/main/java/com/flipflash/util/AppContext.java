@@ -10,6 +10,7 @@ import com.amazonaws.auth.CognitoCachingCredentialsProvider;
 import com.amazonaws.regions.Regions;
 import com.amazonaws.services.s3.AmazonS3Client;
 import com.facebook.stetho.Stetho;
+import com.flipflash.android_ffc.R;
 import com.nostra13.universalimageloader.cache.disc.naming.Md5FileNameGenerator;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
@@ -68,7 +69,7 @@ public class AppContext extends Application {
         // Setup Amazon Cognito
         mCredentialsProvider = new CognitoCachingCredentialsProvider(
                 mContext, // Context
-                "us-east-1:19efa782-177f-476a-a62b-c504d5ddcd76", // Identity Pool ID
+                getString(R.string.aws_identity_pool_id), // Identity Pool ID
                 Regions.US_EAST_1 // Region
         );
 
@@ -81,8 +82,8 @@ public class AppContext extends Application {
         // Parse的app_key和app_id是在Manifest中进行设置
 
         //Twitter
-        ParseTwitterUtils.initialize("uptcC5DVVmMPE25rwNDoVyG7q",
-                "ciAdhaC2lF1hkZqnYmfoUowcBhnQN2rfcYuKoV7D9ImK8tWZzo");
+        ParseTwitterUtils.initialize(getString(R.string.parse_twitter_key),
+                getString(R.string.parse_twitter_secret));
 
         //Facebook
         ParseFacebookUtils.initialize(this);

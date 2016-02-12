@@ -11,10 +11,15 @@
 
     <string name="app_name">Flip Flash Cards</string>
 
-    <!--facebook related-->
+    <!--all key/secret here, ParseTwitterUtils和AWS Cognito部分则在AppContext-->
     <string name="facebook_app_id">905454096190039</string>
     <string name="parse_app_id">LWnSvs6XkYqzdKd07QKowViu8axdnwsHJIpFb4gO</string>
     <string name="parse_client_key">bVGvephS1FlkuePH7Yv6GrsQmfvNDW75mKN67Ssk</string>
+    <string name="dropbox__app_key">db-656kygg6ny4d7l6</string>
+    <string name="parse_twitter_key">uptcC5DVVmMPE25rwNDoVyG7q</string>
+    <string name="parse_twitter_secret">ciAdhaC2lF1hkZqnYmfoUowcBhnQN2rfcYuKoV7D9ImK8tWZzo</string>
+    <string name="lvl_public_key">MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAh35nQt2ttqMr0RsfhS3vqDQiaaBnNLyZ3n20owNpzGMOAClyK7UpST2MALzZT7G3pOwGuxQB7fHUPXDeI4ZVrcPB0m0ZeBwJ+5xe3isxdwQMVkZkAFJnCsfrthAjBUBvxJ1w/RX8HyQs9Pqts3XVZRiDu3Pc3RVwmIjQUx8Kksoy8ks79BLmed3Ar9tG+JVjWuOtUzoGQz+1LjetNVQlg7wfLXQuGfDT+k+rO/lt62SyPr0bSS4Fj6JwBlBN8f7fM2x44/UFQV0w/zwGnDJrSLP/bMD5UJ2rXBnbJe3D0gaSK9OBg1wuSbIUrUES8FDImju3ZqxyS16pFFQKLU8qvQIDAQAB</string>
+    <string name="aws_identity_pool_id">us-east-1:19efa782-177f-476a-a62b-c504d5ddcd76</string>
 
     <string name="DIALOG_TITLE_NO_NETWORK">No internet connection</string>
     <string name="DIALOG_PLEASE_CHECK_YOUR_NETWORK">Please check your internet settings.</string>
@@ -287,6 +292,5 @@
     <string name="Record_Introduction_Text">When you click “Record” you have a maximum of 30 seconds to record your message. \n\nClick “Stop” when ready to stop recording.\n\nYou can then click “Play” to hear it, or “Save” to save it to the card.</string>
     <string name="Record_Introduction_Text2">Record is finished, you can playback or save the recorded sound</string>
     <string name="Sample_Cards">FFC Sample Cards</string>
-
 
 </resources>

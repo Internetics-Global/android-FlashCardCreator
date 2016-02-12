@@ -28,8 +28,6 @@ public class AppStart extends Activity {
     private LicenseCheckerCallback mLicenseCheckerCallback;
     private LicenseChecker         mChecker;
 
-    //key不是随意的,比如你手动更改其中的内容,就会crash app
-    private static final String BASE64_PUBLIC_KEY = "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAh35nQt2ttqMr0RsfhS3vqDQiaaBnNLyZ3n20owNpzGMOAClyK7UpST2MALzZT7G3pOwGuxQB7fHUPXDeI4ZVrcPB0m0ZeBwJ+5xe3isxdwQMVkZkAFJnCsfrthAjBUBvxJ1w/RX8HyQs9Pqts3XVZRiDu3Pc3RVwmIjQUx8Kksoy8ks79BLmed3Ar9tG+JVjWuOtUzoGQz+1LjetNVQlg7wfLXQuGfDT+k+rO/lt62SyPr0bSS4Fj6JwBlBN8f7fM2x44/UFQV0w/zwGnDJrSLP/bMD5UJ2rXBnbJe3D0gaSK9OBg1wuSbIUrUES8FDImju3ZqxyS16pFFQKLU8qvQIDAQAB";
     // Generate 20 random bytes
     private static final byte[] SALT = new byte[] {
             -46, 65, 30, -128, -103, -57, 74, -64, 51, 88, -95,
@@ -56,7 +54,7 @@ public class AppStart extends Activity {
                 mChecker = new LicenseChecker(
                         getApplicationContext(), new ServerManagedPolicy(AppStart.this,
                         new AESObfuscator(SALT, getPackageName(), deviceId)),
-                        BASE64_PUBLIC_KEY  // Your public licensing key.
+                        getString(R.string.lvl_public_key)  // Your public licensing key.key不是随意的,比如你手动更改其中的内容,就会crash app
                 );
                 mChecker.checkAccess(mLicenseCheckerCallback);
 //                mHandler.sendEmptyMessageDelayed(0,200);
