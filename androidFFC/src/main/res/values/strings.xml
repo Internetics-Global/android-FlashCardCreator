@@ -283,7 +283,7 @@
 
     <string name="LVL_Retry">Failure to connect to the licensing server. Please restart to try again</string>
     <string name="LVL_Not_Licenced">Unauthorised usage of the app, please download it from Google Play</string>
-    <string name="LVL_Not_Market_Managed">The app may need to been released to Google Play first, and needs to be accessed via that route</string>
+    <string name="LVL_Not_Market_Managed">Unauthorised version of the app</string>
     <string name="LVL_Licence_Granted">Thank you for downloading through Google Play</string>
 
 
