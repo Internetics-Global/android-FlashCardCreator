@@ -48,6 +48,9 @@ public class AppStart extends Activity {
                 showDialogAndExit(getString(R.string.DIALOG_WARN),getString(R.string.DIALOG_TITLE_NO_NETWORK));
 
             } else {
+
+                Log.d("lvl","setup LicenseChecker");
+
                 String deviceId = Settings.Secure.getString(getContentResolver(), Settings.Secure.ANDROID_ID);
                 mLicenseCheckerCallback = new MyLicenseCheckerCallback();
                 // Construct the LicenseChecker with a Policy.
@@ -59,6 +62,9 @@ public class AppStart extends Activity {
                 mChecker.checkAccess(mLicenseCheckerCallback);
 //                mHandler.sendEmptyMessageDelayed(0,200);
             }
+        } else {
+            Log.d("lvl","lvl check passed and go on");
+            mHandler.sendEmptyMessageDelayed(0,200);
         }
 
     }
@@ -132,7 +138,7 @@ public class AppStart extends Activity {
 
 
             if (Policy.NOT_LICENSED == reason) {
-                LOGD(TAG, "Policy.NOT_LICENSED");
+                Log.d("lvl","Policy.NOT_LICENSED");
 
                 runOnUiThread(new Runnable() {
                     @Override
@@ -147,8 +153,7 @@ public class AppStart extends Activity {
 
                 // If the reason received from the policy is RETRY, it was probably
                 // Due to a recoverable local or server error, such as when the network is not available to send the request,这就是为什么你需要前置Reachability检测的原因
-
-                LOGD(TAG, "Policy.RETRY");
+                Log.d("lvl","Policy.RETRY");
 
                 runOnUiThread(new Runnable() {
                     @Override
