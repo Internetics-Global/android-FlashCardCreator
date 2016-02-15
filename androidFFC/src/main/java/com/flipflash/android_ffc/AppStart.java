@@ -1,5 +1,7 @@
 package com.flipflash.android_ffc;
 
+import android.accounts.Account;
+import android.accounts.AccountManager;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
@@ -48,6 +50,13 @@ public class AppStart extends Activity {
                 showDialogAndExit(getString(R.string.DIALOG_WARN),getString(R.string.DIALOG_TITLE_NO_NETWORK));
 
             } else {
+
+                boolean isGoogleAccountLogged = deviceHasGoogleAccount();
+                if (isGoogleAccountLogged == false) {
+                    Log.d("lvl","Google account need to be logged in firstly");
+                    showDialogAndExit(getString(R.string.DIALOG_WARN),getString(R.string.LVL_Google_Account_Not_Logged));
+                    return;
+                }
 
                 Log.d("lvl","setup LicenseChecker");
 
@@ -268,6 +277,13 @@ public class AppStart extends Activity {
         });
         alertDialogBuilder
                 .setMessage(message).show();
+    }
+
+
+    private boolean deviceHasGoogleAccount(){
+        AccountManager accMan = AccountManager.get(this);
+        Account[] accArray = accMan.getAccountsByType("com.google");
+        return accArray.length >= 1 ? true : false;
     }
 
 }

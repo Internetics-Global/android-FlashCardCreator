@@ -285,6 +285,7 @@
     <string name="LVL_Not_Licenced">Unauthorised usage of the app, please download it from Google Play</string>
     <string name="LVL_Not_Market_Managed">Unauthorised version of the app</string>
     <string name="LVL_Licence_Granted">Thank you for downloading through Google Play</string>
+    <string name="LVL_Google_Account_Not_Logged">Please sign in Google account first in system settings</string>
 
 
 
