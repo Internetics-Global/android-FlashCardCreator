@@ -75,8 +75,11 @@ public class Global {
     public static final String URL_REDIRECT_API = "http://tinyurl.com/api-create.php?url=";
     public static final String TINYURL_SHORTED_BASE_URL = "http://tinyurl.com/";
 
-    //tooltip related
-    public static final String isAllowToShowTooltip = "isAllowToShowTooltip";
+
+    public static  boolean     isAllowToShowTooltips = true;
+
+    //has to show tip on the help button firstly, then others
+    public static final String isHelpTipHasBeenShowedFirst = "isHelpTipHasBeenShowedFirst";
 
     //download sample pack related
     public static  boolean   isNotAllowDownloadSamplePack = false;

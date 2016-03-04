@@ -216,21 +216,28 @@ public class AppConfig {
 
     }
 
-    public boolean isAllowToShowTooltip() {
-        String str = appConfig.get(Global.isAllowToShowTooltip);
-        if ((str == null) || (str.equals("true")))
+
+    public boolean isHelpTipHasBeenShowedFirst() {
+
+        String str = appConfig.get(Global.isHelpTipHasBeenShowedFirst);
+
+        if (str == null) {
+            return false;
+        }
+
+        if ("true".equals(str))
             return true;
         else
             return false;
+
     }
 
-    public void setAllowToShowTooltip(boolean b) {
+    public void setHelpTipHasBeenShowedFirst(boolean b) {
         if (b) {
-            appConfig.set(Global.isAllowToShowTooltip, "true");
+            appConfig.set(Global.isHelpTipHasBeenShowedFirst, "true");
         } else {
-            appConfig.set(Global.isAllowToShowTooltip, "false");
+            appConfig.set(Global.isHelpTipHasBeenShowedFirst, "false");
         }
-
     }
 
 

@@ -14,7 +14,6 @@ import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
-import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
 import android.text.Editable;
 import android.text.InputType;
@@ -269,7 +268,7 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnTouchL
             setCardBackgroundMaskGray();
         }
 
-        if (AppConfig.sharedInstance().isAllowToShowTooltip()) {
+        if (Global.isAllowToShowTooltips && AppConfig.sharedInstance().isHelpTipHasBeenShowedFirst()) {
             showTooltips();
         }
 

@@ -222,8 +222,8 @@ public class TipHelper {
                 .text(activity.getString(R.string.Tip_Create_Card))
                 .toggleArrow(true)
                 .maxWidth(500)
-                .showDelay(200)
-                .activateDelay(300)
+                .showDelay(100)
+                .activateDelay(150)
                 .withCallback(new TooltipManager.onTooltipClosingCallback() {
                     @Override
                     public void onClosing(int i, boolean b, boolean b2) {
@@ -251,8 +251,8 @@ public class TipHelper {
                 .text(activity.getString(R.string.Tip_Share))
                 .toggleArrow(true)
                 .maxWidth(500)
-                .showDelay(200)
-                .activateDelay(300)
+                .showDelay(100)
+                .activateDelay(150)
                 .withCallback(new TooltipManager.onTooltipClosingCallback() {
                     @Override
                     public void onClosing(int i, boolean b, boolean b2) {
@@ -279,8 +279,8 @@ public class TipHelper {
                 .text(activity.getString(R.string.Tip_App_Setting))
                 .toggleArrow(true)
                 .maxWidth(500)
-                .showDelay(200)
-                .activateDelay(300)
+                .showDelay(100)
+                .activateDelay(150)
                 .withCallback(new TooltipManager.onTooltipClosingCallback() {
                     @Override
                     public void onClosing(int i, boolean b, boolean b2) {
@@ -292,10 +292,18 @@ public class TipHelper {
     }
 
 
-    public static void showTipForActionBarHelp(final Activity activity, View anchorView) {
+    public static boolean isShowingTipForActionBarHelp = false;
+    public static void showTipForActionBarHelp(final Activity activity, View anchorView, boolean isShort) {
 
         if ((activity == null) || (anchorView == null)) {
             return;
+        }
+
+        float arrowLength = 0;
+        if (isShort) {
+            arrowLength = 1.2f;
+        } else {
+            arrowLength =12.2f;
         }
 
         TooltipManager.getInstance(activity)
@@ -304,19 +312,25 @@ public class TipHelper {
                 .closePolicy(TooltipManager.ClosePolicy.TouchInside, 0)
                 .withStyleId(R.style.ToolTipLayoutCustomStyle_green)
                 .text(activity.getString(R.string.Tip_Toggle))
-                .withArrowLenghtWeight(12.2f)
+                .withArrowLenghtWeight(arrowLength)
                 .toggleArrow(true)
-                .maxWidth(1000)
-                .showDelay(200)
-                .activateDelay(300)
+                .maxWidth(450)
+                .showDelay(100)
+                .activateDelay(150)
                 .withCallback(new TooltipManager.onTooltipClosingCallback() {
                     @Override
                     public void onClosing(int i, boolean b, boolean b2) {
                         TooltipManager.getInstance(activity).remove(i);
                         setFlagIfMeetCondition(activity);
+
+                        AppConfig.sharedInstance().setHelpTipHasBeenShowedFirst(true);
+                        isShowingTipForActionBarHelp = false;
+
                     }
                 })
                 .show();
+
+        isShowingTipForActionBarHelp = true;
     }
 
 
@@ -335,8 +349,8 @@ public class TipHelper {
                 .text(activity.getString(R.string.Tip_Palette))
                 .toggleArrow(true)
                 .maxWidth(1000)
-                .showDelay(200)
-                .activateDelay(300)
+                .showDelay(100)
+                .activateDelay(150)
                 .withCallback(new TooltipManager.onTooltipClosingCallback() {
                     @Override
                     public void onClosing(int i, boolean b, boolean b2) {
@@ -365,8 +379,8 @@ public class TipHelper {
                 .text(activity.getString(R.string.Tip_Play))
                 .toggleArrow(true)
                 .maxWidth(500)
-                .showDelay(200)
-                .activateDelay(300)
+                .showDelay(100)
+                .activateDelay(150)
                 .withCallback(new TooltipManager.onTooltipClosingCallback() {
                     @Override
                     public void onClosing(int i, boolean b, boolean b2) {
@@ -393,8 +407,8 @@ public class TipHelper {
                 .text(activity.getString(R.string.Tip_Create_New_Pack))
                 .toggleArrow(true)
                 .maxWidth(500)
-                .showDelay(200)
-                .activateDelay(300)
+                .showDelay(100)
+                .activateDelay(150)
                 .withCallback(new TooltipManager.onTooltipClosingCallback() {
                     @Override
                     public void onClosing(int i, boolean b,boolean b2) {
@@ -421,8 +435,8 @@ public class TipHelper {
                 .text(activity.getString(R.string.Tip_Edit_Pack))
                 .toggleArrow(true)
                 .maxWidth(500)
-                .showDelay(200)
-                .activateDelay(300)
+                .showDelay(100)
+                .activateDelay(150)
                 .withCallback(new TooltipManager.onTooltipClosingCallback() {
                     @Override
                     public void onClosing(int i, boolean b,boolean b2) {
@@ -448,8 +462,8 @@ public class TipHelper {
                 .text(activity.getString(R.string.Tip_Open_Pack_Viewer))
                 .toggleArrow(true)
                 .maxWidth(450)
-                .showDelay(200)
-                .activateDelay(300)
+                .showDelay(100)
+                .activateDelay(150)
                 .withCallback(new TooltipManager.onTooltipClosingCallback() {
                     @Override
                     public void onClosing(int i, boolean b,boolean b2) {
@@ -475,8 +489,8 @@ public class TipHelper {
                 .text(activity.getString(R.string.Tip_Edit_Link))
                 .toggleArrow(true)
                 .maxWidth(500)
-                .showDelay(200)
-                .activateDelay(300)
+                .showDelay(100)
+                .activateDelay(150)
                 .withCallback(new TooltipManager.onTooltipClosingCallback() {
                     @Override
                     public void onClosing(int i, boolean b,boolean b2) {
@@ -489,10 +503,15 @@ public class TipHelper {
 
 
 
-    public static void hideEverthing(Activity activity) {
+    public static void hideEverything(Activity activity) {
         for (int i = 0; i <= TOOLTIP_TYPE_A_NUMBER; i ++) {
             TooltipManager.getInstance(activity).hide(i);
         }
+
+        Global.isAllowToShowTooltips = true;
+
+        AppConfig.sharedInstance().setHelpTipHasBeenShowedFirst(true);
+        isShowingTipForActionBarHelp = false;
 
     }
 
@@ -503,10 +522,6 @@ public class TipHelper {
               return;
             }
         }
-
-        AppConfig.sharedInstance().setAllowToShowTooltip(false);
-
-
 
     }
 

@@ -6,12 +6,10 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.res.Configuration;
-import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.Rect;
 import android.net.Uri;
 import android.os.Bundle;
-import android.provider.MediaStore;
 import android.support.v4.app.DialogFragment;
 import android.util.Base64;
 
@@ -42,11 +40,9 @@ import com.flipflash.util.AppConfig;
 import com.flipflash.util.AppContext;
 import com.flipflash.util.Global;
 import com.flipflash.util.OpenUDID_manager;
-import com.flipflash.util.StringUtils;
 import com.flipflash.util.UIHelper;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.assist.ImageSize;
-import com.squareup.leakcanary.RefWatcher;
 
 import org.adw.library.widgets.discreteseekbar.DiscreteSeekBar;
 
@@ -404,9 +400,6 @@ public class CreateEditFragment extends DialogFragment implements TextView.OnEdi
                         }
                         if (activity != null) {
                             activity.sendBroadcast(intent);
-                            if (AppConfig.sharedInstance().isAllowToShowTooltip()) {
-                                ((MainActivity)activity).showTooltips();
-                            }
 
                         }
 

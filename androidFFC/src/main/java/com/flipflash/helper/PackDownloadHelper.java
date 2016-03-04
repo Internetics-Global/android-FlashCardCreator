@@ -14,6 +14,8 @@ import android.widget.Toast;
 
 import com.flipflash.android_ffc.R;
 import com.flipflash.cryptor.CryptoHelper;
+import com.flipflash.event.DownloadCancelEvent;
+import com.flipflash.event.WebViewMessageEvent;
 import com.flipflash.helper.AWS.SimpleDBHelper;
 import com.flipflash.util.AppConfig;
 import com.flipflash.util.AppContext;
@@ -29,6 +31,8 @@ import java.io.OutputStream;
 import java.net.URL;
 import java.net.URLConnection;
 import java.util.HashMap;
+
+import de.greenrobot.event.EventBus;
 
 import static com.flipflash.util.LogUtils.LOGD;
 import static com.flipflash.util.LogUtils.LOGE;
@@ -96,6 +100,8 @@ public class PackDownloadHelper extends AsyncTask<Void, Long, Boolean> {
             public void onClick(DialogInterface dialog, int which) {
                 mIsAllowPostExecute = false;
                 Global.isNotAllowDownloadSamplePack = true;
+
+                EventBus.getDefault().post(new DownloadCancelEvent());
 
 
             }

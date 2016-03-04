@@ -53,6 +53,7 @@ import com.flipflash.UI.ScaleHelper;
 import com.flipflash.UI.SlideInRightWithoutAlphaAnimator;
 import com.flipflash.UI.SlideOutRightWithoutAlphaAnimator;
 import com.flipflash.data.CSS;
+import com.flipflash.event.DownloadCancelEvent;
 import com.flipflash.event.WebViewMessageEvent;
 import com.github.lzyzsd.circleprogress.DonutProgress;
 import com.google.analytics.tracking.android.EasyTracker;
@@ -75,7 +76,6 @@ import com.flipflash.helper.Dropbox.Dropbox_Constant;
 import com.flipflash.helper.FileOperationHelper;
 import com.flipflash.helper.PackBuildHelper;
 import com.flipflash.helper.PackDownloadHelper;
-import com.flipflash.helper.PackRecordHelper;
 import com.flipflash.helper.SQLiteHelper;
 import com.flipflash.util.AppConfig;
 import com.flipflash.util.AppContext;
@@ -222,7 +222,7 @@ public class MainActivity extends FragmentActivity implements
             public void onClick(View view) {
                 LOGD(TAG, "onClick: add card button  is clicked");
                 createNewCardButtonClicked();
-                TipHelper.hideEverthing(MainActivity.this);
+                TipHelper.hideEverything(MainActivity.this);
 
             }
         });
@@ -573,19 +573,23 @@ public class MainActivity extends FragmentActivity implements
 
             case R.id.actionbar_help:
 
-                boolean isAllowToShowTooltip = AppConfig.sharedInstance().isAllowToShowTooltip();
-                if (isAllowToShowTooltip == false) {
-                    AppConfig.sharedInstance().setAllowToShowTooltip(true);
-                    if (activeCardDetailFragment != null) {
-                        activeCardDetailFragment.showTooltips();
-                        showTooltips();
-                    } else {
-                        showTooltips();
-                    }
+                if (TipHelper.isShowingTipForActionBarHelp) {
+                    AppConfig.sharedInstance().setHelpTipHasBeenShowedFirst(true);
+                    TipHelper.hideEverything(MainActivity.this);
                 } else {
-                    AppConfig.sharedInstance().setAllowToShowTooltip(false);
-                    TipHelper.hideEverthing(MainActivity.this);
+                    if (Global.isAllowToShowTooltips) {
+                        if (activeCardDetailFragment != null) {
+                            activeCardDetailFragment.showTooltips();
+                            showTooltips();
+                        } else {
+                            showTooltips();
+                        }
+                    } else {
+                        TipHelper.hideEverything(MainActivity.this);
+                    }
                 }
+
+
 
 
                 break;
@@ -737,9 +741,10 @@ public class MainActivity extends FragmentActivity implements
                     @Override
                     public void run() {
                         mIsAllowedToShowPackList = true;
+
                     }
 
-                }, 1000); // 2000ms delay
+                }, 1000); // 1000ms delay
 
 
     }
@@ -842,6 +847,8 @@ public class MainActivity extends FragmentActivity implements
 
         LOGD(TAG, "showTooltips");
 
+        Global.isAllowToShowTooltips = false;
+
         final Button addCardButton = (Button) this.findViewById(R.id.add_card_button);
         final Button shareButton = (Button) this.findViewById(R.id.tooltip_fake_actionbar_share);
         final Button settingButton = (Button) this.findViewById(R.id.tooltip_fake_actionbar_setting);
@@ -865,7 +872,7 @@ public class MainActivity extends FragmentActivity implements
                 TipHelper.showTipForActionBarCreateNewPack(MainActivity.this, createPackButton);
 
 
-                TipHelper.showTipForActionBarHelp(MainActivity.this, paletteButton);
+                TipHelper.showTipForActionBarHelp(MainActivity.this, paletteButton,false);
                 TipHelper.showTipForActionBarShare(MainActivity.this, settingButton);
                 TipHelper.showTipForActionBarPlay(MainActivity.this, shareButton);
                 TipHelper.showTipForActionBarSetting(MainActivity.this, helpButton);
@@ -876,7 +883,7 @@ public class MainActivity extends FragmentActivity implements
 
             }
 
-        }, 200);
+        }, 50);
     }
 
     public static int getActionBarSize(final Context context) {
@@ -913,8 +920,10 @@ public class MainActivity extends FragmentActivity implements
                     fragmentManager.beginTransaction().remove(fm).commitAllowingStateLoss();
                     fragmentManager.executePendingTransactions();
 
-                    if (AppConfig.sharedInstance().isAllowToShowTooltip()) {
-                        showTooltips();
+                    if (AppConfig.sharedInstance().isHelpTipHasBeenShowedFirst() == false) {
+                        final Button paletteButton = (Button) findViewById(R.id.tooltip_fake_actionbar_palette); //TODO: we need to match the real meaning with its name
+                        TipHelper.showTipForActionBarHelp(MainActivity.this, paletteButton, true);
+                        Global.isAllowToShowTooltips = false;
                     }
                 }
             });
@@ -1360,7 +1369,7 @@ public class MainActivity extends FragmentActivity implements
             imm.hideSoftInputFromWindow(mMasterMaskButton.getApplicationWindowToken(), 0);
         }
 
-        TipHelper.hideEverthing(MainActivity.this);
+        TipHelper.hideEverything(MainActivity.this);
 
     }
 
@@ -2413,6 +2422,16 @@ public class MainActivity extends FragmentActivity implements
                     }
 
                 }, 500); // 5000ms delay
+
+    }
+
+    public void onEventMainThread(DownloadCancelEvent event) {
+
+        if (AppConfig.sharedInstance().isHelpTipHasBeenShowedFirst() == false) {
+            final Button paletteButton = (Button) findViewById(R.id.tooltip_fake_actionbar_palette); //TODO: we need to match the real meaning with its name
+            TipHelper.showTipForActionBarHelp(MainActivity.this, paletteButton,true);
+            Global.isAllowToShowTooltips = false;
+        }
 
     }
 
