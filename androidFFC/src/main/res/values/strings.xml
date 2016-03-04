@@ -184,8 +184,9 @@
     <string name="Label_New_Pack_Name">New pack name</string>
     <string name="Label_Sidebar_Title">Side bar title</string>
     <string name="Label_Creator">Your name</string>
-    <string name="Label_Admin_Password">admin password</string>
-    <string name="Label_Confirm_Admin_Password">confirm admin password</string>
+    <string name="Label_Admin_Password">Pack password</string>
+    <string name="Label_Admin_Password_Hint">Add a pack password to secure the pack:</string>
+    <string name="Label_Confirm_Admin_Password">Confirm Pack password</string>
     <string name="Label_Creator_Hint">Created by:</string>
     <string name="Job_Title">Name or title</string>
     <string name="Label_New_User">New User?</string>

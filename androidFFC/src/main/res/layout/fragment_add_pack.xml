@@ -78,6 +78,17 @@
                 android:hint="@string/Job_Title"
                 android:ems="10"/>
 
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                android:textSize="13sp"
+                android:maxLines="1"
+                android:gravity="left|bottom"
+                android:textColor="@android:color/white"
+                android:layout_marginLeft="10dp"
+                android:text="@string/Label_Admin_Password_Hint"/>
+
             <EditText
                 android:layout_marginTop="5dp"
                 android:id="@+id/fragment_add_pack_admin_password"
@@ -109,7 +120,7 @@
             <include
                 layout="@layout/create_edit_pack_seek_bar"
                 android:layout_width="match_parent"
-                android:layout_marginTop="5dp"
+                android:layout_marginTop="20dp"
                 android:layout_height="0dp"
                 android:layout_weight="1" />
 
