@@ -268,10 +268,6 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnTouchL
             setCardBackgroundMaskGray();
         }
 
-        if (Global.isAllowToShowTooltips && AppConfig.sharedInstance().isHelpTipHasBeenShowedFirst()) {
-            showTooltips();
-        }
-
 
     }
 

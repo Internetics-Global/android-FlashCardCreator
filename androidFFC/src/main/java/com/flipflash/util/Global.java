@@ -76,6 +76,7 @@ public class Global {
     public static final String TINYURL_SHORTED_BASE_URL = "http://tinyurl.com/";
 
 
+    // true only hideEverything is executed
     public static  boolean     isAllowToShowTooltips = true;
 
     //has to show tip on the help button firstly, then others

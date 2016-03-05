@@ -574,8 +574,8 @@ public class MainActivity extends FragmentActivity implements
             case R.id.actionbar_help:
 
                 if (TipHelper.isShowingTipForActionBarHelp) {
-                    AppConfig.sharedInstance().setHelpTipHasBeenShowedFirst(true);
                     TipHelper.hideEverything(MainActivity.this);
+                    Global.isAllowToShowTooltips = true;
                 } else {
                     if (Global.isAllowToShowTooltips) {
                         if (activeCardDetailFragment != null) {
@@ -586,6 +586,7 @@ public class MainActivity extends FragmentActivity implements
                         }
                     } else {
                         TipHelper.hideEverything(MainActivity.this);
+                        Global.isAllowToShowTooltips = true;
                     }
                 }
 

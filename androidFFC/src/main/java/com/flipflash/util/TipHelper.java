@@ -323,7 +323,13 @@ public class TipHelper {
                         TooltipManager.getInstance(activity).remove(i);
                         setFlagIfMeetCondition(activity);
 
-                        AppConfig.sharedInstance().setHelpTipHasBeenShowedFirst(true);
+                        if (AppConfig.sharedInstance().isHelpTipHasBeenShowedFirst() == false) {
+
+                            AppConfig.sharedInstance().setHelpTipHasBeenShowedFirst(true);
+
+                            Global.isAllowToShowTooltips = true;
+                        }
+
                         isShowingTipForActionBarHelp = false;
 
                     }
