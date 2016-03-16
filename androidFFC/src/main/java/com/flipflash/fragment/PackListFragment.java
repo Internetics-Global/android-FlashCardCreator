@@ -133,6 +133,17 @@ public class PackListFragment extends Fragment {
             }
         });
 
+        final Button helpButton = (Button) mRootView.findViewById(R.id.help_btn);
+        helpButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                Intent intent = new Intent(getActivity(), WebViewActivity.class);
+                intent.putExtra("url", "http://www.flipflashcards.com/category/tutorials");
+                startActivity(intent);
+            }
+        });
+
         final Button newUserButton = (Button) mRootView.findViewById(R.id.new_user_btn);
         newUserButton.setOnClickListener(new View.OnClickListener() {
             @Override
