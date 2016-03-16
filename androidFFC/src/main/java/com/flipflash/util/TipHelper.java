@@ -314,7 +314,7 @@ public class TipHelper {
                 .text(activity.getString(R.string.Tip_Toggle))
                 .withArrowLenghtWeight(arrowLength)
                 .toggleArrow(true)
-                .maxWidth(450)
+                .maxWidth(330)
                 .showDelay(100)
                 .activateDelay(150)
                 .withCallback(new TooltipManager.onTooltipClosingCallback() {
