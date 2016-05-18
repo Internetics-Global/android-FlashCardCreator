@@ -4,13 +4,26 @@ buildscript {
         jcenter()
     }
     dependencies {
-        classpath 'com.android.tools.build:gradle:2.0.0-alpha7'
+        classpath 'com.android.tools.build:gradle:2.1.0'
     }
 }
 
 apply plugin: 'com.android.application'
 
 android {
+
+    productFlavors {
+        full_version {
+            applicationId "com.flipflash.android_ffc"
+            buildConfigField "boolean", "PLAY_ONLY", "false"
+        }
+
+        play_only {
+            applicationId "com.flipflash.android_ffc_play_only"
+            buildConfigField "boolean", "PLAY_ONLY", "true"
+
+        }
+    }
 
     repositories {
         flatDir {
