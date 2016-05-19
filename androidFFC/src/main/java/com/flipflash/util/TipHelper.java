@@ -3,6 +3,7 @@ package com.flipflash.util;
 import android.app.Activity;
 import android.view.View;
 
+import com.flipflash.android_ffc.BuildConfig;
 import com.flipflash.android_ffc.R;
 
 import it.sephiroth.android.library.tooltip.TooltipManager;
@@ -294,6 +295,10 @@ public class TipHelper {
 
     public static boolean isShowingTipForActionBarHelp = false;
     public static void showTipForActionBarHelp(final Activity activity, View anchorView, boolean isShort) {
+
+        if (MutipleTargetHelper.isFullVersion() == false) {
+            return;
+        }
 
         if ((activity == null) || (anchorView == null)) {
             return;

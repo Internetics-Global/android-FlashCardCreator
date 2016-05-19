@@ -40,6 +40,7 @@
 
     <item
             android:icon="@drawable/share_button"
+            android:id="@+id/actionbar_share"
             android:title="Share" android:showAsAction="always">
 
         <menu>

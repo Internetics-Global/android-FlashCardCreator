@@ -8,6 +8,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Color;
 import android.graphics.Paint;
 import android.net.Uri;
 import android.os.Bundle;
@@ -30,6 +31,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.flipflash.UI.SmoothGallery;
+import com.flipflash.android_ffc.BuildConfig;
 import com.flipflash.android_ffc.MainActivity;
 import com.flipflash.android_ffc.PlayActivity;
 import com.flipflash.android_ffc.R;
@@ -39,6 +41,7 @@ import com.flipflash.data.User;
 import com.flipflash.util.AppConfig;
 import com.flipflash.util.AppContext;
 import com.flipflash.util.Global;
+import com.flipflash.util.MutipleTargetHelper;
 import com.flipflash.util.OpenUDID_manager;
 import com.flipflash.util.StringUtils;
 import com.flipflash.util.UIHelper;
@@ -87,6 +90,13 @@ public class PackListFragment extends Fragment {
 
         final Button editButton = (Button) mRootView.findViewById(R.id.dialog_head_save_btn);
         editButton.setText(getString(R.string.NavigationBarItem_Create_New_Pack));
+
+        if (MutipleTargetHelper.isFullVersion() == false) {
+            editButton.setTextColor(Color.DKGRAY);
+        } else {
+            editButton.setTextColor(Color.WHITE);
+        }
+
         ViewGroup.LayoutParams params = editButton.getLayoutParams();
         params.width = params.width + UIHelper.getPixels(60);
         editButton.setLayoutParams(params);
@@ -94,10 +104,16 @@ public class PackListFragment extends Fragment {
             @Override
             public void onClick(View v) {
 
-                DialogFragment dialogFragment = new CreateEditFragment();
-                dialogFragment.show(getActivity().getSupportFragmentManager(), "add_pack_fragment");
-                ((ImageAdapter) mGallery.getAdapter()).notifyDataSetChanged();
-                ((MainActivity) getActivity()).dismissPackListPopupWindow();
+                if (MutipleTargetHelper.isFullVersion()) {
+                    DialogFragment dialogFragment = new CreateEditFragment();
+                    dialogFragment.show(getActivity().getSupportFragmentManager(), "add_pack_fragment");
+                    ((ImageAdapter) mGallery.getAdapter()).notifyDataSetChanged();
+                    ((MainActivity) getActivity()).dismissPackListPopupWindow();
+                } else {
+
+                    MutipleTargetHelper.showAlertToUpgradeToFullVersion(getActivity());
+                    ((MainActivity) getActivity()).dismissPackListPopupWindow();
+                }
 
 
             }
@@ -216,9 +232,16 @@ public class PackListFragment extends Fragment {
     private void galleryItemClicked(int position) {
 
         if (position ==0) {
-            DialogFragment dialogFragment = new CreateEditFragment();
-            dialogFragment.show(getActivity().getSupportFragmentManager(), "add_pack_fragment");
-            ((MainActivity) getActivity()).dismissPackListPopupWindow();
+
+            if (MutipleTargetHelper.isFullVersion()) {
+                DialogFragment dialogFragment = new CreateEditFragment();
+                dialogFragment.show(getActivity().getSupportFragmentManager(), "add_pack_fragment");
+                ((MainActivity) getActivity()).dismissPackListPopupWindow();
+            } else {
+                MutipleTargetHelper.showAlertToUpgradeToFullVersion(getActivity());
+                ((MainActivity) getActivity()).dismissPackListPopupWindow();
+            }
+
         } else {
             LOGD(TAG, "galleryItemClicked: " + "Index of pack in pack list is:" + position);
             Intent intent = new Intent();
@@ -264,16 +287,25 @@ public class PackListFragment extends Fragment {
                 LayoutInflater inflater = (LayoutInflater) getActivity().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
                 if (position == 0) {
                     convertView = inflater.inflate(R.layout.pack_list_item_add_pack, parent, false);
+
+                    ImageView coverImageView = (ImageView) convertView.findViewById(R.id.pack_cover_image);
+                    TextView coverImageAnnotation = (TextView) convertView.findViewById(R.id.pack_cover_image_annotation);
+                    if (MutipleTargetHelper.isFullVersion() == false) {
+                        coverImageView.setImageResource(R.drawable.create_new_pack_dimmed);
+                        coverImageAnnotation.setTextColor(Color.DKGRAY);
+                    } else {
+                        //use default
+                    }
+
                 } else {
                     convertView = inflater.inflate(R.layout.pack_list_item, parent, false);
                 }
             }
 
 
-            //also share add pack function
-            ImageView coverImageView = (ImageView) convertView.findViewById(R.id.pack_cover_image);
-
             if ((position != 0)&&(mUser.packs.size() > 0)) {
+
+                ImageView coverImageView = (ImageView) convertView.findViewById(R.id.pack_cover_image);
 
                 final Pack currentPack = mUser.packs.get(position -1);
 

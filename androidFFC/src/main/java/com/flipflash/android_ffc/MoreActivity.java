@@ -21,6 +21,7 @@ import com.flipflash.helper.Dropbox.DropboxAuthHelper;
 import com.flipflash.util.AppConfig;
 import com.flipflash.util.AppContext;
 import com.flipflash.util.Global;
+import com.flipflash.util.MutipleTargetHelper;
 import com.parse.LogOutCallback;
 import com.parse.ParseException;
 import com.parse.ParseUser;
@@ -187,6 +188,12 @@ public class MoreActivity extends Activity {
             @Override
             public void onToggle(boolean on) {
 
+                if (MutipleTargetHelper.isFullVersion() == false) {
+                    MutipleTargetHelper.showAlertToUpgradeToFullVersion(MoreActivity.this);
+                    mStorageProviderToggleButton.setToggleOff();
+                    return;
+                }
+
                 if (on) {
                     DropboxAuthHelper.sharedHelper(MoreActivity.this).startAuthentication();
                 } else {
@@ -233,6 +240,12 @@ public class MoreActivity extends Activity {
 
             TextView textView = (TextView) findViewById(R.id.storage_provider_toggle_textview);
             textView.setText(R.string.Table_Item_Dropbox_Logged_In);
+
+            if (MutipleTargetHelper.isFullVersion() == false) {
+                textView.setTextColor(Color.DKGRAY);
+            } else {
+                textView.setTextColor(Color.WHITE);
+            }
 
         } else {
 

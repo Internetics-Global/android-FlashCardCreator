@@ -17,6 +17,7 @@ import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import com.flipflash.android_ffc.BuildConfig;
 import com.flipflash.android_ffc.MainActivity;
 import com.flipflash.android_ffc.R;
 import com.flipflash.data.Card;
@@ -204,6 +205,7 @@ public class CardListFragment extends Fragment {
     }
 
     public boolean getEditStyle() {
+
         return mIsListViewEditable;
     }
 
@@ -325,6 +327,7 @@ public class CardListFragment extends Fragment {
                     extraCardIndex = 0;
                     mCurrentPack = CardListModel.getLatestCreatedPack();
                     ((MainActivity)getActivity()).showPackListView();
+                    ((MainActivity)getActivity()).checkAdView();
                 } else if (extraFrom.equals(Global.BROADCAST_EXTRA_FROM_SNAPSHOT_ALL)) {
                     mCurrentPack = User.getPack(AppContext.getAppContext(),mCurrentPack.packID);
                     extraCardIndex = intent.getExtras().getInt(Global.KEY_CARD_INDEX);;

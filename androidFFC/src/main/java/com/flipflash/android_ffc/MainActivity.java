@@ -8,6 +8,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.res.TypedArray;
+import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.graphics.PixelFormat;
 import android.net.Uri;
@@ -39,6 +40,7 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.FrameLayout;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.PopupWindow;
@@ -55,6 +57,7 @@ import com.flipflash.UI.SlideOutRightWithoutAlphaAnimator;
 import com.flipflash.data.CSS;
 import com.flipflash.event.DownloadCancelEvent;
 import com.flipflash.event.WebViewMessageEvent;
+import com.flipflash.util.MutipleTargetHelper;
 import com.github.lzyzsd.circleprogress.DonutProgress;
 import com.google.analytics.tracking.android.EasyTracker;
 import com.flipflash.cryptor.CryptoHelper;
@@ -85,6 +88,9 @@ import com.flipflash.util.StringUtils;
 import com.flipflash.util.TipHelper;
 import com.flipflash.util.UIHelper;
 import com.nineoldandroids.animation.Animator;
+import com.nostra13.universalimageloader.core.DisplayImageOptions;
+import com.nostra13.universalimageloader.core.ImageLoader;
+import com.nostra13.universalimageloader.core.listener.SimpleImageLoadingListener;
 import com.orhanobut.hawk.Hawk;
 import com.parse.ParseException;
 import com.parse.ParseUser;
@@ -301,27 +307,56 @@ public class MainActivity extends FragmentActivity implements
         menu.clear();
         getMenuInflater().inflate(menuID, menu);
 
+
+        MenuItem packsMenuItem = menu.findItem(R.id.actionbar_packs);
+        MenuItem editPackMenuItem = menu.findItem(R.id.actionbar_edit);
+        MenuItem newPackMenuItem = menu.findItem(R.id.actionbar_add_pack);
+
+        MenuItem changeTemplatColorMenuItem = menu.findItem(R.id.actionbar_change_template_color);
+        MenuItem helpMenuItem = menu.findItem(R.id.actionbar_help);
+        MenuItem moreMenuItem = menu.findItem(R.id.actionbar_more);;
+        MenuItem shareMenuItem = menu.findItem(R.id.actionbar_share);;
+        MenuItem playMenuItem = menu.findItem(R.id.actionbar_play);;
+
         //在不同的屏幕尺寸下，我们需要隐藏或者显示
         if ((UIHelper.getScreenWidthDPUnit(this) >= 600) && (mIsCreatingCard == false)) {
-            MenuItem item = menu.findItem(R.id.actionbar_change_template_color);
-            item.setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS);
-            item = menu.findItem(R.id.actionbar_help);
-            item.setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS);
-            item = menu.findItem(R.id.actionbar_more);
-            item.setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS);
+            changeTemplatColorMenuItem.setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS);
+            helpMenuItem.setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS);
+            moreMenuItem.setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS);
 
         }
 
+        if (MutipleTargetHelper.isFullVersion() == false) {
+
+            editPackMenuItem.setIcon(R.drawable.pack_edit_dimmed);
+            newPackMenuItem.setIcon(R.drawable.pack_add_dimmed);
+
+            changeTemplatColorMenuItem.setIcon(R.drawable.template_background_change_button_dimmed);
+            helpMenuItem.setIcon(R.drawable.helping_button_dimmed);
+            shareMenuItem.setIcon(R.drawable.share_button_dimmed);
+        } else {
+
+            editPackMenuItem.setIcon(R.drawable.pack_edit);
+            newPackMenuItem.setIcon(R.drawable.pack_add);
+
+            changeTemplatColorMenuItem.setIcon(R.drawable.template_background_change_button);
+            helpMenuItem.setIcon(R.drawable.helping_button);
+            shareMenuItem.setIcon(R.drawable.share_button);
+        }
+
         //update status
-        MenuItem item = menu.findItem(R.id.actionbar_edit);
-        if (item != null) {
-            CardListFragment cardListFragment = (CardListFragment) (getSupportFragmentManager().findFragmentById(R.id.fragment_card_list));
-            if (cardListFragment.getEditStyle()) {
-                //item.setTitle("done");
-                item.setIcon(getResources().getDrawable(R.drawable.pack_edit_finished));
-            } else {
-                //item.setTitle("edit");
-                item.setIcon(getResources().getDrawable(R.drawable.pack_edit));
+        if (MutipleTargetHelper.isFullVersion()) {
+
+            MenuItem item = menu.findItem(R.id.actionbar_edit);
+            if (item != null) {
+                CardListFragment cardListFragment = (CardListFragment) (getSupportFragmentManager().findFragmentById(R.id.fragment_card_list));
+                if (cardListFragment.getEditStyle()) {
+                    //item.setTitle("done");
+                    item.setIcon(getResources().getDrawable(R.drawable.pack_edit_finished));
+                } else {
+                    //item.setTitle("edit");
+                    item.setIcon(getResources().getDrawable(R.drawable.pack_edit));
+                }
             }
         }
 
@@ -345,11 +380,22 @@ public class MainActivity extends FragmentActivity implements
 
         switch (item.getItemId()) {
             case R.id.actionbar_add_pack: {
+
+                if (MutipleTargetHelper.isFullVersion() == false) {
+                    MutipleTargetHelper.showAlertToUpgradeToFullVersion(MainActivity.this);
+                    break;
+                }
+
                 DialogFragment dialogFragment = new CreateEditFragment();
                 dialogFragment.show(getSupportFragmentManager(), "add_pack_fragment");
                 break;
             }
             case R.id.actionbar_edit:
+
+                if (MutipleTargetHelper.isFullVersion() == false) {
+                    MutipleTargetHelper.showAlertToUpgradeToFullVersion(MainActivity.this);
+                    break;
+                }
 
                 if (mCurrentPack == null) {
                     break;
@@ -384,6 +430,11 @@ public class MainActivity extends FragmentActivity implements
                 break;
 
             case R.id.actionbar_change_template_color:
+
+                if (MutipleTargetHelper.isFullVersion() == false) {
+                    MutipleTargetHelper.showAlertToUpgradeToFullVersion(MainActivity.this);
+                    break;
+                }
 
                 if (!mCurrentPack.creatorID.equals(OpenUDID_manager.getOpenUDID())) {
                     new SweetAlertDialog(MainActivity.this)
@@ -452,7 +503,13 @@ public class MainActivity extends FragmentActivity implements
                 }
                 break;
 
+
             case R.id.actionbar_share_pack:
+
+                if (MutipleTargetHelper.isFullVersion() == false) {
+                    MutipleTargetHelper.showAlertToUpgradeToFullVersion(MainActivity.this);
+                    break;
+                }
                 if (Global.apiReachableWithAlert(MainActivity.this)) {
                     onActionbarShareItemSelected();
                 } else {
@@ -467,6 +524,11 @@ public class MainActivity extends FragmentActivity implements
                 break;
 
             case R.id.actionbar_install_from_code:
+
+                if (MutipleTargetHelper.isFullVersion() == false) {
+                    MutipleTargetHelper.showAlertToUpgradeToFullVersion(MainActivity.this);
+                    break;
+                }
 
                 final EditText codeEditText = new EditText(this);
                 codeEditText.setHint("lzupcb1");
@@ -572,6 +634,11 @@ public class MainActivity extends FragmentActivity implements
                 break;
 
             case R.id.actionbar_help:
+
+                if (MutipleTargetHelper.isFullVersion() == false) {
+                    MutipleTargetHelper.showAlertToUpgradeToFullVersion(MainActivity.this);
+                    break;
+                }
 
                 if (TipHelper.isShowingTipForActionBarHelp) {
                     TipHelper.hideEverything(MainActivity.this);
@@ -746,6 +813,9 @@ public class MainActivity extends FragmentActivity implements
                     }
 
                 }, 1000); // 1000ms delay
+
+
+        checkAdView();
 
 
     }
@@ -1203,6 +1273,11 @@ public class MainActivity extends FragmentActivity implements
     private void createNewCardButtonClicked() {
 
         LOGD(TAG, "startCreateCard");
+
+        if (MutipleTargetHelper.isFullVersion() == false) {
+            MutipleTargetHelper.showAlertToUpgradeToFullVersion(MainActivity.this);
+            return;
+        }
 
         //mCurrentPack = CardListModel.getLatestCreatedPack();//don't need to do here
         boolean result = checkEntryConditionBeforeCreatingNewCard(mCurrentPack);
@@ -1974,6 +2049,7 @@ public class MainActivity extends FragmentActivity implements
         mPackInfoLayout.setVisibility(View.VISIBLE);
         updatePackInfoView();
         findViewById(R.id.card_detail_container).setVisibility(View.GONE);
+
     }
 
     private void hidePackInfoView() {
@@ -2012,6 +2088,47 @@ public class MainActivity extends FragmentActivity implements
         } else {
             shareCodeTextView.setText("");
         }
+    }
+
+    public void checkAdView() {
+
+        if (mPackDownloadHelper == null || mPackDownloadHelper.isDownloading() == false) {
+
+            if (MutipleTargetHelper.isFullVersion() == false && MutipleTargetHelper.isNoAdVersion() == false) {
+                showAdView();
+                return;
+            }
+        }
+
+        final ImageView imageView = (ImageView) findViewById(R.id.ad_image_view);
+        imageView.setVisibility(View.GONE);
+        return;
+
+    }
+
+    private void showAdView() {
+
+        final ImageView imageView = (ImageView) findViewById(R.id.ad_image_view);
+
+        if (MutipleTargetHelper.isFullVersion() || MutipleTargetHelper.isNoAdVersion()) {
+        }
+
+        DisplayImageOptions defaultOptions = new DisplayImageOptions.Builder().cacheInMemory(false).cacheOnDisk(false).build();
+        ImageLoader imageLoader = ImageLoader.getInstance();
+        imageLoader.displayImage("http://www.flipflashcards.com/promo/upgrade.png",imageView, defaultOptions,new SimpleImageLoadingListener() {
+            @Override
+            public void onLoadingComplete(String imageUri, View view, Bitmap loadedImage) {
+                super.onLoadingComplete(imageUri, view, loadedImage);
+                imageView.setVisibility(View.VISIBLE);
+            }
+        });
+        imageView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                MutipleTargetHelper.showPurchaseView(MainActivity.this);
+            }
+        });
+
     }
 
     private  int COUNTDOWN_SECOND_FOR_RECORDING = 30;
@@ -2428,11 +2545,18 @@ public class MainActivity extends FragmentActivity implements
 
     public void onEventMainThread(DownloadCancelEvent event) {
 
+        if (mPackDownloadHelper != null) {
+            mPackDownloadHelper.cancel(true);
+            mPackDownloadHelper = null;
+        }
+
         if (AppConfig.sharedInstance().isHelpTipHasBeenShowedFirst() == false) {
             final Button paletteButton = (Button) findViewById(R.id.tooltip_fake_actionbar_palette); //TODO: we need to match the real meaning with its name
             TipHelper.showTipForActionBarHelp(MainActivity.this, paletteButton,true);
             Global.isAllowToShowTooltips = false;
         }
+
+        checkAdView();
 
     }
 
