@@ -1,6 +1,9 @@
 package com.flipflash.fragment;
 
+import android.app.AlertDialog;
+import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,26 +15,56 @@ import android.webkit.WebView;
 import android.widget.Button;
 import android.widget.TextView;
 
+import com.anjlab.android.iab.v3.BillingProcessor;
+import com.anjlab.android.iab.v3.SkuDetails;
+import com.anjlab.android.iab.v3.TransactionDetails;
 import com.flipflash.android_ffc.R;
+import com.flipflash.util.MutipleTargetHelper;
 import com.flipflash.util.UIHelper;
 
+import java.util.ArrayList;
+import java.util.List;
 
-public class PurchaseFragment extends android.app.DialogFragment {
+import static com.flipflash.util.LogUtils.LOGD;
+
+
+public class PurchaseFragment extends android.app.DialogFragment implements BillingProcessor.IBillingHandler {
+
     private static final String TAG = PurchaseFragment.class.getSimpleName();
 
     private View mContentView;
     private WebView  mWebView;
 
+    private Button dollar1PurchaseButton;
+    private Button dollar5PurchaseButton;
+    private Button restorePurchaseButton;
+
+    private BillingProcessor mBillingProcessor;
+    
+    private static final String GOOGLE_IAP_LICENCE_KEY = "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAi+G7n49I1WtfCGwo0zzMXjFxtcLiKCe671QktSJTkFHojuHJAoOWGYIiaUCAh9YZbRcdtx7uVVhOXQlzVxwd/LmIxgXpH5QY8ipxEerObXxEJShrWgC6LiyTnGq9ReqFtE8D68aSrowRgnmD4+yz3Qj3BwHxArOa2p8tl6StpoUDUxF48ekbosNTF3TyOQ2zT4TqpYk2OyPvdVWzRJ6jhVfWjrpmAEq0mUE4NwP/Mnp5kVISyGHCQR7dfRBV3wyDjjhFUn6zayeaLEY3kXWO4j74oK04aJazQlr8EhEoK7jtpxM1LfLRC9ejwS5pfRNmn1O+b5/8LJ0UzYf6LnHw/wIDAQAB";
+
+    private static final String DOLLAR_1_PURCHASE_ID = "play_only_314159";
+    private static final String DOLLAR_5_PURCHASE_ID = "full_314159";
+    // if filled library will provide protection against Freedom alike Play Market simulators
+    private static final String MERCHANT_ID=null;
+
+    private boolean mLocalizedPriceUpdated = false;
+    private boolean mPurchaseRestoreRequest = false;
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
 
         super.onCreate(savedInstanceState);
+
+
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         super.onCreateView(inflater, container, savedInstanceState);
+
+        LOGD(TAG, "onCreateView");
 
         mContentView = inflater.inflate(R.layout.fragment_purchase, container);
         getDialog().getWindow().requestFeature(Window.FEATURE_NO_TITLE);
@@ -60,12 +93,39 @@ public class PurchaseFragment extends android.app.DialogFragment {
         saveButton.setVisibility(View.GONE);
 
 
+        dollar1PurchaseButton = (Button) mContentView.findViewById(R.id.button_1_dollar);
+        dollar5PurchaseButton = (Button) mContentView.findViewById(R.id.button_5_dollar);
+        restorePurchaseButton = (Button) mContentView.findViewById(R.id.button_restore);
+
+        dollar1PurchaseButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                dollar1PurchaseButtonClicked();
+            }
+        });
+
+        dollar5PurchaseButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                dollar5PurchaseButtonClicked();
+            }
+        });
+
+        restorePurchaseButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                restorePurchaseButtonClicked();
+            }
+        });
+
         return mContentView;
     }
 
     @Override
     public void onResume() {
         super.onResume();
+
+        LOGD(TAG, "onResume");
 
         ViewGroup.LayoutParams params = mContentView.getLayoutParams();
         params.width = getResources().getDimensionPixelSize(R.dimen.add_pack_window_width);
@@ -75,5 +135,191 @@ public class PurchaseFragment extends android.app.DialogFragment {
         mWebView = (WebView) mContentView.findViewById(R.id.webview);
         mWebView.getSettings().setCacheMode(WebSettings.LOAD_NO_CACHE);
         mWebView.loadUrl("http://www.flipflashcards.com/promo/index.html");
+
+        setupPurchase();
+    }
+
+
+    private void setupPurchase() {
+
+        boolean isAvailable = BillingProcessor.isIabServiceAvailable(getActivity());
+        if(!isAvailable) {
+            showSimpleAlertDialogWidthMessage("Google In-app Billing is not available now");
+            return;
+        } else {
+            LOGD(TAG, "Google In-app Billing is ready");
+        }
+
+        mBillingProcessor = new BillingProcessor(getActivity(),MERCHANT_ID,GOOGLE_IAP_LICENCE_KEY,this);
+
+    }
+
+    private void restorePurchaseButtonClicked() {
+
+        LOGD(TAG, "restorePurchaseButtonClicked");
+
+        if (mLocalizedPriceUpdated == false) {
+            showPriceNeedToBeUpdatedDialog();
+            return;
+        }
+
+        mPurchaseRestoreRequest = true;
+        mBillingProcessor.loadOwnedPurchasesFromGoogle();
+    }
+
+    private void dollar5PurchaseButtonClicked() {
+
+        LOGD(TAG, "dollar5PurchaseButtonClicked");
+
+        if (mLocalizedPriceUpdated == false) {
+            showPriceNeedToBeUpdatedDialog();
+            return;
+        }
+
+        mBillingProcessor.purchase(getActivity(), DOLLAR_5_PURCHASE_ID);
+
+    }
+
+    private void dollar1PurchaseButtonClicked() {
+
+        LOGD(TAG, "dollar1PurchaseButtonClicked");
+
+        if (mLocalizedPriceUpdated == false) {
+            showPriceNeedToBeUpdatedDialog();
+            return;
+        }
+
+        mBillingProcessor.purchase(getActivity(), DOLLAR_1_PURCHASE_ID);
+
+    }
+
+
+    @Override
+    public void onProductPurchased(String productId, TransactionDetails details) {
+
+        LOGD(TAG, "onProductPurchased");
+
+        boolean result = false;
+        if (productId.equals(DOLLAR_1_PURCHASE_ID)) {
+            result = true;
+            MutipleTargetHelper.setNoAdVersionFlag(true);
+        } else if (productId.equals(DOLLAR_5_PURCHASE_ID)) {
+            result = true;
+            MutipleTargetHelper.setFullVersionFlag(true);
+        }
+
+        if (result) {
+            showSimpleAlertDialogWidthMessage("Thank you for upgrading, please restart the app to be effective");
+        } else {
+            showSimpleAlertDialogWidthMessage("In-app billing configuration is not expected, check in Google Console");
+        }
+
+    }
+
+    @Override
+    public void onPurchaseHistoryRestored() {
+
+        LOGD(TAG, "onPurchaseHistoryRestored");
+
+        if (mPurchaseRestoreRequest) {
+            showSimpleAlertDialogWidthMessage("Successfully restored, please restart the app to be effective");
+            mPurchaseRestoreRequest = false;
+        }
+
+    }
+
+    @Override
+    public void onBillingError(int errorCode, Throwable error) {
+
+        LOGD(TAG, "onBillingError with errorCode = " + errorCode);
+
+        //showSimpleAlertDialogWidthMessage("In-app billing error:" + errorCode);
+
+    }
+
+    @Override
+    public void onBillingInitialized() {
+
+        LOGD(TAG, "onBillingInitialized");
+
+        ArrayList<String> list = new ArrayList<>(2);
+        list.add(DOLLAR_1_PURCHASE_ID);
+        list.add(DOLLAR_5_PURCHASE_ID);
+
+        SkuDetails test = mBillingProcessor.getPurchaseListingDetails(DOLLAR_1_PURCHASE_ID);
+        if (test != null) {
+            Log.d(getTag(),test.priceText);
+        }
+
+        List<SkuDetails> skuList =  mBillingProcessor.getPurchaseListingDetails(list);
+        if (skuList == null) {
+            showSimpleAlertDialogWidthMessage("No in-app products in Google console");
+        } else if (skuList.size() != 2) {
+
+            String msg = "";
+            for (SkuDetails item : skuList) {
+                msg = msg + item.productId;
+            }
+            LOGD(TAG,msg);
+
+            showSimpleAlertDialogWidthMessage("You can have only 2 in-app product in Google Console, currently, you have: " + skuList.size() );
+        } else {
+            SkuDetails firstSkuPrice = skuList.get(0);
+            SkuDetails secondSkuPrice = skuList.get(1);
+
+            if (firstSkuPrice.productId.equals(DOLLAR_1_PURCHASE_ID) && secondSkuPrice.productId.equals(DOLLAR_5_PURCHASE_ID)) {
+
+                dollar1PurchaseButton.setText("No Ads - " + firstSkuPrice.priceText);
+                dollar5PurchaseButton.setText("Full Version - " + secondSkuPrice.priceText);
+
+                mLocalizedPriceUpdated = true;
+
+            } else {
+
+                showSimpleAlertDialogWidthMessage("IAP configuration is not expected");
+            }
+
+        }
+
+    }
+
+    private void showPriceNeedToBeUpdatedDialog() {
+
+        showSimpleAlertDialogWidthMessage("Please wait for price to be fetched");
+    }
+
+    private void showSimpleAlertDialogWidthMessage(String msg) {
+
+        LOGD(TAG, "showSimpleAlertDialogWidthMessage with message of" + msg);
+
+        AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(
+                getActivity());
+        alertDialogBuilder.setTitle("Alert");
+        alertDialogBuilder.setPositiveButton("Close", null);
+        alertDialogBuilder
+                .setMessage(msg).
+                show();
+
+    }
+
+
+    @Override
+    public void onDestroy() {
+
+        LOGD(TAG, "onDestroy");
+
+        if (mBillingProcessor != null)
+            mBillingProcessor.release();
+
+        super.onDestroy();
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+
+        LOGD(TAG, "onActivityResult");
+
+        if (!mBillingProcessor.handleActivityResult(requestCode, resultCode, data))
+            super.onActivityResult(requestCode, resultCode, data);
     }
 }

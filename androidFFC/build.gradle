@@ -19,7 +19,7 @@ android {
         }
 
         play_only {
-            applicationId "com.flipflash.android_ffc_play_only"
+            applicationId "com.flipflash.android_ffc_play_only2"
             buildConfigField "boolean", "PLAY_ONLY", "true"
 
         }
@@ -66,7 +66,7 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.txt'
         }
         debug {
-            minifyEnabled true
+            minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.txt'
         }
     }
@@ -84,6 +84,11 @@ allprojects {
 
         maven { url "https://jitpack.io" }
     }
+}
+
+
+repositories {
+    mavenCentral()
 }
 
 
@@ -135,6 +140,8 @@ dependencies {
     compile 'com.github.orhanobut:hawk:1.22'
     compile project(':mediapicker')
     compile project(':lvl')
+
+    compile 'com.anjlab.android.iab.v3:library:1.0.+'
 }
 
 
