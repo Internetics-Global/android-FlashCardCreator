@@ -233,6 +233,12 @@ public class MainActivity extends FragmentActivity implements
             }
         });
 
+        if (MutipleTargetHelper.isFullVersion()) {
+            addCardButton.setVisibility(View.VISIBLE);
+        } else {
+            addCardButton.setVisibility(View.INVISIBLE);
+        }
+
         mMasterMaskButton = (Button) findViewById(R.id.master_view_mask);
 
         mMasterMaskButton.setOnClickListener(new View.OnClickListener() {
@@ -315,7 +321,10 @@ public class MainActivity extends FragmentActivity implements
         MenuItem changeTemplatColorMenuItem = menu.findItem(R.id.actionbar_change_template_color);
         MenuItem helpMenuItem = menu.findItem(R.id.actionbar_help);
         MenuItem moreMenuItem = menu.findItem(R.id.actionbar_more);;
-        MenuItem shareMenuItem = menu.findItem(R.id.actionbar_share);;
+
+        MenuItem installCodeMenuItem = menu.findItem(R.id.actionbar_install_from_code);
+        MenuItem sharePackMenuItem = menu.findItem(R.id.actionbar_share_pack);
+
         MenuItem playMenuItem = menu.findItem(R.id.actionbar_play);;
 
         //在不同的屏幕尺寸下，我们需要隐藏或者显示
@@ -328,20 +337,22 @@ public class MainActivity extends FragmentActivity implements
 
         if (MutipleTargetHelper.isFullVersion() == false) {
 
+            sharePackMenuItem.setVisible(false);
+
             editPackMenuItem.setIcon(R.drawable.pack_edit_dimmed);
             newPackMenuItem.setIcon(R.drawable.pack_add_dimmed);
 
             changeTemplatColorMenuItem.setIcon(R.drawable.template_background_change_button_dimmed);
             helpMenuItem.setIcon(R.drawable.helping_button_dimmed);
-            shareMenuItem.setIcon(R.drawable.share_button_dimmed);
         } else {
+
+            sharePackMenuItem.setVisible(true);
 
             editPackMenuItem.setIcon(R.drawable.pack_edit);
             newPackMenuItem.setIcon(R.drawable.pack_add);
 
             changeTemplatColorMenuItem.setIcon(R.drawable.template_background_change_button);
             helpMenuItem.setIcon(R.drawable.helping_button);
-            shareMenuItem.setIcon(R.drawable.share_button);
         }
 
         //update status
@@ -524,11 +535,6 @@ public class MainActivity extends FragmentActivity implements
                 break;
 
             case R.id.actionbar_install_from_code:
-
-                if (MutipleTargetHelper.isFullVersion() == false) {
-                    MutipleTargetHelper.showAlertToUpgradeToFullVersion(MainActivity.this);
-                    break;
-                }
 
                 final EditText codeEditText = new EditText(this);
                 codeEditText.setHint("lzupcb1");
