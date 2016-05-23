@@ -678,7 +678,7 @@ public class MainActivity extends FragmentActivity implements
     public void setCurrentPack(Pack mCurrentPack) {
         this.mCurrentPack = mCurrentPack;
         if (mCurrentPack != null) {
-            mCustomTitleTextView.setText(mCurrentPack.packName);
+//            mCustomTitleTextView.setText(mCurrentPack.packName);
         }
         updatePackInfoView();
     }
@@ -1166,7 +1166,7 @@ public class MainActivity extends FragmentActivity implements
         //因为是引用关系，所以这里的mCurrentPack一旦改变，也会影响CardListFragment中的mCurrentPack。一旦这改变保存到Sqlite，则重新从SQlite取一次，保证严格一致
         //create new card中的因为是通过shadow copy过去的，所以不用担心影响到
         mCurrentPack = currentPack;
-        mCustomTitleTextView.setText(mCurrentPack.packName);
+//        mCustomTitleTextView.setText(mCurrentPack.packName);
 
         if (selectedCardIndex >= 0) {
             mCurrentCardIndex = selectedCardIndex;
@@ -2084,8 +2084,11 @@ public class MainActivity extends FragmentActivity implements
             packCoverImageView.setImageURI(Uri.parse(mCurrentPack.coverImageUriFormatStr));
         }
 
-        TextView  packCoverTextView = (TextView) findViewById(R.id.pack_info_title);
-        packCoverTextView.setText(String.format("%s:%d", getString(R.string.Title_Total_Number_Card),mCurrentPack.cards.size()));
+        TextView  packInfoTextView = (TextView) findViewById(R.id.pack_info_no);
+        packInfoTextView.setText(String.format("%s:%d", getString(R.string.Title_Total_Number_Card),mCurrentPack.cards.size()));
+
+        TextView  packTitleTextView = (TextView) findViewById(R.id.pack_info_title);
+        packTitleTextView.setText(mCurrentPack.packName);
 
         TextView  shareCodeTextView = (TextView) findViewById(R.id.pack_info_share_code);
         if (StringUtils.isEmpty(mCurrentPack.shareLink) == false && ((mCurrentPack.creatorID).equals(OpenUDID_manager.getOpenUDID()))) {

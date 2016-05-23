@@ -183,6 +183,18 @@
                 android:layout_width="@dimen/pack_info_layout_width"
                 android:layout_height="@dimen/pack_info_layout_height">
 
+                <TextView
+                    android:id="@+id/pack_info_title"
+                    android:layout_width="match_parent"
+                    android:layout_height="20dp"
+                    android:textStyle="bold"
+                    android:text=""
+                    android:layout_marginBottom="10dp"
+                    android:gravity="center"
+                    android:layout_gravity="center"
+                    android:textColor="@android:color/white"
+                    android:textAppearance="?android:attr/textAppearanceSmall" />
+
                 <ImageView
                     android:id="@+id/pack_info_cover_image"
                     android:layout_width="match_parent"
@@ -191,7 +203,7 @@
                     android:layout_gravity="center"/>
 
                 <TextView
-                    android:id="@+id/pack_info_title"
+                    android:id="@+id/pack_info_no"
                     android:layout_width="match_parent"
                     android:layout_height="20dp"
                     android:textStyle="bold"
