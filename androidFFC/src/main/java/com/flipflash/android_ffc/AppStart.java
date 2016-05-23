@@ -12,8 +12,11 @@ import android.provider.Settings;
 import android.util.DisplayMetrics;
 import android.util.Log;
 
+import com.flipflash.helper.SQLiteHelper;
 import com.flipflash.util.Global;
+import com.flipflash.util.MutipleTargetHelper;
 import com.google.android.vending.licensing.AESObfuscator;
+import com.google.android.vending.licensing.APKExpansionPolicy;
 import com.google.android.vending.licensing.LicenseChecker;
 import com.google.android.vending.licensing.LicenseCheckerCallback;
 import com.google.android.vending.licensing.Policy;
@@ -39,6 +42,31 @@ public class AppStart extends Activity {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.start);
+
+
+        /**
+         *  This should be before [SQLiteHelper verifyDatabase]
+         *  In version 1x, it's paid version
+         *  From 2.x, it's IAP version
+         */
+        {
+
+            //check only once
+            if (Hawk.contains("K_Upgrade_From_Paid_To_IAP") == false) {
+
+               if (SQLiteHelper.databaseExist(AppStart.this)){
+
+                  //it's upgraded from 1.x to 2.x
+                  MutipleTargetHelper.setFullVersionFlag(true);
+
+               }
+
+            Hawk.put("K_Upgrade_From_Paid_To_IAP","PLACEHOLDER");
+
+           }
+
+        }
+
 
         collectDeviceInfoForDebugging();
 

@@ -8,9 +8,12 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteDatabase.CursorFactory;
+import android.database.sqlite.SQLiteException;
 import android.database.sqlite.SQLiteOpenHelper;
 
 import com.flipflash.util.Global;
+
+import java.io.File;
 
 import static com.flipflash.util.LogUtils.LOGD;
 
@@ -30,6 +33,7 @@ public class SQLiteHelper {
         }
         return dbOpenHelper.getWritableDatabase();
     }
+
 
     public static void closeDatabase() {
         dbOpenHelper.close();
@@ -69,6 +73,7 @@ public class SQLiteHelper {
 
         @Override
         public void onCreate(SQLiteDatabase db) {
+
             db.execSQL("CREATE TABLE " + "Users_Tables" + " (" + "user_id"
                     + " INTEGER PRIMARY KEY, " + "nick_name" + " TEXT)");
             db.execSQL("CREATE INDEX IF NOT EXISTS IA on Users_Tables(user_id)");
@@ -156,6 +161,12 @@ public class SQLiteHelper {
 
         }
 
+
+    }
+
+    public static boolean databaseExist(Context context) {
+        File dbFile = context.getDatabasePath(Global.DATABASE_NAME);
+        return dbFile.exists();
     }
 
 }
