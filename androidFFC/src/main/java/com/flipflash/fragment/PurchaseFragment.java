@@ -40,11 +40,9 @@ public class PurchaseFragment extends android.app.DialogFragment implements Bill
     private Button restorePurchaseButton;
 
     private BillingProcessor mBillingProcessor;
-    
-    private static final String GOOGLE_IAP_LICENCE_KEY = "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAi+G7n49I1WtfCGwo0zzMXjFxtcLiKCe671QktSJTkFHojuHJAoOWGYIiaUCAh9YZbRcdtx7uVVhOXQlzVxwd/LmIxgXpH5QY8ipxEerObXxEJShrWgC6LiyTnGq9ReqFtE8D68aSrowRgnmD4+yz3Qj3BwHxArOa2p8tl6StpoUDUxF48ekbosNTF3TyOQ2zT4TqpYk2OyPvdVWzRJ6jhVfWjrpmAEq0mUE4NwP/Mnp5kVISyGHCQR7dfRBV3wyDjjhFUn6zayeaLEY3kXWO4j74oK04aJazQlr8EhEoK7jtpxM1LfLRC9ejwS5pfRNmn1O+b5/8LJ0UzYf6LnHw/wIDAQAB";
 
-    private static final String DOLLAR_1_PURCHASE_ID = "play_only_314159";
-    private static final String DOLLAR_5_PURCHASE_ID = "full_314159";
+    private static final String DOLLAR_1_PURCHASE_ID = "com.flipflash.flipflashcards.removeads";
+    private static final String DOLLAR_5_PURCHASE_ID = "com.flipflash.flipflashcards.full";
     // if filled library will provide protection against Freedom alike Play Market simulators
     private static final String MERCHANT_ID=null;
 
@@ -149,6 +147,8 @@ public class PurchaseFragment extends android.app.DialogFragment implements Bill
         } else {
             LOGD(TAG, "Google In-app Billing is ready");
         }
+
+        String GOOGLE_IAP_LICENCE_KEY = getString(R.string.lvl_public_key);
 
         mBillingProcessor = new BillingProcessor(getActivity(),MERCHANT_ID,GOOGLE_IAP_LICENCE_KEY,this);
 
