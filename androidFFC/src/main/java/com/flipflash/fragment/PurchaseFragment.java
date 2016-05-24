@@ -21,6 +21,7 @@ import com.anjlab.android.iab.v3.TransactionDetails;
 import com.flipflash.android_ffc.R;
 import com.flipflash.util.MutipleTargetHelper;
 import com.flipflash.util.UIHelper;
+import com.orhanobut.hawk.Hawk;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -37,7 +38,12 @@ public class PurchaseFragment extends android.app.DialogFragment implements Bill
 
     private Button dollar1PurchaseButton;
     private Button dollar5PurchaseButton;
+
+    /*
+     * we have to disable this function, since it does not work: https://github.com/anjlab/android-inapp-billing-v3/issues/10
+     */
     private Button restorePurchaseButton;
+
 
     private BillingProcessor mBillingProcessor;
 
@@ -176,6 +182,7 @@ public class PurchaseFragment extends android.app.DialogFragment implements Bill
             return;
         }
 
+        //if already purchased, will still call onProductPurchased, so that's the reason why we can throw restore function 
         mBillingProcessor.purchase(getActivity(), DOLLAR_5_PURCHASE_ID);
 
     }
@@ -189,6 +196,7 @@ public class PurchaseFragment extends android.app.DialogFragment implements Bill
             return;
         }
 
+        //if already purchased, will still call onProductPurchased, so that's the reason why we can throw restore function
         mBillingProcessor.purchase(getActivity(), DOLLAR_1_PURCHASE_ID);
 
     }
@@ -221,6 +229,22 @@ public class PurchaseFragment extends android.app.DialogFragment implements Bill
 
         LOGD(TAG, "onPurchaseHistoryRestored");
 
+        {
+            TransactionDetails dollar1TransactionDetails = mBillingProcessor.getPurchaseTransactionDetails(DOLLAR_1_PURCHASE_ID);
+            if (dollar1TransactionDetails != null) {
+                LOGD(TAG, "1 dollar purchased has be restored");
+                MutipleTargetHelper.setNoAdVersionFlag(true);
+            }
+        }
+
+        {
+            TransactionDetails dollar5TransactionDetails = mBillingProcessor.getPurchaseTransactionDetails(DOLLAR_5_PURCHASE_ID);
+            if (dollar5TransactionDetails != null) {
+                LOGD(TAG, "5 dollar purchased has be restored");
+                MutipleTargetHelper.setFullVersionFlag(true);
+            }
+        }
+
         if (mPurchaseRestoreRequest) {
             showSimpleAlertDialogWidthMessage("Successfully restored, please restart the app to be effective");
             mPurchaseRestoreRequest = false;
@@ -241,6 +265,19 @@ public class PurchaseFragment extends android.app.DialogFragment implements Bill
     public void onBillingInitialized() {
 
         LOGD(TAG, "onBillingInitialized");
+
+        if (mBillingProcessor.isPurchased(DOLLAR_1_PURCHASE_ID) && MutipleTargetHelper.isNoAdVersion() == false) {
+            MutipleTargetHelper.setNoAdVersionFlag(true);
+            showSimpleAlertDialogWidthMessage("Successfully restored, please restart the app to be effective");
+            return;
+        }
+
+        if (mBillingProcessor.isPurchased(DOLLAR_5_PURCHASE_ID) && MutipleTargetHelper.isFullVersion() == false) {
+            MutipleTargetHelper.setFullVersionFlag(true);
+            showSimpleAlertDialogWidthMessage("Successfully restored, please restart the app to be effective");
+            return;
+        }
+
 
         ArrayList<String> list = new ArrayList<>(2);
         list.add(DOLLAR_1_PURCHASE_ID);
@@ -264,13 +301,23 @@ public class PurchaseFragment extends android.app.DialogFragment implements Bill
 
             showSimpleAlertDialogWidthMessage("You can have only 2 in-app product in Google Console, currently, you have: " + skuList.size() );
         } else {
+
             SkuDetails firstSkuPrice = skuList.get(0);
             SkuDetails secondSkuPrice = skuList.get(1);
+
+
 
             if (firstSkuPrice.productId.equals(DOLLAR_1_PURCHASE_ID) && secondSkuPrice.productId.equals(DOLLAR_5_PURCHASE_ID)) {
 
                 dollar1PurchaseButton.setText("No Ads - " + firstSkuPrice.priceText);
                 dollar5PurchaseButton.setText("Full Version - " + secondSkuPrice.priceText);
+
+                mLocalizedPriceUpdated = true;
+
+            } else if (firstSkuPrice.productId.equals(DOLLAR_5_PURCHASE_ID) && secondSkuPrice.productId.equals(DOLLAR_1_PURCHASE_ID)) {
+
+                dollar1PurchaseButton.setText("No Ads - " + secondSkuPrice.priceText);
+                dollar5PurchaseButton.setText("Full Version - " + firstSkuPrice.priceText);
 
                 mLocalizedPriceUpdated = true;
 
