@@ -57,6 +57,7 @@ import com.flipflash.UI.SlideOutRightWithoutAlphaAnimator;
 import com.flipflash.data.CSS;
 import com.flipflash.event.DownloadCancelEvent;
 import com.flipflash.event.WebViewMessageEvent;
+import com.flipflash.fragment.PurchaseFragment;
 import com.flipflash.util.MutipleTargetHelper;
 import com.github.lzyzsd.circleprogress.DonutProgress;
 import com.google.analytics.tracking.android.EasyTracker;
@@ -194,6 +195,9 @@ public class MainActivity extends FragmentActivity implements
         super.onCreate(savedInstanceState);
 
         LOGD(TAG, "onCreate: ");
+
+        AppContext mApp = ((AppContext)getApplicationContext());
+        mApp.setMainActivity(MainActivity.this);
 
         //Step1: check table and default user
         SQLiteHelper.defaultDatabase(AppContext.getAppContext());
@@ -393,7 +397,7 @@ public class MainActivity extends FragmentActivity implements
             case R.id.actionbar_add_pack: {
 
                 if (MutipleTargetHelper.isFullVersion() == false) {
-                    MutipleTargetHelper.showAlertToUpgradeToFullVersion(MainActivity.this);
+                    MutipleTargetHelper.showAlertToUpgradeToFullVersion();
                     break;
                 }
 
@@ -404,7 +408,7 @@ public class MainActivity extends FragmentActivity implements
             case R.id.actionbar_edit:
 
                 if (MutipleTargetHelper.isFullVersion() == false) {
-                    MutipleTargetHelper.showAlertToUpgradeToFullVersion(MainActivity.this);
+                    MutipleTargetHelper.showAlertToUpgradeToFullVersion();
                     break;
                 }
 
@@ -443,7 +447,12 @@ public class MainActivity extends FragmentActivity implements
             case R.id.actionbar_change_template_color:
 
                 if (MutipleTargetHelper.isFullVersion() == false) {
-                    MutipleTargetHelper.showAlertToUpgradeToFullVersion(MainActivity.this);
+                    MutipleTargetHelper.showAlertToUpgradeToFullVersion();
+                    break;
+                }
+
+                if (mCurrentPack == null || activeCardDetailFragment == null) {
+                    Toast.makeText(getApplicationContext(), getString(R.string.DIALOG_SELECT_CARD_BEFOREHAND), Toast.LENGTH_SHORT).show();
                     break;
                 }
 
@@ -454,10 +463,6 @@ public class MainActivity extends FragmentActivity implements
                             .show();
 
                 }  else {
-                    if (activeCardDetailFragment == null) {
-                        Toast.makeText(getApplicationContext(), getString(R.string.DIALOG_SELECT_CARD_BEFOREHAND), Toast.LENGTH_SHORT).show();
-                        break;
-                    }
 
                     int defaultIndex = (StringUtils.convertTemplateBackgroundStringToResourceID(mCurrentCard.templateBackground))[0];
                     if (mCurrentPack.cards.size() >= 0) {
@@ -518,7 +523,7 @@ public class MainActivity extends FragmentActivity implements
             case R.id.actionbar_share_pack:
 
                 if (MutipleTargetHelper.isFullVersion() == false) {
-                    MutipleTargetHelper.showAlertToUpgradeToFullVersion(MainActivity.this);
+                    MutipleTargetHelper.showAlertToUpgradeToFullVersion();
                     break;
                 }
                 if (Global.apiReachableWithAlert(MainActivity.this)) {
@@ -642,7 +647,7 @@ public class MainActivity extends FragmentActivity implements
             case R.id.actionbar_help:
 
                 if (MutipleTargetHelper.isFullVersion() == false) {
-                    MutipleTargetHelper.showAlertToUpgradeToFullVersion(MainActivity.this);
+                    MutipleTargetHelper.showAlertToUpgradeToFullVersion();
                     break;
                 }
 
@@ -1281,7 +1286,7 @@ public class MainActivity extends FragmentActivity implements
         LOGD(TAG, "startCreateCard");
 
         if (MutipleTargetHelper.isFullVersion() == false) {
-            MutipleTargetHelper.showAlertToUpgradeToFullVersion(MainActivity.this);
+            MutipleTargetHelper.showAlertToUpgradeToFullVersion();
             return;
         }
 
@@ -2134,7 +2139,7 @@ public class MainActivity extends FragmentActivity implements
         imageView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                MutipleTargetHelper.showPurchaseView(MainActivity.this);
+                MutipleTargetHelper.showPurchaseView();
             }
         });
 
@@ -2318,7 +2323,7 @@ public class MainActivity extends FragmentActivity implements
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        LOGD(TAG, "onActivityResult");
+        LOGD(TAG, "onActivityResult with request code = " + requestCode);
 
         //Parse暂时不支持区分sign up或sign in
         //https://github.com/ParsePlatform/ParseUI-Android/issues/79
@@ -2397,6 +2402,13 @@ public class MainActivity extends FragmentActivity implements
                         .show();
                 LOGE(TAG, "onActivityResult: " + "sign up or sign in failure with resultCode = " + resultCode);
             }
+        } else if (requestCode == 2061984) {  //defined in "https://github.com/anjlab/android-inapp-billing-v3"
+            android.app.Fragment fragment = getFragmentManager().findFragmentByTag("PurchaseFragment");
+            if (fragment != null)
+            {
+                ((PurchaseFragment)fragment).onActivityResult(requestCode, resultCode,data);
+            }
+
         } else {
 
         }

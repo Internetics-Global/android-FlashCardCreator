@@ -10,6 +10,7 @@ import com.amazonaws.auth.CognitoCachingCredentialsProvider;
 import com.amazonaws.regions.Regions;
 import com.amazonaws.services.s3.AmazonS3Client;
 import com.facebook.stetho.Stetho;
+import com.flipflash.android_ffc.MainActivity;
 import com.flipflash.android_ffc.R;
 import com.nostra13.universalimageloader.cache.disc.naming.Md5FileNameGenerator;
 import com.nostra13.universalimageloader.core.ImageLoader;
@@ -41,6 +42,8 @@ public class AppContext extends Application {
     private static AmazonS3Client                    mS3Client;
 
     private RefWatcher refWatcher;
+
+    private MainActivity mMainActivity;
 
 
     @Override
@@ -174,4 +177,11 @@ public class AppContext extends Application {
     }
 
 
+    public MainActivity getMainActivity() {
+        return mMainActivity;
+    }
+
+    public void setMainActivity(MainActivity mainActivity) {
+        mMainActivity = mainActivity;
+    }
 }

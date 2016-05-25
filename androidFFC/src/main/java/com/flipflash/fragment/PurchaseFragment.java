@@ -57,10 +57,6 @@ public class PurchaseFragment extends android.app.DialogFragment implements Bill
 
         super.onCreate(savedInstanceState);
 
-        if (getActivity() instanceof MainActivity) {
-            ((MainActivity)getActivity()).mIsAllowedToShowPackList = false;
-        }
-
     }
 
     @Override
@@ -126,21 +122,29 @@ public class PurchaseFragment extends android.app.DialogFragment implements Bill
     }
 
     @Override
-    public void onResume() {
-        super.onResume();
+    public void onStart() {
+        super.onStart();
 
-        LOGD(TAG, "onResume");
-
-        ViewGroup.LayoutParams params = mContentView.getLayoutParams();
-        params.width = getResources().getDimensionPixelSize(R.dimen.add_pack_window_width);
-        params.height = getResources().getDimensionPixelSize(R.dimen.add_pack_window_height) + (int)UIHelper.convertDpToPixel(50);
-        mContentView.setLayoutParams(params);
+        LOGD(TAG, "onStart");
 
         mWebView = (WebView) mContentView.findViewById(R.id.webview);
         mWebView.getSettings().setCacheMode(WebSettings.LOAD_NO_CACHE);
         mWebView.loadUrl("http://www.flipflashcards.com/promo/index.html");
 
         setupPurchase();
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+
+        ViewGroup.LayoutParams params = mContentView.getLayoutParams();
+        params.width = getResources().getDimensionPixelSize(R.dimen.add_pack_window_width);
+        params.height = getResources().getDimensionPixelSize(R.dimen.add_pack_window_height) + (int)UIHelper.convertDpToPixel(50);
+        mContentView.setLayoutParams(params);
+
+        LOGD(TAG, "onResume");
+
     }
 
 
@@ -179,10 +183,12 @@ public class PurchaseFragment extends android.app.DialogFragment implements Bill
             } else if (mBillingProcessor.isPurchased(DOLLAR_5_PURCHASE_ID)) {
                 MutipleTargetHelper.setFullVersionFlag(true);
                 showSimpleAlertDialogWidthMessage("Successfully restored, please restart the app to be effective");
+            } else {
+                showSimpleAlertDialogWidthMessage("You didn't purchased anything before.");
             }
 
         } else {
-            showSimpleAlertDialogWidthMessage("You didn't purchased anything before.");
+            LOGD(TAG, "mBillingProcessor.loadOwnedPurchasesFromGoogle failed");
         }
     }
 

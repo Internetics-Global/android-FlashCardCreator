@@ -8,6 +8,7 @@ import android.support.v4.app.DialogFragment;
 import android.support.v4.app.FragmentActivity;
 
 import com.flipflash.android_ffc.BuildConfig;
+import com.flipflash.android_ffc.MainActivity;
 import com.flipflash.fragment.PurchaseFragment;
 import com.orhanobut.hawk.Hawk;
 
@@ -29,9 +30,12 @@ public class MutipleTargetHelper {
 
     }
 
-    public static void showAlertToUpgradeToFullVersion(final Activity context) {
+    public static void showAlertToUpgradeToFullVersion() {
 
-        AlertDialog.Builder alertDialog = new AlertDialog.Builder(context);
+        AppContext app = (AppContext) AppContext.getAppContext();
+        final MainActivity mainActivity = app.getMainActivity();
+
+        AlertDialog.Builder alertDialog = new AlertDialog.Builder(app.getMainActivity());
         alertDialog.setTitle("This is a FlipFlashCard PRO function");
         alertDialog.setMessage("You can upgrade the app to get it!");
         alertDialog.setNegativeButton("Not yet", new DialogInterface.OnClickListener() {
@@ -42,15 +46,18 @@ public class MutipleTargetHelper {
         alertDialog.setPositiveButton("More details", new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int which) {
 
-                showPurchaseView(context);
+                showPurchaseView();
             }
         });
         alertDialog.show();
     }
-    public static void showPurchaseView(Activity context) {
+    public static void showPurchaseView() {
+
+        AppContext app = (AppContext) AppContext.getAppContext();
+        final MainActivity mainActivity = app.getMainActivity();
 
         android.app.DialogFragment dialogFragment = new PurchaseFragment();
-        dialogFragment.show(context.getFragmentManager(),"PurchaseFragment");
+        dialogFragment.show(mainActivity.getFragmentManager(),"PurchaseFragment");
 
 
     }

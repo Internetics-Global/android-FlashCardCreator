@@ -111,7 +111,7 @@ public class PackListFragment extends Fragment {
                     ((MainActivity) getActivity()).dismissPackListPopupWindow();
                 } else {
 
-                    MutipleTargetHelper.showAlertToUpgradeToFullVersion(getActivity());
+                    MutipleTargetHelper.showAlertToUpgradeToFullVersion();
                     ((MainActivity) getActivity()).dismissPackListPopupWindow();
                 }
 
@@ -238,7 +238,7 @@ public class PackListFragment extends Fragment {
                 dialogFragment.show(getActivity().getSupportFragmentManager(), "add_pack_fragment");
                 ((MainActivity) getActivity()).dismissPackListPopupWindow();
             } else {
-                MutipleTargetHelper.showAlertToUpgradeToFullVersion(getActivity());
+                MutipleTargetHelper.showAlertToUpgradeToFullVersion();
                 ((MainActivity) getActivity()).dismissPackListPopupWindow();
             }
 
