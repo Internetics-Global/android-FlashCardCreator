@@ -1,6 +1,10 @@
 package com.flipflash.fragment;
 
+import android.app.AlarmManager;
 import android.app.AlertDialog;
+import android.app.PendingIntent;
+import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -18,6 +22,7 @@ import android.widget.TextView;
 import com.anjlab.android.iab.v3.BillingProcessor;
 import com.anjlab.android.iab.v3.SkuDetails;
 import com.anjlab.android.iab.v3.TransactionDetails;
+import com.flipflash.android_ffc.AppStart;
 import com.flipflash.android_ffc.MainActivity;
 import com.flipflash.android_ffc.R;
 import com.flipflash.util.MutipleTargetHelper;
@@ -152,7 +157,7 @@ public class PurchaseFragment extends android.app.DialogFragment implements Bill
 
         boolean isAvailable = BillingProcessor.isIabServiceAvailable(getActivity());
         if(!isAvailable) {
-            showSimpleAlertDialogWidthMessage("Google In-app Billing is not available now");
+            showSimpleAlertDialogWidthMessage(getString(R.string.iap_google_service_not_available));
             return;
         } else {
             LOGD(TAG, "Google In-app Billing is ready");
@@ -179,12 +184,12 @@ public class PurchaseFragment extends android.app.DialogFragment implements Bill
 
             if (mBillingProcessor.isPurchased(DOLLAR_1_PURCHASE_ID)) {
                 MutipleTargetHelper.setNoAdVersionFlag(true);
-                showSimpleAlertDialogWidthMessage("Successfully restored, please restart the app to be effective");
+                showSimpleAlertDialogWidthMessageWithRelaunch(getString(R.string.iap_restore_1dollar_success));
             } else if (mBillingProcessor.isPurchased(DOLLAR_5_PURCHASE_ID)) {
                 MutipleTargetHelper.setFullVersionFlag(true);
-                showSimpleAlertDialogWidthMessage("Successfully restored, please restart the app to be effective");
+                showSimpleAlertDialogWidthMessageWithRelaunch(getString(R.string.iap_restore_5dollar_success));
             } else {
-                showSimpleAlertDialogWidthMessage("You didn't purchased anything before.");
+                showSimpleAlertDialogWidthMessage(getString(R.string.iap_not_purchased_before));
             }
 
         } else {
@@ -234,9 +239,9 @@ public class PurchaseFragment extends android.app.DialogFragment implements Bill
         }
 
         if (result) {
-            showSimpleAlertDialogWidthMessage("Thank you for upgrading, please restart the app to be effective");
+            showSimpleAlertDialogWidthMessageWithRelaunch(getString(R.string.iap_success_upgrade));
         } else {
-            showSimpleAlertDialogWidthMessage("In-app billing configuration is not expected, check in Google Console");
+            showSimpleAlertDialogWidthMessage(getString(R.string.iap_configuration_error));
         }
 
     }
@@ -296,12 +301,12 @@ public class PurchaseFragment extends android.app.DialogFragment implements Bill
 
         if (mBillingProcessor.isPurchased(DOLLAR_5_PURCHASE_ID) && MutipleTargetHelper.isFullVersion() == false) {
             MutipleTargetHelper.setFullVersionFlag(true);
-            showSimpleAlertDialogWidthMessage("Successfully restored since you have purchased full version before, please restart the app to be effective.");
+            showSimpleAlertDialogWidthMessageWithRelaunch(getString(R.string.iap_restore_5dollar_success));
         } else {
 
             if (mBillingProcessor.isPurchased(DOLLAR_1_PURCHASE_ID) && MutipleTargetHelper.isNoAdVersion() == false) {
                 MutipleTargetHelper.setNoAdVersionFlag(true);
-                showSimpleAlertDialogWidthMessage("Successfully restored since you have purchased no ad version before, please restart the app to be effective.");
+                showSimpleAlertDialogWidthMessageWithRelaunch(getString(R.string.iap_restore_1dollar_success));
             }
         }
 
@@ -313,7 +318,7 @@ public class PurchaseFragment extends android.app.DialogFragment implements Bill
         List<SkuDetails> skuList =  mBillingProcessor.getPurchaseListingDetails(list);
         if (skuList == null || skuList.size() == 0) {
 
-            showSimpleAlertDialogWidthMessage("No in-app products available");
+            showSimpleAlertDialogWidthMessage(getString(R.string.iap_configuration_error));
 
         } else if (skuList.size() < 2) {
 
@@ -323,7 +328,7 @@ public class PurchaseFragment extends android.app.DialogFragment implements Bill
             }
             LOGD(TAG,"All products:" + msg);
 
-            showSimpleAlertDialogWidthMessage("In-app configurations are wrong, please contact author");
+            showSimpleAlertDialogWidthMessage(getString(R.string.iap_configuration_error));
         } else {
 
             SkuDetails dollar1Sku = null;
@@ -355,7 +360,7 @@ public class PurchaseFragment extends android.app.DialogFragment implements Bill
 
             } else {
 
-                showSimpleAlertDialogWidthMessage("In-app configurations are wrong, please contact author");
+                showSimpleAlertDialogWidthMessage(getString(R.string.iap_configuration_error));
             }
 
         }
@@ -364,7 +369,7 @@ public class PurchaseFragment extends android.app.DialogFragment implements Bill
 
     private void showPriceNeedToBeUpdatedDialog() {
 
-        showSimpleAlertDialogWidthMessage("Please wait for price to be updated");
+        showSimpleAlertDialogWidthMessage(getString(R.string.iap_wait_for_update));
     }
 
     private void showSimpleAlertDialogWidthMessage(String msg) {
@@ -373,6 +378,28 @@ public class PurchaseFragment extends android.app.DialogFragment implements Bill
                 getActivity());
         alertDialogBuilder.setTitle("Alert");
         alertDialogBuilder.setPositiveButton("Close", null);
+        alertDialogBuilder
+                .setMessage(msg).
+                show();
+
+    }
+
+    private void showSimpleAlertDialogWidthMessageWithRelaunch(String msg) {
+
+        AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(
+                getActivity());
+        alertDialogBuilder.setTitle("Alert");
+        alertDialogBuilder.setPositiveButton("Close", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                Intent mStartActivity = new Intent(getActivity(), AppStart.class);
+                int mPendingIntentId = 123456;
+                PendingIntent mPendingIntent = PendingIntent.getActivity(getActivity(), mPendingIntentId,    mStartActivity, PendingIntent.FLAG_CANCEL_CURRENT);
+                AlarmManager mgr = (AlarmManager)getActivity().getSystemService(Context.ALARM_SERVICE);
+                mgr.set(AlarmManager.RTC, System.currentTimeMillis() + 100, mPendingIntent);
+                System.exit(0);
+            }
+        });
         alertDialogBuilder
                 .setMessage(msg).
                 show();

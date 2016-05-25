@@ -297,4 +297,12 @@
     <string name="Sample_Cards">FFC Sample Cards</string>
     <string name="select_your_pack_image_from_photo_library">Select your pack image from photo library</string>
 
+    <string name="iap_restore_1dollar_success">Successfully restored since you have purchased no ad version before.Please press Close to restart the app</string>
+    <string name="iap_restore_5dollar_success">Successfully restored since you have purchased full version before.Please press Close to restart the app</string>
+    <string name="iap_not_purchased_before">You didn\'t purchase anything before</string>
+    <string name="iap_configuration_error">In-app billing configuration is not expected, contact author</string>
+    <string name="iap_success_upgrade">Thank you for upgrading.Please press Close to restart the app</string>
+    <string name="iap_google_service_not_available">Google In-app Billing service is not available now</string>
+    <string name="iap_wait_for_update">Please wait for price to be updated</string>
+
 </resources>
