@@ -18,6 +18,7 @@ import android.widget.TextView;
 import com.anjlab.android.iab.v3.BillingProcessor;
 import com.anjlab.android.iab.v3.SkuDetails;
 import com.anjlab.android.iab.v3.TransactionDetails;
+import com.flipflash.android_ffc.MainActivity;
 import com.flipflash.android_ffc.R;
 import com.flipflash.util.MutipleTargetHelper;
 import com.flipflash.util.UIHelper;
@@ -38,10 +39,7 @@ public class PurchaseFragment extends android.app.DialogFragment implements Bill
 
     private Button dollar1PurchaseButton;
     private Button dollar5PurchaseButton;
-
-    /*
-     * we have to disable this function, since it does not work: https://github.com/anjlab/android-inapp-billing-v3/issues/10
-     */
+    
     private Button restorePurchaseButton;
 
 
@@ -53,13 +51,15 @@ public class PurchaseFragment extends android.app.DialogFragment implements Bill
     private static final String MERCHANT_ID=null;
 
     private boolean mLocalizedPriceUpdated = false;
-    private boolean mPurchaseRestoreRequest = false;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
 
         super.onCreate(savedInstanceState);
 
+        if (getActivity() instanceof MainActivity) {
+            ((MainActivity)getActivity()).mIsAllowedToShowPackList = false;
+        }
 
     }
 
@@ -169,8 +169,21 @@ public class PurchaseFragment extends android.app.DialogFragment implements Bill
             return;
         }
 
-        mPurchaseRestoreRequest = true;
-        mBillingProcessor.loadOwnedPurchasesFromGoogle();
+        boolean result = mBillingProcessor.loadOwnedPurchasesFromGoogle();
+
+        if (result) {
+
+            if (mBillingProcessor.isPurchased(DOLLAR_1_PURCHASE_ID)) {
+                MutipleTargetHelper.setNoAdVersionFlag(true);
+                showSimpleAlertDialogWidthMessage("Successfully restored, please restart the app to be effective");
+            } else if (mBillingProcessor.isPurchased(DOLLAR_5_PURCHASE_ID)) {
+                MutipleTargetHelper.setFullVersionFlag(true);
+                showSimpleAlertDialogWidthMessage("Successfully restored, please restart the app to be effective");
+            }
+
+        } else {
+            showSimpleAlertDialogWidthMessage("You didn't purchased anything before.");
+        }
     }
 
     private void dollar5PurchaseButtonClicked() {
@@ -182,7 +195,6 @@ public class PurchaseFragment extends android.app.DialogFragment implements Bill
             return;
         }
 
-        //if already purchased, will still call onProductPurchased, so that's the reason why we can throw restore function 
         mBillingProcessor.purchase(getActivity(), DOLLAR_5_PURCHASE_ID);
 
     }
@@ -196,7 +208,6 @@ public class PurchaseFragment extends android.app.DialogFragment implements Bill
             return;
         }
 
-        //if already purchased, will still call onProductPurchased, so that's the reason why we can throw restore function
         mBillingProcessor.purchase(getActivity(), DOLLAR_1_PURCHASE_ID);
 
     }
@@ -224,31 +235,40 @@ public class PurchaseFragment extends android.app.DialogFragment implements Bill
 
     }
 
+
     @Override
     public void onPurchaseHistoryRestored() {
 
         LOGD(TAG, "onPurchaseHistoryRestored");
 
-        {
-            TransactionDetails dollar1TransactionDetails = mBillingProcessor.getPurchaseTransactionDetails(DOLLAR_1_PURCHASE_ID);
-            if (dollar1TransactionDetails != null) {
-                LOGD(TAG, "1 dollar purchased has be restored");
-                MutipleTargetHelper.setNoAdVersionFlag(true);
-            }
-        }
-
-        {
-            TransactionDetails dollar5TransactionDetails = mBillingProcessor.getPurchaseTransactionDetails(DOLLAR_5_PURCHASE_ID);
-            if (dollar5TransactionDetails != null) {
-                LOGD(TAG, "5 dollar purchased has be restored");
-                MutipleTargetHelper.setFullVersionFlag(true);
-            }
-        }
-
-        if (mPurchaseRestoreRequest) {
-            showSimpleAlertDialogWidthMessage("Successfully restored, please restart the app to be effective");
-            mPurchaseRestoreRequest = false;
-        }
+        /*
+         * It's auto called then the billing service is connected for the first time (within
+         * the library) and the purchases list was downloaded from google
+         * Since we have provided restore button, we comment this logic
+         */
+//        boolean showDialog = false;
+//
+//        {
+//            TransactionDetails dollar1TransactionDetails = mBillingProcessor.getPurchaseTransactionDetails(DOLLAR_1_PURCHASE_ID);
+//            if (dollar1TransactionDetails != null) {
+//                LOGD(TAG, "1 dollar purchased has be restored");
+//                MutipleTargetHelper.setNoAdVersionFlag(true);
+//                showDialog = true;
+//            }
+//        }
+//
+//        {
+//            TransactionDetails dollar5TransactionDetails = mBillingProcessor.getPurchaseTransactionDetails(DOLLAR_5_PURCHASE_ID);
+//            if (dollar5TransactionDetails != null) {
+//                LOGD(TAG, "5 dollar purchased has be restored");
+//                MutipleTargetHelper.setFullVersionFlag(true);
+//                showDialog = true;
+//            }
+//        }
+//
+//        if (showDialog) {
+//            showSimpleAlertDialogWidthMessage("You have purchased this produc, please restart the app to be effective");
+//        }
 
     }
 
@@ -266,16 +286,17 @@ public class PurchaseFragment extends android.app.DialogFragment implements Bill
 
         LOGD(TAG, "onBillingInitialized");
 
-        if (mBillingProcessor.isPurchased(DOLLAR_1_PURCHASE_ID) && MutipleTargetHelper.isNoAdVersion() == false) {
-            MutipleTargetHelper.setNoAdVersionFlag(true);
-            showSimpleAlertDialogWidthMessage("Successfully restored, please restart the app to be effective");
-            return;
-        }
+
 
         if (mBillingProcessor.isPurchased(DOLLAR_5_PURCHASE_ID) && MutipleTargetHelper.isFullVersion() == false) {
             MutipleTargetHelper.setFullVersionFlag(true);
-            showSimpleAlertDialogWidthMessage("Successfully restored, please restart the app to be effective");
-            return;
+            showSimpleAlertDialogWidthMessage("Successfully restored since you have purchased full version before, please restart the app to be effective.");
+        } else {
+
+            if (mBillingProcessor.isPurchased(DOLLAR_1_PURCHASE_ID) && MutipleTargetHelper.isNoAdVersion() == false) {
+                MutipleTargetHelper.setNoAdVersionFlag(true);
+                showSimpleAlertDialogWidthMessage("Successfully restored since you have purchased no ad version before, please restart the app to be effective.");
+            }
         }
 
 
@@ -283,47 +304,52 @@ public class PurchaseFragment extends android.app.DialogFragment implements Bill
         list.add(DOLLAR_1_PURCHASE_ID);
         list.add(DOLLAR_5_PURCHASE_ID);
 
-        SkuDetails test = mBillingProcessor.getPurchaseListingDetails(DOLLAR_1_PURCHASE_ID);
-        if (test != null) {
-            Log.d(getTag(),test.priceText);
-        }
-
         List<SkuDetails> skuList =  mBillingProcessor.getPurchaseListingDetails(list);
-        if (skuList == null) {
-            showSimpleAlertDialogWidthMessage("No in-app products in Google console");
-        } else if (skuList.size() != 2) {
+        if (skuList == null || skuList.size() == 0) {
+
+            showSimpleAlertDialogWidthMessage("No in-app products available");
+
+        } else if (skuList.size() < 2) {
 
             String msg = "";
             for (SkuDetails item : skuList) {
-                msg = msg + item.productId;
+                msg = msg + item.productId + " ";
             }
-            LOGD(TAG,msg);
+            LOGD(TAG,"All products:" + msg);
 
-            showSimpleAlertDialogWidthMessage("You can have only 2 in-app product in Google Console, currently, you have: " + skuList.size() );
+            showSimpleAlertDialogWidthMessage("In-app configurations are wrong, please contact author");
         } else {
 
-            SkuDetails firstSkuPrice = skuList.get(0);
-            SkuDetails secondSkuPrice = skuList.get(1);
+            SkuDetails dollar1Sku = null;
+            SkuDetails dollar5Sku = null;
+            for (SkuDetails item: skuList) {
 
+                LOGD(TAG,"Available product:" + item.productId + " with price:" + item.priceText);
 
+                if (item.productId.equals(DOLLAR_5_PURCHASE_ID)) {
+                    dollar5Sku = item;
+                }
 
-            if (firstSkuPrice.productId.equals(DOLLAR_1_PURCHASE_ID) && secondSkuPrice.productId.equals(DOLLAR_5_PURCHASE_ID)) {
+                if (item.productId.equals(DOLLAR_1_PURCHASE_ID)) {
+                    dollar1Sku = item;
+                }
 
-                dollar1PurchaseButton.setText("No Ads - " + firstSkuPrice.priceText);
-                dollar5PurchaseButton.setText("Full Version - " + secondSkuPrice.priceText);
+                if ((dollar1Sku != null) && (dollar5Sku != null)) {
+                    break;
+                }
 
-                mLocalizedPriceUpdated = true;
+            }
 
-            } else if (firstSkuPrice.productId.equals(DOLLAR_5_PURCHASE_ID) && secondSkuPrice.productId.equals(DOLLAR_1_PURCHASE_ID)) {
+            if ((dollar1Sku != null) && (dollar5Sku != null)) {
 
-                dollar1PurchaseButton.setText("No Ads - " + secondSkuPrice.priceText);
-                dollar5PurchaseButton.setText("Full Version - " + firstSkuPrice.priceText);
+                dollar1PurchaseButton.setText("No Ads - " + dollar1Sku.priceText);
+                dollar5PurchaseButton.setText("Full Version - " + dollar5Sku.priceText);
 
                 mLocalizedPriceUpdated = true;
 
             } else {
 
-                showSimpleAlertDialogWidthMessage("IAP configuration is not expected");
+                showSimpleAlertDialogWidthMessage("In-app configurations are wrong, please contact author");
             }
 
         }
@@ -332,12 +358,10 @@ public class PurchaseFragment extends android.app.DialogFragment implements Bill
 
     private void showPriceNeedToBeUpdatedDialog() {
 
-        showSimpleAlertDialogWidthMessage("Please wait for price to be fetched");
+        showSimpleAlertDialogWidthMessage("Please wait for price to be updated");
     }
 
     private void showSimpleAlertDialogWidthMessage(String msg) {
-
-        LOGD(TAG, "showSimpleAlertDialogWidthMessage with message of" + msg);
 
         AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(
                 getActivity());

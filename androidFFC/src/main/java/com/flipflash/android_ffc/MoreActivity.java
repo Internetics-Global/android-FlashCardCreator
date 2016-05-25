@@ -190,7 +190,7 @@ public class MoreActivity extends Activity {
 
                 if (MutipleTargetHelper.isFullVersion() == false) {
                     MutipleTargetHelper.showAlertToUpgradeToFullVersion(MoreActivity.this);
-                    mStorageProviderToggleButton.setToggleOff();
+                    finish();
                     return;
                 }
 
