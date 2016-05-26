@@ -37,8 +37,8 @@ android {
             applicationId "com.flipflashcards.FFC_Android"
             minSdkVersion 15
             targetSdkVersion 20
-            versionCode code
-            versionName '1.0'
+            versionCode 6921
+            versionName '2.0'
         }
     }
     else {
