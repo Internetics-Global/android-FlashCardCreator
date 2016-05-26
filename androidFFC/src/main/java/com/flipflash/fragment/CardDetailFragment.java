@@ -61,6 +61,7 @@ import com.flipflash.util.AppConfig;
 import com.flipflash.util.AppContext;
 import com.flipflash.util.FontHelper;
 import com.flipflash.util.Global;
+import com.flipflash.util.MutipleTargetHelper;
 import com.flipflash.util.OpenUDID_manager;
 import com.flipflash.util.StringUtils;
 import com.flipflash.util.TipHelper;
@@ -234,6 +235,11 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnTouchL
         setImageVideoClickListener(); // play video during play mode
         configureSoundRecordPlayImageView(); //play sound during play mode
         configureLogoImageView();
+
+        if (MutipleTargetHelper.isFullVersion() == false) {
+            mRadioGroup.setVisibility(View.INVISIBLE);
+            mContentView.findViewById(R.id.functionarea).setVisibility(View.INVISIBLE);
+        }
 
         return mContentView;
     }
