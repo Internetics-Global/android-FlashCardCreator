@@ -343,7 +343,7 @@ public class MainActivity extends FragmentActivity implements
 
             sharePackMenuItem.setVisible(false);
 
-            editPackMenuItem.setIcon(R.drawable.pack_edit_dimmed);
+//            editPackMenuItem.setIcon(R.drawable.pack_edit_dimmed);
             newPackMenuItem.setIcon(R.drawable.pack_add_dimmed);
 
             changeTemplatColorMenuItem.setIcon(R.drawable.template_background_change_button_dimmed);
@@ -352,7 +352,7 @@ public class MainActivity extends FragmentActivity implements
 
             sharePackMenuItem.setVisible(true);
 
-            editPackMenuItem.setIcon(R.drawable.pack_edit);
+//            editPackMenuItem.setIcon(R.drawable.pack_edit);
             newPackMenuItem.setIcon(R.drawable.pack_add);
 
             changeTemplatColorMenuItem.setIcon(R.drawable.template_background_change_button);
@@ -406,11 +406,6 @@ public class MainActivity extends FragmentActivity implements
                 break;
             }
             case R.id.actionbar_edit:
-
-                if (MutipleTargetHelper.isFullVersion() == false) {
-                    MutipleTargetHelper.showAlertToUpgradeToFullVersion();
-                    break;
-                }
 
                 if (mCurrentPack == null) {
                     break;
