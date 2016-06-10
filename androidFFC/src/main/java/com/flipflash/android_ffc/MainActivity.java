@@ -2146,8 +2146,11 @@ public class MainActivity extends FragmentActivity implements
     }
 
     private  int COUNTDOWN_SECOND_FOR_RECORDING = 30;
+    private  int COUNTDOWN_SECOND_FOR_PREPARE = 4;
     public void dismissCreateSoundFragment(boolean is_to_recording) {
         View view = findViewById(R.id.record_button_background_mask_layout);
+
+        COUNTDOWN_SECOND_FOR_PREPARE = 4;
 
         if (is_to_recording == false) {
             view.setVisibility(View.INVISIBLE);
@@ -2170,19 +2173,41 @@ public class MainActivity extends FragmentActivity implements
             mRecordCountDownTimer.scheduleAtFixedRate(new TimerTask() {
                 @Override
                 public void run() {
-                    COUNTDOWN_SECOND_FOR_RECORDING--;
 
-                    runOnUiThread(new Runnable() {
-                        @Override
-                        public void run() {
-                            mRecordStopProgress.setProgress((int)((30-COUNTDOWN_SECOND_FOR_RECORDING)/30.0*100));
+                    if (COUNTDOWN_SECOND_FOR_PREPARE == 1) {
+
+                        COUNTDOWN_SECOND_FOR_RECORDING--;
+
+                        runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+
+                                mRecordStopButton.setText("Stop");
+
+                                mRecordStopProgress.setProgress((int)((30-COUNTDOWN_SECOND_FOR_RECORDING)/30.0*100));
+                            }
+                        });
+                        if (COUNTDOWN_SECOND_FOR_RECORDING ==0) {
+                            AudioHelper.stopRecord();
+                            mRecordCountDownTimer.cancel();
+                            mRecordCountDownTimer = null;
+
                         }
-                    });
-                    if (COUNTDOWN_SECOND_FOR_RECORDING ==0) {
-                        AudioHelper.stopRecord();
-                        mRecordCountDownTimer.cancel();
-                        mRecordCountDownTimer = null;
+
+                    } else {
+
+                        COUNTDOWN_SECOND_FOR_PREPARE = COUNTDOWN_SECOND_FOR_PREPARE -1;
+
+                        runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                mRecordStopButton.setText(String.format("%d",COUNTDOWN_SECOND_FOR_PREPARE));
+                            }
+                        });
+
                     }
+
+
                 }
             },0,1000);
 
