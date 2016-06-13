@@ -27,6 +27,7 @@ import com.flipflash.model.CardListModel;
 import com.flipflash.util.AppConfig;
 import com.flipflash.util.AppContext;
 import com.flipflash.util.Global;
+import com.flipflash.util.MutipleTargetHelper;
 import com.mobeta.android.dslv.DragSortListView;
 import com.mobeta.android.dslv.SimpleDragSortCursorAdapter;
 import com.squareup.leakcanary.RefWatcher;
@@ -267,12 +268,15 @@ public class CardListFragment extends Fragment {
                 public void onClick(View v) {
                     LOGD(TAG, "onClick: " +  "card item is clicked:" + position);
 
-                    //这一步是必要的，因为有可能右边的卡片没有save（左边与右边的mCurrentPack是引用关系，不是独立的）。这时如果不重新去，就会有问题
-                    mCurrentPack = User.getPack(AppContext.getAppContext(),mCurrentPack.packID);
+                    if (MutipleTargetHelper.isFullVersion()) {
 
-                    mCallbacks.onItemSelected(position,mCurrentPack,true);
-                    ((FCCdapter) adapter).setSelectedPosition(position);
-                    adapter.notifyDataSetChanged();
+                        //这一步是必要的，因为有可能右边的卡片没有save（左边与右边的mCurrentPack是引用关系，不是独立的）。这时如果不重新去，就会有问题
+                        mCurrentPack = User.getPack(AppContext.getAppContext(),mCurrentPack.packID);
+
+                        mCallbacks.onItemSelected(position,mCurrentPack,true);
+                        ((FCCdapter) adapter).setSelectedPosition(position);
+                        adapter.notifyDataSetChanged();
+                    }
                 }
             });
 
