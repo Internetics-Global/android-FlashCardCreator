@@ -17,7 +17,7 @@
 
     <!--pack info layout size-->
     <dimen name="pack_info_layout_width">240dp</dimen>
-    <dimen name="pack_info_layout_height">300dp</dimen>
+    <dimen name="pack_info_layout_height">350dp</dimen>
 
     <!--pack list related-->
     <dimen name="pack_list_width">380dp</dimen>

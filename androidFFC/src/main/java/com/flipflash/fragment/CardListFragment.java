@@ -57,7 +57,7 @@ public class CardListFragment extends Fragment {
     /*
      * 这个值的更新很重要，始终保证与SQlite中一致
      */
-    public Pack mCurrentPack;
+    private Pack mCurrentPack;
 
     private List<HashMap<String, Object>> mCardArrayList;
 
@@ -82,6 +82,9 @@ public class CardListFragment extends Fragment {
         }
     }
 
+    public void setCurrentPack(Pack currentPack) {
+        mCurrentPack = currentPack;
+    }
 
     public interface Callbacks {
 
@@ -214,7 +217,7 @@ public class CardListFragment extends Fragment {
 
         mIsListViewEditable = isEditingStyle;
 
-        updateListView(-1);
+        updateListView(-1,false);
     }
 
     private class FCCdapter extends SimpleDragSortCursorAdapter {
@@ -305,7 +308,12 @@ public class CardListFragment extends Fragment {
 
         @Override
         public void onReceive(Context context, Intent intent) {
+
+            MainActivity activity = (MainActivity) getActivity();
+
             if (intent.getAction().equals(Global.BROADCAST_ACTION_UPDATE_MASTER_VIEW)) {
+
+                boolean isAlsoShowCardDetail = true;
 
                 //step1: set mCurrentPack;
                 String extraFrom = intent.getExtras().getString(Global.KEY_FROM);
@@ -314,6 +322,8 @@ public class CardListFragment extends Fragment {
                 if (extraFrom.equals(Global.BROADCAST_EXTRA_FROM_NEW_PACK)) {
                     extraCardIndex = 0;
                     mCurrentPack = CardListModel.getLatestCreatedPack();
+                    isAlsoShowCardDetail = false;
+
                 } else if (extraFrom.equals(Global.BROADCAST_EXTRA_FROM_EDIT_PACK)) {
                     //still use current pack
                 }else if (extraFrom.equals(Global.BROADCAST_EXTRA_FROM_NEW_CARD)) {
@@ -321,25 +331,28 @@ public class CardListFragment extends Fragment {
                     mCurrentPack = User.getPack(AppContext.getAppContext(),mCurrentPack.packID);
                 } else if (extraFrom.equals(Global.BROADCAST_EXTRA_FROM_PACK_SELECTED)) {
                     extraCardIndex = 0;
-                    int packIndex = intent.getExtras().getInt("indexOfPack");
-                    mCurrentPack = CardListModel.getAllPacks().get(packIndex);
+                    mCurrentPack = CardListModel.getLastSelectedPack();
+                    isAlsoShowCardDetail = false;
                 } else if (extraFrom.equals(Global.BROADCAST_EXTRA_FROM_PACK_DOWNLOADED)) {
                     extraCardIndex = 0;
                     mCurrentPack = CardListModel.getLatestCreatedPack();
-                    ((MainActivity)getActivity()).showPackListView();
-                    ((MainActivity)getActivity()).checkAdView();
+                    activity.showPackListView();
+                    activity.checkAdView();
+                    isAlsoShowCardDetail = false;
                 } else if (extraFrom.equals(Global.BROADCAST_EXTRA_FROM_SNAPSHOT_ALL)) {
                     mCurrentPack = User.getPack(AppContext.getAppContext(),mCurrentPack.packID);
                     extraCardIndex = intent.getExtras().getInt(Global.KEY_CARD_INDEX);;
                 }
 
-                ((MainActivity)getActivity()).packIDForMasterViewPack = mCurrentPack.packID;
+                activity.packIDForMasterViewPack = mCurrentPack.packID;
 
                 //step2: update list view
-                if (extraFrom.equals(Global.BROADCAST_EXTRA_FROM_PACK_SELECTED)) {
-                    updateListView(-1);
+                if (isAlsoShowCardDetail) {
+                    updateListView(extraCardIndex,true);
                 } else {
-                    updateListView(extraCardIndex);
+                    updateListView(-1,false);
+                    activity.setCurrentPack(mCurrentPack);
+                    activity.showPackInfoView();
                 }
             }
         }
@@ -402,7 +415,18 @@ public class CardListFragment extends Fragment {
         }
 
         //Step3: update list view
-        updateListView(0);
+
+        MainActivity activity = (MainActivity)getActivity();
+        if (activity.isPackInfoViewVisible()) {
+            updateListView(0,false);
+            activity.refreshPackInfoView();
+        } else {
+            updateListView(0,true);
+        }
+
+        mIsListViewEditable = false;
+
+        activity.updateEditPackNavIcon();
 
         LOGD(TAG, "removeListItem: test point 0");
         //Step4: save change
@@ -413,9 +437,12 @@ public class CardListFragment extends Fragment {
     }
 
     /**
-     * @param selectedItemIndex, Don't update detail view when -1
+     * @param selectedItemIndex
+     * @param isAlsoShowCardDetail : in contrast to showPackInfoView. true: show details; false; show packInfoView
      */
-    private void updateListView(int selectedItemIndex) {
+    public void updateListView(int selectedItemIndex, boolean isAlsoShowCardDetail) {
+
+        MainActivity activity = (MainActivity)getActivity();
 
         //Step1: update mCardArrayList
         if (mCurrentPack != null) {
@@ -428,24 +455,19 @@ public class CardListFragment extends Fragment {
         adapter.changeCursor(cursor);
 
         //Step3: Send back currentPack to activity
-        ((MainActivity) getActivity()).setCurrentPack(mCurrentPack);
+        activity.setCurrentPack(mCurrentPack);
+
+        AppConfig.sharedInstance().setPackIDForLastSelected(mCurrentPack.packID);
+
+        ((FCCdapter) adapter).setSelectedPosition(selectedItemIndex);
+        adapter.notifyDataSetChanged();
+        mDSLVListView.smoothScrollToPosition(selectedItemIndex);
 
         //Step4: Update detail view
-        if ((mCardArrayList.size() > 0) && (selectedItemIndex >= 0)) {
-
-            AppConfig.sharedInstance().setPackIDForLastSelected(mCurrentPack.packID);
-
+        if (isAlsoShowCardDetail) {
             mCallbacks.onItemSelected(selectedItemIndex, mCurrentPack,false);
-            ((FCCdapter) adapter).setSelectedPosition(selectedItemIndex);
-            adapter.notifyDataSetChanged();
-            mDSLVListView.smoothScrollToPosition(selectedItemIndex);
 
-
-        } else if (selectedItemIndex == -1) {
-            //do nothing
         } else {
-            //Clear detail view
-            mCallbacks.onItemSelected(-1,mCurrentPack,false);
         }
 
     }

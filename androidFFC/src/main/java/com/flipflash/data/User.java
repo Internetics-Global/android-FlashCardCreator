@@ -38,6 +38,7 @@ public class User {
 
     /*
      * 用于重置内存中的数据
+     * 一般情况下,无需reset,因为我们所使用的方式都是reference.比如mCurrentPack的更改会也会引起User.defaultUser().packs中的变化
      */
     public static void reset(Context context,boolean isReset) {
 
@@ -126,6 +127,9 @@ public class User {
         }
     }
 
+    /*
+     * this part of logic is different with iOS
+     */
     public ArrayList<Pack> sortPacks(int sortType) {
 
         switch (sortType) {

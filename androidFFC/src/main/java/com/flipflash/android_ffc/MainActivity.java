@@ -51,13 +51,16 @@ import android.widget.Toast;
 import com.daimajia.androidanimations.library.Techniques;
 import com.daimajia.androidanimations.library.YoYo;
 import com.dropbox.client2.android.AuthActivity;
+import com.flipflash.UI.PackInfoView;
 import com.flipflash.UI.ScaleHelper;
 import com.flipflash.UI.SlideInRightWithoutAlphaAnimator;
 import com.flipflash.UI.SlideOutRightWithoutAlphaAnimator;
 import com.flipflash.data.CSS;
+import com.flipflash.data.User;
 import com.flipflash.event.DownloadCancelEvent;
 import com.flipflash.event.WebViewMessageEvent;
 import com.flipflash.fragment.PurchaseFragment;
+import com.flipflash.model.CardListModel;
 import com.flipflash.util.MutipleTargetHelper;
 import com.github.lzyzsd.circleprogress.DonutProgress;
 import com.google.analytics.tracking.android.EasyTracker;
@@ -119,7 +122,7 @@ import de.greenrobot.event.EventBus;
  * Also responsbile for managing Actionbar(or Option Menu)
  */
 public class MainActivity extends FragmentActivity implements
-        CardListFragment.Callbacks {
+        CardListFragment.Callbacks, PackInfoView.PackInfoViewDelegate {
 
     private static final String TAG = MainActivity.class.getSimpleName();
 
@@ -177,7 +180,7 @@ public class MainActivity extends FragmentActivity implements
 
     public int                   packIDForMasterViewPack;
 
-    private LinearLayout         mPackInfoLayout;
+    private PackInfoView         mPackInfoView;
 
     private AWSUploadHelper      mAmazonUploadHelper ;
     private DropboxUploadHelper  mDropboxUploadHelper ;
@@ -254,8 +257,15 @@ public class MainActivity extends FragmentActivity implements
         });
 
         //step6: set info view
-        mPackInfoLayout = (LinearLayout) findViewById(R.id.pack_info_layout);
-        showPackInfoView();
+        mPackInfoView = (PackInfoView) findViewById(R.id.pack_info_layout);
+        mPackInfoView.setPackInfoViewDelegate(this);
+        mCurrentPack = CardListModel.getLastSelectedPack();
+        if (mCurrentPack != null) {
+            mPackInfoView.setCurrentPack(mCurrentPack);
+            showPackInfoView();
+        } else {
+            hidePackInfoView();
+        }
 
         //step7: setup symbol box
         mSymbolBoxFragment = (SymbolBoxFragment) getSupportFragmentManager().findFragmentById(R.id.fragment_symbol_box);
@@ -341,22 +351,46 @@ public class MainActivity extends FragmentActivity implements
 
         if (MutipleTargetHelper.isFullVersion() == false) {
 
-            sharePackMenuItem.setVisible(false);
+            if (sharePackMenuItem != null) {
+                sharePackMenuItem.setVisible(false);
+            }
 
-            editPackMenuItem.setIcon(R.drawable.pack_edit_dimmed);
-            newPackMenuItem.setIcon(R.drawable.pack_add_dimmed);
+            if (editPackMenuItem != null) {
+                editPackMenuItem.setIcon(R.drawable.pack_edit_dimmed);
+            }
 
-            changeTemplatColorMenuItem.setIcon(R.drawable.template_background_change_button_dimmed);
-            helpMenuItem.setIcon(R.drawable.helping_button_dimmed);
+            if (newPackMenuItem != null) {
+                newPackMenuItem.setIcon(R.drawable.pack_add_dimmed);
+            }
+
+            if (changeTemplatColorMenuItem != null) {
+                changeTemplatColorMenuItem.setIcon(R.drawable.template_background_change_button_dimmed);
+            }
+
+            if (helpMenuItem != null) {
+                helpMenuItem.setIcon(R.drawable.helping_button_dimmed);
+            }
         } else {
 
-            sharePackMenuItem.setVisible(true);
+            if (sharePackMenuItem != null) {
+                sharePackMenuItem.setVisible(true);
+            }
 
-            editPackMenuItem.setIcon(R.drawable.pack_edit);
-            newPackMenuItem.setIcon(R.drawable.pack_add);
+            if (editPackMenuItem != null) {
+                editPackMenuItem.setIcon(R.drawable.pack_edit);
+            }
 
-            changeTemplatColorMenuItem.setIcon(R.drawable.template_background_change_button);
-            helpMenuItem.setIcon(R.drawable.helping_button);
+            if (newPackMenuItem != null) {
+                newPackMenuItem.setIcon(R.drawable.pack_add);
+            }
+
+            if (changeTemplatColorMenuItem != null) {
+                changeTemplatColorMenuItem.setIcon(R.drawable.template_background_change_button);
+            }
+
+            if (helpMenuItem != null) {
+                helpMenuItem.setIcon(R.drawable.helping_button);
+            }
         }
 
         //update status
@@ -501,22 +535,8 @@ public class MainActivity extends FragmentActivity implements
 
             case R.id.actionbar_play:
 
-                int playOption = AppConfig.sharedInstance().getPlayOption();
+                play();
 
-                if ((mCurrentPack != null) && (mCurrentPack.cards.size() > 0)) {
-                    Intent intent = new Intent(MainActivity.this, PlayActivity.class);
-                    intent.putExtra("packID", mCurrentPack.packID);
-                    intent.putExtra("oneOffPlayType",playOption);  //manually
-                    startActivity(intent);
-                    mIsAllowedToShowPackList = false;
-                }  else {
-
-                    new AlertDialog.Builder(this)
-                            .setTitle(getString(R.string.DIALOG_AlERT))
-                            .setMessage(getString(R.string.DIALOG_NO_CARD_AVAILABLE))
-                            .setPositiveButton(getString(R.string.DIALOG_OK), null)
-                            .show();
-                }
                 break;
 
 
@@ -680,12 +700,31 @@ public class MainActivity extends FragmentActivity implements
         return super.onOptionsItemSelected(item);
     }
 
+    private void play() {
+
+        int playOption = AppConfig.sharedInstance().getPlayOption();
+
+        if ((mCurrentPack != null) && (mCurrentPack.cards.size() > 0)) {
+            Intent intent = new Intent(MainActivity.this, PlayActivity.class);
+            intent.putExtra("packID", mCurrentPack.packID);
+            intent.putExtra("oneOffPlayType",playOption);  //manually
+            startActivity(intent);
+            mIsAllowedToShowPackList = false;
+        }  else {
+
+            new AlertDialog.Builder(this)
+                    .setTitle(getString(R.string.DIALOG_AlERT))
+                    .setMessage(getString(R.string.DIALOG_NO_CARD_AVAILABLE))
+                    .setPositiveButton(getString(R.string.DIALOG_OK), null)
+                    .show();
+        }
+    }
+
     public void setCurrentPack(Pack mCurrentPack) {
         this.mCurrentPack = mCurrentPack;
         if (mCurrentPack != null) {
 //            mCustomTitleTextView.setText(mCurrentPack.packName);
         }
-        updatePackInfoView();
     }
 
 
@@ -2057,9 +2096,25 @@ public class MainActivity extends FragmentActivity implements
 
         LOGD(TAG, "showPackInfoView");
 
-        mPackInfoLayout.setVisibility(View.VISIBLE);
-        updatePackInfoView();
-        findViewById(R.id.card_detail_container).setVisibility(View.GONE);
+        if (isPackInfoViewVisible() == false) {
+            findViewById(R.id.card_detail_container).setVisibility(View.GONE);
+            mPackInfoView.setVisibility(View.VISIBLE);
+        }
+
+        mPackInfoView.setCurrentPack(mCurrentPack);
+        mPackInfoView.scrollTo(mCurrentPack,true);
+
+
+    }
+
+    public void refreshPackInfoView() {
+
+        if (isPackInfoViewVisible() == false) {
+            findViewById(R.id.card_detail_container).setVisibility(View.GONE);
+            mPackInfoView.setVisibility(View.VISIBLE);
+        }
+
+        mPackInfoView.refreshWithRebuildViewPager(false);
 
     }
 
@@ -2067,41 +2122,19 @@ public class MainActivity extends FragmentActivity implements
 
         LOGD(TAG, "hidePackInfoView");
 
-        mPackInfoLayout.setVisibility(View.GONE);
+        mPackInfoView.setVisibility(View.GONE);
         findViewById(R.id.card_detail_container).setVisibility(View.VISIBLE);
-
-
 
     }
 
-    private void updatePackInfoView() {
-        LOGD(TAG, "updatePackInfoView");
-        if (mCurrentPack == null) {
-            hidePackInfoView();
-            return;
-        }
+    public boolean isPackInfoViewVisible() {
 
-        ImageView packCoverImageView = (ImageView) findViewById(R.id.pack_info_cover_image);
-        if (StringUtils.isEmptyOrPlaceHolder(mCurrentPack.coverImageUriFormatStr) ||
-                StringUtils.isValidImageFile(mCurrentPack.coverImageUriFormatStr) == false) {
-            packCoverImageView.setImageDrawable(getResources().getDrawable(R.drawable.default_pack_cover_image_transparent));
+        if (mPackInfoView.getVisibility() == View.VISIBLE) {
+            return true;
         } else {
-            packCoverImageView.setImageURI(Uri.parse(mCurrentPack.coverImageUriFormatStr));
+            return false;
         }
 
-        TextView  packInfoTextView = (TextView) findViewById(R.id.pack_info_no);
-        packInfoTextView.setText(String.format("%s:%d", getString(R.string.Title_Total_Number_Card),mCurrentPack.cards.size()));
-
-        TextView  packTitleTextView = (TextView) findViewById(R.id.pack_info_title);
-        packTitleTextView.setText(mCurrentPack.packName);
-
-        TextView  shareCodeTextView = (TextView) findViewById(R.id.pack_info_share_code);
-        if (StringUtils.isEmpty(mCurrentPack.shareLink) == false && ((mCurrentPack.creatorID).equals(OpenUDID_manager.getOpenUDID()))) {
-            Uri uri = Uri.parse(mCurrentPack.shareLink);
-            shareCodeTextView.setText(String.format("%s: %s",getString(R.string.Title_Share_Code),uri.getLastPathSegment()));
-        } else {
-            shareCodeTextView.setText("");
-        }
     }
 
     public void checkAdView() {
@@ -2462,6 +2495,10 @@ public class MainActivity extends FragmentActivity implements
         }
     }
 
+    public void updateEditPackNavIcon() {
+        invalidateOptionsMenu();
+    }
+
 
     /*
      * 由于默认的spinner不支持highlight，所以需要这样些
@@ -2604,6 +2641,27 @@ public class MainActivity extends FragmentActivity implements
 
         checkAdView();
 
+    }
+
+    /*
+     * delegate of PackInfoViewDelegate
+     */
+    @Override
+    public void didScrollToPackOnPackInfoView(Pack pack) {
+        //update list view
+        setCurrentPack(pack);
+        CardListFragment cardListFragment = (CardListFragment) (getSupportFragmentManager().findFragmentById(R.id.fragment_card_list));
+        cardListFragment.setCurrentPack(pack);
+        cardListFragment.updateListView(-1,false);
+
+    }
+
+    /*
+     * delegate of PackInfoViewDelegate
+     */
+    @Override
+    public void playButtonClickedOnPackInfoView() {
+        play();
     }
 
 

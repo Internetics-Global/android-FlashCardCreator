@@ -175,58 +175,11 @@
 
             </FrameLayout>
 
-            <LinearLayout
-                android:id="@+id/pack_info_layout"
-                android:visibility="visible"
+            <com.flipflash.UI.PackInfoView
                 android:layout_gravity="center"
-                android:orientation="vertical"
-                android:layout_width="@dimen/pack_info_layout_width"
-                android:layout_height="@dimen/pack_info_layout_height">
-
-                <TextView
-                    android:id="@+id/pack_info_title"
-                    android:layout_width="match_parent"
-                    android:layout_height="20dp"
-                    android:textStyle="bold"
-                    android:text=""
-                    android:layout_marginBottom="10dp"
-                    android:gravity="center"
-                    android:layout_gravity="center"
-                    android:textColor="@android:color/white"
-                    android:textAppearance="?android:attr/textAppearanceSmall" />
-
-                <ImageView
-                    android:id="@+id/pack_info_cover_image"
-                    android:layout_width="match_parent"
-                    android:layout_height="0dp"
-                    android:layout_weight="1"
-                    android:layout_gravity="center"/>
-
-                <TextView
-                    android:id="@+id/pack_info_no"
-                    android:layout_width="match_parent"
-                    android:layout_height="20dp"
-                    android:textStyle="bold"
-                    android:text=""
-                    android:layout_marginTop="10dp"
-                    android:gravity="center"
-                    android:layout_gravity="center"
-                    android:textColor="@android:color/white"
-                    android:textAppearance="?android:attr/textAppearanceSmall" />
-
-
-                <TextView
-                    android:id="@+id/pack_info_share_code"
-                    android:layout_width="match_parent"
-                    android:layout_height="20dp"
-                    android:textStyle="bold"
-                    android:text=""
-                    android:gravity="center"
-                    android:layout_gravity="center"
-                    android:textColor="@android:color/white"
-                    android:textAppearance="?android:attr/textAppearanceSmall" />
-
-            </LinearLayout>
+                android:id="@+id/pack_info_layout"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"></com.flipflash.UI.PackInfoView>
 
             <!-- TODO:Optimize memory -->
             <FrameLayout
