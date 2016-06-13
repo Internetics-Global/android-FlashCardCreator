@@ -11,7 +11,7 @@ public class FontHelper {
     private static final String TAG = FontHelper.class.getSimpleName();
 
     /**
-     * 与css_font(arrays.xml）的对应关系
+     * 与css_font(arrays.xml）的对应关系,index次序不能颠倒
      */
     public static Typeface fontFromArrayIndex(Context context,int index) {
 
@@ -20,23 +20,31 @@ public class FontHelper {
                 return (FontCache.get(Global.fontName_Default, context));
 
             case 1:
-                return (FontCache.get(Global.fontName_Papyrus, context));
+                return (FontCache.get(Global.fontName_Chalkboard, context));
 
             case 2:
-                return (FontCache.get(Global.fontName_Courier, context));
+                return (FontCache.get(Global.fontName_Futura, context));
 
             case 3:
-                return (FontCache.get(Global.fontName_Chalkduster, context));
+                return (FontCache.get(Global.fontName_Papyrus, context));
 
             case 4:
-                return (FontCache.get(Global.fontName_ArialBoldMT, context));
+                return (FontCache.get(Global.fontName_Courier, context));
 
             case 5:
+                return (FontCache.get(Global.fontName_Chalkduster, context));
+
+            case 6:
+                return (FontCache.get(Global.fontName_ArialBoldMT, context));
+
+            case 7:
                 return (FontCache.get(Global.fontName_Zapfino, context));
 
             default:
-                return (FontCache.get(Global.fontName_Default, context));
+            //return (FontCache.get(Global.fontName_Default, context));
         }
+
+        return (FontCache.get(Global.fontName_Default, context));
 
     }
 
@@ -45,6 +53,12 @@ public class FontHelper {
 
         if ((fontStr == null) || (fontStr.length() == 0)) {
             return (FontCache.get(Global.fontName_Default, context));
+        }
+        else if (fontStr.equalsIgnoreCase("Futura-Medium")) {
+            return (FontCache.get(Global.fontName_Futura, context));
+        }
+        else if (fontStr.equalsIgnoreCase("ChalkboardSE-Bold")) {
+            return (FontCache.get(Global.fontName_Chalkboard, context));
         }
         else if (fontStr.equalsIgnoreCase("Papyrus")) {
             return (FontCache.get(Global.fontName_Papyrus, context));
@@ -57,12 +71,15 @@ public class FontHelper {
         }
         else if (fontStr.equalsIgnoreCase("Arial-BoldMT")) {
             return (FontCache.get(Global.fontName_ArialBoldMT, context));
-        } else if (fontStr.equalsIgnoreCase("Zapfino")) {
+        }
+        else if (fontStr.equalsIgnoreCase("Zapfino")) {
             return (FontCache.get(Global.fontName_Zapfino, context));
         }
         else {
-            return (FontCache.get(Global.fontName_Default, context));
+
         }
+
+        return (FontCache.get(Global.fontName_Default, context));
 
     }
 

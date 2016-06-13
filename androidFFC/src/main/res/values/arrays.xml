@@ -21,10 +21,27 @@
         <item>@string/ToolbarItem_Align_Vertical_Top</item>
     </string-array>
 
+    <!--css_font_nominal与css_font index必须一致-->
     <string-array
         name="css_font">
         <item>@string/ToolbarItem_Font</item>
         <item>@string/ToolbarItem_Default</item>
+        <item>ChalkboardSE-Bold</item>
+        <item>Futura-Medium</item>
+        <item>Papyrus</item>
+        <item>Courier</item>
+        <item>Chalkduster</item>
+        <item>Arial-BoldMT</item>
+        <item>Zapfino</item>
+    </string-array>
+
+    <!--css_font_nominal与css_font index必须一致-->
+    <string-array
+        name="css_font_nominal">
+        <item>@string/ToolbarItem_Font</item>
+        <item>@string/ToolbarItem_Default</item>
+        <item>Chalkboard</item>
+        <item>Futura</item>
         <item>Papyrus</item>
         <item>Courier</item>
         <item>Chalkduster</item>

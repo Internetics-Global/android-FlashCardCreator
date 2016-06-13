@@ -1744,7 +1744,7 @@ public class MainActivity extends FragmentActivity implements
         Spinner spinnerSize = (Spinner) mCSSToolbar.findViewById(R.id.spinner_size);
 
         HighLightArrayAdapter adapterFont = new HighLightArrayAdapter(this,
-                R.layout.spinner,getResources().getTextArray(R.array.css_font));
+                R.layout.spinner,getResources().getTextArray(R.array.css_font_nominal));
         adapterFont.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinnerFont.setAdapter(adapterFont);
 

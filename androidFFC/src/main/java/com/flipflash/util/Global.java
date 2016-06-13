@@ -1,11 +1,8 @@
 package com.flipflash.util;
 
-import android.app.AlertDialog;
 import android.content.Context;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
-
-import com.flipflash.android_ffc.R;
 
 public class Global {
 
@@ -28,12 +25,14 @@ public class Global {
     public static final String defaultUserStr = "Default_User";
 
     //名称必须与css_font（arrays.xml)保持一致，同iOS版本也一致
-    public static final String fontName_Default = "DejaVuSans.ttf";
-    public static final String fontName_ArialBoldMT = "Arial-BoldMT.ttf";
-    public static final String fontName_Chalkduster = "Chalkduster.ttf";
-    public static final String fontName_Courier = "Courier.ttf";
-    public static final String fontName_Papyrus = "Papyrus.ttf";
-    public static final String fontName_Zapfino = "Zapfino.ttf";
+    public static final String fontName_Default      = "DejaVuSans.ttf";
+    public static final String fontName_ArialBoldMT  = "Arial-BoldMT.ttf";
+    public static final String fontName_Chalkduster  = "Chalkduster.ttf";
+    public static final String fontName_Courier      = "Courier.ttf";
+    public static final String fontName_Papyrus      = "Papyrus.ttf";
+    public static final String fontName_Zapfino      = "Zapfino.ttf";
+    public static final String fontName_Chalkboard   = "ChalkboardSE-Bold.ttf";
+    public static final String fontName_Futura       = "Futura-Medium.ttf";
 
     //Broadcast action name
     public static final String BROADCAST_ACTION_UPDATE_MASTER_VIEW = "com.internectics.update_master_view";
