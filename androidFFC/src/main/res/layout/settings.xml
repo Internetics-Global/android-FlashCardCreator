@@ -55,7 +55,7 @@
 
             <TextView
                 style="@style/option_item_text_parent"
-                android:text="@string/Table_Item_Mute_Sound_Recording"
+                android:text="@string/Table_Item_Personal_Recording"
                 android:textColor="@android:color/white"
                 android:textSize="16dp" />
 

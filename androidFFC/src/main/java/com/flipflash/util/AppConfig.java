@@ -129,19 +129,19 @@ public class AppConfig {
     }
 
 
-    public boolean isMuteSoundRecording() {
-        String str = appConfig.get(Global.isMuteSoundRecording);
+    public boolean isSoundRecording() {
+        String str = appConfig.get(Global.isSoundRecording);
         if ((str != null) && (str.equals("true")))
             return true;
         else
             return false;
     }
 
-    public void setMuteSoundRecording(boolean b) {
+    public void setSoundRecording(boolean b) {
         if (b) {
-            appConfig.set(Global.isMuteSoundRecording, "true");
+            appConfig.set(Global.isSoundRecording, "true");
         } else {
-            appConfig.set(Global.isMuteSoundRecording, "false");
+            appConfig.set(Global.isSoundRecording, "false");
         }
 
     }

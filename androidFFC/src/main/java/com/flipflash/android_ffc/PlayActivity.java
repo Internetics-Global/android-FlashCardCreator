@@ -356,7 +356,7 @@ public class PlayActivity extends FragmentActivity implements SensorEventListene
         });
 
 
-        if (AppConfig.sharedInstance().isMuteSoundRecording()) {
+        if (AppConfig.sharedInstance().isSoundRecording() == false) {
             mMuteImageButton.setImageDrawable(getResources().getDrawable(R.drawable.sound_off));
             mIsMuteSoundRecording = true;
         } else {
@@ -711,7 +711,7 @@ public class PlayActivity extends FragmentActivity implements SensorEventListene
             stopTextToSpeech();
         }
 
-        AppConfig.sharedInstance().setMuteSoundRecording(mIsMuteSoundRecording);
+        AppConfig.sharedInstance().setSoundRecording(!mIsMuteSoundRecording);
 
 
     }

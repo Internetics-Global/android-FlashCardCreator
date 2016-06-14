@@ -62,7 +62,7 @@ public class MoreActivity extends Activity {
         setTitle(getString(R.string.Title_Settings));
 
         final ToggleButton randomPlayToggleButton = (ToggleButton) findViewById(R.id.random_play_toggle_button);
-        final ToggleButton muteSoundRecordingToggleButton = (ToggleButton) findViewById(R.id.mute_sound_recording_toggle_button);
+        final ToggleButton soundRecordingToggleButton = (ToggleButton) findViewById(R.id.mute_sound_recording_toggle_button);
         final ToggleButton textToSpeechToggleButton =(ToggleButton) findViewById(R.id.text_to_speech_toggle_button);
         final ToggleButton showQuestionOnlyToggleButton = (ToggleButton) findViewById(R.id.auto_show_question_only_toggle_button);
 //        final ToggleButton maleFemaleToggleButton = (ToggleButton) findViewById(R.id.male_female_voice_toggle_button);
@@ -109,15 +109,15 @@ public class MoreActivity extends Activity {
             }
         });
 
-        if (AppConfig.sharedInstance().isMuteSoundRecording()) {
-            muteSoundRecordingToggleButton.setToggleOn();
+        if (AppConfig.sharedInstance().isSoundRecording()) {
+            soundRecordingToggleButton.setToggleOn();
         } else {
-            muteSoundRecordingToggleButton.setToggleOff();
+            soundRecordingToggleButton.setToggleOff();
         }
-        muteSoundRecordingToggleButton.setOnToggleChanged(new ToggleButton.OnToggleChanged() {
+        soundRecordingToggleButton.setOnToggleChanged(new ToggleButton.OnToggleChanged() {
             @Override
             public void onToggle(boolean on) {
-                AppConfig.sharedInstance().setMuteSoundRecording(on);
+                AppConfig.sharedInstance().setSoundRecording(on);
             }
         });
 
