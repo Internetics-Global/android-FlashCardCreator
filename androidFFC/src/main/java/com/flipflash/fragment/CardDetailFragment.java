@@ -173,6 +173,8 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnTouchL
 
     private LinearLayout mContentBodyLinearLayout;
 
+    private LinearLayout mFunctionalAreaLinearLayout;
+
     private final int REQUEST_CODE_FROM_LOGO  = 314;
     private final int REQUEST_CODE_FROM_IMAGE  = 315;
     private final int REQUEST_CODE_FROM_BACKGROUND  = 316;
@@ -237,8 +239,14 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnTouchL
         configureLogoImageView();
 
         if (MutipleTargetHelper.isFullVersion() == false) {
-            mRadioGroup.setVisibility(View.INVISIBLE);
-            mContentView.findViewById(R.id.functionarea).setVisibility(View.INVISIBLE);
+            if (mRadioGroup != null) {
+                mRadioGroup.setVisibility(View.INVISIBLE);
+            }
+
+            if (mFunctionalAreaLinearLayout != null) {
+                mFunctionalAreaLinearLayout.setVisibility(View.INVISIBLE);
+            }
+
         }
 
         return mContentView;
@@ -1646,7 +1654,10 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnTouchL
             mAnswerRadioButton = (RadioButton) mContentView.findViewById(R.id.radio_segment_answer);
             mRadioGroup = (RadioGroup) mContentView.findViewById(R.id.radio_segment);
 
+            mFunctionalAreaLinearLayout = (LinearLayout) mContentView.findViewById(R.id.function_area);
+
         }
+
 
 
         if (!mIsPlayingCard) {

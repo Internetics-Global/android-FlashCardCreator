@@ -63,7 +63,7 @@
         </RadioGroup>
 
         <LinearLayout
-            android:id="@+id/functionarea"
+            android:id="@+id/function_area"
             android:layout_width="120dp"
             android:layout_marginRight="5dp"
             android:background="@drawable/shape_darkgray"
