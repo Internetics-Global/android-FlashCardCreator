@@ -17,6 +17,7 @@ import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
 import android.text.method.PasswordTransformationMethod;
 import android.util.Base64;
+import android.util.DisplayMetrics;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -137,7 +138,6 @@ public class PackListFragment extends Fragment {
             }
         });
 
-
         final Button visitStoreButton = (Button) mRootView.findViewById(R.id.visit_store_btn);
         visitStoreButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -231,14 +231,7 @@ public class PackListFragment extends Fragment {
 
     private void galleryItemClicked(int position) {
 
-        int OFFSET;
-        if (MutipleTargetHelper.isFullVersion()) {
-            OFFSET = 0;
-        } else {
-            OFFSET = -1;  //in view mode, there's no "add pack" cell
-        }
-
-        if (position ==0 + OFFSET) {
+        if (position ==0) {
 
             if (MutipleTargetHelper.isFullVersion()) {
                 DialogFragment dialogFragment = new CreateEditFragment();
@@ -251,11 +244,9 @@ public class PackListFragment extends Fragment {
 
         } else {
 
-            int normalizePosition = position - OFFSET;
-
             LOGD(TAG, "galleryItemClicked: " + "Index of pack in pack list is:" + position);
 
-            Pack selectPack = mUser.packs.get(normalizePosition-1);
+            Pack selectPack = mUser.packs.get(position-1);
             AppConfig.sharedInstance().setPackIDForLastSelected(selectPack.packID);
 
             Intent intent = new Intent();
@@ -279,11 +270,7 @@ public class PackListFragment extends Fragment {
 
         public int getCount() {
 
-            if (MutipleTargetHelper.isFullVersion()) {
-                return mUser.packs.size() +1;
-            } else {
-                return mUser.packs.size();
-            }
+            return mUser.packs.size() +1;
         }
 
         public Object getItem(int position) {
@@ -296,16 +283,10 @@ public class PackListFragment extends Fragment {
 
         public View getView(final int position, View convertView, ViewGroup parent) {
 
-            int OFFSET;
-            if (MutipleTargetHelper.isFullVersion()) {
-                OFFSET = 0;
-            } else {
-                OFFSET = -1;  //in view mode, there's no "add pack" cell
-            }
 
             if (convertView == null) {
                 LayoutInflater inflater = (LayoutInflater) getActivity().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-                if (position == 0  && (MutipleTargetHelper.isFullVersion())) {
+                if (position == 0) {
                     convertView = inflater.inflate(R.layout.pack_list_item_add_pack, parent, false);
 
                     ImageView coverImageView = (ImageView) convertView.findViewById(R.id.pack_cover_image);
@@ -317,20 +298,23 @@ public class PackListFragment extends Fragment {
                         //use default
                     }
 
+                    if (MutipleTargetHelper.isFullVersion() == false) {
+                        convertView.setVisibility(View.INVISIBLE);
+                        convertView.setEnabled(false);
+                    }
+
                 } else {
                     convertView = inflater.inflate(R.layout.pack_list_item, parent, false);
                 }
             }
 
 
-            if ((mUser.packs.size() > 0) &&
-                    (position >= 1 + OFFSET)) {
+            if ((position != 0)&&(mUser.packs.size() > 0)) {
 
-                final int normalizePosition = position- OFFSET;
 
                 ImageView coverImageView = (ImageView) convertView.findViewById(R.id.pack_cover_image);
 
-                final Pack currentPack = mUser.packs.get(normalizePosition -1);
+                final Pack currentPack = mUser.packs.get(position -1);
 
 
 
@@ -342,7 +326,7 @@ public class PackListFragment extends Fragment {
                     @Override
                     public void onClick(View v) {
 
-                        playImageViewButtonClicked(normalizePosition);
+                        playImageViewButtonClicked(position);
 
                     }
                 });
@@ -369,7 +353,7 @@ public class PackListFragment extends Fragment {
                     @Override
                     public void onClick(View v) {
 
-                        editButtonClicked(normalizePosition);
+                        editButtonClicked(position);
 
 
                     }
@@ -378,13 +362,13 @@ public class PackListFragment extends Fragment {
                 deleteButton.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        deleteButtonClicked(normalizePosition);
+                        deleteButtonClicked(position);
                     }
                 });
 
 
                 EditText packNameEditText = (EditText) convertView.findViewById(R.id.pack_name_text);
-                packNameEditText.setText(mUser.packs.get(normalizePosition - 1).packName);
+                packNameEditText.setText(mUser.packs.get(position - 1).packName);
 
 
                 FrameLayout itemLayout = (FrameLayout) convertView.findViewById(R.id.pack_item_layout);
