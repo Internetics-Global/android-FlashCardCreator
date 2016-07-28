@@ -40,6 +40,31 @@ public class Question {
 
     public CSS css;
 
+    public Question deepCopy() {
+        Question copy = new Question();
+
+        copy.questionID = questionID;
+        copy.cardID = cardID;
+        copy.subheading = subheading;
+        copy.main = main;
+        copy.sub = sub;
+        copy.imageUriFormatStr = imageUriFormatStr;
+        copy.imageUriFormatStr2 = imageUriFormatStr2;
+        copy.cssID = cssID;
+        copy.templateID = templateID;
+        copy.lineNoSubheading = lineNoSubheading;
+        copy.lineNoMain = lineNoMain;
+        copy.lineNoSub = lineNoSub;
+        copy.backgroundImageUriFormatStr = backgroundImageUriFormatStr;
+        copy.movieUriFormatStr = movieUriFormatStr;
+        copy.movieUriFormatStr2 = movieUriFormatStr2;
+        copy.audioUriFormatStr = audioUriFormatStr;
+        copy.css = css.deepCopy();
+
+
+        return copy;
+    }
+
     public Question() {
         super();
         questionID = -1;
@@ -234,4 +259,5 @@ public class Question {
             }
         }
     }
+
 }

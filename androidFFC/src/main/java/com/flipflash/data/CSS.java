@@ -31,6 +31,34 @@ public class CSS {
     public String subFont;
     public float subSize;
 
+    public CSS deepCopy() {
+        CSS copy = new CSS();
+
+        copy.cssID = cssID;
+        copy.subheadingAlign = subheadingAlign;
+        copy.subheadingAlignVertical = subheadingAlignVertical;
+        copy.subheadingColor = subheadingColor;
+        copy.subheadingFont = subheadingFont;
+        copy.subheadingSize = subheadingSize;
+        copy.mainAlign = mainAlign;
+        copy.mainAlignVertical = mainAlignVertical;
+        copy.mainColor = mainColor;
+        copy.mainFont = mainFont;
+        copy.mainSize = mainSize;
+        copy.subAlign = subAlign;
+        copy.subAlignVertical = subAlignVertical;
+        copy.subColor = subColor;
+        copy.subFont = subFont;
+        copy.subSize = subSize;
+
+
+        return copy;
+    }
+
+    private CSS() {
+        super();
+    }
+
     public CSS(boolean isForQuestion) {
         super();
         cssID = -1;
@@ -150,4 +178,5 @@ public class CSS {
         String query = String.format("DELETE FROM CSS_Tables WHERE css_id=%d", cssID);
         SQLiteHelper.defaultDatabase(context).execSQL(query);
     }
+
 }

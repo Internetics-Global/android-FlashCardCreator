@@ -40,6 +40,21 @@ public class Card {
         answer = new Answer();
     }
 
+    public Card deepCopy() {
+
+        Card copy = new Card();
+        copy.cardID = cardID;
+        copy.packID = packID;
+        copy.coverImageUriFormatStr = coverImageUriFormatStr;
+        copy.templateBackground = templateBackground;
+        copy.cardSN = cardSN;
+
+        copy.answer = answer.deepCopy();
+        copy.question = question.deepCopy();
+
+        return copy;
+
+    }
 
     public Object initWithDictionary(HashMap<String, Object> dataDict) {
         cardID = (Integer) dataDict.get("card_id");
@@ -140,4 +155,5 @@ public class Card {
         this.answer.destroy(context);
         this.question.destroy(context);
     }
+
 }

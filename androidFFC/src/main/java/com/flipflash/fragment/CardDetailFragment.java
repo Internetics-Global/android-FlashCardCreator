@@ -31,6 +31,7 @@ import android.view.ViewTreeObserver;
 import android.view.WindowManager;
 import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputMethodManager;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
@@ -46,6 +47,7 @@ import com.flipflash.UI.RoundedBottomRightImageView;
 import com.flipflash.UI.ScaleHelper;
 import com.flipflash.android_ffc.CropActivity;
 import com.flipflash.android_ffc.MainActivity;
+import com.flipflash.android_ffc.PlayActivity;
 import com.flipflash.android_ffc.R;
 import com.flipflash.android_ffc.VideoViewActivity;
 import com.flipflash.android_ffc.WebViewActivity;
@@ -123,6 +125,9 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnTouchL
     private RadioButton mQuestionRadioButton;
     private RadioButton mAnswerRadioButton;
     private RadioGroup mRadioGroup;
+
+    private Button      mPreviewButton;
+    private Button      mSaveButton;
 
     private RoundedBottomRightImageView mBackgroundImageView;
 
@@ -247,6 +252,14 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnTouchL
                 mFunctionalAreaLinearLayout.setVisibility(View.INVISIBLE);
             }
 
+            if (mSaveButton != null) {
+                mSaveButton.setVisibility(View.INVISIBLE);
+            }
+
+            if (mPreviewButton != null) {
+                mPreviewButton.setVisibility(View.INVISIBLE);
+            }
+
         }
 
         return mContentView;
@@ -274,6 +287,15 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnTouchL
 
         if (mIsCreatingCard) {
             mTitle.setEnabled(false); //same as iOS
+
+
+            if (mSaveButton != null) {
+                mSaveButton.setVisibility(View.INVISIBLE);
+            }
+
+            if (mPreviewButton != null) {
+                mPreviewButton.setVisibility(View.INVISIBLE);
+            }
         }
 
         if (mIsPlayingCard || mIsCreatingCard) {
@@ -1608,6 +1630,25 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnTouchL
         mSidebarBackground = (FrameLayout) mContentView.findViewById(R.id.sidebar_background_linearlayout);
         mCardSN = (TextView) mContentView.findViewById(R.id.card_sn);
 
+        mPreviewButton = (Button) mContentView.findViewById(R.id.preview_button);
+        if (mPreviewButton != null) {
+            mPreviewButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    previewButtonClicked();
+                }
+            });
+        }
+        mSaveButton = (Button) mContentView.findViewById(R.id.save_button);
+        if (mSaveButton != null) {
+            mSaveButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    saveButtonClicked();
+                }
+            });
+        }
+
 
         mTitle = (FCCEditText) mContentView.findViewById(R.id.title);
         mTitle.setTag(TAG_TITLE);
@@ -1698,6 +1739,82 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnTouchL
                 }
             });
         }
+
+    }
+
+    private void saveButtonClicked() {
+
+        if (isEditableMode() == false) {
+
+            new SweetAlertDialog(getActivity(), SweetAlertDialog.NORMAL_TYPE)
+                    .setTitleText(getString(R.string.DIALOG_AlERT))
+                    .setContentText(getString(R.string.SAVE_NOT_AVAILABLE_THAT_IS_NOT_YOU))
+                    .show();
+
+        } else {
+
+            saveEditedCard();
+
+        }
+
+
+
+
+    }
+
+    private void previewButtonClicked() {
+
+        Card previewCard = copyCurrentUnsavedCardForPreview();
+
+        Pack previewPack = new Pack();
+        ArrayList cards = new ArrayList<>();
+        cards.add(previewCard);
+        previewPack.cards = cards;
+
+        ((MainActivity) getActivity()).mIsAllowedToShowPackList = false;
+
+        {
+            //currently, we only need info of creator, but for future potential benefit, we try to copy everything except packID info, shareLink, and fileNameOnAWS
+            previewPack.packName = mCurrentPack.packName;
+            previewPack.sidebarTitle = mCurrentPack.sidebarTitle;
+            previewPack.coverImageUriFormatStr = mCurrentPack.coverImageUriFormatStr;
+            previewPack.userID = mCurrentPack.userID;
+//            previewPack.languageName = mCurrentPack.languageName;
+            previewPack.creatorID = mCurrentPack.creatorID; //check later, please
+            previewPack.creatorNickName = mCurrentPack.creatorNickName;
+            previewPack.creatorNickName = mCurrentPack.creatorNickName;
+            previewPack.lastVistDate = mCurrentPack.lastVistDate;
+            previewPack.createDate = mCurrentPack.createDate;
+            previewPack.restorePassword = mCurrentPack.restorePassword;
+//            screenshotPack.isAllowShare = mCurrentPack.isAllowShare;
+            previewPack.autoPlaySpeed = mCurrentPack.autoPlaySpeed;
+            previewPack.platform = mCurrentPack.platform;
+
+            previewPack.shareLink = "";
+            previewPack.fileNameOnAWS = "";
+            previewPack.packID = Global.generateNoRepeatInt();
+        }
+
+        Global.previewPack = previewPack;
+
+
+
+        //play
+        Intent intentPlay = new Intent(getActivity(), PlayActivity.class);
+        intentPlay.putExtra("packID", previewPack.packID);
+        intentPlay.putExtra("previewOnly", true);
+        intentPlay.putExtra("oneOffPlayType", 0);  //only manually is supported
+        startActivity(intentPlay);
+
+
+    }
+
+    private Card copyCurrentUnsavedCardForPreview() {
+
+        Card card = mCurrentCard.deepCopy();
+
+        return card;
+
 
     }
 

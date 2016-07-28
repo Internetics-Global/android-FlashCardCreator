@@ -4,6 +4,8 @@ import android.content.Context;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 
+import com.flipflash.data.Pack;
+
 public class Global {
 
     /**
@@ -91,6 +93,11 @@ public class Global {
 
     //
     public static final String sortType = "sort_Type";
+
+    /*
+     * For preview function. In order to avoid serialization for activity intent, we put previewPack here
+     */
+    public static Pack         previewPack;
 
 
     /*

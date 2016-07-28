@@ -65,6 +65,32 @@ public class Answer {
         audioUriFormatStr = "";
     }
 
+    public Answer deepCopy() {
+        Answer copy = new Answer();
+
+        copy.answerID = answerID;
+        copy.cardID = cardID;
+        copy.subheading = subheading;
+        copy.main = main;
+        copy.sub = sub;
+        copy.imageUriFormatStr = imageUriFormatStr;
+        copy.imageUriFormatStr2 = imageUriFormatStr2;
+        copy.cssID = cssID;
+        copy.templateID = templateID;
+        copy.lineNoSubheading = lineNoSubheading;
+        copy.lineNoMain = lineNoMain;
+        copy.lineNoSub = lineNoSub;
+        copy.backgroundImageUriFormatStr = backgroundImageUriFormatStr;
+        copy.movieUriFormatStr = movieUriFormatStr;
+        copy.movieUriFormatStr2 = movieUriFormatStr2;
+        copy.audioUriFormatStr = audioUriFormatStr;
+
+        copy.css = css.deepCopy();
+
+
+        return copy;
+    }
+
     public Answer initWithDictionary(HashMap<String, Object> dataDict) {
         answerID = (Integer) dataDict.get("answer_id");
         cardID = (Integer) dataDict.get("card_id");
@@ -237,4 +263,5 @@ public class Answer {
         }
 
     }
+
 }

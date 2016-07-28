@@ -164,6 +164,8 @@ public class PlayActivity extends FragmentActivity implements SensorEventListene
     boolean      _isDeviceRotating;
     boolean      _isRotationJustFinish;
 
+    boolean      _PreviewOnly;
+
     private HandlerThread mSensorThread;
     private Handler       mSensorHandler;
 
@@ -181,8 +183,17 @@ public class PlayActivity extends FragmentActivity implements SensorEventListene
         mAudioIntentReceiver = new AudioIntentReceiver();
 
         int packID = getIntent().getIntExtra("packID", -1);
+        _PreviewOnly = getIntent().getBooleanExtra("previewOnly",false);
         mOneOffPlayType = getIntent().getIntExtra("oneOffPlayType", -1);
-        mCurrentPack = User.getPack(AppContext.getAppContext(),packID);
+
+        if (_PreviewOnly) {
+
+            //intent在传递数据时,需要序列化,为了减少麻烦,我们定义了这个Global.previewPack
+            mCurrentPack = Global.previewPack;
+
+        } else {
+            mCurrentPack = User.getPack(AppContext.getAppContext(),packID);
+        }
 
         mSensorManager = (SensorManager) getSystemService(Context.SENSOR_SERVICE);
 
@@ -663,6 +674,8 @@ public class PlayActivity extends FragmentActivity implements SensorEventListene
         super.onDestroy();
 
         LOGD(TAG, "onDestroy");
+
+        Global.previewPack = null;
 
         if (mSensorThread != null) {
             mSensorThread.quit();
@@ -1483,7 +1496,9 @@ public class PlayActivity extends FragmentActivity implements SensorEventListene
                 mSensorManager.unregisterListener(this);
             }
 
-            mCurrentPack.save(PlayActivity.this);
+            if (_PreviewOnly == false) {
+                mCurrentPack.save(PlayActivity.this);
+            }
 
             mIsShuttingDown = true;
         }
