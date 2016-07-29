@@ -2184,6 +2184,7 @@ public class MainActivity extends FragmentActivity implements
         View view = findViewById(R.id.record_button_background_mask_layout);
 
         COUNTDOWN_SECOND_FOR_PREPARE = 4;
+        COUNTDOWN_SECOND_FOR_RECORDING = 30;
 
         if (is_to_recording == false) {
             view.setVisibility(View.INVISIBLE);
@@ -2208,6 +2209,10 @@ public class MainActivity extends FragmentActivity implements
                 public void run() {
 
                     if (COUNTDOWN_SECOND_FOR_PREPARE == 1) {
+
+                        if (COUNTDOWN_SECOND_FOR_RECORDING == 30) {
+                            AudioHelper.startRecord(); //only execute once
+                        }
 
                         COUNTDOWN_SECOND_FOR_RECORDING--;
 

@@ -137,7 +137,6 @@ public class CreateSoundFragment extends DialogFragment {
 
     private void recordButtonClicked() {
 
-        AudioHelper.startRecord();
         AudioHelper.isRecordFinished = true;
 
         MainActivity mainActivity = (MainActivity)(getActivity());
@@ -217,6 +216,8 @@ public class CreateSoundFragment extends DialogFragment {
     }
 
     private void closeButtonClicked() {
+
+        AudioHelper.stopAndCleanAudio();
 
         AudioHelper.isRecordFinished = false;
         MainActivity mainActivity = (MainActivity)(getActivity());

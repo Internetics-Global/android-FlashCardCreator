@@ -224,7 +224,7 @@
             android:id="@+id/record_stop_progress"
             android:layout_width="72dp"
             android:layout_height="72dp"
-            app:donut_progress="30"
+            app:donut_progress="0"
             app:donut_unfinished_color = "@android:color/holo_orange_dark"
             app:donut_finished_color = "@android:color/white"
             app:donut_unfinished_stroke_width="4dp"
