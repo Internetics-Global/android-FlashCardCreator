@@ -33,7 +33,7 @@
         <RadioGroup
                 android:id="@+id/radio_segment"
                 android:orientation="horizontal"
-                android:layout_width="300dp"
+                android:layout_width="@dimen/segment_control_width"
                 android:layout_alignParentLeft="true"
                 android:layout_height="wrap_content">
             <RadioButton

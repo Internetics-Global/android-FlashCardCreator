@@ -57,4 +57,6 @@
     <dimen name="keyboard_height">350dp</dimen>
     <dimen name="image_rounded_corner">15dp</dimen>
 
+    <dimen name="segment_control_width">300dp</dimen>
+
 </resources>
