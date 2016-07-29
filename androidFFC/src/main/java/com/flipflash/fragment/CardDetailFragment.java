@@ -1331,7 +1331,7 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnTouchL
         ActionItem answerActionItem14 = new ActionItem(7, null, getResources().getDrawable(R.drawable.answer_templatescreenshot14));
         ActionItem answerActionItem15 = new ActionItem(7, null, getResources().getDrawable(R.drawable.answer_templatescreenshot15));
         ActionItem answerActionItem16 = new ActionItem(7, null, getResources().getDrawable(R.drawable.answer_templatescreenshot16));
-
+        ActionItem answerActionItem17 = new ActionItem(7, null, getResources().getDrawable(R.drawable.answer_templatescreenshot17));
 
         answerQuickAction.addActionItem(answerActionItem0);
         answerQuickAction.addActionItem(answerActionItem1);
@@ -1350,6 +1350,7 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnTouchL
         answerQuickAction.addActionItem(answerActionItem14);
         answerQuickAction.addActionItem(answerActionItem15);
         answerQuickAction.addActionItem(answerActionItem16);
+        answerQuickAction.addActionItem(answerActionItem17);
 
         answerQuickAction.setOnActionItemClickListener(new QuickAction.OnActionItemClickListener() {
             @Override
@@ -1388,6 +1389,8 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnTouchL
         ActionItem questionActionItem14 = new ActionItem(7, null, getResources().getDrawable(R.drawable.question_templatescreenshot14));
         ActionItem questionActionItem15 = new ActionItem(7, null, getResources().getDrawable(R.drawable.question_templatescreenshot15));
         ActionItem questionActionItem16 = new ActionItem(7, null, getResources().getDrawable(R.drawable.question_templatescreenshot16));
+        ActionItem questionActionItem17 = new ActionItem(7, null, getResources().getDrawable(R.drawable.question_templatescreenshot17));
+
 
         questionQuickAction.addActionItem(questionActionItem0);
         questionQuickAction.addActionItem(questionActionItem1);
@@ -1406,6 +1409,7 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnTouchL
         questionQuickAction.addActionItem(questionActionItem14);
         questionQuickAction.addActionItem(questionActionItem15);
         questionQuickAction.addActionItem(questionActionItem16);
+        questionQuickAction.addActionItem(questionActionItem17);
 
         questionQuickAction.setOnActionItemClickListener(new QuickAction.OnActionItemClickListener() {
             @Override
@@ -3090,6 +3094,11 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnTouchL
                 break;
             }
 
+            case 17: {
+                configTemplate_17();
+                break;
+            }
+
             default:
                 LOGE(TAG, "updateQuestionViewTemplate: mCurrentCard.question.templateID is out of scope");
         }
@@ -3180,6 +3189,11 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnTouchL
 
             case 16: {
                 configTemplate_16();
+                break;
+            }
+
+            case 17: {
+                configTemplate_17();
                 break;
             }
 
@@ -4196,6 +4210,44 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnTouchL
         left.addView(mImage);
 
 
+    }
+
+
+    private void configTemplate_17 () {
+
+        removeAllSubViewsInContentBody();
+
+        mContentBodyLinearLayout.setOrientation(LinearLayout.VERTICAL);
+        mImage.setVisibility(View.VISIBLE);
+        mImage2.setVisibility(View.GONE);
+        mSubheading.setVisibility(View.GONE);
+        mMain.setVisibility(View.GONE);
+        mSub.setVisibility(View.VISIBLE);
+
+
+        //image
+        LinearLayout.LayoutParams params;
+        params = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,
+                ViewGroup.LayoutParams.MATCH_PARENT);
+        params.weight = 230;
+        params.height = 0;
+
+        int topMargin = UIHelper.getPixels(20);
+        int bottomMargin = UIHelper.getPixels(60);
+        int horizontalMargin = UIHelper.getPixels(185);
+        params.setMargins(horizontalMargin,topMargin,horizontalMargin,bottomMargin);
+        mImage.setLayoutParams(params);
+        mContentBodyLinearLayout.addView(mImage);
+
+        //sub
+        params = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,
+                ViewGroup.LayoutParams.MATCH_PARENT);
+        params.weight = 120;
+        params.height = 0;
+        params.topMargin = UIHelper.getPixels(0);
+        mSub.setLayoutParams(params);
+
+        mContentBodyLinearLayout.addView(mSub);
     }
 
     private void removeAllSubViewsInContentBody() {
