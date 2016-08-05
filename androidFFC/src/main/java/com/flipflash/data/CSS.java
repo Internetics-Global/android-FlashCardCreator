@@ -31,6 +31,10 @@ public class CSS {
     public String subFont;
     public float subSize;
 
+    public boolean subheadingSemiTransparent;
+    public boolean mainSemiTransparent;
+    public boolean subSemiTransparent;
+
     public CSS(boolean isForQuestion) {
         super();
         cssID = -1;
@@ -44,6 +48,10 @@ public class CSS {
         subheadingFont = "";
         mainFont = "";
         subFont = "";
+
+        subheadingSemiTransparent = false;
+        mainSemiTransparent = false;
+        subSemiTransparent = false;
 
         subheadingAlignVertical = "";
         mainAlignVertical = "";
@@ -82,6 +90,10 @@ public class CSS {
         mainAlignVertical = (String) dataDict.get("main_align_vertical");
         subAlignVertical = (String) dataDict.get("sub_align_vertical");
 
+        subheadingSemiTransparent = (Integer) dataDict.get("subheading_semi_transparent") == 1;
+        mainSemiTransparent = (Integer) dataDict.get("main_semi_transparent") == 1;
+        subSemiTransparent = (Integer) dataDict.get("sub_align_vertical")  == 1;
+
         return this;
     }
 
@@ -110,6 +122,10 @@ public class CSS {
                 cssDict.put("main_align_vertical", cur.getString(14));
                 cssDict.put("sub_align_vertical", cur.getString(15));
 
+                cssDict.put("subheading_semi_transparent", cur.getInt(16));
+                cssDict.put("main_semi_transparent", cur.getInt(17));
+                cssDict.put("sub_semi_transparent", cur.getInt(18));
+
                 break;
             }
         } finally {
@@ -131,7 +147,7 @@ public class CSS {
     }
 
     private void update(Context context) {
-        String query = String.format("UPDATE CSS_Tables SET subheading_size=%d, subheading_align=\"%s\", subheading_color=\"%s\", main_size=%d, main_align=\"%s\", main_color=\"%s\",sub_size=%d, sub_align=\"%s\", sub_color=\"%s\", subheading_font=\"%s\", main_font=\"%s\", sub_font=\"%s\", subheading_align_vertical=\"%s\", main_align_vertical=\"%s\", sub_align_vertical=\"%s\" WHERE css_id=%d", (int)subheadingSize, subheadingAlign, subheadingColor, (int)mainSize, mainAlign, mainColor, (int)subSize, subAlign, subColor, subheadingFont,mainFont,subFont,subheadingAlignVertical,mainAlignVertical,subAlignVertical, cssID);
+        String query = String.format("UPDATE CSS_Tables SET subheading_size=%d, subheading_align=\"%s\", subheading_color=\"%s\", main_size=%d, main_align=\"%s\", main_color=\"%s\",sub_size=%d, sub_align=\"%s\", sub_color=\"%s\", subheading_font=\"%s\", main_font=\"%s\", sub_font=\"%s\", subheading_align_vertical=\"%s\", main_align_vertical=\"%s\", sub_align_vertical=\"%s\",subheading_semi_transparent=%d, main_semi_transparent=%d, sub_semi_transparent=%d WHERE css_id=%d", (int)subheadingSize, subheadingAlign, subheadingColor, (int)mainSize, mainAlign, mainColor, (int)subSize, subAlign, subColor, subheadingFont,mainFont,subFont,subheadingAlignVertical,mainAlignVertical,subAlignVertical,subheadingSemiTransparent?1:0,mainSemiTransparent?1:0,subSemiTransparent?1:0, cssID);
         SQLiteHelper.defaultDatabase(context).execSQL(query);
     }
 
@@ -141,7 +157,7 @@ public class CSS {
             cssID = SQLiteHelper.getMaxValueForColumn(context, "css_id", "CSS_Tables") + 1;
         }
 
-        String query = String.format("INSERT INTO CSS_Tables(css_id, subheading_size, subheading_align, subheading_color, main_size, main_align, main_color, sub_size, sub_align, sub_color,subheading_font,main_font,sub_font,subheading_align_vertical,main_align_vertical,sub_align_vertical) VALUES (%d,%d, \"%s\", \"%s\", %d, \"%s\", \"%s\", %d, \"%s\", \"%s\", \"%s\", \"%s\", \"%s\", \"%s\", \"%s\", \"%s\")", cssID, (int)subheadingSize, subheadingAlign, subheadingColor, (int)mainSize, mainAlign, mainColor, (int)subSize, subAlign, subColor,subheadingFont,mainFont,subFont,subheadingAlignVertical,mainAlignVertical,subAlignVertical);
+        String query = String.format("INSERT INTO CSS_Tables(css_id, subheading_size, subheading_align, subheading_color, main_size, main_align, main_color, sub_size, sub_align, sub_color,subheading_font,main_font,sub_font,subheading_align_vertical,main_align_vertical,sub_align_vertical,subheading_semi_transparent,main_semi_transparent,sub_semi_transparent) VALUES (%d,%d, \"%s\", \"%s\", %d, \"%s\", \"%s\", %d, \"%s\", \"%s\", \"%s\", \"%s\", \"%s\", \"%s\", \"%s\", \"%s\",%d, %d, %d)", cssID, (int)subheadingSize, subheadingAlign, subheadingColor, (int)mainSize, mainAlign, mainColor, (int)subSize, subAlign, subColor,subheadingFont,mainFont,subFont,subheadingAlignVertical,mainAlignVertical,subAlignVertical,subheadingSemiTransparent?1:0,mainSemiTransparent?1:0,subSemiTransparent?1:0);
         SQLiteHelper.defaultDatabase(context).execSQL(query);
 
     }

@@ -281,6 +281,10 @@ public class PackBuildHelper {
         obj.put("main_font", card.question.css.mainFont);
         obj.put("sub_font", card.question.css.subFont);
 
+        obj.put("subheading_semi_transparent", card.question.css.subheadingSemiTransparent?"1":"0");
+        obj.put("main_semi_transparent", card.question.css.mainSemiTransparent?"1":"0");
+        obj.put("sub_semi_transparent", card.question.css.subSemiTransparent?"1":"0");
+
         File savedPath = FileOperationHelper.getUploadCardQuestionJsonFile();
         FileWriter file;
         try {
@@ -329,6 +333,10 @@ public class PackBuildHelper {
         obj.put("sub_align_vertical", card.answer.css.subAlignVertical);
         obj.put("sub_color", card.answer.css.subColor);
         obj.put("sub_size", String.format("%d",(int)card.answer.css.subSize));
+
+        obj.put("subheading_semi_transparent", card.answer.css.subheadingSemiTransparent?"1":"0");
+        obj.put("main_semi_transparent", card.answer.css.mainSemiTransparent?"1":"0");
+        obj.put("sub_semi_transparent", card.answer.css.subSemiTransparent?"1":"0");
 
         obj.put("background_image", StringUtils.lastComponentOfPath(card.answer.backgroundImageUriFormatStr));
         
