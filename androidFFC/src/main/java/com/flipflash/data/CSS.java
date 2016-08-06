@@ -3,9 +3,7 @@ package com.flipflash.data;
 import android.content.Context;
 import android.database.Cursor;
 
-import com.flipflash.android_ffc.R;
 import com.flipflash.helper.SQLiteHelper;
-import com.flipflash.util.AppContext;
 import com.flipflash.util.UIHelper;
 
 import java.util.HashMap;

@@ -69,6 +69,9 @@ public class SQLiteHelper {
 
         @Override
         public void onCreate(SQLiteDatabase db) {
+
+            LOGD(TAG, "database onCreate");
+
             db.execSQL("CREATE TABLE " + "Users_Tables" + " (" + "user_id"
                     + " INTEGER PRIMARY KEY, " + "nick_name" + " TEXT)");
             db.execSQL("CREATE INDEX IF NOT EXISTS IA on Users_Tables(user_id)");
@@ -131,7 +134,8 @@ public class SQLiteHelper {
                     + "subheading_align" + " TEXT," + "subheading_color" + " TEXT,"
                     + "main_size" + " INTEGER," + "main_align" + " TEXT,"
                     + "main_color" + " TEXT," + "sub_size" + " INTEGER,"
-                    + "sub_align" + " TEXT," + "sub_color" + " TEXT," + "subheading_font" + " TEXT," + "main_font" + " TEXT,"+ "sub_font" + " TEXT,"+ "subheading_align_vertical" + " TEXT,"+ "main_align_vertical" + " TEXT," + "sub_align_vertical" + " TEXT)");
+                    + "sub_align" + " TEXT," + "sub_color" + " TEXT," + "subheading_font" + " TEXT," + "main_font" + " TEXT,"+ "sub_font" + " TEXT,"+ "subheading_align_vertical" + " TEXT,"+ "main_align_vertical" + " TEXT," + "sub_align_vertical" + " TEXT,"
+                    + "subheading_semi_transparent" + " INTEGER," + "main_semi_transparent" + " INTEGER," + "sub_semi_transparent" + " INTEGER)");
             db.execSQL("CREATE INDEX IF NOT EXISTS IA on CSS_Tables(css_id)");
 
 
@@ -153,6 +157,15 @@ public class SQLiteHelper {
 
         @Override
         public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
+            if (oldVersion == 1 && newVersion == 2) {
+
+                LOGD(TAG, "database onUpgrade from version 1 to 2");
+
+                db.execSQL("ALTER TABLE CSS_Tables ADD COLUMN subheading_semi_transparent INTEGER");
+                db.execSQL("ALTER TABLE CSS_Tables ADD COLUMN main_semi_transparent INTEGER");
+                db.execSQL("ALTER TABLE CSS_Tables ADD COLUMN sub_semi_transparent INTEGER");
+
+            }
 
         }
 

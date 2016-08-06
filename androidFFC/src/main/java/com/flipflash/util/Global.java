@@ -1,11 +1,8 @@
 package com.flipflash.util;
 
-import android.app.AlertDialog;
 import android.content.Context;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
-
-import com.flipflash.android_ffc.R;
 
 public class Global {
 
@@ -22,7 +19,7 @@ public class Global {
     //public static final String    SAMPLE_URL = "http://7o51o0.com1.z0.glb.clouddn.com/Pack1440729625-2043618070.zip";
 
     public static final String  DATABASE_NAME = "FlashCardCreator-Local.db";
-    public static final int     DATABASE_VERSION = 1;  // you need to update this when changing
+    public static final int     DATABASE_VERSION = 2;  // you need to update this when changing
 
     public static final int USER_ID = 314;
     public static final String defaultUserStr = "Default_User";
