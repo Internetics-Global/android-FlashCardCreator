@@ -41,6 +41,7 @@
     <item>@string/ToolbarItem_Color_Yellow</item>
     <item>@string/ToolbarItem_Color_Green</item>
     <item>@string/ToolbarItem_Color_White</item>
+        <item>@string/ToolbarItem_Color_Invisible</item>
     </string-array>
 
 

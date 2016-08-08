@@ -30,7 +30,7 @@
             style="@style/BlackButtonText"
             android:text="@string/Keyboard_Cancel"/>
 
-    <Spinner
+    <com.flipflash.UI.NoDefaultSpinner
         android:id="@+id/spinner_font"
         android:gravity="center"
         android:layout_width="@dimen/csstoolbar_button_width"
@@ -40,7 +40,7 @@
         android:background="@drawable/selector_csstoolbar_button"
         android:layout_margin="5dp"/>
 
-    <Spinner
+    <com.flipflash.UI.NoDefaultSpinner
             android:id="@+id/spinner_align"
             android:gravity="center"
             android:layout_width="@dimen/csstoolbar_button_width"
@@ -51,7 +51,7 @@
             android:layout_margin="5dp"/>
 
 
-    <Spinner
+    <com.flipflash.UI.NoDefaultSpinner
             android:id="@+id/spinner_color"
             android:gravity="center"
             android:layout_width="@dimen/csstoolbar_button_width"
@@ -62,7 +62,7 @@
             android:layout_toLeftOf="@id/spinner_align"
             />
 
-    <Spinner
+    <com.flipflash.UI.NoDefaultSpinner
             android:id="@+id/spinner_size"
             android:gravity="center"
             android:layout_width="@dimen/csstoolbar_button_width"

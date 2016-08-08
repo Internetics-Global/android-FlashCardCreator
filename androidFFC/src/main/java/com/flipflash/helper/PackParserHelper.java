@@ -589,19 +589,19 @@ public class PackParserHelper {
             }
 
             if (questionObj.containsKey("subheading_semi_transparent")) {
-                card.question.css.subheadingSemiTransparent = (Integer) questionObj.get("subheading_semi_transparent") == 1;
+                card.question.css.subheadingSemiTransparent = "1".equals(questionObj.get("subheading_semi_transparent"));
             } else {
                 card.question.css.subheadingSemiTransparent = false;
             }
 
             if (questionObj.containsKey("main_semi_transparent")) {
-                card.question.css.mainSemiTransparent = (Integer) questionObj.get("main_semi_transparent") == 1;
+                card.question.css.mainSemiTransparent = "1".equals(questionObj.get("main_semi_transparent"));
             } else {
                 card.question.css.mainSemiTransparent = false;
             }
 
             if (questionObj.containsKey("sub_semi_transparent")) {
-                card.question.css.subSemiTransparent = (Integer) questionObj.get("sub_semi_transparent") == 1;
+                card.question.css.subSemiTransparent = "1".equals(questionObj.get("sub_semi_transparent"));
             } else {
                 card.question.css.subSemiTransparent = false;
             }
@@ -982,19 +982,19 @@ public class PackParserHelper {
             }
 
             if (answerObj.containsKey("subheading_semi_transparent")) {
-                card.answer.css.subheadingSemiTransparent = (Integer) answerObj.get("subheading_semi_transparent") == 1;
+                card.answer.css.subheadingSemiTransparent = "1".equals(answerObj.get("subheading_semi_transparent"));
             } else {
                 card.answer.css.subheadingSemiTransparent = false;
             }
 
             if (answerObj.containsKey("main_semi_transparent")) {
-                card.answer.css.mainSemiTransparent = (Integer) answerObj.get("main_semi_transparent") == 1;
+                card.answer.css.mainSemiTransparent = "1".equals(answerObj.get("main_semi_transparent"));
             } else {
                 card.answer.css.mainSemiTransparent = false;
             }
 
             if (answerObj.containsKey("sub_semi_transparent")) {
-                card.answer.css.subSemiTransparent = (Integer) answerObj.get("sub_semi_transparent") == 1;
+                card.answer.css.subSemiTransparent = "1".equals(answerObj.get("sub_semi_transparent"));
             } else {
                 card.answer.css.subSemiTransparent = false;
             }

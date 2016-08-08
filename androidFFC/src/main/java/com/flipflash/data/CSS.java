@@ -88,9 +88,9 @@ public class CSS {
         mainAlignVertical = (String) dataDict.get("main_align_vertical");
         subAlignVertical = (String) dataDict.get("sub_align_vertical");
 
-        subheadingSemiTransparent = (Integer) dataDict.get("subheading_semi_transparent") == 1;
-        mainSemiTransparent = (Integer) dataDict.get("main_semi_transparent") == 1;
-        subSemiTransparent = (Integer) dataDict.get("sub_align_vertical")  == 1;
+        subheadingSemiTransparent = ((Integer) dataDict.get("subheading_semi_transparent")) == 1;
+        mainSemiTransparent = ((Integer) dataDict.get("main_semi_transparent")) == 1;
+        subSemiTransparent = ((Integer) dataDict.get("sub_semi_transparent"))  == 1;
 
         return this;
     }
