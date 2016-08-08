@@ -588,6 +588,24 @@ public class PackParserHelper {
                 card.question.css.subFont = str;
             }
 
+            if (questionObj.containsKey("subheading_semi_transparent")) {
+                card.question.css.subheadingSemiTransparent = "1".equals(questionObj.get("subheading_semi_transparent"));
+            } else {
+                card.question.css.subheadingSemiTransparent = false;
+            }
+
+            if (questionObj.containsKey("main_semi_transparent")) {
+                card.question.css.mainSemiTransparent = "1".equals(questionObj.get("main_semi_transparent"));
+            } else {
+                card.question.css.mainSemiTransparent = false;
+            }
+
+            if (questionObj.containsKey("sub_semi_transparent")) {
+                card.question.css.subSemiTransparent = "1".equals(questionObj.get("sub_semi_transparent"));
+            } else {
+                card.question.css.subSemiTransparent = false;
+            }
+
             int subheadingSize;
             temp = null;
             if (questionObj.containsKey("subheading_size"))  {
@@ -961,6 +979,24 @@ public class PackParserHelper {
 
                 String str = (String) answerObj.get("sub_font");
                 card.answer.css.subFont = str;
+            }
+
+            if (answerObj.containsKey("subheading_semi_transparent")) {
+                card.answer.css.subheadingSemiTransparent = "1".equals(answerObj.get("subheading_semi_transparent"));
+            } else {
+                card.answer.css.subheadingSemiTransparent = false;
+            }
+
+            if (answerObj.containsKey("main_semi_transparent")) {
+                card.answer.css.mainSemiTransparent = "1".equals(answerObj.get("main_semi_transparent"));
+            } else {
+                card.answer.css.mainSemiTransparent = false;
+            }
+
+            if (answerObj.containsKey("sub_semi_transparent")) {
+                card.answer.css.subSemiTransparent = "1".equals(answerObj.get("sub_semi_transparent"));
+            } else {
+                card.answer.css.subSemiTransparent = false;
             }
 
             temp = "";

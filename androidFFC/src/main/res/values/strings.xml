@@ -184,6 +184,7 @@
     <string name="ToolbarItem_Color_Black">Black</string>
     <string name="ToolbarItem_Color_Yellow">Yellow</string>
     <string name="ToolbarItem_Color_White">White</string>
+    <string name="ToolbarItem_Color_Invisible">Invisible</string>
     <string name="Label_Question">Question</string>
     <string name="Label_Answer">Answer</string>
     <string name="Label_New_Pack_Name">New pack name</string>

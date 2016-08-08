@@ -1966,6 +1966,7 @@ public class MainActivity extends FragmentActivity implements
         int fontIndex = 1;  // by default, it's default color, so it's 1
         int sizeIndex = -1;
 
+        boolean semiTransparent = false;  //这个是非常特殊的,应客户要求属于colorArray,但其实从逻辑看很不合理
 
         if (tag.equals(CardDetailFragment.TAG_SUBHEADING)) {
             alignHorizontalIndex = Arrays.asList(alignArray).indexOf(currentCSS.subheadingAlign);
@@ -1980,6 +1981,7 @@ public class MainActivity extends FragmentActivity implements
             fontIndex = Arrays.asList(fontArray).indexOf(currentCSS.subheadingFont);
             sizeIndex = searchNearestIndex(sizeArray, (int) currentCSS.subheadingSize);
 
+            semiTransparent = currentCSS.subheadingSemiTransparent;
         } else if (tag.equals(CardDetailFragment.TAG_MAIN)) {
 
             alignHorizontalIndex = Arrays.asList(alignArray).indexOf(currentCSS.mainAlign);
@@ -1994,6 +1996,7 @@ public class MainActivity extends FragmentActivity implements
             fontIndex = Arrays.asList(fontArray).indexOf(currentCSS.mainFont);
             sizeIndex = searchNearestIndex(sizeArray, (int) currentCSS.mainSize);
 
+            semiTransparent = currentCSS.mainSemiTransparent;
         } else if (tag.equals(CardDetailFragment.TAG_SUB)) {
 
             alignHorizontalIndex = Arrays.asList(alignArray).indexOf(currentCSS.subAlign);
@@ -2007,6 +2010,7 @@ public class MainActivity extends FragmentActivity implements
             colorIndex = Arrays.asList(colorArray).indexOf(currentCSS.subColor);
             fontIndex = Arrays.asList(fontArray).indexOf(currentCSS.subFont);
             sizeIndex = searchNearestIndex(sizeArray, (int) currentCSS.subSize);
+            semiTransparent = currentCSS.subSemiTransparent;
 
         }
 
@@ -2029,6 +2033,9 @@ public class MainActivity extends FragmentActivity implements
 
         ArrayList colorIndexList = new ArrayList<Integer>();
         colorIndexList.add(Integer.valueOf(colorIndex));
+        if (semiTransparent) {
+            colorIndexList.add(Integer.valueOf(colorArray.length - 1));
+        }
         adapterColor.setSelection(colorIndexList);
 
         ArrayList alignIndexList = new ArrayList<Integer>();

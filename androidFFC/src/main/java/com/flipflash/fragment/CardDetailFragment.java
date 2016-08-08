@@ -1513,6 +1513,9 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnTouchL
 
     }
 
+    /*
+     * Used only in play mode
+     */
     public void switchQuestionAnswerView() {
 
         if ((mCurrentPack.creatorID.equals(OpenUDID_manager.getOpenUDID())) == false) {
@@ -1560,6 +1563,8 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnTouchL
 
         resetResizingMonitorTimer();//必须放到updateAnswerCSS后，因为在play mode中，会在updateAnswerCSS中额外的setTextSize
 
+        updateSemiTransparentPolicy();
+
         //hide placeholder image if play mode
         if (mIsPlayingCard) {
             if (StringUtils.isEmptyOrPlaceHolder(mCurrentCard.question.imageUriFormatStr)) {
@@ -1570,6 +1575,63 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnTouchL
                 mImage2.setVisibility(View.INVISIBLE);
             }
         }
+
+
+    }
+
+
+    private void updateSemiTransparentPolicy() {
+
+        float ALPHA_VALUE;
+
+        if (mIsPlayingCard) {
+            ALPHA_VALUE = 0;
+        } else {
+            ALPHA_VALUE = 0.5f;
+        }
+
+        if (mIsQuestionShowing) {
+
+            if (mCurrentCard.question.css.subheadingSemiTransparent) {
+                mSubheading.setAlpha(ALPHA_VALUE);
+            } else {
+                mSubheading.setAlpha(1);
+            }
+
+            if (mCurrentCard.question.css.mainSemiTransparent) {
+                mMain.setAlpha(ALPHA_VALUE);
+            } else {
+                mMain.setAlpha(1);
+            }
+
+            if (mCurrentCard.question.css.subSemiTransparent) {
+                mSub.setAlpha(ALPHA_VALUE);
+            } else {
+                mSub.setAlpha(1);
+            }
+
+        } else {
+
+            if (mCurrentCard.answer.css.subheadingSemiTransparent) {
+                mSubheading.setAlpha(ALPHA_VALUE);
+            } else {
+                mSubheading.setAlpha(1);
+            }
+
+            if (mCurrentCard.answer.css.mainSemiTransparent) {
+                mMain.setAlpha(ALPHA_VALUE);
+            } else {
+                mMain.setAlpha(1);
+            }
+
+            if (mCurrentCard.answer.css.subSemiTransparent) {
+                mSub.setAlpha(ALPHA_VALUE);
+            } else {
+                mSub.setAlpha(1);
+            }
+        }
+
+
 
 
     }
@@ -1598,6 +1660,8 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnTouchL
         updateAnswerCSS();
 
         resetResizingMonitorTimer(); //必须放到updateAnswerCSS后，因为在play mode中，会在updateAnswerCSS中额外的setTextSize
+
+        updateSemiTransparentPolicy();
 
         //hide placeholder image if play mode
         if (mIsPlayingCard) {
@@ -4477,35 +4541,72 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnTouchL
                 break;
             case 2:   //stand for color
 
-                if (editTextTag.equals(TAG_SUBHEADING)) {
-                    currentCSS.subheadingColor = colorArray[subMenuID + 1];
-                } else if (editTextTag.equals(TAG_MAIN)) {
-                    currentCSS.mainColor = colorArray[subMenuID + 1];
-                } else if (editTextTag.equals(TAG_SUB)) {
-                    currentCSS.subColor = colorArray[subMenuID + 1];
-                }
+                if (subMenuID == 6) {
+                    //semi transparent logic
 
-                switch (subMenuID) {
-                    case 0:
-                        mCurrentFocusedCardContentText.setTextColor(Color.RED);
-                        break;
-                    case 1:
-                        mCurrentFocusedCardContentText.setTextColor(Color.BLUE);
-                        break;
-                    case 2:
-                        mCurrentFocusedCardContentText.setTextColor(Color.BLACK);
-                        break;
-                    case 3:
-                        mCurrentFocusedCardContentText.setTextColor(Color.YELLOW);
-                        break;
-                    case 4:
-                        mCurrentFocusedCardContentText.setTextColor(Color.GREEN);
-                        break;
-                    case 5:
-                        mCurrentFocusedCardContentText.setTextColor(Color.WHITE);
-                        break;
-                    default:
-                        LOGE(TAG, "updateCSS: Out of range of subMenuID");
+                    if (editTextTag.equals(TAG_SUBHEADING)) {
+
+                        if (currentCSS.subheadingSemiTransparent) {
+                            mCurrentFocusedCardContentText.setAlpha(1.0f);
+                        } else {
+                            mCurrentFocusedCardContentText.setAlpha(0.5f);
+                        }
+
+                        currentCSS.subheadingSemiTransparent = ! (currentCSS.subheadingSemiTransparent);
+
+                    } else if (editTextTag.equals(TAG_MAIN)) {
+
+                        if (currentCSS.mainSemiTransparent) {
+                            mCurrentFocusedCardContentText.setAlpha(1.0f);
+                        } else {
+                            mCurrentFocusedCardContentText.setAlpha(0.5f);
+                        }
+
+                        currentCSS.mainSemiTransparent = ! (currentCSS.mainSemiTransparent);
+
+                    } else if (editTextTag.equals(TAG_SUB)) {
+
+                        if (currentCSS.subSemiTransparent) {
+                            mCurrentFocusedCardContentText.setAlpha(1.0f);
+                        } else {
+                            mCurrentFocusedCardContentText.setAlpha(0.5f);
+                        }
+
+                        currentCSS.subSemiTransparent = ! (currentCSS.subSemiTransparent);
+                    }
+
+                } else {
+
+                    if (editTextTag.equals(TAG_SUBHEADING)) {
+                        currentCSS.subheadingColor = colorArray[subMenuID + 1];
+                    } else if (editTextTag.equals(TAG_MAIN)) {
+                        currentCSS.mainColor = colorArray[subMenuID + 1];
+                    } else if (editTextTag.equals(TAG_SUB)) {
+                        currentCSS.subColor = colorArray[subMenuID + 1];
+                    }
+
+                    switch (subMenuID) {
+                        case 0:
+                            mCurrentFocusedCardContentText.setTextColor(Color.RED);
+                            break;
+                        case 1:
+                            mCurrentFocusedCardContentText.setTextColor(Color.BLUE);
+                            break;
+                        case 2:
+                            mCurrentFocusedCardContentText.setTextColor(Color.BLACK);
+                            break;
+                        case 3:
+                            mCurrentFocusedCardContentText.setTextColor(Color.YELLOW);
+                            break;
+                        case 4:
+                            mCurrentFocusedCardContentText.setTextColor(Color.GREEN);
+                            break;
+                        case 5:
+                            mCurrentFocusedCardContentText.setTextColor(Color.WHITE);
+                            break;
+                        default:
+                            LOGE(TAG, "updateCSS: Out of range of subMenuID");
+                    }
                 }
                 break;
             case 3:   //font
