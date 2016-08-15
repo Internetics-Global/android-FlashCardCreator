@@ -28,6 +28,7 @@ import com.flipflash.util.AppConfig;
 import com.flipflash.util.AppContext;
 import com.flipflash.util.Global;
 import com.flipflash.util.MutipleTargetHelper;
+import com.flipflash.util.OpenUDID_manager;
 import com.mobeta.android.dslv.DragSortListView;
 import com.mobeta.android.dslv.SimpleDragSortCursorAdapter;
 import com.squareup.leakcanary.RefWatcher;
@@ -249,7 +250,13 @@ public class CardListFragment extends Fragment {
             //Animation alphaIn = AnimationUtils.loadAnimation(getActivity(), R.anim.fade_in);
             if (mIsListViewEditable) {
                 drageImage.setVisibility(View.VISIBLE);
-                removeImage.setVisibility(View.VISIBLE);
+
+                if ((mCurrentPack != null) && (mCurrentPack.creatorID).equals(OpenUDID_manager.getOpenUDID())) {
+                    removeImage.setVisibility(View.VISIBLE);
+                }else {
+                    removeImage.setVisibility(View.GONE);
+                }
+
                 cardSNText.setVisibility(View.GONE);
 
                 //drageImage.startAnimation(alphaIn);

@@ -450,25 +450,16 @@ public class MainActivity extends FragmentActivity implements
                     break;
                 }
 
-                if (!mCurrentPack.creatorID.equals(OpenUDID_manager.getOpenUDID())) {
-
-                    new SweetAlertDialog(MainActivity.this)
-                            .setTitleText(getResources().getString(R.string.DIALOG_AlERT))
-                            .setContentText(getResources().getString(R.string.DIALOG_YOU_CAN_NOT_CHANGE_TEMPLATE_BACKGROUND))
-                            .show();
-
-                } else {
-                    if ((mCurrentPack != null) && (mCurrentPack.cards.size() > 0)) {
-                        CardListFragment cardListFragment = (CardListFragment) (getSupportFragmentManager().findFragmentById(R.id.fragment_card_list));
-                        if (cardListFragment.getEditStyle() == false) {
-                            //item.setTitle("done");
-                            item.setIcon(getResources().getDrawable(R.drawable.pack_edit_finished));
-                            cardListFragment.enterEditStyle(true);
-                        } else {
-                            //item.setTitle("edit");
-                            item.setIcon(getResources().getDrawable(R.drawable.pack_edit));
-                            cardListFragment.enterEditStyle(false);
-                        }
+                if ((mCurrentPack != null) && (mCurrentPack.cards.size() > 0)) {
+                    CardListFragment cardListFragment = (CardListFragment) (getSupportFragmentManager().findFragmentById(R.id.fragment_card_list));
+                    if (cardListFragment.getEditStyle() == false) {
+                        //item.setTitle("done");
+                        item.setIcon(getResources().getDrawable(R.drawable.pack_edit_finished));
+                        cardListFragment.enterEditStyle(true);
+                    } else {
+                        //item.setTitle("edit");
+                        item.setIcon(getResources().getDrawable(R.drawable.pack_edit));
+                        cardListFragment.enterEditStyle(false);
                     }
                 }
 
