@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Context;
 import android.os.Bundle;
 import android.speech.tts.TextToSpeech;
+import android.support.v7.app.AlertDialog;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -101,6 +102,12 @@ public class SelectText2SpeechLanguageActivity extends Activity {
 
                     } else {
                         LOGE(TAG, "onInit: TTS Initialization Failed!");
+
+                        AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(
+                                SelectText2SpeechLanguageActivity.this);
+                        alertDialogBuilder.setTitle("Alert");
+                        alertDialogBuilder
+                                .setMessage("Failed to fetch language list, please try again").show();
                     }
                 }
             });
