@@ -243,16 +243,20 @@ public class SelectText2SpeechLanguageActivity extends Activity {
         dict.put("en-AU","English (Australia) ");
         dict.put("en-GB","English (United Kingdom) ");
         dict.put("en-IE","English (Ireland) ");
+        dict.put("en-IN","English (India) ");
         dict.put("en-US","English (United States) ");
         dict.put("en-ZA","English (South Africa) ");
         dict.put("es-ES","Spanish (Spain) ");
         dict.put("es-MX","Spanish (Mexico) ");
+        dict.put("es-US","Spanish (United States) ");
         dict.put("fi-FI","Finnish (Finland) ");
         dict.put("fr-CA","French (Canada) ");
         dict.put("fr-FR","French (France) ");
+        dict.put("fr-BE","French (Belgium) ");
         dict.put("he-IL","Hebrew (Israel) ");
         dict.put("hi-IN","Hindi (India) ");
         dict.put("hu-HU","Hungarian (Hungary) ");
+        dict.put("in-ID","Indonesia (Indonesia) ");
         dict.put("id-ID","Indonesian (Indonesia) ");
         dict.put("it-IT","Italian (Italy) ");
         dict.put("ja-JP","Japanese (Japan) ");
@@ -322,6 +326,9 @@ public class SelectText2SpeechLanguageActivity extends Activity {
             String key = getLanguageAndLocaleString(locale);
 
             String displayStr = mLanguageLocalePairings.get(key);
+            if (displayStr == null) {
+                displayStr = key;
+            }
 
             titleTextView.setText(displayStr);
 
