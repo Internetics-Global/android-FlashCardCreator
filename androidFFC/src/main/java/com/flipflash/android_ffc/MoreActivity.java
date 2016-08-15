@@ -227,6 +227,13 @@ public class MoreActivity extends Activity {
             }
         });
 
+        findViewById(R.id.rl_select_speech_language).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(MoreActivity.this, SelectText2SpeechLanguageActivity.class));
+            }
+        });
+
         findViewById(R.id.rl_play_option).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

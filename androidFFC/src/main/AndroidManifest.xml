@@ -73,6 +73,10 @@
             android:screenOrientation="landscape">
         </activity>
         <activity
+            android:name="com.flipflash.android_ffc.SelectText2SpeechLanguageActivity"
+            android:screenOrientation="landscape">
+        </activity>
+        <activity
             android:name="com.flipflash.android_ffc.VideoViewActivity"
             android:windowSoftInputMode="stateAlwaysHidden"
             android:screenOrientation="landscape">

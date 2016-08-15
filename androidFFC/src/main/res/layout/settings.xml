@@ -123,6 +123,21 @@
         <View
             style="@style/h_line" />
 
+        <RelativeLayout
+            android:id="@+id/rl_select_speech_language"
+            style="@style/option_item_rl" >
+
+            <TextView
+                style="@style/option_item_text_parent"
+                android:text= "@string/Table_Item_Speech_Language_Select"
+                android:textColor="@android:color/white"
+                android:textSize="16dp" />
+        </RelativeLayout>
+
+
+        <View
+            style="@style/h_line" />
+
 
         <include
 

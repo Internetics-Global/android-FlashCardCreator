@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:orientation="vertical"
+              android:layout_width="match_parent"
+              android:layout_height="50dp">
+
+    <TextView
+        style="@style/option_item_text_parent"
+        android:text= "placeholder"
+        android:textColor="@android:color/white"
+        android:textSize="16dp"
+        android:id="@+id/title_textview"
+        android:layout_alignParentLeft="true"
+        android:layout_centerVertical="true"
+        android:layout_marginLeft="20dp"/>
+
+    <Button
+        android:layout_width="24dp"
+        android:layout_height="24dp"
+        android:layout_centerVertical="true"
+        android:background="@drawable/check"
+        android:layout_marginRight="20dp"
+        android:layout_alignParentRight="true"
+        android:id="@+id/checked_button"/>
+
+</RelativeLayout>

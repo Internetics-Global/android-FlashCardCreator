@@ -49,6 +49,7 @@ import com.flipflash.util.Global;
 import com.flipflash.util.StringUtils;
 import com.flipflash.util.UIHelper;
 import com.flipflash.UI.VGViewPager;
+import com.orhanobut.hawk.Hawk;
 
 import org.adw.library.widgets.discreteseekbar.DiscreteSeekBar;
 
@@ -1510,7 +1511,7 @@ public class PlayActivity extends FragmentActivity implements SensorEventListene
 
         LOGD(TAG, "setupTextToSpeech");
 
-        mMatchedLocale = getText2SpeechLocale();
+        mMatchedLocale = getSelectedLocale();
 
         if (mTTS == null) {
 
@@ -1537,9 +1538,44 @@ public class PlayActivity extends FragmentActivity implements SensorEventListene
 
     }
 
-    private Locale getText2SpeechLocale() {
+    private Locale getSelectedLocale() {
 
-        LOGD(TAG, "getText2SpeechLocale");
+        Locale locale = null;
+        if (Hawk.contains("Selected_Text2Speech_Language")) {
+            String savedStr = Hawk.get("Selected_Text2Speech_Language");
+
+            Locale[] locales = Locale.getAvailableLocales();
+            for (Locale item: locales) {
+                String itemStr = getLanguageAndLocaleString(item);
+                if (itemStr.equals(savedStr)) {
+                    locale = item;
+                }
+            }
+
+        }
+
+        if (locale == null) {
+            locale = getDefaultText2SpeechLocale();
+        }
+
+        return locale;
+    }
+
+    /*
+     * There's another same method in SelectText2SpeechLanguageActivity, refactoring later
+    */
+    private String getLanguageAndLocaleString(Locale locale) {
+
+        return locale.getLanguage() + "-" + locale.getCountry();
+
+    }
+
+    /*
+     * There's another same method in SelectText2SpeechLanguageActivity, refactoring later
+    */
+    private Locale getDefaultText2SpeechLocale() {
+
+        LOGD(TAG, "getDefaultText2SpeechLocale");
 
         try {
             Locale[] locales = Locale.getAvailableLocales();
@@ -1551,7 +1587,8 @@ public class PlayActivity extends FragmentActivity implements SensorEventListene
             List<Locale> localeList = new ArrayList<Locale>();
             for (Locale locale : locales) {
                 int res = mTTS.isLanguageAvailable(locale);
-                if (res == TextToSpeech.LANG_COUNTRY_AVAILABLE) {
+                //used to diff en_US_POSIX, since en_US_POSIX is the same as en_US
+                if (res == TextToSpeech.LANG_COUNTRY_AVAILABLE && ("POSIX".equals(locale.getVariant()) == false)) {
                     localeList.add(locale);
                 }
             }
