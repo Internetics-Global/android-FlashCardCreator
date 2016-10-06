@@ -20,7 +20,7 @@
             android:orientation="vertical">
 
             <com.flipflash.UI.FCCEditTextAutoFit
-                android:layout_marginTop="5dp"
+                android:layout_marginTop="2dp"
                 android:id="@+id/fragment_add_pack_pack_name"
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
@@ -36,7 +36,7 @@
             </com.flipflash.UI.FCCEditTextAutoFit>
 
             <com.flipflash.UI.FCCEditTextAutoFit
-                android:layout_marginTop="5dp"
+                android:layout_marginTop="2dp"
                 android:id="@+id/fragment_add_pack_sidebar_title"
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
@@ -51,7 +51,7 @@
 
 
             <com.flipflash.UI.FCCEditTextAutoFit
-                android:layout_marginTop="5dp"
+                android:layout_marginTop="2dp"
                 android:id="@+id/fragment_add_pack_creator"
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
@@ -65,7 +65,7 @@
                 android:ems="10"/>
 
             <com.flipflash.UI.FCCEditTextAutoFit
-                android:layout_marginTop="5dp"
+                android:layout_marginTop="2dp"
                 android:id="@+id/fragment_add_pack_job_title"
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
@@ -79,18 +79,19 @@
                 android:ems="10"/>
 
             <TextView
+                android:layout_marginTop="2dp"
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
                 android:layout_weight="1"
-                android:textSize="13sp"
-                android:maxLines="1"
+                android:textSize="@dimen/add_pack_edit_text_size"
+                android:maxLines="2"
                 android:gravity="left|bottom"
                 android:textColor="@android:color/white"
                 android:layout_marginLeft="10dp"
                 android:text="@string/Label_Admin_Password_Hint"/>
 
             <EditText
-                android:layout_marginTop="5dp"
+                android:layout_marginTop="2dp"
                 android:id="@+id/fragment_add_pack_admin_password"
                 android:layout_width="match_parent"
                 android:inputType="textPassword"
@@ -104,7 +105,7 @@
                 android:ems="10"/>
 
             <EditText
-                android:layout_marginTop="5dp"
+                android:layout_marginTop="2dp"
                 android:id="@+id/fragment_add_pack_confirm_admin_password"
                 android:layout_width="match_parent"
                 android:inputType="textPassword"
@@ -156,12 +157,13 @@
             <TextView
                 android:layout_marginLeft="20dp"
                 android:layout_marginRight="20dp"
+                android:layout_marginTop="10dp"
                 android:layout_marginBottom="120dp"
                 android:layout_gravity="center"
                 android:layout_width="match_parent"
                 android:text="@string/select_your_pack_image_from_photo_library"
                 android:textColor="@android:color/white"
-                android:textSize="15sp"
+                android:textSize="@dimen/add_pack_edit_text_size"
                 android:maxLines="2"
                 android:gravity="center"
                 android:layout_height="40dp" />
