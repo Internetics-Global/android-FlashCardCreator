@@ -4297,8 +4297,8 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnTouchL
         params.height = 0;
 
         int topMargin = UIHelper.getPixels(20);
-        int bottomMargin = UIHelper.getPixels(60);
-        int horizontalMargin = UIHelper.getPixels(185);
+        int bottomMargin = UIHelper.getPixels(20);
+        int horizontalMargin = UIHelper.getPixels(155);
         params.setMargins(horizontalMargin,topMargin,horizontalMargin,bottomMargin);
         mImage.setLayoutParams(params);
         mContentBodyLinearLayout.addView(mImage);
@@ -4306,7 +4306,7 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnTouchL
         //sub
         params = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,
                 ViewGroup.LayoutParams.MATCH_PARENT);
-        params.weight = 120;
+        params.weight = 100;
         params.height = 0;
         params.topMargin = UIHelper.getPixels(0);
         mSub.setLayoutParams(params);
