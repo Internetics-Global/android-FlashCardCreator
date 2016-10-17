@@ -2838,6 +2838,9 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnTouchL
         mMain.setBackgroundResource(R.drawable.shape_edittext_no_editable);
         mSub.setBackgroundResource(R.drawable.shape_edittext_no_editable);
 
+        mImage.setBackgroundResource(R.drawable.shape_imageview_no_editable);
+        mImage2.setBackgroundResource(R.drawable.shape_imageview_no_editable);
+
     }
 
     /**
