@@ -9,6 +9,7 @@ import android.content.pm.PackageManager;
 import com.amazonaws.auth.CognitoCachingCredentialsProvider;
 import com.amazonaws.regions.Regions;
 import com.amazonaws.services.s3.AmazonS3Client;
+import com.bumptech.glide.request.target.ViewTarget;
 import com.facebook.stetho.Stetho;
 import com.flipflash.android_ffc.MainActivity;
 import com.flipflash.android_ffc.R;
@@ -49,6 +50,8 @@ public class AppContext extends Application {
     @Override
     public void onCreate() {
         super.onCreate();
+
+        ViewTarget.setTagId(R.id.glide_tag);
 
 //        refWatcher = LeakCanary.install(this);
 

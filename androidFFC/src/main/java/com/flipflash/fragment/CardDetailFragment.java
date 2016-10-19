@@ -42,6 +42,7 @@ import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
 import com.flipflash.UI.FCCEditText;
 import com.flipflash.UI.RoundedBottomRightImageView;
 import com.flipflash.UI.ScaleHelper;
@@ -594,6 +595,10 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnTouchL
         mImage2.setImageURI(null);
         mLogoImage.setImageURI(null);
 
+        //to avoid potential memory issue
+        Glide.clear(mImage);
+        Glide.clear(mImage2);
+
 //        mSubheadingTextWatcher = null;
 //        mMainTextWatcher = null;
 //        mSubTextWatcher = null;
@@ -904,8 +909,10 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnTouchL
 
                         if (mIsImage2Active) {
                             String placeholderImagePath = FileOperationHelper.getQuestionImagePlaceholderImagePath();
-                            ImageLoader imageLoader = ImageLoader.getInstance();
-                            imageLoader.displayImage(placeholderImagePath, mImage2);
+                            Glide.with(getActivity())
+                                    .load(placeholderImagePath)
+                                    .dontAnimate()
+                                    .into(mImage2);
                             if (mIsQuestionShowing) {
                                 mCurrentCard.question.imageUriFormatStr2 = "";
                             } else {
@@ -913,8 +920,9 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnTouchL
                             }
                         } else {
                             String placeholderImagePath = FileOperationHelper.getAnswerImagePlaceholderImagePath();
-                            ImageLoader imageLoader = ImageLoader.getInstance();
-                            imageLoader.displayImage(placeholderImagePath, mImage);
+                            Glide.with(getActivity()).load(placeholderImagePath)
+                                    .dontAnimate()
+                                    .into(mImage);
                             if (mIsQuestionShowing) {
                                 mCurrentCard.question.imageUriFormatStr = "";
                             } else {
@@ -2714,13 +2722,30 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnTouchL
         mMain.setText(mCurrentCard.question.main);
         mSub.setText(mCurrentCard.question.sub);
 
-        ImageLoader imageLoader = ImageLoader.getInstance();
         if (StringUtils.isEmpty(mCurrentCard.question.imageUriFormatStr) == false && (mImage.getVisibility() == View.VISIBLE)) {
-            imageLoader.displayImage(mCurrentCard.question.imageUriFormatStr, mImage,mDisplayImageOptions);
+            if (mCurrentCard.question.imageUriFormatStr.toLowerCase().contains(".gif")) {
+                Glide.with(getActivity()).load(mCurrentCard.question.imageUriFormatStr)
+                        .asGif()
+                        .placeholder(R.drawable.loading_spinner)
+                        .dontAnimate()
+                        .into(mImage);
+            } else {
+                Glide.with(getActivity()).load(mCurrentCard.question.imageUriFormatStr)
+                        .into(mImage);
+            }
         }
 
         if (StringUtils.isEmpty(mCurrentCard.question.imageUriFormatStr2) == false && (mImage2.getVisibility() == View.VISIBLE)) {
-             imageLoader.displayImage(mCurrentCard.question.imageUriFormatStr2, mImage2,mDisplayImageOptions);
+            if (mCurrentCard.question.imageUriFormatStr2.toLowerCase().contains(".gif")) {
+                Glide.with(getActivity()).load(mCurrentCard.question.imageUriFormatStr2).asGif()
+                        .placeholder(R.drawable.loading_spinner)
+                        .dontAnimate()
+                        .into(mImage2);
+            } else {
+                Glide.with(getActivity()).load(mCurrentCard.question.imageUriFormatStr2)
+                        .dontAnimate()
+                        .into(mImage2);
+            }
         }
 
         if (StringUtils.isEmpty(mCurrentCard.question.backgroundImageUriFormatStr) == false && (mBackgroundImageView.getVisibility() == View.VISIBLE)) {
@@ -2738,14 +2763,32 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnTouchL
         mMain.setText(mCurrentCard.answer.main);
         mSub.setText(mCurrentCard.answer.sub);
 
-        ImageLoader imageLoader = ImageLoader.getInstance();
-
         if (StringUtils.isEmpty(mCurrentCard.answer.imageUriFormatStr) == false && (mImage.getVisibility() == View.VISIBLE)) {
-            imageLoader.displayImage(mCurrentCard.answer.imageUriFormatStr, mImage,mDisplayImageOptions);
+
+            if (mCurrentCard.answer.imageUriFormatStr.toLowerCase().contains(".gif")) {
+                Glide.with(getActivity()).load(mCurrentCard.answer.imageUriFormatStr).asGif()
+                        .placeholder(R.drawable.loading_spinner)
+                        .dontAnimate()
+                        .into(mImage);
+            } else {
+                Glide.with(getActivity()).load(mCurrentCard.answer.imageUriFormatStr)
+                        .dontAnimate()
+                        .into(mImage);
+            }
+
         }
 
         if (StringUtils.isEmpty(mCurrentCard.answer.imageUriFormatStr2) == false && (mImage2.getVisibility() == View.VISIBLE)) {
-            imageLoader.displayImage(mCurrentCard.answer.imageUriFormatStr2, mImage2,mDisplayImageOptions);
+            if (mCurrentCard.answer.imageUriFormatStr2.toLowerCase().contains(".gif")) {
+                Glide.with(getActivity()).load(mCurrentCard.answer.imageUriFormatStr2).asGif()
+                        .placeholder(R.drawable.loading_spinner)
+                        .dontAnimate()
+                        .into(mImage2);
+            } else {
+                Glide.with(getActivity()).load(mCurrentCard.answer.imageUriFormatStr2)
+                        .dontAnimate()
+                        .into(mImage2);
+            }
         }
 
         if (StringUtils.isEmpty(mCurrentCard.answer.backgroundImageUriFormatStr) == false && (mBackgroundImageView.getVisibility() == View.VISIBLE)) {
@@ -3447,8 +3490,7 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnTouchL
         mImage.setVisibility(View.VISIBLE);
 
         String placeholderImagePath = FileOperationHelper.getQuestionImagePlaceholderImagePath();
-        ImageLoader imageLoader = ImageLoader.getInstance();
-        imageLoader.displayImage(placeholderImagePath, mImage);
+        Glide.with(getActivity()).load(placeholderImagePath).into(mImage);
 
         mImage2.setVisibility(View.GONE);
         mSubheading.setVisibility(View.GONE);
@@ -3474,8 +3516,7 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnTouchL
         mImage.setVisibility(View.VISIBLE);
 
         String placeholderImagePath = FileOperationHelper.getQuestionImagePlaceholderImagePath();
-        ImageLoader imageLoader = ImageLoader.getInstance();
-        imageLoader.displayImage(placeholderImagePath, mImage);
+        Glide.with(getActivity()).load(placeholderImagePath).into(mImage);
 
         mImage2.setVisibility(View.GONE);
         mSubheading.setVisibility(View.VISIBLE);
@@ -3545,8 +3586,7 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnTouchL
         mImage.setVisibility(View.VISIBLE);
 
         String placeholderImagePath = FileOperationHelper.getQuestionImagePlaceholderImagePath();
-        ImageLoader imageLoader = ImageLoader.getInstance();
-        imageLoader.displayImage(placeholderImagePath, mImage);
+        Glide.with(getActivity()).load(placeholderImagePath).into(mImage);
 
         mImage2.setVisibility(View.GONE);
         mSubheading.setVisibility(View.VISIBLE);
@@ -3606,8 +3646,7 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnTouchL
         mImage.setVisibility(View.VISIBLE);
 
         String placeholderImagePath = FileOperationHelper.getQuestionImagePlaceholderImagePath();
-        ImageLoader imageLoader = ImageLoader.getInstance();
-        imageLoader.displayImage(placeholderImagePath, mImage);
+        Glide.with(getActivity()).load(placeholderImagePath).into(mImage);
 
         mImage2.setVisibility(View.GONE);
         mSubheading.setVisibility(View.VISIBLE);
@@ -3715,12 +3754,11 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnTouchL
         mImage.setVisibility(View.VISIBLE);
 
         String placeholderImagePath = FileOperationHelper.getQuestionImagePlaceholderImagePath();
-        ImageLoader imageLoader = ImageLoader.getInstance();
-        imageLoader.displayImage(placeholderImagePath, mImage);
+        Glide.with(getActivity()).load(placeholderImagePath).into(mImage);
 
         mImage2.setVisibility(View.VISIBLE);
 
-        imageLoader.displayImage(placeholderImagePath, mImage2);
+        Glide.with(getActivity()).load(placeholderImagePath).into(mImage2);
 
         mSubheading.setVisibility(View.VISIBLE);
         mMain.setVisibility(View.GONE);
@@ -3790,8 +3828,7 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnTouchL
         mImage.setVisibility(View.VISIBLE);
 
         String placeholderImagePath = FileOperationHelper.getQuestionImagePlaceholderImagePath();
-        ImageLoader imageLoader = ImageLoader.getInstance();
-        imageLoader.displayImage(placeholderImagePath, mImage);
+        Glide.with(getActivity()).load(placeholderImagePath).into(mImage);
 
         mImage2.setVisibility(View.GONE);
         mSubheading.setVisibility(View.VISIBLE);
@@ -3965,8 +4002,7 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnTouchL
         mImage.setVisibility(View.VISIBLE);
 
         String placeholderImagePath = FileOperationHelper.getQuestionImagePlaceholderImagePath();
-        ImageLoader imageLoader = ImageLoader.getInstance();
-        imageLoader.displayImage(placeholderImagePath, mImage);
+        Glide.with(getActivity()).load(placeholderImagePath).into(mImage);
 
         mImage2.setVisibility(View.GONE);
         mSubheading.setVisibility(View.VISIBLE);
@@ -4036,8 +4072,7 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnTouchL
         mImage.setVisibility(View.VISIBLE);
 
         String placeholderImagePath = FileOperationHelper.getQuestionImagePlaceholderImagePath();
-        ImageLoader imageLoader = ImageLoader.getInstance();
-        imageLoader.displayImage(placeholderImagePath, mImage);
+        Glide.with(getActivity()).load(placeholderImagePath).into(mImage);
 
         mImage2.setVisibility(View.GONE);
         mSubheading.setVisibility(View.VISIBLE);
@@ -4118,12 +4153,11 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnTouchL
         mImage.setVisibility(View.VISIBLE);
 
         String placeholderImagePath = FileOperationHelper.getQuestionImagePlaceholderImagePath();
-        ImageLoader imageLoader = ImageLoader.getInstance();
-        imageLoader.displayImage(placeholderImagePath, mImage);
+        Glide.with(getActivity()).load(placeholderImagePath).into(mImage);
 
         mImage2.setVisibility(View.VISIBLE);
 
-        imageLoader.displayImage(placeholderImagePath, mImage2);
+        Glide.with(getActivity()).load(placeholderImagePath).into(mImage2);
 
         mSubheading.setVisibility(View.VISIBLE);
         mMain.setVisibility(View.VISIBLE);
@@ -4204,8 +4238,7 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnTouchL
         mImage.setVisibility(View.VISIBLE);
 
         String placeholderImagePath = FileOperationHelper.getQuestionImagePlaceholderImagePath();
-        ImageLoader imageLoader = ImageLoader.getInstance();
-        imageLoader.displayImage(placeholderImagePath, mImage);
+        Glide.with(getActivity()).load(placeholderImagePath).into(mImage);
 
         mImage2.setVisibility(View.GONE);
         mSubheading.setVisibility(View.VISIBLE);
@@ -5247,19 +5280,38 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnTouchL
 
                             } else if (requestCodeFinal == REQUEST_CODE_FROM_IMAGE) {
 
-                                ImageSize targetSize = new ImageSize(400, 400);
-                                ImageLoader imageLoader = ImageLoader.getInstance();
-                                Bitmap scaledBitmap = imageLoader.loadImageSync(selectedURI.toString(),targetSize);
+                                String selectedPath = UIHelper.getRealPathFromURI(getActivity(),selectedURI);
+                                boolean isGif = selectedPath.toLowerCase().contains(".gif");
 
-                                if (scaledBitmap == null) {
-                                    LOGE(TAG, "handleCrop, scaledBitmap = null");
-                                    return;
+                                Bitmap scaledBitmap = null;  //for non-gif
+                                File toSaveFile;
+                                if (isGif) {
+                                    toSaveFile = UIHelper.saveGIFToCaches(new File(selectedPath));
+                                } else {
+
+                                    ImageSize targetSize = new ImageSize(400, 400);
+                                    ImageLoader imageLoader = ImageLoader.getInstance();
+                                    scaledBitmap = imageLoader.loadImageSync(selectedURI.toString(),targetSize);
+
+                                    if (scaledBitmap == null) {
+                                        LOGE(TAG, "handleCrop, scaledBitmap = null");
+                                        return;
+                                    }
+
+                                    toSaveFile = UIHelper.saveImageToCaches(scaledBitmap);
                                 }
 
-                                File toSaveFile = UIHelper.saveImageToCaches(scaledBitmap);
-
                                 if (mIsImage2Active) {
-                                    mImage2.setImageBitmap(scaledBitmap);
+
+                                    if (isGif) {
+                                        Glide.with(getActivity()).load(toSaveFile).asGif()
+                                                .placeholder(R.drawable.loading_spinner)
+                                                .dontAnimate()
+                                                .into(mImage2);
+                                    } else {
+                                        mImage2.setImageBitmap(scaledBitmap);
+                                    }
+
                                     if (mIsQuestionShowing) {
                                         mCurrentCard.question.imageUriFormatStr2 = FileOperationHelper.convertToUriFormatFile(toSaveFile);
 
@@ -5280,7 +5332,15 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnTouchL
                                         mCurrentCard.answer.movieUriFormatStr2 = "";
                                     }
                                 } else {
-                                    mImage.setImageBitmap(scaledBitmap);
+
+                                    if (isGif) {
+                                        Glide.with(getActivity()).load(toSaveFile).asGif()
+                                                .placeholder(R.drawable.loading_spinner)
+                                                .into(mImage);
+                                    } else {
+                                        mImage.setImageBitmap(scaledBitmap);
+                                    }
+
                                     if (mIsQuestionShowing) {
                                         mCurrentCard.question.imageUriFormatStr = FileOperationHelper.convertToUriFormatFile(toSaveFile);
 

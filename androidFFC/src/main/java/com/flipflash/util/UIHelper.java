@@ -31,6 +31,8 @@ import android.widget.FrameLayout;
 import com.flipflash.android_ffc.R;
 import com.flipflash.helper.FileOperationHelper;
 
+import org.apache.commons.io.FileUtils;
+
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
@@ -221,6 +223,22 @@ public class UIHelper {
         canvas.drawBitmap(bitmap, rect, rect, paint);
 
         return output;
+    }
+
+
+    public static File saveGIFToCaches(File file) {
+        File toSaveFile = FileOperationHelper.generateUniqueGIFFilePath();
+        try {
+            FileUtils.copyFile(
+                file,
+                toSaveFile);
+            return toSaveFile;
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        return null;
+
     }
 
 

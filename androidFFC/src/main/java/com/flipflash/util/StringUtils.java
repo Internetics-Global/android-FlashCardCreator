@@ -316,7 +316,7 @@ public class StringUtils {
 
     public static boolean isCorrectImageName(String str) {
         boolean result = false;
-        result = ((str != null) && ((str.toLowerCase().contains(".png")) || (str.toLowerCase().contains(".jpg"))));
+        result = ((str != null) && ((str.toLowerCase().contains(".gif")) || (str.toLowerCase().contains(".png")) || (str.toLowerCase().contains(".jpg"))));
         return result;
     }
 

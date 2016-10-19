@@ -98,6 +98,12 @@ public class FileOperationHelper {
         return tempFile;
     }
 
+    public static File generateUniqueGIFFilePath() {
+        String string = String.format("%s.gif", UUID.randomUUID().toString());
+        File tempFile = new File(imagesDirectory(), string);
+        return tempFile;
+    }
+
     /**
      * All the video resouces in pack/card will be  format of .3gp Everytime you call
      * this method, the file path will be unique
