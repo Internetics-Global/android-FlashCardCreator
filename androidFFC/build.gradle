@@ -50,11 +50,11 @@ android {
     buildTypes {
         release {
             minifyEnabled true
-            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.txt'
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.txt','proguard-fresco.pro'
         }
         debug {
             minifyEnabled false
-            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.txt'
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.txt','proguard-fresco.pro'
         }
     }
 
@@ -128,10 +128,20 @@ dependencies {
     compile project(':mediapicker')
     compile project(':lvl')
 
-    //glide
+    //https://github.com/anjlab/android-inapp-billing-v3
     compile 'com.anjlab.android.iab.v3:library:1.0.+'
 
-    compile 'com.github.bumptech.glide:glide:3.7.0'
+    compile ('com.facebook.fresco:fresco:0.13.0+'){
+        exclude group: 'com.parse.bolts', module: 'bolts-applinks';
+        exclude module: 'bolts-android';
+            exclude group: 'com.parse.bolts', module: 'bolts-tasks';
+    }
+
+    compile ('com.facebook.fresco:animated-gif:0.13.0+'){
+        exclude group: 'com.parse.bolts', module: 'bolts-applinks';
+        exclude module: 'bolts-android';
+        exclude group: 'com.parse.bolts', module: 'bolts-tasks';
+    }
 
 }
 

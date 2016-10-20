@@ -9,8 +9,10 @@ import android.content.pm.PackageManager;
 import com.amazonaws.auth.CognitoCachingCredentialsProvider;
 import com.amazonaws.regions.Regions;
 import com.amazonaws.services.s3.AmazonS3Client;
-import com.bumptech.glide.request.target.ViewTarget;
+import com.facebook.drawee.backends.pipeline.Fresco;
+import com.facebook.imagepipeline.core.ImagePipelineConfig;
 import com.facebook.stetho.Stetho;
+import com.flipflash.UI.FCCEditText;
 import com.flipflash.android_ffc.MainActivity;
 import com.flipflash.android_ffc.R;
 import com.nostra13.universalimageloader.cache.disc.naming.Md5FileNameGenerator;
@@ -51,7 +53,10 @@ public class AppContext extends Application {
     public void onCreate() {
         super.onCreate();
 
-        ViewTarget.setTagId(R.id.glide_tag);
+        ImagePipelineConfig config = ImagePipelineConfig.newBuilder(this)
+                .setDownsampleEnabled(true)
+                .build();
+        Fresco.initialize(this, config);
 
 //        refWatcher = LeakCanary.install(this);
 
