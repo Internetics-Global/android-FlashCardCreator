@@ -48,6 +48,8 @@ import com.facebook.common.logging.FLog;
 import com.facebook.drawee.backends.pipeline.Fresco;
 import com.facebook.drawee.controller.ControllerListener;
 import com.facebook.drawee.drawable.ProgressBarDrawable;
+import com.facebook.drawee.drawable.ScalingUtils;
+import com.facebook.drawee.generic.RoundingParams;
 import com.facebook.drawee.interfaces.DraweeController;
 import com.facebook.drawee.view.SimpleDraweeView;
 import com.facebook.imagepipeline.common.ResizeOptions;
@@ -2027,13 +2029,16 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnTouchL
 
         mImage.setPadding(5,5,5,5);
 
-        mImage.setScaleType(ImageView.ScaleType.FIT_CENTER);
+        //don't use ImageVIew scale property
+        mImage.getHierarchy().setActualImageScaleType(ScalingUtils.ScaleType.FIT_CENTER);
+        mImage.getHierarchy().setFadeDuration(0);
 
 //        mImage.setBackgroundColor(Color.RED);
 
         if (isEditableMode() && (mIsPlayingCard == false)) {
             mImage.setBackgroundResource(R.drawable.shape_imageview_editable);
         }
+
 
     }
 
@@ -2049,7 +2054,9 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnTouchL
 
         mImage2.setPadding(5, 5, 5, 5);
 
-        mImage2.setScaleType(ImageView.ScaleType.FIT_CENTER);
+        //don't use ImageVIew scale property
+        mImage2.getHierarchy().setActualImageScaleType(ScalingUtils.ScaleType.FIT_CENTER);
+        mImage2.getHierarchy().setFadeDuration(0);
 
         if (isEditableMode() && (mIsPlayingCard == false)) {
             mImage2.setBackgroundResource(R.drawable.shape_imageview_editable);
@@ -5475,6 +5482,7 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnTouchL
         if (isGif) {
             frescoImageView.getHierarchy().setProgressBarImage(new ProgressBarDrawable());
         }
+
         frescoImageView.setController(controller);
     }
 
