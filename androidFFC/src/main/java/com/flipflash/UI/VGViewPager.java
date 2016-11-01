@@ -7,6 +7,7 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 
+import com.flipflash.UI.MultimediaView.MultimediaView;
 import com.flipflash.UI.autoscrollviewpager.AutoScrollViewPager;
 import com.flipflash.android_ffc.R;
 import com.flipflash.fragment.CardDetailFragment;
@@ -66,7 +67,7 @@ public class VGViewPager extends AutoScrollViewPager {
         }
 
         //当image包含视频时，isEnabled() = true
-        ImageView image = (ImageView)findViewWithTag(Global.mImage_Showing);
+        MultimediaView image = (MultimediaView)findViewWithTag(Global.mImage_Showing);
         if ((image != null) && (image.getVisibility() == VISIBLE) && (image.isEnabled() == true)) {
 
 
@@ -105,7 +106,7 @@ public class VGViewPager extends AutoScrollViewPager {
         }
 
         //当image包含视频时，isEnabled() = true
-        ImageView image2 = (ImageView)findViewWithTag(Global.mImage2_Showing);
+        MultimediaView image2 = (MultimediaView)findViewWithTag(Global.mImage2_Showing);
         if ((image2 != null) && (image2.getVisibility() == VISIBLE) && (image2.isEnabled() == true)) {
 
             CardDetailFragment cardDetailFragment = mCardDetailFragmentWeakReference.get();

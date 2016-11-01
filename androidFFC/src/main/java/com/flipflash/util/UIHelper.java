@@ -18,6 +18,7 @@ import android.graphics.RectF;
 import android.media.ThumbnailUtils;
 import android.net.Uri;
 import android.provider.MediaStore;
+import android.support.annotation.NonNull;
 import android.text.Layout;
 import android.text.Selection;
 import android.util.DisplayMetrics;
@@ -266,10 +267,12 @@ public class UIHelper {
         return toSaveFile;
     }
 
-    public static Bitmap getVideoThumbnail(Context context,Uri uri) {
+    public static Bitmap getVideoThumbnail(Context context,@NonNull  Uri uri) {
+
+        boolean isInternetVideo =  (uri.toString().contains("http://")) || (uri.toString().contains("https://"));
 
         Bitmap bMap;
-        if ((uri.toString().contains("http://")) || (uri.toString().contains("https://"))) {
+        if (isInternetVideo) {
             //我们暂时没有更好的方法获取来自http://的thumbnail图片，比如youtube。期待更加的解决方案
             bMap = BitmapFactory.decodeResource(context.getResources(), R.drawable.video_placeholder);
         } else {
@@ -286,19 +289,24 @@ public class UIHelper {
             bMap = BitmapFactory.decodeResource(context.getResources(), R.drawable.video_placeholder);
         }
 
-        //TODO: crash on xiaomi pad here
-        Bitmap bmOverlay = Bitmap.createBitmap(bMap.getWidth(), bMap.getHeight(), bMap.getConfig());
-        Canvas canvas = new Canvas(bmOverlay);
-        canvas.drawBitmap(bMap, new Matrix(), null);
+        if (isInternetVideo) {
 
-        Bitmap playIconBitmap = BitmapFactory.decodeResource(context.getResources(), R.drawable.play_big);
+            Bitmap bmOverlay = Bitmap.createBitmap(bMap.getWidth(), bMap.getHeight(), bMap.getConfig());
+            Canvas canvas = new Canvas(bmOverlay);
+            canvas.drawBitmap(bMap, new Matrix(), null);
 
-        int left = (int)(bMap.getWidth() *0.4);
-        int right = (int)(bMap.getWidth() *0.6);
-        Rect rect = new Rect(left,left,right,right);
-        canvas.drawBitmap(playIconBitmap,null,rect,null);
+            Bitmap playIconBitmap = BitmapFactory.decodeResource(context.getResources(), R.drawable.play_big);
 
-        return bmOverlay;
+            int left = (int)(bMap.getWidth() *0.4);
+            int right = (int)(bMap.getWidth() *0.6);
+            Rect rect = new Rect(left,left,right,right);
+            canvas.drawBitmap(playIconBitmap,null,rect,null);
+
+            return bmOverlay;
+        } else {
+            return bMap;
+        }
+
     }
 
     public static String getRealPathFromURI(Context context, Uri contentUri) {

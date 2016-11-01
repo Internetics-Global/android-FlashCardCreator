@@ -3,11 +3,14 @@ buildscript {
         jcenter()
     }
     dependencies {
-        classpath 'com.android.tools.build:gradle:2.2.0'
+        classpath 'com.android.tools.build:gradle:2.2.2'
     }
 }
 apply plugin: 'com.android.library'
 android {
+
+    useLibrary 'org.apache.http.legacy'
+
     sourceSets {
         main {
             manifest.srcFile 'AndroidManifest.xml'
@@ -15,14 +18,14 @@ android {
             res.srcDirs = ['res']
         }
     }
-    compileSdkVersion 20
+    compileSdkVersion 23
     buildToolsVersion '23.0.2'
     lintOptions {
         abortOnError false
     }
     defaultConfig {
-        minSdkVersion 14
-        targetSdkVersion 20
+        minSdkVersion 16
+        targetSdkVersion 23
         versionCode 1
         versionName '1.0'
     }

@@ -311,6 +311,9 @@ public class PlayActivity extends FragmentActivity implements SensorEventListene
 
         LOGD(TAG, "onPause");
 
+        CardDetailFragment currentCardDetailFragment = getCurrentCardDetailFragment();
+        currentCardDetailFragment.stopEmbeddedVideoAndGif();
+
         unregisterReceiver(mAudioIntentReceiver);
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {

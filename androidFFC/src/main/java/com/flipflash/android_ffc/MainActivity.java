@@ -280,7 +280,7 @@ public class MainActivity extends FragmentActivity implements
         actionBar.setCustomView(mCustomView);
         actionBar.setDisplayShowCustomEnabled(true);
 
-        EasyTracker.getInstance().setContext(this);
+        //EasyTracker.getInstance().setContext(this);
 
         if (Global.apiReachableWithAlert(MainActivity.this) == false) {
             new AlertDialog.Builder(MainActivity.this)
@@ -1130,7 +1130,7 @@ public class MainActivity extends FragmentActivity implements
 
         LOGD(TAG, "onStart");
 
-        EasyTracker.getInstance().activityStart(this);
+        //EasyTracker.getInstance().activityStart(this);
 
     }
 
@@ -1147,7 +1147,7 @@ public class MainActivity extends FragmentActivity implements
 
         dismissPackListPopupWindow();
 
-        EasyTracker.getInstance().activityStop(this);
+        //EasyTracker.getInstance().activityStop(this);
     }
 
 

@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="utf-8"?>
+<merge xmlns:android="http://schemas.android.com/apk/res/android"
+       xmlns:fresco="http://schemas.android.com/apk/res-auto"
+       android:layout_width="match_parent"
+       android:layout_height="match_parent">
+
+    <FrameLayout
+        android:id="@+id/video_holder_view_fl"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@android:color/holo_red_dark"
+        android:visibility="visible">
+
+        <com.flipflash.UI.scalablevideoview.ScalableVideoView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_gravity="center"
+            android:id="@+id/videoView"/>
+
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:id="@+id/video_thumbnail_imageview"
+            />
+
+
+        <ImageButton
+            android:visibility="invisible"
+            android:id="@+id/video_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:padding="10dp"
+            android:src="@drawable/play_button"
+            android:scaleType="center"
+            android:background="@null"
+            android:layout_gravity="bottom|right"/>
+
+
+
+
+    </FrameLayout>
+
+    <FrameLayout
+        android:id="@+id/gif_holder_view_fl"
+        android:visibility="gone"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@android:color/holo_green_dark">
+
+        <com.facebook.drawee.view.SimpleDraweeView
+            android:id="@+id/gif_imageview"
+            android:layout_gravity="center"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            fresco:actualImageScaleType = "fitCenter"
+            fresco:fadeDuration="0"
+            />
+
+
+        <ImageButton
+            android:visibility="invisible"
+            android:id="@+id/gif_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:padding="10dp"
+            android:src="@drawable/play_button"
+            android:scaleType="center"
+            android:background="@null"
+            android:layout_gravity="bottom|right"
+            android:layout_marginRight="5dp"
+            android:layout_marginBottom="5dp"/>
+
+
+    </FrameLayout>
+
+</merge>

@@ -23,8 +23,8 @@ public class Answer {
     public String subheading;
     public String main;
     public String sub;
-    public String imageUriFormatStr;
-    public String imageUriFormatStr2;
+    public String imageUriFormatStr;  //save animatable gif and jpg/png
+    public String imageUriFormatStr2; //save animatable gif and jpg/png
     public int cssID;
     public int templateID;
 
@@ -33,8 +33,8 @@ public class Answer {
     public int lineNoSub;
 
     public String backgroundImageUriFormatStr;
-    public String movieUriFormatStr;
-    public String movieUriFormatStr2;
+    public String movieUriFormatStr;  //save video
+    public String movieUriFormatStr2; //save video
 
     public String audioUriFormatStr;
 

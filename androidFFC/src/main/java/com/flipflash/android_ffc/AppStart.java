@@ -70,10 +70,10 @@ public class AppStart extends Activity {
 
         collectDeviceInfoForDebugging();
 
-//        if (true) {
-//            mHandler.sendEmptyMessageDelayed(0,200);
-//            return;
-//        }
+        if (true) {
+            mHandler.sendEmptyMessageDelayed(0,200);
+            return;
+        }
 
         Boolean checkPass = Hawk.get("LVLCheckPass");
         if (checkPass == null || checkPass.booleanValue() == false) {
