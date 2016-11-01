@@ -1,16 +1,15 @@
 package com.flipflash.UI.MultimediaView;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.Animatable;
-import android.graphics.drawable.Drawable;
 import android.media.MediaPlayer;
 import android.net.Uri;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.FrameLayout;
@@ -30,13 +29,16 @@ import com.facebook.imagepipeline.request.ImageRequest;
 import com.facebook.imagepipeline.request.ImageRequestBuilder;
 import com.flipflash.UI.scalablevideoview.ScalableType;
 import com.flipflash.UI.scalablevideoview.ScalableVideoView;
-import com.flipflash.android_ffc.MultiViewActivity;
+import com.flipflash.android_ffc.MultimediaFullscreenActivity;
 import com.flipflash.android_ffc.R;
+import com.flipflash.event.DownloadCancelEvent;
+import com.flipflash.event.MultiMediaFullscreenEvent;
 import com.flipflash.helper.FileOperationHelper;
-
-import junit.framework.Assert;
+import com.flipflash.util.Global;
 
 import java.io.IOException;
+
+import de.greenrobot.event.EventBus;
 
 /**
  * Created by internetics on 24/10/2016.
@@ -48,7 +50,11 @@ public class MultimediaView extends FrameLayout {
 
     private static final String TAG = MultimediaView.class.getSimpleName();
 
+    /*
+     * Support both static and gif image view
+     */
     private SimpleDraweeView mGifImageView;
+
     private FrameLayout      mGifHolderViewFrameLayout;
     private ImageButton      mGifButton;
     private ImageButton      mGifFullscreenButton;
@@ -59,31 +65,39 @@ public class MultimediaView extends FrameLayout {
     private ImageButton      mVideoButton;
     private ImageButton      mVideoFullscreenButton;
 
+    /*
+     * the only usage is for mVideoFullscreenButtonClicked
+     */
     private String           mVideoUrlPath;
 
-    private Context          mContext;
+    /*
+     * the only usage is for mGifFullscreenButtonClicked
+     */
+    private String           mGifUriPath;
+
+    private Context          mActivity;
 
     public MultimediaView(Context context) {
         super(context);
-        mContext = context;
+        mActivity = context;
         setup();
     }
 
     public MultimediaView(Context context, AttributeSet attrs) {
         super(context, attrs);
-        mContext = context;
+        mActivity = context;
         setup();
     }
 
     public MultimediaView(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
-        mContext = context;
+        mActivity = context;
         setup();
     }
 
 
     /*
-     * This is for non-gif image and small size loading. So screenshot will be ok immediately
+     * This is for non-gif image and small size loading.
      */
     public void setStaticImageURI(Uri uri) {
         mGifImageView.setImageURI(uri);
@@ -92,15 +106,23 @@ public class MultimediaView extends FrameLayout {
 
 
     /*
-     * This is for gif image loading or large  size static image loading. So screenshot has to begin after loaded
+     * Different with setStaticImageURI
+     *
+     * This is for gif image loading or large  size static image loading. The background is we need to take screenshot after image is full loaded
      *
      * In order to reduce memory usage as much as possible, we introduce resizing http://frescolib.org/docs/resizing-rotating.html
      * Resize is only for jpeg, while our format is png and gif
-     * Down sampling supports jpeg, png, webp, but not gif. (when using Downsampling, resizing is required)
+     * Down sampling supports jpeg, png, webp, but not gif. (when using down sampling, resizing is required)
      *
      * Highlighted: the view must be layout before calling this method.Otherwise, width/height will be zero
      */
-    public void setAnimitableImage(Uri uri,boolean isGif,final OnFrescoImageViewLoadCompletionListener completionListener) {
+    public void setAnimitableImage(@NonNull  Uri uri,boolean isGif,final OnFrescoImageViewLoadCompletionListener completionListener) {
+
+        if (isGif) {
+            mGifUriPath = uri.toString();
+        } else {
+            mGifUriPath = "";
+        }
 
         ControllerListener controllerListener = new BaseControllerListener<ImageInfo>() {
             @Override
@@ -160,6 +182,10 @@ public class MultimediaView extends FrameLayout {
 
     private void setup() {
 
+        if ((mActivity instanceof Activity) == false) {
+            throw new RuntimeException("mContext should be an instance of Activity");
+        }
+
         LayoutInflater.from(getContext()).inflate(R.layout.multimedia_view,this,true);
 
         {
@@ -213,15 +239,21 @@ public class MultimediaView extends FrameLayout {
 
     private void mGifFullscreenButtonClicked() {
 
+        Intent intent = new Intent(mActivity, MultimediaFullscreenActivity.class);
+        intent.putExtra("gifPath", mGifUriPath);
+        mActivity.startActivity(intent);
 
+        EventBus.getDefault().post(new MultiMediaFullscreenEvent()); //not allow to show pack list after back
     }
 
     private void videoFullscreenButtonClicked() {
 
         String videoPath = FileOperationHelper.deleteUriSchemeHeader(mVideoUrlPath);
-        Intent intent = new Intent(mContext, MultiViewActivity.class);
+        Intent intent = new Intent(mActivity, MultimediaFullscreenActivity.class);
         intent.putExtra("videoPath", videoPath);
-        mContext.startActivity(intent);
+        mActivity.startActivity(intent);
+
+        EventBus.getDefault().post(new MultiMediaFullscreenEvent()); // not allow to show pack list after back
 
     }
 
@@ -294,7 +326,7 @@ public class MultimediaView extends FrameLayout {
 
                 mVideoView.release();
                 mVideoUrlPath = videoUriPath;
-                mVideoView.setDataSource(mContext,Uri.parse(videoUriPath));
+                mVideoView.setDataSource(mActivity,Uri.parse(videoUriPath));
                 mVideoView.setScalableType(ScalableType.FIT_CENTER);
                 mVideoView.setVolume(0, 0);
                 mVideoView.prepare(new MediaPlayer.OnPreparedListener() {

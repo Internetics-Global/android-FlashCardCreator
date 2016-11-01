@@ -202,12 +202,6 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnTouchL
 
     private LinearLayout mFunctionalAreaLinearLayout;
 
-    private final int REQUEST_CODE_FROM_LOGO  = 314;
-    private final int REQUEST_CODE_FROM_IMAGE  = 315;
-    private final int REQUEST_CODE_FROM_BACKGROUND  = 316;
-    private final int REQUEST_CODE_FROM_BACKGROUND_AFTER_CROPPED  = 317;
-
-
     public final static  String TAG_SUBHEADING          = "1001";
     public final static  String TAG_MAIN                = "1002";
     public final static  String TAG_SUB                 = "1003";
@@ -234,6 +228,10 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnTouchL
     private Timer mResizeMonitorTimer;
 
 
+    /*
+     * Background
+     * To show a gif could take second. Before screenshoting, we have to wait for this to finish
+     */
     private LockObject mLockForScreenshotGif = new LockObject();
 
 
@@ -738,7 +736,7 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnTouchL
                     .canSelectMultiPhoto(false).canSelectMultiVideo(false)
                     .build();
             if (options != null) {
-                MediaPickerActivity.open(CardDetailFragment.this, REQUEST_CODE_FROM_IMAGE, options);
+                MediaPickerActivity.open(CardDetailFragment.this, Global.REQUEST_CODE_FROM_IMAGE, options);
             }
         } else {
             if (mIsQuestionShowing) {
@@ -812,7 +810,7 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnTouchL
 
     private void handleCrop(int requestCode, int resultCode, Intent data) {
 
-        if (requestCode == REQUEST_CODE_FROM_BACKGROUND_AFTER_CROPPED &&
+        if (requestCode == Global.REQUEST_CODE_FROM_BACKGROUND_AFTER_CROPPED &&
                 resultCode == Activity.RESULT_OK) {
 
             Uri selectedURI = data.getParcelableExtra("cropped_image_uri");
@@ -1010,7 +1008,7 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnTouchL
 
                                             MediaOptions options = MediaOptions.createDefault();
                                             if (options != null) {
-                                                MediaPickerActivity.open(CardDetailFragment.this, REQUEST_CODE_FROM_LOGO, options);
+                                                MediaPickerActivity.open(CardDetailFragment.this, Global.REQUEST_CODE_FROM_LOGO, options);
                                             }
 
                                         }
@@ -1026,7 +1024,7 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnTouchL
 
                                             MediaOptions options = MediaOptions.createDefault();
                                             if (options != null) {
-                                                MediaPickerActivity.open(CardDetailFragment.this, REQUEST_CODE_FROM_LOGO, options);
+                                                MediaPickerActivity.open(CardDetailFragment.this, Global.REQUEST_CODE_FROM_LOGO, options);
                                             }
 
                                         }
@@ -1170,7 +1168,7 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnTouchL
                                     public void onClick(DialogInterface dialog, int which) {
                                         MediaOptions options = MediaOptions.createDefault();;
                                         if (options != null) {
-                                            MediaPickerActivity.open(CardDetailFragment.this, REQUEST_CODE_FROM_BACKGROUND, options);
+                                            MediaPickerActivity.open(CardDetailFragment.this, Global.REQUEST_CODE_FROM_BACKGROUND, options);
                                         }
                                     }
                                 })
@@ -1184,7 +1182,7 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnTouchL
                                     public void onClick(DialogInterface dialog, int which) {
                                         MediaOptions options = MediaOptions.createDefault();;
                                         if (options != null) {
-                                            MediaPickerActivity.open(CardDetailFragment.this, REQUEST_CODE_FROM_BACKGROUND, options);
+                                            MediaPickerActivity.open(CardDetailFragment.this, Global.REQUEST_CODE_FROM_BACKGROUND, options);
                                         }
                                     }
                                 })
@@ -5326,7 +5324,7 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnTouchL
 
                 if (resultCodeFinal == Activity.RESULT_OK) {
 
-                    if (requestCodeFinal == REQUEST_CODE_FROM_BACKGROUND) {
+                    if (requestCodeFinal == Global.REQUEST_CODE_FROM_BACKGROUND) {
 
                         List<MediaItem> mMediaSelectedList = MediaPickerActivity
                                 .getMediaItemSelected(dataFinal);
@@ -5336,11 +5334,11 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnTouchL
                         LOGD(TAG, "onActivityResult: ready to crop");
                         Intent intent = new Intent(getActivity(), CropActivity.class);
                         intent.putExtra("uri",selectedURI);
-                        startActivityForResult(intent, REQUEST_CODE_FROM_BACKGROUND_AFTER_CROPPED);
+                        startActivityForResult(intent, Global.REQUEST_CODE_FROM_BACKGROUND_AFTER_CROPPED);
 
-                    } else if (requestCodeFinal == REQUEST_CODE_FROM_BACKGROUND_AFTER_CROPPED) {
+                    } else if (requestCodeFinal == Global.REQUEST_CODE_FROM_BACKGROUND_AFTER_CROPPED) {
 
-                        handleCrop(REQUEST_CODE_FROM_BACKGROUND_AFTER_CROPPED,resultCodeFinal,dataFinal);
+                        handleCrop(Global.REQUEST_CODE_FROM_BACKGROUND_AFTER_CROPPED,resultCodeFinal,dataFinal);
 
                     } else {
 
@@ -5404,7 +5402,7 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnTouchL
                             }
 
                         } else if (StringUtils.isEmpty(decodeUriStr) == false) {   //images
-                            if (requestCodeFinal == REQUEST_CODE_FROM_LOGO) {
+                            if (requestCodeFinal == Global.REQUEST_CODE_FROM_LOGO) {
 
                                 ImageSize targetSize = new ImageSize(100, 100);
                                 ImageLoader imageLoader = ImageLoader.getInstance();
@@ -5427,7 +5425,7 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnTouchL
                                     mIsTakeSnapshotAllNeeded= true;
                                 }
 
-                            } else if (requestCodeFinal == REQUEST_CODE_FROM_IMAGE) {
+                            } else if (requestCodeFinal == Global.REQUEST_CODE_FROM_IMAGE) {
 
                                 String selectedPath = UIHelper.getRealPathFromURI(getActivity(),selectedURI);
                                 boolean isGif = isGif(selectedPath);
@@ -5532,12 +5530,16 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnTouchL
 
                                                     synchronized (mLockForScreenshotGif) {
                                                         try {
+                                                            LOGD(TAG, "mLockForScreenshotGif.wait now");
                                                             mLockForScreenshotGif.wait();
+                                                            LOGD(TAG, "mLockForScreenshotGif.wait finished");
 
-                                                            Task.call(new Callable<String>() {
+                                                            Task.delay(460).continueWith(new Continuation<Void, String>() {
                                                                 @Override
-                                                                public String call() throws Exception {
+                                                                public String then(Task<Void> task) throws Exception {
+
                                                                     takeSnapshotCurrentCard();
+
                                                                     return null;
                                                                 }
                                                             },Task.UI_THREAD_EXECUTOR);
@@ -5554,7 +5556,14 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnTouchL
 
 
                                         } else {
-                                            takeSnapshotCurrentCard();
+
+                                            Task.delay(460).continueWith(new Continuation<Void, String>() {
+                                                @Override
+                                                public String then(Task<Void> task) throws Exception {
+                                                    takeSnapshotCurrentCard();
+                                                    return null;
+                                                }
+                                            },Task.UI_THREAD_EXECUTOR);
                                         }
                                     }
                                 }
@@ -5613,6 +5622,7 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnTouchL
                     try {
 
                         mLockForScreenshotGif.clearTagStr();
+                        LOGD(TAG, "mLockForScreenshotGif.notify now");
                         mLockForScreenshotGif.notify();
 
 

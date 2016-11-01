@@ -44,8 +44,6 @@ public class MoreActivity extends Activity {
 
     private static final String TAG = MoreActivity.class.getSimpleName();
 
-    private static final int LOGIN_REQUEST = 0;
-
     ToggleButton             mStorageProviderToggleButton;
     TextView                 mSocialAccountTextView;
 
@@ -318,7 +316,7 @@ public class MoreActivity extends Activity {
                 .setParseSignupMinPasswordLength(4)
                 .setAppLogo(R.drawable.sign_in_logo)
                 .build();
-        startActivityForResult(parseLoginIntent, LOGIN_REQUEST);
+        startActivityForResult(parseLoginIntent, Global.REQUEST_LOGIN);
     }
 
     @Override
@@ -377,7 +375,7 @@ public class MoreActivity extends Activity {
         //Parse暂时不支持区分sign up或sign in
         //https://github.com/ParsePlatform/ParseUI-Android/issues/79
 
-        if (requestCode == LOGIN_REQUEST) {
+        if (requestCode == Global.REQUEST_LOGIN) {
 
             if (resultCode == Activity.RESULT_OK) {
 

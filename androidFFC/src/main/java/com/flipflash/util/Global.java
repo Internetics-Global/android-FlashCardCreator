@@ -146,6 +146,17 @@ public class Global {
     public static       boolean   checkLineNumberWhenResizeTextToFitFrame = true;
 
 
+    /*
+     * for startActivityForResult
+     */
+    public static final int REQUEST_LOGIN = 0;
+    public static final int REQUEST_CODE_FROM_LOGO  = 314;
+    public static final int REQUEST_CODE_FROM_IMAGE  = 315;
+    public static final int REQUEST_CODE_FROM_BACKGROUND  = 316;
+    public static final int REQUEST_CODE_FROM_BACKGROUND_AFTER_CROPPED  = 317;
+    public static final int REQUEST_GIF_VIDEO_FULL_SCREEN  = 319;
+
+
     /**
      * detect network
      *

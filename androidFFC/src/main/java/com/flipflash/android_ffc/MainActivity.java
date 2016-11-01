@@ -40,7 +40,6 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.FrameLayout;
-import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.PopupWindow;
@@ -56,14 +55,13 @@ import com.flipflash.UI.ScaleHelper;
 import com.flipflash.UI.SlideInRightWithoutAlphaAnimator;
 import com.flipflash.UI.SlideOutRightWithoutAlphaAnimator;
 import com.flipflash.data.CSS;
-import com.flipflash.data.User;
 import com.flipflash.event.DownloadCancelEvent;
+import com.flipflash.event.MultiMediaFullscreenEvent;
 import com.flipflash.event.WebViewMessageEvent;
 import com.flipflash.fragment.PurchaseFragment;
 import com.flipflash.model.CardListModel;
 import com.flipflash.util.MutipleTargetHelper;
 import com.github.lzyzsd.circleprogress.DonutProgress;
-import com.google.analytics.tracking.android.EasyTracker;
 import com.flipflash.cryptor.CryptoHelper;
 import com.flipflash.data.Card;
 import com.flipflash.data.Pack;
@@ -125,8 +123,6 @@ public class MainActivity extends FragmentActivity implements
         CardListFragment.Callbacks, PackInfoView.PackInfoViewDelegate {
 
     private static final String TAG = MainActivity.class.getSimpleName();
-
-    private static final int LOGIN_REQUEST = 0;
 
     /*
      * createNewCardButtonClicked时：true
@@ -1570,7 +1566,7 @@ public class MainActivity extends FragmentActivity implements
                 .setParseSignupMinPasswordLength(4)
                 .setAppLogo(R.drawable.sign_in_logo)
                 .build();
-        startActivityForResult(parseLoginIntent, LOGIN_REQUEST);
+        startActivityForResult(parseLoginIntent, Global.REQUEST_LOGIN);
 
 
     }
@@ -2389,7 +2385,7 @@ public class MainActivity extends FragmentActivity implements
         //Parse暂时不支持区分sign up或sign in
         //https://github.com/ParsePlatform/ParseUI-Android/issues/79
 
-        if (requestCode == LOGIN_REQUEST) {
+        if (requestCode == Global.REQUEST_LOGIN) {
 
             if (resultCode == Activity.RESULT_OK) {
 
@@ -2607,6 +2603,12 @@ public class MainActivity extends FragmentActivity implements
         }
 
 
+
+    }
+
+    public void onEventMainThread(MultiMediaFullscreenEvent event) {
+
+        mIsAllowedToShowPackList = false;
 
     }
 

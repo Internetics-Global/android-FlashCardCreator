@@ -77,7 +77,7 @@
             android:screenOrientation="landscape">
         </activity>
         <activity
-            android:name="com.flipflash.android_ffc.MultiViewActivity"
+            android:name="com.flipflash.android_ffc.MultimediaFullscreenActivity"
             android:windowSoftInputMode="stateAlwaysHidden"
             android:screenOrientation="landscape">
         </activity>

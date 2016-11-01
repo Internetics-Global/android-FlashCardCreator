@@ -78,9 +78,7 @@
             android:src="@drawable/play_button"
             android:scaleType="center"
             android:background="@null"
-            android:layout_gravity="bottom|right"
-            android:layout_marginRight="5dp"
-            android:layout_marginBottom="5dp"/>
+            android:layout_gravity="bottom|right"/>
 
 
         <ImageButton
@@ -91,8 +89,8 @@
             android:padding="10dp"
             android:src="@drawable/fullscreen"
             android:scaleType="center"
-            android:background="@null"
             android:layout_marginRight="44dp"
+            android:background="@null"
             android:layout_gravity="bottom|right"/>
 
 
