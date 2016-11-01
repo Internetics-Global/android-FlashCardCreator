@@ -1,6 +1,7 @@
 package com.flipflash.UI.MultimediaView;
 
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.Animatable;
 import android.graphics.drawable.Drawable;
@@ -16,11 +17,24 @@ import android.widget.FrameLayout;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 
+import com.facebook.drawee.backends.pipeline.Fresco;
+import com.facebook.drawee.controller.BaseControllerListener;
+import com.facebook.drawee.controller.ControllerListener;
+import com.facebook.drawee.drawable.ProgressBarDrawable;
+import com.facebook.drawee.interfaces.DraweeController;
 import com.facebook.drawee.view.SimpleDraweeView;
 
+import com.facebook.imagepipeline.common.ResizeOptions;
+import com.facebook.imagepipeline.image.ImageInfo;
+import com.facebook.imagepipeline.request.ImageRequest;
+import com.facebook.imagepipeline.request.ImageRequestBuilder;
 import com.flipflash.UI.scalablevideoview.ScalableType;
 import com.flipflash.UI.scalablevideoview.ScalableVideoView;
+import com.flipflash.android_ffc.MultiViewActivity;
 import com.flipflash.android_ffc.R;
+import com.flipflash.helper.FileOperationHelper;
+
+import junit.framework.Assert;
 
 import java.io.IOException;
 
@@ -37,11 +51,15 @@ public class MultimediaView extends FrameLayout {
     private SimpleDraweeView mGifImageView;
     private FrameLayout      mGifHolderViewFrameLayout;
     private ImageButton      mGifButton;
+    private ImageButton      mGifFullscreenButton;
 
     private ScalableVideoView mVideoView;
     private FrameLayout      mVideoHolderViewFrameLayout;
+    private ImageView        mVideoThumbNail;  // this is quite different with iOS counterpart since Android does not support thumbnail
     private ImageButton      mVideoButton;
-    private ImageView        mVideoThumbNail;
+    private ImageButton      mVideoFullscreenButton;
+
+    private String           mVideoUrlPath;
 
     private Context          mContext;
 
@@ -64,8 +82,79 @@ public class MultimediaView extends FrameLayout {
     }
 
 
-    public SimpleDraweeView getGifImageView() {
-        return mGifImageView;
+    /*
+     * This is for non-gif image and small size loading. So screenshot will be ok immediately
+     */
+    public void setStaticImageURI(Uri uri) {
+        mGifImageView.setImageURI(uri);
+    }
+
+
+
+    /*
+     * This is for gif image loading or large  size static image loading. So screenshot has to begin after loaded
+     *
+     * In order to reduce memory usage as much as possible, we introduce resizing http://frescolib.org/docs/resizing-rotating.html
+     * Resize is only for jpeg, while our format is png and gif
+     * Down sampling supports jpeg, png, webp, but not gif. (when using Downsampling, resizing is required)
+     *
+     * Highlighted: the view must be layout before calling this method.Otherwise, width/height will be zero
+     */
+    public void setAnimitableImage(Uri uri,boolean isGif,final OnFrescoImageViewLoadCompletionListener completionListener) {
+
+        ControllerListener controllerListener = new BaseControllerListener<ImageInfo>() {
+            @Override
+            public void onFinalImageSet(
+                    String id,
+                    @Nullable ImageInfo imageInfo,
+                    @Nullable Animatable anim) {
+                if (anim != null) {
+                    //mean it's gif
+                    showGifControl();
+
+                    if (completionListener != null) {
+                        completionListener.gifLoadSucceeded(MultimediaView.this);
+                    }
+
+                } else {
+                    hideGifControl();
+
+                    if (completionListener != null) {
+                        completionListener.nonGifLoadSucceeded(MultimediaView.this);
+                    }
+                }
+
+
+            }
+
+            @Override
+            public void onFailure(String id, Throwable throwable) {
+                super.onFailure(id, throwable);
+
+                if (completionListener != null) {
+                    completionListener.failed(MultimediaView.this);
+                }
+            }
+        };
+
+        ResizeOptions resizeOptions = new ResizeOptions(getWidth(),getHeight());
+        ImageRequest request = ImageRequestBuilder.newBuilderWithSource(uri)
+                .setResizeOptions(resizeOptions)
+                .build();
+        DraweeController controller = Fresco.newDraweeControllerBuilder()
+                .setOldController(mGifImageView.getController())
+                .setImageRequest(request)
+                .setControllerListener(controllerListener)
+//                .setAutoPlayAnimations(isGif)
+                .build();
+        mGifImageView.getHierarchy().setProgressBarImage(new ProgressBarDrawable());
+
+        if (isGif) {
+            mGifImageView.getHierarchy().setProgressBarImage(new ProgressBarDrawable());
+        }
+
+        mGifImageView.setController(controller);
+
     }
 
 
@@ -77,11 +166,18 @@ public class MultimediaView extends FrameLayout {
             mGifButton = (ImageButton) findViewById(R.id.gif_button);
             mGifHolderViewFrameLayout = (FrameLayout) findViewById(R.id.gif_holder_view_fl);
             mGifImageView = (SimpleDraweeView) findViewById(R.id.gif_imageview);
+            mGifFullscreenButton = (ImageButton) findViewById(R.id.gif_fullscreen_button);
 
             mGifButton.setOnClickListener(new OnClickListener() {
                 @Override
                 public void onClick(View view) {
                     gifButtonClicked();
+                }
+            });
+            mGifFullscreenButton.setOnClickListener(new OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    mGifFullscreenButtonClicked();
                 }
             });
 
@@ -93,6 +189,7 @@ public class MultimediaView extends FrameLayout {
             mVideoHolderViewFrameLayout = (FrameLayout) findViewById(R.id.video_holder_view_fl);
             mVideoView = (ScalableVideoView) findViewById(R.id.videoView);
             mVideoView.setBackgroundColor(Color.GREEN);
+            mVideoFullscreenButton = (ImageButton) findViewById(R.id.video_fullscreen_button);
 
             mVideoButton.setOnClickListener(new OnClickListener() {
                 @Override
@@ -101,9 +198,30 @@ public class MultimediaView extends FrameLayout {
                 }
             });
 
+            mVideoFullscreenButton.setOnClickListener(new OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    videoFullscreenButtonClicked();
+                }
+            });
+
 
             mVideoThumbNail = (ImageView) findViewById(R.id.video_thumbnail_imageview);
         }
+
+    }
+
+    private void mGifFullscreenButtonClicked() {
+
+
+    }
+
+    private void videoFullscreenButtonClicked() {
+
+        String videoPath = FileOperationHelper.deleteUriSchemeHeader(mVideoUrlPath);
+        Intent intent = new Intent(mContext, MultiViewActivity.class);
+        intent.putExtra("videoPath", videoPath);
+        mContext.startActivity(intent);
 
     }
 
@@ -175,7 +293,7 @@ public class MultimediaView extends FrameLayout {
             try {
 
                 mVideoView.release();
-
+                mVideoUrlPath = videoUriPath;
                 mVideoView.setDataSource(mContext,Uri.parse(videoUriPath));
                 mVideoView.setScalableType(ScalableType.FIT_CENTER);
                 mVideoView.setVolume(0, 0);
@@ -192,11 +310,13 @@ public class MultimediaView extends FrameLayout {
             mVideoThumbNail.setImageURI(Uri.parse(videoThumbnailUriPath));
 
             mVideoButton.setVisibility(VISIBLE);
+            mVideoFullscreenButton.setVisibility(VISIBLE);
             mVideoView.setVisibility(INVISIBLE);
             mVideoThumbNail.setVisibility(VISIBLE);
 
         } else {
             mVideoButton.setVisibility(INVISIBLE);
+            mVideoFullscreenButton.setVisibility(INVISIBLE);
         }
 
 
@@ -318,14 +438,22 @@ public class MultimediaView extends FrameLayout {
     }
 
 
+    /*
+     * This is quite different with iOS counterpart because of performance limit on Android
+     */
     public void showGifControl() {
 
         mGifButton.setVisibility(View.VISIBLE);
+        mGifFullscreenButton.setVisibility(VISIBLE);
     }
 
+    /*
+     * This is quite different with iOS counterpart because of performance limit on Android
+     */
     public void hideGifControl() {
 
         mGifButton.setVisibility(View.INVISIBLE);
+        mGifFullscreenButton.setVisibility(INVISIBLE);
     }
 
 
