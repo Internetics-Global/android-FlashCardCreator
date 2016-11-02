@@ -12,6 +12,7 @@ import com.flipflash.UI.autoscrollviewpager.AutoScrollViewPager;
 import com.flipflash.android_ffc.R;
 import com.flipflash.fragment.CardDetailFragment;
 import com.flipflash.util.Global;
+import com.flipflash.util.UIHelper;
 
 import java.lang.ref.WeakReference;
 
@@ -73,15 +74,34 @@ public class VGViewPager extends AutoScrollViewPager {
 
             CardDetailFragment cardDetailFragment = mCardDetailFragmentWeakReference.get();
             boolean isYoutube = false;
+            boolean isGif = false;
+            boolean isLocalVideo = false;
 
             if (cardDetailFragment!=null) {
                 if (cardDetailFragment.mIsQuestionShowing) {
                     if (cardDetailFragment.mCurrentCard.question.movieUriFormatStr.toLowerCase().contains("youtube")) {
                         isYoutube = true;
                     }
+
+                    if (cardDetailFragment.mCurrentCard.question.imageUriFormatStr.toLowerCase().contains(".gif")) {
+                        isGif = true;
+                    }
+
+                    if (cardDetailFragment.mCurrentCard.question.movieUriFormatStr.toLowerCase().contains(".3gp")) {
+                        isLocalVideo = true;
+                    }
+
                 } else {
                     if (cardDetailFragment.mCurrentCard.answer.movieUriFormatStr.toLowerCase().contains("youtube")) {
                         isYoutube = true;
+                    }
+
+                    if (cardDetailFragment.mCurrentCard.answer.imageUriFormatStr.toLowerCase().contains(".gif")) {
+                        isGif = true;
+                    }
+
+                    if (cardDetailFragment.mCurrentCard.answer.movieUriFormatStr.toLowerCase().contains(".3gp")) {
+                        isLocalVideo = true;
                     }
                 }
             }
@@ -91,6 +111,14 @@ public class VGViewPager extends AutoScrollViewPager {
                 if (isYoutbeIconContains(image, hitXInScreen, hitYInScreen)) {
                     Boolean bool = image.isEnabled();
                     LOGD(TAG, "onInterceptTouchEvent: " + "touch location in youtube image，enable=  "+bool);
+                    return false;
+                }
+
+            } else if (isGif || isLocalVideo) {
+
+                if (isGifLocalVideoControlBarContain(image, hitXInScreen, hitYInScreen)) {
+                    Boolean bool = image.isEnabled();
+                    LOGD(TAG, "onInterceptTouchEvent: " + "touch location in gif/local video image，enable=  "+bool);
                     return false;
                 }
 
@@ -111,15 +139,34 @@ public class VGViewPager extends AutoScrollViewPager {
 
             CardDetailFragment cardDetailFragment = mCardDetailFragmentWeakReference.get();
             boolean isYoutube = false;
+            boolean isGif = false;
+            boolean isLocalVideo = false;
 
             if (cardDetailFragment != null) {
                 if (cardDetailFragment.mIsQuestionShowing) {
                     if (cardDetailFragment.mCurrentCard.question.movieUriFormatStr2.toLowerCase().contains("youtube")) {
                         isYoutube = true;
                     }
+
+                    if (cardDetailFragment.mCurrentCard.question.imageUriFormatStr2.toLowerCase().contains(".gif")) {
+                        isGif = true;
+                    }
+
+                    if (cardDetailFragment.mCurrentCard.question.movieUriFormatStr2.toLowerCase().contains(".3gp")) {
+                        isLocalVideo = true;
+                    }
+
                 } else {
                     if (cardDetailFragment.mCurrentCard.answer.movieUriFormatStr2.toLowerCase().contains("youtube")) {
                         isYoutube = true;
+                    }
+
+                    if (cardDetailFragment.mCurrentCard.answer.imageUriFormatStr2.toLowerCase().contains(".gif")) {
+                        isGif = true;
+                    }
+
+                    if (cardDetailFragment.mCurrentCard.answer.movieUriFormatStr2.toLowerCase().contains(".3gp")) {
+                        isLocalVideo = true;
                     }
                 }
             }
@@ -128,6 +175,12 @@ public class VGViewPager extends AutoScrollViewPager {
                 if (isYoutbeIconContains(image2, hitXInScreen, hitYInScreen)) {
                     Boolean bool = image2.isEnabled();
                     LOGD(TAG, "onInterceptTouchEvent: "+ "touch location in image2，enable=  "+bool);
+                    return false;
+                }
+            } else if (isGif || isLocalVideo) {
+                if (isGifLocalVideoControlBarContain(image2, hitXInScreen, hitYInScreen)) {
+                    Boolean bool = image2.isEnabled();
+                    LOGD(TAG, "onInterceptTouchEvent: "+ "touch location in gif/local video image，enable=  "+bool);
                     return false;
                 }
             } else {
@@ -184,6 +237,26 @@ public class VGViewPager extends AutoScrollViewPager {
         int h = view.getHeight();
 
         if (rx < x + 0.4*w || rx > x + w - 0.4*w || ry < y + h*0.4 || ry > y + h - h*0.4) {
+            return false;
+        }
+        return true;
+    }
+
+    /*
+     * 对于gif和local video,我们有 play/stop and full screen button
+     */
+    private boolean isGifLocalVideoControlBarContain(View view, float rx, float ry) {
+        int[] l = new int[2];
+        view.getLocationOnScreen(l);
+        int x = Math.abs(l[0]);
+        int y = l[1];
+        int w = view.getWidth();
+        int h = view.getHeight();
+
+        int controlBarHeight = (int) UIHelper.convertDpToPixel(44);
+        int controlBarWidth = controlBarHeight * 2;
+
+        if (rx < x + w - controlBarWidth || rx > x + w || ry < y + h - controlBarHeight || ry > y + h) {
             return false;
         }
         return true;

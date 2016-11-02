@@ -2958,7 +2958,7 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnTouchL
         mJobTitle.setEnabled(false);
 
         if (mIsQuestionShowing) {
-            if (StringUtils.isYoutubeLinkage(mCurrentCard.question.movieUriFormatStr)) {
+            if (mCurrentCard.question.movieUriFormatStr.length() > 0 || isGif(mCurrentCard.question.imageUriFormatStr)) {
                 //allow to play movie
                 mImage.setEnabled(true);
 
@@ -2967,7 +2967,7 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnTouchL
 
             }
 
-            if (StringUtils.isYoutubeLinkage(mCurrentCard.question.movieUriFormatStr2)) {
+            if (mCurrentCard.question.movieUriFormatStr2.length() > 0 || isGif(mCurrentCard.question.imageUriFormatStr2)) {
                 //allow to play movie
                 mImage2.setEnabled(true);
 
@@ -2977,7 +2977,7 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnTouchL
             }
 
         } else {
-            if (StringUtils.isYoutubeLinkage(mCurrentCard.answer.movieUriFormatStr)) {
+            if (mCurrentCard.answer.movieUriFormatStr.length() > 0 || isGif(mCurrentCard.answer.imageUriFormatStr)) {
                 //allow to play movie
                 mImage.setEnabled(true);
 
@@ -2986,7 +2986,7 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnTouchL
 
             }
 
-            if (StringUtils.isYoutubeLinkage(mCurrentCard.answer.movieUriFormatStr2)) {
+            if (mCurrentCard.answer.movieUriFormatStr2.length() > 0 || isGif(mCurrentCard.answer.imageUriFormatStr2)) {
                 //allow to play movie
                 mImage2.setEnabled(true);
 

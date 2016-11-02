@@ -66,6 +66,9 @@ public class MultimediaView extends FrameLayout {
     private ImageButton      mVideoButton;
     private ImageButton      mVideoFullscreenButton;
 
+    private FrameLayout      mVideoControlBarFrameLayout;
+    private FrameLayout      mGifControlBarFrameLayout;
+
     /*
      * the only usage is for mVideoFullscreenButtonClicked
      */
@@ -233,6 +236,8 @@ public class MultimediaView extends FrameLayout {
                 }
             });
 
+            mGifControlBarFrameLayout = (FrameLayout) findViewById(R.id.gif_control_bar_fl);
+
         }
 
 
@@ -259,6 +264,8 @@ public class MultimediaView extends FrameLayout {
 
 
             mVideoThumbNail = (ImageView) findViewById(R.id.video_thumbnail_imageview);
+
+            mVideoControlBarFrameLayout = (FrameLayout) findViewById(R.id.video_control_bar_fl);
         }
 
     }
@@ -355,6 +362,7 @@ public class MultimediaView extends FrameLayout {
                 mVideoView.setDataSource(mActivity,Uri.parse(videoUriPath));
                 mVideoView.setScalableType(ScalableType.FIT_CENTER);
                 mVideoView.setVolume(0, 0);
+                mVideoView.setLooping(true);
                 mVideoView.prepare(new MediaPlayer.OnPreparedListener() {
                     @Override
                     public void onPrepared(MediaPlayer mp) {
@@ -367,14 +375,12 @@ public class MultimediaView extends FrameLayout {
 
             mVideoThumbNail.setImageURI(Uri.parse(videoThumbnailUriPath));
 
-            mVideoButton.setVisibility(VISIBLE);
-            mVideoFullscreenButton.setVisibility(VISIBLE);
+            mVideoControlBarFrameLayout.setVisibility(VISIBLE);
             mVideoView.setVisibility(INVISIBLE);
             mVideoThumbNail.setVisibility(VISIBLE);
 
         } else {
-            mVideoButton.setVisibility(INVISIBLE);
-            mVideoFullscreenButton.setVisibility(INVISIBLE);
+            mVideoControlBarFrameLayout.setVisibility(INVISIBLE);
         }
 
 
@@ -501,8 +507,7 @@ public class MultimediaView extends FrameLayout {
      */
     public void showGifControl() {
 
-        mGifButton.setVisibility(View.VISIBLE);
-        mGifFullscreenButton.setVisibility(VISIBLE);
+        mGifControlBarFrameLayout.setVisibility(View.VISIBLE);
     }
 
     /*
@@ -510,8 +515,7 @@ public class MultimediaView extends FrameLayout {
      */
     public void hideGifControl() {
 
-        mGifButton.setVisibility(View.INVISIBLE);
-        mGifFullscreenButton.setVisibility(INVISIBLE);
+        mGifControlBarFrameLayout.setVisibility(View.INVISIBLE);
     }
 
 
