@@ -443,8 +443,13 @@ public class StringUtils {
             final URL url = new URL(shortedURL);
             final HttpURLConnection urlConnection = (HttpURLConnection) url.openConnection();
             urlConnection.setInstanceFollowRedirects(false); //this is very important
+            urlConnection.setRequestMethod("HEAD");
             location = urlConnection.getHeaderField("location");
             LOGD(TAG, "getUnshortedURL: " + "unshortened url is: " + location);
+
+
+
+
 
         } catch (MalformedURLException e) {
             e.printStackTrace();

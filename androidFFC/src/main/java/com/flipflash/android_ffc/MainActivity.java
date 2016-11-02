@@ -1,5 +1,6 @@
 package com.flipflash.android_ffc;
 
+import android.annotation.TargetApi;
 import android.app.ActionBar;
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -17,6 +18,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.provider.Settings;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
@@ -755,6 +757,11 @@ public class MainActivity extends FragmentActivity implements
         super.onResume();
 
         LOGD(TAG, "onResume");
+
+        //minSdkVersion
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            checkDrawOverlayPermission();
+        }
 
         if (DropboxAuthHelper.sharedHelper(MainActivity.this).isAuthenticationSuccessful()) {
 
@@ -1661,6 +1668,22 @@ public class MainActivity extends FragmentActivity implements
     }
 
 
+    /*
+     * http://stackoverflow.com/questions/7569937/unable-to-add-window-android-view-viewrootw44da9bc0-permission-denied-for-t
+     */
+    @TargetApi(23)
+    public void checkDrawOverlayPermission() {
+        /** check if we already  have permission to draw over other apps */
+        if (!Settings.canDrawOverlays(MainActivity.this)) {
+            /** if not construct intent to request permission */
+            Intent intent = new Intent(Settings.ACTION_MANAGE_OVERLAY_PERMISSION,
+                    Uri.parse("package:" + getPackageName()));
+            /** request permission via start activity for result */
+            startActivityForResult(intent, Global.REQUEST_ACTION_MANAGE_OVERLAY_PERMISSION);
+        }
+    }
+
+
     public void removeCSSToolbar() {
         if (mCSSToolbar == null) {
             LOGD(TAG, "removeCSSToolbar: mCSSToolbar is null when executing removeCSSToolbar");
@@ -2466,6 +2489,16 @@ public class MainActivity extends FragmentActivity implements
                 ((PurchaseFragment)fragment).onActivityResult(requestCode, resultCode,data);
             }
 
+        } else if (requestCode == Global.REQUEST_ACTION_MANAGE_OVERLAY_PERMISSION) {
+            if (Settings.canDrawOverlays(this)) {
+                // continue here - permission was granted
+            } else {
+                new SweetAlertDialog(MainActivity.this, SweetAlertDialog.WARNING_TYPE)
+                    .setTitleText("Alert")
+                    .setContentText("Sorry but you have to  give it permission to access. Otherwise the app would not work well.")
+                    .setConfirmText("Close")
+                    .show();
+            }
         } else {
 
         }

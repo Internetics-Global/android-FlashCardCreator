@@ -154,7 +154,7 @@ public class Global {
     public static final int REQUEST_CODE_FROM_IMAGE  = 315;
     public static final int REQUEST_CODE_FROM_BACKGROUND  = 316;
     public static final int REQUEST_CODE_FROM_BACKGROUND_AFTER_CROPPED  = 317;
-    public static final int REQUEST_GIF_VIDEO_FULL_SCREEN  = 319;
+    public static final int REQUEST_ACTION_MANAGE_OVERLAY_PERMISSION    = 319;
 
 
     /**
