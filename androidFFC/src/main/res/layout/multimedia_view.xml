@@ -8,7 +8,6 @@
         android:id="@+id/video_holder_view_fl"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@android:color/holo_red_dark"
         android:visibility="visible">
 
         <com.flipflash.UI.scalablevideoview.ScalableVideoView
@@ -56,8 +55,7 @@
         android:id="@+id/gif_holder_view_fl"
         android:visibility="gone"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:background="@android:color/holo_green_dark">
+        android:layout_height="match_parent">
 
         <com.facebook.drawee.view.SimpleDraweeView
             android:id="@+id/gif_imageview"

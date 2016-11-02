@@ -296,7 +296,7 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnTouchL
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        LOGD(TAG, "onViewCreated: cardSN=" + mCurrentCard.cardSN);
+       // LOGD(TAG, "onViewCreated: cardSN=" + mCurrentCard.cardSN);
 
         updateCommonContent();
         switchToQuestionViewWithOption(false);
@@ -2958,7 +2958,7 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnTouchL
         mJobTitle.setEnabled(false);
 
         if (mIsQuestionShowing) {
-            if (mCurrentCard.question.movieUriFormatStr.length() > 0 || isGif(mCurrentCard.question.imageUriFormatStr)) {
+            if (StringUtils.isYoutubeLinkage(mCurrentCard.question.movieUriFormatStr)) {
                 //allow to play movie
                 mImage.setEnabled(true);
 
@@ -2967,7 +2967,7 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnTouchL
 
             }
 
-            if (mCurrentCard.question.movieUriFormatStr2.length() > 0 || isGif(mCurrentCard.question.imageUriFormatStr2)) {
+            if (StringUtils.isYoutubeLinkage(mCurrentCard.question.movieUriFormatStr2)) {
                 //allow to play movie
                 mImage2.setEnabled(true);
 
@@ -2977,7 +2977,7 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnTouchL
             }
 
         } else {
-            if (mCurrentCard.answer.movieUriFormatStr.length() > 0 || isGif(mCurrentCard.answer.imageUriFormatStr)) {
+            if (StringUtils.isYoutubeLinkage(mCurrentCard.answer.movieUriFormatStr)) {
                 //allow to play movie
                 mImage.setEnabled(true);
 
@@ -2986,7 +2986,7 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnTouchL
 
             }
 
-            if (mCurrentCard.answer.movieUriFormatStr2.length() > 0 || isGif(mCurrentCard.answer.imageUriFormatStr2)) {
+            if (StringUtils.isYoutubeLinkage(mCurrentCard.answer.movieUriFormatStr2)) {
                 //allow to play movie
                 mImage2.setEnabled(true);
 
