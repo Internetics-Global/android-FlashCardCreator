@@ -20,6 +20,7 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.net.URI;
 import java.util.ArrayList;
 import java.util.Random;
 import java.util.UUID;
@@ -470,6 +471,21 @@ public class FileOperationHelper {
         File destFile = new File(destFileName);
 
         return srcFile.renameTo(destFile);
+    }
+
+    public static boolean  checkFileExist(Uri uri) {
+
+        if (uri == null) {
+            return false;
+        }
+
+        File file = new File(deleteUriSchemeHeader(uri.toString()));
+        if (file.exists()) {
+            return true;
+        }
+
+        return false;
+
     }
 
 }

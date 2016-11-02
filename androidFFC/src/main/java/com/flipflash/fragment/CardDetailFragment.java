@@ -511,7 +511,10 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnTouchL
 
 
 
-    //由于我们是动态布局（通过weight)，而ScrollView（见card.xml）中要求内容是确定的高度，而不是match_parent
+    /*
+     * 此部分的逻辑用于takeSnapshotAll(): 当一个新的fragment生成后，自动进行screenshot
+     * 由于我们是动态布局（通过weight)，而ScrollView（见card.xml）中要求内容是确定的高度，而不是match_parent
+     */
     private ViewTreeObserver.OnGlobalLayoutListener mContentBodyListener = new ViewTreeObserver.OnGlobalLayoutListener() {
         @Override
         public void onGlobalLayout() {
@@ -543,11 +546,11 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnTouchL
             if (mIsSnapShotNotCurrent) {
                 mIsSnapShotNotCurrent = false;
 
-                // 450ms 在onGlobalLayout调用后，需要一段时间完成onDraw方法（比如setText), 450秒是个经验值，但是应该足够
-                Task.delay(450).continueWith(new Continuation<Void, String>() {
+                // 460ms 在onGlobalLayout调用后，需要一段时间完成onDraw方法（比如setText), 460是个经验值
+                Task.delay(460).continueWith(new Continuation<Void, String>() {
                     @Override
                     public String then(Task<Void> task) throws Exception {
-                        Log.d("ccaa",Thread.currentThread().getName());
+                        takeSnapshotCurrentCard();
                         return null;
                     }
                 },Task.UI_THREAD_EXECUTOR);
@@ -697,26 +700,43 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnTouchL
                         String youtubeURLStr = textInput.getText().toString();
                         if (StringUtils.isYoutubeLinkage(youtubeURLStr)) {
 
+                            thumbnailImageFromVideoURL(Uri.parse(youtubeURLStr));
+
                             if (mIsImage2Active) {
                                 if (mIsQuestionShowing) {
                                     mCurrentCard.question.movieUriFormatStr2 = youtubeURLStr;
+                                    mImage2.setStaticImageURI(Uri.parse(mCurrentCard.question.imageUriFormatStr2));
                                 } else {
                                     mCurrentCard.answer.movieUriFormatStr2 = youtubeURLStr;
+                                    mImage2.setStaticImageURI(Uri.parse(mCurrentCard.answer.imageUriFormatStr2));
                                 }
+
+
                             } else {
                                 if (mIsQuestionShowing) {
                                     mCurrentCard.question.movieUriFormatStr = youtubeURLStr;
+                                    mImage.setStaticImageURI(Uri.parse(mCurrentCard.question.imageUriFormatStr));
                                 } else {
                                     mCurrentCard.answer.movieUriFormatStr = youtubeURLStr;
+                                    mImage.setStaticImageURI(Uri.parse(mCurrentCard.answer.imageUriFormatStr));
                                 }
                             }
 
-                            thumbnailImageFromVideoURL(Uri.parse(youtubeURLStr));
+
 
 
                             if (!mIsCreatingCard) {
-                                takeSnapshotCurrentCard();
-                                //mCurrentCard.save(AppContext.getAppContext());
+                                mSnapshotAllCardsSemaphore = -1; //we only need to screenshot curent card
+
+                                Task.delay(460).continueWith(new Continuation<Void, String>() {
+                                    @Override
+                                    public String then(Task<Void> task) throws Exception {
+                                        takeSnapshotCurrentCard();
+                                        return null;
+                                    }
+                                },Task.UI_THREAD_EXECUTOR);
+
+//                                mCurrentCard.save(AppContext.getAppContext());
                             }
                         } else {
                             Toast.makeText(AppContext.getAppContext(), getString(R.string.DIALOG_INVALID_YOUTUBE_URL), Toast.LENGTH_LONG).show();
@@ -835,6 +855,7 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnTouchL
             if (mIsCreatingCard == false) {
                 mCurrentCard.save(AppContext.getAppContext());
                 if (mIsQuestionShowing) {
+                    mSnapshotAllCardsSemaphore = -1; //we only need to screenshot current card
                     takeSnapshotCurrentCard();
                 }
             }
@@ -919,7 +940,6 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnTouchL
                         if (mIsImage2Active) {
                             String placeholderImagePath = FileOperationHelper.getQuestionImagePlaceholderImagePath();
 
-                            mImage2.setMultimediaType(FFCMultimediaType.ImageView);
                             mImage2.setStaticImageURI(Uri.parse(placeholderImagePath));
 
                             if (mIsQuestionShowing) {
@@ -929,7 +949,6 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnTouchL
                             }
                         } else {
                             String placeholderImagePath = FileOperationHelper.getAnswerImagePlaceholderImagePath();
-                            mImage.setMultimediaType(FFCMultimediaType.ImageView);
                             mImage.setStaticImageURI(Uri.parse(placeholderImagePath));
 
                             if (mIsQuestionShowing) {
@@ -942,6 +961,7 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnTouchL
                         if (mIsCreatingCard == false) {
                             mCurrentCard.save(AppContext.getAppContext());
                             if (mIsQuestionShowing) {
+                                mSnapshotAllCardsSemaphore = -1; //we only need to screenshot curent card
                                 takeSnapshotCurrentCard();
                             }
                         }
@@ -1158,6 +1178,7 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnTouchL
                                         if (mIsCreatingCard == false) {
                                             mCurrentCard.save(AppContext.getAppContext());
                                             if (mIsQuestionShowing) {
+                                                mSnapshotAllCardsSemaphore = -1; //we only need to screenshot curent card
                                                 takeSnapshotCurrentCard();
                                             }
                                         }
@@ -2764,7 +2785,6 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnTouchL
                                         mImage.getViewTreeObserver().removeOnGlobalLayoutListener(this);
                                     }
 
-                                    mImage.setMultimediaType(FFCMultimediaType.ImageView);
                                     mImage.setAnimitableImage(Uri.parse(mCurrentCard.question.imageUriFormatStr),isGif,mOnFrescoImageViewLoadCompletionListener);
                                 }
 
@@ -2800,7 +2820,6 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnTouchL
                                         mImage2.getViewTreeObserver().removeOnGlobalLayoutListener(this);
                                     }
 
-                                    mImage2.setMultimediaType(FFCMultimediaType.ImageView);
                                     mImage2.setAnimitableImage(Uri.parse(mCurrentCard.question.imageUriFormatStr2),isGif,mOnFrescoImageViewLoadCompletionListener);
                                 }
 
@@ -2849,7 +2868,6 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnTouchL
                                         mImage.getViewTreeObserver().removeOnGlobalLayoutListener(this);
                                     }
 
-                                    mImage.setMultimediaType(FFCMultimediaType.ImageView);
                                     mImage.setAnimitableImage(Uri.parse(mCurrentCard.answer.imageUriFormatStr),isGif,mOnFrescoImageViewLoadCompletionListener);
                                 }
 
@@ -2885,7 +2903,6 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnTouchL
                                         mImage2.getViewTreeObserver().removeOnGlobalLayoutListener(this);
                                     }
 
-                                    mImage2.setMultimediaType(FFCMultimediaType.ImageView);
                                     mImage2.setAnimitableImage(Uri.parse(mCurrentCard.answer.imageUriFormatStr2),isGif,mOnFrescoImageViewLoadCompletionListener);
                                 }
 
@@ -3595,7 +3612,6 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnTouchL
         mImage.setVisibility(View.VISIBLE);
 
         String placeholderImagePath = FileOperationHelper.getQuestionImagePlaceholderImagePath();
-        mImage.setMultimediaType(FFCMultimediaType.ImageView);
         mImage.setStaticImageURI(Uri.parse(placeholderImagePath));
 
         mImage2.setVisibility(View.GONE);
@@ -3622,7 +3638,6 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnTouchL
         mImage.setVisibility(View.VISIBLE);
 
         String placeholderImagePath = FileOperationHelper.getQuestionImagePlaceholderImagePath();
-        mImage.setMultimediaType(FFCMultimediaType.ImageView);
         mImage.setStaticImageURI(Uri.parse(placeholderImagePath));
 
 
@@ -3694,7 +3709,6 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnTouchL
         mImage.setVisibility(View.VISIBLE);
 
         String placeholderImagePath = FileOperationHelper.getQuestionImagePlaceholderImagePath();
-        mImage.setMultimediaType(FFCMultimediaType.ImageView);
         mImage.setStaticImageURI(Uri.parse(placeholderImagePath));
 
 
@@ -3756,7 +3770,6 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnTouchL
         mImage.setVisibility(View.VISIBLE);
 
         String placeholderImagePath = FileOperationHelper.getQuestionImagePlaceholderImagePath();
-        mImage.setMultimediaType(FFCMultimediaType.ImageView);
         mImage.setStaticImageURI(Uri.parse(placeholderImagePath));
 
 
@@ -3866,12 +3879,10 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnTouchL
         mImage.setVisibility(View.VISIBLE);
 
         String placeholderImagePath = FileOperationHelper.getQuestionImagePlaceholderImagePath();
-        mImage.setMultimediaType(FFCMultimediaType.ImageView);
         mImage.setStaticImageURI(Uri.parse(placeholderImagePath));
 
 
         mImage2.setVisibility(View.VISIBLE);
-        mImage2.setMultimediaType(FFCMultimediaType.ImageView);
         mImage2.setStaticImageURI(Uri.parse(placeholderImagePath));
 
 
@@ -3943,7 +3954,6 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnTouchL
         mImage.setVisibility(View.VISIBLE);
 
         String placeholderImagePath = FileOperationHelper.getQuestionImagePlaceholderImagePath();
-        mImage.setMultimediaType(FFCMultimediaType.ImageView);
         mImage.setStaticImageURI(Uri.parse(placeholderImagePath));
 
 
@@ -4119,7 +4129,6 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnTouchL
         mImage.setVisibility(View.VISIBLE);
 
         String placeholderImagePath = FileOperationHelper.getQuestionImagePlaceholderImagePath();
-        mImage.setMultimediaType(FFCMultimediaType.ImageView);
         mImage.setStaticImageURI(Uri.parse(placeholderImagePath));
 
 
@@ -4191,7 +4200,6 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnTouchL
         mImage.setVisibility(View.VISIBLE);
 
         String placeholderImagePath = FileOperationHelper.getQuestionImagePlaceholderImagePath();
-        mImage.setMultimediaType(FFCMultimediaType.ImageView);
         mImage.setStaticImageURI(Uri.parse(placeholderImagePath));
 
 
@@ -4274,12 +4282,10 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnTouchL
         mImage.setVisibility(View.VISIBLE);
 
         String placeholderImagePath = FileOperationHelper.getQuestionImagePlaceholderImagePath();
-        mImage.setMultimediaType(FFCMultimediaType.ImageView);
         mImage.setStaticImageURI(Uri.parse(placeholderImagePath));
 
 
         mImage2.setVisibility(View.VISIBLE);
-        mImage2.setMultimediaType(FFCMultimediaType.ImageView);
         mImage2.setStaticImageURI(Uri.parse(placeholderImagePath));
 
 
@@ -4362,7 +4368,6 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnTouchL
         mImage.setVisibility(View.VISIBLE);
 
         String placeholderImagePath = FileOperationHelper.getQuestionImagePlaceholderImagePath();
-        mImage.setMultimediaType(FFCMultimediaType.ImageView);
         mImage.setStaticImageURI(Uri.parse(placeholderImagePath));
 
 
@@ -5391,9 +5396,10 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnTouchL
                                 mCurrentCard.save(AppContext.getAppContext());
                                 if (mIsQuestionShowing) {
 
-                                    Task.delay(450).continueWith(new Continuation<Void, String>() {
+                                    Task.delay(460).continueWith(new Continuation<Void, String>() {
                                         @Override
                                         public String then(Task<Void> task) throws Exception {
+                                            mSnapshotAllCardsSemaphore = -1; //we only need to screenshot curent card
                                             takeSnapshotCurrentCard();
                                             return null;
                                         }
@@ -5452,12 +5458,10 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnTouchL
 
                                 if (mIsImage2Active) {
 
-                                    mImage2.setMultimediaType(FFCMultimediaType.ImageView);
                                     if (isGif) {
                                         mImage2.setAnimitableImage(Uri.fromFile(toSaveFile),isGif,mOnFrescoImageViewLoadCompletionListener);
                                     } else {
-                                        mImage2.setMultimediaType(FFCMultimediaType.ImageView);
-                                        mImage.setStaticImageURI(Uri.parse(toSaveFileUrlStr));
+                                        mImage2.setStaticImageURI(Uri.parse(toSaveFileUrlStr));
                                     }
 
                                     if (mIsQuestionShowing) {
@@ -5481,11 +5485,9 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnTouchL
                                     }
                                 } else {
 
-                                    mImage.setMultimediaType(FFCMultimediaType.ImageView);
                                     if (isGif) {
                                         mImage.setAnimitableImage(Uri.fromFile(toSaveFile),isGif,mOnFrescoImageViewLoadCompletionListener);
                                     } else {
-                                        mImage.setMultimediaType(FFCMultimediaType.ImageView);
                                         mImage.setStaticImageURI(Uri.parse(toSaveFileUrlStr));
                                     }
 
@@ -5537,7 +5539,7 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnTouchL
                                                             Task.delay(460).continueWith(new Continuation<Void, String>() {
                                                                 @Override
                                                                 public String then(Task<Void> task) throws Exception {
-
+                                                                    mSnapshotAllCardsSemaphore = -1; //we only need to screenshot curent card
                                                                     takeSnapshotCurrentCard();
 
                                                                     return null;
@@ -5560,6 +5562,7 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnTouchL
                                             Task.delay(460).continueWith(new Continuation<Void, String>() {
                                                 @Override
                                                 public String then(Task<Void> task) throws Exception {
+                                                    mSnapshotAllCardsSemaphore = -1; //we only need to screenshot curent card
                                                     takeSnapshotCurrentCard();
                                                     return null;
                                                 }

@@ -36,6 +36,7 @@ import com.flipflash.event.MultiMediaFullscreenEvent;
 import com.flipflash.helper.FileOperationHelper;
 import com.flipflash.util.Global;
 
+import java.io.File;
 import java.io.IOException;
 
 import de.greenrobot.event.EventBus;
@@ -100,7 +101,19 @@ public class MultimediaView extends FrameLayout {
      * This is for non-gif image and small size loading.
      */
     public void setStaticImageURI(Uri uri) {
-        mGifImageView.setImageURI(uri);
+
+        setMultimediaType(FFCMultimediaType.ImageView);
+
+        boolean exist = FileOperationHelper.checkFileExist(uri);
+        Uri newUri;
+        if (exist == false) {
+            String placeholderStr = FileOperationHelper.getQuestionImagePlaceholderImagePath();
+            newUri = Uri.parse(placeholderStr);
+        } else {
+            newUri = Uri.parse(uri.toString());
+        }
+
+        mGifImageView.setImageURI(newUri);
     }
 
 
@@ -116,10 +129,23 @@ public class MultimediaView extends FrameLayout {
      *
      * Highlighted: the view must be layout before calling this method.Otherwise, width/height will be zero
      */
-    public void setAnimitableImage(@NonNull  Uri uri,boolean isGif,final OnFrescoImageViewLoadCompletionListener completionListener) {
+    public void setAnimitableImage( Uri uri,boolean isGif,final OnFrescoImageViewLoadCompletionListener completionListener) {
+
+        setMultimediaType(FFCMultimediaType.ImageView);
+
+        boolean exist = FileOperationHelper.checkFileExist(uri);
+        Uri newUri;
+        if (exist == false) {
+            String placeholderStr = FileOperationHelper.getQuestionImagePlaceholderImagePath();
+            newUri = Uri.parse(placeholderStr);
+        } else {
+            newUri = Uri.parse(uri.toString());
+        }
+
+
 
         if (isGif) {
-            mGifUriPath = uri.toString();
+            mGifUriPath = newUri.toString();
         } else {
             mGifUriPath = "";
         }
@@ -160,7 +186,7 @@ public class MultimediaView extends FrameLayout {
         };
 
         ResizeOptions resizeOptions = new ResizeOptions(getWidth(),getHeight());
-        ImageRequest request = ImageRequestBuilder.newBuilderWithSource(uri)
+        ImageRequest request = ImageRequestBuilder.newBuilderWithSource(newUri)
                 .setResizeOptions(resizeOptions)
                 .build();
         DraweeController controller = Fresco.newDraweeControllerBuilder()
