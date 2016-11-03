@@ -4996,23 +4996,47 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnTouchL
 
 
 
-    private void setCardBackgroundImageWithUri(String uriString) {
+    private void setCardBackgroundImageWithUri(final String uriString) {
         LOGD(TAG, "setCardBackgroundImageWithUri: " + uriString);
         if (uriString == null) {
-            mBackgroundImageView.setImageBitmap(null);
+            mBackgroundImageView.setImageURI("");
         } else {
-            ImageLoader imageLoader = ImageLoader.getInstance();
-//            imageLoader.displayImage(uriString,mBackgroundImageView,mDisplayImageOptions); //这里必须用同步，因为实践中发现,screenshot可能会得到没有load到图片的case，因为displayImage是异步执行
-            //TODO:这里最好是测量view大小，然后根据大小进行处理。
-            Bitmap bitmap = imageLoader.loadImageSync(uriString,mDisplayImageOptions);
-            mBackgroundImageView.setImageBitmap(bitmap);
+
+            mBackgroundImageView.getViewTreeObserver().addOnGlobalLayoutListener(
+                    new ViewTreeObserver.OnGlobalLayoutListener(){
+
+                        @Override
+                        public void onGlobalLayout() {
+                            if (Build.VERSION.SDK_INT < 16) {
+                                mBackgroundImageView.getViewTreeObserver().removeGlobalOnLayoutListener(this);
+                            } else {
+                                mBackgroundImageView.getViewTreeObserver().removeOnGlobalLayoutListener(this);
+                            }
+
+
+                            ResizeOptions resizeOptions = new ResizeOptions(mBackgroundImageView.getWidth(),mBackgroundImageView.getHeight());
+                            ImageRequest request = ImageRequestBuilder.newBuilderWithSource(Uri.parse(uriString))
+                                    .setResizeOptions(resizeOptions)
+                                    .build();
+                            DraweeController controller = Fresco.newDraweeControllerBuilder()
+                                    .setOldController(mBackgroundImageView.getController())
+                                    .setImageRequest(request)
+                                    .build();
+
+                            mBackgroundImageView.setController(controller);
+
+                        }
+
+                    });
+
+
         }
 
     }
 
 
     private void setCardBackgroundImageDefault() {
-        mBackgroundImageView.setImageBitmap(null);
+        mBackgroundImageView.setImageURI("");
 
     }
 

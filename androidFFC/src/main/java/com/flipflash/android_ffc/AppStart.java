@@ -149,6 +149,10 @@ public class AppStart extends Activity {
 
         float density = getResources().getDisplayMetrics().density;
         LOGD(TAG, "desnity * dp = px, here density = " + density);
+
+        Runtime runtime = Runtime.getRuntime();
+        long maxMemory = runtime.maxMemory();
+        LOGD(TAG, "heap size(M) = " + maxMemory/1024/1024);
     }
 
 

@@ -7,12 +7,13 @@ import android.graphics.RectF;
 import android.util.AttributeSet;
 import android.widget.ImageView;
 
+import com.facebook.drawee.view.SimpleDraweeView;
 import com.flipflash.android_ffc.R;
 
 /**
  * Created by bournewang on 5/30/14.
  */
-public class RoundedBottomRightImageView extends ImageView{
+public class RoundedBottomRightImageView extends SimpleDraweeView{
 
     private static final String TAG = RoundedBottomRightImageView.class.getSimpleName();
 
