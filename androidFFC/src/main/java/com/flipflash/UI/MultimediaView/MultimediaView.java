@@ -362,9 +362,14 @@ public class MultimediaView extends FrameLayout {
 
     public void clean() {
 
+        stopGif();
+        stopVideo();
+
         mGifHolderViewFrameLayout.setVisibility(View.GONE);
 
         mVideoHolderViewFrameLayout.setVisibility(View.GONE);
+
+
 
     }
 
@@ -377,7 +382,7 @@ public class MultimediaView extends FrameLayout {
                 mVideoUrlPathForFullScreen = videoUriPath;
                 mVideoView.setDataSource(mActivity,Uri.parse(videoUriPath));
                 mVideoView.setScalableType(ScalableType.FIT_CENTER);
-                mVideoView.setVolume(0, 0);
+                mVideoView.setVolume(1, 1);
                 mVideoView.setLooping(true);
                 mVideoView.prepare(new MediaPlayer.OnPreparedListener() {
                     @Override
