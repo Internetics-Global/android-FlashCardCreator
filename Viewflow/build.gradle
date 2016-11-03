@@ -9,7 +9,7 @@ buildscript {
 apply plugin: 'com.android.library'
 android {
 
-    useLibrary 'org.apache.http.legacy'
+//    useLibrary 'org.apache.http.legacy'
 
     sourceSets {
         main {
@@ -18,14 +18,14 @@ android {
             res.srcDirs = ['res']
         }
     }
-    compileSdkVersion 23
+    compileSdkVersion 22
     buildToolsVersion '23.0.2'
     lintOptions {
         abortOnError false
     }
     defaultConfig {
         minSdkVersion 16
-        targetSdkVersion 23
+        targetSdkVersion 22
         versionCode 1
         versionName '1.0'
     }

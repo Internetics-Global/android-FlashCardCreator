@@ -38,6 +38,7 @@ import com.flipflash.util.Global;
 
 import java.io.File;
 import java.io.IOException;
+import java.security.InvalidParameterException;
 
 import de.greenrobot.event.EventBus;
 
@@ -51,6 +52,8 @@ public class MultimediaView extends FrameLayout {
 
     private static final String TAG = MultimediaView.class.getSimpleName();
 
+    private Context          mActivity;
+
     /*
      * Support both static and gif image view
      */
@@ -61,25 +64,35 @@ public class MultimediaView extends FrameLayout {
     private ImageButton      mGifFullscreenButton;
 
     private ScalableVideoView mVideoView;
-    private FrameLayout      mVideoHolderViewFrameLayout;
-    private ImageView        mVideoThumbNail;  // this is quite different with iOS counterpart since Android does not support thumbnail
-    private ImageButton      mVideoButton;
-    private ImageButton      mVideoFullscreenButton;
+    private FrameLayout       mVideoHolderViewFrameLayout;
 
-    private FrameLayout      mVideoControlBarFrameLayout;
-    private FrameLayout      mGifControlBarFrameLayout;
+    /*
+     * this is quite different with iOS counterpart since Android does not support thumbnail
+     */
+    private ImageView         mVideoThumbNail;
+
+    private ImageButton       mVideoButton;
+    private ImageButton       mVideoFullscreenButton;
+
+    /*
+     * layout to hold controls to play/stop and full screen
+     */
+    private FrameLayout       mVideoControlBarFrameLayout;
+
+    /*
+     * layout to hold controls to play/stop and full screen
+     */
+    private FrameLayout       mGifControlBarFrameLayout;
 
     /*
      * the only usage is for mVideoFullscreenButtonClicked
      */
-    private String           mVideoUrlPath;
+    private String           mVideoUrlPathForFullScreen;
 
     /*
      * the only usage is for mGifFullscreenButtonClicked
      */
-    private String           mGifUriPath;
-
-    private Context          mActivity;
+    private String           mGifUriPathForFullScreen;
 
     public MultimediaView(Context context) {
         super(context);
@@ -101,7 +114,7 @@ public class MultimediaView extends FrameLayout {
 
 
     /*
-     * This is for non-gif image and small size loading.
+     * This is for non-gif image without callback.
      */
     public void setStaticImageURI(Uri uri) {
 
@@ -122,15 +135,14 @@ public class MultimediaView extends FrameLayout {
 
 
     /*
-     * Different with setStaticImageURI
+     * 1. Different with setStaticImageURI: this is for gif image loading or large  size static image loading with callback.
+     * The background is we need to take screenshot after image is full loaded
      *
-     * This is for gif image loading or large  size static image loading. The background is we need to take screenshot after image is full loaded
-     *
-     * In order to reduce memory usage as much as possible, we introduce resizing http://frescolib.org/docs/resizing-rotating.html
-     * Resize is only for jpeg, while our format is png and gif
+     * 2. In order to reduce memory usage as much as possible, we introduce resizing http://frescolib.org/docs/resizing-rotating.html
+     * Resize is only for jpeg, while our format is png and gif.
      * Down sampling supports jpeg, png, webp, but not gif. (when using down sampling, resizing is required)
      *
-     * Highlighted: the view must be layout before calling this method.Otherwise, width/height will be zero
+     * Highlighted: the view must be fully inflated before calling this method.Otherwise, width/height will be zero
      */
     public void setAnimitableImage( Uri uri,boolean isGif,final OnFrescoImageViewLoadCompletionListener completionListener) {
 
@@ -139,18 +151,17 @@ public class MultimediaView extends FrameLayout {
         boolean exist = FileOperationHelper.checkFileExist(uri);
         Uri newUri;
         if (exist == false) {
-            String placeholderStr = FileOperationHelper.getQuestionImagePlaceholderImagePath();
+            String placeholderStr = FileOperationHelper.getQuestionImagePlaceholderImagePath();  //placeholders for answer and question are the same
             newUri = Uri.parse(placeholderStr);
         } else {
             newUri = Uri.parse(uri.toString());
         }
 
 
-
         if (isGif) {
-            mGifUriPath = newUri.toString();
+            mGifUriPathForFullScreen = newUri.toString();
         } else {
-            mGifUriPath = "";
+            mGifUriPathForFullScreen = "";
         }
 
         ControllerListener controllerListener = new BaseControllerListener<ImageInfo>() {
@@ -212,7 +223,7 @@ public class MultimediaView extends FrameLayout {
     private void setup() {
 
         if ((mActivity instanceof Activity) == false) {
-            throw new RuntimeException("mContext should be an instance of Activity");
+            throw new InvalidParameterException("mContext must be an instance of Activity");
         }
 
         LayoutInflater.from(getContext()).inflate(R.layout.multimedia_view,this,true);
@@ -273,7 +284,7 @@ public class MultimediaView extends FrameLayout {
     private void mGifFullscreenButtonClicked() {
 
         Intent intent = new Intent(mActivity, MultimediaFullscreenActivity.class);
-        intent.putExtra("gifPath", mGifUriPath);
+        intent.putExtra("gifPath", mGifUriPathForFullScreen);
         mActivity.startActivity(intent);
 
         EventBus.getDefault().post(new MultiMediaFullscreenEvent()); //not allow to show pack list after back
@@ -281,7 +292,7 @@ public class MultimediaView extends FrameLayout {
 
     private void videoFullscreenButtonClicked() {
 
-        String videoPath = FileOperationHelper.deleteUriSchemeHeader(mVideoUrlPath);
+        String videoPath = FileOperationHelper.deleteUriSchemeHeader(mVideoUrlPathForFullScreen);
         Intent intent = new Intent(mActivity, MultimediaFullscreenActivity.class);
         intent.putExtra("videoPath", videoPath);
         mActivity.startActivity(intent);
@@ -312,6 +323,9 @@ public class MultimediaView extends FrameLayout {
 
     }
 
+    /*
+     * Different with iOS, in Android, we put video and image together in a single layout, rather than render than separately
+     */
     public void setMultimediaType(FFCMultimediaType multimediaType) {
 
         switch (multimediaType) {
@@ -331,6 +345,7 @@ public class MultimediaView extends FrameLayout {
             }
 
             case YoutubeVideo: {
+                //Todo: similar with iOS, we need to include youtube logic into this part
                 break;
             }
 
@@ -356,9 +371,8 @@ public class MultimediaView extends FrameLayout {
 
         if (mVideoView != null) {
             try {
-
                 mVideoView.release();
-                mVideoUrlPath = videoUriPath;
+                mVideoUrlPathForFullScreen = videoUriPath;
                 mVideoView.setDataSource(mActivity,Uri.parse(videoUriPath));
                 mVideoView.setScalableType(ScalableType.FIT_CENTER);
                 mVideoView.setVolume(0, 0);

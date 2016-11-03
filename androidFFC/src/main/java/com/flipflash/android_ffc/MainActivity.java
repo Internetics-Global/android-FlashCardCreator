@@ -758,24 +758,25 @@ public class MainActivity extends FragmentActivity implements
 
         LOGD(TAG, "onResume");
 
-        boolean permissionAuthorized = false;
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            //http://stackoverflow.com/questions/7569937/unable-to-add-window-android-view-viewrootw44da9bc0-permission-denied-for-t
-            if (!Settings.canDrawOverlays(MainActivity.this)) {
-                permissionAuthorized = false;
-                Intent intent = new Intent(Settings.ACTION_MANAGE_OVERLAY_PERMISSION,
-                        Uri.parse("package:" + getPackageName()));
-                startActivityForResult(intent, Global.REQUEST_ACTION_MANAGE_OVERLAY_PERMISSION);
-            } else {
-                permissionAuthorized = true;
-            }
-        } else {
-            permissionAuthorized = true;
-        }
-
-        if (permissionAuthorized == false) {
-            return;
-        }
+//if our targetAPI is 23, we have to add this. We can not set targetAPI= 23 since it could raise permission other issues, see my evernote
+//        boolean permissionAuthorized = false;
+//        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+//            //http://stackoverflow.com/questions/7569937/unable-to-add-window-android-view-viewrootw44da9bc0-permission-denied-for-t
+//            if (!Settings.canDrawOverlays(MainActivity.this)) {
+//                permissionAuthorized = false;
+//                Intent intent = new Intent(Settings.ACTION_MANAGE_OVERLAY_PERMISSION,
+//                        Uri.parse("package:" + getPackageName()));
+//                startActivityForResult(intent, Global.REQUEST_ACTION_MANAGE_OVERLAY_PERMISSION);
+//            } else {
+//                permissionAuthorized = true;
+//            }
+//        } else {
+//            permissionAuthorized = true;
+//        }
+//
+//        if (permissionAuthorized == false) {
+//            return;
+//        }
 
         if (DropboxAuthHelper.sharedHelper(MainActivity.this).isAuthenticationSuccessful()) {
 
@@ -2488,15 +2489,15 @@ public class MainActivity extends FragmentActivity implements
             }
 
         } else if (requestCode == Global.REQUEST_ACTION_MANAGE_OVERLAY_PERMISSION) {
-            if (Settings.canDrawOverlays(this)) {
-                // continue here - permission was granted
-            } else {
+//            if (Settings.canDrawOverlays(this)) {
+//                // continue here - permission was granted
+//            } else {
 //                new SweetAlertDialog(MainActivity.this, SweetAlertDialog.WARNING_TYPE)
 //                    .setTitleText("Alert")
 //                    .setContentText("Sorry but you have to  give it permission to access. Otherwise the app would not work well.")
 //                    .setConfirmText("Close")
 //                    .show();
-            }
+//            }
         } else {
 
         }

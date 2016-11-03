@@ -205,6 +205,7 @@ public class ScalableVideoView extends TextureView implements TextureView.Surfac
 
     public boolean isLooping() {
 
+        //added by ccaa
         if (mMediaPlayer == null) {
             return false;
         }
@@ -214,6 +215,7 @@ public class ScalableVideoView extends TextureView implements TextureView.Surfac
 
     public boolean isPlaying() {
 
+        //added by ccaa
         if (mMediaPlayer == null) {
             return false;
         }
@@ -232,6 +234,7 @@ public class ScalableVideoView extends TextureView implements TextureView.Surfac
 
     public void seekTo(int msec) {
 
+        //added by ccaa
         if (mMediaPlayer == null) {
             return;
         }
@@ -241,6 +244,7 @@ public class ScalableVideoView extends TextureView implements TextureView.Surfac
 
     public void setLooping(boolean looping) {
 
+        //added by ccaa
         if (mMediaPlayer == null) {
             return;
         }
@@ -250,6 +254,7 @@ public class ScalableVideoView extends TextureView implements TextureView.Surfac
 
     public void setVolume(float leftVolume, float rightVolume) {
 
+        //added by ccaa
         if (mMediaPlayer == null) {
             return;
         }
@@ -259,6 +264,7 @@ public class ScalableVideoView extends TextureView implements TextureView.Surfac
 
     public void start() {
 
+        //added by ccaa
         if (mMediaPlayer == null) {
             return;
         }
@@ -268,6 +274,7 @@ public class ScalableVideoView extends TextureView implements TextureView.Surfac
 
     public void stop() {
 
+        //added by ccaa
         if (mMediaPlayer == null) {
             return;
         }
@@ -277,6 +284,7 @@ public class ScalableVideoView extends TextureView implements TextureView.Surfac
 
     public void reset() {
 
+        //added by ccaa
         if (mMediaPlayer == null) {
             return;
         }
@@ -286,6 +294,7 @@ public class ScalableVideoView extends TextureView implements TextureView.Surfac
 
     public void release() {
 
+        //added by ccaa
         if (mMediaPlayer == null) {
             return;
         }

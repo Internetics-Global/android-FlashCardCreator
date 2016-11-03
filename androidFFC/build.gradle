@@ -12,7 +12,7 @@ apply plugin: 'com.android.application'
 
 android {
 
-    useLibrary 'org.apache.http.legacy'
+//    useLibrary 'org.apache.http.legacy'
 
     repositories {
         flatDir {
@@ -20,7 +20,7 @@ android {
         }
     }
 
-    compileSdkVersion 23
+    compileSdkVersion 22
     buildToolsVersion '23.0.2'
 
     def versionPropsFile = file('version.properties')
@@ -38,7 +38,7 @@ android {
         defaultConfig {
             applicationId "com.flipflashcards.FFC_Android_dev"
             minSdkVersion 16
-            targetSdkVersion 23
+            targetSdkVersion 22
             versionCode 6921
             versionName '2.0'
         }
@@ -82,7 +82,7 @@ repositories {
 
 
 dependencies {
-    compile 'com.android.support:support-v4:23.0.0'
+    compile 'com.android.support:support-v4:22.1.1'
     compile 'com.android.support:support-annotations:23.0.0'
     debugCompile 'com.squareup.leakcanary:leakcanary-android:1.3.1'
     releaseCompile 'com.squareup.leakcanary:leakcanary-android-no-op:1.3.1'
