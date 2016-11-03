@@ -54,6 +54,8 @@ public class MultimediaView extends FrameLayout {
 
     private Context          mActivity;
 
+
+
     /*
      * Support both static and gif image view
      */
@@ -532,6 +534,15 @@ public class MultimediaView extends FrameLayout {
         mGifControlBarFrameLayout.setVisibility(View.INVISIBLE);
     }
 
+    @Override
+    protected void onAttachedToWindow() {
+        super.onAttachedToWindow();
+    }
 
+    @Override
+    protected void onDetachedFromWindow() {
+        super.onDetachedFromWindow();
 
+        clean();
+    }
 }
