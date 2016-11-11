@@ -86,6 +86,7 @@ import com.flipflash.util.UIHelper;
 import com.nostra13.universalimageloader.core.DisplayImageOptions;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.assist.ImageSize;
+import com.squareup.leakcanary.RefWatcher;
 
 import net.londatiga.android.ActionItem;
 import net.londatiga.android.QuickAction;
@@ -616,13 +617,6 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnTouchL
     @Override
     public void onDestroy() {
         LOGD(TAG, "onDestroy: " + String.format("cardSN = %d", mCurrentCard.cardSN));
-        super.onDestroy();
-
-//        RefWatcher refWatcher = AppContext.getRefWatcher(getActivity());
-//        refWatcher.watch(this);
-
-        mVerticalScrollView.getViewTreeObserver().removeOnScrollChangedListener(null);
-
 
         mLogoImage.setImageURI(null);
 
@@ -634,6 +628,12 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnTouchL
 //        mTitleTextWatcher = null;
 //        mJobTitleTextWatcher = null;
 //        mSidebarTitleTextWatcher = null;
+
+
+        super.onDestroy();
+
+//        RefWatcher refWatcher = AppContext.getRefWatcher(getActivity());
+//        refWatcher.watch(this);
 
 
     }
@@ -1703,6 +1703,18 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnTouchL
         }
     }
 
+    private ViewTreeObserver.OnScrollChangedListener mOnVerticalScrollViewChangedListener = new ViewTreeObserver.OnScrollChangedListener() {
+        @Override
+        public void onScrollChanged() {
+            LOGD(TAG,"mVerticalScrollView onScrollChanged");
+
+            if (mVerticalScrollView.getScrollY() != 0) {
+
+                stopEmbeddedVideoAndGif();
+            }
+        }
+    };
+
 
     /**
      * 用于inflate后
@@ -1747,17 +1759,8 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnTouchL
 
 
         mVerticalScrollView = (ScrollView) mContentView.findViewById(R.id.card_vertical_scrollview);
-        mVerticalScrollView.getViewTreeObserver().addOnScrollChangedListener(new ViewTreeObserver.OnScrollChangedListener() {
-            @Override
-            public void onScrollChanged() {
-                LOGD(TAG,"mVerticalScrollView onScrollChanged");
-
-                if (mVerticalScrollView.getScrollY() != 0) {
-
-                    stopEmbeddedVideoAndGif();
-                }
-            }
-        });
+        mVerticalScrollView.getViewTreeObserver().removeOnScrollChangedListener(mOnVerticalScrollViewChangedListener);
+        mVerticalScrollView.getViewTreeObserver().addOnScrollChangedListener(mOnVerticalScrollViewChangedListener);
 
 
         mTitle = (FCCEditText) mContentView.findViewById(R.id.title);
@@ -2288,11 +2291,14 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnTouchL
         //1.
         // setOnEditorActionListener，我们不需要手工remove
 
+        mVerticalScrollView.getViewTreeObserver().removeOnScrollChangedListener(mOnVerticalScrollViewChangedListener);
+
         //2.
         if (Build.VERSION.SDK_INT < 16) {
             mVtoSubheading.removeGlobalOnLayoutListener(mVtoSubheadingListener);
             mVtoMain.removeGlobalOnLayoutListener(mVtoMainListener);
             mVtoSub.removeGlobalOnLayoutListener(mVtoSubListener);
+
         } else {
             mVtoSubheading.removeOnGlobalLayoutListener(mVtoSubheadingListener);
             mVtoMain.removeOnGlobalLayoutListener(mVtoMainListener);
@@ -2307,6 +2313,9 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnTouchL
         mCreator.removeTextChangedListener(mCreatorTextWatcher);
         mJobTitle.removeTextChangedListener(mJobTitleTextWatcher);
         mSidebarTitle.removeTextChangedListener(mSidebarTitleTextWatcher);
+
+        //4.
+
 
     }
 
@@ -5015,9 +5024,15 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnTouchL
 
 
                             ResizeOptions resizeOptions = new ResizeOptions(mBackgroundImageView.getWidth(),mBackgroundImageView.getHeight());
-                            ImageRequest request = ImageRequestBuilder.newBuilderWithSource(Uri.parse(uriString))
-                                    .setResizeOptions(resizeOptions)
-                                    .build();
+                            ImageRequest request;
+                            if (resizeOptions.width == 0 || resizeOptions.height == 0) {
+                                request = ImageRequestBuilder.newBuilderWithSource(Uri.parse(uriString))
+                                        .build();
+                            } else {
+                                request = ImageRequestBuilder.newBuilderWithSource(Uri.parse(uriString))
+                                        .setResizeOptions(resizeOptions)
+                                        .build();
+                            }
                             DraweeController controller = Fresco.newDraweeControllerBuilder()
                                     .setOldController(mBackgroundImageView.getController())
                                     .setImageRequest(request)

@@ -58,6 +58,11 @@ public class AppContext extends Application {
                 .build();
         Fresco.initialize(this, config);
 
+//        if (LeakCanary.isInAnalyzerProcess(this)) {
+//            // This process is dedicated to LeakCanary for heap analysis.
+//            // You should not init your app in this process.
+//            return;
+//        }
 //        refWatcher = LeakCanary.install(this);
 
         initImageLoader(getApplicationContext());

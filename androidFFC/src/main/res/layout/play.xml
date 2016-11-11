@@ -3,7 +3,7 @@
     xmlns:soulwolf="http://schemas.android.com/apk/res-auto"
                 android:id="@+id/play_baseview"
                 android:layout_width="match_parent"
-                android:background="@drawable/w2048"
+                android:background="@drawable/background"
                 android:layout_height="match_parent">
 
     <com.flipflash.UI.FFCRatioFrameLayout
