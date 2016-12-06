@@ -433,7 +433,7 @@ public class MultimediaView extends FrameLayout {
             if (mVideoView != null && mVideoView.isPlaying()) {
                 mVideoView.pause();
 
-                mVideoButton.setImageResource(R.drawable.play_button);
+                mVideoButton.setImageResource(R.drawable.play_multimedia);
 
                 mVideoButton.setVisibility(VISIBLE);
                 mVideoFullscreenButton.setVisibility(VISIBLE);
@@ -451,7 +451,7 @@ public class MultimediaView extends FrameLayout {
                 if (mVideoView.isPlaying()) {
                     mVideoView.stop();
                 }
-                mVideoButton.setImageResource(R.drawable.play_button);
+                mVideoButton.setImageResource(R.drawable.play_multimedia);
 
                 mVideoButton.setVisibility(VISIBLE);
                 mVideoFullscreenButton.setVisibility(VISIBLE);
@@ -494,7 +494,7 @@ public class MultimediaView extends FrameLayout {
             Animatable animatable = mGifImageView.getController().getAnimatable();
             if (animatable != null && animatable.isRunning()) {
                 animatable.stop();
-                mGifButton.setImageResource(R.drawable.play_button);
+                mGifButton.setImageResource(R.drawable.play_multimedia);
             }
 
         }
