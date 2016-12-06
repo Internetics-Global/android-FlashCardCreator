@@ -383,11 +383,17 @@ public class MultimediaView extends FrameLayout {
                 mVideoView.setDataSource(mActivity,Uri.parse(videoUriPath));
                 mVideoView.setScalableType(ScalableType.FIT_CENTER);
                 mVideoView.setVolume(1, 1);
-                mVideoView.setLooping(true);
+//                mVideoView.setLooping(true);
                 mVideoView.prepare(new MediaPlayer.OnPreparedListener() {
                     @Override
                     public void onPrepared(MediaPlayer mp) {
 
+                    }
+                });
+                mVideoView.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
+                    @Override
+                    public void onCompletion(MediaPlayer mediaPlayer) {
+                        stopVideo();
                     }
                 });
             } catch (IOException e) {
@@ -426,7 +432,11 @@ public class MultimediaView extends FrameLayout {
 
             if (mVideoView != null && mVideoView.isPlaying()) {
                 mVideoView.pause();
+
                 mVideoButton.setImageResource(R.drawable.play_button);
+
+                mVideoButton.setVisibility(VISIBLE);
+                mVideoFullscreenButton.setVisibility(VISIBLE);
             }
 
         }
@@ -437,9 +447,14 @@ public class MultimediaView extends FrameLayout {
 
         if (mVideoHolderViewFrameLayout.getVisibility() == VISIBLE) {
 
-            if (mVideoView != null && mVideoView.isPlaying()) {
-                mVideoView.stop();
+            if (mVideoView != null) {
+                if (mVideoView.isPlaying()) {
+                    mVideoView.stop();
+                }
                 mVideoButton.setImageResource(R.drawable.play_button);
+
+                mVideoButton.setVisibility(VISIBLE);
+                mVideoFullscreenButton.setVisibility(VISIBLE);
 
                 mVideoView.setVisibility(INVISIBLE);
                 mVideoThumbNail.setVisibility(VISIBLE);
@@ -456,10 +471,15 @@ public class MultimediaView extends FrameLayout {
 
             if (mVideoView != null && mVideoView.isPlaying() == false) {
                 mVideoView.start();
+
                 mVideoButton.setImageResource(R.drawable.pause_button);
+                mVideoButton.setVisibility(INVISIBLE);
+                mVideoFullscreenButton.setVisibility(INVISIBLE);
 
                 mVideoView.setVisibility(VISIBLE);
                 mVideoThumbNail.setVisibility(INVISIBLE);
+
+
             }
 
         }
