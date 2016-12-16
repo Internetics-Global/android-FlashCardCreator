@@ -14,6 +14,10 @@ android {
 
 //    useLibrary 'org.apache.http.legacy'
 
+    dexOptions {
+        javaMaxHeapSize "4g"
+    }
+
     repositories {
         flatDir {
             dirs 'libs'
@@ -41,6 +45,7 @@ android {
             targetSdkVersion 22
             versionCode 6921
             versionName '2.0'
+            multiDexEnabled true
         }
     }
     else {
@@ -150,6 +155,14 @@ dependencies {
 
 
 
+    //Google drive related
+    configurations {
+        compile.exclude group: "org.apache.httpcomponents", module: "httpclient"
+    }
+    compile 'com.google.api-client:google-api-client:1.20.0'
+
+    //avoid 64k max method issue: https://developer.android.com/studio/build/multidex.html
+    compile 'com.android.support:multidex:1.0.1'
 }
 
 
