@@ -22,11 +22,6 @@ import com.flipflash.util.AppConfig;
 import com.flipflash.util.AppContext;
 import com.flipflash.util.Global;
 import com.flipflash.util.MutipleTargetHelper;
-import com.parse.LogOutCallback;
-import com.parse.ParseException;
-import com.parse.ParseUser;
-import com.parse.SaveCallback;
-import com.parse.ui.ParseLoginBuilder;
 
 import org.adw.library.widgets.discreteseekbar.DiscreteSeekBar;
 
@@ -45,7 +40,6 @@ public class MoreActivity extends Activity {
     private static final String TAG = MoreActivity.class.getSimpleName();
 
     ToggleButton             mStorageProviderToggleButton;
-    TextView                 mSocialAccountTextView;
 
 
     public void onCreate(Bundle savedInstanceState) {
@@ -64,8 +58,6 @@ public class MoreActivity extends Activity {
         final ToggleButton textToSpeechToggleButton =(ToggleButton) findViewById(R.id.text_to_speech_toggle_button);
         final ToggleButton showQuestionOnlyToggleButton = (ToggleButton) findViewById(R.id.auto_show_question_only_toggle_button);
 //        final ToggleButton maleFemaleToggleButton = (ToggleButton) findViewById(R.id.male_female_voice_toggle_button);
-
-        mSocialAccountTextView = (TextView) findViewById(R.id.random_play_social_account_textview);
 
         mStorageProviderToggleButton = (ToggleButton) findViewById(R.id.storage_provider_toggle_button);
 
@@ -198,21 +190,12 @@ public class MoreActivity extends Activity {
                 } else {
                     DropboxAuthHelper.sharedHelper(MoreActivity.this).logOut();
 
-                    if (Global.FFC_WITHOUT_SUBSCRIPTION == false) {
-                        AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(
-                                MoreActivity.this);
-                        alertDialogBuilder.setTitle(R.string.DIALOG_AlERT);
-                        alertDialogBuilder.setPositiveButton(R.string.DIALOG_CLOSE,null);
-                        alertDialogBuilder
-                                .setMessage(R.string.DIALOG_USE_AMAZON_AS_STORAGE).show();
-                    } else {
-                        AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(
-                                MoreActivity.this);
-                        alertDialogBuilder.setTitle(R.string.DIALOG_AlERT);
-                        alertDialogBuilder.setPositiveButton(R.string.DIALOG_CLOSE,null);
-                        alertDialogBuilder
-                                .setMessage(R.string.DIALOG_FAIL_TO_LOG_DROPBOX).show();
-                    }
+                    AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(
+                            MoreActivity.this);
+                    alertDialogBuilder.setTitle(R.string.DIALOG_AlERT);
+                    alertDialogBuilder.setPositiveButton(R.string.DIALOG_CLOSE,null);
+                    alertDialogBuilder
+                            .setMessage(R.string.DIALOG_FAIL_TO_LOG_DROPBOX).show();
                 }
 
             }
@@ -240,60 +223,14 @@ public class MoreActivity extends Activity {
         });
 
 
-        if (Global.FFC_WITHOUT_SUBSCRIPTION) {
-            findViewById(R.id.rl_social_account_line).setVisibility(View.GONE);
-            findViewById(R.id.rl_social_account).setVisibility(View.GONE);
+        TextView textView = (TextView) findViewById(R.id.storage_provider_toggle_textview);
+        textView.setText(R.string.Table_Item_Dropbox_Logged_In);
 
-            TextView textView = (TextView) findViewById(R.id.storage_provider_toggle_textview);
-            textView.setText(R.string.Table_Item_Dropbox_Logged_In);
-
-            if (MutipleTargetHelper.isFullVersion() == false) {
-                textView.setTextColor(Color.DKGRAY);
-            } else {
-                textView.setTextColor(Color.WHITE);
-            }
-
+        if (MutipleTargetHelper.isFullVersion() == false) {
+            textView.setTextColor(Color.DKGRAY);
         } else {
-
-            findViewById(R.id.rl_social_account).setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-
-                    ParseUser currentUser = ParseUser.getCurrentUser();
-
-                    if (currentUser != null) {
-                        // User clicked to log out.
-
-                        final SweetAlertDialog pDialog = new SweetAlertDialog(MoreActivity.this, SweetAlertDialog.PROGRESS_TYPE);
-                        pDialog.getProgressHelper().setBarColor(Color.parseColor("#A5DC86"));
-                        pDialog.setTitleText("Logging out...");
-                        pDialog.setCancelable(false);
-                        pDialog.show();
-
-                        ParseUser.logOutInBackground(new LogOutCallback() {
-                            @Override
-                            public void done(ParseException e) {
-
-                                mSocialAccountTextView.setText(R.string.Table_Item_Log_In_Social_Network);
-
-                                pDialog.dismiss();
-
-                                new SweetAlertDialog(MoreActivity.this, SweetAlertDialog.SUCCESS_TYPE)
-                                        .setTitleText(getString(R.string.DIALOG_AlERT))
-                                        .setContentText(getString(R.string.DIALOG_SOCIAL_MEDIA_LOG_OUT_SUCCESS))
-                                        .show();
-
-                            }
-                        });
-
-                    } else {
-                        parseUserAuth();
-                    }
-                }
-            });
+            textView.setTextColor(Color.WHITE);
         }
-
-
 
 
         findViewById(R.id.rl_send_log).setOnClickListener(new View.OnClickListener() {
@@ -304,19 +241,6 @@ public class MoreActivity extends Activity {
         });
 
 
-    }
-
-    private void parseUserAuth() {
-
-        ParseLoginBuilder loginBuilder = new ParseLoginBuilder(
-                MoreActivity.this);
-        Intent parseLoginIntent = loginBuilder.setParseLoginEnabled(true)
-                .setParseLoginEmailAsUsername(false)
-                .setParseSignupButtonText("Create account")
-                .setParseSignupMinPasswordLength(4)
-                .setAppLogo(R.drawable.sign_in_logo)
-                .build();
-        startActivityForResult(parseLoginIntent, Global.REQUEST_LOGIN);
     }
 
     @Override
@@ -334,12 +258,6 @@ public class MoreActivity extends Activity {
     @Override
     protected void onResume() {
         super.onResume();
-
-        if (ParseUser.getCurrentUser() != null) {
-            mSocialAccountTextView.setText(R.string.Table_Item_Log_Out_Social_Network);
-        } else {
-            mSocialAccountTextView.setText(R.string.Table_Item_Log_In_Social_Network);
-        }
 
         if (DropboxAuthHelper.sharedHelper(MoreActivity.this).isLinked()) {
             mStorageProviderToggleButton.setToggleOn();
@@ -376,87 +294,7 @@ public class MoreActivity extends Activity {
         //https://github.com/ParsePlatform/ParseUI-Android/issues/79
 
         if (requestCode == Global.REQUEST_LOGIN) {
-
-            if (resultCode == Activity.RESULT_OK) {
-
-                final ParseUser currentUser = ParseUser.getCurrentUser();
-                if (currentUser != null) {
-                    if (currentUser.getUsername().length() > 20) { //表明这是一个系统生成的user name，而不是二次用户生成
-
-                        final EditText passwordEditText = new EditText(MoreActivity.this);
-                        passwordEditText.setSingleLine(true);
-                        passwordEditText.setInputType(InputType.TYPE_TEXT_FLAG_NO_SUGGESTIONS);
-                        new AlertDialog.Builder(MoreActivity.this)
-                                .setTitle(R.string.DIALOG_CREATE_ACCOUNT_ALERT_MESSAGE)
-                                .setIcon(android.R.drawable.ic_dialog_info)
-                                .setView(passwordEditText)
-                                .setPositiveButton(R.string.DIALOG_DONE, new DialogInterface.OnClickListener() {
-                                    @Override
-                                    public void onClick(DialogInterface dialog, int which) {
-                                        String username = passwordEditText.getText().toString().trim().toLowerCase(); //bucket name必须小写
-
-                                        if (username.length() == 0) {
-
-                                            new SweetAlertDialog(MoreActivity.this, SweetAlertDialog.ERROR_TYPE)
-                                                                                                .setTitleText("Oops...")
-                                                                                                .setContentText(getString(R.string.DIALOG_ACCOUNT_USERNAME_EMPTY_ERROR))
-                                                                                                .show();
-
-                                            return;
-                                        }
-
-                                        currentUser.setUsername(username);
-                                        currentUser.saveInBackground(new SaveCallback() {
-                                            @Override
-                                            public void done(ParseException e) {
-                                                if (e == null) {
-                                                    new SweetAlertDialog(MoreActivity.this, SweetAlertDialog.SUCCESS_TYPE)
-                                                            .setTitleText(getString(R.string.DIALOG_AlERT))
-                                                            .setContentText(getString(R.string.DIALOG_ACCOUNT_USERNAME_LINKED_SUCCESSFULLY))
-                                                            .show();
-                                                } else {
-                                                    new SweetAlertDialog(MoreActivity.this, SweetAlertDialog.ERROR_TYPE)
-                                                            .setTitleText(getString(R.string.DIALOG_ERROR))
-                                                            .setContentText(getString(R.string.DIALOG_ACCOUNT_USERNAME_HAS_BEEN_REGISTERED))
-                                                            .show();
-
-                                                }
-
-                                            }
-                                        });
-
-
-                                    }
-                                })
-                                .setNegativeButton(R.string.DIALOG_CANCEL, null)
-                                .show();
-
-                    } else {
-
-                        new SweetAlertDialog(MoreActivity.this,SweetAlertDialog.SUCCESS_TYPE)
-                                .setTitleText(getString(R.string.DIALOG_AlERT))
-                                .setContentText(getString(R.string.DIALOG_SOCIAL_MEDIA_SIGNUP_OR_SIGNIN_SUCCESS))
-                                .show();
-                    }
-                } else {
-                    new SweetAlertDialog(MoreActivity.this,SweetAlertDialog.ERROR_TYPE)
-                            .setTitleText(getString(R.string.DIALOG_ERROR))
-                            .setContentText(getString(R.string.DIALOG_SOCIAL_MEDIA_LOG_IN_FAILURE))
-                            .show();
-                    LOGE(TAG, "onActivityResult: sign up or sign in failure.currentUser should exist");
-                }
-
-
-            } else if (resultCode == Activity.RESULT_CANCELED) {
-
-            } else {
-
-                new SweetAlertDialog(MoreActivity.this,SweetAlertDialog.ERROR_TYPE)
-                        .setTitleText(getString(R.string.DIALOG_ERROR))
-                        .setContentText(getString(R.string.DIALOG_SOCIAL_MEDIA_LOG_IN_FAILURE))
-                        .show();
-                LOGE(TAG, "onActivityResult: sign up or sign in failure with resultCode = " + resultCode);
-            }
+            //old parse logic here
         }
     }
 

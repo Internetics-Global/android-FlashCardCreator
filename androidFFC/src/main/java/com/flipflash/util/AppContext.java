@@ -23,11 +23,7 @@ import com.nostra13.universalimageloader.utils.L;
 import com.orhanobut.hawk.Hawk;
 import com.orhanobut.hawk.HawkBuilder;
 import com.orhanobut.hawk.LogLevel;
-import com.parse.Parse;
-import com.parse.ParseCrashReporting;
-import com.parse.ParseFacebookUtils;
-import com.parse.ParseTwitterUtils;
-import com.squareup.leakcanary.LeakCanary;
+
 import com.squareup.leakcanary.RefWatcher;
 
 import java.text.SimpleDateFormat;
@@ -90,20 +86,6 @@ public class AppContext extends Application {
         );
 
         mS3Client = new AmazonS3Client(mCredentialsProvider);
-
-        // Setup Parse
-        //ParseCrashReporting.enable(this);
-        Parse.enableLocalDatastore(this);
-        Parse.initialize(this);
-        // Parse的app_key和app_id是在Manifest中进行设置
-
-        //Twitter
-        ParseTwitterUtils.initialize(getString(R.string.parse_twitter_key),
-                getString(R.string.parse_twitter_secret));
-
-        //Facebook
-        ParseFacebookUtils.initialize(this);
-        //facebook_app_id 是在Manifest中进行设置
 
         //Key-value storage
         Hawk.init(this)

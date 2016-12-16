@@ -1,8 +1,6 @@
 package com.flipflash.android_ffc;
 
-import android.annotation.TargetApi;
 import android.app.ActionBar;
-import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.Context;
@@ -18,7 +16,6 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
-import android.provider.Settings;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
@@ -71,9 +68,6 @@ import com.flipflash.fragment.CardDetailFragment;
 import com.flipflash.fragment.CardListFragment;
 import com.flipflash.fragment.CreateEditFragment;
 import com.flipflash.fragment.SymbolBoxFragment;
-import com.flipflash.helper.AWS.AWSShareHelper;
-import com.flipflash.helper.AWS.AWS_Constant;
-import com.flipflash.helper.AWS.AWSUploadHelper;
 import com.flipflash.helper.AWS.SimpleDBHelper;
 import com.flipflash.helper.AudioHelper;
 import com.flipflash.helper.Dropbox.DropboxAuthHelper;
@@ -96,10 +90,6 @@ import com.nostra13.universalimageloader.core.DisplayImageOptions;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.listener.SimpleImageLoadingListener;
 import com.orhanobut.hawk.Hawk;
-import com.parse.ParseException;
-import com.parse.ParseUser;
-import com.parse.SaveCallback;
-import com.parse.ui.ParseLoginBuilder;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -180,7 +170,6 @@ public class MainActivity extends FragmentActivity implements
 
     private PackInfoView         mPackInfoView;
 
-    private AWSUploadHelper      mAmazonUploadHelper ;
     private DropboxUploadHelper  mDropboxUploadHelper ;
 
     private DonutProgress        mRecordStopProgress;
@@ -1190,10 +1179,6 @@ public class MainActivity extends FragmentActivity implements
             mRecordCountDownTimer = null;
         }
 
-        if (mAmazonUploadHelper != null) {
-            mAmazonUploadHelper.stop();
-        }
-
         if (mDropboxUploadHelper != null) {
             mDropboxUploadHelper.cancel(true);
             mDropboxUploadHelper = null;
@@ -1556,41 +1541,11 @@ public class MainActivity extends FragmentActivity implements
         }
 
 
-        if (Global.FFC_WITHOUT_SUBSCRIPTION) {
-            if (DropboxAuthHelper.sharedHelper(MainActivity.this).isLinked()) {
-                shareToDropbox();
-            } else {
-                DropboxAuthHelper.sharedHelper(MainActivity.this).startAuthentication();  //跳转到授权页，成功后，会到onResume进行处理。
-            }
+        if (DropboxAuthHelper.sharedHelper(MainActivity.this).isLinked()) {
+            shareToDropbox();
         } else {
-            if (DropboxAuthHelper.sharedHelper(MainActivity.this).isLinked()) {
-                shareToDropbox();
-            } else {
-                ParseUser currentUser = ParseUser.getCurrentUser();
-                if (currentUser != null) {
-                    shareToAWS();
-                } else {
-                    parseUserAuth();
-                }
-            }
+            DropboxAuthHelper.sharedHelper(MainActivity.this).startAuthentication();  //跳转到授权页，成功后，会到onResume进行处理。
         }
-    }
-
-    private void parseUserAuth() {
-        LOGD(TAG, "parseUserAuth");
-        mIsAllowedToShowPackList = false;
-
-        ParseLoginBuilder loginBuilder = new ParseLoginBuilder(
-                MainActivity.this);
-        Intent parseLoginIntent = loginBuilder.setParseLoginEnabled(true)
-                .setParseLoginEmailAsUsername(false)
-                .setParseSignupButtonText("Create account")
-                .setParseSignupMinPasswordLength(4)
-                .setAppLogo(R.drawable.sign_in_logo)
-                .build();
-        startActivityForResult(parseLoginIntent, Global.REQUEST_LOGIN);
-
-
     }
 
     private void share() {
@@ -1598,7 +1553,6 @@ public class MainActivity extends FragmentActivity implements
         if (DropboxAuthHelper.sharedHelper(MainActivity.this).isLinked()) {
             shareToDropbox();
         } else {
-            shareToAWS();
         }
 
     }
@@ -1617,20 +1571,6 @@ public class MainActivity extends FragmentActivity implements
         }
     }
 
-
-    private void shareToAWS() {
-        LOGD(TAG, "share");
-
-        if ((mCurrentPack.creatorID).equals(OpenUDID_manager.getOpenUDID())) {
-
-            setPasswordAndUpload();
-
-        } else {
-            AWSShareHelper AWSShareHelper = new AWSShareHelper(this,mCurrentPack,true);
-            AWSShareHelper.share();
-
-        }
-    }
 
 
     private void setPasswordAndUpload() {
@@ -2344,143 +2284,13 @@ public class MainActivity extends FragmentActivity implements
     };
 
 
-
-
-    //TODO: lint This Handler class should be static or leaks might occur (null)
-    private final Handler mAmazonUploadHandler = new Handler() {
-        @Override
-        public void handleMessage(Message msg) {
-            super.handleMessage(msg);
-            switch (msg.what) {
-                case AWS_Constant.UPLOAD_PROGRESS: {
-                    File file = (File) msg.obj;
-                    int flag = msg.arg1; //indicate whether upload is finished or not
-                    int percent = msg.arg2;
-
-                    if (mUploadProgressDialog == null) {
-                        mUploadProgressDialog = new ProgressDialog(MainActivity.this);
-                        mUploadProgressDialog.setMax(100);
-                        mUploadProgressDialog.setCancelable(false);
-                        mUploadProgressDialog.setCanceledOnTouchOutside(false);
-                        mUploadProgressDialog.setMessage(getString(R.string.Indicator_Upload));
-                        mUploadProgressDialog.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
-                        mUploadProgressDialog.setButton(DialogInterface.BUTTON_NEGATIVE, getString(R.string.DIALOG_CANCEL), new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialog, int which) {
-                                dialog.dismiss();
-                                if (mAmazonUploadHelper != null) {
-                                    mAmazonUploadHelper.stop();
-                                }
-                            }
-                        });
-                    }
-
-                    if (flag == 0) {
-                        mUploadProgressDialog.dismiss();
-
-                        Toast.makeText(getApplicationContext(), R.string.DIALOG_UPLOAD_SUCCESSFULLY, Toast.LENGTH_SHORT).show();
-
-                        AWSShareHelper AWSShareHelper = new AWSShareHelper(MainActivity.this, mCurrentPack,false);
-                        AWSShareHelper.execute();
-
-                    } else {
-                        if (mUploadProgressDialog.isShowing() == false) {
-                            mUploadProgressDialog.show();
-                        }
-                        mUploadProgressDialog.setProgress(percent);
-                    }
-                    break;
-                }
-
-
-            }
-        }
-    };
-
-
-
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         LOGD(TAG, "onActivityResult with request code = " + requestCode);
 
-        //Parse暂时不支持区分sign up或sign in
-        //https://github.com/ParsePlatform/ParseUI-Android/issues/79
-
         if (requestCode == Global.REQUEST_LOGIN) {
-
-            if (resultCode == Activity.RESULT_OK) {
-
-                final ParseUser currentUser = ParseUser.getCurrentUser();
-                if (currentUser != null) {
-                    if (currentUser.getUsername().length() > 20) { //表明这是一个系统生成的user name，而不是二次用户生成
-
-                        final EditText passwordEditText = new EditText(MainActivity.this);
-                        passwordEditText.setSingleLine(true);
-                        passwordEditText.setInputType(InputType.TYPE_TEXT_FLAG_NO_SUGGESTIONS);
-                        new AlertDialog.Builder(MainActivity.this)
-                                .setTitle(R.string.DIALOG_CREATE_ACCOUNT_ALERT_MESSAGE)
-                                .setIcon(android.R.drawable.ic_dialog_info)
-                                .setView(passwordEditText)
-                                .setPositiveButton(R.string.DIALOG_DONE, new DialogInterface.OnClickListener() {
-                                    @Override
-                                    public void onClick(DialogInterface dialog, int which) {
-                                        String username = passwordEditText.getText().toString().trim().toLowerCase();//bucket name必须小写
-
-                                        if (username.length() == 0) {
-                                            new SweetAlertDialog(MainActivity.this, SweetAlertDialog.ERROR_TYPE)
-                                                    .setTitleText("Oops...")
-                                                    .setContentText(getString(R.string.DIALOG_ACCOUNT_USERNAME_EMPTY_ERROR))
-                                                    .show();
-                                            return;
-                                        }
-
-                                        currentUser.setUsername(username);
-                                        currentUser.saveInBackground(new SaveCallback() {
-                                            @Override
-                                            public void done(ParseException e) {
-                                                if (e == null) {
-                                                    share();
-                                                } else {
-                                                    new SweetAlertDialog(MainActivity.this, SweetAlertDialog.ERROR_TYPE)
-                                                            .setTitleText(getString(R.string.DIALOG_ERROR))
-                                                            .setContentText(getString(R.string.DIALOG_ACCOUNT_USERNAME_HAS_BEEN_REGISTERED))
-                                                            .show();
-
-                                                }
-
-                                            }
-                                        });
-
-
-                                    }
-                                })
-                                .setNegativeButton(R.string.DIALOG_CANCEL, null)
-                                .show();
-
-                    } else {
-
-                        share();
-                    }
-                } else {
-                    new SweetAlertDialog(MainActivity.this,SweetAlertDialog.ERROR_TYPE)
-                            .setTitleText(getString(R.string.DIALOG_ERROR))
-                            .setContentText(getString(R.string.DIALOG_SOCIAL_MEDIA_LOG_IN_FAILURE))
-                            .show();
-                    LOGD(TAG, "onActivityResult: sign up or sign in failure.currentUser should exist");
-                }
-
-
-            } else if (resultCode == Activity.RESULT_CANCELED) {
-
-            } else {
-
-                new SweetAlertDialog(MainActivity.this,SweetAlertDialog.ERROR_TYPE)
-                        .setTitleText(getString(R.string.DIALOG_ERROR))
-                        .setContentText(getString(R.string.DIALOG_SOCIAL_MEDIA_LOG_IN_FAILURE))
-                        .show();
-                LOGE(TAG, "onActivityResult: " + "sign up or sign in failure with resultCode = " + resultCode);
-            }
+            //old parse logic here
         } else if (requestCode == 2061984) {  //defined in "https://github.com/anjlab/android-inapp-billing-v3"
             android.app.Fragment fragment = getFragmentManager().findFragmentByTag("PurchaseFragment");
             if (fragment != null)
@@ -2628,8 +2438,7 @@ public class MainActivity extends FragmentActivity implements
                     mDropboxUploadHelper = new DropboxUploadHelper(MainActivity.this, Global.DROPBOX_FOLDER, mZippedFile, mDropboxUploadHandler);
                     mDropboxUploadHelper.execute();
                 } else {
-                    mAmazonUploadHelper = new AWSUploadHelper(MainActivity.this, mAmazonUploadHandler);
-                    mAmazonUploadHelper.upload(mZippedFile);
+
                 }
             }
         }
