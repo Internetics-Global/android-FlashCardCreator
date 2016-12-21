@@ -71,18 +71,25 @@ public class GoogleDriveUploadHelper {
         mDialog.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
         mDialog.setProgress(0);
         mDialog.setCancelable(false);
-        mDialog.setButton(DialogInterface.BUTTON_NEGATIVE, mContext.getString(R.string.DIALOG_CANCEL), new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                dialog.dismiss();
 
-                new Thread(new Runnable() {
-                    @Override
-                          public void run() {
-//                             mUploadRequest.abort();  todo: ccaa. how to stop
+        //Google APIs does not support cancel operation, see here: https://github.com/google/google-http-java-client/issues/343
+        //It's a strongly requested function to be able to cancel, we will implement it when API supports this.
+        if (false) {
+            mDialog.setButton(DialogInterface.BUTTON_NEGATIVE, mContext.getString(R.string.DIALOG_CANCEL), new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    dialog.dismiss();
+
+                    new Thread(new Runnable() {
+                        @Override
+                        public void run() {
+
+//                             mUploadRequest.abort();
                         } }).start();
-            }
-        });
+                }
+            });
+        }
+
         mDialog.setCanceledOnTouchOutside(false);
         mDialog.show();
     }

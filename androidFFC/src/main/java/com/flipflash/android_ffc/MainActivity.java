@@ -2542,12 +2542,7 @@ public class MainActivity extends FragmentActivity implements
                     mGoogleDriveUploadHelper = new GoogleDriveUploadHelper(MainActivity.this, Global.GOOGLE_DRIVE_FOLDER_NAME, mZippedFile, mGoogleDriveUploadHandler);
                     mGoogleDriveUploadHelper.execute();
                 } else {
-                    //todo : ccaa
-//                    AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(
-//                            MainActivity.this);
-//                    alertDialogBuilder.setTitle("Alert");
-//                    alertDialogBuilder
-//                            .setMessage("Error to be here").show();
+                    LOGE(TAG, "onPostExecute, and should not be here, please have a check");
                 }
             }
         }

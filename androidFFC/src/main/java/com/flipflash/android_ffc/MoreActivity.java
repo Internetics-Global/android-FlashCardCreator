@@ -182,7 +182,11 @@ public class MoreActivity extends Activity {
         findViewById(R.id.rl_storage_option).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(MoreActivity.this, StorageOptionActivity.class));
+                if (MutipleTargetHelper.isFullVersion() == false) {
+                } else {
+                    startActivity(new Intent(MoreActivity.this, StorageOptionActivity.class));
+                }
+
             }
         });
 
