@@ -115,33 +115,35 @@ public class DropboxShareHelper extends AsyncTask<Void, Long, Boolean> {
                 //这段逻辑用于解决：当在dropbox和google drive相互切换时
 
                 boolean toSavePackUploadRecord = true;
+                boolean toGenerateShareLink = true;
                 if (StringUtils.isEmpty(mCurrentPack.shareLink) == false) {
                     String currentShareLink = StringUtils.getUnshortedURL(mCurrentPack.shareLink);
 
                     if (currentShareLink != null && currentShareLink.toLowerCase().contains("dropbox.com")) {
+                        toGenerateShareLink = false;
 
+                    }
+                }
+
+                if (toGenerateShareLink) {
+                    String filePathInDropbox = Global.DROPBOX_FOLDER + mCurrentPack.fileNameOnAWS;
+
+                    DropboxAPI.DropboxLink link = DropboxAuthHelper.sharedHelper(mActivity).getDropboxAPI().share(filePathInDropbox);
+                    String shortedShareLink = link.url;
+                    String shareLink = StringUtils.getUnshortedURL(shortedShareLink);
+                    if (shareLink == null) {
+                        return false;
+                    }
+                    String undirectedURL = shareLink.replace("https","fcc").replace("http","fcc");
+                    LOGD(TAG, "doInBackground: " +  "the fcc share linkage is: " + undirectedURL);
+                    mCurrentPack.shareLink = generateRedirectedURL(undirectedURL);
+
+                    if (mCurrentPack.shareLink.indexOf("http://") != 0) {
+                        toSavePackUploadRecord = false;
+                        Toast.makeText(AppContext.getAppContext(), R.string.DIALOG_REDIRECT_SERVICE_UNAVAILABLE, Toast.LENGTH_LONG).show();
                     } else {
 
-                        String filePathInDropbox = Global.DROPBOX_FOLDER + mCurrentPack.fileNameOnAWS;
-
-                        DropboxAPI.DropboxLink link = DropboxAuthHelper.sharedHelper(mActivity).getDropboxAPI().share(filePathInDropbox);
-                        String shortedShareLink = link.url;
-                        String shareLink = StringUtils.getUnshortedURL(shortedShareLink);
-                        if (shareLink == null) {
-                            return false;
-                        }
-                        String undirectedURL = shareLink.replace("https","fcc").replace("http","fcc");
-                        LOGD(TAG, "doInBackground: " +  "the fcc share linkage is: " + undirectedURL);
-                        mCurrentPack.shareLink = generateRedirectedURL(undirectedURL);
-
-                        if (mCurrentPack.shareLink.indexOf("http://") != 0) {
-                            toSavePackUploadRecord = false;
-                            Toast.makeText(AppContext.getAppContext(), R.string.DIALOG_REDIRECT_SERVICE_UNAVAILABLE, Toast.LENGTH_LONG).show();
-                        } else {
-
-                            mCurrentPack.save(mActivity);
-
-                        }
+                        mCurrentPack.save(mActivity);
 
                     }
                 }
