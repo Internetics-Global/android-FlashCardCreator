@@ -129,6 +129,8 @@ public class Global {
 
     //Dropbox folder to save Flip Flash Cards
     public static final String DROPBOX_FOLDER = "/FlipFlashCardsPacks/";
+    //Google Drive folder to save Flip Flash Cards
+    public static final String GOOGLE_DRIVE_FOLDER_NAME = "FlipFlashCardsPacks";
 
 
     public static final String K_AppStore_Link = "https://play.google.com/store/apps/details?id=com.flipflashcards.FFC_Android";
@@ -155,6 +157,9 @@ public class Global {
     public static final int REQUEST_CODE_FROM_BACKGROUND  = 316;
     public static final int REQUEST_CODE_FROM_BACKGROUND_AFTER_CROPPED  = 317;
     public static final int REQUEST_ACTION_MANAGE_OVERLAY_PERMISSION    = 319;
+
+    public static final int REQUEST_CODE_GOOGLE_ACCOUNT_PICKER = 321;
+    public static final int REQUEST_CODE_GOOGLE_DRIVE_REQUEST_PERMISSION = 322;
 
 
     /**

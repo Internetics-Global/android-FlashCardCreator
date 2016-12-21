@@ -18,6 +18,7 @@ import android.widget.TextView;
 import com.dropbox.client2.android.AuthActivity;
 import com.flipflash.UI.togglebutton.ToggleButton;
 import com.flipflash.helper.Dropbox.DropboxAuthHelper;
+import com.flipflash.helper.GoogleDrive.GoogleDriveAuthHelper;
 import com.flipflash.util.AppConfig;
 import com.flipflash.util.AppContext;
 import com.flipflash.util.Global;
@@ -39,8 +40,6 @@ public class MoreActivity extends Activity {
 
     private static final String TAG = MoreActivity.class.getSimpleName();
 
-    ToggleButton             mStorageProviderToggleButton;
-
 
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -58,8 +57,6 @@ public class MoreActivity extends Activity {
         final ToggleButton textToSpeechToggleButton =(ToggleButton) findViewById(R.id.text_to_speech_toggle_button);
         final ToggleButton showQuestionOnlyToggleButton = (ToggleButton) findViewById(R.id.auto_show_question_only_toggle_button);
 //        final ToggleButton maleFemaleToggleButton = (ToggleButton) findViewById(R.id.male_female_voice_toggle_button);
-
-        mStorageProviderToggleButton = (ToggleButton) findViewById(R.id.storage_provider_toggle_button);
 
         final DiscreteSeekBar countDownDiscreteSeekBar = (DiscreteSeekBar) findViewById(R.id.seekbar);
         final TextView countDownTextView = (TextView) findViewById(R.id.count_down_textview);
@@ -168,39 +165,6 @@ public class MoreActivity extends Activity {
 //        });
 
 
-        if (DropboxAuthHelper.sharedHelper(MoreActivity.this).isLinked()) {
-            mStorageProviderToggleButton.setToggleOn();
-        } else {
-            mStorageProviderToggleButton.setToggleOff();
-        }
-
-        mStorageProviderToggleButton.setOnToggleChanged(new ToggleButton.OnToggleChanged() {
-            @Override
-            public void onToggle(boolean on) {
-
-                if (MutipleTargetHelper.isFullVersion() == false) {
-                    MutipleTargetHelper.showAlertToUpgradeToFullVersion();
-                    mStorageProviderToggleButton.setToggleOff();
-                    finish();
-                    return;
-                }
-
-                if (on) {
-                    DropboxAuthHelper.sharedHelper(MoreActivity.this).startAuthentication();
-                } else {
-                    DropboxAuthHelper.sharedHelper(MoreActivity.this).logOut();
-
-                    AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(
-                            MoreActivity.this);
-                    alertDialogBuilder.setTitle(R.string.DIALOG_AlERT);
-                    alertDialogBuilder.setPositiveButton(R.string.DIALOG_CLOSE,null);
-                    alertDialogBuilder
-                            .setMessage(R.string.DIALOG_FAIL_TO_LOG_DROPBOX).show();
-                }
-
-            }
-        });
-
         findViewById(R.id.rl_about).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -215,6 +179,13 @@ public class MoreActivity extends Activity {
             }
         });
 
+        findViewById(R.id.rl_storage_option).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(MoreActivity.this, StorageOptionActivity.class));
+            }
+        });
+
         findViewById(R.id.rl_play_option).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -223,9 +194,7 @@ public class MoreActivity extends Activity {
         });
 
 
-        TextView textView = (TextView) findViewById(R.id.storage_provider_toggle_textview);
-        textView.setText(R.string.Table_Item_Dropbox_Logged_In);
-
+        TextView textView = (TextView) findViewById(R.id.storage_textview);
         if (MutipleTargetHelper.isFullVersion() == false) {
             textView.setTextColor(Color.DKGRAY);
         } else {
@@ -255,35 +224,6 @@ public class MoreActivity extends Activity {
         super.onStop();
     }
 
-    @Override
-    protected void onResume() {
-        super.onResume();
-
-        if (DropboxAuthHelper.sharedHelper(MoreActivity.this).isLinked()) {
-            mStorageProviderToggleButton.setToggleOn();
-        } else {
-            if (DropboxAuthHelper.sharedHelper(MoreActivity.this).isAuthenticationSuccessful()) {
-                try {
-                    // Mandatory call to complete the auth
-                    DropboxAuthHelper.sharedHelper(MoreActivity.this).finishAuthentication();
-
-                    // Store it locally in our app for later use
-                    DropboxAuthHelper.sharedHelper(MoreActivity.this).storeAuth();
-
-                    AuthActivity.result = null;
-
-                } catch (IllegalStateException e) {
-                    LOGD(TAG, "onResume: Error authenticating " + e);
-                }
-
-                mStorageProviderToggleButton.setToggleOn();
-
-            } else {
-                mStorageProviderToggleButton.setToggleOff();
-            }
-        }
-
-    }
 
 
     @Override
@@ -332,6 +272,7 @@ public class MoreActivity extends Activity {
     @Override
     protected void onDestroy() {
         DropboxAuthHelper.cleanup(); //avoid memory leak
+        GoogleDriveAuthHelper.cleanup(); //avoid memory leak
         super.onDestroy();
         LOGD(TAG, "onDestroy");
 

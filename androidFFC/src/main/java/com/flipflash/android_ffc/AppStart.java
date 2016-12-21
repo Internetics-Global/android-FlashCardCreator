@@ -15,6 +15,8 @@ import android.util.Log;
 import com.flipflash.helper.SQLiteHelper;
 import com.flipflash.util.Global;
 import com.flipflash.util.MutipleTargetHelper;
+import com.google.android.gms.common.ConnectionResult;
+import com.google.android.gms.common.GoogleApiAvailability;
 import com.google.android.vending.licensing.AESObfuscator;
 import com.google.android.vending.licensing.APKExpansionPolicy;
 import com.google.android.vending.licensing.LicenseChecker;

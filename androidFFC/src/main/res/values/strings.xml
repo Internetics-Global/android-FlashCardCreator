@@ -126,6 +126,19 @@
 
     <string name="DIALOG_ONLY_ALPHANUMBER_PERMITTED">Only alphanumeric characters are permitted</string>
 
+    <string name="DIALOG_DOWNLOAD_CANCELLED">Download is cancelled</string>
+    <string name="DIALOG_ERROR_DROPBOX_QUOTA_FULL">Dropbox was unable to complete this action because of a storage quota limit</string>
+    <string name="DIALOG_STORAGE_SELECTION">Storage Selection</string>
+    <string name="DIALOG_STORAGE_SELECTION_DROPBOX">Dropbox</string>
+    <string name="DIALOG_STORAGE_SELECTION_GOOGLE_DRIVE">Google Drive</string>
+    <string name="DIALOG_GOOGLE_DRIVE_AUTHE_FAILED">Google Drive Authentication failed, Please try again</string>
+    <string name="DIALOG_GOOGLE_DRIVE_DISCONNECTED">Disconnected from Google Drive</string>
+    <string name="DIALOG_GOOGLE_DRIVE_LOGIN_SUCCESS">Google Drive is successfully logged in</string>
+    <string name="DIALOG_DROPBOX_DISCONNECTED">Disconnected from Dropbox</string>
+
+    <string name="DIALOG_GOOGLE_SERVICE_UNAVAILABLE">Google Play service unavailable</string>
+    <string name="DIALOG_GOOGLE_SERVICE_UPDATE_REQUIRED">Please update Google Play services</string>
+
     <string name="NavigationBarItem_Packs">Packs</string>
     <string name="NavigationBarItem_Create">Create</string>
     <string name="NavigationBarItem_Edit"> Edit </string>
@@ -260,6 +273,9 @@
     <string name="Table_Item_Count_Down">Count Down</string>
     <string name="Table_Item_Amazon_Or_Dropbox">Use Dropbox Storage</string>
     <string name="Table_Item_Dropbox_Logged_In">Dropbox storage</string>
+    <string name="Table_Item_Dropbox">Use Dropbox</string>
+    <string name="Table_Item_Google_Drive">Use Google Drive</string>
+    <string name="Table_Item_Storage">Storage</string>
     <string name="Table_Item_Log_In_Social_Network">Sign in</string>
     <string name="Table_Item_Log_Out_Social_Network">Sign out</string>
 

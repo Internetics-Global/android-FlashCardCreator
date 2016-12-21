@@ -1,10 +1,9 @@
 package com.flipflash.util;
 
-import android.app.Activity;
-import android.app.Application;
 import android.content.Context;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
+import android.support.multidex.MultiDexApplication;
 
 import com.amazonaws.auth.CognitoCachingCredentialsProvider;
 import com.amazonaws.regions.Regions;
@@ -12,14 +11,12 @@ import com.amazonaws.services.s3.AmazonS3Client;
 import com.facebook.drawee.backends.pipeline.Fresco;
 import com.facebook.imagepipeline.core.ImagePipelineConfig;
 import com.facebook.stetho.Stetho;
-import com.flipflash.UI.FCCEditText;
 import com.flipflash.android_ffc.MainActivity;
 import com.flipflash.android_ffc.R;
 import com.nostra13.universalimageloader.cache.disc.naming.Md5FileNameGenerator;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
 import com.nostra13.universalimageloader.core.assist.QueueProcessingType;
-import com.nostra13.universalimageloader.utils.L;
 import com.orhanobut.hawk.Hawk;
 import com.orhanobut.hawk.HawkBuilder;
 import com.orhanobut.hawk.LogLevel;
@@ -28,12 +25,15 @@ import com.squareup.leakcanary.RefWatcher;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
-import java.util.LinkedList;
-import java.util.List;
+
 import java.util.UUID;
 import static com.flipflash.util.LogUtils.LOGD;
 
-public class AppContext extends Application {
+/*
+ * The background of MultiDexApplication: https://developer.android.com/studio/build/multidex.html
+ *
+ */
+public class AppContext extends MultiDexApplication {
     private static final String TAG = AppContext.class.getSimpleName();
 
     private static Context                           mContext;

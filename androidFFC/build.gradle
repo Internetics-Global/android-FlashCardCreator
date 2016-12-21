@@ -150,13 +150,15 @@ dependencies {
 
 
     //Google drive related
-    configurations {
-        compile.exclude group: "org.apache.httpcomponents", module: "httpclient"
-    }
-    compile 'com.google.api-client:google-api-client:1.20.0'
+
+    compile 'com.google.http-client:google-http-client-gson:1.22.0' exclude module: 'httpclient'
+    compile 'com.google.api-client:google-api-client-android:1.22.0' exclude module: 'httpclient'
+    compile 'com.google.apis:google-api-services-drive:v3-rev52-1.22.0' exclude module: 'httpclient'
 
     //avoid 64k max method issue: https://developer.android.com/studio/build/multidex.html
     compile 'com.android.support:multidex:1.0.1'
 }
+
+apply plugin: 'com.google.gms.google-services'
 
 

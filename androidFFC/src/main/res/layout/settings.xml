@@ -150,39 +150,14 @@
         <View
             style="@style/h_line" />
 
-
-
         <RelativeLayout
+            android:id="@+id/rl_storage_option"
             style="@style/option_item_rl" >
 
             <TextView
-                android:id="@+id/storage_provider_toggle_textview"
+                android:id="@+id/storage_textview"
                 style="@style/option_item_text_parent"
-                android:text="@string/Table_Item_Amazon_Or_Dropbox"
-                android:textColor="@android:color/white"
-                android:textSize="16dp" />
-
-            <com.flipflash.UI.togglebutton.ToggleButton
-                android:layout_marginRight="15dp"
-                android:id="@+id/storage_provider_toggle_button"
-                style="@style/option_item_toggleButton"
-                android:layout_alignParentRight="true" />
-        </RelativeLayout>
-
-
-
-        <View
-            android:id="@+id/rl_social_account_line"
-            style="@style/h_line" />
-
-        <RelativeLayout
-            android:id="@+id/rl_social_account"
-            style="@style/option_item_rl" >
-
-            <TextView
-                android:id="@+id/random_play_social_account_textview"
-                style="@style/option_item_text_parent"
-                android:text= "@string/Table_Item_Log_In_Social_Network"
+                android:text= "@string/Table_Item_Storage"
                 android:textColor="@android:color/white"
                 android:textSize="16dp" />
         </RelativeLayout>

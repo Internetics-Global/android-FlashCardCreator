@@ -1,0 +1,172 @@
+package com.flipflash.android_ffc;
+
+import android.accounts.AccountManager;
+import android.app.Activity;
+import android.app.AlertDialog;
+import android.content.Intent;
+import android.os.Bundle;
+import android.view.View;
+import android.view.WindowManager;
+import android.widget.Button;
+
+import com.dropbox.client2.android.AuthActivity;
+import com.flipflash.fragment.PurchaseFragment;
+import com.flipflash.helper.Dropbox.DropboxAuthHelper;
+import com.flipflash.helper.GoogleDrive.GoogleDriveAuthHelper;
+import com.flipflash.util.Global;
+
+
+import static com.flipflash.util.LogUtils.LOGD;
+
+/**
+ * Created by BourneWang on 5/12/2015.
+ */
+public class StorageOptionActivity extends Activity{
+
+    Button mUseDropboxButton;
+    Button mUseGoogleDriveButton;
+
+    private static final String TAG = PlayActivity.class.getSimpleName();
+
+
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+
+        LOGD(TAG, "onCreate:");
+
+        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
+
+        setContentView(R.layout.storage_option_setting);
+
+        setTitle(getString(R.string.DIALOG_STORAGE_SELECTION));
+
+
+        mUseDropboxButton = (Button) findViewById(R.id.storage_option_dropbox_button);
+        mUseGoogleDriveButton = (Button) findViewById(R.id.storage_option_google_drive_button);
+
+        findViewById(R.id.rl_storage_option_google_drive).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                if (mUseGoogleDriveButton.getVisibility() != View.VISIBLE) {
+                    DropboxAuthHelper.sharedHelper(StorageOptionActivity.this).logOut();
+                    GoogleDriveAuthHelper.sharedHelper(StorageOptionActivity.this).startAuthenticationFromActivity(StorageOptionActivity.this);
+                } else {
+                    GoogleDriveAuthHelper.sharedHelper(StorageOptionActivity.this).logOut();
+
+                    AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(
+                            StorageOptionActivity.this);
+                    alertDialogBuilder.setTitle(R.string.DIALOG_AlERT);
+                    alertDialogBuilder.setPositiveButton(R.string.DIALOG_CLOSE,null);
+                    alertDialogBuilder
+                            .setMessage(R.string.DIALOG_GOOGLE_DRIVE_DISCONNECTED).show();
+                }
+
+                mUseGoogleDriveButton.setVisibility(View.INVISIBLE);
+
+            }
+        });
+
+
+        findViewById(R.id.rl_storage_option_dropbox).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                if (mUseDropboxButton.getVisibility() != View.VISIBLE) {
+                    GoogleDriveAuthHelper.sharedHelper(StorageOptionActivity.this).logOut();
+                    DropboxAuthHelper.sharedHelper(StorageOptionActivity.this).startAuthentication();
+                } else {
+                    DropboxAuthHelper.sharedHelper(StorageOptionActivity.this).logOut();
+
+                    AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(
+                            StorageOptionActivity.this);
+                    alertDialogBuilder.setTitle(R.string.DIALOG_AlERT);
+                    alertDialogBuilder.setPositiveButton(R.string.DIALOG_CLOSE,null);
+                    alertDialogBuilder
+                            .setMessage(R.string.DIALOG_DROPBOX_DISCONNECTED).show();
+
+                    mUseDropboxButton.setVisibility(View.INVISIBLE);
+                }
+
+            }
+        });
+
+    }
+
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+
+        if (DropboxAuthHelper.sharedHelper(StorageOptionActivity.this).isLinked()) {
+            mUseDropboxButton.setVisibility(View.VISIBLE);
+        } else {
+            if (DropboxAuthHelper.sharedHelper(StorageOptionActivity.this).isAuthenticationSuccessful()) {
+                try {
+                    // Mandatory call to complete the auth
+                    DropboxAuthHelper.sharedHelper(StorageOptionActivity.this).finishAuthentication();
+
+                    // Store it locally in our app for later use
+                    DropboxAuthHelper.sharedHelper(StorageOptionActivity.this).storeAuth();
+
+                    AuthActivity.result = null;
+
+                } catch (IllegalStateException e) {
+                    LOGD(TAG, "onResume: Error authenticating " + e);
+                }
+
+                mUseDropboxButton.setVisibility(View.VISIBLE);
+
+            }
+        }
+
+
+        if (DropboxAuthHelper.sharedHelper(StorageOptionActivity.this).isLinked()) {
+
+            mUseDropboxButton.setVisibility(View.VISIBLE);
+
+        } else {
+            mUseDropboxButton.setVisibility(View.INVISIBLE);
+        }
+
+        if (GoogleDriveAuthHelper.sharedHelper(StorageOptionActivity.this).isLinked()) {
+
+            mUseGoogleDriveButton.setVisibility(View.VISIBLE);
+
+        } else {
+            mUseGoogleDriveButton.setVisibility(View.INVISIBLE);
+        }
+    }
+
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        LOGD(TAG, "onActivityResult with request code = " + requestCode);
+
+        if (requestCode == Global.REQUEST_CODE_GOOGLE_ACCOUNT_PICKER) {
+
+            if (resultCode == RESULT_OK && data != null && data.getExtras() != null) {
+                String accountName = data.getExtras().getString(AccountManager.KEY_ACCOUNT_NAME);
+                if (accountName != null) {
+                    GoogleDriveAuthHelper.sharedHelper(StorageOptionActivity.this).finishAuthentication(accountName);
+                    mUseGoogleDriveButton.setVisibility(View.VISIBLE);
+
+                    AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(
+                            StorageOptionActivity.this);
+                    alertDialogBuilder.setTitle(R.string.DIALOG_AlERT);
+                    alertDialogBuilder.setPositiveButton(R.string.DIALOG_CLOSE,null);
+                    alertDialogBuilder
+                            .setMessage(R.string.DIALOG_GOOGLE_DRIVE_LOGIN_SUCCESS).show();
+
+
+                }
+            }
+
+        } else {
+
+        }
+
+    }
+
+}

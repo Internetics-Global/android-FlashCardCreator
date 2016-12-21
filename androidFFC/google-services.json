@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "1088270400357",
+    "project_id": "comccaa314159001"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1088270400357:android:aa73dff7c59d6bd5",
+        "android_client_info": {
+          "package_name": "com.flipflashcards.FFC_Android_dev"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1088270400357-4pg3clbs4q9bgt1g8emtnubpo78d7h5j.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.flipflashcards.FFC_Android_dev",
+            "certificate_hash": "9F0B8EA2678930CFA456776650CE633EAA656118"
+          }
+        },
+        {
+          "client_id": "1088270400357-47e5lqft74nt95d9iief7rbv5b4u6n95.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDRQNo5wfXqYx5s9B2KmkBHlf-c4gW8uDo"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 1
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

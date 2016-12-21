@@ -1,11 +1,14 @@
 package com.flipflash.android_ffc;
 
+import android.accounts.AccountManager;
 import android.app.ActionBar;
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.IntentSender;
+import android.content.SharedPreferences;
 import android.content.res.TypedArray;
 import android.graphics.Bitmap;
 import android.graphics.Color;
@@ -16,6 +19,8 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
@@ -58,6 +63,10 @@ import com.flipflash.event.DownloadCancelEvent;
 import com.flipflash.event.MultiMediaFullscreenEvent;
 import com.flipflash.event.WebViewMessageEvent;
 import com.flipflash.fragment.PurchaseFragment;
+import com.flipflash.helper.GoogleDrive.GoogleDriveAuthHelper;
+import com.flipflash.helper.GoogleDrive.GoogleDriveShareHelper;
+import com.flipflash.helper.GoogleDrive.GoogleDriveUploadHelper;
+import com.flipflash.helper.GoogleDrive.GoogleDrive_Constant;
 import com.flipflash.model.CardListModel;
 import com.flipflash.util.MutipleTargetHelper;
 import com.github.lzyzsd.circleprogress.DonutProgress;
@@ -112,7 +121,7 @@ import de.greenrobot.event.EventBus;
  * Also responsbile for managing Actionbar(or Option Menu)
  */
 public class MainActivity extends FragmentActivity implements
-        CardListFragment.Callbacks, PackInfoView.PackInfoViewDelegate {
+        CardListFragment.Callbacks, PackInfoView.PackInfoViewDelegate{
 
     private static final String TAG = MainActivity.class.getSimpleName();
 
@@ -170,7 +179,8 @@ public class MainActivity extends FragmentActivity implements
 
     private PackInfoView         mPackInfoView;
 
-    private DropboxUploadHelper  mDropboxUploadHelper ;
+    private DropboxUploadHelper      mDropboxUploadHelper ;
+    private GoogleDriveUploadHelper  mGoogleDriveUploadHelper ;
 
     private DonutProgress        mRecordStopProgress;
     private Button               mRecordStopButton;
@@ -179,6 +189,7 @@ public class MainActivity extends FragmentActivity implements
     private TextView             mCustomTitleTextView;
 
     private PackDownloadHelper   mPackDownloadHelper;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -877,8 +888,15 @@ public class MainActivity extends FragmentActivity implements
             //for download (not include sample pack
             if (Global.apiReachableWithAlert(MainActivity.this)) {
 
-                String packFileName = packUri.getLastPathSegment();
-                Global.currentAmazonSimpleDBItemName = packFileName.substring(0,packFileName.indexOf(".zip"));
+                if (packUri.getHost().contains("google.com")) {
+                    //google
+                    Global.currentAmazonSimpleDBItemName = packUri.getQueryParameter("id");
+                } else {
+                    //dropbox
+                    String packFileName = packUri.getLastPathSegment();
+                    Global.currentAmazonSimpleDBItemName = packFileName.substring(0,packFileName.indexOf(".zip"));
+                }
+
                 mSemaphore = false;
 
                 //The reason why we design this is: network operation could not be done on main thread
@@ -1182,6 +1200,11 @@ public class MainActivity extends FragmentActivity implements
         if (mDropboxUploadHelper != null) {
             mDropboxUploadHelper.cancel(true);
             mDropboxUploadHelper = null;
+        }
+
+        if (mGoogleDriveUploadHelper != null) {
+            mGoogleDriveUploadHelper.cancel(true);
+            mGoogleDriveUploadHelper = null;
         }
 
         EventBus.getDefault().unregister(MainActivity.this);
@@ -1541,21 +1564,39 @@ public class MainActivity extends FragmentActivity implements
         }
 
 
-        if (DropboxAuthHelper.sharedHelper(MainActivity.this).isLinked()) {
-            shareToDropbox();
-        } else {
-            DropboxAuthHelper.sharedHelper(MainActivity.this).startAuthentication();  //跳转到授权页，成功后，会到onResume进行处理。
-        }
-    }
-
-    private void share() {
 
         if (DropboxAuthHelper.sharedHelper(MainActivity.this).isLinked()) {
             shareToDropbox();
+
+        } else if (GoogleDriveAuthHelper.sharedHelper(MainActivity.this).isLinked()) {
+            shareToGoogleDrive();
+
         } else {
+            new AlertDialog.Builder(MainActivity.this)
+                    .setMessage(R.string.DIALOG_STORAGE_SELECTION)
+                    .setNeutralButton(R.string.DIALOG_STORAGE_SELECTION_DROPBOX, new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+
+                            DropboxAuthHelper.sharedHelper(MainActivity.this).startAuthentication();  //跳转到授权页，成功后，会到onResume进行处理。
+                        }
+                    })
+                    .setPositiveButton(R.string.DIALOG_STORAGE_SELECTION_GOOGLE_DRIVE, new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+
+                            GoogleDriveAuthHelper.sharedHelper(MainActivity.this).startAuthenticationFromActivity(MainActivity.this);  //跳转到授权页，成功后，会到onResume进行处理。
+
+                        }
+                    })
+                    .show();
         }
 
+
+
+
     }
+
 
     private void shareToDropbox() {
         LOGD(TAG, "share");
@@ -1570,6 +1611,23 @@ public class MainActivity extends FragmentActivity implements
 
         }
     }
+
+
+    private void shareToGoogleDrive() {
+        LOGD(TAG, "share");
+
+        if ((mCurrentPack.creatorID).equals(OpenUDID_manager.getOpenUDID())) {
+
+            setPasswordAndUpload();
+
+        } else {
+            GoogleDriveShareHelper googleDriveShareHelper = new GoogleDriveShareHelper(this,mCurrentPack,true,null);
+            googleDriveShareHelper.share();
+
+        }
+    }
+
+
 
 
 
@@ -2284,6 +2342,34 @@ public class MainActivity extends FragmentActivity implements
     };
 
 
+    //TODO:  lint This Handler class should be static or leaks might occur (null)
+    private final Handler mGoogleDriveUploadHandler = new Handler() {
+        @Override
+        public void handleMessage(Message msg) {
+            super.handleMessage(msg);
+            switch (msg.what) {
+                case GoogleDrive_Constant.UPLOAD_SUCCEED: {
+
+                    String googleDriveShareLink = (String) msg.obj;
+
+                    Toast.makeText(getApplicationContext(), R.string.DIALOG_UPLOAD_SUCCESSFULLY, Toast.LENGTH_SHORT).show();
+
+                    GoogleDriveShareHelper googleDriveShareHelper = new GoogleDriveShareHelper(MainActivity.this,mCurrentPack,false,googleDriveShareLink);
+                    googleDriveShareHelper.execute();
+
+                    break;
+                }
+
+
+                case GoogleDrive_Constant.UPLOAD_FAILED: {
+                    break;
+                }
+
+            }
+        }
+    };
+
+
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
@@ -2308,7 +2394,21 @@ public class MainActivity extends FragmentActivity implements
 //                    .setConfirmText("Close")
 //                    .show();
 //            }
-        } else {
+        } else if (requestCode == Global.REQUEST_CODE_GOOGLE_ACCOUNT_PICKER) {
+
+            if (resultCode == RESULT_OK && data != null && data.getExtras() != null) {
+                String accountName = data.getExtras().getString(AccountManager.KEY_ACCOUNT_NAME);
+                if (accountName != null) {
+                    GoogleDriveAuthHelper.sharedHelper(MainActivity.this).finishAuthentication(accountName);
+                    shareToGoogleDrive();
+                }
+            }
+
+        } else if (requestCode == Global.REQUEST_CODE_GOOGLE_DRIVE_REQUEST_PERMISSION) {
+
+            shareToGoogleDrive();
+
+        }else {
 
         }
 
@@ -2339,6 +2439,7 @@ public class MainActivity extends FragmentActivity implements
     public void updateEditPackNavIcon() {
         invalidateOptionsMenu();
     }
+
 
 
     /*
@@ -2437,8 +2538,16 @@ public class MainActivity extends FragmentActivity implements
                 if (DropboxAuthHelper.sharedHelper(MainActivity.this).isLinked()) {
                     mDropboxUploadHelper = new DropboxUploadHelper(MainActivity.this, Global.DROPBOX_FOLDER, mZippedFile, mDropboxUploadHandler);
                     mDropboxUploadHelper.execute();
+                } else if (GoogleDriveAuthHelper.sharedHelper(MainActivity.this).isLinked()) {
+                    mGoogleDriveUploadHelper = new GoogleDriveUploadHelper(MainActivity.this, Global.GOOGLE_DRIVE_FOLDER_NAME, mZippedFile, mGoogleDriveUploadHandler);
+                    mGoogleDriveUploadHelper.execute();
                 } else {
-
+                    //todo : ccaa
+//                    AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(
+//                            MainActivity.this);
+//                    alertDialogBuilder.setTitle("Alert");
+//                    alertDialogBuilder
+//                            .setMessage("Error to be here").show();
                 }
             }
         }
