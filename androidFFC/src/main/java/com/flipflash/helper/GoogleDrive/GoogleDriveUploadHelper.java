@@ -13,6 +13,7 @@ import android.widget.Toast;
 import com.flipflash.android_ffc.R;
 import com.flipflash.util.AppContext;
 import com.flipflash.util.Global;
+import com.flipflash.util.StringUtils;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GoogleApiAvailability;
 import com.google.api.client.googleapis.extensions.android.gms.auth.UserRecoverableAuthIOException;
@@ -109,11 +110,17 @@ public class GoogleDriveUploadHelper {
 
                 try {
                     if (checkFolderOfFlipFlashCardsPacksExist()) {
-                        upload();
                     } else {
                         createFolderOfFlipFlashCardsPacks();
-                        upload();
                     }
+
+                    String existingFileID = checkFileExist();
+                    if (StringUtils.isEmpty(existingFileID)) {
+                        upload();
+                    } else {
+                        update(existingFileID);
+                    }
+
                 } catch (UserRecoverableAuthIOException e) {
                     e.printStackTrace();
                     mContext.startActivityForResult(e.getIntent(), Global.REQUEST_CODE_GOOGLE_DRIVE_REQUEST_PERMISSION);
@@ -152,6 +159,36 @@ public class GoogleDriveUploadHelper {
 
     }
 
+    /*
+     * 与Dropbox不同，Google Drive允许同一文件夹下多个同一文件名存在（通过fileID）区分。我们的做法是：
+     * 1. 获取第一个具有相同文件名的fileID，然后通过update的方式，而不是通过upload方式（https://developers.google.com/drive/v2/reference/files/update）
+     */
+    private String checkFileExist() throws IOException {
+
+        LOGD(TAG, "checkFileExist");
+
+        Drive driveService = GoogleDriveAuthHelper.sharedHelper(mContext).getDriveService();
+
+        String expectedFileName = mUploadFile.getName();
+
+        String Q = String.format("mimeType = 'application/zip' and name = '%s' and trashed = false",expectedFileName);
+
+        FileList result = driveService.files().list()
+                .setQ(Q)
+                .setSpaces("drive")
+                .execute();
+        for(File file: result.getFiles()) {
+            System.out.printf("Found file: %s (%s)\n",
+                    file.getName(), file.getId());
+            return file.getId();
+
+        }
+
+        return "";
+
+
+    }
+
     private void createFolderOfFlipFlashCardsPacks() throws IOException {
 
         LOGD(TAG, "createFolderOfFlipFlashCardsPacks");
@@ -171,7 +208,52 @@ public class GoogleDriveUploadHelper {
     }
 
 
+    /*
+     * 当文件存在时，我们通过update方式：http://www.labnol.org/internet/update-files-in-google-drive/28928/
+     */
+    private void update(String currentFileID) throws IOException {
 
+        LOGD(TAG, "update");
+
+        Drive driveService = GoogleDriveAuthHelper.sharedHelper(mContext).getDriveService();
+
+        File newFile = new File();
+        newFile.setMimeType("application/zip");
+        newFile.setName(mUploadFile.getName());
+
+        FileContent newContent = new FileContent("application/zip",mUploadFile);
+
+        try {
+            Drive.Files.Update request = driveService.files().update(currentFileID,newFile,newContent);
+            request.setFields("id");
+            MediaHttpUploader uploader = request.getMediaHttpUploader();
+            uploader.setProgressListener(mUploadProgressListener);
+            uploader.setDirectUploadEnabled(false);
+            uploader.setChunkSize(MediaHttpUploader.MINIMUM_CHUNK_SIZE);
+            File file = request.execute(); //block until upload finishes or fails
+            if (file != null && file.getId() != null) {
+                mUploadedFileID = file.getId();
+
+                makeItPublic();
+                String shareLink = getShareLink();
+
+                handleSuccess(shareLink);
+            } else {
+                handleError("Google Drive service error.  Please try again.");
+            }
+
+
+        } catch (IOException e) {
+            e.printStackTrace();
+
+            handleError("Google Drive service error.  Please try again.");
+        }
+
+    }
+
+    /*
+     * 仅当文件不存在时
+     */
     private void upload() {
 
         LOGD(TAG, "upload");
