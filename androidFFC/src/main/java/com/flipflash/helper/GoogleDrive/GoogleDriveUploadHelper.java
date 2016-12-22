@@ -98,10 +98,6 @@ public class GoogleDriveUploadHelper {
 
     public void execute() {
 
-        if (isGoogleServiceAvailable() == false) {
-            return;
-        }
-
         mUploadedFileID = "";
 
         Task.callInBackground(new Callable<String>() {
@@ -386,37 +382,7 @@ public class GoogleDriveUploadHelper {
     }
 
 
-    private boolean isGoogleServiceAvailable() {
-        GoogleApiAvailability googleApiAvailability = GoogleApiAvailability.getInstance();
-        int resultCode = googleApiAvailability.isGooglePlayServicesAvailable(mContext);
-        switch (resultCode) {
-            case ConnectionResult.SERVICE_MISSING:
-            case ConnectionResult.SERVICE_DISABLED:
-            case ConnectionResult.SERVICE_INVALID: {
-                AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(
-                        mContext);
-                alertDialogBuilder.setTitle(R.string.DIALOG_AlERT);
-                alertDialogBuilder
-                        .setMessage("Execute successfully").show();
-            }
-            case ConnectionResult.SERVICE_VERSION_UPDATE_REQUIRED: {
-                AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(
-                        mContext);
-                alertDialogBuilder.setTitle(R.string.DIALOG_AlERT);
-                alertDialogBuilder
-                        .setMessage(R.string.DIALOG_GOOGLE_SERVICE_UPDATE_REQUIRED).show();
 
-            }
-            default: {
-
-            }
-        }
-        if (resultCode == ConnectionResult.SUCCESS) {
-            return true;
-        } else {
-            return false;
-        }
-    }
 
 
 }

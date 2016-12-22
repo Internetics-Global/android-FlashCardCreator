@@ -45,6 +45,10 @@ public class AppStart extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.start);
 
+        if (isGoogleServiceAvailable() == false) {
+            return;
+        }
+
 
         /**
          *  This should be before [SQLiteHelper verifyDatabase]
@@ -323,6 +327,53 @@ public class AppStart extends Activity {
         AccountManager accMan = AccountManager.get(this);
         Account[] accArray = accMan.getAccountsByType("com.google");
         return accArray.length >= 1 ? true : false;
+    }
+
+
+    private boolean isGoogleServiceAvailable() {
+        GoogleApiAvailability googleApiAvailability = GoogleApiAvailability.getInstance();
+        int resultCode = googleApiAvailability.isGooglePlayServicesAvailable(AppStart.this);
+        switch (resultCode) {
+            case ConnectionResult.SERVICE_MISSING:
+            case ConnectionResult.SERVICE_DISABLED:
+            case ConnectionResult.SERVICE_INVALID: {
+                AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(
+                        AppStart.this);
+                alertDialogBuilder.setTitle(R.string.DIALOG_AlERT);
+                alertDialogBuilder.setNegativeButton(R.string.DIALOG_CLOSE, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        finish();
+                    }
+                });
+                alertDialogBuilder
+                        .setMessage(R.string.DIALOG_GOOGLE_SERVICE_UNAVAILABLE).show();
+
+                break;
+            }
+            case ConnectionResult.SERVICE_VERSION_UPDATE_REQUIRED: {
+                AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(
+                        AppStart.this);
+                alertDialogBuilder.setTitle(R.string.DIALOG_AlERT);
+                alertDialogBuilder.setNegativeButton(R.string.DIALOG_CLOSE, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        finish();
+                    }
+                });
+                alertDialogBuilder
+                        .setMessage(R.string.DIALOG_GOOGLE_SERVICE_UPDATE_REQUIRED).show();
+
+            }
+            default: {
+
+            }
+        }
+        if (resultCode == ConnectionResult.SUCCESS) {
+            return true;
+        } else {
+            return false;
+        }
     }
 
 }
