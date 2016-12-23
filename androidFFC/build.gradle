@@ -94,7 +94,8 @@ dependencies {
     releaseCompile 'com.squareup.leakcanary:leakcanary-android-no-op:1.5'
     testCompile 'com.squareup.leakcanary:leakcanary-android-no-op:1.5'
 
-    compile files('libs/dropbox-android-sdk-1.6.3.jar')
+    compile 'com.dropbox.core:dropbox-core-sdk:2.1.2'
+    
     compile files('libs/json_simple-1.1.jar')
     compile files('libs/aws-android-sdk-cognito-2.2.1.jar')
     compile files('libs/aws-android-sdk-core-2.2.1.jar')
