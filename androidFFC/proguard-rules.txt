@@ -81,6 +81,16 @@
 -dontwarn rx.**
 -keep class com.google.gson.** { *; }
 
+# related okhttp and Dropbox SDK
+-dontwarn okio.**
+-dontwarn okhttp3.**
+-dontwarn com.squareup.okhttp.**
+-dontwarn com.google.appengine.**
+-dontwarn javax.servlet.**
+
+-dontwarn com.google.common.cache.**
+-dontwarn com.google.common.primitives.UnsignedBytes$**
+
 # Parse
 -dontwarn com.parse.**
 -keep class com.parse.** { *; }
