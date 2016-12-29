@@ -116,42 +116,21 @@
             android:theme="@style/MediaPickerTheme" />
 
         <activity
-            android:name="com.dropbox.client2.android.AuthActivity"
-            android:launchMode="singleTask"
-            android:configChanges="orientation|keyboard">
+            android:name="com.dropbox.core.android.AuthActivity"
+            android:configChanges="orientation|keyboard"
+            android:launchMode="singleTask" >
             <intent-filter>
+
                 <!-- Change this to be db- followed by your app key -->
                 <data android:scheme="@string/dropbox__app_key" />
+
                 <action android:name="android.intent.action.VIEW" />
-                <category android:name="android.intent.category.BROWSABLE"/>
+
+                <category android:name="android.intent.category.BROWSABLE" />
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </activity>
 
-
-        <activity
-            android:name="com.parse.ui.ParseLoginActivity"
-            android:screenOrientation="portrait"
-            android:label="@string/app_name"
-            android:launchMode="singleTop">
-            <meta-data
-                android:name="com.parse.ui.ParseLoginActivity.PARSE_LOGIN_ENABLED"
-                android:value="true"/>
-            <meta-data
-                android:name="com.parse.ui.ParseLoginActivity.PARSE_LOGIN_EMAIL_AS_USERNAME"
-                android:value="true"/>
-            <meta-data
-                android:name="com.parse.ui.ParseLoginActivity.FACEBOOK_LOGIN_ENABLED"
-                android:value="true"/>
-            <meta-data
-                android:name="com.parse.ui.ParseLoginActivity.TWITTER_LOGIN_ENABLED"
-                android:value="true"/>
-
-            <meta-data
-                android:name="com.parse.ui.ParseLoginActivity.PARSE_SIGNUP_NAME_FIELD_ENABLED"
-                android:value="false"/>
-
-        </activity>
     
 
         <activity android:name="com.facebook.FacebookActivity"

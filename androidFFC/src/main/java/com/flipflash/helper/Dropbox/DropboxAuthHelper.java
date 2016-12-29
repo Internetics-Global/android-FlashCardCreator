@@ -1,14 +1,22 @@
 package com.flipflash.helper.Dropbox;
 
-import android.content.Context;
+import android.app.Activity;
 import android.content.SharedPreferences;
 
-import com.dropbox.client2.DropboxAPI;
-import com.dropbox.client2.android.AndroidAuthSession;
-import com.dropbox.client2.session.AccessTokenPair;
-import com.dropbox.client2.session.AppKeyPair;
-import com.dropbox.client2.session.Session;
+
+import com.dropbox.core.DbxException;
+import com.dropbox.core.DbxRequestConfig;
+import com.dropbox.core.android.Auth;
+import com.dropbox.core.http.OkHttp3Requestor;
+import com.dropbox.core.v2.DbxClientV2;
 import com.flipflash.util.AppContext;
+import com.flipflash.util.StringUtils;
+
+import java.util.concurrent.Callable;
+
+import bolts.Task;
+
+import static android.content.Context.MODE_PRIVATE;
 
 /**
  * All Dropbox AndroidAuthSession and DropboxAPI related
@@ -17,19 +25,12 @@ public class DropboxAuthHelper {
 
     private static final String TAG = DropboxAuthHelper.class.getSimpleName();
 
-    private static Context mContext;
-    final static private Session.AccessType ACCESS_TYPE = Session.AccessType.DROPBOX;
+    private static DbxClientV2 sDbxClient;
 
-    private static DropboxAPI<AndroidAuthSession> mApi;
+    final private String PREP_FILE_NAME = "ffc_dropbox_auth";
+    final private String PREP_TOKEN_KEY = "access-token";
 
-    /**
-     * You don't need to change these, leave them alone.
-     */
-    final private String ACCOUNT_PREFS_NAME = "prefs";
-    final private String ACCESS_KEY_NAME = "ACCESS_KEY";
-    final private String ACCESS_SECRET_NAME = "ACCESS_SECRET";
-
-    private static final boolean USE_OAUTH1 = false;
+    private boolean      isAuthenticationInProgress = false;
 
 
     private static DropboxAuthHelper mDropboxAuthHelper;
@@ -37,7 +38,7 @@ public class DropboxAuthHelper {
     /*
      * context没用
      */
-    public static DropboxAuthHelper sharedHelper(Context context) {
+    public static DropboxAuthHelper sharedHelper() {
 
         if (mDropboxAuthHelper == null) {
             mDropboxAuthHelper = new DropboxAuthHelper();
@@ -47,23 +48,9 @@ public class DropboxAuthHelper {
 
 
     private DropboxAuthHelper() {
-        mContext = AppContext.getAppContext();
 
-        if (mApi == null) {
+        loadAuth();
 
-            // We create a new AuthSession so that we can use the Dropbox API.
-            AndroidAuthSession session = buildSession();
-            mApi = new DropboxAPI<AndroidAuthSession>(session);
-        }
-
-    }
-
-    public DropboxAPI getDropboxAPI() {
-        if (mApi == null) {
-            throw new IllegalStateException("should call getDropboxAPI first");
-        }
-
-        return mApi;
     }
 
 
@@ -72,137 +59,126 @@ public class DropboxAuthHelper {
      */
     public void logOut() {
 
-        if (mApi == null) {
-            throw new IllegalStateException("should call getDropboxAPI first");
-        }
+        clearAuth();
 
-        // Remove credentials from the session
-        mApi.getSession().unlink();
+        Task.callInBackground(new Callable<String>() {
+            @Override
+            public String call() throws Exception {
 
-        // Clear our stored keys
-        clearKeys();
+                if (sDbxClient != null) {
+                    try {
+                        sDbxClient.auth().tokenRevoke();
+                    } catch (DbxException e) {
+                        e.printStackTrace();
+                    }
+                }
+
+                return null;
+            }
+        });
     }
 
     public boolean isLinked() {
 
-        if (mApi == null) {
-            throw new IllegalStateException("should call getDropboxAPI first");
-        }
-
-        boolean b = mApi.getSession().isLinked();
-        return b;
+        return isHasToken();
     }
 
-    /*
-     * 如果已经是logged in，返回false。只有startAuthentication发起后，并网页登陆成功后，才会一次性返回true
-     */
-    public boolean isAuthenticationSuccessful() {
-        AndroidAuthSession session = mApi.getSession();
-        if (session.authenticationSuccessful()) {
-            return true;
-        } else {
-            return false;
-        }
-    }
 
-    public void startAuthentication() {
+    public void startAuthenticationFromActivity(Activity activity){
 
-        if (mApi == null) {
-            throw new IllegalStateException("should call getDropboxAPI first");
-        }
-
-        if (USE_OAUTH1) {
-            mApi.getSession().startAuthentication(mContext);
-        } else {
-            mApi.getSession().startOAuth2Authentication(mContext);
-        }
+        Auth.startOAuth2Authentication(activity, Dropbox_Constant.APP_KEY);
+        isAuthenticationInProgress = true;
     }
 
     public void finishAuthentication() {
-        if (mApi == null) {
-            throw new IllegalStateException("should call getDropboxAPI first");
-        }
 
-        mApi.getSession().finishAuthentication();
-    }
+        isAuthenticationInProgress = false;
 
-    public void storeAuth() {
+        storeAuth();
 
-        if (mApi == null) {
-            throw new IllegalStateException("should call getDropboxAPI first");
-        }
-
-        storeAuth(mApi.getSession());
+        String token = getToken();
+        initAndLoadData(token);
     }
 
 
-    private void storeAuth(AndroidAuthSession session) {
-        // Store the OAuth 2 access token, if there is one.
-        String oauth2AccessToken = session.getOAuth2AccessToken();
-        if (oauth2AccessToken != null) {
-            SharedPreferences prefs = mContext.getSharedPreferences(ACCOUNT_PREFS_NAME, 0);
-            SharedPreferences.Editor edit = prefs.edit();
-            edit.putString(ACCESS_KEY_NAME, "oauth2:");
-            edit.putString(ACCESS_SECRET_NAME, oauth2AccessToken);
-            edit.commit();
-            return;
-        }
-        // Store the OAuth 1 access token, if there is one.  This is only necessary if
-        // you're still using OAuth 1.
-        AccessTokenPair oauth1AccessToken = session.getAccessTokenPair();
-        if (oauth1AccessToken != null) {
-            SharedPreferences prefs = mContext.getSharedPreferences(ACCOUNT_PREFS_NAME, 0);
-            SharedPreferences.Editor edit = prefs.edit();
-            edit.putString(ACCESS_KEY_NAME, oauth1AccessToken.key);
-            edit.putString(ACCESS_SECRET_NAME, oauth1AccessToken.secret);
-            edit.commit();
-            return;
+    private String getToken() {
+        SharedPreferences prefs = AppContext.getAppContext().getSharedPreferences(PREP_FILE_NAME, MODE_PRIVATE);
+        String accessToken = prefs.getString(PREP_TOKEN_KEY, null);
+        return accessToken;
+    }
+
+    private boolean isHasToken() {
+        String token = getToken();
+        if (StringUtils.isEmpty(token)) {
+            return false;
+        } else {
+            return true;
         }
     }
 
-
-
-    private void clearKeys() {
-        SharedPreferences prefs = mContext.getSharedPreferences(ACCOUNT_PREFS_NAME, 0);
+    private void clearAuth() {
+        SharedPreferences prefs = AppContext.getAppContext().getSharedPreferences(PREP_FILE_NAME, MODE_PRIVATE);
         SharedPreferences.Editor edit = prefs.edit();
-        edit.clear();
+        edit.remove(PREP_TOKEN_KEY);
         edit.commit();
     }
 
 
-    private AndroidAuthSession buildSession() {
-        AppKeyPair appKeyPair = new AppKeyPair(Dropbox_Constant.APP_KEY, Dropbox_Constant.APP_SECRET);
+    public void storeAuth() {
 
-        AndroidAuthSession session = new AndroidAuthSession(appKeyPair);
-        loadAuth(session);
-        return session;
-    }
-
-
-    /**
-     * Shows keeping the access keys returned from Trusted Authenticator in a local
-     * store, rather than storing user name & password, and re-authenticating each
-     * time (which is not to be done, ever).
-     */
-    private void loadAuth(AndroidAuthSession session) {
-        SharedPreferences prefs = mContext.getSharedPreferences(ACCOUNT_PREFS_NAME, 0);
-        String key = prefs.getString(ACCESS_KEY_NAME, null);
-        String secret = prefs.getString(ACCESS_SECRET_NAME, null);
-        if (key == null || secret == null || key.length() == 0 || secret.length() == 0) return;
-
-        if (key.equals("oauth2:")) {
-            // If the key is set to "oauth2:", then we can assume the token is for OAuth 2.
-            session.setOAuth2AccessToken(secret);
-        } else {
-            // Still support using old OAuth 1 tokens.
-            session.setAccessTokenPair(new AccessTokenPair(key, secret));
+        SharedPreferences prefs = AppContext.getAppContext().getSharedPreferences(PREP_FILE_NAME, MODE_PRIVATE);
+        String accessToken = Auth.getOAuth2Token();
+        if (accessToken != null) {
+            prefs.edit().putString(PREP_TOKEN_KEY, accessToken).commit();
         }
     }
 
+
+
+    private void loadAuth() {
+
+        SharedPreferences prefs = AppContext.getAppContext().getSharedPreferences(PREP_FILE_NAME, MODE_PRIVATE);
+        String accessToken = prefs.getString(PREP_TOKEN_KEY, null);
+        if (accessToken == null) {
+            accessToken = Auth.getOAuth2Token();
+            if (accessToken != null) {
+                prefs.edit().putString(PREP_TOKEN_KEY, accessToken).apply();
+                initAndLoadData(accessToken);
+            }
+        } else {
+            initAndLoadData(accessToken);
+        }
+
+    }
+
+    private void initAndLoadData(String accessToken) {
+
+        DbxRequestConfig requestConfig = DbxRequestConfig.newBuilder("ffc_dropbox_v2")
+                .withHttpRequestor(OkHttp3Requestor.INSTANCE)
+                .build();
+
+        sDbxClient = new DbxClientV2(requestConfig, accessToken);
+
+        loadData();
+    }
+
+    private void loadData() {
+
+    }
+
     public static void cleanup() {
-        mContext = null;
-        mApi = null;
         mDropboxAuthHelper = null;
     }
 
+
+    public static DbxClientV2 getClient() {
+        if (sDbxClient == null) {
+            throw new IllegalStateException("Client not initialized.");
+        }
+        return sDbxClient;
+    }
+
+    public boolean isAuthenticationInProgress() {
+        return isAuthenticationInProgress;
+    }
 }

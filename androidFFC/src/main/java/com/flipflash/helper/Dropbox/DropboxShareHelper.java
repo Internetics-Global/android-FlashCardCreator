@@ -19,8 +19,10 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.Toast;
 
-import com.dropbox.client2.DropboxAPI;
-import com.dropbox.client2.exception.DropboxException;
+import com.dropbox.core.DbxException;
+import com.dropbox.core.v2.DbxClientV2;
+import com.dropbox.core.v2.sharing.ListSharedLinksResult;
+import com.dropbox.core.v2.sharing.SharedLinkMetadata;
 import com.flipflash.android_ffc.R;
 import com.flipflash.data.Pack;
 import com.flipflash.helper.AWS.SimpleDBHelper;
@@ -44,9 +46,6 @@ import org.apache.http.impl.client.DefaultHttpClient;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
-import java.net.HttpURLConnection;
-import java.net.MalformedURLException;
-import java.net.URL;
 import java.util.HashMap;
 import java.util.List;
 import java.util.concurrent.ExecutorService;
@@ -63,19 +62,21 @@ public class DropboxShareHelper extends AsyncTask<Void, Long, Boolean> {
 
     private static final String TAG = DropboxShareHelper.class.getSimpleName();
 
-    private Activity mActivity;
-    private Pack     mCurrentPack;
+    private Activity        mActivity;
+    private Pack            mCurrentPack;
 
-    private ProgressDialog mDialog;
+    private ProgressDialog  mDialog;
+
+    private String mFilePathInDropbox;
 
     /**
      * true: 没有经过上传，设密码等，直接share (upload逻辑在S3UploadHelper）
      */
-    private boolean  mIsDirectShare; //true: 没有经过上传，设密码等，直接share
+    private boolean  mIsDirectShare;
 
 
 
-    public DropboxShareHelper(Activity activity, Pack currentPack, Boolean isDirectShare) {
+    public DropboxShareHelper(Activity activity, Pack currentPack, String filePathInDropbox,Boolean isDirectShare) {
 
         if (currentPack == null) {
             throw  new IllegalArgumentException("currentPack should not be null");
@@ -84,6 +85,8 @@ public class DropboxShareHelper extends AsyncTask<Void, Long, Boolean> {
         mActivity = activity;
         mCurrentPack = currentPack;
         mIsDirectShare= isDirectShare;
+
+        mFilePathInDropbox = filePathInDropbox;
 
     }
 
@@ -107,33 +110,42 @@ public class DropboxShareHelper extends AsyncTask<Void, Long, Boolean> {
          */
     @Override
     protected Boolean doInBackground(Void... params) {
-        try {
-            if(mIsDirectShare) {
-            } else
-            {
 
-                //这段逻辑用于解决：当在dropbox和google drive相互切换时
+        if(mIsDirectShare) {
+        } else
+        {
 
-                boolean toSavePackUploadRecord = true;
-                boolean toGenerateShareLink = true;
-                if (StringUtils.isEmpty(mCurrentPack.shareLink) == false) {
-                    String currentShareLink = StringUtils.getUnshortedURL(mCurrentPack.shareLink);
+            //这段逻辑用于解决：当在dropbox和google drive相互切换时
 
-                    if (currentShareLink != null && currentShareLink.toLowerCase().contains("dropbox.com")) {
-                        toGenerateShareLink = false;
+            boolean toSavePackUploadRecord = true;
+            boolean toGenerateShareLink = true;
+            if (StringUtils.isEmpty(mCurrentPack.shareLink) == false) {
+                String currentShareLink = StringUtils.getUnshortedURL(mCurrentPack.shareLink);
 
-                    }
+                if (currentShareLink != null && currentShareLink.toLowerCase().contains("dropbox.com")) {
+                    toGenerateShareLink = false;
+
                 }
+            }
 
-                if (toGenerateShareLink) {
-                    String filePathInDropbox = Global.DROPBOX_FOLDER + mCurrentPack.fileNameOnAWS;
+            if (toGenerateShareLink) {
 
-                    DropboxAPI.DropboxLink link = DropboxAuthHelper.sharedHelper(mActivity).getDropboxAPI().share(filePathInDropbox);
-                    String shortedShareLink = link.url;
-                    String shareLink = StringUtils.getUnshortedURL(shortedShareLink);
-                    if (shareLink == null) {
-                        return false;
+                DbxClientV2 mDbxClient = DropboxAuthHelper.getClient();
+                try {
+                    ListSharedLinksResult resultList= mDbxClient.sharing().listSharedLinksBuilder().withPath(mFilePathInDropbox).start();
+
+                    String shareLink;
+                    if (resultList.getLinks() != null && resultList.getLinks().size() > 0) {
+
+                        shareLink = resultList.getLinks().get(0).getUrl();
+
+                    } else {
+                        SharedLinkMetadata metaData = mDbxClient.sharing().createSharedLinkWithSettings(mFilePathInDropbox);
+
+                        shareLink = metaData.getUrl();
                     }
+
+
                     String undirectedURL = shareLink.replace("https","fcc").replace("http","fcc");
                     LOGD(TAG, "doInBackground: " +  "the fcc share linkage is: " + undirectedURL);
                     mCurrentPack.shareLink = generateRedirectedURL(undirectedURL);
@@ -146,19 +158,18 @@ public class DropboxShareHelper extends AsyncTask<Void, Long, Boolean> {
                         mCurrentPack.save(mActivity);
 
                     }
+
+                } catch (DbxException e) {
+                    e.printStackTrace();
                 }
 
-                if (toSavePackUploadRecord) {
-                    //直到我们短链接生成并保存，我们才最终认为upload完成
-                    //同时为了保证savePackUploadRecord的发生，我们认为无论是isEmpty(mCurrentPack.shareLink)，都需要保存
-                    PackRecordHelper.savePackUploadRecord(mCurrentPack);
-                }
             }
 
-
-
-        } catch (DropboxException e) {
-            e.printStackTrace();
+            if (toSavePackUploadRecord) {
+                //直到我们短链接生成并保存，我们才最终认为upload完成
+                //同时为了保证savePackUploadRecord的发生，我们认为无论是isEmpty(mCurrentPack.shareLink)，都需要保存
+                PackRecordHelper.savePackUploadRecord(mCurrentPack);
+            }
         }
 
         return false;

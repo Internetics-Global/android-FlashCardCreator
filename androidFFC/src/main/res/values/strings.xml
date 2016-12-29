@@ -135,6 +135,7 @@
     <string name="DIALOG_GOOGLE_DRIVE_DISCONNECTED">Disconnected from Google Drive</string>
     <string name="DIALOG_GOOGLE_DRIVE_LOGIN_SUCCESS">Google Drive is successfully logged in</string>
     <string name="DIALOG_DROPBOX_DISCONNECTED">Disconnected from Dropbox</string>
+    <string name="DIALOG_SUCCESS_TO_LOG_DROPBOX">Dropbox is successfully logged in</string>
 
     <string name="DIALOG_GOOGLE_SERVICE_UNAVAILABLE">Google Play service unavailable</string>
     <string name="DIALOG_GOOGLE_SERVICE_UPDATE_REQUIRED">Please update Google Play services</string>

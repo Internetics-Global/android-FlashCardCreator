@@ -95,7 +95,7 @@ dependencies {
     testCompile 'com.squareup.leakcanary:leakcanary-android-no-op:1.5'
 
     compile 'com.dropbox.core:dropbox-core-sdk:2.1.2'
-    
+
     compile files('libs/json_simple-1.1.jar')
     compile files('libs/aws-android-sdk-cognito-2.2.1.jar')
     compile files('libs/aws-android-sdk-core-2.2.1.jar')
@@ -148,6 +148,7 @@ dependencies {
         exclude group: 'com.parse.bolts', module: 'bolts-tasks';
     }
 
+    compile 'com.squareup.okhttp3:okhttp:3.3.1'
 
 
     //Google drive related

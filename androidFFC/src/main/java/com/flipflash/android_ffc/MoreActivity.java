@@ -9,18 +9,14 @@ import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
-import android.text.InputType;
 import android.view.View;
 import android.view.WindowManager;
-import android.widget.EditText;
 import android.widget.TextView;
 
-import com.dropbox.client2.android.AuthActivity;
 import com.flipflash.UI.togglebutton.ToggleButton;
 import com.flipflash.helper.Dropbox.DropboxAuthHelper;
 import com.flipflash.helper.GoogleDrive.GoogleDriveAuthHelper;
 import com.flipflash.util.AppConfig;
-import com.flipflash.util.AppContext;
 import com.flipflash.util.Global;
 import com.flipflash.util.MutipleTargetHelper;
 
@@ -28,11 +24,6 @@ import org.adw.library.widgets.discreteseekbar.DiscreteSeekBar;
 
 import java.io.File;
 import java.io.IOException;
-
-import cn.pedant.SweetAlert.SweetAlertDialog;
-
-import static com.flipflash.util.LogUtils.LOGE;
-import static com.flipflash.util.LogUtils.LOGW;
 
 import static com.flipflash.util.LogUtils.LOGD;
 

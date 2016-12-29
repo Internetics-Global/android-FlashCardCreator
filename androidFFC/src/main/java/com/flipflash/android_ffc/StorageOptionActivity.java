@@ -9,8 +9,6 @@ import android.view.View;
 import android.view.WindowManager;
 import android.widget.Button;
 
-import com.dropbox.client2.android.AuthActivity;
-import com.flipflash.fragment.PurchaseFragment;
 import com.flipflash.helper.Dropbox.DropboxAuthHelper;
 import com.flipflash.helper.GoogleDrive.GoogleDriveAuthHelper;
 import com.flipflash.util.Global;
@@ -49,7 +47,7 @@ public class StorageOptionActivity extends Activity{
             public void onClick(View v) {
 
                 if (mUseGoogleDriveButton.getVisibility() != View.VISIBLE) {
-                    DropboxAuthHelper.sharedHelper(StorageOptionActivity.this).logOut();
+                    DropboxAuthHelper.sharedHelper().logOut();
                     GoogleDriveAuthHelper.sharedHelper(StorageOptionActivity.this).startAuthenticationFromActivity(StorageOptionActivity.this);
                 } else {
                     GoogleDriveAuthHelper.sharedHelper(StorageOptionActivity.this).logOut();
@@ -74,9 +72,9 @@ public class StorageOptionActivity extends Activity{
 
                 if (mUseDropboxButton.getVisibility() != View.VISIBLE) {
                     GoogleDriveAuthHelper.sharedHelper(StorageOptionActivity.this).logOut();
-                    DropboxAuthHelper.sharedHelper(StorageOptionActivity.this).startAuthentication();
+                    DropboxAuthHelper.sharedHelper().startAuthenticationFromActivity(StorageOptionActivity.this);
                 } else {
-                    DropboxAuthHelper.sharedHelper(StorageOptionActivity.this).logOut();
+                    DropboxAuthHelper.sharedHelper().logOut();
 
                     AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(
                             StorageOptionActivity.this);
@@ -98,30 +96,19 @@ public class StorageOptionActivity extends Activity{
     protected void onResume() {
         super.onResume();
 
-        if (DropboxAuthHelper.sharedHelper(StorageOptionActivity.this).isLinked()) {
-            mUseDropboxButton.setVisibility(View.VISIBLE);
-        } else {
-            if (DropboxAuthHelper.sharedHelper(StorageOptionActivity.this).isAuthenticationSuccessful()) {
-                try {
-                    // Mandatory call to complete the auth
-                    DropboxAuthHelper.sharedHelper(StorageOptionActivity.this).finishAuthentication();
+        if (DropboxAuthHelper.sharedHelper().isAuthenticationInProgress()) {
+            DropboxAuthHelper.sharedHelper().finishAuthentication();
 
-                    // Store it locally in our app for later use
-                    DropboxAuthHelper.sharedHelper(StorageOptionActivity.this).storeAuth();
+            AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(
+                    StorageOptionActivity.this);
+            alertDialogBuilder.setTitle(R.string.DIALOG_AlERT);
+            alertDialogBuilder.setPositiveButton(R.string.DIALOG_CLOSE,null);
+            alertDialogBuilder
+                    .setMessage(R.string.DIALOG_SUCCESS_TO_LOG_DROPBOX).show();
 
-                    AuthActivity.result = null;
-
-                } catch (IllegalStateException e) {
-                    LOGD(TAG, "onResume: Error authenticating " + e);
-                }
-
-                mUseDropboxButton.setVisibility(View.VISIBLE);
-
-            }
         }
 
-
-        if (DropboxAuthHelper.sharedHelper(StorageOptionActivity.this).isLinked()) {
+        if (DropboxAuthHelper.sharedHelper().isLinked()) {
 
             mUseDropboxButton.setVisibility(View.VISIBLE);
 

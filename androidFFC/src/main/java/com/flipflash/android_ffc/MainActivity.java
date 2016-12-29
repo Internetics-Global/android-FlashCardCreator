@@ -53,7 +53,7 @@ import android.widget.Toast;
 
 import com.daimajia.androidanimations.library.Techniques;
 import com.daimajia.androidanimations.library.YoYo;
-import com.dropbox.client2.android.AuthActivity;
+import com.dropbox.core.v2.files.FileMetadata;
 import com.flipflash.UI.PackInfoView;
 import com.flipflash.UI.ScaleHelper;
 import com.flipflash.UI.SlideInRightWithoutAlphaAnimator;
@@ -778,26 +778,18 @@ public class MainActivity extends FragmentActivity implements
 //            return;
 //        }
 
-        if (DropboxAuthHelper.sharedHelper(MainActivity.this).isAuthenticationSuccessful()) {
+        if (DropboxAuthHelper.sharedHelper().isAuthenticationInProgress()) {
 
             LOGD(TAG, "onResume: isAuthenticationSuccessful, now try to finishAuthentication and storeAuth");
 
-            try {
-                // Mandatory call to complete the auth
-                DropboxAuthHelper.sharedHelper(MainActivity.this).finishAuthentication();
+            // Mandatory call to complete the auth
+            DropboxAuthHelper.sharedHelper().finishAuthentication();
 
-                // Store it locally in our app for later use
-                DropboxAuthHelper.sharedHelper(MainActivity.this).storeAuth();
-
-                AuthActivity.result = null;
-
-                shareToDropbox();
-
-            } catch (IllegalStateException e) {
-                LOGD(TAG, "onResume: Error authenticating " + e);
-            }
+            shareToDropbox();
 
             return;
+        } else {
+            //for Google Drive, similar logic is located in onActivityResult
         }
 
         if (mIsNecessaryToRestoreCSSToolbar) {
@@ -1565,7 +1557,7 @@ public class MainActivity extends FragmentActivity implements
 
 
 
-        if (DropboxAuthHelper.sharedHelper(MainActivity.this).isLinked()) {
+        if (DropboxAuthHelper.sharedHelper().isLinked()) {
             shareToDropbox();
 
         } else if (GoogleDriveAuthHelper.sharedHelper(MainActivity.this).isLinked()) {
@@ -1578,7 +1570,7 @@ public class MainActivity extends FragmentActivity implements
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
 
-                            DropboxAuthHelper.sharedHelper(MainActivity.this).startAuthentication();  //跳转到授权页，成功后，会到onResume进行处理。
+                            DropboxAuthHelper.sharedHelper().startAuthenticationFromActivity(MainActivity.this);  //跳转到授权页，成功后，会到onResume进行处理。
                         }
                     })
                     .setPositiveButton(R.string.DIALOG_STORAGE_SELECTION_GOOGLE_DRIVE, new DialogInterface.OnClickListener() {
@@ -1606,7 +1598,7 @@ public class MainActivity extends FragmentActivity implements
             setPasswordAndUpload();
 
         } else {
-            DropboxShareHelper dropboxShareHelper = new DropboxShareHelper(this,mCurrentPack,true);
+            DropboxShareHelper dropboxShareHelper = new DropboxShareHelper(this,mCurrentPack,null,true);
             dropboxShareHelper.share();
 
         }
@@ -2322,11 +2314,11 @@ public class MainActivity extends FragmentActivity implements
             super.handleMessage(msg);
             switch (msg.what) {
                 case Dropbox_Constant.UPLOAD_SUCCEED: {
-                    File file = (File) msg.obj;
+                    String filePathInDropbox = (String) msg.obj;
 
                     Toast.makeText(getApplicationContext(), R.string.DIALOG_UPLOAD_SUCCESSFULLY, Toast.LENGTH_SHORT).show();
 
-                    DropboxShareHelper dropboxShareHelper = new DropboxShareHelper(MainActivity.this,mCurrentPack,false);
+                    DropboxShareHelper dropboxShareHelper = new DropboxShareHelper(MainActivity.this,mCurrentPack,filePathInDropbox,false);
                     dropboxShareHelper.execute();
 
                     break;
@@ -2334,6 +2326,9 @@ public class MainActivity extends FragmentActivity implements
 
 
                 case Dropbox_Constant.UPLOAD_FAILED: {
+
+                    //todo:ccaa
+
                     break;
                 }
 
@@ -2535,9 +2530,11 @@ public class MainActivity extends FragmentActivity implements
             } else {
 
                 //步骤： upload -- > 设置最大分享数 --> 创建短连接 --> 分享
-                if (DropboxAuthHelper.sharedHelper(MainActivity.this).isLinked()) {
-                    mDropboxUploadHelper = new DropboxUploadHelper(MainActivity.this, Global.DROPBOX_FOLDER, mZippedFile, mDropboxUploadHandler);
-                    mDropboxUploadHelper.execute();
+                if (DropboxAuthHelper.sharedHelper().isLinked()) {
+
+                    mDropboxUploadHelper = new DropboxUploadHelper(MainActivity.this, Global.DROPBOX_FOLDER, mZippedFile,mDropboxUploadHandler);
+                    mDropboxUploadHelper.execute(mZippedFile.toString(), Global.GOOGLE_DRIVE_FOLDER_NAME);
+
                 } else if (GoogleDriveAuthHelper.sharedHelper(MainActivity.this).isLinked()) {
                     mGoogleDriveUploadHelper = new GoogleDriveUploadHelper(MainActivity.this, Global.GOOGLE_DRIVE_FOLDER_NAME, mZippedFile, mGoogleDriveUploadHandler);
                     mGoogleDriveUploadHelper.execute();
