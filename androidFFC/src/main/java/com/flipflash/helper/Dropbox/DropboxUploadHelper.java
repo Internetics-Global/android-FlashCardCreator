@@ -273,7 +273,7 @@ public class DropboxUploadHelper extends AsyncTask<String, Void, FileMetadata> {
         mDialog.dismiss();
 
         if (mException != null) {
-            mHandler.obtainMessage(Dropbox_Constant.UPLOAD_FAILED, 0, 0, mFilePathInDropbox).sendToTarget();
+            mHandler.obtainMessage(Dropbox_Constant.UPLOAD_FAILED, 0, 0, mException).sendToTarget();
         } else if (result == null) {
             mHandler.obtainMessage(Dropbox_Constant.UPLOAD_FAILED, 0, 0, mFilePathInDropbox).sendToTarget();
         } else {

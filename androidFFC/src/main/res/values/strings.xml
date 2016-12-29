@@ -136,6 +136,7 @@
     <string name="DIALOG_GOOGLE_DRIVE_LOGIN_SUCCESS">Google Drive is successfully logged in</string>
     <string name="DIALOG_DROPBOX_DISCONNECTED">Disconnected from Dropbox</string>
     <string name="DIALOG_SUCCESS_TO_LOG_DROPBOX">Dropbox is successfully logged in</string>
+    <string name="DIALOG_DROPBOX_TOKEN_ERROR_PLEASE_LOG_IN_AGAIN">Dropbox session has expired. Please log in again</string>
 
     <string name="DIALOG_GOOGLE_SERVICE_UNAVAILABLE">Google Play service unavailable</string>
     <string name="DIALOG_GOOGLE_SERVICE_UPDATE_REQUIRED">Please update Google Play services</string>

@@ -2327,7 +2327,18 @@ public class MainActivity extends FragmentActivity implements
 
                 case Dropbox_Constant.UPLOAD_FAILED: {
 
-                    //todo:ccaa
+                    Exception exception = (Exception) msg.obj;
+                    if (exception != null) {
+                        String message = exception.getMessage();
+                        if (message != null && message.toLowerCase().contains("invalid_access_token")) {
+                            AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(
+                                    MainActivity.this);
+                            alertDialogBuilder.setTitle(R.string.DIALOG_AlERT);
+                            alertDialogBuilder.setNegativeButton(R.string.DIALOG_CLOSE,null);
+                            alertDialogBuilder
+                                    .setMessage(R.string.DIALOG_DROPBOX_TOKEN_ERROR_PLEASE_LOG_IN_AGAIN).show();
+                        }
+                    }
 
                     break;
                 }
