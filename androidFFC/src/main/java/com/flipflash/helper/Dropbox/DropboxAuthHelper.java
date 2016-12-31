@@ -27,6 +27,11 @@ public class DropboxAuthHelper {
 
     private static DbxClientV2 sDbxClient;
 
+    /*
+     * we have to use this flag to diff since Dropbox does not support a good way : https://github.com/dropbox/dropbox-sdk-java/issues/89
+     */
+    private static boolean     mIsLogoutExectued = false;
+
     final private String PREP_FILE_NAME = "ffc_dropbox_auth";
     final private String PREP_TOKEN_KEY = "access-token";
 
@@ -59,26 +64,16 @@ public class DropboxAuthHelper {
      */
     public void logOut() {
 
+        mIsLogoutExectued = true;
+
         clearAuth();
-
-        Task.callInBackground(new Callable<String>() {
-            @Override
-            public String call() throws Exception {
-
-                if (sDbxClient != null) {
-                    try {
-                        sDbxClient.auth().tokenRevoke();
-                    } catch (DbxException e) {
-                        e.printStackTrace();
-                    }
-                }
-
-                return null;
-            }
-        });
     }
 
     public boolean isLinked() {
+
+        if (mIsLogoutExectued == true) {
+            return false;
+        }
 
         return isHasToken();
     }
@@ -93,6 +88,8 @@ public class DropboxAuthHelper {
     public void finishAuthentication() {
 
         isAuthenticationInProgress = false;
+
+        mIsLogoutExectued = false;
 
         storeAuth();
 
