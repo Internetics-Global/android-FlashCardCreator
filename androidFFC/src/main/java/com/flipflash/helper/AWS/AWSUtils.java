@@ -3,7 +3,7 @@ package com.flipflash.helper.AWS;
 import com.flipflash.data.Pack;
 import com.flipflash.util.Global;
 import com.flipflash.util.StringUtils;
-import com.parse.ParseUser;
+import com.google.firebase.auth.FirebaseAuth;
 
 /**
  * Created by BourneWang on 29/05/15.
@@ -27,11 +27,11 @@ public class AWSUtils {
 
     public static String getFullBucketName() {
 
-        if (ParseUser.getCurrentUser() == null) {
+        if (FirebaseAuth.getInstance().getCurrentUser() == null) {
             throw  new IllegalStateException("Should not be here, Parse account should be registered beforehand");
         }
+        String expectedBucketName = FirebaseAuth.getInstance().getCurrentUser().getEmail().toLowerCase(); //bucket name必须是low case的，这是aws要求的
 
-        String expectedBucketName = ParseUser.getCurrentUser().getUsername().toLowerCase(); //bucket name必须是low case的，这是aws要求的
         expectedBucketName = StringUtils.removeAllCharactersExceptAlphanumericFromString(expectedBucketName);
         //AWS对于bucket是有命名要求的：http://docs.rightscale.com/faq/clouds/aws/What_are_valid_S3_bucket_names.html
         expectedBucketName = String.format("%s-%s",expectedBucketName, Global.BucketPostfixAfterUserName);

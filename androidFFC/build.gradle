@@ -159,6 +159,9 @@ dependencies {
 
     //avoid 64k max method issue: https://developer.android.com/studio/build/multidex.html
     compile 'com.android.support:multidex:1.0.1'
+
+    // Firebase Authentication
+    compile 'com.google.firebase:firebase-auth:10.0.1'
 }
 
 apply plugin: 'com.google.gms.google-services'

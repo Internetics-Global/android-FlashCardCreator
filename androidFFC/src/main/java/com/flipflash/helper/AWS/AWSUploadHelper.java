@@ -18,8 +18,7 @@ import com.amazonaws.services.s3.model.CreateBucketRequest;
 import com.amazonaws.services.s3.model.PutObjectRequest;
 import com.flipflash.android_ffc.R;
 import com.flipflash.util.AppContext;
-import com.flipflash.util.Global;
-import com.parse.ParseUser;
+import com.google.firebase.auth.FirebaseAuth;
 
 import java.io.File;
 import java.util.List;
@@ -108,7 +107,7 @@ public class AWSUploadHelper {
         public void run() {
             super.run();
 
-            if (ParseUser.getCurrentUser() == null) {
+            if (FirebaseAuth.getInstance().getCurrentUser() == null) {
                 throw  new AssertionError("ParseUser.getCurrentUser() should be set before being here");
             }
 

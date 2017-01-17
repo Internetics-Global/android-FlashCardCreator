@@ -111,6 +111,9 @@
             android:screenOrientation="sensorLandscape"/>
 
         <activity
+            android:name=".FirebaseSignInActivity"/>
+
+        <activity
             android:name="vn.tungdx.mediapicker.activities.MediaPickerActivity"
             android:screenOrientation="sensorLandscape"
             android:theme="@style/MediaPickerTheme" />
