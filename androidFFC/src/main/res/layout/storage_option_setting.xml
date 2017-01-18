@@ -40,7 +40,7 @@
 
 
         <View
-            style="@style/h_line" />
+        style="@style/h_line" />
 
         <RelativeLayout
             android:id="@+id/rl_storage_option_google_drive"
@@ -59,6 +59,31 @@
                 android:layout_marginRight="20dp"
                 android:layout_alignParentRight="true"
                 android:id="@+id/storage_option_google_drive_button"
+                android:layout_centerVertical="true" />
+
+        </RelativeLayout>
+
+
+        <View
+            style="@style/h_line" />
+
+        <RelativeLayout
+            android:id="@+id/rl_storage_option_aws"
+            style="@style/option_item_rl" >
+
+            <TextView
+                style="@style/option_item_text_parent"
+                android:text= "@string/Table_Item_AWS"
+                android:textColor="@android:color/white"
+                android:textSize="16dp" />
+
+            <Button
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:background="@drawable/check"
+                android:layout_marginRight="20dp"
+                android:layout_alignParentRight="true"
+                android:id="@+id/storage_option_aws_button"
                 android:layout_centerVertical="true" />
 
         </RelativeLayout>

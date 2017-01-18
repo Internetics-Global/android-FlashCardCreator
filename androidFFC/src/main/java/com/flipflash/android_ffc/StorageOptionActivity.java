@@ -12,6 +12,7 @@ import android.widget.Button;
 import com.flipflash.helper.Dropbox.DropboxAuthHelper;
 import com.flipflash.helper.GoogleDrive.GoogleDriveAuthHelper;
 import com.flipflash.util.Global;
+import com.google.firebase.auth.FirebaseAuth;
 
 
 import static com.flipflash.util.LogUtils.LOGD;
@@ -23,6 +24,7 @@ public class StorageOptionActivity extends Activity{
 
     Button mUseDropboxButton;
     Button mUseGoogleDriveButton;
+    Button mUseAWSButton;
 
     private static final String TAG = PlayActivity.class.getSimpleName();
 
@@ -41,6 +43,7 @@ public class StorageOptionActivity extends Activity{
 
         mUseDropboxButton = (Button) findViewById(R.id.storage_option_dropbox_button);
         mUseGoogleDriveButton = (Button) findViewById(R.id.storage_option_google_drive_button);
+        mUseAWSButton = (Button) findViewById(R.id.storage_option_aws_button);
 
         findViewById(R.id.rl_storage_option_google_drive).setOnClickListener(new View.OnClickListener() {
             @Override
@@ -48,7 +51,7 @@ public class StorageOptionActivity extends Activity{
 
                 if (mUseGoogleDriveButton.getVisibility() != View.VISIBLE) {
                     DropboxAuthHelper.sharedHelper().logOut();
-                    GoogleDriveAuthHelper.sharedHelper(StorageOptionActivity.this).startAuthenticationFromActivity(StorageOptionActivity.this);
+                    startActivity(new Intent(StorageOptionActivity.this, FirebaseSignInActivity.class));
                 } else {
                     GoogleDriveAuthHelper.sharedHelper(StorageOptionActivity.this).logOut();
 
@@ -89,6 +92,28 @@ public class StorageOptionActivity extends Activity{
             }
         });
 
+        findViewById(R.id.rl_storage_option_aws).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                if (mUseAWSButton.getVisibility() != View.VISIBLE) {
+                    DropboxAuthHelper.sharedHelper().startAuthenticationFromActivity(StorageOptionActivity.this);
+                } else {
+                    FirebaseAuth.getInstance().signOut();
+
+                    AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(
+                            StorageOptionActivity.this);
+                    alertDialogBuilder.setTitle(R.string.DIALOG_AlERT);
+                    alertDialogBuilder.setPositiveButton(R.string.DIALOG_CLOSE,null);
+                    alertDialogBuilder
+                            .setMessage(R.string.DIALOG_AWS_DISCONNECTED).show();
+
+                    mUseAWSButton.setVisibility(View.INVISIBLE);
+                }
+
+            }
+        });
+
     }
 
 
@@ -117,6 +142,14 @@ public class StorageOptionActivity extends Activity{
         }
 
         if (GoogleDriveAuthHelper.sharedHelper(StorageOptionActivity.this).isLinked()) {
+
+            mUseGoogleDriveButton.setVisibility(View.VISIBLE);
+
+        } else {
+            mUseGoogleDriveButton.setVisibility(View.INVISIBLE);
+        }
+
+        if (FirebaseAuth.getInstance().getCurrentUser() != null) {
 
             mUseGoogleDriveButton.setVisibility(View.VISIBLE);
 

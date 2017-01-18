@@ -1,6 +1,8 @@
 package com.flipflash.android_ffc;
 
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.app.ProgressDialog;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.text.TextUtils;
@@ -23,10 +25,9 @@ import com.google.firebase.auth.FirebaseUser;
 public class FirebaseSignInActivity extends Activity implements
         View.OnClickListener {
 
-    private static final String TAG = "EmailPassword";
+    public ProgressDialog mProgressDialog;
 
-    private TextView mStatusTextView;
-    private TextView mDetailTextView;
+    private static final String TAG = "EmailPassword";
     private EditText mEmailField;
     private EditText mPasswordField;
 
@@ -67,35 +68,37 @@ public class FirebaseSignInActivity extends Activity implements
                     // User is signed out
                     Log.d(TAG, "onAuthStateChanged:signed_out");
                 }
-                // [START_EXCLUDE]
                 updateUI(user);
-                // [END_EXCLUDE]
             }
         };
-        // [END auth_state_listener]
     }
 
-    // [START on_start_add_listener]
     @Override
     public void onStart() {
         super.onStart();
         mAuth.addAuthStateListener(mAuthListener);
     }
-    // [END on_start_add_listener]
 
-    // [START on_stop_remove_listener]
     @Override
     public void onStop() {
         super.onStop();
+        hideProgressDialog();
         if (mAuthListener != null) {
             mAuth.removeAuthStateListener(mAuthListener);
         }
     }
-    // [END on_stop_remove_listener]
 
     private void createAccount(String email, String password) {
         Log.d(TAG, "createAccount:" + email);
         if (!validateForm()) {
+
+            AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(
+                    FirebaseSignInActivity.this);
+            alertDialogBuilder.setTitle(R.string.DIALOG_AlERT);
+            alertDialogBuilder.setPositiveButton(R.string.DIALOG_CLOSE,null);
+            alertDialogBuilder
+                    .setMessage("Email or password could not be empty").show();
+
             return;
         }
 
@@ -108,29 +111,50 @@ public class FirebaseSignInActivity extends Activity implements
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         Log.d(TAG, "createUserWithEmail:onComplete:" + task.isSuccessful());
 
+                        hideProgressDialog();
+
                         // If sign in fails, display a message to the user. If sign in succeeds
                         // the auth state listener will be notified and logic to handle the
                         // signed in user can be handled in the listener.
                         if (!task.isSuccessful()) {
-                            Toast.makeText(FirebaseSignInActivity.this, "auth failed todo",
-                                    Toast.LENGTH_SHORT).show();
+
+                            AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(
+                                    FirebaseSignInActivity.this);
+                            alertDialogBuilder.setTitle(R.string.DIALOG_AlERT);
+                            alertDialogBuilder.setPositiveButton(R.string.DIALOG_CLOSE,null);
+                            alertDialogBuilder
+                                    .setMessage(R.string.FIREBASE_FAIL_TO_CREATE_ACCOUNT).show();
+
+                        } else {
+
+                            AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(
+                                    FirebaseSignInActivity.this);
+                            alertDialogBuilder.setTitle(R.string.DIALOG_AlERT);
+                            alertDialogBuilder.setPositiveButton(R.string.DIALOG_CLOSE,null);
+                            alertDialogBuilder
+                                    .setMessage(R.string.AWS_DRIVE_LOGIN_SUCCESS).show();
                         }
 
-                        // [START_EXCLUDE]
-                        hideProgressDialog();
-                        // [END_EXCLUDE]
                     }
                 });
-        // [END create_user_with_email]
     }
 
-    private void hideProgressDialog() {
+    public void showProgressDialog() {
+        if (mProgressDialog == null) {
+            mProgressDialog = new ProgressDialog(this);
+            mProgressDialog.setMessage(getString(R.string.loading));
+            mProgressDialog.setIndeterminate(true);
+        }
 
+        mProgressDialog.show();
     }
 
-    private void showProgressDialog() {
-
+    public void hideProgressDialog() {
+        if (mProgressDialog != null && mProgressDialog.isShowing()) {
+            mProgressDialog.dismiss();
+        }
     }
+
 
     private void signIn(String email, String password) {
         Log.d(TAG, "signIn:" + email);
@@ -147,6 +171,8 @@ public class FirebaseSignInActivity extends Activity implements
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         Log.d(TAG, "signInWithEmail:onComplete:" + task.isSuccessful());
 
+                        hideProgressDialog();
+
                         // If sign in fails, display a message to the user. If sign in succeeds
                         // the auth state listener will be notified and logic to handle the
                         // signed in user can be handled in the listener.
@@ -154,17 +180,17 @@ public class FirebaseSignInActivity extends Activity implements
                             Log.w(TAG, "signInWithEmail:failed", task.getException());
                             Toast.makeText(FirebaseSignInActivity.this, "failed todo",
                                     Toast.LENGTH_SHORT).show();
+                        }  else {
+                            AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(
+                                    FirebaseSignInActivity.this);
+                            alertDialogBuilder.setTitle(R.string.DIALOG_AlERT);
+                            alertDialogBuilder.setPositiveButton(R.string.DIALOG_CLOSE,null);
+                            alertDialogBuilder
+                                    .setMessage(R.string.AWS_DRIVE_LOGIN_SUCCESS).show();
                         }
 
-                        // [START_EXCLUDE]
-                        if (!task.isSuccessful()) {
-                            mStatusTextView.setText("Failed to do");
-                        }
-                        hideProgressDialog();
-                        // [END_EXCLUDE]
                     }
                 });
-        // [END sign_in_with_email]
     }
 
     private void signOut() {
