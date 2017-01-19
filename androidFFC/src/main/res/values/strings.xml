@@ -141,6 +141,10 @@
     <string name="DIALOG_GOOGLE_SERVICE_UNAVAILABLE">Google Play service unavailable</string>
     <string name="DIALOG_GOOGLE_SERVICE_UPDATE_REQUIRED">Please update Google Play services</string>
 
+    <string name="DIALOG_AWS_DISCONNECTED">Disconnected from AWS Cloud</string>
+    <string name="AWS_DRIVE_LOGIN_SUCCESS">AWS Cloud is successfully logged in</string>
+    <string name="FIREBASE_FAIL_TO_CREATE_ACCOUNT">Failed to create account</string>
+
     <string name="NavigationBarItem_Packs">Packs</string>
     <string name="NavigationBarItem_Create">Create</string>
     <string name="NavigationBarItem_Edit"> Edit </string>
@@ -277,6 +281,7 @@
     <string name="Table_Item_Dropbox_Logged_In">Dropbox storage</string>
     <string name="Table_Item_Dropbox">Use Dropbox</string>
     <string name="Table_Item_Google_Drive">Use Google Drive</string>
+    <string name="Table_Item_AWS">Use AWS</string>
     <string name="Table_Item_Storage">Storage</string>
     <string name="Table_Item_Log_In_Social_Network">Sign in</string>
     <string name="Table_Item_Log_Out_Social_Network">Sign out</string>
@@ -329,5 +334,7 @@
     <string name="iap_success_upgrade">Thank you for upgrading.Please press Close to restart the app</string>
     <string name="iap_google_service_not_available">Google In-app Billing service is not available now</string>
     <string name="iap_wait_for_update">Please wait for price to be updated</string>
+
+    <string name="loading">Loading…</string>
 
 </resources>

@@ -51,7 +51,7 @@ public class StorageOptionActivity extends Activity{
 
                 if (mUseGoogleDriveButton.getVisibility() != View.VISIBLE) {
                     DropboxAuthHelper.sharedHelper().logOut();
-                    startActivity(new Intent(StorageOptionActivity.this, FirebaseSignInActivity.class));
+                    GoogleDriveAuthHelper.sharedHelper(StorageOptionActivity.this).startAuthenticationFromActivity(StorageOptionActivity.this);
                 } else {
                     GoogleDriveAuthHelper.sharedHelper(StorageOptionActivity.this).logOut();
 
@@ -97,7 +97,7 @@ public class StorageOptionActivity extends Activity{
             public void onClick(View v) {
 
                 if (mUseAWSButton.getVisibility() != View.VISIBLE) {
-                    DropboxAuthHelper.sharedHelper().startAuthenticationFromActivity(StorageOptionActivity.this);
+                    startActivity(new Intent(StorageOptionActivity.this, FirebaseSignInActivity.class));
                 } else {
                     FirebaseAuth.getInstance().signOut();
 
@@ -151,10 +151,10 @@ public class StorageOptionActivity extends Activity{
 
         if (FirebaseAuth.getInstance().getCurrentUser() != null) {
 
-            mUseGoogleDriveButton.setVisibility(View.VISIBLE);
+            mUseAWSButton.setVisibility(View.VISIBLE);
 
         } else {
-            mUseGoogleDriveButton.setVisibility(View.INVISIBLE);
+            mUseAWSButton.setVisibility(View.INVISIBLE);
         }
     }
 
