@@ -3063,6 +3063,9 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnTouchL
     /**
      * 凡是call这个方法的，都会自动导致更新card list view。这也是从MainActivity或CardDetailFragment回调更新card list view的唯一途径
      */
+    Boolean subHeadingQuestionAlphaRevertNeeded = false;
+    Boolean mainQuestionAlphaRevertNeeded = false;
+    Boolean subQuestionAlphaRevertNeeded = false;
     private void takeSnapshotCurrentCard() {
 
         LOGD(TAG, "takeSnapshotCurrentCard with cardSN = " + mCurrentCard.cardSN);
@@ -3074,6 +3077,22 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnTouchL
 
         if (isEditableMode()) {
             disableCardEditable();
+
+
+            if (mSubheading.getAlpha() == 0.5) {
+                subHeadingQuestionAlphaRevertNeeded = true;
+                mSubheading.setAlpha(0);
+            }
+
+            if (mMain.getAlpha() == 0.5) {
+                mainQuestionAlphaRevertNeeded = true;
+                mMain.setAlpha(0);
+            }
+
+            if (mSub.getAlpha() == 0.5) {
+                subQuestionAlphaRevertNeeded = true;
+                mSub.setAlpha(0);
+            }
         }
 
         if (mIsQuestionShowing == false) {
@@ -3122,6 +3141,21 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnTouchL
 
         if (isEditableMode()) {
             enableCardEditable();
+
+            if (subHeadingQuestionAlphaRevertNeeded) {
+                subHeadingQuestionAlphaRevertNeeded = false;
+                mSubheading.setAlpha(0.5f);
+            }
+
+            if (mainQuestionAlphaRevertNeeded) {
+                mainQuestionAlphaRevertNeeded = false;
+                mMain.setAlpha(0.5f);
+            }
+
+            if (subQuestionAlphaRevertNeeded) {
+                subQuestionAlphaRevertNeeded = false;
+                mSub.setAlpha(0.5f);
+            }
         }
 
         mCurrentCard.save(AppContext.getAppContext());

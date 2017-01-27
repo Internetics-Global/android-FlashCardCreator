@@ -25,9 +25,10 @@
     </EditText>
 
 
-    <FrameLayout
+    <LinearLayout
         android:layout_width="fill_parent"
         android:layout_marginTop="5dp"
+        android:orientation="vertical"
         android:layout_height="0dp"
         android:layout_weight="100">
 
@@ -35,7 +36,8 @@
         <ImageView
             android:id="@+id/pack_cover_image"
             android:layout_width="fill_parent"
-            android:layout_height="fill_parent"
+            android:layout_height="0dp"
+            android:layout_weight="37"
             android:scaleType="fitCenter"
             android:src="@drawable/create_new_pack"
             android:background="@drawable/shape_image_round_corner">
@@ -44,16 +46,37 @@
 
         <TextView
             android:id="@+id/pack_cover_image_annotation"
-            android:layout_height="fill_parent"
+            android:layout_height="0dp"
+            android:layout_weight="13"
             android:layout_width="fill_parent"
             android:textColor="@android:color/white"
-            android:textSize="14sp"
-            android:gravity="center_horizontal|bottom"
-            android:layout_marginBottom="15dp"
+            android:textSize="12sp"
+            android:gravity="center_horizontal|center"
             android:text="@string/Title_Add_A_New_Pack"/>
 
+        <ImageView
+            android:id="@+id/library_image"
+            android:layout_width="fill_parent"
+            android:layout_height="0dp"
+            android:layout_weight="37"
+            android:scaleType="fitCenter"
+            android:src="@drawable/ffc_library"
+            android:background="@drawable/shape_image_round_corner">
 
-        </FrameLayout>
+        </ImageView>
+
+        <TextView
+            android:id="@+id/library_image_annotation"
+            android:layout_height="0dp"
+            android:layout_weight="13"
+            android:layout_width="fill_parent"
+            android:textColor="@android:color/white"
+            android:textSize="12sp"
+            android:gravity="center_horizontal|center"
+            android:text="@string/Title_FFC_Library"/>
+
+
+        </LinearLayout>
 
 
     <LinearLayout
