@@ -63,6 +63,9 @@ import com.flipflash.event.DownloadCancelEvent;
 import com.flipflash.event.MultiMediaFullscreenEvent;
 import com.flipflash.event.WebViewMessageEvent;
 import com.flipflash.fragment.PurchaseFragment;
+import com.flipflash.helper.AWS.AWSShareHelper;
+import com.flipflash.helper.AWS.AWSUploadHelper;
+import com.flipflash.helper.AWS.AWS_Constant;
 import com.flipflash.helper.GoogleDrive.GoogleDriveAuthHelper;
 import com.flipflash.helper.GoogleDrive.GoogleDriveShareHelper;
 import com.flipflash.helper.GoogleDrive.GoogleDriveUploadHelper;
@@ -94,6 +97,7 @@ import com.flipflash.util.OpenUDID_manager;
 import com.flipflash.util.StringUtils;
 import com.flipflash.util.TipHelper;
 import com.flipflash.util.UIHelper;
+import com.google.firebase.auth.FirebaseAuth;
 import com.nineoldandroids.animation.Animator;
 import com.nostra13.universalimageloader.core.DisplayImageOptions;
 import com.nostra13.universalimageloader.core.ImageLoader;
@@ -179,6 +183,7 @@ public class MainActivity extends FragmentActivity implements
 
     private PackInfoView         mPackInfoView;
 
+    private AWSUploadHelper          mAmazonUploadHelper ;
     private DropboxUploadHelper      mDropboxUploadHelper ;
     private GoogleDriveUploadHelper  mGoogleDriveUploadHelper ;
 
@@ -783,9 +788,11 @@ public class MainActivity extends FragmentActivity implements
             LOGD(TAG, "onResume: isAuthenticationSuccessful, now try to finishAuthentication and storeAuth");
 
             // Mandatory call to complete the auth
-            DropboxAuthHelper.sharedHelper().finishAuthentication();
+            boolean success = DropboxAuthHelper.sharedHelper().finishAuthentication();
 
-            shareToDropbox();
+            if (success) {
+                shareToDropbox();
+            }
 
             return;
         } else {
@@ -1189,6 +1196,10 @@ public class MainActivity extends FragmentActivity implements
             mRecordCountDownTimer = null;
         }
 
+        if (mAmazonUploadHelper != null) {
+            mAmazonUploadHelper.stop();
+        }
+
         if (mDropboxUploadHelper != null) {
             mDropboxUploadHelper.cancel(true);
             mDropboxUploadHelper = null;
@@ -1563,6 +1574,9 @@ public class MainActivity extends FragmentActivity implements
         } else if (GoogleDriveAuthHelper.sharedHelper(MainActivity.this).isLinked()) {
             shareToGoogleDrive();
 
+        } else if (FirebaseAuth.getInstance().getCurrentUser() != null) {
+            shareToAWS();
+
         } else {
             new AlertDialog.Builder(MainActivity.this)
                     .setMessage(R.string.DIALOG_STORAGE_SELECTION)
@@ -1573,11 +1587,23 @@ public class MainActivity extends FragmentActivity implements
                             DropboxAuthHelper.sharedHelper().startAuthenticationFromActivity(MainActivity.this);  //跳转到授权页，成功后，会到onResume进行处理。
                         }
                     })
-                    .setPositiveButton(R.string.DIALOG_STORAGE_SELECTION_GOOGLE_DRIVE, new DialogInterface.OnClickListener() {
+                    .setNegativeButton(R.string.DIALOG_STORAGE_SELECTION_GOOGLE_DRIVE, new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
 
                             GoogleDriveAuthHelper.sharedHelper(MainActivity.this).startAuthenticationFromActivity(MainActivity.this);  //跳转到授权页，成功后，会到onResume进行处理。
+
+                        }
+                    })
+                    .setPositiveButton(R.string.DIALOG_STORAGE_SELECTION_AWS, new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialogInterface, int i) {
+
+                            new SweetAlertDialog(MainActivity.this)
+                                    .setTitleText(getString(R.string.DIALOG_AlERT))
+                                    .setContentText("Please sign in to FFC Drive in Settings > FFC Drive")
+                                    .show();
+
 
                         }
                     })
@@ -1619,6 +1645,19 @@ public class MainActivity extends FragmentActivity implements
         }
     }
 
+    private void shareToAWS() {
+        LOGD(TAG, "share");
+
+        if ((mCurrentPack.creatorID).equals(OpenUDID_manager.getOpenUDID())) {
+
+            setPasswordAndUpload();
+
+        } else {
+            AWSShareHelper AWSShareHelper = new AWSShareHelper(this,mCurrentPack,true);
+            AWSShareHelper.share();
+
+        }
+    }
 
 
 
@@ -2376,6 +2415,59 @@ public class MainActivity extends FragmentActivity implements
     };
 
 
+    //TODO: lint This Handler class should be static or leaks might occur (null)
+    private final Handler mAmazonUploadHandler = new Handler() {
+        @Override
+        public void handleMessage(Message msg) {
+            super.handleMessage(msg);
+            switch (msg.what) {
+                case AWS_Constant.UPLOAD_PROGRESS: {
+                    File file = (File) msg.obj;
+                    int flag = msg.arg1; //indicate whether upload is finished or not
+                    int percent = msg.arg2;
+
+                    if (mUploadProgressDialog == null) {
+                        mUploadProgressDialog = new ProgressDialog(MainActivity.this);
+                        mUploadProgressDialog.setMax(100);
+                        mUploadProgressDialog.setCancelable(false);
+                        mUploadProgressDialog.setCanceledOnTouchOutside(false);
+                        mUploadProgressDialog.setMessage(getString(R.string.Indicator_Upload));
+                        mUploadProgressDialog.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
+                        mUploadProgressDialog.setButton(DialogInterface.BUTTON_NEGATIVE, getString(R.string.DIALOG_CANCEL), new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                dialog.dismiss();
+                                if (mAmazonUploadHelper != null) {
+                                    mAmazonUploadHelper.stop();
+                                }
+                            }
+                        });
+                    }
+
+                    if (flag == 0) {
+                        mUploadProgressDialog.dismiss();
+
+                        Toast.makeText(getApplicationContext(), R.string.DIALOG_UPLOAD_SUCCESSFULLY, Toast.LENGTH_SHORT).show();
+
+                        AWSShareHelper AWSShareHelper = new AWSShareHelper(MainActivity.this, mCurrentPack,false);
+                        AWSShareHelper.execute();
+
+                    } else {
+                        if (mUploadProgressDialog.isShowing() == false) {
+                            mUploadProgressDialog.show();
+                        }
+                        mUploadProgressDialog.setProgress(percent);
+                    }
+                    break;
+                }
+
+
+            }
+        }
+    };
+
+
+
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
@@ -2549,6 +2641,9 @@ public class MainActivity extends FragmentActivity implements
                 } else if (GoogleDriveAuthHelper.sharedHelper(MainActivity.this).isLinked()) {
                     mGoogleDriveUploadHelper = new GoogleDriveUploadHelper(MainActivity.this, Global.GOOGLE_DRIVE_FOLDER_NAME, mZippedFile, mGoogleDriveUploadHandler);
                     mGoogleDriveUploadHelper.execute();
+                } else if (FirebaseAuth.getInstance().getCurrentUser() != null) {
+                    mAmazonUploadHelper = new AWSUploadHelper(MainActivity.this, mAmazonUploadHandler);
+                    mAmazonUploadHelper.upload(mZippedFile);
                 } else {
                     LOGE(TAG, "onPostExecute, and should not be here, please have a check");
                 }

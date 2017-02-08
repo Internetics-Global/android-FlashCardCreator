@@ -85,7 +85,7 @@ public class DropboxAuthHelper {
         isAuthenticationInProgress = true;
     }
 
-    public void finishAuthentication() {
+    public boolean finishAuthentication() {
 
         isAuthenticationInProgress = false;
 
@@ -94,7 +94,13 @@ public class DropboxAuthHelper {
         storeAuth();
 
         String token = getToken();
-        initAndLoadData(token);
+
+        if (StringUtils.isEmpty(token)) {
+            return false;
+        } else {
+            initAndLoadData(token);
+            return true;
+        }
     }
 
 

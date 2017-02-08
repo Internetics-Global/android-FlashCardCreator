@@ -82,8 +82,8 @@ public class FirebaseSignInActivity extends Activity implements
         }
     }
 
-    private void createAccount(String email, String password) {
-        Log.d(TAG, "createAccount:" + email);
+    private void signup(String email, String password) {
+        Log.d(TAG, "createcreateAccountAccount:" + email);
         if (!validateForm()) {
 
             AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(
@@ -126,6 +126,8 @@ public class FirebaseSignInActivity extends Activity implements
                             alertDialogBuilder.setPositiveButton(R.string.DIALOG_CLOSE,null);
                             alertDialogBuilder
                                     .setMessage(R.string.AWS_DRIVE_LOGIN_SUCCESS).show();
+
+                            finish();
                         }
 
                     }
@@ -133,9 +135,15 @@ public class FirebaseSignInActivity extends Activity implements
         .addOnFailureListener(new OnFailureListener() {
             @Override
             public void onFailure(@NonNull Exception e) {
-
                 hideProgressDialog();
                 e.printStackTrace();
+
+                AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(
+                        FirebaseSignInActivity.this);
+                alertDialogBuilder.setTitle(R.string.DIALOG_AlERT);
+                alertDialogBuilder.setPositiveButton(R.string.DIALOG_CLOSE,null);
+                alertDialogBuilder
+                        .setMessage(e.getMessage()).show();
 
             }
         })
@@ -196,10 +204,22 @@ public class FirebaseSignInActivity extends Activity implements
                             alertDialogBuilder.setPositiveButton(R.string.DIALOG_CLOSE,null);
                             alertDialogBuilder
                                     .setMessage(R.string.AWS_DRIVE_LOGIN_SUCCESS).show();
+
+                            finish();
                         }
 
                     }
-                });
+                }).addOnFailureListener(this, new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+                AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(
+                        FirebaseSignInActivity.this);
+                alertDialogBuilder.setTitle(R.string.DIALOG_AlERT);
+                alertDialogBuilder.setPositiveButton(R.string.DIALOG_CLOSE,null);
+                alertDialogBuilder
+                        .setMessage(e.getMessage()).show();
+            }
+        });
     }
 
     private void signOut() {
@@ -237,7 +257,7 @@ public class FirebaseSignInActivity extends Activity implements
     public void onClick(View v) {
         int i = v.getId();
         if (i == R.id.email_create_account_button) {
-            createAccount(mEmailField.getText().toString(), mPasswordField.getText().toString());
+            signup(mEmailField.getText().toString(), mPasswordField.getText().toString());
         } else if (i == R.id.email_sign_in_button) {
             signIn(mEmailField.getText().toString(), mPasswordField.getText().toString());
         }

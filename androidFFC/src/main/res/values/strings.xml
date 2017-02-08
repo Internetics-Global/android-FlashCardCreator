@@ -131,6 +131,7 @@
     <string name="DIALOG_STORAGE_SELECTION">Storage Selection</string>
     <string name="DIALOG_STORAGE_SELECTION_DROPBOX">Dropbox</string>
     <string name="DIALOG_STORAGE_SELECTION_GOOGLE_DRIVE">Google Drive</string>
+    <string name="DIALOG_STORAGE_SELECTION_AWS">FFC Drive</string>
     <string name="DIALOG_GOOGLE_DRIVE_AUTHE_FAILED">Google Drive Authentication failed, Please try again</string>
     <string name="DIALOG_GOOGLE_DRIVE_DISCONNECTED">Disconnected from Google Drive</string>
     <string name="DIALOG_GOOGLE_DRIVE_LOGIN_SUCCESS">Google Drive is successfully logged in</string>
@@ -141,8 +142,8 @@
     <string name="DIALOG_GOOGLE_SERVICE_UNAVAILABLE">Google Play service unavailable</string>
     <string name="DIALOG_GOOGLE_SERVICE_UPDATE_REQUIRED">Please update Google Play services</string>
 
-    <string name="DIALOG_AWS_DISCONNECTED">Disconnected from AWS Cloud</string>
-    <string name="AWS_DRIVE_LOGIN_SUCCESS">AWS Cloud is successfully logged in</string>
+    <string name="DIALOG_AWS_DISCONNECTED">Disconnected from FFC Drive</string>
+    <string name="AWS_DRIVE_LOGIN_SUCCESS">FFC Drive is successfully logged in</string>
     <string name="FIREBASE_FAIL_TO_CREATE_ACCOUNT">Failed to create account</string>
 
     <string name="NavigationBarItem_Packs">Packs</string>
@@ -281,7 +282,7 @@
     <string name="Table_Item_Dropbox_Logged_In">Dropbox storage</string>
     <string name="Table_Item_Dropbox">Use Dropbox</string>
     <string name="Table_Item_Google_Drive">Use Google Drive</string>
-    <string name="Table_Item_AWS">Use AWS</string>
+    <string name="Table_Item_AWS">Use FFC Drive</string>
     <string name="Table_Item_Storage">Storage</string>
     <string name="Table_Item_Log_In_Social_Network">Sign in</string>
     <string name="Table_Item_Log_Out_Social_Network">Sign out</string>
