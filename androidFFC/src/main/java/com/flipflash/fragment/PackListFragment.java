@@ -233,15 +233,6 @@ public class PackListFragment extends Fragment {
 
         if (position ==0) {
 
-            if (MutipleTargetHelper.isFullVersion()) {
-                DialogFragment dialogFragment = new CreateEditFragment();
-                dialogFragment.show(getActivity().getSupportFragmentManager(), "add_pack_fragment");
-                ((MainActivity) getActivity()).dismissPackListPopupWindow();
-            } else {
-                MutipleTargetHelper.showAlertToUpgradeToFullVersion();
-                ((MainActivity) getActivity()).dismissPackListPopupWindow();
-            }
-
         } else {
 
             LOGD(TAG, "galleryItemClicked: " + "Index of pack in pack list is:" + position);
@@ -302,6 +293,31 @@ public class PackListFragment extends Fragment {
                         convertView.setVisibility(View.INVISIBLE);
                         convertView.setEnabled(false);
                     }
+
+                    ImageView libraryImageView = (ImageView) convertView.findViewById(R.id.library_image);
+
+                    coverImageView.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View view) {
+                            if (MutipleTargetHelper.isFullVersion()) {
+                                DialogFragment dialogFragment = new CreateEditFragment();
+                                dialogFragment.show(getActivity().getSupportFragmentManager(), "add_pack_fragment");
+                                ((MainActivity) getActivity()).dismissPackListPopupWindow();
+                            } else {
+                                MutipleTargetHelper.showAlertToUpgradeToFullVersion();
+                                ((MainActivity) getActivity()).dismissPackListPopupWindow();
+                            }
+                        }
+                    });
+
+                    libraryImageView.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View view) {
+                            Intent intent = new Intent(getActivity(), WebViewActivity.class);
+                            intent.putExtra("url", "http://www.flipflashcards.com/packs");
+                            startActivity(intent);
+                        }
+                    });
 
                 } else {
                     convertView = inflater.inflate(R.layout.pack_list_item, parent, false);

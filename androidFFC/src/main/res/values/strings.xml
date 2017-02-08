@@ -216,7 +216,7 @@
     <string name="Label_Creator_Hint">Created by:</string>
     <string name="Job_Title">Name or title</string>
     <string name="Label_New_User">New User?</string>
-    <string name="Label_Visit_Store">Get packs!</string>
+    <string name="Label_Visit_Store">Free packs!</string>
     <string name="Label_Help">Help</string>
     <string name="Label_Recently_Created">recently created</string>
     <string name="Label_Recently_Viewed">recently viewed</string>
@@ -225,6 +225,7 @@
     <string name="Label_Color_Select">Select Color</string>
     <string name="Title_Add_A_New_Pack">Add a new pack</string>
     <string name="Title_Create_A_New_Card">Create a new card</string>
+    <string name="Title_FFC_Library">FFC Library</string>
     <string name="Title_About">About us</string>
     <string name="Title_Edit_Pack">Edit Pack</string>
     <string name="Title_Settings">Settings</string>
