@@ -162,6 +162,8 @@ dependencies {
 
     // Firebase Authentication
     compile 'com.google.firebase:firebase-auth:9.0.1'
+
+    compile 'com.google.android.gms:play-services-auth:9.0.1'
 }
 
 apply plugin: 'com.google.gms.google-services'
