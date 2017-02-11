@@ -31,6 +31,9 @@ public class GoogleDriveAuthHelper {
 
     private static final String PREF_ACCOUNT_NAME = "Google_Account_Name";
 
+    // This is extra flag to check log in status. Background: in practice, we found it could be by mistake indicated log-in
+    private static final String PREF_ACCOUNT_LOG_IN_EXTRA_FLAG = "Google_Account_Log_Out_Flag";
+
 
     public static GoogleDriveAuthHelper sharedHelper(Activity activity) {
 
@@ -88,6 +91,11 @@ public class GoogleDriveAuthHelper {
             return false;
         }
 
+        if (getLogInExtraFlag() == false) {
+            return false;
+        }
+
+
         if (mCredential.getSelectedAccountName() == null) {
             return false;
         } else {
@@ -130,6 +138,7 @@ public class GoogleDriveAuthHelper {
         SharedPreferences settings = mActivity.getPreferences(Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = settings.edit();
         editor.putString(PREF_ACCOUNT_NAME, accountName);
+        editor.putBoolean(PREF_ACCOUNT_LOG_IN_EXTRA_FLAG,true);
         editor.commit();
     }
 
@@ -147,6 +156,15 @@ public class GoogleDriveAuthHelper {
         //这里需要注意一个case: accountName（保存于SharedPreference)不为null，但是这时用户已经提前在系统设置中退出了accountName这个帐号，这时，即便执行了
         //mCredential.setSelectedAccountName(accountName), mCredential.getSelectedAccountName()仍然得到的将是null。
         //也就是说，mCredential.getSelectedAccountName返回的是真实的已经auth的信息
+
+
+    }
+
+
+    private boolean getLogInExtraFlag() {
+        SharedPreferences settings = mActivity.getPreferences(Context.MODE_PRIVATE);
+        boolean result = settings.getBoolean(PREF_ACCOUNT_LOG_IN_EXTRA_FLAG, false);
+        return result;
     }
 
     private void removeCredential() {
@@ -154,6 +172,7 @@ public class GoogleDriveAuthHelper {
         SharedPreferences settings = mActivity.getPreferences(Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = settings.edit();
         editor.remove(PREF_ACCOUNT_NAME);
+        editor.remove(PREF_ACCOUNT_LOG_IN_EXTRA_FLAG);
         editor.commit();
     }
 
