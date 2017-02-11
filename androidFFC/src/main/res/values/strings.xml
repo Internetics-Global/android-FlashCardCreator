@@ -145,6 +145,7 @@
     <string name="DIALOG_AWS_DISCONNECTED">Disconnected from FFC Drive</string>
     <string name="AWS_DRIVE_LOGIN_SUCCESS">FFC Drive is successfully logged in</string>
     <string name="FIREBASE_FAIL_TO_CREATE_ACCOUNT">Failed to create account</string>
+    <string name="AWS_DRIVE_LOGIN_REQUIRED">Please sign in to FFC Drive in Settings > FFC Drive</string>
 
     <string name="NavigationBarItem_Packs">Packs</string>
     <string name="NavigationBarItem_Create">Create</string>

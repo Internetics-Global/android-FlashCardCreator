@@ -1601,7 +1601,7 @@ public class MainActivity extends FragmentActivity implements
 
                             new SweetAlertDialog(MainActivity.this)
                                     .setTitleText(getString(R.string.DIALOG_AlERT))
-                                    .setContentText("Please sign in to FFC Drive in Settings > FFC Drive")
+                                    .setContentText(getString(R.string.AWS_DRIVE_LOGIN_REQUIRED))
                                     .show();
 
 

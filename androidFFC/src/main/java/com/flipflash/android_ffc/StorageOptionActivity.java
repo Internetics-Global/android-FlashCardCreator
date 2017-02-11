@@ -51,6 +51,7 @@ public class StorageOptionActivity extends Activity{
 
                 if (mUseGoogleDriveButton.getVisibility() != View.VISIBLE) {
                     DropboxAuthHelper.sharedHelper().logOut();
+                    FirebaseAuth.getInstance().signOut();
                     GoogleDriveAuthHelper.sharedHelper(StorageOptionActivity.this).startAuthenticationFromActivity(StorageOptionActivity.this);
                 } else {
                     GoogleDriveAuthHelper.sharedHelper(StorageOptionActivity.this).logOut();
@@ -75,6 +76,7 @@ public class StorageOptionActivity extends Activity{
 
                 if (mUseDropboxButton.getVisibility() != View.VISIBLE) {
                     GoogleDriveAuthHelper.sharedHelper(StorageOptionActivity.this).logOut();
+                    FirebaseAuth.getInstance().signOut();
                     DropboxAuthHelper.sharedHelper().startAuthenticationFromActivity(StorageOptionActivity.this);
                 } else {
                     DropboxAuthHelper.sharedHelper().logOut();
@@ -97,6 +99,8 @@ public class StorageOptionActivity extends Activity{
             public void onClick(View v) {
 
                 if (mUseAWSButton.getVisibility() != View.VISIBLE) {
+                    DropboxAuthHelper.sharedHelper().logOut();
+                    GoogleDriveAuthHelper.sharedHelper(StorageOptionActivity.this).logOut();
                     startActivity(new Intent(StorageOptionActivity.this, FirebaseSignInActivity.class));
                 } else {
                     FirebaseAuth.getInstance().signOut();
@@ -122,14 +126,16 @@ public class StorageOptionActivity extends Activity{
         super.onResume();
 
         if (DropboxAuthHelper.sharedHelper().isAuthenticationInProgress()) {
-            DropboxAuthHelper.sharedHelper().finishAuthentication();
+            boolean success = DropboxAuthHelper.sharedHelper().finishAuthentication();
 
-            AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(
-                    StorageOptionActivity.this);
-            alertDialogBuilder.setTitle(R.string.DIALOG_AlERT);
-            alertDialogBuilder.setPositiveButton(R.string.DIALOG_CLOSE,null);
-            alertDialogBuilder
-                    .setMessage(R.string.DIALOG_SUCCESS_TO_LOG_DROPBOX).show();
+            if (success) {
+                AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(
+                        StorageOptionActivity.this);
+                alertDialogBuilder.setTitle(R.string.DIALOG_AlERT);
+                alertDialogBuilder.setPositiveButton(R.string.DIALOG_CLOSE,null);
+                alertDialogBuilder
+                        .setMessage(R.string.DIALOG_SUCCESS_TO_LOG_DROPBOX).show();
+            }
 
         }
 

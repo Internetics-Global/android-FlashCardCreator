@@ -6,7 +6,6 @@ buildscript {
     dependencies {
         classpath 'com.android.tools.build:gradle:2.2.2'
 
-        //http://stackoverflow.com/questions/37866058/how-can-i-resolve-the-didnt-find-class-com-google-android-gms-auth-googleauth
         classpath 'com.google.gms:google-services:3.0.0'
     }
 }
