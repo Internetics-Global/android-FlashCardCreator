@@ -30,6 +30,8 @@ public class UnzipAndParsePackHelper extends AsyncTask<Void, Long, Boolean> {
 
     private final Handler mHandler;
 
+    private String  mErrorMsg;
+
     public UnzipAndParsePackHelper(Context context, String zipFileName, String password, @NonNull Handler handler) {
         this.mContext = context;
         this.mZipFileName = zipFileName;
@@ -45,6 +47,8 @@ public class UnzipAndParsePackHelper extends AsyncTask<Void, Long, Boolean> {
 
     @Override
     protected Boolean doInBackground(Void... params) {
+
+        mErrorMsg = "";
 
         File outputDirectory = FileOperationHelper.downloadedPackDirectory();
         try {
@@ -78,6 +82,13 @@ public class UnzipAndParsePackHelper extends AsyncTask<Void, Long, Boolean> {
         } catch (ZipException e) {
             e.printStackTrace();
 
+            if (e.getLocalizedMessage().contains("No space left on device")) {
+                mErrorMsg = "No space left on device";
+            }
+
+            //could happen when:
+            // 1. net.lingala.zip4j.exception.ZipException: java.io.IOException: write failed: ENOSPC (No space left on device)
+
             return false;
         }
 
@@ -94,7 +105,7 @@ public class UnzipAndParsePackHelper extends AsyncTask<Void, Long, Boolean> {
             mHandler.obtainMessage(UnzipAndParsePackHelper.UNZIP_SUCCEED, 0, 0, null).sendToTarget();
 
         } else {
-            mHandler.obtainMessage(UnzipAndParsePackHelper.UNZIP_FAILED, 0, 0, null).sendToTarget();
+            mHandler.obtainMessage(UnzipAndParsePackHelper.UNZIP_FAILED, 0, 0, mErrorMsg).sendToTarget();
         }
     }
 }

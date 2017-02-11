@@ -20,6 +20,7 @@ import com.flipflash.helper.AWS.SimpleDBHelper;
 import com.flipflash.util.AppConfig;
 import com.flipflash.util.AppContext;
 import com.flipflash.util.Global;
+import com.flipflash.util.StringUtils;
 
 import net.lingala.zip4j.core.ZipFile;
 
@@ -294,11 +295,19 @@ public class PackDownloadHelper extends AsyncTask<Void, Long, Boolean> {
             if (msg.what == UnzipAndParsePackHelper.UNZIP_SUCCEED) {
                 unzipPackTaskFinished();
             }  else {
+
+                String message = mContext.getString(R.string.DIALOG_WRONG_PASSWORD);
+
+                if (msg.obj != null) {
+                    String temp = (String) msg.obj;
+                    message = temp;
+                }
+
                 AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(
                         mContext);
                 alertDialogBuilder.setTitle(R.string.DIALOG_WARN);
                 alertDialogBuilder
-                        .setMessage(R.string.DIALOG_WRONG_PASSWORD)
+                        .setMessage(message)
                         .setPositiveButton(R.string.DIALOG_CLOSE,null).
                         show();
             }
