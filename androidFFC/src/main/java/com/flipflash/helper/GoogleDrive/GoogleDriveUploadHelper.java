@@ -10,6 +10,7 @@ import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.widget.Toast;
 
+import com.flipflash.android_ffc.BuildConfig;
 import com.flipflash.android_ffc.R;
 import com.flipflash.util.AppContext;
 import com.flipflash.util.Global;
@@ -123,7 +124,14 @@ public class GoogleDriveUploadHelper {
                 } catch (IOException e) {
                     e.printStackTrace();
 
-                    handleError("Google Drive service error.  Please try again.");
+                    if (BuildConfig.DEBUG) 
+                        handleError("Google Drive service error. Possible reason: You may have built the apk on another MAC, you have to re-create signing-certificate fingerprint");
+
+                    } else {
+                        handleError("Google Drive service error.  Please try again.");
+                    }
+
+
                 }
 
                 return "";
