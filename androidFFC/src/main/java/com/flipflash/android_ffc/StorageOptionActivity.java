@@ -139,28 +139,16 @@ public class StorageOptionActivity extends Activity{
 
         }
 
+        mUseDropboxButton.setVisibility(View.INVISIBLE);
+        mUseGoogleDriveButton.setVisibility(View.INVISIBLE);
+        mUseAWSButton.setVisibility(View.INVISIBLE);
+
         if (DropboxAuthHelper.sharedHelper().isLinked()) {
-
             mUseDropboxButton.setVisibility(View.VISIBLE);
-
-        } else {
-            mUseDropboxButton.setVisibility(View.INVISIBLE);
-        }
-
-        if (GoogleDriveAuthHelper.sharedHelper(StorageOptionActivity.this).isLinked()) {
-
+        } else if (GoogleDriveAuthHelper.sharedHelper(StorageOptionActivity.this).isLinked()) {
             mUseGoogleDriveButton.setVisibility(View.VISIBLE);
-
-        } else {
-            mUseGoogleDriveButton.setVisibility(View.INVISIBLE);
-        }
-
-        if (FirebaseAuth.getInstance().getCurrentUser() != null) {
-
+        } else if (FirebaseAuth.getInstance().getCurrentUser() != null) {
             mUseAWSButton.setVisibility(View.VISIBLE);
-
-        } else {
-            mUseAWSButton.setVisibility(View.INVISIBLE);
         }
     }
 

@@ -124,9 +124,8 @@ public class GoogleDriveUploadHelper {
                 } catch (IOException e) {
                     e.printStackTrace();
 
-                    if (BuildConfig.DEBUG) 
+                    if (BuildConfig.DEBUG) {
                         handleError("Google Drive service error. Possible reason: You may have built the apk on another MAC, you have to re-create signing-certificate fingerprint");
-
                     } else {
                         handleError("Google Drive service error.  Please try again.");
                     }

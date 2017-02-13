@@ -1570,13 +1570,10 @@ public class MainActivity extends FragmentActivity implements
 
         if (DropboxAuthHelper.sharedHelper().isLinked()) {
             shareToDropbox();
-
         } else if (GoogleDriveAuthHelper.sharedHelper(MainActivity.this).isLinked()) {
             shareToGoogleDrive();
-
         } else if (FirebaseAuth.getInstance().getCurrentUser() != null) {
             shareToAWS();
-
         } else {
             new AlertDialog.Builder(MainActivity.this)
                     .setMessage(R.string.DIALOG_STORAGE_SELECTION)
