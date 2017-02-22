@@ -2373,6 +2373,20 @@ public class MainActivity extends FragmentActivity implements
                             alertDialogBuilder.setNegativeButton(R.string.DIALOG_CLOSE,null);
                             alertDialogBuilder
                                     .setMessage(R.string.DIALOG_DROPBOX_TOKEN_ERROR_PLEASE_LOG_IN_AGAIN).show();
+                        } else if (message != null && message.toLowerCase().contains("insufficient_space")) {
+                            AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(
+                                    MainActivity.this);
+                            alertDialogBuilder.setTitle(R.string.DIALOG_AlERT);
+                            alertDialogBuilder.setNegativeButton(R.string.DIALOG_CLOSE,null);
+                            alertDialogBuilder
+                                    .setMessage(R.string.DIALOG_ERROR_DROPBOX_QUOTA_FULL).show();
+                        } else {
+                            AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(
+                                    MainActivity.this);
+                            alertDialogBuilder.setTitle(R.string.DIALOG_AlERT);
+                            alertDialogBuilder.setNegativeButton(R.string.DIALOG_CLOSE,null);
+                            alertDialogBuilder
+                                    .setMessage(R.string.DIALOG_UPLOAD_FAILURE).show();
                         }
                     }
 
