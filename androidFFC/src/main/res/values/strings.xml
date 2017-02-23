@@ -135,6 +135,9 @@
     <string name="DIALOG_GOOGLE_DRIVE_AUTHE_FAILED">Google Drive Authentication failed, Please try again</string>
     <string name="DIALOG_GOOGLE_DRIVE_DISCONNECTED">Disconnected from Google Drive</string>
     <string name="DIALOG_GOOGLE_DRIVE_LOGIN_SUCCESS">Google Drive is successfully logged in</string>
+    <string name="DIALOG_GOOGLE_DRIVE_GENERAL_ERROR">Google Drive service error.  Please try again.</string>
+    <string name="DIALOG_ERROR_GOOGLE_DRIVE_QUOTA_FULL">Google Drive was unable to complete this action possibly because of a storage quota limit</string>
+    
     <string name="DIALOG_DROPBOX_DISCONNECTED">Disconnected from Dropbox</string>
     <string name="DIALOG_SUCCESS_TO_LOG_DROPBOX">Dropbox is successfully logged in</string>
     <string name="DIALOG_DROPBOX_TOKEN_ERROR_PLEASE_LOG_IN_AGAIN">Dropbox session has expired. Please log in again</string>

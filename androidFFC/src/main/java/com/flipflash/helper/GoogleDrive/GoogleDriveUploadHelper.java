@@ -53,6 +53,8 @@ public class GoogleDriveUploadHelper {
 
     private final ProgressDialog mDialog;
 
+    private Exception mException;
+
     public GoogleDriveUploadHelper(Activity context, String googleDriveFolderName,
                                    java.io.File file, @NonNull Handler handler) {
 
@@ -120,14 +122,17 @@ public class GoogleDriveUploadHelper {
 
                 } catch (UserRecoverableAuthIOException e) {
                     e.printStackTrace();
+                    mException = e;
                     mContext.startActivityForResult(e.getIntent(), Global.REQUEST_CODE_GOOGLE_DRIVE_REQUEST_PERMISSION);
                 } catch (IOException e) {
                     e.printStackTrace();
+                    mException = e;
 
                     if (BuildConfig.DEBUG) {
-                        handleError("Google Drive service error. Possible reason: You may have built the apk on another MAC, you have to re-create signing-certificate fingerprint");
+                        Exception exception = new Exception("Google Drive service error. Possible reason: You may have built the apk on another MAC, you have to re-create signing-certificate fingerprint");
+                        handleError(exception);
                     } else {
-                        handleError("Google Drive service error.  Please try again.");
+                        handleError(e);
                     }
 
 
@@ -242,14 +247,17 @@ public class GoogleDriveUploadHelper {
 
                 handleSuccess(shareLink);
             } else {
-                handleError("Google Drive service error.  Please try again.");
+                Exception exception = new Exception(mContext.getString(R.string.DIALOG_GOOGLE_DRIVE_GENERAL_ERROR));
+                handleError(exception);
             }
 
 
         } catch (IOException e) {
+            mException = e;
             e.printStackTrace();
 
-            handleError("Google Drive service error.  Please try again.");
+            Exception exception = new Exception(mContext.getString(R.string.DIALOG_GOOGLE_DRIVE_GENERAL_ERROR));
+            handleError(exception);
         }
 
     }
@@ -286,14 +294,15 @@ public class GoogleDriveUploadHelper {
 
                 handleSuccess(shareLink);
             } else {
-                handleError("Google Drive service error.  Please try again.");
+                Exception exception = new Exception(mContext.getString(R.string.DIALOG_GOOGLE_DRIVE_GENERAL_ERROR));
+                handleError(exception);
             }
 
 
         } catch (IOException e) {
+            mException = e;
             e.printStackTrace();
-
-            handleError("Google Drive service error.  Please try again.");
+            handleError(mException);
         }
 
     }
@@ -361,14 +370,18 @@ public class GoogleDriveUploadHelper {
 
     }
 
-    private void handleError(final String errorMessage) {
+    private void handleError(final Exception e) {
         mContext.runOnUiThread(new Runnable() {
             @Override
             public void run() {
 
                 mDialog.dismiss();
 
-                Toast.makeText(AppContext.getAppContext(), errorMessage, Toast.LENGTH_SHORT).show();
+                if (e.getMessage().contains("storage quota")) {
+                    Toast.makeText(AppContext.getAppContext(), R.string.DIALOG_ERROR_GOOGLE_DRIVE_QUOTA_FULL, Toast.LENGTH_SHORT).show();
+                } else {
+                    Toast.makeText(AppContext.getAppContext(), e.getMessage(), Toast.LENGTH_SHORT).show();
+                }
 
                 mHandler.obtainMessage(GoogleDrive_Constant.UPLOAD_FAILED, 0, 0, mUploadFile).sendToTarget();
             }
