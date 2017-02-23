@@ -253,11 +253,8 @@ public class GoogleDriveUploadHelper {
 
 
         } catch (IOException e) {
-            mException = e;
             e.printStackTrace();
-
-            Exception exception = new Exception(mContext.getString(R.string.DIALOG_GOOGLE_DRIVE_GENERAL_ERROR));
-            handleError(exception);
+            handleError(e);
         }
 
     }
