@@ -297,9 +297,11 @@ public class UIHelper {
 
             Bitmap playIconBitmap = BitmapFactory.decodeResource(context.getResources(), R.drawable.play_big);
 
-            int left = (int)(bMap.getWidth() *0.4);
-            int right = (int)(bMap.getWidth() *0.6);
-            Rect rect = new Rect(left,left,right,right);
+            int left = (int)(bMap.getWidth() *0.42);
+            int top = (int)(bMap.getWidth() *0.4);
+            int right = (int)(bMap.getWidth() *0.58);
+            int bottom = (int)(bMap.getWidth() *0.6);
+            Rect rect = new Rect(left,top,right,bottom);
             canvas.drawBitmap(playIconBitmap,null,rect,null);
 
             return bmOverlay;
