@@ -297,7 +297,7 @@
     <string name="Indicator_Share_Process_Processing">Processing the pack...</string>
     <string name="Indicator_Creating_Share_Linkage_Failure">Fail to create share linkage</string>
 
-    <string name="Tip_Open_Pack_Viewer">Open pack viewer</string>
+    <string name="Tip_Open_Pack_Viewer">Open pack list</string>
     <string name="Tip_Edit_Pack">Edit a pack</string>
     <string name="Tip_Create_New_Pack">Create a new pack</string>
     <string name="Tip_Question">Click to see the question side of the card</string>
