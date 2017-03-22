@@ -50,8 +50,8 @@ public class PurchaseFragment extends android.app.DialogFragment implements Bill
 
     private BillingProcessor mBillingProcessor;
 
-    private static final String DOLLAR_1_PURCHASE_ID = "com.flipflash.flipflashcards.removeads";
-    private static final String DOLLAR_5_PURCHASE_ID = "com.flipflash.flipflashcards.full";
+    private static final String DOLLAR_1_PURCHASE_ID = "com.flipflash.flipflashcards.viewerfull";
+    private static final String DOLLAR_5_PURCHASE_ID = "com.flipflash.flipflashcards.creator";
     // if filled library will provide protection against Freedom alike Play Market simulators
     private static final String MERCHANT_ID=null;
 
