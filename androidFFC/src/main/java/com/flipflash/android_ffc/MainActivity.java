@@ -832,7 +832,14 @@ public class MainActivity extends FragmentActivity implements
         //Step2: call from other app or Dropbox log in
         Uri packUri = getIntent().getData();
         if (packUri != null) {
-            downloadPack(packUri);
+
+            if (MutipleTargetHelper.isFullVersion() == false && MutipleTargetHelper.isNoAdVersion() == false) {
+                MutipleTargetHelper.showAlertToUpgradeToFullVersion();
+                return;
+            } else {
+                downloadPack(packUri);
+            }
+
         }
         getIntent().setData(null); //in case it will be recalled time and time
 
