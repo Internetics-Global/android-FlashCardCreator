@@ -40,7 +40,7 @@ android {
         versionProps.store(versionPropsFile.newWriter(), null)
 
         defaultConfig {
-            applicationId "com.flipflashcards.FFC_Android_dev"
+            applicationId "com.flipflashcards.FFC_Android"
             minSdkVersion 16
             targetSdkVersion 22
             versionCode 6921
