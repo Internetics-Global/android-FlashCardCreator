@@ -555,96 +555,103 @@ public class MainActivity extends FragmentActivity implements
 
             case R.id.actionbar_install_from_code:
 
-                final EditText codeEditText = new EditText(this);
-                codeEditText.setHint("lzupcb1");
-                codeEditText.setInputType(InputType.TYPE_TEXT_FLAG_NO_SUGGESTIONS);
-                codeEditText.setSingleLine();
-                new AlertDialog.Builder(this)
-                        .setTitle(R.string.DIALOG_INPUT_DOWNLOAD_CODE)
-                        .setIcon(android.R.drawable.ic_dialog_info)
-                        .setView(codeEditText)
-                        .setPositiveButton(R.string.DIALOG_DONE, new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialog, int which) {
+                if (MutipleTargetHelper.isFullVersion() == false && MutipleTargetHelper.isNoAdVersion() == false) {
+                    MutipleTargetHelper.showAlertToUpgradeToFullVersion();
+                } else {
 
-                                if (Global.apiReachableWithAlert(MainActivity.this) == false) {
-                                    new AlertDialog.Builder(MainActivity.this)
-                                            .setTitle(getResources().getString(R.string.DIALOG_TITLE_NO_NETWORK))
-                                            .setMessage(getResources().getString(R.string.DIALOG_PLEASE_CHECK_YOUR_NETWORK))
-                                            .setPositiveButton(getResources().getString(R.string.DIALOG_OK), null)
-                                            .show();
-                                    return;
+                    final EditText codeEditText = new EditText(this);
+                    codeEditText.setHint("lzupcb1");
+                    codeEditText.setInputType(InputType.TYPE_TEXT_FLAG_NO_SUGGESTIONS);
+                    codeEditText.setSingleLine();
+                    new AlertDialog.Builder(this)
+                            .setTitle(R.string.DIALOG_INPUT_DOWNLOAD_CODE)
+                            .setIcon(android.R.drawable.ic_dialog_info)
+                            .setView(codeEditText)
+                            .setPositiveButton(R.string.DIALOG_DONE, new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
 
-                                }
+                                    if (Global.apiReachableWithAlert(MainActivity.this) == false) {
+                                        new AlertDialog.Builder(MainActivity.this)
+                                                .setTitle(getResources().getString(R.string.DIALOG_TITLE_NO_NETWORK))
+                                                .setMessage(getResources().getString(R.string.DIALOG_PLEASE_CHECK_YOUR_NETWORK))
+                                                .setPositiveButton(getResources().getString(R.string.DIALOG_OK), null)
+                                                .show();
+                                        return;
 
-                                final String codeString = codeEditText.getText().toString();
-
-                                InputMethodManager imm = (InputMethodManager) getSystemService(
-                                        Context.INPUT_METHOD_SERVICE);
-                                imm.hideSoftInputFromWindow(codeEditText.getWindowToken(), 0);
-
-                                if (StringUtils.isEmpty(codeString) == false) {
-
-                                    if (mUnshortenProgressDialog == null) {
-                                        mUnshortenProgressDialog = new ProgressDialog(MainActivity.this);
-                                        mUnshortenProgressDialog.setMax(100);
-                                        mUnshortenProgressDialog.setCancelable(false);
-                                        mUnshortenProgressDialog.setCanceledOnTouchOutside(false);
-                                        mUnshortenProgressDialog.setMessage(getString(R.string.Title_Process_Share_Code));
-                                        mUnshortenProgressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
                                     }
-                                    mUnshortenProgressDialog.show();
 
-                                    ExecutorService taskExecutor = Executors.newSingleThreadExecutor();
-                                    taskExecutor.execute(new Runnable() {
-                                        @Override
-                                        public void run() {
+                                    final String codeString = codeEditText.getText().toString();
 
-                                            String shortenURL = String.format("%s%s",Global.TINYURL_SHORTED_BASE_URL,codeString);
-                                            String wholeURL = StringUtils.getUnshortedURL(shortenURL);
-                                            if (wholeURL == null) {
+                                    InputMethodManager imm = (InputMethodManager) getSystemService(
+                                            Context.INPUT_METHOD_SERVICE);
+                                    imm.hideSoftInputFromWindow(codeEditText.getWindowToken(), 0);
 
-                                                runOnUiThread(new Runnable() {
-                                                    @Override
-                                                    public void run() {
+                                    if (StringUtils.isEmpty(codeString) == false) {
 
-                                                        if (mUnshortenProgressDialog !=null) {
-                                                            mUnshortenProgressDialog.dismiss();
-                                                            mUnshortenProgressDialog = null;
-                                                        }
-
-                                                        new SweetAlertDialog(MainActivity.this)
-                                                            .setTitleText(getString(R.string.DIALOG_AlERT))
-                                                            .setContentText(getString(R.string.Title_Share_Code_Not_Right))
-                                                            .show();
-                                                    }
-                                                });
-
-
-                                            } else {
-
-                                                final Uri packUri = Uri.parse(wholeURL);
-
-                                                runOnUiThread(new Runnable() {
-                                                    @Override
-                                                    public void run() {
-                                                        downloadPack(packUri);
-                                                    }
-                                                });
-                                            }
+                                        if (mUnshortenProgressDialog == null) {
+                                            mUnshortenProgressDialog = new ProgressDialog(MainActivity.this);
+                                            mUnshortenProgressDialog.setMax(100);
+                                            mUnshortenProgressDialog.setCancelable(false);
+                                            mUnshortenProgressDialog.setCanceledOnTouchOutside(false);
+                                            mUnshortenProgressDialog.setMessage(getString(R.string.Title_Process_Share_Code));
+                                            mUnshortenProgressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
                                         }
-                                    });
+                                        mUnshortenProgressDialog.show();
+
+                                        ExecutorService taskExecutor = Executors.newSingleThreadExecutor();
+                                        taskExecutor.execute(new Runnable() {
+                                            @Override
+                                            public void run() {
+
+                                                String shortenURL = String.format("%s%s",Global.TINYURL_SHORTED_BASE_URL,codeString);
+                                                String wholeURL = StringUtils.getUnshortedURL(shortenURL);
+                                                if (wholeURL == null) {
+
+                                                    runOnUiThread(new Runnable() {
+                                                        @Override
+                                                        public void run() {
+
+                                                            if (mUnshortenProgressDialog !=null) {
+                                                                mUnshortenProgressDialog.dismiss();
+                                                                mUnshortenProgressDialog = null;
+                                                            }
+
+                                                            new SweetAlertDialog(MainActivity.this)
+                                                                    .setTitleText(getString(R.string.DIALOG_AlERT))
+                                                                    .setContentText(getString(R.string.Title_Share_Code_Not_Right))
+                                                                    .show();
+                                                        }
+                                                    });
+
+
+                                                } else {
+
+                                                    final Uri packUri = Uri.parse(wholeURL);
+
+                                                    runOnUiThread(new Runnable() {
+                                                        @Override
+                                                        public void run() {
+                                                            downloadPack(packUri);
+                                                        }
+                                                    });
+                                                }
+                                            }
+                                        });
+                                    }
+
+
                                 }
+                            })
+                            .setNegativeButton(R.string.DIALOG_CANCEL, new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+                                }
+                            })
+                            .show();
+                }
 
 
-                            }
-                        })
-                        .setNegativeButton(R.string.DIALOG_CANCEL, new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialog, int which) {
-                            }
-                        })
-                        .show();
 
                 break;
 
