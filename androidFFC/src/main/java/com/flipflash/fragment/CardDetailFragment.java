@@ -5343,6 +5343,10 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnTouchL
 
     public void showTooltips() {
 
+        if (MutipleTargetHelper.isFullVersion() == false) {
+            return;
+        }
+
         if (mIsPlayingCard) {
             return;
         }

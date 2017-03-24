@@ -988,6 +988,10 @@ public class MainActivity extends FragmentActivity implements
 
     public void showTooltips() {
 
+        if (MutipleTargetHelper.isFullVersion() == false) {
+            return;
+        }
+
         //we don't allow to show when screen is too small
         DisplayMetrics displayMetrics = getResources().getDisplayMetrics();
         float dpWidth = displayMetrics.widthPixels / displayMetrics.density;
