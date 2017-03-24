@@ -6,6 +6,7 @@ import android.app.PendingIntent;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -101,6 +102,11 @@ public class PurchaseFragment extends android.app.DialogFragment implements Bill
         dollar1PurchaseButton = (Button) mContentView.findViewById(R.id.button_1_dollar);
         dollar5PurchaseButton = (Button) mContentView.findViewById(R.id.button_5_dollar);
         restorePurchaseButton = (Button) mContentView.findViewById(R.id.button_restore);
+
+        if (MutipleTargetHelper.isNoAdVersion()) {
+            dollar1PurchaseButton.setEnabled(false);
+            dollar1PurchaseButton.setTextColor(Color.GRAY);
+        }
 
         dollar1PurchaseButton.setOnClickListener(new View.OnClickListener() {
             @Override
