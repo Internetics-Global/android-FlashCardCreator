@@ -112,21 +112,25 @@ public class CreateEditFragment extends DialogFragment implements TextView.OnEdi
             titleTextView.setText(R.string.Title_Add_A_New_Pack);
         }
 
-        final Button closeButton = (Button) mContentView
-                .findViewById(R.id.dialog_head_close_btn);
-        Button saveButton = (Button) mContentView
+        //we exchange the button between save and close
+        final Button closeDialalogButton = (Button) mContentView
                 .findViewById(R.id.dialog_head_save_btn);
-        closeButton.setOnClickListener(new View.OnClickListener() {
+        closeDialalogButton.setText(R.string.NavigationBarItem_Close);
+        closeDialalogButton.setOnClickListener(new View.OnClickListener() {
 
             @Override
             public void onClick(View v) {
                 if (mIMM.isActive()) {
-                    mIMM.hideSoftInputFromInputMethod(closeButton.getWindowToken(), 0);
+                    mIMM.hideSoftInputFromInputMethod(closeDialalogButton.getWindowToken(), 0);
                 }
                 dismiss();
 
             }
         });
+
+        mContentView.findViewById(R.id.dialog_head_close_btn).setVisibility(View.INVISIBLE);
+
+        final Button saveButton = (Button) mContentView.findViewById(R.id.save_button);
         saveButton.setOnClickListener(new View.OnClickListener() {
 
             @Override
