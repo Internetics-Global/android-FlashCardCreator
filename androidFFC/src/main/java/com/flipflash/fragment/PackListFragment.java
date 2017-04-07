@@ -332,11 +332,9 @@ public class PackListFragment extends Fragment {
 
                 final Pack currentPack = mUser.packs.get(position -1);
 
-
-
-                final ImageButton editButton = (ImageButton) convertView.findViewById(R.id.button_edit);
                 final ImageButton deleteButton = (ImageButton) convertView.findViewById(R.id.button_delete_pack);
                 final ImageView playImageView = (ImageView) convertView.findViewById(R.id.pack_play_image_view);
+                final ImageView editImageView = (ImageView) convertView.findViewById(R.id.pack_edit_image_view);
 
                 playImageView.setOnClickListener(new View.OnClickListener() {
                     @Override
@@ -365,7 +363,7 @@ public class PackListFragment extends Fragment {
                 }
 
 
-                editButton.setOnClickListener(new View.OnClickListener() {
+                editImageView.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
 
@@ -502,6 +500,7 @@ public class PackListFragment extends Fragment {
         intentList.setAction(Global.BROADCAST_ACTION_UPDATE_MASTER_VIEW);
         intentList.putExtra(Global.KEY_FROM, Global.BROADCAST_EXTRA_FROM_PACK_SELECTED);
         intentList.putExtra("indexOfPack",  position-1);
+        intentList.putExtra("isFromPackList",  true);
         getActivity().sendBroadcast(intentList);
 
         activity.showPackInfoView();
@@ -512,7 +511,7 @@ public class PackListFragment extends Fragment {
         AppConfig.sharedInstance().setPackIDForLastSelected(currentPack.packID);
 
         activity.mIsAllowedToShowPackList = false;
-        activity.dismissPackListPopupWindow();
+       // activity.dismissPackListPopupWindow();
 
 
 
