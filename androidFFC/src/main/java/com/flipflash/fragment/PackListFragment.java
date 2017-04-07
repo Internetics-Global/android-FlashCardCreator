@@ -500,7 +500,6 @@ public class PackListFragment extends Fragment {
         intentList.setAction(Global.BROADCAST_ACTION_UPDATE_MASTER_VIEW);
         intentList.putExtra(Global.KEY_FROM, Global.BROADCAST_EXTRA_FROM_PACK_SELECTED);
         intentList.putExtra("indexOfPack",  position-1);
-        intentList.putExtra("isFromPackList",  true);
         getActivity().sendBroadcast(intentList);
 
         activity.showPackInfoView();
@@ -510,7 +509,7 @@ public class PackListFragment extends Fragment {
         currentPack.save(AppContext.getAppContext());
         AppConfig.sharedInstance().setPackIDForLastSelected(currentPack.packID);
 
-        activity.mIsAllowedToShowPackList = false;
+        activity.mIsAllowedToShowPackList = true;
        // activity.dismissPackListPopupWindow();
 
 
