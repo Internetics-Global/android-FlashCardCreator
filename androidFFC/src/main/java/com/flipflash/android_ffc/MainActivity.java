@@ -4,15 +4,18 @@ import android.accounts.AccountManager;
 import android.app.ActionBar;
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
+import android.content.ContentResolver;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentSender;
 import android.content.SharedPreferences;
+import android.content.res.Resources;
 import android.content.res.TypedArray;
 import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.graphics.PixelFormat;
+import android.graphics.drawable.Animatable;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Build;
@@ -54,6 +57,8 @@ import android.widget.Toast;
 import com.daimajia.androidanimations.library.Techniques;
 import com.daimajia.androidanimations.library.YoYo;
 import com.dropbox.core.v2.files.FileMetadata;
+import com.facebook.drawee.backends.pipeline.Fresco;
+import com.facebook.drawee.interfaces.DraweeController;
 import com.flipflash.UI.PackInfoView;
 import com.flipflash.UI.ScaleHelper;
 import com.flipflash.UI.SlideInRightWithoutAlphaAnimator;
@@ -295,6 +300,20 @@ public class MainActivity extends FragmentActivity implements
         }
 
         EventBus.getDefault().register(MainActivity.this);
+
+        findViewById(R.id.transparent_full_screen_touch_help_view).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                Boolean check = Hawk.get("K_First_Time_Transparent_Help");
+                if (check == null || check == false) {
+                    //Hawk.put("K_First_Time_Transparent_Help",Boolean.valueOf(true));
+
+                    findViewById(R.id.transparent_full_screen_touch_help_view).setVisibility(View.GONE);
+                }
+
+            }
+        });
 
     }
 
@@ -1272,6 +1291,26 @@ public class MainActivity extends FragmentActivity implements
         }
 
         hidePackInfoView();
+
+        Boolean check = Hawk.get("K_First_Time_Transparent_Help");
+        if (check == null || check == false) {
+            findViewById(R.id.transparent_full_screen_touch_help_view).setVisibility(View.VISIBLE);
+
+            com.facebook.drawee.view.SimpleDraweeView gif = (com.facebook.drawee.view.SimpleDraweeView) findViewById(R.id.transparent_full_screen_touch_help_view_gif);
+
+            Resources resources = getResources();
+            Uri url = Uri.parse(ContentResolver.SCHEME_ANDROID_RESOURCE + "://" + resources.getResourcePackageName(R.drawable.animated_touch_down) + '/' + resources.getResourceTypeName(R.drawable.animated_touch_down) + '/' + resources.getResourceEntryName(R.drawable.animated_touch_down) );
+
+            DraweeController controller = Fresco.newDraweeControllerBuilder()
+                    .setUri(url)
+                    .setAutoPlayAnimations(true)
+                    .build();
+            gif.setController(controller);
+
+            Animatable animatable = gif.getController().getAnimatable();
+            animatable.start();
+
+        }
 
 
     }
@@ -2747,4 +2786,6 @@ public class MainActivity extends FragmentActivity implements
     }
 
 
+    private class SimpleDraweeView {
+    }
 }
