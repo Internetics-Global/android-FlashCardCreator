@@ -19,6 +19,7 @@ import com.flipflash.helper.GoogleDrive.GoogleDriveAuthHelper;
 import com.flipflash.util.AppConfig;
 import com.flipflash.util.Global;
 import com.flipflash.util.MutipleTargetHelper;
+import com.orhanobut.hawk.Hawk;
 
 import org.adw.library.widgets.discreteseekbar.DiscreteSeekBar;
 
@@ -46,6 +47,7 @@ public class MoreActivity extends Activity {
         final ToggleButton randomPlayToggleButton = (ToggleButton) findViewById(R.id.random_play_toggle_button);
         final ToggleButton soundRecordingToggleButton = (ToggleButton) findViewById(R.id.mute_sound_recording_toggle_button);
         final ToggleButton textToSpeechToggleButton =(ToggleButton) findViewById(R.id.text_to_speech_toggle_button);
+        final ToggleButton functionPromptToggleButton =(ToggleButton) findViewById(R.id.functon_prompt_toggle_button);
         final ToggleButton showQuestionOnlyToggleButton = (ToggleButton) findViewById(R.id.auto_show_question_only_toggle_button);
 //        final ToggleButton maleFemaleToggleButton = (ToggleButton) findViewById(R.id.male_female_voice_toggle_button);
 
@@ -135,6 +137,21 @@ public class MoreActivity extends Activity {
             @Override
             public void onToggle(boolean on) {
                 AppConfig.sharedInstance().setShowQuestionOnly(on);
+            }
+        });
+
+
+        if (AppConfig.sharedInstance().isFunctionPromptOff()) {
+            functionPromptToggleButton.setToggleOff();
+        } else {
+            functionPromptToggleButton.toggleOn();
+        }
+
+        functionPromptToggleButton.setOnToggleChanged(new ToggleButton.OnToggleChanged() {
+            @Override
+            public void onToggle(boolean on) {
+                AppConfig.sharedInstance().setFunctionPromptOff(on == false);
+
             }
         });
 

@@ -110,6 +110,23 @@ public class AppConfig {
         appConfig.set(Global.isExamplePackDownloadedSBefore_Property, "true");
     }
 
+    public boolean isFunctionPromptOff() {
+        String str = appConfig.get(Global.isFunctionPromptOff);
+        if ((str != null) && (str.equals("true")))
+            return true;
+        else
+            return false;
+    }
+
+    public void setFunctionPromptOff(boolean b) {
+        if (b) {
+            appConfig.set(Global.isFunctionPromptOff, "true");
+        } else {
+            appConfig.set(Global.isFunctionPromptOff, "false");
+        }
+
+    }
+
 
     public boolean isRandomPlay() {
         String str = appConfig.get(Global.isRandomPlay);

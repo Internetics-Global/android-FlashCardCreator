@@ -66,6 +66,8 @@ public class Global {
     //Used to judge whether to play random
     public static final String isRandomPlay = "is_random_play";
 
+    public static final String isFunctionPromptOff = "isFunctionPromptOff";
+
     public static final String isSoundRecording = "isSoundRecording";
 
     public static final String isTextToSpeech = "is_Text_To_Speech";

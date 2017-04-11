@@ -11,6 +11,7 @@ import android.hardware.Sensor;
 import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
@@ -36,6 +37,9 @@ import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.facebook.drawee.backends.pipeline.Fresco;
+import com.facebook.drawee.interfaces.DraweeController;
+import com.facebook.drawee.view.SimpleDraweeView;
 import com.flipflash.UI.FFCRatioFrameLayout;
 import com.flipflash.UI.OnSwipeTouchListener;
 import com.flipflash.data.Card;
@@ -302,6 +306,36 @@ public class PlayActivity extends FragmentActivity implements SensorEventListene
 
         mBaseView.getViewTreeObserver().addOnGlobalLayoutListener(mRotationChangeListener);
 
+        showTransparentFingerAnimationFullScreenView();
+
+    }
+
+    private void showTransparentFingerAnimationFullScreenView() {
+
+        View layout = findViewById(R.id.transparent_finger_animation_fullScreen_layout);
+        if (AppConfig.sharedInstance().isFunctionPromptOff()) {
+            layout.setVisibility(View.GONE);
+            return;
+        }
+
+        CardDetailFragment currentFlashCardView = getCurrentCardDetailFragment();
+        Uri uri;
+        if (currentFlashCardView.mIsQuestionShowing) {
+            uri = Uri.parse("res:///" + R.drawable.question_gif);
+        } else {
+            uri = Uri.parse("res:///" + R.drawable.answer_gif);
+        }
+
+        layout.setVisibility(View.VISIBLE);
+
+        SimpleDraweeView simpleDraweeView = (SimpleDraweeView) findViewById(R.id.transparent_finger_animation_gif);
+
+        DraweeController controller = Fresco.newDraweeControllerBuilder()
+                .setUri(uri)
+                .setAutoPlayAnimations(true)
+                .build();
+        simpleDraweeView.setController(controller);
+
 
     }
 
@@ -525,6 +559,13 @@ public class PlayActivity extends FragmentActivity implements SensorEventListene
             @Override
             public void onStopTrackingTouch(DiscreteSeekBar seekBar) {
 
+            }
+        });
+
+        findViewById(R.id.transparent_finger_animation_fullScreen_layout).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                view.setVisibility(View.GONE);
             }
         });
 
@@ -1483,6 +1524,8 @@ public class PlayActivity extends FragmentActivity implements SensorEventListene
         playbackOnCard(currentCardDetailFragment);
 
         mIsSwitchQuestionAnswerViewManually_Processing = false;
+
+        showTransparentFingerAnimationFullScreenView();
     }
 
 
