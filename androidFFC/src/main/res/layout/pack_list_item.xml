@@ -56,6 +56,7 @@
 
         <ImageView
             android:id="@+id/pack_edit_image_view"
+            android:visibility="invisible"
             android:layout_width="40dp"
             android:layout_height="40dp"
             android:layout_marginBottom="15dp"
