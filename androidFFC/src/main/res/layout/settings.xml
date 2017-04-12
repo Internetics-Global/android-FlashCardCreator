@@ -108,6 +108,26 @@
 
             <TextView
                 style="@style/option_item_text_parent"
+                android:text="@string/Table_Item_Function_Prompt"
+                android:textColor="@android:color/white"
+                android:textSize="16dp" />
+
+            <com.flipflash.UI.togglebutton.ToggleButton
+                android:layout_marginRight="15dp"
+                android:id="@+id/functon_prompt_toggle_button"
+                style="@style/option_item_toggleButton"
+                android:layout_alignParentRight="true" />
+        </RelativeLayout>
+
+
+        <View
+            style="@style/h_line" />
+
+        <RelativeLayout
+            style="@style/option_item_rl" >
+
+            <TextView
+                style="@style/option_item_text_parent"
                 android:text="@string/Table_Item_Show_Question_Only"
                 android:textColor="@android:color/white"
                 android:textSize="16dp" />

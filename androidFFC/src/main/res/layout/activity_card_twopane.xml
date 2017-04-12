@@ -257,31 +257,6 @@
             android:layout_height="@dimen/symbol_box_height"
             tools:layout="@layout/fragment_symbol_box" />
 
-    <FrameLayout
-        android:id="@+id/transparent_full_screen_touch_help_view"
-        android:layout_width="match_parent"
-        android:visibility="gone"
-        android:layout_height="match_parent">
-
-        <View
-            android:background="@android:color/black"
-            android:alpha="0.8"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent">
-
-        </View>
-
-        <com.facebook.drawee.view.SimpleDraweeView
-            android:layout_gravity="center_horizontal|bottom"
-            android:layout_marginBottom="220dp"
-            android:id="@+id/transparent_full_screen_touch_help_view_gif"
-            android:layout_width="60dp"
-            android:background="@android:color/white"
-            android:layout_height="60dp"
-            />
-
-    </FrameLayout>
-
 
 
 </merge>

@@ -133,7 +133,7 @@ public class PackListFragment extends Fragment {
         mGallery.setOnItemClickListener(new OnItemClickListener() {
             public void onItemClick(AdapterView<?> parent, View v, int position, long id) {
 
-                galleryItemClicked(position);
+                galleryItemClicked(position,true);
 
             }
         });
@@ -229,7 +229,7 @@ public class PackListFragment extends Fragment {
         return mRootView;
     }
 
-    private void galleryItemClicked(int position) {
+    private void galleryItemClicked(int position, boolean isDismissSelf) {
 
         if (position ==0) {
 
@@ -249,7 +249,9 @@ public class PackListFragment extends Fragment {
             selectPack.save(AppContext.getAppContext());
 
 
-            ((MainActivity) getActivity()).mPopupWindow.dismiss();
+            if (isDismissSelf) {
+                ((MainActivity) getActivity()).mPopupWindow.dismiss();
+            }
         }
     }
 
@@ -336,6 +338,12 @@ public class PackListFragment extends Fragment {
                 final ImageView playImageView = (ImageView) convertView.findViewById(R.id.pack_play_image_view);
                 final ImageView editImageView = (ImageView) convertView.findViewById(R.id.pack_edit_image_view);
 
+                if (((currentPack != null) && (currentPack.creatorID).equals(OpenUDID_manager.getOpenUDID()))) {
+                    editImageView.setVisibility(View.VISIBLE);
+                } else {
+                    editImageView.setVisibility(View.INVISIBLE);
+                }
+
                 playImageView.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
@@ -366,6 +374,8 @@ public class PackListFragment extends Fragment {
                 editImageView.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
+
+                        galleryItemClicked(position,false);
 
                         editButtonClicked(position);
 

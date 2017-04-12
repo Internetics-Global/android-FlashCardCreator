@@ -63,4 +63,29 @@
         android:text="3"/>
 
 
+    <FrameLayout
+        android:id="@+id/transparent_finger_animation_fullScreen_layout"
+        android:layout_width="match_parent"
+        android:visibility="gone"
+        android:layout_height="match_parent">
+
+        <!--<View-->
+            <!--android:background="@android:color/black"-->
+            <!--android:alpha="0.8"-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="match_parent">-->
+
+        <!--</View>-->
+
+        <com.facebook.drawee.view.SimpleDraweeView
+            android:layout_gravity="center_horizontal|bottom"
+            android:layout_marginBottom="30dp"
+            android:id="@+id/transparent_finger_animation_gif"
+            android:layout_width="200dp"
+            android:layout_height="200dp"
+            />
+
+    </FrameLayout>
+
+
 </FrameLayout>
