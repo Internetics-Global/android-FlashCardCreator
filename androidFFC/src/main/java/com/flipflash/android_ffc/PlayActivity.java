@@ -309,7 +309,6 @@ public class PlayActivity extends FragmentActivity implements SensorEventListene
 
         mBaseView.getViewTreeObserver().addOnGlobalLayoutListener(mRotationChangeListener);
 
-        showTransparentFingerAnimationFullScreenView();
 
     }
 
@@ -1554,7 +1553,6 @@ public class PlayActivity extends FragmentActivity implements SensorEventListene
 
         mIsSwitchQuestionAnswerViewManually_Processing = false;
 
-        showTransparentFingerAnimationFullScreenView();
     }
 
 
