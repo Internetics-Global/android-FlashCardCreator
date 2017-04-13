@@ -1909,7 +1909,22 @@ public class PlayActivity extends FragmentActivity implements SensorEventListene
 
             AudioHelper.playAudio(cardDetailFragment, mIsMuteSoundRecording);
 
+            int durationForRecordedSound;
+            if (cardDetailFragment.mIsQuestionShowing) {
+                durationForRecordedSound = cardDetailFragment.durationForQuestionRecordedSound();
+            } else {
+                durationForRecordedSound = cardDetailFragment.durationForAnswerRecordedSound();
+            }
 
+            Handler handler = new Handler();
+            handler.postDelayed(new Runnable() {
+                @Override
+                public void run() {
+
+                    showTransparentFingerAnimationFullScreenView();
+
+                }
+            },durationForRecordedSound + 1000);
 
         }
 
