@@ -174,6 +174,9 @@ public class PlayActivity extends FragmentActivity implements SensorEventListene
     private HandlerThread mSensorThread;
     private Handler       mSensorHandler;
 
+    boolean     _showTransparentFingerAnimationQuestion = false;
+    boolean     _showTransparentFingerAnimationAnswer = false;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -322,8 +325,21 @@ public class PlayActivity extends FragmentActivity implements SensorEventListene
         Uri uri;
         if (currentFlashCardView.mIsQuestionShowing) {
             uri = Uri.parse("res:///" + R.drawable.question_gif);
+
+            if (_showTransparentFingerAnimationQuestion) {
+                return;
+            } else {
+                _showTransparentFingerAnimationQuestion = true;
+            }
+
         } else {
             uri = Uri.parse("res:///" + R.drawable.answer_gif);
+
+            if (_showTransparentFingerAnimationAnswer) {
+                return;
+            } else {
+                _showTransparentFingerAnimationAnswer = true;
+            }
         }
 
         layout.setVisibility(View.VISIBLE);
@@ -337,6 +353,15 @@ public class PlayActivity extends FragmentActivity implements SensorEventListene
         simpleDraweeView.setController(controller);
 
 
+    }
+
+    private void hideTransparentFingerAnimationFullScreenView() {
+
+        View layout = findViewById(R.id.transparent_finger_animation_fullScreen_layout);
+
+        if (layout.getVisibility() != View.GONE) {
+            layout.setVisibility(View.GONE);
+        }
     }
 
     @Override
@@ -1101,6 +1126,8 @@ public class PlayActivity extends FragmentActivity implements SensorEventListene
     public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
         //LOGD(TAG, "onPageScrolled");
 
+        hideTransparentFingerAnimationFullScreenView();
+
 
         if ((mPosition != position) && (positionOffsetPixels == 0)) {
 
@@ -1484,6 +1511,8 @@ public class PlayActivity extends FragmentActivity implements SensorEventListene
 
         LOGD(TAG, "switchQuestionAnswerViewManually");
 
+        hideTransparentFingerAnimationFullScreenView();
+
         if (mIsSwitchQuestionAnswerViewManually_Processing) {
             LOGD(TAG, "switchQuestionAnswerViewManually is aborted since it's processing ");
             return;
@@ -1671,6 +1700,10 @@ public class PlayActivity extends FragmentActivity implements SensorEventListene
 
         LOGD(TAG, "text2SpeechFinished");
 
+        if (AppConfig.sharedInstance().isTextToSpeech()) {
+            showTransparentFingerAnimationFullScreenView();
+        }
+
         CardDetailFragment cardDetailFragment = getCurrentCardDetailFragment();
 
         if (isSmartDelay() && mIsAutoScroll) {
@@ -1814,6 +1847,10 @@ public class PlayActivity extends FragmentActivity implements SensorEventListene
                             }
                         },K_Text2Speech_Delay_MilliSecond);
 
+                        if (AppConfig.sharedInstance().isTextToSpeech() == false) {
+                            showTransparentFingerAnimationFullScreenView();
+                        }
+
                     } else {
 
                         if ((AppConfig.sharedInstance().isTextToSpeech() == false) && (mIsAutoScroll == false) &&
@@ -1835,6 +1872,11 @@ public class PlayActivity extends FragmentActivity implements SensorEventListene
                                         },K_Text2Speech_Delay_MilliSecond);
 
                                     }
+
+                                    if (AppConfig.sharedInstance().isTextToSpeech() == false) {
+                                        showTransparentFingerAnimationFullScreenView();
+                                    }
+
                                 }
                             },durationForRecordedSound + 1000);  //这里1000（1秒）是适当的，因为mPauseForAnswerSeekBar或K_IntervalBetweenCardSeconds_ForQAOnly都远大于这个数
 
@@ -1857,6 +1899,10 @@ public class PlayActivity extends FragmentActivity implements SensorEventListene
                             text2SpeechAllContentNow(cardDetailFragment, isMuteText2Speech);
                         }
                     },K_Text2Speech_Delay_MilliSecond);
+
+                    if (AppConfig.sharedInstance().isTextToSpeech() == false) {
+                        showTransparentFingerAnimationFullScreenView();
+                    }
                 }
             }
 
