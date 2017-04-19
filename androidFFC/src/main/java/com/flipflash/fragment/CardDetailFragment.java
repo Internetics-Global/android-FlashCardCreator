@@ -50,6 +50,7 @@ import com.facebook.drawee.controller.ControllerListener;
 import com.facebook.drawee.drawable.ProgressBarDrawable;
 import com.facebook.drawee.interfaces.DraweeController;
 import com.facebook.drawee.view.SimpleDraweeView;
+import com.facebook.imagepipeline.animated.base.AnimatedDrawable;
 import com.facebook.imagepipeline.common.ResizeOptions;
 import com.facebook.imagepipeline.image.ImageInfo;
 import com.facebook.imagepipeline.request.ImageRequest;
@@ -442,12 +443,22 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnTouchL
         return rootView;
     }
 
+    private boolean isAllowShowTransparentFullScreenView() {
+        if (mIsPlayingCard == false) {
+            return false;
+        }
+
+        boolean result = AppConfig.sharedInstance().isFunctionPromptOff();
+
+        return (result == false);
+    }
+
 
     public void showFingerAnimationGifImageView() {
 
         SimpleDraweeView gifImageView = (SimpleDraweeView) mContentView.findViewById(R.id.transparent_finger_animation_gif);
-        if (AppConfig.sharedInstance().isFunctionPromptOff()) {
-            gifImageView.setVisibility(View.GONE);
+
+        if (isAllowShowTransparentFullScreenView() == false) {
             return;
         }
 
@@ -463,7 +474,49 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnTouchL
 
         DraweeController controller = Fresco.newDraweeControllerBuilder()
                 .setUri(uri)
-                .setAutoPlayAnimations(true)
+                .setAutoPlayAnimations(false)
+                .setControllerListener(new ControllerListener<ImageInfo>() {
+                    @Override
+                    public void onSubmit(String id, Object callerContext) {
+
+                    }
+
+                    @Override
+                    public void onFinalImageSet(String id, @javax.annotation.Nullable ImageInfo imageInfo, @javax.annotation.Nullable Animatable animatable) {
+
+                        if (animatable != null) {
+                            try {
+                                Field field = AnimatedDrawable.class.getDeclaredField("mTotalLoops");
+                                field.setAccessible(true);
+                                field.set(animatable, 1);
+                            } catch (Exception e) {
+                                e.printStackTrace();
+                            }
+                            animatable.start();
+                        }
+
+                    }
+
+                    @Override
+                    public void onIntermediateImageSet(String id, @javax.annotation.Nullable ImageInfo imageInfo) {
+
+                    }
+
+                    @Override
+                    public void onIntermediateImageFailed(String id, Throwable throwable) {
+
+                    }
+
+                    @Override
+                    public void onFailure(String id, Throwable throwable) {
+
+                    }
+
+                    @Override
+                    public void onRelease(String id) {
+
+                    }
+                })
                 .build();
         gifImageView.setController(controller);
 
@@ -473,6 +526,13 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnTouchL
     public void hideFingerAnimationGifImageView() {
 
         SimpleDraweeView gifImageView = (SimpleDraweeView) mContentView.findViewById(R.id.transparent_finger_animation_gif);
+
+        Animatable animatable = gifImageView.getController().getAnimatable();
+        if (animatable != null) {
+            animatable.stop();
+        }
+
+        gifImageView.setController(null);
 
         if (gifImageView.getVisibility() != View.GONE) {
             gifImageView.setVisibility(View.GONE);
