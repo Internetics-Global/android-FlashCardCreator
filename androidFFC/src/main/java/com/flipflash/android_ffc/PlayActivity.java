@@ -23,8 +23,6 @@ import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
 import android.support.v4.view.ViewPager;
-import android.util.DisplayMetrics;
-import android.util.Log;
 import android.view.KeyEvent;
 import android.view.MotionEvent;
 import android.view.Surface;
@@ -37,9 +35,6 @@ import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.facebook.drawee.backends.pipeline.Fresco;
-import com.facebook.drawee.interfaces.DraweeController;
-import com.facebook.drawee.view.SimpleDraweeView;
 import com.flipflash.UI.FFCRatioFrameLayout;
 import com.flipflash.UI.OnSwipeTouchListener;
 import com.flipflash.data.Card;
@@ -174,9 +169,6 @@ public class PlayActivity extends FragmentActivity implements SensorEventListene
     private HandlerThread mSensorThread;
     private Handler       mSensorHandler;
 
-    boolean     _showTransparentFingerAnimationQuestion = false;
-    boolean     _showTransparentFingerAnimationAnswer = false;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -310,57 +302,6 @@ public class PlayActivity extends FragmentActivity implements SensorEventListene
         mBaseView.getViewTreeObserver().addOnGlobalLayoutListener(mRotationChangeListener);
 
 
-    }
-
-    private void showTransparentFingerAnimationFullScreenView() {
-
-        View layout = findViewById(R.id.transparent_finger_animation_fullScreen_layout);
-        if (AppConfig.sharedInstance().isFunctionPromptOff()) {
-            layout.setVisibility(View.GONE);
-            return;
-        }
-
-        CardDetailFragment currentFlashCardView = getCurrentCardDetailFragment();
-        Uri uri;
-        if (currentFlashCardView.mIsQuestionShowing) {
-            uri = Uri.parse("res:///" + R.drawable.question_gif);
-
-            if (_showTransparentFingerAnimationQuestion) {
-                return;
-            } else {
-                _showTransparentFingerAnimationQuestion = true;
-            }
-
-        } else {
-            uri = Uri.parse("res:///" + R.drawable.answer_gif);
-
-            if (_showTransparentFingerAnimationAnswer) {
-                return;
-            } else {
-                _showTransparentFingerAnimationAnswer = true;
-            }
-        }
-
-        layout.setVisibility(View.VISIBLE);
-
-        SimpleDraweeView simpleDraweeView = (SimpleDraweeView) findViewById(R.id.transparent_finger_animation_gif);
-
-        DraweeController controller = Fresco.newDraweeControllerBuilder()
-                .setUri(uri)
-                .setAutoPlayAnimations(true)
-                .build();
-        simpleDraweeView.setController(controller);
-
-
-    }
-
-    private void hideTransparentFingerAnimationFullScreenView() {
-
-        View layout = findViewById(R.id.transparent_finger_animation_fullScreen_layout);
-
-        if (layout.getVisibility() != View.GONE) {
-            layout.setVisibility(View.GONE);
-        }
     }
 
     @Override
@@ -583,13 +524,6 @@ public class PlayActivity extends FragmentActivity implements SensorEventListene
             @Override
             public void onStopTrackingTouch(DiscreteSeekBar seekBar) {
 
-            }
-        });
-
-        findViewById(R.id.transparent_finger_animation_fullScreen_layout).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                view.setVisibility(View.GONE);
             }
         });
 
@@ -1125,7 +1059,7 @@ public class PlayActivity extends FragmentActivity implements SensorEventListene
     public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
         //LOGD(TAG, "onPageScrolled");
 
-        hideTransparentFingerAnimationFullScreenView();
+//        hideFingerAnimationGifImageView();
 
 
         if ((mPosition != position) && (positionOffsetPixels == 0)) {
@@ -1510,7 +1444,8 @@ public class PlayActivity extends FragmentActivity implements SensorEventListene
 
         LOGD(TAG, "switchQuestionAnswerViewManually");
 
-        hideTransparentFingerAnimationFullScreenView();
+        CardDetailFragment cardDetailFragment = getCurrentCardDetailFragment();
+        cardDetailFragment.hideFingerAnimationGifImageView();
 
         if (mIsSwitchQuestionAnswerViewManually_Processing) {
             LOGD(TAG, "switchQuestionAnswerViewManually is aborted since it's processing ");
@@ -1698,11 +1633,12 @@ public class PlayActivity extends FragmentActivity implements SensorEventListene
 
         LOGD(TAG, "text2SpeechFinished");
 
-        if (AppConfig.sharedInstance().isTextToSpeech()) {
-            showTransparentFingerAnimationFullScreenView();
-        }
 
         CardDetailFragment cardDetailFragment = getCurrentCardDetailFragment();
+
+        if (AppConfig.sharedInstance().isTextToSpeech()) {
+            cardDetailFragment.showFingerAnimationGifImageView();
+        }
 
         if (isSmartDelay() && mIsAutoScroll) {
 
@@ -1846,7 +1782,7 @@ public class PlayActivity extends FragmentActivity implements SensorEventListene
                         },K_Text2Speech_Delay_MilliSecond);
 
                         if (AppConfig.sharedInstance().isTextToSpeech() == false) {
-                            showTransparentFingerAnimationFullScreenView();
+                            cardDetailFragment.showFingerAnimationGifImageView();
                         }
 
                     } else {
@@ -1872,7 +1808,7 @@ public class PlayActivity extends FragmentActivity implements SensorEventListene
                                     }
 
                                     if (AppConfig.sharedInstance().isTextToSpeech() == false) {
-                                        showTransparentFingerAnimationFullScreenView();
+                                        cardDetailFragment.showFingerAnimationGifImageView();
                                     }
 
                                 }
@@ -1899,7 +1835,7 @@ public class PlayActivity extends FragmentActivity implements SensorEventListene
                     },K_Text2Speech_Delay_MilliSecond);
 
                     if (AppConfig.sharedInstance().isTextToSpeech() == false) {
-                        showTransparentFingerAnimationFullScreenView();
+                        cardDetailFragment.showFingerAnimationGifImageView();
                     }
                 }
             }
@@ -1921,7 +1857,7 @@ public class PlayActivity extends FragmentActivity implements SensorEventListene
                 @Override
                 public void run() {
 
-                    showTransparentFingerAnimationFullScreenView();
+                    cardDetailFragment.showFingerAnimationGifImageView();
 
                 }
             },durationForRecordedSound + 1000);

@@ -75,6 +75,7 @@ import com.flipflash.helper.PackRecordHelper;
 import com.flipflash.helper.SymbolHelper;
 
 import com.flipflash.model.LockObject;
+import com.flipflash.util.AppConfig;
 import com.flipflash.util.AppContext;
 import com.flipflash.util.FontHelper;
 import com.flipflash.util.Global;
@@ -439,6 +440,43 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnTouchL
     private View getRootView() {
         final View rootView = getActivity().getWindow().getDecorView().findViewById(android.R.id.content);
         return rootView;
+    }
+
+
+    public void showFingerAnimationGifImageView() {
+
+        SimpleDraweeView gifImageView = (SimpleDraweeView) mContentView.findViewById(R.id.transparent_finger_animation_gif);
+        if (AppConfig.sharedInstance().isFunctionPromptOff()) {
+            gifImageView.setVisibility(View.GONE);
+            return;
+        }
+
+        Uri uri;
+        if (mIsQuestionShowing) {
+            uri = Uri.parse("res:///" + R.drawable.question_gif);
+
+        } else {
+            uri = Uri.parse("res:///" + R.drawable.answer_gif);
+        }
+
+        gifImageView.setVisibility(View.VISIBLE);
+
+        DraweeController controller = Fresco.newDraweeControllerBuilder()
+                .setUri(uri)
+                .setAutoPlayAnimations(true)
+                .build();
+        gifImageView.setController(controller);
+
+
+    }
+
+    public void hideFingerAnimationGifImageView() {
+
+        SimpleDraweeView gifImageView = (SimpleDraweeView) mContentView.findViewById(R.id.transparent_finger_animation_gif);
+
+        if (gifImageView.getVisibility() != View.GONE) {
+            gifImageView.setVisibility(View.GONE);
+        }
     }
 
 
