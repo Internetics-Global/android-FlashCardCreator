@@ -1636,7 +1636,7 @@ public class PlayActivity extends FragmentActivity implements SensorEventListene
 
         CardDetailFragment cardDetailFragment = getCurrentCardDetailFragment();
 
-        if (AppConfig.sharedInstance().isTextToSpeech()) {
+        if (AppConfig.sharedInstance().isTextToSpeech() && (mOneOffPlayType == 0)) {
             cardDetailFragment.showFingerAnimationGifImageView();
         }
 
@@ -1781,7 +1781,7 @@ public class PlayActivity extends FragmentActivity implements SensorEventListene
                             }
                         },K_Text2Speech_Delay_MilliSecond);
 
-                        if (AppConfig.sharedInstance().isTextToSpeech() == false) {
+                        if (AppConfig.sharedInstance().isTextToSpeech() == false && (mOneOffPlayType == 0)) {
                             cardDetailFragment.showFingerAnimationGifImageView();
                         }
 
@@ -1807,7 +1807,7 @@ public class PlayActivity extends FragmentActivity implements SensorEventListene
 
                                     }
 
-                                    if (AppConfig.sharedInstance().isTextToSpeech() == false) {
+                                    if (AppConfig.sharedInstance().isTextToSpeech() == false && (mOneOffPlayType == 0)) {
                                         cardDetailFragment.showFingerAnimationGifImageView();
                                     }
 
@@ -1834,7 +1834,7 @@ public class PlayActivity extends FragmentActivity implements SensorEventListene
                         }
                     },K_Text2Speech_Delay_MilliSecond);
 
-                    if (AppConfig.sharedInstance().isTextToSpeech() == false) {
+                    if (AppConfig.sharedInstance().isTextToSpeech() == false && (mOneOffPlayType == 0)) {
                         cardDetailFragment.showFingerAnimationGifImageView();
                     }
                 }
@@ -1852,25 +1852,26 @@ public class PlayActivity extends FragmentActivity implements SensorEventListene
                 durationForRecordedSound = cardDetailFragment.durationForAnswerRecordedSound();
             }
 
-            if (mIsMuteSoundRecording) {
+            if (mOneOffPlayType == 0) {
 
-                cardDetailFragment.showFingerAnimationGifImageView();
+                if (mIsMuteSoundRecording) {
 
-            } else {
+                    cardDetailFragment.showFingerAnimationGifImageView();
 
-                Handler handler = new Handler();
-                handler.postDelayed(new Runnable() {
-                    @Override
-                    public void run() {
+                } else {
 
-                        cardDetailFragment.showFingerAnimationGifImageView();
+                    Handler handler = new Handler();
+                    handler.postDelayed(new Runnable() {
+                        @Override
+                        public void run() {
 
-                    }
-                },durationForRecordedSound + 1000);
+                            cardDetailFragment.showFingerAnimationGifImageView();
+
+                        }
+                    },durationForRecordedSound + 1000);
+                }
+
             }
-
-
-
         }
 
 //        //two cases:
