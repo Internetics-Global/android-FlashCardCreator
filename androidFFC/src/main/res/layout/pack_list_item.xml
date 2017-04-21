@@ -55,7 +55,7 @@
         </ImageView>
 
         <ImageView
-            android:id="@+id/pack_edit_image_view"
+            android:id="@+id/goto_pack_image_view"
             android:visibility="invisible"
             android:layout_width="40dp"
             android:layout_height="40dp"
@@ -102,15 +102,16 @@
 
         </ImageButton>
 
-        <!--playholder view-->
-        <View
+        <ImageButton
+            android:id="@+id/button_edit_pack"
             android:gravity="center"
             android:background="@android:color/transparent"
             android:layout_width="0dp"
             android:layout_height="fill_parent"
+            android:src="@drawable/pack_edit"
             android:layout_weight="50">
 
-        </View>
+        </ImageButton>
 
     </LinearLayout>
 

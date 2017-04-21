@@ -17,7 +17,6 @@ import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
 import android.text.method.PasswordTransformationMethod;
 import android.util.Base64;
-import android.util.DisplayMetrics;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -32,7 +31,6 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.flipflash.UI.SmoothGallery;
-import com.flipflash.android_ffc.BuildConfig;
 import com.flipflash.android_ffc.MainActivity;
 import com.flipflash.android_ffc.PlayActivity;
 import com.flipflash.android_ffc.R;
@@ -47,11 +45,8 @@ import com.flipflash.util.OpenUDID_manager;
 import com.flipflash.util.StringUtils;
 import com.flipflash.util.UIHelper;
 import com.nostra13.universalimageloader.core.ImageLoader;
-import com.squareup.leakcanary.RefWatcher;
 
 import java.io.FileNotFoundException;
-
-import cn.pedant.SweetAlert.SweetAlertDialog;
 
 
 import static com.flipflash.util.LogUtils.LOGD;
@@ -133,7 +128,7 @@ public class PackListFragment extends Fragment {
         mGallery.setOnItemClickListener(new OnItemClickListener() {
             public void onItemClick(AdapterView<?> parent, View v, int position, long id) {
 
-                galleryItemClicked(position,true);
+                playImageViewButtonClicked(position);
 
             }
         });
@@ -335,14 +330,9 @@ public class PackListFragment extends Fragment {
                 final Pack currentPack = mUser.packs.get(position -1);
 
                 final ImageButton deleteButton = (ImageButton) convertView.findViewById(R.id.button_delete_pack);
+                final ImageButton editButton = (ImageButton) convertView.findViewById(R.id.button_edit_pack);
                 final ImageView playImageView = (ImageView) convertView.findViewById(R.id.pack_play_image_view);
-                final ImageView editImageView = (ImageView) convertView.findViewById(R.id.pack_edit_image_view);
-
-                if (((currentPack != null) && (currentPack.creatorID).equals(OpenUDID_manager.getOpenUDID()))) {
-                    editImageView.setVisibility(View.VISIBLE);
-                } else {
-                    editImageView.setVisibility(View.INVISIBLE);
-                }
+                final ImageView gotoPackImageView = (ImageView) convertView.findViewById(R.id.goto_pack_image_view);
 
                 playImageView.setOnClickListener(new View.OnClickListener() {
                     @Override
@@ -350,6 +340,13 @@ public class PackListFragment extends Fragment {
 
                         playImageViewButtonClicked(position);
 
+                    }
+                });
+
+                gotoPackImageView.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        galleryItemClicked(position,true);
                     }
                 });
 
@@ -370,8 +367,16 @@ public class PackListFragment extends Fragment {
                     }
                 }
 
+                if (((currentPack != null) && (currentPack.creatorID).equals(OpenUDID_manager.getOpenUDID()))) {
+                    editButton.setEnabled(true);
+                    editButton.setAlpha(1);
+                } else {
+                    editButton.setEnabled(false);
+                    editButton.setAlpha(0.7f);
+                }
 
-                editImageView.setOnClickListener(new View.OnClickListener() {
+
+                editButton.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
 
