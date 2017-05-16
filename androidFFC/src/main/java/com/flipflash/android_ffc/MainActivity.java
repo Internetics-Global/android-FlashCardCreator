@@ -333,7 +333,7 @@ public class MainActivity extends FragmentActivity implements
 
         MenuItem packsMenuItem = menu.findItem(R.id.actionbar_packs);
         MenuItem editPackMenuItem = menu.findItem(R.id.actionbar_edit);
-        MenuItem newPackMenuItem = menu.findItem(R.id.actionbar_add_pack);
+//        MenuItem newPackMenuItem = menu.findItem(R.id.actionbar_add_pack);
 
         MenuItem changeTemplatColorMenuItem = menu.findItem(R.id.actionbar_change_template_color);
         MenuItem helpMenuItem = menu.findItem(R.id.actionbar_help);
@@ -362,9 +362,9 @@ public class MainActivity extends FragmentActivity implements
                 editPackMenuItem.setIcon(R.drawable.pack_edit_dimmed);
             }
 
-            if (newPackMenuItem != null) {
-                newPackMenuItem.setIcon(R.drawable.pack_add_dimmed);
-            }
+//            if (newPackMenuItem != null) {
+//                newPackMenuItem.setIcon(R.drawable.pack_add_dimmed);
+//            }
 
             if (changeTemplatColorMenuItem != null) {
                 changeTemplatColorMenuItem.setIcon(R.drawable.template_background_change_button_dimmed);
@@ -383,9 +383,9 @@ public class MainActivity extends FragmentActivity implements
                 editPackMenuItem.setIcon(R.drawable.pack_edit);
             }
 
-            if (newPackMenuItem != null) {
-                newPackMenuItem.setIcon(R.drawable.pack_add);
-            }
+//            if (newPackMenuItem != null) {
+//                newPackMenuItem.setIcon(R.drawable.pack_add);
+//            }
 
             if (changeTemplatColorMenuItem != null) {
                 changeTemplatColorMenuItem.setIcon(R.drawable.template_background_change_button);
@@ -431,17 +431,17 @@ public class MainActivity extends FragmentActivity implements
         final CardDetailFragment activeCardDetailFragment = getActiveCardDetailFragment();
 
         switch (item.getItemId()) {
-            case R.id.actionbar_add_pack: {
-
-                if (MutipleTargetHelper.isFullVersion() == false) {
-                    MutipleTargetHelper.showAlertToUpgradeToFullVersion();
-                    break;
-                }
-
-                DialogFragment dialogFragment = new CreateEditFragment();
-                dialogFragment.show(getSupportFragmentManager(), "add_pack_fragment");
-                break;
-            }
+//            case R.id.actionbar_add_pack: {
+//
+//                if (MutipleTargetHelper.isFullVersion() == false) {
+//                    MutipleTargetHelper.showAlertToUpgradeToFullVersion();
+//                    break;
+//                }
+//
+//                DialogFragment dialogFragment = new CreateEditFragment();
+//                dialogFragment.show(getSupportFragmentManager(), "add_pack_fragment");
+//                break;
+//            }
             case R.id.actionbar_edit:
 
                 if (MutipleTargetHelper.isFullVersion() == false) {

@@ -13,12 +13,6 @@
             android:title="@string/NavigationBarItem_Edit"
             android:showAsAction="always">
     </item>
-    <item
-            android:id="@+id/actionbar_add_pack"
-            android:icon="@drawable/pack_add"
-            android:title="@string/NavigationBarItem_Create" android:showAsAction="always">
-    </item>
-
 
     <item
             android:id="@+id/actionbar_change_template_color"
