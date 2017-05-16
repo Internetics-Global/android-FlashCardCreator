@@ -108,14 +108,10 @@ public class CardListFragment extends Fragment {
         mContentView = inflater.inflate(R.layout.dragsortlistview, container);
 
         //Step2: set DragSortListView and FCCdapter
-        String[] cols = {"card_sn", "cover_image"};
-        int[] ids = {R.id.card_list_item_card_sn, R.id.card_list_item_cover_image};
-        adapter = new FCCdapter(getActivity(),
-                R.layout.card_list_item_swipe, null, cols, ids, 0);
-
         mDSLVListView = (DragSortListView) mContentView.findViewById(android.R.id.list);
-        mDSLVListView.setAdapter(adapter);
         mDSLVListView.setDividerHeight(0);
+
+        setCardListAdapter();
 
         mDSLVListView.setRemoveListener(new DragSortListView.RemoveListener() {
             @Override
@@ -220,7 +216,24 @@ public class CardListFragment extends Fragment {
 
         mIsListViewEditable = isEditingStyle;
 
+        setCardListAdapter();
+
         updateListView(-1,false);
+    }
+
+    private void setCardListAdapter() {
+        String[] cols = {"card_sn", "cover_image"};
+        int[] ids = {R.id.card_list_item_card_sn, R.id.card_list_item_cover_image};
+
+        if (mIsListViewEditable) {
+            adapter = new FCCdapter(getActivity(),
+                    R.layout.card_list_item, null, cols, ids, 0);
+        } else {
+            adapter = new FCCdapter(getActivity(),
+                    R.layout.card_list_item_swipe, null, cols, ids, 0);
+        }
+
+        mDSLVListView.setAdapter(adapter);
     }
 
     private class FCCdapter extends SimpleDragSortCursorAdapter {
@@ -236,10 +249,11 @@ public class CardListFragment extends Fragment {
         public View getView(final int position, View convertView, ViewGroup parent) {
             View v = super.getView(position, convertView, parent);
 
-            ((SwipeLayout)v).setShowMode(SwipeLayout.ShowMode.PullOut);
-            ((SwipeLayout)v).setDragEdges(SwipeLayout.DragEdge.Left, SwipeLayout.DragEdge.Right);
-            ((SwipeLayout)v).setBottomViewIds(R.id.left_to_right, R.id.right_to_left, SwipeLayout.EMPTY_LAYOUT, SwipeLayout.EMPTY_LAYOUT);
-
+            if (mIsListViewEditable == false) {
+                ((SwipeLayout)v).setShowMode(SwipeLayout.ShowMode.PullOut);
+                ((SwipeLayout)v).setDragEdges(SwipeLayout.DragEdge.Left, SwipeLayout.DragEdge.Right);
+                ((SwipeLayout)v).setBottomViewIds(R.id.left_to_right, R.id.right_to_left, SwipeLayout.EMPTY_LAYOUT, SwipeLayout.EMPTY_LAYOUT);
+            }
 
             ImageView coverImage = (ImageView) v.findViewById(R.id.card_list_item_cover_image);
 
