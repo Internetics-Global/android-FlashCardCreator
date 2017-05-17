@@ -253,6 +253,20 @@ public class CardListFragment extends Fragment {
                 ((SwipeLayout)v).setShowMode(SwipeLayout.ShowMode.PullOut);
                 ((SwipeLayout)v).setDragEdges(SwipeLayout.DragEdge.Left, SwipeLayout.DragEdge.Right);
                 ((SwipeLayout)v).setBottomViewIds(R.id.left_to_right, R.id.right_to_left, SwipeLayout.EMPTY_LAYOUT, SwipeLayout.EMPTY_LAYOUT);
+
+                v.findViewById(R.id.card_list_item_swipe_delete).setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        removeListItem(position);
+                    }
+                });
+
+                v.findViewById(R.id.card_list_item_swipe_copy).setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        copyListItem(position);
+                    }
+                });
             }
 
             ImageView coverImage = (ImageView) v.findViewById(R.id.card_list_item_cover_image);
@@ -429,6 +443,10 @@ public class CardListFragment extends Fragment {
                 return (lhs.cardSN - rhs.cardSN);
             }
         });
+    }
+
+    private void copyListItem(int which) {
+        Card card = mCurrentPack.cards.get(which);
     }
 
 
