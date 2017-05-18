@@ -10,6 +10,7 @@ import android.database.MatrixCursor;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -446,15 +447,44 @@ public class CardListFragment extends Fragment {
     }
 
     private void copyListItem(int which) {
-        Card card = mCurrentPack.cards.get(which);
+
+        if (MutipleTargetHelper.isFullVersion() == false) {
+            MutipleTargetHelper.showAlertToUpgradeToFullVersion();
+            return;
+        }
+
+        Card currentCard = mCurrentPack.cards.get(which);
+        if (currentCard != null && mCurrentPack != null) {
+            Card copy = currentCard.deepCopyIncludingResources(getActivity());
+            mCurrentPack.insertCard(getActivity(),currentCard,which);
+            copy.save(getActivity());
+
+            reorderAllCardsSN();
+
+        } else {
+            Log.d(TAG,"copyListItem unexpected: currentCard or mCurrentPack == nil");
+        }
+
+
     }
 
 
     private void removeListItem(int which) {
 
+        if (MutipleTargetHelper.isFullVersion() == false) {
+            MutipleTargetHelper.showAlertToUpgradeToFullVersion();
+            return;
+        }
+
         //Step1: remove current card from mCurrentPack and database
         Card removedCard = mCurrentPack.cards.get(which);
         mCurrentPack.removeCard(AppContext.getAppContext(),removedCard);
+
+        reorderAllCardsSN();
+
+    }
+
+    private void reorderAllCardsSN() {
 
         //Step2: reorder all cards' SN
         int index = 0;
@@ -482,7 +512,6 @@ public class CardListFragment extends Fragment {
         mCurrentPack.saveAllCards(AppContext.getAppContext());
 
         LOGD(TAG, "removeListItem: test point 1");
-
     }
 
     /**

@@ -258,6 +258,27 @@ No new card included
         card.destroy(context);
     }
 
+    public void insertCard (Context context,Card card, int afterCardID){
+
+        card.packID = packID;
+
+        int foundIndex = -1;
+        for (int i=0; i< cards.size(); i++) {
+            Card item = cards.get(i);
+            if (item.cardID == afterCardID) {
+                foundIndex = i;
+                break;
+            }
+        }
+
+        if (foundIndex >= 0) {
+            cards.add(foundIndex+1,card);
+        }
+
+        card.save(context);
+
+    }
+
     public void addCard (Context context,Card card) {
         card.packID = packID;
         cards.add(card);

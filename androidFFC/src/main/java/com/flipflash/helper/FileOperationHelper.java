@@ -381,7 +381,7 @@ public class FileOperationHelper {
     }
 
 
-    private static void copyFile(File orginFile, File targetFile) {
+    public static void copyFile(File orginFile, File targetFile) {
 
         try {
             FileInputStream inStream = new FileInputStream(orginFile);
@@ -486,6 +486,17 @@ public class FileOperationHelper {
 
         return false;
 
+    }
+
+    public static File getFullPathFromUriFormatStr(String uriFormatStr) {
+
+        if (StringUtils.isEmpty(uriFormatStr)) {
+            return null;
+        }
+
+        String fileName = StringUtils.lastComponentOfPath(Uri.parse(uriFormatStr));
+        File fullFilePath = new File(FileOperationHelper.imagesDirectory(), fileName);
+        return fullFilePath;
     }
 
 }

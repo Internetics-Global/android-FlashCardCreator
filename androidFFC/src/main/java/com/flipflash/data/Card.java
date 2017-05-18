@@ -49,8 +49,182 @@ public class Card {
         copy.templateBackground = templateBackground;
         copy.cardSN = cardSN;
 
+
         copy.answer = answer.deepCopy();
         copy.question = question.deepCopy();
+
+        return copy;
+
+    }
+
+    public Card deepCopyIncludingResources(Context context) {
+
+        Card copy = deepCopy();
+
+        //card
+        {
+            File oldFile = FileOperationHelper.getFullPathFromUriFormatStr(copy.coverImageUriFormatStr);
+            if (oldFile != null && oldFile.exists() && oldFile.isDirectory() == false) {
+                File newFile = FileOperationHelper.generateUniqueImageFilePath();
+                FileOperationHelper.copyFile(oldFile,newFile);
+                copy.coverImageUriFormatStr = FileOperationHelper.convertToUriFormatFile(newFile);
+            }
+        }
+
+        //question
+        {
+            {
+                File oldFile = FileOperationHelper.getFullPathFromUriFormatStr(copy.question.imageUriFormatStr);
+                if (oldFile != null && oldFile.exists() && oldFile.isDirectory() == false) {
+                    File newFile;
+                    if (copy.question.imageUriFormatStr.toLowerCase().contains(".gif")) {
+                        newFile = FileOperationHelper.generateUniqueGIFFilePath();
+                    } else {
+                        newFile = FileOperationHelper.generateUniqueImageFilePath();
+                    }
+                    FileOperationHelper.copyFile(oldFile,newFile);
+                    copy.question.imageUriFormatStr = FileOperationHelper.convertToUriFormatFile(newFile);
+                }
+            }
+
+            {
+                File oldFile = FileOperationHelper.getFullPathFromUriFormatStr(copy.question.imageUriFormatStr2);
+                if (oldFile != null && oldFile.exists() && oldFile.isDirectory() == false) {
+                    File newFile;
+                    if (copy.question.imageUriFormatStr2.toLowerCase().contains(".gif")) {
+                        newFile = FileOperationHelper.generateUniqueGIFFilePath();
+                    } else {
+                        newFile = FileOperationHelper.generateUniqueImageFilePath();
+                    }
+                    FileOperationHelper.copyFile(oldFile,newFile);
+                    copy.question.imageUriFormatStr2 = FileOperationHelper.convertToUriFormatFile(newFile);
+                }
+            }
+
+            {
+                File oldFile = FileOperationHelper.getFullPathFromUriFormatStr(copy.question.movieUriFormatStr);
+                if (oldFile != null && oldFile.exists() && oldFile.isDirectory() == false) {
+                    File newFile = FileOperationHelper.generateUniqueVideoFilePath();
+                    FileOperationHelper.copyFile(oldFile,newFile);
+                    copy.question.movieUriFormatStr = FileOperationHelper.convertToUriFormatFile(newFile);
+                }
+            }
+
+            {
+                File oldFile = FileOperationHelper.getFullPathFromUriFormatStr(copy.question.movieUriFormatStr2);
+                if (oldFile != null && oldFile.exists() && oldFile.isDirectory() == false) {
+                    File newFile = FileOperationHelper.generateUniqueVideoFilePath();
+                    FileOperationHelper.copyFile(oldFile,newFile);
+                    copy.question.movieUriFormatStr2 = FileOperationHelper.convertToUriFormatFile(newFile);
+                }
+            }
+
+            {
+                File oldFile = FileOperationHelper.getFullPathFromUriFormatStr(copy.question.backgroundImageUriFormatStr);
+                if (oldFile != null && oldFile.exists() && oldFile.isDirectory() == false) {
+                    File newFile = FileOperationHelper.generateUniqueImageFilePath();
+                    FileOperationHelper.copyFile(oldFile,newFile);
+                    copy.question.backgroundImageUriFormatStr = FileOperationHelper.convertToUriFormatFile(newFile);
+                }
+            }
+
+            {
+                File oldFile = FileOperationHelper.getFullPathFromUriFormatStr(copy.question.audioUriFormatStr);
+                if (oldFile != null && oldFile.exists() && oldFile.isDirectory() == false) {
+                    File newFile = FileOperationHelper.generateUniqueAudio3GPFilePath();
+                    FileOperationHelper.copyFile(oldFile,newFile);
+                    copy.question.audioUriFormatStr = FileOperationHelper.convertToUriFormatFile(newFile);
+                }
+            }
+
+
+        }
+
+        //answer
+        {
+            {
+                File oldFile = FileOperationHelper.getFullPathFromUriFormatStr(copy.answer.imageUriFormatStr);
+                if (oldFile != null && oldFile.exists() && oldFile.isDirectory() == false) {
+                    File newFile;
+                    if (copy.answer.imageUriFormatStr.toLowerCase().contains(".gif")) {
+                        newFile = FileOperationHelper.generateUniqueGIFFilePath();
+                    } else {
+                        newFile = FileOperationHelper.generateUniqueImageFilePath();
+                    }
+                    FileOperationHelper.copyFile(oldFile,newFile);
+                    copy.answer.imageUriFormatStr = FileOperationHelper.convertToUriFormatFile(newFile);
+                }
+            }
+
+            {
+                File oldFile = FileOperationHelper.getFullPathFromUriFormatStr(copy.answer.imageUriFormatStr2);
+                if (oldFile != null && oldFile.exists() && oldFile.isDirectory() == false) {
+                    File newFile;
+                    if (copy.answer.imageUriFormatStr2.toLowerCase().contains(".gif")) {
+                        newFile = FileOperationHelper.generateUniqueGIFFilePath();
+                    } else {
+                        newFile = FileOperationHelper.generateUniqueImageFilePath();
+                    }
+                    FileOperationHelper.copyFile(oldFile,newFile);
+                    copy.answer.imageUriFormatStr2 = FileOperationHelper.convertToUriFormatFile(newFile);
+                }
+            }
+
+            {
+                File oldFile = FileOperationHelper.getFullPathFromUriFormatStr(copy.answer.movieUriFormatStr);
+                if (oldFile != null && oldFile.exists() && oldFile.isDirectory() == false) {
+                    File newFile = FileOperationHelper.generateUniqueVideoFilePath();
+                    FileOperationHelper.copyFile(oldFile,newFile);
+                    copy.answer.movieUriFormatStr = FileOperationHelper.convertToUriFormatFile(newFile);
+                }
+            }
+
+            {
+                File oldFile = FileOperationHelper.getFullPathFromUriFormatStr(copy.answer.movieUriFormatStr2);
+                if (oldFile != null && oldFile.exists() && oldFile.isDirectory() == false) {
+                    File newFile = FileOperationHelper.generateUniqueVideoFilePath();
+                    FileOperationHelper.copyFile(oldFile,newFile);
+                    copy.answer.movieUriFormatStr2 = FileOperationHelper.convertToUriFormatFile(newFile);
+                }
+            }
+
+            {
+                File oldFile = FileOperationHelper.getFullPathFromUriFormatStr(copy.answer.backgroundImageUriFormatStr);
+                if (oldFile != null && oldFile.exists() && oldFile.isDirectory() == false) {
+                    File newFile = FileOperationHelper.generateUniqueImageFilePath();
+                    FileOperationHelper.copyFile(oldFile,newFile);
+                    copy.answer.backgroundImageUriFormatStr = FileOperationHelper.convertToUriFormatFile(newFile);
+                }
+            }
+
+            {
+                File oldFile = FileOperationHelper.getFullPathFromUriFormatStr(copy.answer.audioUriFormatStr);
+                if (oldFile != null && oldFile.exists() && oldFile.isDirectory() == false) {
+                    File newFile = FileOperationHelper.generateUniqueAudio3GPFilePath();
+                    FileOperationHelper.copyFile(oldFile,newFile);
+                    copy.answer.audioUriFormatStr = FileOperationHelper.convertToUriFormatFile(newFile);
+                }
+            }
+
+
+        }
+
+        //update ID
+        {
+            copy.cardID = Global.generateNoRepeatInt();
+
+            copy.question.questionID = Global.generateNoRepeatInt();
+            copy.question.cardID = copy.cardID;
+            copy.answer.answerID = Global.generateNoRepeatInt();;
+            copy.answer.cardID = copy.cardID;
+
+            copy.question.cssID = SQLiteHelper.getMaxValueForColumn(context, "css_id", "CSS_Tables") + 1;
+            copy.question.css.cssID = copy.question.cssID;
+
+            copy.answer.cssID = SQLiteHelper.getMaxValueForColumn(context, "css_id", "CSS_Tables") + 2;
+            copy.answer.css.cssID = copy.answer.cssID;
+        }
+
 
         return copy;
 
