@@ -456,8 +456,8 @@ public class CardListFragment extends Fragment {
         Card currentCard = mCurrentPack.cards.get(which);
         if (currentCard != null && mCurrentPack != null) {
             Card copy = currentCard.deepCopyIncludingResources(getActivity());
-            mCurrentPack.insertCard(getActivity(),currentCard,which);
-            copy.save(getActivity());
+            mCurrentPack.insertCard(getActivity(),copy,currentCard.cardID);
+            mCurrentPack.save(getActivity());
 
             reorderAllCardsSN();
 
