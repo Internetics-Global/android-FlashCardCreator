@@ -41,6 +41,8 @@ import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 
+import cn.pedant.SweetAlert.SweetAlertDialog;
+
 import static com.flipflash.util.LogUtils.LOGD;
 
 
@@ -448,6 +450,15 @@ public class CardListFragment extends Fragment {
 
     private void copyListItem(int which) {
 
+        if (!mCurrentPack.creatorID.equals(OpenUDID_manager.getOpenUDID())) {
+            new SweetAlertDialog(getActivity())
+                    .setTitleText(getString(R.string.DIALOG_AlERT))
+                    .setContentText(getString(R.string.DIALOG_YOU_CAN_NOT_CHANGE_TEMPLATE_BACKGROUND))
+                    .show();
+            return;
+
+        }
+
         if (MutipleTargetHelper.isFullVersion() == false) {
             MutipleTargetHelper.showAlertToUpgradeToFullVersion();
             return;
@@ -470,6 +481,15 @@ public class CardListFragment extends Fragment {
 
 
     private void removeListItem(int which) {
+
+        if (!mCurrentPack.creatorID.equals(OpenUDID_manager.getOpenUDID())) {
+            new SweetAlertDialog(getActivity())
+                    .setTitleText(getString(R.string.DIALOG_AlERT))
+                    .setContentText(getString(R.string.DIALOG_YOU_CAN_NOT_CHANGE_TEMPLATE_BACKGROUND))
+                    .show();
+            return;
+
+        }
 
         if (MutipleTargetHelper.isFullVersion() == false) {
             MutipleTargetHelper.showAlertToUpgradeToFullVersion();
