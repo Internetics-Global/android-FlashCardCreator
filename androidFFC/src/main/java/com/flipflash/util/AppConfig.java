@@ -182,7 +182,7 @@ public class AppConfig {
 
     public boolean isTextToSpeech() {
         String str = appConfig.get(Global.isTextToSpeech);
-        if ((str != null) && (str.equals("true")))
+        if ((str == null) && (str.equals("true")))
             return true;
         else
             return false;

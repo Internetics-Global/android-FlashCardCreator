@@ -1852,7 +1852,7 @@ public class PlayActivity extends FragmentActivity implements SensorEventListene
                 durationForRecordedSound = cardDetailFragment.durationForAnswerRecordedSound();
             }
 
-            if (mOneOffPlayType == 0 && (_PreviewOnly == false) {
+            if (mOneOffPlayType == 0 && (_PreviewOnly == false)) {
 
                 if (mIsMuteSoundRecording) {
 
