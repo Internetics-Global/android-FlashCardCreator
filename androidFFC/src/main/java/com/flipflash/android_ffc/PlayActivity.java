@@ -1636,7 +1636,7 @@ public class PlayActivity extends FragmentActivity implements SensorEventListene
 
         CardDetailFragment cardDetailFragment = getCurrentCardDetailFragment();
 
-        if (AppConfig.sharedInstance().isTextToSpeech() && (mOneOffPlayType == 0)) {
+        if (AppConfig.sharedInstance().isTextToSpeech() && (mOneOffPlayType == 0) && (_PreviewOnly == false)) {
             cardDetailFragment.showFingerAnimationGifImageView();
         }
 
@@ -1781,7 +1781,7 @@ public class PlayActivity extends FragmentActivity implements SensorEventListene
                             }
                         },K_Text2Speech_Delay_MilliSecond);
 
-                        if (AppConfig.sharedInstance().isTextToSpeech() == false && (mOneOffPlayType == 0)) {
+                        if (AppConfig.sharedInstance().isTextToSpeech() == false && (mOneOffPlayType == 0) && (_PreviewOnly == false)) {
                             cardDetailFragment.showFingerAnimationGifImageView();
                         }
 
@@ -1807,7 +1807,7 @@ public class PlayActivity extends FragmentActivity implements SensorEventListene
 
                                     }
 
-                                    if (AppConfig.sharedInstance().isTextToSpeech() == false && (mOneOffPlayType == 0)) {
+                                    if (AppConfig.sharedInstance().isTextToSpeech() == false && (mOneOffPlayType == 0) && (_PreviewOnly == false)) {
                                         cardDetailFragment.showFingerAnimationGifImageView();
                                     }
 
@@ -1834,7 +1834,7 @@ public class PlayActivity extends FragmentActivity implements SensorEventListene
                         }
                     },K_Text2Speech_Delay_MilliSecond);
 
-                    if (AppConfig.sharedInstance().isTextToSpeech() == false && (mOneOffPlayType == 0)) {
+                    if (AppConfig.sharedInstance().isTextToSpeech() == false && (mOneOffPlayType == 0) && (_PreviewOnly == false)) {
                         cardDetailFragment.showFingerAnimationGifImageView();
                     }
                 }
@@ -1852,7 +1852,7 @@ public class PlayActivity extends FragmentActivity implements SensorEventListene
                 durationForRecordedSound = cardDetailFragment.durationForAnswerRecordedSound();
             }
 
-            if (mOneOffPlayType == 0) {
+            if (mOneOffPlayType == 0 && (_PreviewOnly == false) {
 
                 if (mIsMuteSoundRecording) {
 
