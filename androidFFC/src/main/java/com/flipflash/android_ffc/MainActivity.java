@@ -1795,6 +1795,7 @@ public class MainActivity extends FragmentActivity implements
         Spinner spinnerAlign = (Spinner) mCSSToolbar.findViewById(R.id.spinner_align);
         Spinner spinnerColor = (Spinner) mCSSToolbar.findViewById(R.id.spinner_color);
         Spinner spinnerSize = (Spinner) mCSSToolbar.findViewById(R.id.spinner_size);
+        Spinner spinnerLanguage = (Spinner) mCSSToolbar.findViewById(R.id.spinner_language);
 
         HighLightArrayAdapter adapterFont = new HighLightArrayAdapter(this,
                 R.layout.spinner,getResources().getTextArray(R.array.css_font_nominal));
@@ -1816,10 +1817,16 @@ public class MainActivity extends FragmentActivity implements
         adapterSize.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinnerSize.setAdapter(adapterSize);
 
+        HighLightArrayAdapter adpaterLanguage = new HighLightArrayAdapter(this,
+                R.layout.spinner,getResources().getStringArray(R.array.css_language));
+        adpaterLanguage.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        spinnerLanguage.setAdapter(adpaterLanguage);
+
         spinnerFont.setSelection(0);
         spinnerAlign.setSelection(0);
         spinnerColor.setSelection(0);
         spinnerSize.setSelection(0);
+        spinnerLanguage.setSelection(0);
 
         final Button cssSaveButton = (Button) mCSSToolbar.findViewById(R.id.csstoolbar_save_btn);
         cssSaveButton.setOnClickListener(new View.OnClickListener() {
@@ -1949,6 +1956,20 @@ public class MainActivity extends FragmentActivity implements
             public void onNothingSelected(AdapterView<?> parent) {
             }
         });
+
+        spinnerLanguage.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                //todo
+//                final CardDetailFragment activeCardDetailFragment = getActiveCardDetailFragment();
+//                if (position > 0)
+//                    activeCardDetailFragment.updateCSS(1, position - 1);
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+            }
+        });
     }
 
     public void setAsSymbolStatus() {
@@ -1977,6 +1998,7 @@ public class MainActivity extends FragmentActivity implements
             Spinner spinnerAlign = (Spinner) mCSSToolbar.findViewById(R.id.spinner_align);
             Spinner spinnerColor = (Spinner) mCSSToolbar.findViewById(R.id.spinner_color);
             Spinner spinnerSize = (Spinner) mCSSToolbar.findViewById(R.id.spinner_size);
+            Spinner spinnerLanguage = (Spinner) mCSSToolbar.findViewById(R.id.spinner_language);
 
             Button saveButton = (Button)mCSSToolbar.findViewById(R.id.csstoolbar_save_btn);
             Button cancelButton = (Button)mCSSToolbar.findViewById(R.id.csstoolbar_close_btn);
@@ -1990,6 +2012,7 @@ public class MainActivity extends FragmentActivity implements
             spinnerAlign.setSelection(0);
             spinnerColor.setSelection(0);
             spinnerSize.setSelection(0);
+            spinnerLanguage.setSelection(0);
 
             updateSpinnersHighlightedItem(currentCSS,tag);
 
@@ -2007,17 +2030,20 @@ public class MainActivity extends FragmentActivity implements
         Spinner spinnerAlign = (Spinner) mCSSToolbar.findViewById(R.id.spinner_align);
         Spinner spinnerColor = (Spinner) mCSSToolbar.findViewById(R.id.spinner_color);
         Spinner spinnerSize = (Spinner) mCSSToolbar.findViewById(R.id.spinner_size);
+        Spinner spinnerLanguage = (Spinner) mCSSToolbar.findViewById(R.id.spinner_language);
 
         String[] alignArray = getResources().getStringArray(R.array.css_align);
         String[] colorArray = getResources().getStringArray(R.array.css_color);
         String[] fontArray = getResources().getStringArray(R.array.css_font);
         int[]    sizeArray = ScaleHelper.getRealSizeIntArray(MainActivity.this);
+        String[] languageArray = getResources().getStringArray(R.array.css_language);
 
         int alignHorizontalIndex = -1; //no selected by default
         int alignVerticalIndex = -1; //no selected by default
         int colorIndex = -1; //no selected by default
         int fontIndex = 1;  // by default, it's default color, so it's 1
         int sizeIndex = -1;
+        int languageIndex = -1;  //todo
 
         boolean semiTransparent = false;  //这个是非常特殊的,应客户要求属于colorArray,但其实从逻辑看很不合理
 
@@ -2034,6 +2060,8 @@ public class MainActivity extends FragmentActivity implements
             fontIndex = Arrays.asList(fontArray).indexOf(currentCSS.subheadingFont);
             sizeIndex = searchNearestIndex(sizeArray, (int) currentCSS.subheadingSize);
 
+            languageIndex = Arrays.asList(languageArray).indexOf(currentCSS.subheadingFont);//todo
+
             semiTransparent = currentCSS.subheadingSemiTransparent;
         } else if (tag.equals(CardDetailFragment.TAG_MAIN)) {
 
@@ -2049,6 +2077,8 @@ public class MainActivity extends FragmentActivity implements
             fontIndex = Arrays.asList(fontArray).indexOf(currentCSS.mainFont);
             sizeIndex = searchNearestIndex(sizeArray, (int) currentCSS.mainSize);
 
+            languageIndex = Arrays.asList(languageArray).indexOf(currentCSS.mainSize);//todo
+
             semiTransparent = currentCSS.mainSemiTransparent;
         } else if (tag.equals(CardDetailFragment.TAG_SUB)) {
 
@@ -2063,6 +2093,9 @@ public class MainActivity extends FragmentActivity implements
             colorIndex = Arrays.asList(colorArray).indexOf(currentCSS.subColor);
             fontIndex = Arrays.asList(fontArray).indexOf(currentCSS.subFont);
             sizeIndex = searchNearestIndex(sizeArray, (int) currentCSS.subSize);
+
+            languageIndex = Arrays.asList(languageArray).indexOf(currentCSS.subSize);//todo
+
             semiTransparent = currentCSS.subSemiTransparent;
 
         }
@@ -2075,6 +2108,7 @@ public class MainActivity extends FragmentActivity implements
         HighLightArrayAdapter adapterSize = (HighLightArrayAdapter) spinnerSize.getAdapter();
         HighLightArrayAdapter adapterAlign = (HighLightArrayAdapter) spinnerAlign.getAdapter();
         HighLightArrayAdapter adapterColor = (HighLightArrayAdapter) spinnerColor.getAdapter();
+        HighLightArrayAdapter adapterLanguage = (HighLightArrayAdapter) spinnerLanguage.getAdapter();
 
         ArrayList fontIndexList = new ArrayList<Integer>();
         fontIndexList.add(Integer.valueOf(fontIndex));
@@ -2095,6 +2129,10 @@ public class MainActivity extends FragmentActivity implements
         alignIndexList.add(Integer.valueOf(alignHorizontalIndex));
         alignIndexList.add(Integer.valueOf(alignVerticalIndex));
         adapterAlign.setSelection(alignIndexList);
+
+        ArrayList languageIndexList = new ArrayList<Integer>();
+        languageIndexList.add(Integer.valueOf(languageIndex));
+        adapterLanguage.setSelection(languageIndexList);
     }
 
 

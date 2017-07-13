@@ -93,5 +93,26 @@
         <item>130</item>
     </string-array>
 
+    <string-array
+        name="css_language">
+        <item>@string/ToolbarItem_Language</item>
+        <item>11</item>
+        <item>12</item>
+        <item>14</item>
+        <item>18</item>
+        <item>24</item>
+        <item>28</item>
+        <item>32</item>
+        <item>36</item>
+        <item>40</item>
+        <item>45</item>
+        <item>50</item>
+        <item>55</item>
+        <item>60</item>
+        <item>80</item>
+        <item>100</item>
+        <item>130</item>
+    </string-array>
+
 
 </resources>

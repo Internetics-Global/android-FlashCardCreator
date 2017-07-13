@@ -73,17 +73,30 @@
             android:layout_toLeftOf="@id/spinner_color"
             />
 
+    <com.flipflash.UI.NoDefaultSpinner
+        android:id="@+id/spinner_language"
+        android:gravity="center"
+        android:layout_width="@dimen/csstoolbar_button_width"
+        android:layout_height="match_parent"
+        android:entries="@array/css_language"
+        android:background="@drawable/selector_csstoolbar_button"
+        android:layout_margin="5dp"
+        android:layout_toLeftOf="@id/spinner_size"
+        />
+
     <Button
             android:id="@+id/csstoolbar_symbol_btn"
             android:layout_width="@dimen/csstoolbar_button_width"
             android:layout_height="match_parent"
             android:gravity="center"
             android:textSize="@dimen/csstoolbar_text_size"
-            android:layout_toLeftOf="@id/spinner_size"
+            android:layout_toLeftOf="@id/spinner_language"
             android:layout_margin="5dp"
             android:background="@drawable/selector_csstoolbar_button"
             style="@style/BlackButtonText"
             android:text="@string/ToolbarItem_Symbol"/>
+
+
 
 
 </RelativeLayout>

@@ -187,6 +187,7 @@
     <string name="ToolbarItem_Size">Size</string>
     <string name="ToolbarItem_Color">Color</string>
     <string name="ToolbarItem_Symbol">Symbol</string>
+    <string name="ToolbarItem_Language">Language</string>
     <string name="ToolbarItem_Keyboard">Keyboard</string>
     <string name="ToolbarItem_Back">Back</string>
     <string name="ToolbarItem_Done">Done</string>
