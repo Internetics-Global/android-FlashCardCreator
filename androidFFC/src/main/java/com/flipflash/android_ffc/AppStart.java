@@ -13,6 +13,7 @@ import android.util.DisplayMetrics;
 import android.util.Log;
 
 import com.flipflash.helper.SQLiteHelper;
+import com.flipflash.helper.Text2SpeechHelper;
 import com.flipflash.util.Global;
 import com.flipflash.util.MutipleTargetHelper;
 import com.google.android.gms.common.ConnectionResult;
@@ -76,6 +77,8 @@ public class AppStart extends Activity {
 
         collectDeviceInfoForDebugging();
 
+        Text2SpeechHelper.sharedHelper().setup();
+
         if (true) {
             mHandler.sendEmptyMessageDelayed(0,200);
             return;
@@ -114,6 +117,7 @@ public class AppStart extends Activity {
             Log.d("lvl","lvl check passed and go on");
             mHandler.sendEmptyMessageDelayed(0,200);
         }
+
 
     }
 

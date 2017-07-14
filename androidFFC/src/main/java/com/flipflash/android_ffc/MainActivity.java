@@ -108,6 +108,7 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
 import java.util.concurrent.ExecutorService;
@@ -1817,8 +1818,9 @@ public class MainActivity extends FragmentActivity implements
         adapterSize.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinnerSize.setAdapter(adapterSize);
 
+        String[] myIntArray = {"1","2","3"};
         HighLightArrayAdapter adpaterLanguage = new HighLightArrayAdapter(this,
-                R.layout.spinner,getResources().getStringArray(R.array.css_language));
+                R.layout.spinner,myIntArray);
         adpaterLanguage.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinnerLanguage.setAdapter(adpaterLanguage);
 
