@@ -1,22 +1,10 @@
 package com.flipflash.helper;
 
-import android.content.Context;
-import android.media.AudioManager;
-import android.media.MediaPlayer;
-import android.media.MediaRecorder;
 import android.speech.tts.TextToSpeech;
-import android.support.v7.app.AlertDialog;
-import android.widget.ArrayAdapter;
 
-import com.flipflash.android_ffc.SelectText2SpeechLanguageActivity;
-import com.flipflash.fragment.CardDetailFragment;
-import com.flipflash.helper.Dropbox.DropboxAuthHelper;
 import com.flipflash.util.AppContext;
 import com.orhanobut.hawk.Hawk;
 
-import junit.framework.Assert;
-
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -36,7 +24,7 @@ public class Text2SpeechHelper {
     /*
      * key is the format of "zh-tw", value is display name: Chinese (Taiwan)
      */
-    HashMap<String,String>       mLanguageLocalePairings = getLanguageLocalePairings();
+    HashMap<String,String>       mLanguageLocalePairings = getMapsBetweenLanguageLocalAndDescription();
 
     List<Locale>                 mAllAvailableLocaleList;
 
@@ -118,7 +106,7 @@ public class Text2SpeechHelper {
     }
 
 
-    public HashMap getLanguageLocalePairings() {
+    public HashMap getMapsBetweenLanguageLocalAndDescription() {
 
         HashMap<String,String> dict = new HashMap();
         dict.put("ar-SA","Arabic (Saudi Arabia) ");
@@ -167,7 +155,7 @@ public class Text2SpeechHelper {
 
     }
 
-    private String getSelectedText2SpeechLanguage() {
+    public String getSelectedText2SpeechLanguage() {
 
         if (Hawk.contains("Selected_Text2Speech_Language")) {
             return Hawk.get("Selected_Text2Speech_Language");
