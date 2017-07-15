@@ -99,6 +99,7 @@ import java.io.UnsupportedEncodingException;
 import java.lang.reflect.Field;
 import java.net.URLDecoder;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
@@ -5214,7 +5215,7 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnTouchL
 
 
     public ArrayList textToSpeechContentArray() {
-        ArrayList<String> arrayList = new ArrayList<String>();
+        ArrayList<HashMap> arrayList = new ArrayList<HashMap>();
 
         if (mIsQuestionShowing) {
 
@@ -5226,7 +5227,9 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnTouchL
                 String[] array = str.split("(?<=\n)|(?=\n)");
 
                 for (String itemStr :array) {
-                    arrayList.add(itemStr);
+                    HashMap myMap = new HashMap<String, String>();
+                    myMap.put("subheadingQuestion",itemStr);
+                    arrayList.add(myMap);
                 }
             }
             if (question.main.length() > 0) {
@@ -5235,7 +5238,9 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnTouchL
                 String[] array = str.split("(?<=\n)|(?=\n)");
 
                 for (String itemStr :array) {
-                    arrayList.add(itemStr);
+                    HashMap myMap = new HashMap<String, String>();
+                    myMap.put("mainQuestion",itemStr);
+                    arrayList.add(myMap);
                 }
             }
             if (question.sub.length() > 0) {
@@ -5244,8 +5249,16 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnTouchL
                 String[] array = str.split("(?<=\n)|(?=\n)");
 
                 for (String itemStr :array) {
-                    arrayList.add(itemStr);
+                    HashMap myMap = new HashMap<String, String>();
+                    myMap.put("subQuestion",itemStr);
+                    arrayList.add(myMap);
                 }
+            }
+
+            if (arrayList.size() == 0) {
+                HashMap myMap = new HashMap<String, String>();
+                myMap.put("subheadingQuestion","    ");
+                arrayList.add(myMap); //in auto delay mode, we need this. Otherwise, scroll could not go on since there's no content
             }
 
         } else {
@@ -5256,7 +5269,9 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnTouchL
                 String[] array = str.split("(?<=\n)|(?=\n)");
 
                 for (String itemStr :array) {
-                    arrayList.add(itemStr);
+                    HashMap myMap = new HashMap<String, String>();
+                    myMap.put("subheadingAnswer",itemStr);
+                    arrayList.add(myMap);
                 }
             }
             if (answer.main.length() > 0) {
@@ -5265,7 +5280,9 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnTouchL
                 String[] array = str.split("(?<=\n)|(?=\n)");
 
                 for (String itemStr :array) {
-                    arrayList.add(itemStr);
+                    HashMap myMap = new HashMap<String, String>();
+                    myMap.put("mainAnswer",itemStr);
+                    arrayList.add(myMap);
                 }
             }
             if (answer.sub.length() > 0) {
@@ -5274,14 +5291,19 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnTouchL
                 String[] array = str.split("(?<=\n)|(?=\n)");
 
                 for (String itemStr :array) {
-                    arrayList.add(itemStr);
+                    HashMap myMap = new HashMap<String, String>();
+                    myMap.put("subAnswer",itemStr);
+                    arrayList.add(myMap);
                 }
+            }
+
+            if (arrayList.size() == 0) {
+                HashMap myMap = new HashMap<String, String>();
+                myMap.put("subheadingAnswer","    ");
+                arrayList.add(myMap); //in auto delay mode, we need this. Otherwise, scroll could not go on since there's no content
             }
         }
 
-        if (arrayList.size() == 0) {
-            arrayList.add("    "); //in auto delay mode, we need this. Otherwise, scroll could not go on since there's no content
-        }
 
         return arrayList;
     }
