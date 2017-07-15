@@ -150,7 +150,7 @@ public class PlayActivity extends FragmentActivity implements SensorEventListene
      * 当isAutoShowQuestionOnly = true时，intervalBetweenCardSeconds ＝ mPauseForAnswerSeekBar
      * 当isAutoShowQuestionOnly ＝ false时,intervalBetweenCardSeconds = K_IntervalBetweenCardSeconds_ForQAOnly
      */
-    private final int      K_IntervalBetweenCardMilliSeconds_ForQAOnly      = 4000; //4 seconds
+    private final int      K_IntervalBetweenCardMilliSeconds_ForQAOnly      = 2000; //4 seconds
 
     private final int      K_Big_Enough_For_Endless_Repeated_Timer     =600000;
 
