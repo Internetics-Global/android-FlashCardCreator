@@ -285,6 +285,10 @@ public class PackBuildHelper {
         obj.put("main_semi_transparent", card.question.css.mainSemiTransparent?"1":"0");
         obj.put("sub_semi_transparent", card.question.css.subSemiTransparent?"1":"0");
 
+        obj.put("subheading_text2speech",card.question.css.subheadingText2SpeechSound);
+        obj.put("main_text2speech",card.question.css.mainText2SpeechSound);
+        obj.put("sub_text2speech",card.question.css.subText2SpeechSound);
+
         File savedPath = FileOperationHelper.getUploadCardQuestionJsonFile();
         FileWriter file;
         try {
@@ -337,6 +341,10 @@ public class PackBuildHelper {
         obj.put("subheading_semi_transparent", card.answer.css.subheadingSemiTransparent?"1":"0");
         obj.put("main_semi_transparent", card.answer.css.mainSemiTransparent?"1":"0");
         obj.put("sub_semi_transparent", card.answer.css.subSemiTransparent?"1":"0");
+
+        obj.put("subheading_text2speech",card.answer.css.subheadingText2SpeechSound);
+        obj.put("main_text2speech",card.answer.css.mainText2SpeechSound);
+        obj.put("sub_text2speech",card.answer.css.subText2SpeechSound);
 
         obj.put("background_image", StringUtils.lastComponentOfPath(card.answer.backgroundImageUriFormatStr));
         

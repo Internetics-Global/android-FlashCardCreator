@@ -606,6 +606,24 @@ public class PackParserHelper {
                 card.question.css.subSemiTransparent = false;
             }
 
+            if (questionObj.containsKey("subheading_text2speech")) {
+
+                String str = (String) questionObj.get("subheading_text2speech");
+                card.question.css.subheadingText2SpeechSound = str;
+            }
+
+            if (questionObj.containsKey("main_text2speech")) {
+
+                String str = (String) questionObj.get("main_text2speech");
+                card.question.css.mainText2SpeechSound = str;
+            }
+
+            if (questionObj.containsKey("sub_text2speech")) {
+
+                String str = (String) questionObj.get("sub_text2speech");
+                card.question.css.subText2SpeechSound = str;
+            }
+
             int subheadingSize;
             temp = null;
             if (questionObj.containsKey("subheading_size"))  {
@@ -997,6 +1015,24 @@ public class PackParserHelper {
                 card.answer.css.subSemiTransparent = "1".equals(answerObj.get("sub_semi_transparent"));
             } else {
                 card.answer.css.subSemiTransparent = false;
+            }
+
+            if (answerObj.containsKey("subheading_text2speech")) {
+
+                String str = (String) answerObj.get("subheading_text2speech");
+                card.answer.css.subheadingText2SpeechSound = str;
+            }
+
+            if (answerObj.containsKey("main_text2speech")) {
+
+                String str = (String) answerObj.get("main_text2speech");
+                card.answer.css.mainText2SpeechSound = str;
+            }
+
+            if (answerObj.containsKey("sub_text2speech")) {
+
+                String str = (String) answerObj.get("sub_text2speech");
+                card.answer.css.subText2SpeechSound = str;
             }
 
             temp = "";

@@ -17,17 +17,20 @@ public class CSS {
     public String subheadingAlignVertical;
     public String subheadingColor;
     public String subheadingFont;
-    public float subheadingSize;
+    public float  subheadingSize;
+    public String subheadingText2SpeechSound;
     public String mainAlign;
     public String mainAlignVertical;
     public String mainColor;
     public String mainFont;
-    public float mainSize;
+    public float  mainSize;
+    public String mainText2SpeechSound;
     public String subAlign;
     public String subAlignVertical;
     public String subColor;
     public String subFont;
-    public float subSize;
+    public float  subSize;
+    public String subText2SpeechSound;
 
     public boolean subheadingSemiTransparent;
     public boolean mainSemiTransparent;
@@ -56,6 +59,10 @@ public class CSS {
         copy.subheadingSemiTransparent = subheadingSemiTransparent;
         copy.mainSemiTransparent = mainSemiTransparent;
         copy.subSemiTransparent = subSemiTransparent;
+
+        copy.subheadingText2SpeechSound = subheadingText2SpeechSound;
+        copy.mainText2SpeechSound = mainText2SpeechSound;
+        copy.subText2SpeechSound = subText2SpeechSound;
 
 
         return copy;
@@ -122,6 +129,11 @@ public class CSS {
         subheadingSemiTransparent = ((Integer) dataDict.get("subheading_semi_transparent")) == 1;
         mainSemiTransparent = ((Integer) dataDict.get("main_semi_transparent")) == 1;
         subSemiTransparent = ((Integer) dataDict.get("sub_semi_transparent"))  == 1;
+
+        subheadingText2SpeechSound = (String) dataDict.get("subheading_text2speech");
+        mainText2SpeechSound = (String) dataDict.get("main_text2speech");
+        subText2SpeechSound = (String) dataDict.get("sub_text2speech");
+
         return this;
     }
 
@@ -153,6 +165,11 @@ public class CSS {
                 cssDict.put("subheading_semi_transparent", cur.getInt(16));
                 cssDict.put("main_semi_transparent", cur.getInt(17));
                 cssDict.put("sub_semi_transparent", cur.getInt(18));
+
+                cssDict.put("subheading_text2speech", cur.getInt(19));
+                cssDict.put("main_text2speech", cur.getInt(20));
+                cssDict.put("sub_text2speech", cur.getInt(21));
+
                 break;
             }
         } finally {
@@ -174,7 +191,7 @@ public class CSS {
     }
 
     private void update(Context context) {
-        String query = String.format("UPDATE CSS_Tables SET subheading_size=%d, subheading_align=\"%s\", subheading_color=\"%s\", main_size=%d, main_align=\"%s\", main_color=\"%s\",sub_size=%d, sub_align=\"%s\", sub_color=\"%s\", subheading_font=\"%s\", main_font=\"%s\", sub_font=\"%s\", subheading_align_vertical=\"%s\", main_align_vertical=\"%s\", sub_align_vertical=\"%s\",subheading_semi_transparent=%d, main_semi_transparent=%d, sub_semi_transparent=%d WHERE css_id=%d", (int)subheadingSize, subheadingAlign, subheadingColor, (int)mainSize, mainAlign, mainColor, (int)subSize, subAlign, subColor, subheadingFont,mainFont,subFont,subheadingAlignVertical,mainAlignVertical,subAlignVertical,subheadingSemiTransparent?1:0,mainSemiTransparent?1:0,subSemiTransparent?1:0, cssID);
+        String query = String.format("UPDATE CSS_Tables SET subheading_size=%d, subheading_align=\"%s\", subheading_color=\"%s\", main_size=%d, main_align=\"%s\", main_color=\"%s\",sub_size=%d, sub_align=\"%s\", sub_color=\"%s\", subheading_font=\"%s\", main_font=\"%s\", sub_font=\"%s\", subheading_align_vertical=\"%s\", main_align_vertical=\"%s\", sub_align_vertical=\"%s\",subheading_semi_transparent=%d, main_semi_transparent=%d, sub_semi_transparent=%d, subheading_text2speech=\"%s\", main_text2speech=\"%s\", sub_text2speech=\"%s\" WHERE css_id=%d", (int)subheadingSize, subheadingAlign, subheadingColor, (int)mainSize, mainAlign, mainColor, (int)subSize, subAlign, subColor, subheadingFont,mainFont,subFont,subheadingAlignVertical,mainAlignVertical,subAlignVertical,subheadingSemiTransparent?1:0,mainSemiTransparent?1:0,subSemiTransparent?1:0, subheadingText2SpeechSound,mainText2SpeechSound, subText2SpeechSound, cssID);
         SQLiteHelper.defaultDatabase(context).execSQL(query);
     }
 
@@ -184,7 +201,7 @@ public class CSS {
             cssID = SQLiteHelper.getMaxValueForColumn(context, "css_id", "CSS_Tables") + 1;
         }
 
-        String query = String.format("INSERT INTO CSS_Tables(css_id, subheading_size, subheading_align, subheading_color, main_size, main_align, main_color, sub_size, sub_align, sub_color,subheading_font,main_font,sub_font,subheading_align_vertical,main_align_vertical,sub_align_vertical,subheading_semi_transparent,main_semi_transparent,sub_semi_transparent) VALUES (%d,%d, \"%s\", \"%s\", %d, \"%s\", \"%s\", %d, \"%s\", \"%s\", \"%s\", \"%s\", \"%s\", \"%s\", \"%s\", \"%s\",%d, %d, %d)", cssID, (int)subheadingSize, subheadingAlign, subheadingColor, (int)mainSize, mainAlign, mainColor, (int)subSize, subAlign, subColor,subheadingFont,mainFont,subFont,subheadingAlignVertical,mainAlignVertical,subAlignVertical,subheadingSemiTransparent?1:0,mainSemiTransparent?1:0,subSemiTransparent?1:0);
+        String query = String.format("INSERT INTO CSS_Tables(css_id, subheading_size, subheading_align, subheading_color, main_size, main_align, main_color, sub_size, sub_align, sub_color,subheading_font,main_font,sub_font,subheading_align_vertical,main_align_vertical,sub_align_vertical,subheading_semi_transparent,main_semi_transparent,sub_semi_transparent,subheading_text2speech,main_text2speech,sub_text2speech) VALUES (%d,%d, \"%s\", \"%s\", %d, \"%s\", \"%s\", %d, \"%s\", \"%s\", \"%s\", \"%s\", \"%s\", \"%s\", \"%s\", \"%s\",%d, %d, %d,\"%s\",\"%s\",\"%s\")", cssID, (int)subheadingSize, subheadingAlign, subheadingColor, (int)mainSize, mainAlign, mainColor, (int)subSize, subAlign, subColor,subheadingFont,mainFont,subFont,subheadingAlignVertical,mainAlignVertical,subAlignVertical,subheadingSemiTransparent?1:0,mainSemiTransparent?1:0,subSemiTransparent?1:0, subheadingText2SpeechSound,mainText2SpeechSound,subText2SpeechSound);
         SQLiteHelper.defaultDatabase(context).execSQL(query);
 
     }
