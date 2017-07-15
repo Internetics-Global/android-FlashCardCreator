@@ -148,18 +148,20 @@ public class Text2SpeechHelper {
 
     }
 
-    public List<Locale> getAllVText2SpeechLocales() {
+    private List<Locale> getAllVText2SpeechLocales() {
         return mAllAvailableLocaleList;
     }
 
-    public static  String getLanguageLocaleStringFrom(Locale locale) {
+    private static  String getLanguageLocaleStringFrom(Locale locale) {
 
         return locale.getLanguage() + "-" + locale.getCountry();
 
     }
 
 
-    public HashMap getMapsBetweenLanguageLocalAndDescription() {
+
+
+    private HashMap getMapsBetweenLanguageLocalAndDescription() {
 
         HashMap<String,String> dict = new HashMap();
         dict.put("ar-SA","Arabic (Saudi Arabia) ");
@@ -231,5 +233,33 @@ public class Text2SpeechHelper {
 
     }
 
+
+    public ArrayList<String> availableLanguageLocalStringList() {
+        ArrayList<String> resultList = new ArrayList<>();
+        for (int i =0; i < mAllAvailableLocaleList.size(); i++) {
+            resultList.add(getLanguageLocaleStringFrom(mAllAvailableLocaleList.get(i)));
+        }
+
+        return resultList;
+    }
+
+    public ArrayList<String> availableDescriptionList() {
+
+        ArrayList<String> resultList = new ArrayList<>();
+
+        HashMap<String,String> map = getMapsBetweenLanguageLocalAndDescription();
+
+        for (int i =0; i < mAllAvailableLocaleList.size(); i++) {
+            String key = getLanguageLocaleStringFrom(mAllAvailableLocaleList.get(i));
+            String displayStr = map.get(key);
+            if (displayStr == null) {
+                displayStr = key;
+            }
+            resultList.add(displayStr);
+        }
+
+        return resultList;
+
+    }
 
 }

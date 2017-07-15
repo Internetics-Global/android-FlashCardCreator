@@ -16,9 +16,7 @@ import android.widget.TextView;
 import com.flipflash.helper.Text2SpeechHelper;
 
 
-import java.util.HashMap;
 import java.util.List;
-import java.util.Locale;
 
 import static com.flipflash.util.LogUtils.LOGD;
 import static com.flipflash.util.LogUtils.LOGE;
@@ -33,21 +31,16 @@ public class SelectText2SpeechLanguageActivity extends Activity {
 
     ListView                      mListView;
 
-    /*
-     * key is the format of "zh-tw", value is display name: Chinese (Taiwan)
-     */
-    HashMap<String,String>        mMapBetweenLanguageLocaleAndDescription;
-
-    List<Locale>                  mAllAvailableLocaleList;
+    List<String>                  mAvailableLanguageLocaleStringList;
+    List<String>                  mAvailableDescriptionList;
 
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
         LOGD(TAG, "onCreate:");
 
-        mMapBetweenLanguageLocaleAndDescription = Text2SpeechHelper.sharedHelper().getMapsBetweenLanguageLocalAndDescription();
-
-        mAllAvailableLocaleList = Text2SpeechHelper.sharedHelper().getAllVText2SpeechLocales();;
+        mAvailableLanguageLocaleStringList = Text2SpeechHelper.sharedHelper().availableLanguageLocalStringList();
+        mAvailableDescriptionList = Text2SpeechHelper.sharedHelper().availableDescriptionList();
 
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
         setContentView(R.layout.select_speech_language);
@@ -74,8 +67,7 @@ public class SelectText2SpeechLanguageActivity extends Activity {
 
     private void itemClicked(int position) {
 
-        Locale locale = mAllAvailableLocaleList.get(position);
-        String str = Text2SpeechHelper.getLanguageLocaleStringFrom(locale);
+        String str = mAvailableLanguageLocaleStringList.get(position);
 
         Text2SpeechHelper.sharedHelper().setSelectedLanguageLocalString(str);
         ((ArrayAdapter) mListView.getAdapter()).notifyDataSetChanged();
@@ -93,7 +85,7 @@ public class SelectText2SpeechLanguageActivity extends Activity {
 
         @Override
         public int getCount() {
-            return mAllAvailableLocaleList == null?0:mAllAvailableLocaleList.size();
+            return mAvailableLanguageLocaleStringList == null?0:mAvailableLanguageLocaleStringList.size();
         }
 
         @Override
@@ -102,18 +94,12 @@ public class SelectText2SpeechLanguageActivity extends Activity {
             convertView = inflater.inflate(R.layout.select_speech_language_listview_item, parent, false);
             TextView titleTextView = (TextView) convertView.findViewById(R.id.title_textview);
 
-            Locale locale = mAllAvailableLocaleList.get(position);
-            String languageAndLocaleString = Text2SpeechHelper.getLanguageLocaleStringFrom(locale);
-
-            String displayStr = mMapBetweenLanguageLocaleAndDescription.get(languageAndLocaleString);
-            if (displayStr == null) {
-                displayStr = languageAndLocaleString;
-            }
-
+            String displayStr = mAvailableDescriptionList.get(position);
             titleTextView.setText(displayStr);
+            String languageLocalString = mAvailableLanguageLocaleStringList.get(position);
 
             Button checkedButton = (Button) convertView.findViewById(R.id.checked_button);
-            if (languageAndLocaleString.equals(Text2SpeechHelper.sharedHelper().getSelectedLanguageLocalString())) {
+            if (languageLocalString.equals(Text2SpeechHelper.sharedHelper().getSelectedLanguageLocalString())) {
                 checkedButton.setVisibility(View.VISIBLE);
             } else {
                 checkedButton.setVisibility(View.INVISIBLE);
