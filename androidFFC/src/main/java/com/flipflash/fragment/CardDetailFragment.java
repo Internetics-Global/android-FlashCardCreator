@@ -529,9 +529,11 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnTouchL
 
         SimpleDraweeView gifImageView = (SimpleDraweeView) mContentView.findViewById(R.id.transparent_finger_animation_gif);
 
-        Animatable animatable = gifImageView.getController().getAnimatable();
-        if (animatable != null) {
-            animatable.stop();
+        if (gifImageView.getController() != null) {
+            Animatable animatable = gifImageView.getController().getAnimatable();
+            if (animatable != null) {
+                animatable.stop();
+            }
         }
 
         gifImageView.setController(null);
