@@ -28,17 +28,17 @@ import static com.flipflash.util.LogUtils.LOGE;
  */
 public class SelectText2SpeechLanguageActivity extends Activity {
 
-    ListView               mListView;
+    private static final String TAG = PlayActivity.class.getSimpleName();
+
+
+    ListView                      mListView;
 
     /*
      * key is the format of "zh-tw", value is display name: Chinese (Taiwan)
      */
-    HashMap<String,String> mMapBetweenLanguageLocaleAndDescription;
+    HashMap<String,String>        mMapBetweenLanguageLocaleAndDescription;
 
-    List<Locale>                 mAllAvailableLocaleList;
-
-    private static final String TAG = PlayActivity.class.getSimpleName();
-
+    List<Locale>                  mAllAvailableLocaleList;
 
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -50,11 +50,8 @@ public class SelectText2SpeechLanguageActivity extends Activity {
         mAllAvailableLocaleList = Text2SpeechHelper.sharedHelper().getAllVText2SpeechLocales();;
 
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
-
         setContentView(R.layout.select_speech_language);
-
         setTitle(getString(R.string.Table_Item_Speech_Language_Select));
-
         setupListView();
 
     }
@@ -78,9 +75,9 @@ public class SelectText2SpeechLanguageActivity extends Activity {
     private void itemClicked(int position) {
 
         Locale locale = mAllAvailableLocaleList.get(position);
-        String str = Text2SpeechHelper.sharedHelper().getLanguageAndLocaleString(locale);
+        String str = Text2SpeechHelper.getLanguageLocaleStringFrom(locale);
 
-        Text2SpeechHelper.sharedHelper().setSelectedText2SpeechLanguage(str);
+        Text2SpeechHelper.sharedHelper().setSelectedLanguageLocalString(str);
         ((ArrayAdapter) mListView.getAdapter()).notifyDataSetChanged();
 
     }
@@ -106,17 +103,17 @@ public class SelectText2SpeechLanguageActivity extends Activity {
             TextView titleTextView = (TextView) convertView.findViewById(R.id.title_textview);
 
             Locale locale = mAllAvailableLocaleList.get(position);
-            String key = Text2SpeechHelper.sharedHelper().getLanguageAndLocaleString(locale);
+            String languageAndLocaleString = Text2SpeechHelper.getLanguageLocaleStringFrom(locale);
 
-            String displayStr = mMapBetweenLanguageLocaleAndDescription.get(key);
+            String displayStr = mMapBetweenLanguageLocaleAndDescription.get(languageAndLocaleString);
             if (displayStr == null) {
-                displayStr = key;
+                displayStr = languageAndLocaleString;
             }
 
             titleTextView.setText(displayStr);
 
             Button checkedButton = (Button) convertView.findViewById(R.id.checked_button);
-            if (key.equals(Text2SpeechHelper.sharedHelper().getSelectedText2SpeechLanguage())) {
+            if (languageAndLocaleString.equals(Text2SpeechHelper.sharedHelper().getSelectedLanguageLocalString())) {
                 checkedButton.setVisibility(View.VISIBLE);
             } else {
                 checkedButton.setVisibility(View.INVISIBLE);
