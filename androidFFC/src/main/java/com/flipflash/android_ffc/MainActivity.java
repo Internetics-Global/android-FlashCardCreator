@@ -2113,7 +2113,7 @@ public class MainActivity extends FragmentActivity implements
         }
 
         if (languageIndex == -1) {
-            languageIndex = Text2SpeechHelper.sharedHelper().availableLanguageLocalStringList().indexOf(Global.DEFAULT_TEXT2SPEECH_LANGUAGE_LOCALE);
+            languageIndex = Text2SpeechHelper.sharedHelper().availableLanguageLocalStringList().indexOf(Global.DEFAULT_TEXT2SPEECH_LANGUAGE_LOCALE) + 1;
         }
 
         HighLightArrayAdapter adapterFont = (HighLightArrayAdapter) spinnerFont.getAdapter();

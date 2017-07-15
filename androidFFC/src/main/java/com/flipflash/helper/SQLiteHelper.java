@@ -138,8 +138,8 @@ public class SQLiteHelper {
                     + "main_size" + " INTEGER," + "main_align" + " TEXT,"
                     + "main_color" + " TEXT," + "sub_size" + " INTEGER,"
                     + "sub_align" + " TEXT," + "sub_color" + " TEXT," + "subheading_font" + " TEXT," + "main_font" + " TEXT,"+ "sub_font" + " TEXT,"+ "subheading_align_vertical" + " TEXT,"+ "main_align_vertical" + " TEXT," + "sub_align_vertical" + " TEXT,"
-                    + "subheading_text2speech" + " TEXT," + "main_text2speech" + " TEXT," + "sub_text2speech" + " TEXT,"
-                    + "subheading_semi_transparent" + " INTEGER," + "main_semi_transparent" + " INTEGER," + "sub_semi_transparent" + " INTEGER)");
+                    + "subheading_semi_transparent" + " INTEGER," + "main_semi_transparent" + " INTEGER," + "sub_semi_transparent" + " INTEGER,"
+                    + "subheading_text2speech" + " TEXT," + "main_text2speech" + " TEXT," + "sub_text2speech" + " TEXT)");
             db.execSQL("CREATE INDEX IF NOT EXISTS IA on CSS_Tables(css_id)");
 
 

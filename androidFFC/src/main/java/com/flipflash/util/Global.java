@@ -167,7 +167,7 @@ public class Global {
     /*
      * default text2speech language
      */
-    public static final String DEFAULT_TEXT2SPEECH_LANGUAGE_LOCALE = "en-AU";
+    public static final String DEFAULT_TEXT2SPEECH_LANGUAGE_LOCALE = "en-GB";
 
 
     /**
