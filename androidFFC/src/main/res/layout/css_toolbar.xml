@@ -78,7 +78,6 @@
         android:gravity="center"
         android:layout_width="@dimen/csstoolbar_button_width"
         android:layout_height="match_parent"
-        android:entries="@array/css_language"
         android:background="@drawable/selector_csstoolbar_button"
         android:layout_margin="5dp"
         android:layout_toLeftOf="@id/spinner_size"

@@ -70,6 +70,7 @@ import com.flipflash.helper.GoogleDrive.GoogleDriveAuthHelper;
 import com.flipflash.helper.GoogleDrive.GoogleDriveShareHelper;
 import com.flipflash.helper.GoogleDrive.GoogleDriveUploadHelper;
 import com.flipflash.helper.GoogleDrive.GoogleDrive_Constant;
+import com.flipflash.helper.Text2SpeechHelper;
 import com.flipflash.model.CardListModel;
 import com.flipflash.util.MutipleTargetHelper;
 import com.github.lzyzsd.circleprogress.DonutProgress;
@@ -109,6 +110,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
 import java.util.Timer;
 import java.util.TimerTask;
 import java.util.concurrent.ExecutorService;
@@ -195,6 +197,8 @@ public class MainActivity extends FragmentActivity implements
     private TextView             mCustomTitleTextView;
 
     private PackDownloadHelper   mPackDownloadHelper;
+
+    private String[]             mLanguageSpinnerArray;
 
 
     @Override
@@ -296,6 +300,11 @@ public class MainActivity extends FragmentActivity implements
         }
 
         EventBus.getDefault().register(MainActivity.this);
+
+
+        ArrayList<String> languageList = Text2SpeechHelper.sharedHelper().availableDescriptionList();
+        languageList.add(0,getString(R.string.ToolbarItem_Language));
+        mLanguageSpinnerArray = languageList.toArray(new String[languageList.size()]);
 
     }
 
@@ -1818,11 +1827,10 @@ public class MainActivity extends FragmentActivity implements
         adapterSize.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinnerSize.setAdapter(adapterSize);
 
-        String[] myIntArray = {"1","2","3"};
-        HighLightArrayAdapter adpaterLanguage = new HighLightArrayAdapter(this,
-                R.layout.spinner,myIntArray);
-        adpaterLanguage.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        spinnerLanguage.setAdapter(adpaterLanguage);
+        HighLightArrayAdapter adapterLanguage = new HighLightArrayAdapter(this,
+                R.layout.spinner,mLanguageSpinnerArray);
+        adapterLanguage.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        spinnerLanguage.setAdapter(adapterLanguage);
 
         spinnerFont.setSelection(0);
         spinnerAlign.setSelection(0);
@@ -2038,7 +2046,6 @@ public class MainActivity extends FragmentActivity implements
         String[] colorArray = getResources().getStringArray(R.array.css_color);
         String[] fontArray = getResources().getStringArray(R.array.css_font);
         int[]    sizeArray = ScaleHelper.getRealSizeIntArray(MainActivity.this);
-        String[] languageArray = getResources().getStringArray(R.array.css_language);
 
         int alignHorizontalIndex = -1; //no selected by default
         int alignVerticalIndex = -1; //no selected by default
@@ -2062,7 +2069,7 @@ public class MainActivity extends FragmentActivity implements
             fontIndex = Arrays.asList(fontArray).indexOf(currentCSS.subheadingFont);
             sizeIndex = searchNearestIndex(sizeArray, (int) currentCSS.subheadingSize);
 
-            languageIndex = Arrays.asList(languageArray).indexOf(currentCSS.subheadingFont);//todo
+            languageIndex = Arrays.asList(mLanguageSpinnerArray).indexOf(currentCSS.subheadingFont);//todo
 
             semiTransparent = currentCSS.subheadingSemiTransparent;
         } else if (tag.equals(CardDetailFragment.TAG_MAIN)) {
@@ -2079,7 +2086,7 @@ public class MainActivity extends FragmentActivity implements
             fontIndex = Arrays.asList(fontArray).indexOf(currentCSS.mainFont);
             sizeIndex = searchNearestIndex(sizeArray, (int) currentCSS.mainSize);
 
-            languageIndex = Arrays.asList(languageArray).indexOf(currentCSS.mainSize);//todo
+            languageIndex = Arrays.asList(mLanguageSpinnerArray).indexOf(currentCSS.mainSize);//todo
 
             semiTransparent = currentCSS.mainSemiTransparent;
         } else if (tag.equals(CardDetailFragment.TAG_SUB)) {
@@ -2096,7 +2103,7 @@ public class MainActivity extends FragmentActivity implements
             fontIndex = Arrays.asList(fontArray).indexOf(currentCSS.subFont);
             sizeIndex = searchNearestIndex(sizeArray, (int) currentCSS.subSize);
 
-            languageIndex = Arrays.asList(languageArray).indexOf(currentCSS.subSize);//todo
+            languageIndex = Arrays.asList(mLanguageSpinnerArray).indexOf(currentCSS.subSize);//todo
 
             semiTransparent = currentCSS.subSemiTransparent;
 
