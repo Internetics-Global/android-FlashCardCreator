@@ -166,9 +166,9 @@ public class CSS {
                 cssDict.put("main_semi_transparent", cur.getInt(17));
                 cssDict.put("sub_semi_transparent", cur.getInt(18));
 
-                cssDict.put("subheading_text2speech", cur.getInt(19));
-                cssDict.put("main_text2speech", cur.getInt(20));
-                cssDict.put("sub_text2speech", cur.getInt(21));
+                cssDict.put("subheading_text2speech", cur.getString(19));
+                cssDict.put("main_text2speech", cur.getString(20));
+                cssDict.put("sub_text2speech", cur.getString(21));
 
                 break;
             }
