@@ -4939,11 +4939,11 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnTouchL
                 ArrayList<String> list = Text2SpeechHelper.sharedHelper().availableLanguageLocalStringList();
 
                 if (editTextTag.equals(TAG_SUBHEADING)) {
-                    currentCSS.subheadingText2SpeechSound = list.get(subMenuID + 1);
+                    currentCSS.subheadingText2SpeechSound = list.get(subMenuID); //it's subMenuID + 1, rather than subMenuID
                 } else if (editTextTag.equals(TAG_MAIN)) {
-                    currentCSS.mainText2SpeechSound = list.get(subMenuID + 1);
+                    currentCSS.mainText2SpeechSound = list.get(subMenuID ); //it's subMenuID + 1, rather than subMenuID
                 } else if (editTextTag.equals(TAG_SUB)) {
-                    currentCSS.subText2SpeechSound = list.get(subMenuID + 1);
+                    currentCSS.subText2SpeechSound = list.get(subMenuID); //it's subMenuID + 1, rather than subMenuID
                 }
 
                 break;

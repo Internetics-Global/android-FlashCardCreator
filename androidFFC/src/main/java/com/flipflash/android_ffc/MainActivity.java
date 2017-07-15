@@ -2068,7 +2068,7 @@ public class MainActivity extends FragmentActivity implements
             fontIndex = Arrays.asList(fontArray).indexOf(currentCSS.subheadingFont);
             sizeIndex = searchNearestIndex(sizeArray, (int) currentCSS.subheadingSize);
 
-            languageIndex = Text2SpeechHelper.sharedHelper().availableLanguageLocalStringList().indexOf(currentCSS.subheadingText2SpeechSound);
+            languageIndex = Text2SpeechHelper.sharedHelper().availableLanguageLocalStringList().indexOf(currentCSS.subheadingText2SpeechSound) + 1;
 
             semiTransparent = currentCSS.subheadingSemiTransparent;
         } else if (tag.equals(CardDetailFragment.TAG_MAIN)) {
@@ -2085,7 +2085,7 @@ public class MainActivity extends FragmentActivity implements
             fontIndex = Arrays.asList(fontArray).indexOf(currentCSS.mainFont);
             sizeIndex = searchNearestIndex(sizeArray, (int) currentCSS.mainSize);
 
-            languageIndex = Text2SpeechHelper.sharedHelper().availableLanguageLocalStringList().indexOf(currentCSS.mainText2SpeechSound);
+            languageIndex = Text2SpeechHelper.sharedHelper().availableLanguageLocalStringList().indexOf(currentCSS.mainText2SpeechSound) + 1;
 
             semiTransparent = currentCSS.mainSemiTransparent;
         } else if (tag.equals(CardDetailFragment.TAG_SUB)) {
@@ -2102,7 +2102,7 @@ public class MainActivity extends FragmentActivity implements
             fontIndex = Arrays.asList(fontArray).indexOf(currentCSS.subFont);
             sizeIndex = searchNearestIndex(sizeArray, (int) currentCSS.subSize);
 
-            languageIndex = Text2SpeechHelper.sharedHelper().availableLanguageLocalStringList().indexOf(currentCSS.subText2SpeechSound);
+            languageIndex = Text2SpeechHelper.sharedHelper().availableLanguageLocalStringList().indexOf(currentCSS.subText2SpeechSound) + 1;
 
             semiTransparent = currentCSS.subSemiTransparent;
 
