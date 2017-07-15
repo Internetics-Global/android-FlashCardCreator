@@ -152,7 +152,7 @@ public class Text2SpeechHelper {
         return mAllAvailableLocaleList;
     }
 
-    private static  String getLanguageLocaleStringFrom(Locale locale) {
+    public static  String getLanguageLocaleStringFrom(Locale locale) {
 
         return locale.getLanguage() + "-" + locale.getCountry();
 

@@ -75,6 +75,7 @@ import com.flipflash.helper.FileOperationHelper;
 import com.flipflash.helper.PackRecordHelper;
 import com.flipflash.helper.SymbolHelper;
 
+import com.flipflash.helper.Text2SpeechHelper;
 import com.flipflash.model.LockObject;
 import com.flipflash.util.AppConfig;
 import com.flipflash.util.AppContext;
@@ -4929,6 +4930,18 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnTouchL
                 }
 
                 mCurrentFocusedCardContentText.setTypeface(FontHelper.fontFromArrayIndex(AppContext.getAppContext(), subMenuID));
+
+                break;
+            case 4:   //language
+                ArrayList<String> list = Text2SpeechHelper.sharedHelper().availableLanguageLocalStringList();
+
+                if (editTextTag.equals(TAG_SUBHEADING)) {
+                    currentCSS.subheadingText2SpeechSound = list.get(subMenuID + 1);
+                } else if (editTextTag.equals(TAG_MAIN)) {
+                    currentCSS.mainText2SpeechSound = list.get(subMenuID + 1);
+                } else if (editTextTag.equals(TAG_SUB)) {
+                    currentCSS.subText2SpeechSound = list.get(subMenuID + 1);
+                }
 
                 break;
             default:

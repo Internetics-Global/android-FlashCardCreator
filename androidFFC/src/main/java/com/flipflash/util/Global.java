@@ -164,6 +164,12 @@ public class Global {
     public static final int REQUEST_CODE_GOOGLE_DRIVE_REQUEST_PERMISSION = 322;
 
 
+    /*
+     * default text2speech language
+     */
+    public static final String DEFAULT_TEXT2SPEECH_LANGUAGE_LOCALE = "en-AU";
+
+
     /**
      * detect network
      *

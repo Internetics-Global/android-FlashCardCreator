@@ -131,8 +131,17 @@ public class CSS {
         subSemiTransparent = ((Integer) dataDict.get("sub_semi_transparent"))  == 1;
 
         subheadingText2SpeechSound = (String) dataDict.get("subheading_text2speech");
+        if (subheadingText2SpeechSound == null) {
+            subheadingText2SpeechSound = "";
+        }
         mainText2SpeechSound = (String) dataDict.get("main_text2speech");
+        if (mainText2SpeechSound == null) {
+            mainText2SpeechSound = "";
+        }
         subText2SpeechSound = (String) dataDict.get("sub_text2speech");
+        if (subText2SpeechSound == null) {
+            subText2SpeechSound = "";
+        }
 
         return this;
     }

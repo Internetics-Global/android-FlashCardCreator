@@ -42,6 +42,7 @@ import com.flipflash.data.Pack;
 import com.flipflash.data.User;
 import com.flipflash.fragment.CardDetailFragment;
 import com.flipflash.helper.AudioHelper;
+import com.flipflash.helper.Text2SpeechHelper;
 import com.flipflash.util.AppConfig;
 import com.flipflash.util.AppContext;
 import com.flipflash.util.Global;
@@ -1554,7 +1555,7 @@ public class PlayActivity extends FragmentActivity implements SensorEventListene
 
             Locale[] locales = Locale.getAvailableLocales();
             for (Locale item: locales) {
-                String itemStr = getLanguageAndLocaleString(item);
+                String itemStr = Text2SpeechHelper.getLanguageLocaleStringFrom(item);
                 if (itemStr.equals(savedStr)) {
                     locale = item;
                 }
@@ -1567,15 +1568,6 @@ public class PlayActivity extends FragmentActivity implements SensorEventListene
         }
 
         return locale;
-    }
-
-    /*
-     * There's another same method in SelectText2SpeechLanguageActivity, refactoring later
-    */
-    private String getLanguageAndLocaleString(Locale locale) {
-
-        return locale.getLanguage() + "-" + locale.getCountry();
-
     }
 
     /*

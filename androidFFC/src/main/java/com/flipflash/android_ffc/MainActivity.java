@@ -1970,10 +1970,9 @@ public class MainActivity extends FragmentActivity implements
         spinnerLanguage.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                //todo
-//                final CardDetailFragment activeCardDetailFragment = getActiveCardDetailFragment();
-//                if (position > 0)
-//                    activeCardDetailFragment.updateCSS(1, position - 1);
+                final CardDetailFragment activeCardDetailFragment = getActiveCardDetailFragment();
+                if (position > 0)
+                    activeCardDetailFragment.updateCSS(4, position - 1);
             }
 
             @Override
@@ -2052,7 +2051,7 @@ public class MainActivity extends FragmentActivity implements
         int colorIndex = -1; //no selected by default
         int fontIndex = 1;  // by default, it's default color, so it's 1
         int sizeIndex = -1;
-        int languageIndex = -1;  //todo
+        int languageIndex = -1;
 
         boolean semiTransparent = false;  //这个是非常特殊的,应客户要求属于colorArray,但其实从逻辑看很不合理
 
@@ -2069,7 +2068,7 @@ public class MainActivity extends FragmentActivity implements
             fontIndex = Arrays.asList(fontArray).indexOf(currentCSS.subheadingFont);
             sizeIndex = searchNearestIndex(sizeArray, (int) currentCSS.subheadingSize);
 
-            languageIndex = Arrays.asList(mLanguageSpinnerArray).indexOf(currentCSS.subheadingFont);//todo
+            languageIndex = Text2SpeechHelper.sharedHelper().availableLanguageLocalStringList().indexOf(currentCSS.subheadingText2SpeechSound);
 
             semiTransparent = currentCSS.subheadingSemiTransparent;
         } else if (tag.equals(CardDetailFragment.TAG_MAIN)) {
@@ -2086,7 +2085,7 @@ public class MainActivity extends FragmentActivity implements
             fontIndex = Arrays.asList(fontArray).indexOf(currentCSS.mainFont);
             sizeIndex = searchNearestIndex(sizeArray, (int) currentCSS.mainSize);
 
-            languageIndex = Arrays.asList(mLanguageSpinnerArray).indexOf(currentCSS.mainSize);//todo
+            languageIndex = Text2SpeechHelper.sharedHelper().availableLanguageLocalStringList().indexOf(currentCSS.mainText2SpeechSound);
 
             semiTransparent = currentCSS.mainSemiTransparent;
         } else if (tag.equals(CardDetailFragment.TAG_SUB)) {
@@ -2103,7 +2102,7 @@ public class MainActivity extends FragmentActivity implements
             fontIndex = Arrays.asList(fontArray).indexOf(currentCSS.subFont);
             sizeIndex = searchNearestIndex(sizeArray, (int) currentCSS.subSize);
 
-            languageIndex = Arrays.asList(mLanguageSpinnerArray).indexOf(currentCSS.subSize);//todo
+            languageIndex = Text2SpeechHelper.sharedHelper().availableLanguageLocalStringList().indexOf(currentCSS.subText2SpeechSound);
 
             semiTransparent = currentCSS.subSemiTransparent;
 
@@ -2111,6 +2110,10 @@ public class MainActivity extends FragmentActivity implements
 
         if (fontIndex == -1) {
             fontIndex = 1;  //我们必须这么做，因为我们希望默认是选择default，而不是什么都不选中
+        }
+
+        if (languageIndex == -1) {
+            languageIndex = Text2SpeechHelper.sharedHelper().availableLanguageLocalStringList().indexOf(Global.DEFAULT_TEXT2SPEECH_LANGUAGE_LOCALE);
         }
 
         HighLightArrayAdapter adapterFont = (HighLightArrayAdapter) spinnerFont.getAdapter();
