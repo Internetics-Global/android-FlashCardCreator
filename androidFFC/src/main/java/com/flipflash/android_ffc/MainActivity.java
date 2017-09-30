@@ -368,10 +368,6 @@ public class MainActivity extends FragmentActivity implements
                 sharePackMenuItem.setVisible(false);
             }
 
-            if (editPackMenuItem != null) {
-                editPackMenuItem.setIcon(R.drawable.pack_edit_dimmed);
-            }
-
 //            if (newPackMenuItem != null) {
 //                newPackMenuItem.setIcon(R.drawable.pack_add_dimmed);
 //            }
