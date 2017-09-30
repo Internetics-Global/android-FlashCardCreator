@@ -56,7 +56,7 @@
     <item
         android:id="@+id/actionbar_play"
         android:title="Play"
-        android:icon="@drawable/play_button"
+        android:icon="@drawable/play_revised_round"
         android:showAsAction="always">
     </item>
 
