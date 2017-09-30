@@ -150,6 +150,11 @@ public class Global {
     public static       boolean   checkLineNumberWhenResizeTextToFitFrame = true;
 
 
+    //show share action list again after a share action
+    public static       boolean   showActionListAgain = false;  //only for Email and Twitter. For Facebook, use FacebookShareFinishEvent
+    public static       int       activeShareStorage= -1;   // 0: Google Drive; 1: Dropbox; 2: AWS
+
+
     /*
      * for startActivityForResult
      */

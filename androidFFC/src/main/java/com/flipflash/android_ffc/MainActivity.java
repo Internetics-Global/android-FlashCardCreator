@@ -60,6 +60,7 @@ import com.flipflash.UI.SlideInRightWithoutAlphaAnimator;
 import com.flipflash.UI.SlideOutRightWithoutAlphaAnimator;
 import com.flipflash.data.CSS;
 import com.flipflash.event.DownloadCancelEvent;
+import com.flipflash.event.FacebookShareFinishEvent;
 import com.flipflash.event.MultiMediaFullscreenEvent;
 import com.flipflash.event.WebViewMessageEvent;
 import com.flipflash.fragment.PurchaseFragment;
@@ -199,6 +200,10 @@ public class MainActivity extends FragmentActivity implements
     private PackDownloadHelper   mPackDownloadHelper;
 
     private String[]             mLanguageSpinnerArray;
+
+    private GoogleDriveShareHelper mGoogleDriveShareHelper;
+    private DropboxShareHelper     mDropboxShareHelper;
+    private AWSShareHelper         mAWSShareHelper;
 
 
     @Override
@@ -850,34 +855,39 @@ public class MainActivity extends FragmentActivity implements
         getIntent().setData(null); //in case it will be recalled time and time
 
         //Used to show pack list
-        if (mIsAllowedToShowPackList &&
-                ((mPackDownloadHelper != null && mPackDownloadHelper.isDownloading() == false) || (mPackDownloadHelper == null))) {
+        if (Global.showActionListAgain) {
+            Global.showActionListAgain = false;
+            reShowShareSocialListAlert();
+        } else {
+            if (mIsAllowedToShowPackList &&
+                    ((mPackDownloadHelper != null && mPackDownloadHelper.isDownloading() == false) || (mPackDownloadHelper == null))) {
 
-            final View appMainView = findViewById(R.id.app_main);
+                final View appMainView = findViewById(R.id.app_main);
 
-            if (appMainView.getHeight() > 0 && appMainView.getWidth() > 0) {
-                //如果已经渲染完毕
-                showPackListView();
-            } else {
-                appMainView.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
-                    @Override
-                    public void onGlobalLayout() {
-                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
-                            appMainView.getViewTreeObserver().removeOnGlobalLayoutListener(this);
-                        } else {
-                            appMainView.getViewTreeObserver().removeGlobalOnLayoutListener(this);
-                        }
-                        Handler handler = new Handler();
-                        handler.postDelayed(new Runnable() {
-                            @Override
-                            public void run() {
-                                showPackListView();//放在Handler中是一个trick，实际发现，如果没有这个，则不会显示pack list
+                if (appMainView.getHeight() > 0 && appMainView.getWidth() > 0) {
+                    //如果已经渲染完毕
+                    showPackListView();
+                } else {
+                    appMainView.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
+                        @Override
+                        public void onGlobalLayout() {
+                            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
+                                appMainView.getViewTreeObserver().removeOnGlobalLayoutListener(this);
+                            } else {
+                                appMainView.getViewTreeObserver().removeGlobalOnLayoutListener(this);
                             }
+                            Handler handler = new Handler();
+                            handler.postDelayed(new Runnable() {
+                                @Override
+                                public void run() {
+                                    showPackListView();//放在Handler中是一个trick，实际发现，如果没有这个，则不会显示pack list
+                                }
 
-                        }, 100); // 100ms delay
+                            }, 100); // 100ms delay
 
-                    }
-                });
+                        }
+                    });
+                }
             }
         }
 
@@ -1640,13 +1650,15 @@ public class MainActivity extends FragmentActivity implements
     private void shareToDropbox() {
         LOGD(TAG, "share");
 
+        Global.activeShareStorage = 1;
+
         if ((mCurrentPack.creatorID).equals(OpenUDID_manager.getOpenUDID())) {
 
             setPasswordAndUpload();
 
         } else {
-            DropboxShareHelper dropboxShareHelper = new DropboxShareHelper(this,mCurrentPack,null,true);
-            dropboxShareHelper.share();
+            mDropboxShareHelper = new DropboxShareHelper(this,mCurrentPack,null,true);
+            mDropboxShareHelper.share();
 
         }
     }
@@ -1655,13 +1667,15 @@ public class MainActivity extends FragmentActivity implements
     private void shareToGoogleDrive() {
         LOGD(TAG, "share");
 
+        Global.activeShareStorage = 0;
+
         if ((mCurrentPack.creatorID).equals(OpenUDID_manager.getOpenUDID())) {
 
             setPasswordAndUpload();
 
         } else {
-            GoogleDriveShareHelper googleDriveShareHelper = new GoogleDriveShareHelper(this,mCurrentPack,true,null);
-            googleDriveShareHelper.share();
+            mGoogleDriveShareHelper = new GoogleDriveShareHelper(this,mCurrentPack,true,null);
+            mGoogleDriveShareHelper.share();
 
         }
     }
@@ -1669,13 +1683,15 @@ public class MainActivity extends FragmentActivity implements
     private void shareToAWS() {
         LOGD(TAG, "share");
 
+        Global.activeShareStorage = 2;
+
         if ((mCurrentPack.creatorID).equals(OpenUDID_manager.getOpenUDID())) {
 
             setPasswordAndUpload();
 
         } else {
-            AWSShareHelper AWSShareHelper = new AWSShareHelper(this,mCurrentPack,true);
-            AWSShareHelper.share();
+            mAWSShareHelper = new AWSShareHelper(this,mCurrentPack,true);
+            mAWSShareHelper.share();
 
         }
     }
@@ -2419,8 +2435,8 @@ public class MainActivity extends FragmentActivity implements
 
                     Toast.makeText(getApplicationContext(), R.string.DIALOG_UPLOAD_SUCCESSFULLY, Toast.LENGTH_SHORT).show();
 
-                    DropboxShareHelper dropboxShareHelper = new DropboxShareHelper(MainActivity.this,mCurrentPack,filePathInDropbox,false);
-                    dropboxShareHelper.execute();
+                    mDropboxShareHelper = new DropboxShareHelper(MainActivity.this,mCurrentPack,filePathInDropbox,false);
+                    mDropboxShareHelper.execute();
 
                     break;
                 }
@@ -2475,8 +2491,8 @@ public class MainActivity extends FragmentActivity implements
 
                     Toast.makeText(getApplicationContext(), R.string.DIALOG_UPLOAD_SUCCESSFULLY, Toast.LENGTH_SHORT).show();
 
-                    GoogleDriveShareHelper googleDriveShareHelper = new GoogleDriveShareHelper(MainActivity.this,mCurrentPack,false,googleDriveShareLink);
-                    googleDriveShareHelper.execute();
+                    mGoogleDriveShareHelper = new GoogleDriveShareHelper(MainActivity.this,mCurrentPack,false,googleDriveShareLink);
+                    mGoogleDriveShareHelper.execute();
 
                     break;
                 }
@@ -2525,8 +2541,8 @@ public class MainActivity extends FragmentActivity implements
 
                         Toast.makeText(getApplicationContext(), R.string.DIALOG_UPLOAD_SUCCESSFULLY, Toast.LENGTH_SHORT).show();
 
-                        AWSShareHelper AWSShareHelper = new AWSShareHelper(MainActivity.this, mCurrentPack,false);
-                        AWSShareHelper.execute();
+                        mAWSShareHelper = new AWSShareHelper(MainActivity.this, mCurrentPack,false);
+                        mAWSShareHelper.execute();
 
                     } else {
                         if (mUploadProgressDialog.isShowing() == false) {
@@ -2734,6 +2750,27 @@ public class MainActivity extends FragmentActivity implements
 
         mIsAllowedToShowPackList = false;
 
+    }
+
+    public void onEventMainThread(FacebookShareFinishEvent event) {
+        reShowShareSocialListAlert();
+    }
+
+    private void reShowShareSocialListAlert() {
+        if (Global.activeShareStorage == 0) {
+            if (mGoogleDriveShareHelper != null) {
+                mGoogleDriveShareHelper.showShareSocialListAlert();
+            }
+        } else if (Global.activeShareStorage == 1) {
+            if (mDropboxShareHelper != null) {
+                mDropboxShareHelper.showShareSocialListAlert();
+            }
+
+        } else if (Global.activeShareStorage == 2) {
+            if (mAWSShareHelper != null) {
+                mAWSShareHelper.showShareSocialListAlert();
+            }
+        }
     }
 
 

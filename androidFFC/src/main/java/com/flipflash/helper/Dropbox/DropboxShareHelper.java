@@ -25,6 +25,7 @@ import com.dropbox.core.v2.sharing.ListSharedLinksResult;
 import com.dropbox.core.v2.sharing.SharedLinkMetadata;
 import com.flipflash.android_ffc.R;
 import com.flipflash.data.Pack;
+import com.flipflash.event.FacebookShareFinishEvent;
 import com.flipflash.helper.AWS.SimpleDBHelper;
 import com.flipflash.helper.PackRecordHelper;
 import com.flipflash.util.AppContext;
@@ -51,6 +52,8 @@ import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
+
+import de.greenrobot.event.EventBus;
 
 import static com.flipflash.util.LogUtils.LOGD;
 
@@ -329,24 +332,28 @@ public class DropboxShareHelper extends AsyncTask<Void, Long, Boolean> {
         }
 
         if (mCurrentPack.shareLink != null) {
-            new AlertDialog.Builder(mActivity)
-                    .setTitle("Share")
-                    .setItems(new String[] {"Facebook","Twitter","Email","Copy","Exit"}, new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialog, int which) {
-                            dialog.dismiss();
-                            if (which != 4) {
-                                shareActionOnItemSelected(which,mCurrentPack.shareLink);
-                            }
-                        }
-                    })
-                    .setCancelable(false)
-                    .show();
+            showShareSocialListAlert();
         } else {
             Toast.makeText(AppContext.getAppContext(), R.string.DIALOG_REDIRECT_SERVICE_UNAVAILABLE, Toast.LENGTH_LONG).show();
         }
 
 
+    }
+
+    public void showShareSocialListAlert() {
+        new AlertDialog.Builder(mActivity)
+                .setTitle("Share")
+                .setItems(new String[] {"Facebook","Twitter","Email","Copy","Exit"}, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+                        if (which != 4) {
+                            shareActionOnItemSelected(which,mCurrentPack.shareLink);
+                        }
+                    }
+                })
+                .setCancelable(false)
+                .show();
     }
 
 
@@ -375,6 +382,7 @@ public class DropboxShareHelper extends AsyncTask<Void, Long, Boolean> {
                         intent.putExtra(Intent.EXTRA_TEXT, finalPostString);
                         intent.putExtra(Intent.EXTRA_SUBJECT, "Share my pack");
                         mActivity.startActivity(Intent.createChooser(intent, "Share current pack to"));
+                        Global.showActionListAgain = true;
                     }
                 }  else {
                     Toast.makeText(AppContext.getAppContext(), R.string.DIALOG_NO_TWITTER_CLIENT_INSTALLED, Toast.LENGTH_LONG).show();
@@ -389,6 +397,7 @@ public class DropboxShareHelper extends AsyncTask<Void, Long, Boolean> {
                 emailIntent.setType("message/rfc822");
                 emailIntent.putExtra(Intent.EXTRA_TEXT, finalPostString);
                 mActivity.startActivity(Intent.createChooser(emailIntent, "Share via Email"));
+                Global.showActionListAgain = true;
                 break;
             }
             case 3: {
@@ -451,6 +460,7 @@ public class DropboxShareHelper extends AsyncTask<Void, Long, Boolean> {
         public void onPostPublished() {
             showToastOnUIThread("Posted to Facebook successfully");
             FacebookEvents.removePostListener(postListener);
+            EventBus.getDefault().post(new FacebookShareFinishEvent());
         }
     };
 

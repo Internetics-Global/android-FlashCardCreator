@@ -21,6 +21,7 @@ import android.widget.Toast;
 
 import com.flipflash.android_ffc.R;
 import com.flipflash.data.Pack;
+import com.flipflash.event.FacebookShareFinishEvent;
 import com.flipflash.helper.PackRecordHelper;
 import com.flipflash.util.AppContext;
 import com.flipflash.util.Global;
@@ -49,6 +50,7 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
 
 import cn.pedant.SweetAlert.SweetAlertDialog;
+import de.greenrobot.event.EventBus;
 
 import static com.flipflash.util.LogUtils.LOGD;
 
@@ -285,24 +287,27 @@ public class AWSShareHelper extends AsyncTask<Void, Long, Boolean> {
         }
 
         if (mCurrentPack.shareLink != null) {
-            new AlertDialog.Builder(mActivity)
-                    .setTitle("Share")
-                    .setItems(new String[] {"Facebook","Twitter","Email","Copy","Exit"}, new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialog, int which) {
-                            dialog.dismiss();
-                            if (which != 4) {
-                                shareActionOnItemSelected(which,mCurrentPack.shareLink);
-                            }
-                        }
-                    })
-                    .setCancelable(false)
-                    .show();
+            showShareSocialListAlert();
         } else {
             Toast.makeText(AppContext.getAppContext(), R.string.DIALOG_REDIRECT_SERVICE_UNAVAILABLE, Toast.LENGTH_LONG).show();
         }
     }
 
+    public void showShareSocialListAlert() {
+        new AlertDialog.Builder(mActivity)
+                .setTitle("Share")
+                .setItems(new String[] {"Facebook","Twitter","Email","Copy","Exit"}, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+                        if (which != 4) {
+                            shareActionOnItemSelected(which,mCurrentPack.shareLink);
+                        }
+                    }
+                })
+                .setCancelable(false)
+                .show();
+    }
 
 
     private void shareActionOnItemSelected (int position,String shareLink) {
@@ -329,6 +334,7 @@ public class AWSShareHelper extends AsyncTask<Void, Long, Boolean> {
                         intent.putExtra(Intent.EXTRA_TEXT, finalPostString);
                         intent.putExtra(Intent.EXTRA_SUBJECT, "Share my pack");
                         mActivity.startActivity(Intent.createChooser(intent, "Share current pack to"));
+                        Global.showActionListAgain = true;
                     }
                 }  else {
                     Toast.makeText(AppContext.getAppContext(), R.string.DIALOG_NO_TWITTER_CLIENT_INSTALLED, Toast.LENGTH_LONG).show();
@@ -343,6 +349,7 @@ public class AWSShareHelper extends AsyncTask<Void, Long, Boolean> {
                 emailIntent.setType("message/rfc822");
                 emailIntent.putExtra(android.content.Intent.EXTRA_TEXT, finalPostString);
                 mActivity.startActivity(Intent.createChooser(emailIntent, "Share via Email"));
+                Global.showActionListAgain = true;
                 break;
             }
             case 3: {
@@ -403,25 +410,10 @@ public class AWSShareHelper extends AsyncTask<Void, Long, Boolean> {
 
         @Override
         public void onPostPublished() {
-
-            mActivity.runOnUiThread(new Runnable() {
-                @Override
-                public void run() {
-                    AlertDialog alertDialog = new AlertDialog.Builder(mActivity).create();
-                    alertDialog.setTitle(mActivity.getString(R.string.DIALOG_AlERT));
-                    alertDialog.setMessage(mActivity.getString(R.string.DIALOG_POST_FACEBOOK_SUCCESSFULLY));
-                    alertDialog.setButton(AlertDialog.BUTTON_NEUTRAL, mActivity.getString(R.string.DIALOG_OK),
-                            new DialogInterface.OnClickListener() {
-                                public void onClick(DialogInterface dialog, int which) {
-                                    dialog.dismiss();
-                                }
-                            });
-                    alertDialog.show();
-                }
-            });
-
-
             FacebookEvents.removePostListener(facebookPostListener);
+            showToastOnUIThread("Posted to Facebook successfully");
+            FacebookEvents.removePostListener(facebookPostListener);
+            EventBus.getDefault().post(new FacebookShareFinishEvent());
         }
     };
 
