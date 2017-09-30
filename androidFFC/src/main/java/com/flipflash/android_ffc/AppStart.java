@@ -46,9 +46,9 @@ public class AppStart extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.start);
 
-        if (isGoogleServiceAvailable() == false) {
-            return;
-        }
+//        if (isGoogleServiceAvailable() == false) {
+//            return;
+//        }
 
 
         /**
