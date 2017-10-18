@@ -249,13 +249,15 @@ public class Text2SpeechHelper {
 
         HashMap<String,String> map = getMapsBetweenLanguageLocalAndDescription();
 
-        for (int i =0; i < mAllAvailableLocaleList.size(); i++) {
-            String key = getLanguageLocaleStringFrom(mAllAvailableLocaleList.get(i));
-            String displayStr = map.get(key);
-            if (displayStr == null) {
-                displayStr = key;
+        if (mAllAvailableLocaleList != null) {
+            for (int i =0; i < mAllAvailableLocaleList.size(); i++) {
+                String key = getLanguageLocaleStringFrom(mAllAvailableLocaleList.get(i));
+                String displayStr = map.get(key);
+                if (displayStr == null) {
+                    displayStr = key;
+                }
+                resultList.add(displayStr);
             }
-            resultList.add(displayStr);
         }
 
         return resultList;
