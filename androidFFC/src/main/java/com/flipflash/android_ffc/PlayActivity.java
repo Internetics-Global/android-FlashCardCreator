@@ -1967,6 +1967,8 @@ public class PlayActivity extends FragmentActivity implements SensorEventListene
             }
             if (targetLanguage == null || targetLanguage.length() == 0) {
                 targetLanguage = Text2SpeechHelper.sharedHelper().getSelectedLanguageLocalString();
+            }
+            if (content == null || content.length() == 0) {
                 content =  "   ";
             }
 
@@ -2376,6 +2378,8 @@ public class PlayActivity extends FragmentActivity implements SensorEventListene
                     }
                     if (targetLanguage == null || targetLanguage.length() == 0) {
                         targetLanguage = Text2SpeechHelper.sharedHelper().getSelectedLanguageLocalString();
+                    }
+                    if (content == null || content.length() == 0) {
                         content =  "   ";
                     }
 
