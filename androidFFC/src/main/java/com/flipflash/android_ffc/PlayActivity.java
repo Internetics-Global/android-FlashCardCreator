@@ -1637,10 +1637,6 @@ public class PlayActivity extends FragmentActivity implements SensorEventListene
 
         CardDetailFragment cardDetailFragment = getCurrentCardDetailFragment();
 
-        if (AppConfig.sharedInstance().isTextToSpeech() && (mOneOffPlayType == 0) && (_PreviewOnly == false)) {
-            cardDetailFragment.showFingerAnimationGifImageView();
-        }
-
         if (isSmartDelay() && mIsAutoScroll) {
 
             //TODO:XXX
@@ -2392,14 +2388,32 @@ public class PlayActivity extends FragmentActivity implements SensorEventListene
 
             } else {
 
-                if (textToSpeechArray.size() >0 && isSmartDelay()) {
+                if (textToSpeechArray.size() > 0) {
+                    if (isSmartDelay()) {
+                        runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                CardDetailFragment cardDetailFragment = getCurrentCardDetailFragment();
+                                if (AppConfig.sharedInstance().isTextToSpeech() && (mOneOffPlayType == 0) && (_PreviewOnly == false)) {
+                                    cardDetailFragment.showFingerAnimationGifImageView();
+                                }
 
-                    runOnUiThread(new Runnable() {
-                        @Override
-                        public void run() {
-                            text2SpeechFinished();
-                        }
-                    });
+                                text2SpeechFinished();
+                            }
+                        });
+                    } else if ((mOneOffPlayType == 0) && (_PreviewOnly == false)) {
+                        runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                CardDetailFragment cardDetailFragment = getCurrentCardDetailFragment();
+                                if (AppConfig.sharedInstance().isTextToSpeech() && (mOneOffPlayType == 0) && (_PreviewOnly == false)) {
+                                    cardDetailFragment.showFingerAnimationGifImageView();
+                                }
+                            }
+                        });
+                    }
+
+
 
                 } else {
                     //playAudio(); do nothing
