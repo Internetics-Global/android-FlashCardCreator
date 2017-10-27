@@ -1538,7 +1538,7 @@ public class PlayActivity extends FragmentActivity implements SensorEventListene
                     }
                 }
             });
-            mTTS.setSpeechRate((float) 0.4);
+           // mTTS.setSpeechRate((float) 0.4);
 
         }
 
