@@ -1,5 +1,6 @@
 package com.flipflash.fragment;
 
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.ContentResolver;
 import android.content.Context;
@@ -20,6 +21,7 @@ import android.util.Base64;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.BaseAdapter;
@@ -490,6 +492,11 @@ public class PackListFragment extends Fragment {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
 
+                            InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(Activity.INPUT_METHOD_SERVICE);
+                            if (imm.isActive()){
+                                imm.toggleSoftInput(InputMethodManager.HIDE_IMPLICIT_ONLY, 0); // hide
+                            }
+
                             String password = input.getText().toString();
                             String savedPassword = new String(Base64.decode(currentPack.restorePassword,0));
                             if (password.equals(savedPassword)) {
@@ -510,7 +517,15 @@ public class PackListFragment extends Fragment {
 
                         }
                     })
-                    .setNegativeButton(R.string.DIALOG_CANCEL, null)
+                    .setNegativeButton(R.string.DIALOG_CANCEL, new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialogInterface, int i) {
+                            InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(Activity.INPUT_METHOD_SERVICE);
+                            if (imm.isActive()){
+                                imm.toggleSoftInput(InputMethodManager.HIDE_IMPLICIT_ONLY, 0); // hide
+                            }
+                        }
+                    })
                     .show();
 
         }
