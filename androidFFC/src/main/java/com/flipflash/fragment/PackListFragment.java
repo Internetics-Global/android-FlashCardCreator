@@ -387,12 +387,6 @@ public class PackListFragment extends Fragment {
                     }
                 }
 
-                if (((currentPack != null) && (currentPack.creatorID).equals(OpenUDID_manager.getOpenUDID()))) {
-                    editButton.setEnabled(true);
-                } else {
-                    editButton.setEnabled(false);
-                }
-
 
                 editButton.setOnClickListener(new View.OnClickListener() {
                     @Override
