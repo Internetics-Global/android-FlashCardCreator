@@ -63,6 +63,8 @@ public class PackListFragment extends Fragment {
 
     private User mUser;
 
+    private boolean mIsEditingMode = false;
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -84,19 +86,40 @@ public class PackListFragment extends Fragment {
         TextView titleTextView = (TextView) mRootView.findViewById(R.id.dialog_title);
         titleTextView.setText(R.string.Title_Pack_List);
 
-        final Button editButton = (Button) mRootView.findViewById(R.id.dialog_head_save_btn);
-        editButton.setText(getString(R.string.NavigationBarItem_Create_New_Pack));
+        final Button editPackButton = (Button) mRootView.findViewById(R.id.dialog_head_close_btn);
+        editPackButton.setVisibility(View.VISIBLE);
+        editPackButton.setText(getString(R.string.NavigationBarItem_Edit));
+        mIsEditingMode = false;
+        editPackButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (mIsEditingMode == false) {
+                    mIsEditingMode = true;
+                    editPackButton.setText(getString(R.string.NavigationBarItem_Done));
+                    ((ImageAdapter) mGallery.getAdapter()).notifyDataSetChanged();
+
+
+                } else {
+                    mIsEditingMode = false;
+                    editPackButton.setText(getString(R.string.NavigationBarItem_Edit));
+                    ((ImageAdapter) mGallery.getAdapter()).notifyDataSetChanged();
+                }
+            }
+        });
+
+        final Button createPackButton = (Button) mRootView.findViewById(R.id.dialog_head_save_btn);
+        createPackButton.setText(getString(R.string.NavigationBarItem_Create_New_Pack));
 
         if (MutipleTargetHelper.isFullVersion() == false) {
-            editButton.setTextColor(Color.DKGRAY);
+            createPackButton.setTextColor(Color.DKGRAY);
         } else {
-            editButton.setTextColor(Color.WHITE);
+            createPackButton.setTextColor(Color.WHITE);
         }
 
-        ViewGroup.LayoutParams params = editButton.getLayoutParams();
+        ViewGroup.LayoutParams params = createPackButton.getLayoutParams();
         params.width = params.width + UIHelper.getPixels(60);
-        editButton.setLayoutParams(params);
-        editButton.setOnClickListener(new View.OnClickListener() {
+        createPackButton.setLayoutParams(params);
+        createPackButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
@@ -114,9 +137,6 @@ public class PackListFragment extends Fragment {
 
             }
         });
-
-        Button closeButton = (Button) mRootView.findViewById(R.id.dialog_head_close_btn);
-        closeButton.setVisibility(View.INVISIBLE);
 
 
         mGallery = (SmoothGallery) mRootView.findViewById(R.id.pack_list_gallery);
@@ -409,6 +429,14 @@ public class PackListFragment extends Fragment {
                     itemLayout.setBackgroundResource(0);
 
                     convertView.findViewById(R.id.pack_lock_image).setVisibility(View.GONE);
+                }
+
+                if (mIsEditingMode) {
+                    editButton.setVisibility(View.VISIBLE);
+                    deleteButton.setVisibility(View.VISIBLE);
+                } else {
+                    editButton.setVisibility(View.INVISIBLE);
+                    deleteButton.setVisibility(View.INVISIBLE);
                 }
 
             }

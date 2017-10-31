@@ -108,7 +108,7 @@
             android:background="@android:color/transparent"
             android:layout_width="0dp"
             android:layout_height="fill_parent"
-            android:src="@drawable/pack_edit"
+            android:src="@drawable/edit_pack_button"
             android:layout_weight="50">
 
         </ImageButton>
