@@ -1037,10 +1037,7 @@ public class MainActivity extends FragmentActivity implements
             public void run() {
                 TipHelper.showTipForCreateCard(MainActivity.this, addCardButton);
 
-                TipHelper.showTipForOpenPack(MainActivity.this, openPackButton);
-                TipHelper.showTipForEditPack(MainActivity.this, editPackButton);
-                TipHelper.showTipForActionBarCreateNewPack(MainActivity.this, createPackButton);
-
+                TipHelper.showTipForOpenPack(MainActivity.this, editPackButton);
 
                 TipHelper.showTipForActionBarHelp(MainActivity.this, paletteButton,false);
                 TipHelper.showTipForActionBarShare(MainActivity.this, settingButton);
