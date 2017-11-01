@@ -1776,7 +1776,7 @@ public class PlayActivity extends FragmentActivity implements SensorEventListene
                             public void run() {
                                 text2SpeechAllContentNow(cardDetailFragment, isMuteText2Speech);
                             }
-                        },K_Text2Speech_Delay_MilliSecond);
+                        },getText2SpeechDelayMilliSecond());
 
                         if (AppConfig.sharedInstance().isTextToSpeech() == false && (mOneOffPlayType == 0) && (_PreviewOnly == false)) {
                             cardDetailFragment.showFingerAnimationGifImageView();
@@ -1800,7 +1800,7 @@ public class PlayActivity extends FragmentActivity implements SensorEventListene
                                             public void run() {
                                                 text2SpeechAllContentNow(cardDetailFragment, isMuteText2Speech);
                                             }
-                                        },K_Text2Speech_Delay_MilliSecond);
+                                        },getText2SpeechDelayMilliSecond());
 
                                     }
 
@@ -1809,7 +1809,7 @@ public class PlayActivity extends FragmentActivity implements SensorEventListene
                                     }
 
                                 }
-                            },durationForRecordedSound + 1000);  //这里1000（1秒）是适当的，因为mPauseForAnswerSeekBar或K_IntervalBetweenCardSeconds_ForQAOnly都远大于这个数
+                            },durationForRecordedSound + 500);  //这里1000（1秒）是适当的，因为mPauseForAnswerSeekBar或K_IntervalBetweenCardSeconds_ForQAOnly都远大于这个数
 
                         }
 
@@ -1829,7 +1829,7 @@ public class PlayActivity extends FragmentActivity implements SensorEventListene
                         public void run() {
                             text2SpeechAllContentNow(cardDetailFragment, isMuteText2Speech);
                         }
-                    },K_Text2Speech_Delay_MilliSecond);
+                    },getText2SpeechDelayMilliSecond());
 
                     if (AppConfig.sharedInstance().isTextToSpeech() == false && (mOneOffPlayType == 0) && (_PreviewOnly == false)) {
                         cardDetailFragment.showFingerAnimationGifImageView();
@@ -1880,6 +1880,14 @@ public class PlayActivity extends FragmentActivity implements SensorEventListene
 //        } else {
 //            playAudio();
 //        }
+    }
+
+    private int getText2SpeechDelayMilliSecond() {
+        if (mTTS != null && "com.google.android.tts".equals(mTTS.getDefaultEngine())) {
+            return 0;
+        } else {
+            return K_Text2Speech_Delay_MilliSecond;
+        }
     }
 
 
