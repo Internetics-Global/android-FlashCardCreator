@@ -356,6 +356,12 @@ public class PackListFragment extends Fragment {
                 final ImageView playImageView = (ImageView) convertView.findViewById(R.id.pack_play_image_view);
                 final ImageView gotoPackImageView = (ImageView) convertView.findViewById(R.id.goto_pack_image_view);
 
+                if (isEditableMode(currentPack)) {
+                    gotoPackImageView.setVisibility(View.VISIBLE);
+                } else {
+                    gotoPackImageView.setVisibility(View.INVISIBLE);
+                }
+
                 playImageView.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
@@ -439,6 +445,14 @@ public class PackListFragment extends Fragment {
 
 
             return convertView;
+        }
+
+        private boolean isEditableMode(Pack pack) {
+            if ((pack != null) && (pack.creatorID).equals(OpenUDID_manager.getOpenUDID())) {
+                return true;
+            } else {
+                return false;
+            }
         }
 
     }
