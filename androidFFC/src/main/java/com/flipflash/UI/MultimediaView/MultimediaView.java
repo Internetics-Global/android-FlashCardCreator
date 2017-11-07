@@ -400,7 +400,12 @@ public class MultimediaView extends FrameLayout {
                 e.printStackTrace();
             }
 
-            mVideoThumbNail.setImageURI(Uri.parse(videoThumbnailUriPath));
+            if (videoThumbnailUriPath.contains("14424425612018234863")) {
+                //this is a special case for sample pack since sample pack contains a video play overlap
+                mVideoThumbNail.setImageDrawable(getResources().getDrawable(R.drawable.trick14424425612018234863));
+            } else {
+                mVideoThumbNail.setImageURI(Uri.parse(videoThumbnailUriPath));
+            }
 
             mVideoControlBarFrameLayout.setVisibility(VISIBLE);
             mVideoView.setVisibility(INVISIBLE);
