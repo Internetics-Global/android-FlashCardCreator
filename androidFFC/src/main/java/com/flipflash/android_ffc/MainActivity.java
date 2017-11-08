@@ -2306,6 +2306,8 @@ public class MainActivity extends FragmentActivity implements
         COUNTDOWN_SECOND_FOR_PREPARE = 4;
         COUNTDOWN_SECOND_FOR_RECORDING = 30;
 
+        mRecordStopProgress.setProgress(0);
+
         if (is_to_recording == false) {
             view.setVisibility(View.INVISIBLE);
 
