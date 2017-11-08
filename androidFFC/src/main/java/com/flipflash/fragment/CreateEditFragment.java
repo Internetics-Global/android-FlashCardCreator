@@ -284,8 +284,8 @@ public class CreateEditFragment extends DialogFragment implements TextView.OnEdi
         super.onResume();
 
         ViewGroup.LayoutParams params = mContentView.getLayoutParams();
-        params.width = getResources().getDimensionPixelSize(R.dimen.add_pack_window_width);
-        params.height = getResources().getDimensionPixelSize(R.dimen.add_pack_window_height);
+        params.width = (int) (UIHelper.getScreenWidth(getActivity()) *0.8);
+        params.height = (int) (UIHelper.getScreenHeight(getActivity()) * 0.8);
         mContentView.setLayoutParams(params);
 
         final View rootView = getActivity().getWindow().getDecorView().findViewById(android.R.id.content);
