@@ -36,28 +36,32 @@ public class AudioHelper {
                 ((outputPathString != null) && (outputPathString.toLowerCase().contains(".3gp") == true)));
 
 
-        if (mRecorder == null) {
-            mRecorder = new MediaRecorder();
-
-            mRecorder.setAudioSource(MediaRecorder.AudioSource.DEFAULT);
-            mRecorder.setOutputFormat(MediaRecorder.OutputFormat.THREE_GPP);
-            mRecorder.setAudioEncoder(MediaRecorder.AudioEncoder.AAC);
-            mRecorder.setOutputFile(outputPathString);
-
-            mRecorder.setOnErrorListener(new MediaRecorder.OnErrorListener() {
-                @Override
-                public void onError(MediaRecorder mr, int what, int extra) {
-                    mRecorder.release();
-
-                }
-            });
-            mRecorder.setOnInfoListener(new MediaRecorder.OnInfoListener() {
-                @Override
-                public void onInfo(MediaRecorder mr, int what, int extra) {
-
-                }
-            });
+        if (mRecorder != null) {
+            stopRecord();
+            mRecorder.release();
+            mRecorder = null;
         }
+
+        mRecorder = new MediaRecorder();
+
+        mRecorder.setAudioSource(MediaRecorder.AudioSource.DEFAULT);
+        mRecorder.setOutputFormat(MediaRecorder.OutputFormat.THREE_GPP);
+        mRecorder.setAudioEncoder(MediaRecorder.AudioEncoder.AAC);
+        mRecorder.setOutputFile(outputPathString);
+
+        mRecorder.setOnErrorListener(new MediaRecorder.OnErrorListener() {
+            @Override
+            public void onError(MediaRecorder mr, int what, int extra) {
+                mRecorder.release();
+
+            }
+        });
+        mRecorder.setOnInfoListener(new MediaRecorder.OnInfoListener() {
+            @Override
+            public void onInfo(MediaRecorder mr, int what, int extra) {
+
+            }
+        });
 
     }
 

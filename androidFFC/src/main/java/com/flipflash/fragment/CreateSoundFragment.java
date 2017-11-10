@@ -139,6 +139,8 @@ public class CreateSoundFragment extends DialogFragment {
 
         AudioHelper.isRecordFinished = true;
 
+        AudioHelper.setupAudioRecord(temporaryRecordedSoundPath().toString());
+
         MainActivity mainActivity = (MainActivity)(getActivity());
         mainActivity.dismissCreateSoundFragment(true);
 
