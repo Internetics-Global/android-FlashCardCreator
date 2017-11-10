@@ -12,6 +12,7 @@ import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Matrix;
 import android.graphics.Paint;
+import android.graphics.PaintFlagsDrawFilter;
 import android.graphics.PorterDuff;
 import android.graphics.PorterDuffXfermode;
 import android.graphics.Rect;
@@ -298,7 +299,18 @@ public class UIHelper {
 
             Bitmap bmOverlay = Bitmap.createBitmap(bMap.getWidth(), bMap.getHeight(), bMap.getConfig());
             Canvas canvas = new Canvas(bmOverlay);
+            canvas.setDrawFilter(new PaintFlagsDrawFilter(0, Paint.ANTI_ALIAS_FLAG|Paint.FILTER_BITMAP_FLAG));
             canvas.drawBitmap(bMap, new Matrix(), null);
+
+            Bitmap playIconBitmap = BitmapFactory.decodeResource(context.getResources(), R.drawable.video_link_3);
+
+            int left = (int)(bMap.getWidth()/2 - 110/2);
+            int top = (int)(bMap.getWidth()/2 - 141/2);
+            int right = (int)(left + 110);
+            int bottom = (int)(top + 141);
+            Rect rect = new Rect(left,top,right,bottom);
+            canvas.drawBitmap(playIconBitmap,null,rect,null);
+
             return bmOverlay;
         } else {
             return bMap;
