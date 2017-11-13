@@ -77,31 +77,30 @@
         android:visibility="invisible"
         android:id="@+id/gif_control_bar_fl"
         android:layout_gravity="bottom|center"
-        android:layout_width="88dp"
-        android:layout_height="44dp">
+        android:layout_width="118dp"
+        android:layout_height="50dp">
 
 
         <ImageButton
             android:id="@+id/gif_button"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:padding="4dp"
+            android:layout_width="44dp"
+            android:layout_height="44dp"
+            android:padding="3dp"
             android:src="@drawable/play_multimedia"
-            android:scaleType="center"
+            android:scaleType="fitCenter"
             android:background="@null"
-            android:layout_gravity="bottom|left"/>
+            android:layout_gravity="center|left"/>
 
 
         <ImageButton
             android:id="@+id/gif_fullscreen_button"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:padding="4dp"
+            android:layout_width="44dp"
+            android:layout_height="44dp"
+            android:padding="3dp"
             android:src="@drawable/fullscreen"
-            android:scaleType="center"
-            android:layout_marginRight="40dp"
+            android:scaleType="fitCenter"
             android:background="@null"
-            android:layout_gravity="bottom|right"/>
+            android:layout_gravity="center|right"/>
 
 
         </FrameLayout>

@@ -114,9 +114,15 @@ public class VGViewPager extends AutoScrollViewPager {
                     return false;
                 }
 
-            } else if (isGif || isLocalVideo) {
+            } else if (isGif) {
+                if (isGifControlBarContain(image, hitXInScreen, hitYInScreen)) {
+                    Boolean bool = image.isEnabled();
+                    LOGD(TAG, "onInterceptTouchEvent: " + "touch location in gif/local video image，enable=  "+bool);
+                    return false;
+                }
 
-                if (isGifLocalVideoControlBarContain(image, hitXInScreen, hitYInScreen)) {
+            } else if (isLocalVideo) {
+                if (isLocalVideoControlBarContain(image, hitXInScreen, hitYInScreen)) {
                     Boolean bool = image.isEnabled();
                     LOGD(TAG, "onInterceptTouchEvent: " + "touch location in gif/local video image，enable=  "+bool);
                     return false;
@@ -177,8 +183,14 @@ public class VGViewPager extends AutoScrollViewPager {
                     LOGD(TAG, "onInterceptTouchEvent: "+ "touch location in image2，enable=  "+bool);
                     return false;
                 }
-            } else if (isGif || isLocalVideo) {
-                if (isGifLocalVideoControlBarContain(image2, hitXInScreen, hitYInScreen)) {
+            } else if (isGif) {
+                if (isGifControlBarContain(image2, hitXInScreen, hitYInScreen)) {
+                    Boolean bool = image2.isEnabled();
+                    LOGD(TAG, "onInterceptTouchEvent: "+ "touch location in gif/local video image，enable=  "+bool);
+                    return false;
+                }
+            } else if (isLocalVideo) {
+                if (isLocalVideoControlBarContain(image2, hitXInScreen, hitYInScreen)) {
                     Boolean bool = image2.isEnabled();
                     LOGD(TAG, "onInterceptTouchEvent: "+ "touch location in gif/local video image，enable=  "+bool);
                     return false;
@@ -236,30 +248,28 @@ public class VGViewPager extends AutoScrollViewPager {
         int w = view.getWidth();
         int h = view.getHeight();
 
-        if (rx < x + 0.4*w || rx > x + w - 0.4*w || ry < y + h*0.4 || ry > y + h - h*0.4) {
+        if ((rx < x + (w - 110)/2) || (rx > x + (w + 110)/2) || (ry < y + (h - 141)/2) || (ry > y + (h + 141)/2)) {
             return false;
         }
         return true;
     }
 
     /*
-     * 对于gif和local video,我们有 play/stop and full screen button
+     * 对于gif,我们有 play/stop and full screen button
      */
-    private boolean isGifLocalVideoControlBarContain(View view, float rx, float ry) {
-        int[] l = new int[2];
-        view.getLocationOnScreen(l);
-        int x = Math.abs(l[0]);
-        int y = l[1];
-        int w = view.getWidth();
-        int h = view.getHeight();
+    private boolean isGifControlBarContain(View view, float rx, float ry) {
+        View bar = view.findViewById(R.id.gif_control_bar_fl);
+        boolean result = isViewContains(bar,rx,ry);
+        return result;
+    }
 
-        int controlBarHeight = (int) UIHelper.convertDpToPixel(44);
-        int controlBarWidth = controlBarHeight * 2;
-
-        if (rx < x + w - controlBarWidth || rx > x + w || ry < y + h - controlBarHeight || ry > y + h) {
-            return false;
-        }
-        return true;
+    /*
+     * 对于local video,我们有 play/stop and full screen button
+     */
+    private boolean isLocalVideoControlBarContain(View view, float rx, float ry) {
+        View bar = view.findViewById(R.id.video_control_bar_fl);
+        boolean result = isViewContains(bar,rx,ry);
+        return result;
     }
 
     private boolean isSwipeAction = false;
