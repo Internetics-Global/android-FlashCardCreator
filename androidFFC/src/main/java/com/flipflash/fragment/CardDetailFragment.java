@@ -5171,22 +5171,24 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnTouchL
                             }
 
 
-                            ResizeOptions resizeOptions = new ResizeOptions(mBackgroundImageView.getWidth(),mBackgroundImageView.getHeight());
-                            ImageRequest request;
-                            if (resizeOptions.width == 0 || resizeOptions.height == 0) {
-                                request = ImageRequestBuilder.newBuilderWithSource(Uri.parse(uriString))
+                            if (mBackgroundImageView.getWidth() > 0 && mBackgroundImageView.getHeight() > 0) {
+                                ResizeOptions resizeOptions = new ResizeOptions(mBackgroundImageView.getWidth(),mBackgroundImageView.getHeight());
+                                ImageRequest request;
+                                if (resizeOptions.width == 0 || resizeOptions.height == 0) {
+                                    request = ImageRequestBuilder.newBuilderWithSource(Uri.parse(uriString))
+                                            .build();
+                                } else {
+                                    request = ImageRequestBuilder.newBuilderWithSource(Uri.parse(uriString))
+                                            .setResizeOptions(resizeOptions)
+                                            .build();
+                                }
+                                DraweeController controller = Fresco.newDraweeControllerBuilder()
+                                        .setOldController(mBackgroundImageView.getController())
+                                        .setImageRequest(request)
                                         .build();
-                            } else {
-                                request = ImageRequestBuilder.newBuilderWithSource(Uri.parse(uriString))
-                                        .setResizeOptions(resizeOptions)
-                                        .build();
-                            }
-                            DraweeController controller = Fresco.newDraweeControllerBuilder()
-                                    .setOldController(mBackgroundImageView.getController())
-                                    .setImageRequest(request)
-                                    .build();
 
-                            mBackgroundImageView.setController(controller);
+                                mBackgroundImageView.setController(controller);
+                            }
 
                         }
 
