@@ -2470,6 +2470,11 @@ public class PlayActivity extends FragmentActivity implements SensorEventListene
                     return;
                 }
 
+                if (original_audio_stream_state == state) {
+                    //this happens on Huawei phone
+                    return;
+                }
+
                 switch (state) {
                     case 0: {
                         LOGD(TAG, "onReceive: Headset is unplugged at PlayActivity");
