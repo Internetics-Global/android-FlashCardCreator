@@ -290,6 +290,7 @@ public class MainActivity extends FragmentActivity implements
         mCustomTitleTextView = (TextView) mCustomView.findViewById(R.id.title_text);
         mCustomTitleTextView.setText("");
         ActionBar actionBar = getActionBar();
+        actionBar.setDisplayShowTitleEnabled(false);
         actionBar.setCustomView(mCustomView);
         actionBar.setDisplayShowCustomEnabled(true);
 
