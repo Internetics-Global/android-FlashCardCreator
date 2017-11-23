@@ -120,6 +120,10 @@ public class PlayActivity extends FragmentActivity implements SensorEventListene
     private final int      K_Text2Speech_Delay_MilliSecond              = 1000;
     private Handler        mText2Speech_Delay_Handler                   = new Handler();
 
+    // Used to avoid this problem: click to switch to answer card, but still get question text2speech, even worse no answer text2speech.
+    // This seems to be a common issue on low performance device
+    private Handler        mSafeSwitchForManualOnly_Delay_Handler          = new Handler();
+
     /**
      *  与iPhone不同的是，我们不需要这个
      */
@@ -622,6 +626,11 @@ public class PlayActivity extends FragmentActivity implements SensorEventListene
         if (mText2Speech_Delay_Handler !=null) {
             mText2Speech_Delay_Handler.removeCallbacksAndMessages(null);
             mText2Speech_Delay_Handler = null;
+        }
+
+        if (mSafeSwitchForManualOnly_Delay_Handler !=null) {
+            mSafeSwitchForManualOnly_Delay_Handler.removeCallbacksAndMessages(null);
+            mSafeSwitchForManualOnly_Delay_Handler = null;
         }
 
         if (mPauseForAnswerHandler !=null) {
@@ -1485,7 +1494,16 @@ public class PlayActivity extends FragmentActivity implements SensorEventListene
 
         playbackOnCard(currentCardDetailFragment);
 
-        mIsSwitchQuestionAnswerViewManually_Processing = false;
+        if (isManually) {
+            mSafeSwitchForManualOnly_Delay_Handler = new Handler();
+            mSafeSwitchForManualOnly_Delay_Handler.postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    mIsSwitchQuestionAnswerViewManually_Processing = false;
+                }
+            },1000);
+        }
+
 
     }
 
