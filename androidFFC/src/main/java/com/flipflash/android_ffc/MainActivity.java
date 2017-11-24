@@ -2300,11 +2300,11 @@ public class MainActivity extends FragmentActivity implements
     }
 
     private  int COUNTDOWN_SECOND_FOR_RECORDING = 30;
-    private  int COUNTDOWN_SECOND_FOR_PREPARE = 4;
+    private  int COUNTDOWN_SECOND_FOR_PREPARE = 6;
     public void dismissCreateSoundFragment(boolean is_to_recording) {
         View view = findViewById(R.id.record_button_background_mask_layout);
 
-        COUNTDOWN_SECOND_FOR_PREPARE = 4;
+        COUNTDOWN_SECOND_FOR_PREPARE = 6;
         COUNTDOWN_SECOND_FOR_RECORDING = 30;
 
         mRecordStopProgress.setProgress(0);
