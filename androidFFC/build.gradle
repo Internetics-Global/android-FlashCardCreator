@@ -90,9 +90,8 @@ dependencies {
     compile 'com.android.support:support-v4:22.1.1'
     compile 'com.android.support:support-annotations:23.0.0'
 
-    debugCompile 'com.squareup.leakcanary:leakcanary-android:1.5'
-    releaseCompile 'com.squareup.leakcanary:leakcanary-android-no-op:1.5'
-    testCompile 'com.squareup.leakcanary:leakcanary-android-no-op:1.5'
+    debugCompile 'com.squareup.leakcanary:leakcanary-android:1.5.4'
+    releaseCompile 'com.squareup.leakcanary:leakcanary-android-no-op:1.5.4'
 
     compile 'com.dropbox.core:dropbox-core-sdk:2.1.2'
 

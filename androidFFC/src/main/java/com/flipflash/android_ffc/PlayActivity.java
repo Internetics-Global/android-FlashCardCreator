@@ -11,7 +11,6 @@ import android.hardware.Sensor;
 import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
-import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
@@ -1528,6 +1527,13 @@ public class PlayActivity extends FragmentActivity implements SensorEventListene
 
             mIsShuttingDown = true;
         }
+
+        // There's a silly memory leak problem on Huawei device
+        // see this keyword of inputmethodmanager.mlastsrvview on Google.
+        if (android.os.Build.MANUFACTURER.toLowerCase().contains("huawei")) {
+            startActivity(new Intent(this, SillyHuaweiActivity.class));
+        }
+
         return super.onKeyDown(keyCode, event);  // need to use super to exit current activity
     }
 

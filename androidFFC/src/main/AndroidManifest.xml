@@ -135,6 +135,10 @@
             </intent-filter>
         </activity>
 
+        <activity
+            android:name=".SillyHuaweiActivity"
+            android:theme="@style/AppTheme.Transparent"
+            android:screenOrientation="portrait" />
     
 
         <activity android:name="com.facebook.FacebookActivity"
