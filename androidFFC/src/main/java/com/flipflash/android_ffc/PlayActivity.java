@@ -1610,6 +1610,7 @@ public class PlayActivity extends FragmentActivity implements SensorEventListene
 
     /*
      * There's another same method in SelectText2SpeechLanguageActivity, refactoring later
+     * This method's performance is bad, avoid to be called multiple
     */
     private Locale getDefaultText2SpeechLocale() {
 

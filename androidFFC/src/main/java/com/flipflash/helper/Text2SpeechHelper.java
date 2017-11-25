@@ -24,6 +24,8 @@ public class Text2SpeechHelper {
 
     private List<Locale>             mAllAvailableLocaleList;
 
+    private Locale              mDefaultLocale;
+
     public static Text2SpeechHelper sharedHelper() {
         if (mText2SpeechHelper == null) {
             mText2SpeechHelper = new Text2SpeechHelper();
@@ -34,6 +36,8 @@ public class Text2SpeechHelper {
     public void setup() {
 
         LOGD(TAG, "setupTextToSpeech");
+
+        mDefaultLocale = getDefaultText2SpeechLocale();
 
         if (mTTS == null) {
 
@@ -93,6 +97,7 @@ public class Text2SpeechHelper {
 
     /*
      * There's another same method in PlayActivity, refactoring later
+     * This method's performance is bad, avoid to be called multiple
      */
     private Locale getDefaultText2SpeechLocale() {
 
@@ -223,7 +228,7 @@ public class Text2SpeechHelper {
             return Hawk.get("Selected_Text2Speech_Language");
         } else {
 
-            Locale locale = getDefaultText2SpeechLocale();
+            Locale locale = mDefaultLocale;
             String str = getLanguageLocaleStringFrom(locale);
             return str;
 
