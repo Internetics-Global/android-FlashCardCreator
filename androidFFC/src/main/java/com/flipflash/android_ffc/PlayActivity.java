@@ -171,11 +171,16 @@ public class PlayActivity extends FragmentActivity implements SensorEventListene
     private HandlerThread mSensorThread;
     private Handler       mSensorHandler;
 
+
+    private Locale        mDefaultLocal;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
         LOGD(TAG, "onCreate");
+
+        mDefaultLocal = getDefaultText2SpeechLocale();
 
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
         requestWindowFeature(Window.FEATURE_ACTION_BAR);
@@ -1597,7 +1602,7 @@ public class PlayActivity extends FragmentActivity implements SensorEventListene
 
 
         if (locale == null) {
-            locale = getDefaultText2SpeechLocale();
+            locale = mDefaultLocal;
         }
 
         return locale;
