@@ -303,6 +303,10 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnTouchL
         super.onViewCreated(view, savedInstanceState);
        // LOGD(TAG, "onViewCreated: cardSN=" + mCurrentCard.cardSN);
 
+        if (mCurrentPack == null) {
+            return;
+        }
+
         updateCommonContent();
         switchToQuestionViewWithOption(false);
 
@@ -492,7 +496,7 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnTouchL
                                 field.setAccessible(true);
                                 field.set(animatable, 1);
                             } catch (Exception e) {
-                                e.printStackTrace();
+                                //e.printStackTrace();
                             }
                             animatable.start();
                         }
@@ -1676,6 +1680,10 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnTouchL
 
         LOGD(TAG, "switchToQuestionViewWithOption");
 
+        if (mContentBodyLinearLayout == null) {
+            return;
+        }
+
         setContentViewVisibility();
 
         mIsQuestionShowing = true;
@@ -2813,7 +2821,7 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnTouchL
 
         ImageLoader imageLoader = ImageLoader.getInstance();
 
-        if (mCurrentPack.sidebarTitle.contains("null")) {
+        if (("null").contains(mCurrentPack.sidebarTitle)) {
             mSidebarTitle.setText("");
         } else {
             mSidebarTitle.setText(mCurrentPack.sidebarTitle);

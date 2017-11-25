@@ -111,10 +111,14 @@ public class Text2SpeechHelper {
 
             List<Locale> localeList = new ArrayList<Locale>();
             for (Locale locale : locales) {
-                int res = mTTS.isLanguageAvailable(locale);
-                //used to diff en_US_POSIX, since en_US_POSIX is the same as en_US
-                if (res == TextToSpeech.LANG_COUNTRY_AVAILABLE && ("POSIX".equals(locale.getVariant()) == false)) {
-                    localeList.add(locale);
+                try {
+                    int res = mTTS.isLanguageAvailable(locale);
+                    //used to diff en_US_POSIX, since en_US_POSIX is the same as en_US
+                    if (res == TextToSpeech.LANG_COUNTRY_AVAILABLE && ("POSIX".equals(locale.getVariant()) == false)) {
+                        localeList.add(locale);
+                    }
+                } catch (MissingResourceException e) {
+                    //ignore the error
                 }
             }
 
