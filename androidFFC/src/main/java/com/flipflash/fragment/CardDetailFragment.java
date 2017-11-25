@@ -1684,6 +1684,10 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnTouchL
             return;
         }
 
+        if (getActivity() == null  || isAdded() == false) {
+            return;
+        }
+
         setContentViewVisibility();
 
         mIsQuestionShowing = true;
