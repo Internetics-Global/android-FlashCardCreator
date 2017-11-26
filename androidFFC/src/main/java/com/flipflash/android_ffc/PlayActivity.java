@@ -1505,7 +1505,7 @@ public class PlayActivity extends FragmentActivity implements SensorEventListene
                 public void run() {
                     mIsSwitchQuestionAnswerViewManually_Processing = false;
                 }
-            },1000);
+            },300);
         }
 
 
@@ -1533,10 +1533,13 @@ public class PlayActivity extends FragmentActivity implements SensorEventListene
             mIsShuttingDown = true;
         }
 
-        // There's a silly memory leak problem on Huawei device
-        // see this keyword of inputmethodmanager.mlastsrvview on Google.
-        if (android.os.Build.MANUFACTURER.toLowerCase().contains("huawei")) {
-            startActivity(new Intent(this, SillyHuaweiActivity.class));
+        //This does not work, worse it could bring crash issue, so we have to disable it.
+        if (false) {
+            // There's a silly memory leak problem on Huawei device
+            // see this keyword of inputmethodmanager.mlastsrvview on Google.
+            if (android.os.Build.MANUFACTURER.toLowerCase().contains("huawei")) {
+                startActivity(new Intent(this, SillyHuaweiActivity.class));
+            }
         }
 
         return super.onKeyDown(keyCode, event);  // need to use super to exit current activity
