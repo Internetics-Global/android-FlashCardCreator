@@ -304,10 +304,13 @@ public class UIHelper {
 
             Bitmap playIconBitmap = BitmapFactory.decodeResource(context.getResources(), R.drawable.video_link_3);
 
-            int left = (int)(bMap.getWidth()/2 - 110/2);
-            int top = (int)(bMap.getWidth()/2 - 141/2);
-            int right = (int)(left + 110);
-            int bottom = (int)(top + 141);
+            int value55 = UIHelper.getPixels(55);
+            int value70 = UIHelper.getPixels(70);
+
+            int left = (int)(bMap.getWidth()/2 - value55/2);
+            int top = (int)(bMap.getWidth()/2 - value70/2);
+            int right = (int)(left + value55);
+            int bottom = (int)(top + value70);
             Rect rect = new Rect(left,top,right,bottom);
             canvas.drawBitmap(playIconBitmap,null,rect,null);
 
