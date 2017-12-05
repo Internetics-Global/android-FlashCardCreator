@@ -308,7 +308,7 @@ public class TipHelper {
         if (isShort) {
             arrowLength = 1.2f;
         } else {
-            arrowLength =12.2f;
+            arrowLength =1.2f;
         }
 
         TooltipManager.getInstance(activity)

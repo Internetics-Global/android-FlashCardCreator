@@ -1009,12 +1009,12 @@ public class MainActivity extends FragmentActivity implements
             return;
         }
 
-        //we don't allow to show when screen is too small
-        DisplayMetrics displayMetrics = getResources().getDisplayMetrics();
-        float dpWidth = displayMetrics.widthPixels / displayMetrics.density;
-        if (dpWidth < 900) {
-            return;
-        }
+//        //we don't allow to show when screen is too small
+//        DisplayMetrics displayMetrics = getResources().getDisplayMetrics();
+//        float dpWidth = displayMetrics.widthPixels / displayMetrics.density;
+//        if (dpWidth < 900) {
+//            return;
+//        }
 
         LOGD(TAG, "showTooltips");
 
@@ -1039,7 +1039,7 @@ public class MainActivity extends FragmentActivity implements
                 TipHelper.showTipForCreateCard(MainActivity.this, addCardButton);
 
                 TipHelper.showTipForOpenPack(MainActivity.this, editPackButton);
-
+                TipHelper.showTipForEditPack(MainActivity.this,createPackButton);
                 TipHelper.showTipForActionBarHelp(MainActivity.this, paletteButton,false);
                 TipHelper.showTipForActionBarShare(MainActivity.this, settingButton);
                 TipHelper.showTipForActionBarPlay(MainActivity.this, shareButton);
