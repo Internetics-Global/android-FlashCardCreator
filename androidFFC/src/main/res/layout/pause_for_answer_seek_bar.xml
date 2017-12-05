@@ -7,12 +7,12 @@
     android:layout_height="30dp">
 
     <TextView
-        android:layout_width="15dp"
+        android:layout_width="16dp"
         android:layout_height="match_parent"
         android:paddingLeft="0dp"
         android:gravity="center_vertical|right"
         android:paddingRight="0dp"
-        android:textSize="12sp"
+        android:textSize="10sp"
         android:text="2"/>
 
     <org.adw.library.widgets.discreteseekbar.DiscreteSeekBar
@@ -33,13 +33,13 @@
         app:dsb_indicatorFormatter="%d"/>
 
     <TextView
-        android:layout_width="15dp"
+        android:layout_width="16dp"
         android:layout_marginLeft="-5dp"
         android:layout_height="match_parent"
         android:paddingLeft="0dp"
         android:gravity="center_vertical|left"
         android:paddingRight="0dp"
-        android:textSize="12sp"
+        android:textSize="10sp"
         android:text="20"/>
 
 </LinearLayout>
