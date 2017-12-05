@@ -147,13 +147,6 @@ public class PackListFragment extends Fragment {
         if (mUser.packs.size() >0) {
             mGallery.setSelection(1); //when set this, every time after notifyDataSetChanged finish, getView(1) will be called one more
         }
-        mGallery.setOnItemClickListener(new OnItemClickListener() {
-            public void onItemClick(AdapterView<?> parent, View v, int position, long id) {
-
-                playImageViewButtonClicked(position);
-
-            }
-        });
 
         final Button visitStoreButton = (Button) mRootView.findViewById(R.id.visit_store_btn);
         visitStoreButton.setOnClickListener(new View.OnClickListener() {
@@ -394,6 +387,13 @@ public class PackListFragment extends Fragment {
                         //e.printStackTrace();
                     }
                 }
+
+                coverImageView.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        playImageViewButtonClicked(position);
+                    }
+                });
 
 
                 editButton.setOnClickListener(new View.OnClickListener() {
