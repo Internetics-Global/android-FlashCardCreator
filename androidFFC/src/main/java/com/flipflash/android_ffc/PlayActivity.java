@@ -1980,36 +1980,43 @@ public class PlayActivity extends FragmentActivity implements SensorEventListene
         ArrayList<HashMap> textToSpeechArray = cardDetailFragment.textToSpeechContentArray();
         if (textToSpeechArray.size() >0) {
 
-            HashMap<String,String> first = textToSpeechArray.get(0);
             String targetLanguage = "";
             String content ="";
-            if (first.get("subheadingQuestion") != null){
-                targetLanguage = cardDetailFragment.mCurrentCard.question.css.subheadingText2SpeechSound;
-                content =  first.get("subheadingQuestion");
-            } else if (first.get("mainQuestion") != null){
-                targetLanguage =  cardDetailFragment.mCurrentCard.question.css.mainText2SpeechSound;
-                content =  first.get("mainQuestion");
-            } else if (first.get("subQuestion") != null){
-                targetLanguage =  cardDetailFragment.mCurrentCard.question.css.subText2SpeechSound;
-                content =  first.get("subQuestion");
-            } else if (first.get("subheadingAnswer") != null){
-                targetLanguage =  cardDetailFragment.mCurrentCard.answer.css.subheadingText2SpeechSound;
-                content =  first.get("subheadingAnswer");
-            } else if (first.get("mainAnswer") != null){
-                targetLanguage =  cardDetailFragment.mCurrentCard.answer.css.mainText2SpeechSound;
-                content =  first.get("mainAnswer");
-            } else if (first.get("subAnswer") != null){
-                targetLanguage =  cardDetailFragment.mCurrentCard.answer.css.subText2SpeechSound;
-                content =  first.get("subAnswer");
-            }
-            if (targetLanguage == null || targetLanguage.length() == 0) {
-                targetLanguage = Text2SpeechHelper.sharedHelper().getSelectedLanguageLocalString();
-            }
-            if (content == null || content.length() == 0) {
-                content =  "   ";
+            mTextToSpeechContentArrayIndex = 0;
+            for (int index = 0; index < textToSpeechArray.size(); index++) {
+                HashMap<String,String> first = textToSpeechArray.get(index);
+                if (first.get("subheadingQuestion") != null){
+                    targetLanguage = cardDetailFragment.mCurrentCard.question.css.subheadingText2SpeechSound;
+                    content =  first.get("subheadingQuestion");
+                } else if (first.get("mainQuestion") != null){
+                    targetLanguage =  cardDetailFragment.mCurrentCard.question.css.mainText2SpeechSound;
+                    content =  first.get("mainQuestion");
+                } else if (first.get("subQuestion") != null){
+                    targetLanguage =  cardDetailFragment.mCurrentCard.question.css.subText2SpeechSound;
+                    content =  first.get("subQuestion");
+                } else if (first.get("subheadingAnswer") != null){
+                    targetLanguage =  cardDetailFragment.mCurrentCard.answer.css.subheadingText2SpeechSound;
+                    content =  first.get("subheadingAnswer");
+                } else if (first.get("mainAnswer") != null){
+                    targetLanguage =  cardDetailFragment.mCurrentCard.answer.css.mainText2SpeechSound;
+                    content =  first.get("mainAnswer");
+                } else if (first.get("subAnswer") != null){
+                    targetLanguage =  cardDetailFragment.mCurrentCard.answer.css.subText2SpeechSound;
+                    content =  first.get("subAnswer");
+                }
+                if (targetLanguage == null || targetLanguage.length() == 0) {
+                    targetLanguage = Text2SpeechHelper.sharedHelper().getSelectedLanguageLocalString();
+                }
+                if (content != null && content.length() != 0 && content.contains(System.getProperty("line.separator")) == false) {
+                    mTextToSpeechContentArrayIndex = index;  //index begins with first non-empty
+                    break;
+                } else {
+                    content = "    ";
+                }
+
             }
 
-            mTextToSpeechContentArrayIndex = 0;
+
             HashMap<String, String> params = new HashMap<String, String>();
             params.put(TextToSpeech.Engine.KEY_PARAM_UTTERANCE_ID, "stringId");//必不可少
 
@@ -2370,6 +2377,7 @@ public class PlayActivity extends FragmentActivity implements SensorEventListene
 
             //我们在Q/A切换过程中不允许执行
             if (mIsSwitchQuestionAnswerViewManually_Processing) {
+                LOGD("UtteranceProgressListener","mIsSwitchQuestionAnswerViewManually_Processing == true");
                 return;
             }
 
@@ -2425,6 +2433,10 @@ public class PlayActivity extends FragmentActivity implements SensorEventListene
 
                     mTTS.speak(content, TextToSpeech.QUEUE_FLUSH, params);
                     LOGD(TAG, "TTS Speak text: " + content);
+                } else {
+
+                    LOGD(TAG, "should not come here");
+
                 }
 
             } else {
