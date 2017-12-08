@@ -90,7 +90,7 @@
         android:orientation="horizontal"
         >
 
-        <ImageButton
+        <com.flipflash.UI.ExpandTouchAreaImageButton
             android:id="@+id/button_delete_pack"
             android:layout_marginRight="10dp"
             android:background="@android:color/transparent"
@@ -100,9 +100,9 @@
             android:src="@drawable/delete_button"
             android:layout_weight="50">
 
-        </ImageButton>
+        </com.flipflash.UI.ExpandTouchAreaImageButton>
 
-        <ImageButton
+        <com.flipflash.UI.ExpandTouchAreaImageButton
             android:id="@+id/button_edit_pack"
             android:gravity="center"
             android:background="@android:color/transparent"
@@ -111,7 +111,7 @@
             android:src="@drawable/edit_pack_button"
             android:layout_weight="50">
 
-        </ImageButton>
+        </com.flipflash.UI.ExpandTouchAreaImageButton>
 
     </LinearLayout>
 

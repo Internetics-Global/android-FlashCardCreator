@@ -32,6 +32,7 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.flipflash.UI.ExpandTouchAreaImageButton;
 import com.flipflash.UI.SmoothGallery;
 import com.flipflash.android_ffc.MainActivity;
 import com.flipflash.android_ffc.PlayActivity;
@@ -147,6 +148,13 @@ public class PackListFragment extends Fragment {
         if (mUser.packs.size() >0) {
             mGallery.setSelection(1); //when set this, every time after notifyDataSetChanged finish, getView(1) will be called one more
         }
+
+        mGallery.setOnItemClickListener(new OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
+                playImageViewButtonClicked(position);
+            }
+        });
 
         final Button visitStoreButton = (Button) mRootView.findViewById(R.id.visit_store_btn);
         visitStoreButton.setOnClickListener(new View.OnClickListener() {
@@ -344,8 +352,8 @@ public class PackListFragment extends Fragment {
 
                 final Pack currentPack = mUser.packs.get(position -1);
 
-                final ImageButton deleteButton = (ImageButton) convertView.findViewById(R.id.button_delete_pack);
-                final ImageButton editButton = (ImageButton) convertView.findViewById(R.id.button_edit_pack);
+                final ExpandTouchAreaImageButton deleteButton = (ExpandTouchAreaImageButton) convertView.findViewById(R.id.button_delete_pack);
+                final ExpandTouchAreaImageButton editButton = (ExpandTouchAreaImageButton) convertView.findViewById(R.id.button_edit_pack);
                 final ImageView playImageView = (ImageView) convertView.findViewById(R.id.pack_play_image_view);
                 final ImageView gotoPackImageView = (ImageView) convertView.findViewById(R.id.goto_pack_image_view);
 
@@ -388,14 +396,9 @@ public class PackListFragment extends Fragment {
                     }
                 }
 
-                coverImageView.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-                        playImageViewButtonClicked(position);
-                    }
-                });
 
-
+                int dp10 = UIHelper.getPixels(10);
+                ExpandTouchAreaImageButton.expandViewTouchDelegate(editButton,dp10,dp10,dp10 * 2,dp10 * 2);
                 editButton.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
@@ -408,6 +411,7 @@ public class PackListFragment extends Fragment {
                     }
                 });
 
+                ExpandTouchAreaImageButton.expandViewTouchDelegate(deleteButton,dp10,dp10,dp10 * 2,dp10 * 2);
                 deleteButton.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
