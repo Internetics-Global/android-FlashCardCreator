@@ -553,6 +553,10 @@ public class PackListFragment extends Fragment {
 
         final Pack currentPack = mUser.packs.get(position -1);
 
+        if (currentPack ==null || currentPack.cards.size() == 0) {
+            return;
+        }
+
         MainActivity activity = ((MainActivity) getActivity());
 
         //play
