@@ -118,23 +118,6 @@ public class CardListFragment extends Fragment {
 
         setCardListAdapter();
 
-        mDSLVListView.setRemoveListener(new DragSortListView.RemoveListener() {
-            @Override
-            public void remove(int which) {
-                LOGD(TAG, "remove: Card list item is removed" + which);
-                        removeListItem(which);
-            }
-        });
-
-        mDSLVListView.setDragListener(new DragSortListView.DragListener() {
-            @Override
-            public void drag(int from, int to) {
-                dragListItem(from, to);
-            }
-        });
-
-        mDSLVListView.setOverScrollMode(ListView.OVER_SCROLL_ALWAYS);
-
         //Register broadcast
         mReceiver = new MasterFragmentReceiver();
         IntentFilter filter = new IntentFilter();
@@ -163,6 +146,10 @@ public class CardListFragment extends Fragment {
     @Override
     public void onDestroy() {
         super.onDestroy();
+        if (mDSLVListView != null) {
+            mDSLVListView.setRemoveListener(null);
+            mDSLVListView.setDragListener(null);
+        }
         getActivity().unregisterReceiver(mReceiver);
 
 //        RefWatcher refWatcher = AppContext.getRefWatcher(getActivity());
@@ -222,6 +209,28 @@ public class CardListFragment extends Fragment {
         mIsListViewEditable = isEditingStyle;
 
         setCardListAdapter();
+
+        mDSLVListView.setRemoveListener(null);
+        mDSLVListView.setDragListener(null);
+        if (isEditingStyle) {
+            mDSLVListView.setRemoveListener(new DragSortListView.RemoveListener() {
+                @Override
+                public void remove(int which) {
+                    LOGD(TAG, "remove: Card list item is removed" + which);
+                    removeListItem(which);
+                }
+            });
+
+            mDSLVListView.setDragListener(new DragSortListView.DragListener() {
+                @Override
+                public void drag(int from, int to) {
+                    dragListItem(from, to);
+                }
+            });
+
+            mDSLVListView.setOverScrollMode(ListView.OVER_SCROLL_ALWAYS);
+        } else {
+        }
 
         updateListView(-1,false);
     }
@@ -534,8 +543,6 @@ public class CardListFragment extends Fragment {
         } else {
             updateListView(0,true);
         }
-
-        mIsListViewEditable = false;
 
         activity.updateEditPackNavIcon();
 
