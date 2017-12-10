@@ -1,8 +1,10 @@
 package com.flipflash.fragment;
 
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.content.BroadcastReceiver;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.database.Cursor;
@@ -260,7 +262,17 @@ public class CardListFragment extends Fragment {
                 v.findViewById(R.id.card_list_item_swipe_delete).setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-                        removeListItem(position);
+                        new AlertDialog.Builder(getActivity())
+                                .setTitle(getString(R.string.DIALOG_WARN))
+                                .setMessage(getString(R.string.DIALOG_DELETE_PACK))
+                                .setPositiveButton(getString(R.string.DIALOG_OK), new DialogInterface.OnClickListener() {
+                                    @Override
+                                    public void onClick(DialogInterface dialogInterface, int i) {
+                                        removeListItem(position);
+                                    }
+                                })
+                                .setNegativeButton(getString(R.string.DIALOG_CANCEL), null)
+                                .show();
                     }
                 });
 
