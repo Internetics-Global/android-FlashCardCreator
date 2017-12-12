@@ -2104,7 +2104,7 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnTouchL
             // https://github.com/android/platform_frameworks_base/blob/kitkat-release/core/java/android/widget/TextView.java#L562-564
             Field f = TextView.class.getDeclaredField("mCursorDrawableRes");
             f.setAccessible(true);
-            f.set(mSubheading, R.drawable.cursor);
+            f.set(mSubheading, R.drawable.color_cursor);
         } catch (Exception ignored) {
         }
     }
@@ -2129,7 +2129,7 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnTouchL
             // https://github.com/android/platform_frameworks_base/blob/kitkat-release/core/java/android/widget/TextView.java#L562-564
             Field f = TextView.class.getDeclaredField("mCursorDrawableRes");
             f.setAccessible(true);
-            f.set(mMain, R.drawable.cursor);
+            f.set(mMain, R.drawable.color_cursor);
         } catch (Exception ignored) {
         }
 
@@ -2155,7 +2155,7 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnTouchL
             // https://github.com/android/platform_frameworks_base/blob/kitkat-release/core/java/android/widget/TextView.java#L562-564
             Field f = TextView.class.getDeclaredField("mCursorDrawableRes");
             f.setAccessible(true);
-            f.set(mSub, R.drawable.cursor);
+            f.set(mSub, R.drawable.color_cursor);
         } catch (Exception ignored) {
         }
 

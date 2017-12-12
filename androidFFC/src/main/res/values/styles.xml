@@ -109,7 +109,7 @@
 
 
     <style name="CardBodyEditTextCustomStyle" parent="@android:style/Widget.EditText">
-        <item name="android:textCursorDrawable">@null</item>
+        <item name="android:textCursorDrawable">@drawable/color_cursor</item>
     </style>
 
 
