@@ -5578,6 +5578,15 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnTouchL
                         MediaItem item = mMediaSelectedList.get(0);//因为是单选，所以永远是第一个
                         Uri selectedURI = item.getUriOrigin();
 
+                        long durationSeconds = getVideoDurationSeconds(selectedURI);
+                        if (durationSeconds > 30) {
+                            new SweetAlertDialog(getActivity(), SweetAlertDialog.ERROR_TYPE)
+                                    .setTitleText(getString(R.string.DIALOG_AlERT))
+                                    .setContentText(getString(R.string.MAX_VIDEO_DURATION_REACHED))
+                                    .show();
+                            return;
+                        }
+
                         String decodeUriStr = "";
                         try {
                             decodeUriStr = URLDecoder.decode(selectedURI.toString(), "UTF-8");
@@ -5813,6 +5822,17 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnTouchL
 
 
 
+    }
+
+    private long getVideoDurationSeconds(Uri uri) {
+        MediaMetadataRetriever retriever = new MediaMetadataRetriever();
+//use one of overloaded setDataSource() functions to set your data source
+        retriever.setDataSource(getActivity(), uri);
+        String time = retriever.extractMetadata(MediaMetadataRetriever.METADATA_KEY_DURATION);
+        long timeInMillisec = Long.parseLong(time );
+
+        retriever.release();
+        return timeInMillisec/1000;
     }
 
 
