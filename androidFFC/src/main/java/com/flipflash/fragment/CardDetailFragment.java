@@ -1050,8 +1050,10 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnTouchL
 
                             if (mIsQuestionShowing) {
                                 mCurrentCard.question.imageUriFormatStr2 = "";
+                                mCurrentCard.question.movieUriFormatStr2 = "";
                             } else {
                                 mCurrentCard.answer.imageUriFormatStr2 = "";
+                                mCurrentCard.answer.movieUriFormatStr2 = "";
                             }
                         } else {
                             String placeholderImagePath = FileOperationHelper.getAnswerImagePlaceholderImagePath();
@@ -1059,8 +1061,10 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnTouchL
 
                             if (mIsQuestionShowing) {
                                 mCurrentCard.question.imageUriFormatStr = "";
+                                mCurrentCard.question.movieUriFormatStr = "";
                             } else {
                                 mCurrentCard.answer.imageUriFormatStr = "";
+                                mCurrentCard.answer.movieUriFormatStr = "";
                             }
                         }
 
