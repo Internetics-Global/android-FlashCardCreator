@@ -248,7 +248,10 @@ public class VGViewPager extends AutoScrollViewPager {
         int w = view.getWidth();
         int h = view.getHeight();
 
-        if ((rx < x + (w - 110)/2) || (rx > x + (w + 110)/2) || (ry < y + (h - 141)/2) || (ry > y + (h + 141)/2)) {
+        int value55 = UIHelper.getPixels(55);
+        int value70 = UIHelper.getPixels(70);
+
+        if ((rx < x + (w - value55)/2) || (rx > x + (w + value55)/2) || (ry < y + (h - value70)/2) || (ry > y + (h + value70)/2)) {
             return false;
         }
         return true;
