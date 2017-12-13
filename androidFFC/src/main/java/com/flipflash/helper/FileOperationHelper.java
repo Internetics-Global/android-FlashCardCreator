@@ -151,7 +151,7 @@ public class FileOperationHelper {
             String returnStr = str.substring(index + 3);
             return returnStr;
         }
-        return str;
+        return "";
     }
 
 

@@ -55,37 +55,69 @@ public class PackBuildHelper {
             cardFiles.add(singleFile);
 
             if (card.coverImageUriFormatStr.length() > 0) {
-                cardFiles.add(FileOperationHelper.deleteUriSchemeHeader(card.coverImageUriFormatStr));
+                String path = FileOperationHelper.deleteUriSchemeHeader(card.coverImageUriFormatStr);
+                boolean isExist = (new File(path)).exists();
+                if (isExist) {
+                    cardFiles.add(path);
+                }
             }
 
             if (currentPack.logoImageUriFormatStr.length() > 0) {
-                cardFiles.add(FileOperationHelper.deleteUriSchemeHeader(currentPack.logoImageUriFormatStr));
+                String path = FileOperationHelper.deleteUriSchemeHeader(currentPack.logoImageUriFormatStr);
+                boolean isExist = (new File(path)).exists();
+                if (isExist) {
+                    cardFiles.add(path);
+                }
             }
 
 
 
             if (card.question.imageUriFormatStr.length() >0) {
-                cardFiles.add(FileOperationHelper.deleteUriSchemeHeader(card.question.imageUriFormatStr));
+                String path = FileOperationHelper.deleteUriSchemeHeader(card.question.imageUriFormatStr);
+                boolean isExist = (new File(path)).exists();
+                if (isExist) {
+                    cardFiles.add(path);
+                }
             }
 
             if (card.question.imageUriFormatStr2.length() >0) {
-                cardFiles.add(FileOperationHelper.deleteUriSchemeHeader(card.question.imageUriFormatStr2));
+                String path = FileOperationHelper.deleteUriSchemeHeader(card.question.imageUriFormatStr2);
+                boolean isExist = (new File(path)).exists();
+                if (isExist) {
+                    cardFiles.add(path);
+                }
             }
 
             if (card.question.backgroundImageUriFormatStr.length() >0) {
-                cardFiles.add(FileOperationHelper.deleteUriSchemeHeader(card.question.backgroundImageUriFormatStr));
+                String path = FileOperationHelper.deleteUriSchemeHeader(card.question.backgroundImageUriFormatStr);
+                boolean isExist = (new File(path)).exists();
+                if (isExist) {
+                    cardFiles.add(path);
+                }
             }
 
             if ((card.question.movieUriFormatStr.length() >0) && (card.question.movieUriFormatStr.contains("http://") == false) && (card.question.movieUriFormatStr.contains("https://") == false)) {
-                cardFiles.add(FileOperationHelper.deleteUriSchemeHeader(card.question.movieUriFormatStr));
+                String path = FileOperationHelper.deleteUriSchemeHeader(card.question.movieUriFormatStr);
+                boolean isExist = (new File(path)).exists();
+                if (isExist) {
+                    cardFiles.add(path);
+                }
             }
 
             if ((card.question.movieUriFormatStr2.length() >0) && (card.question.movieUriFormatStr2.contains("http://") == false) && (card.question.movieUriFormatStr2.contains("https://") == false)) {
-                cardFiles.add(FileOperationHelper.deleteUriSchemeHeader(card.question.movieUriFormatStr2));
+                String path = FileOperationHelper.deleteUriSchemeHeader(card.question.movieUriFormatStr2);
+                boolean isExist = (new File(path)).exists();
+                if (isExist) {
+                    cardFiles.add(path);
+                }
             }
 
             if (card.question.audioUriFormatStr.length() >0) {
-                cardFiles.add(FileOperationHelper.deleteUriSchemeHeader(card.question.audioUriFormatStr));
+                String path = FileOperationHelper.deleteUriSchemeHeader(card.question.audioUriFormatStr);
+                boolean isExist = (new File(path)).exists();
+                if (isExist) {
+                    cardFiles.add(path);
+                }
             }
 
 
@@ -93,28 +125,52 @@ public class PackBuildHelper {
 
             if (!(card.question.imageUriFormatStr.equals(card.answer.imageUriFormatStr))) {
                 //for history reason, in iOS version, this data could be same (answer_placeholder_content.jpg)
-                cardFiles.add(FileOperationHelper.deleteUriSchemeHeader(card.answer.imageUriFormatStr));
+                String path = FileOperationHelper.deleteUriSchemeHeader(card.answer.imageUriFormatStr);
+                boolean isExist = (new File(path)).exists();
+                if (isExist) {
+                    cardFiles.add(path);
+                }
             }
 
             if (!(card.question.imageUriFormatStr2.equals(card.answer.imageUriFormatStr2))) {
                 //for history reason, in iOS version, this data could be same (answer_placeholder_content.jpg)
-                cardFiles.add(FileOperationHelper.deleteUriSchemeHeader(card.answer.imageUriFormatStr2));
+                String path = FileOperationHelper.deleteUriSchemeHeader(card.answer.imageUriFormatStr2);
+                boolean isExist = (new File(path)).exists();
+                if (isExist) {
+                    cardFiles.add(path);
+                }
             }
 
             if (card.answer.backgroundImageUriFormatStr.length() >0) {
-                cardFiles.add(FileOperationHelper.deleteUriSchemeHeader(card.answer.backgroundImageUriFormatStr));
+                String path = FileOperationHelper.deleteUriSchemeHeader(card.answer.backgroundImageUriFormatStr);
+                boolean isExist = (new File(path)).exists();
+                if (isExist) {
+                    cardFiles.add(path);
+                }
             }
 
             if ((card.answer.movieUriFormatStr.length() >0) && (card.answer.movieUriFormatStr.contains("http://") == false) && (card.answer.movieUriFormatStr.contains("https://") == false)) {  //有可能只是类似youtube的链接，而不是本地文件
-                cardFiles.add(FileOperationHelper.deleteUriSchemeHeader(card.answer.movieUriFormatStr));
+                String path = FileOperationHelper.deleteUriSchemeHeader(card.answer.movieUriFormatStr);
+                boolean isExist = (new File(path)).exists();
+                if (isExist) {
+                    cardFiles.add(path);
+                }
             }
 
             if ((card.answer.movieUriFormatStr2.length() >0) && (card.answer.movieUriFormatStr2.contains("http://") == false) && (card.answer.movieUriFormatStr2.contains("https://") == false)) {  //有可能只是类似youtube的链接，而不是本地文件
-                cardFiles.add(FileOperationHelper.deleteUriSchemeHeader(card.answer.movieUriFormatStr2));
+                String path = FileOperationHelper.deleteUriSchemeHeader(card.answer.movieUriFormatStr2);
+                boolean isExist = (new File(path)).exists();
+                if (isExist) {
+                    cardFiles.add(path);
+                }
             }
 
             if (card.answer.audioUriFormatStr.length() >0) {
-                cardFiles.add(FileOperationHelper.deleteUriSchemeHeader(card.answer.audioUriFormatStr));
+                String path = FileOperationHelper.deleteUriSchemeHeader(card.answer.audioUriFormatStr);
+                boolean isExist = (new File(path)).exists();
+                if (isExist) {
+                    cardFiles.add(path);
+                }
             }
 
             //remove duplicated
