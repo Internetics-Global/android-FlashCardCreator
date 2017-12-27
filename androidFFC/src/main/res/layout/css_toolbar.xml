@@ -37,6 +37,7 @@
         android:layout_height="match_parent"
         android:layout_alignParentRight="true"
         android:entries="@array/css_font"
+        android:padding="0dp"
         android:background="@drawable/selector_csstoolbar_button"
         android:layout_margin="5dp"/>
 
@@ -47,6 +48,7 @@
             android:layout_height="match_parent"
             android:layout_toLeftOf="@id/spinner_font"
             android:entries="@array/css_align"
+            android:padding="0dp"
             android:background="@drawable/selector_csstoolbar_button"
             android:layout_margin="5dp"/>
 
@@ -58,6 +60,7 @@
             android:layout_height="match_parent"
             android:entries="@array/css_color"
             android:background="@drawable/selector_csstoolbar_button"
+            android:padding="0dp"
             android:layout_margin="5dp"
             android:layout_toLeftOf="@id/spinner_align"
             />
@@ -69,6 +72,7 @@
             android:layout_height="match_parent"
             android:entries="@array/css_size"
             android:background="@drawable/selector_csstoolbar_button"
+            android:padding="0dp"
             android:layout_margin="5dp"
             android:layout_toLeftOf="@id/spinner_color"
             />
@@ -79,6 +83,7 @@
         android:layout_width="@dimen/csstoolbar_button_width"
         android:layout_height="match_parent"
         android:background="@drawable/selector_csstoolbar_button"
+        android:padding="0dp"
         android:layout_margin="5dp"
         android:layout_toLeftOf="@id/spinner_size"
         />
