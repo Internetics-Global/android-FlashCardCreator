@@ -5595,13 +5595,15 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnTouchL
                         MediaItem item = mMediaSelectedList.get(0);//因为是单选，所以永远是第一个
                         Uri selectedURI = item.getUriOrigin();
 
-                        long durationSeconds = getVideoDurationSeconds(selectedURI);
-                        if (durationSeconds > 30) {
-                            new SweetAlertDialog(getActivity(), SweetAlertDialog.ERROR_TYPE)
-                                    .setTitleText(getString(R.string.DIALOG_AlERT))
-                                    .setContentText(getString(R.string.MAX_VIDEO_DURATION_REACHED))
-                                    .show();
-                            return;
+                        if (item.getType() == MediaItem.VIDEO) {
+                            long durationSeconds = getVideoDurationSeconds(selectedURI);
+                            if (durationSeconds > 30) {
+                                new SweetAlertDialog(getActivity(), SweetAlertDialog.ERROR_TYPE)
+                                        .setTitleText(getString(R.string.DIALOG_AlERT))
+                                        .setContentText(getString(R.string.MAX_VIDEO_DURATION_REACHED))
+                                        .show();
+                                return;
+                            }
                         }
 
                         String decodeUriStr = "";
