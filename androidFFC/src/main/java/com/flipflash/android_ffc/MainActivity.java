@@ -1815,7 +1815,7 @@ public class MainActivity extends FragmentActivity implements
         Spinner spinnerAlign = (Spinner) mCSSToolbar.findViewById(R.id.spinner_align);
         Spinner spinnerColor = (Spinner) mCSSToolbar.findViewById(R.id.spinner_color);
         Spinner spinnerSize = (Spinner) mCSSToolbar.findViewById(R.id.spinner_size);
-        Spinner spinnerLanguage = (Spinner) mCSSToolbar.findViewById(R.id.spinner_language);
+        final Spinner spinnerLanguage = (Spinner) mCSSToolbar.findViewById(R.id.spinner_language);
 
         HighLightArrayAdapter adapterFont = new HighLightArrayAdapter(this,
                 R.layout.spinner,getResources().getTextArray(R.array.css_font_nominal));
@@ -1837,7 +1837,7 @@ public class MainActivity extends FragmentActivity implements
         adapterSize.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinnerSize.setAdapter(adapterSize);
 
-        HighLightArrayAdapter adapterLanguage = new HighLightArrayAdapter(this,
+        final HighLightArrayAdapter adapterLanguage = new HighLightArrayAdapter(this,
                 R.layout.spinner,mLanguageSpinnerArray);
         adapterLanguage.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinnerLanguage.setAdapter(adapterLanguage);
@@ -1925,7 +1925,7 @@ public class MainActivity extends FragmentActivity implements
 
                 if (position > 0) //this is necessary, since default will be automatically executed
                 {
-                    activeCardDetailFragment.updateCSS(3, position - 1);
+                    activeCardDetailFragment.updateCSS(3, position - 1, null);
                 }
 
 
@@ -1943,7 +1943,7 @@ public class MainActivity extends FragmentActivity implements
 
                 final CardDetailFragment activeCardDetailFragment = getActiveCardDetailFragment();
                 if (position > 0) //this is necessary, since default will be automatically executed
-                    activeCardDetailFragment.updateCSS(0, position - 1);
+                    activeCardDetailFragment.updateCSS(0, position - 1, null);
             }
 
             @Override
@@ -1956,7 +1956,7 @@ public class MainActivity extends FragmentActivity implements
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 final CardDetailFragment activeCardDetailFragment = getActiveCardDetailFragment();
                 if (position > 0)
-                    activeCardDetailFragment.updateCSS(1, position - 1);
+                    activeCardDetailFragment.updateCSS(1, position - 1, null);
             }
 
             @Override
@@ -1969,7 +1969,7 @@ public class MainActivity extends FragmentActivity implements
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 final CardDetailFragment activeCardDetailFragment = getActiveCardDetailFragment();
                 if (position > 0)
-                    activeCardDetailFragment.updateCSS(2, position - 1);
+                    activeCardDetailFragment.updateCSS(2, position - 1,null);
             }
 
             @Override
@@ -1981,8 +1981,13 @@ public class MainActivity extends FragmentActivity implements
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 final CardDetailFragment activeCardDetailFragment = getActiveCardDetailFragment();
-                if (position > 0)
-                    activeCardDetailFragment.updateCSS(4, position - 1);
+                if (position > 0) {
+                    ArrayList selectedList = adapterLanguage.getSelectedList();
+                    activeCardDetailFragment.updateCSS(4, position - 1, selectedList);
+                    if (selectedList.contains(Integer.valueOf(position))) {
+                        spinnerLanguage.setSelection(0);
+                    }
+                }
             }
 
             @Override
@@ -2638,6 +2643,10 @@ public class MainActivity extends FragmentActivity implements
     class HighLightArrayAdapter extends ArrayAdapter<CharSequence> {
 
         private ArrayList mSelectedList;
+
+        public ArrayList getSelectedList() {
+            return mSelectedList;
+        }
 
 
         public void setSelection(ArrayList list) {

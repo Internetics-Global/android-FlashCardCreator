@@ -4765,7 +4765,10 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnTouchL
 
 
 
-    public void updateCSS(int menuID, int subMenuID) {
+    /*
+     * Currently, currentSelectedList is used only in language. use null for others
+     */
+    public void updateCSS(int menuID, int subMenuID, ArrayList currentSelectedList) {
         CSS currentCSS;
 
         if ((mCurrentFocusedCardContentText == null) || (mCurrentFocusedCardContentText.getTag() == null)) {
@@ -4954,12 +4957,22 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnTouchL
             case 4:   //language
                 ArrayList<String> list = Text2SpeechHelper.sharedHelper().availableLanguageLocalStringList();
 
-                if (editTextTag.equals(TAG_SUBHEADING)) {
-                    currentCSS.subheadingText2SpeechSound = list.get(subMenuID); //it's subMenuID + 1, rather than subMenuID
-                } else if (editTextTag.equals(TAG_MAIN)) {
-                    currentCSS.mainText2SpeechSound = list.get(subMenuID ); //it's subMenuID + 1, rather than subMenuID
-                } else if (editTextTag.equals(TAG_SUB)) {
-                    currentCSS.subText2SpeechSound = list.get(subMenuID); //it's subMenuID + 1, rather than subMenuID
+                if (currentSelectedList.contains(Integer.valueOf(subMenuID + 1))) {
+                    if (editTextTag.equals(TAG_SUBHEADING)) {
+                        currentCSS.subheadingText2SpeechSound = "";
+                    } else if (editTextTag.equals(TAG_MAIN)) {
+                        currentCSS.mainText2SpeechSound = "";
+                    } else if (editTextTag.equals(TAG_SUB)) {
+                        currentCSS.subText2SpeechSound = "";
+                    }
+                } else {
+                    if (editTextTag.equals(TAG_SUBHEADING)) {
+                        currentCSS.subheadingText2SpeechSound = list.get(subMenuID); //it's subMenuID + 1, rather than subMenuID
+                    } else if (editTextTag.equals(TAG_MAIN)) {
+                        currentCSS.mainText2SpeechSound = list.get(subMenuID ); //it's subMenuID + 1, rather than subMenuID
+                    } else if (editTextTag.equals(TAG_SUB)) {
+                        currentCSS.subText2SpeechSound = list.get(subMenuID); //it's subMenuID + 1, rather than subMenuID
+                    }
                 }
 
                 break;
