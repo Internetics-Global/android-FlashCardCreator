@@ -2122,10 +2122,10 @@ public class MainActivity extends FragmentActivity implements
             fontIndex = 1;  //我们必须这么做，因为我们希望默认是选择default，而不是什么都不选中
         }
 
-        if (languageIndex == 0) {
-            String defaultValue = Text2SpeechHelper.sharedHelper().getSelectedLanguageLocalString();
-            languageIndex = Text2SpeechHelper.sharedHelper().availableLanguageLocalStringList().indexOf(defaultValue) + 1;
-        }
+//        if (languageIndex == 0) {
+//            String defaultValue = Text2SpeechHelper.sharedHelper().getSelectedLanguageLocalString();
+//            languageIndex = Text2SpeechHelper.sharedHelper().availableLanguageLocalStringList().indexOf(defaultValue) + 1;
+//        }
 
         HighLightArrayAdapter adapterFont = (HighLightArrayAdapter) spinnerFont.getAdapter();
         HighLightArrayAdapter adapterSize = (HighLightArrayAdapter) spinnerSize.getAdapter();
