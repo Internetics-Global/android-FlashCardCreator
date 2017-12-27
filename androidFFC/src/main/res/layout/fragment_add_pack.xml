@@ -20,7 +20,6 @@
             android:orientation="vertical">
 
             <com.flipflash.UI.FCCEditTextAutoFit
-                android:layout_marginTop="2dp"
                 android:id="@+id/fragment_add_pack_pack_name"
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
@@ -36,7 +35,6 @@
             </com.flipflash.UI.FCCEditTextAutoFit>
 
             <com.flipflash.UI.FCCEditTextAutoFit
-                android:layout_marginTop="2dp"
                 android:id="@+id/fragment_add_pack_sidebar_title"
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
@@ -51,7 +49,6 @@
 
 
             <com.flipflash.UI.FCCEditTextAutoFit
-                android:layout_marginTop="2dp"
                 android:id="@+id/fragment_add_pack_creator"
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
@@ -65,7 +62,6 @@
                 android:ems="10"/>
 
             <com.flipflash.UI.FCCEditTextAutoFit
-                android:layout_marginTop="2dp"
                 android:id="@+id/fragment_add_pack_job_title"
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
@@ -79,7 +75,6 @@
                 android:ems="10"/>
 
             <TextView
-                android:layout_marginTop="2dp"
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
                 android:layout_weight="1"
@@ -91,7 +86,6 @@
                 android:text="@string/Label_Admin_Password_Hint"/>
 
             <EditText
-                android:layout_marginTop="2dp"
                 android:id="@+id/fragment_add_pack_admin_password"
                 android:layout_width="match_parent"
                 android:inputType="textPassword"
@@ -105,7 +99,6 @@
                 android:ems="10"/>
 
             <EditText
-                android:layout_marginTop="2dp"
                 android:id="@+id/fragment_add_pack_confirm_admin_password"
                 android:layout_width="match_parent"
                 android:inputType="textPassword"
