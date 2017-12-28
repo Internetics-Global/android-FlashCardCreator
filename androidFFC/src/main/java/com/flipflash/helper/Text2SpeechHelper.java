@@ -258,15 +258,17 @@ public class Text2SpeechHelper {
 
         HashMap<String,String> map = getMapsBetweenLanguageLocalAndDescription();
 
-        if (mAllAvailableLocaleList != null) {
-            for (int i =0; i < mAllAvailableLocaleList.size(); i++) {
-                String key = getLanguageLocaleStringFrom(mAllAvailableLocaleList.get(i));
-                String displayStr = map.get(key);
-                if (displayStr == null) {
-                    displayStr = key;
-                }
-                resultList.add(displayStr);
+        if (mAllAvailableLocaleList == null) {
+            mAllAvailableLocaleList = fetchAllVText2SpeechLocales();
+        }
+
+        for (int i =0; i < mAllAvailableLocaleList.size(); i++) {
+            String key = getLanguageLocaleStringFrom(mAllAvailableLocaleList.get(i));
+            String displayStr = map.get(key);
+            if (displayStr == null) {
+                displayStr = key;
             }
+            resultList.add(displayStr);
         }
 
         return resultList;

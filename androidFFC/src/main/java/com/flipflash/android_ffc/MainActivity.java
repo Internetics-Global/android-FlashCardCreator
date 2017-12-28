@@ -308,11 +308,16 @@ public class MainActivity extends FragmentActivity implements
         EventBus.getDefault().register(MainActivity.this);
 
 
+        searchAvailableLanguageSpinnerArray();
+
+    }
+
+    void searchAvailableLanguageSpinnerArray() {
         ArrayList<String> languageList = Text2SpeechHelper.sharedHelper().availableDescriptionList();
         languageList.add(0,getString(R.string.ToolbarItem_Language));
         mLanguageSpinnerArray = languageList.toArray(new String[languageList.size()]);
-
     }
+
 
     public boolean getPackInfoLayoutVisible() {
         LinearLayout         packInfoLayout = (LinearLayout) findViewById(R.id.pack_info_layout);
@@ -1837,6 +1842,9 @@ public class MainActivity extends FragmentActivity implements
         adapterSize.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinnerSize.setAdapter(adapterSize);
 
+        if (mLanguageSpinnerArray == null || mLanguageSpinnerArray.length <=1) {
+            searchAvailableLanguageSpinnerArray();
+        }
         final HighLightArrayAdapter adapterLanguage = new HighLightArrayAdapter(this,
                 R.layout.spinner,mLanguageSpinnerArray);
         adapterLanguage.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
