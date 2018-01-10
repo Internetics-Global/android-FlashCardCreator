@@ -51,6 +51,7 @@
             android:layout_width="fill_parent"
             android:textColor="@android:color/white"
             android:textSize="12sp"
+            android:layout_marginTop="-8dp"
             android:gravity="center_horizontal|center"
             android:text="@string/Title_Add_A_New_Pack"/>
 
@@ -61,6 +62,7 @@
             android:layout_weight="37"
             android:scaleType="fitCenter"
             android:src="@drawable/ffc_library"
+            android:layout_marginTop="10dp"
             android:background="@drawable/shape_image_round_corner">
 
         </ImageView>
