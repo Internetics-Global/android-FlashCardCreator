@@ -196,7 +196,12 @@ public class PackBuildHelper {
         }
 
         //step3:
-        packFiles.add(new File(FileOperationHelper.deleteUriSchemeHeader(currentPack.coverImageUriFormatStr)));
+        File newFile = new File(FileOperationHelper.deleteUriSchemeHeader(currentPack.coverImageUriFormatStr));
+        boolean isExist = newFile.exists();
+        if (isExist) {
+            packFiles.add(newFile);
+        }
+
         File jsonPackFile = PackBuildHelper.buildPackJsonFile(currentPack);
         packFiles.add(jsonPackFile);
 
