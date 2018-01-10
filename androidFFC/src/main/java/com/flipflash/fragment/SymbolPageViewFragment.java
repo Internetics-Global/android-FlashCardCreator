@@ -42,7 +42,7 @@ public class SymbolPageViewFragment extends Fragment implements TextView.OnTouch
 
     private Typeface mTypeFace;  //引用它的原因是因为unicode需要特殊字体支持
 
-    private final static int ROW_NUMBER           = 6;
+    private final static int ROW_NUMBER           = 4;
     private final static int COLUMN_NUMBER_TYPE_A = 11;
     private final static int COLUMN_NUMBER_TYPE_B = 12;
 
@@ -183,9 +183,9 @@ public class SymbolPageViewFragment extends Fragment implements TextView.OnTouch
         if (page <= 0) {
             count = 0;
         } else if (page == 1) {
-            count = (3 * COLUMN_NUMBER_TYPE_A + 3 * COLUMN_NUMBER_TYPE_B);
+            count = (3 * COLUMN_NUMBER_TYPE_A + 1 * COLUMN_NUMBER_TYPE_B);
         } else {
-            count = (3 * COLUMN_NUMBER_TYPE_A + 3 * COLUMN_NUMBER_TYPE_B) + (page -1) * COLUMN_NUMBER_TYPE_B * 6;
+            count = (3 * COLUMN_NUMBER_TYPE_A + 1 * COLUMN_NUMBER_TYPE_B) + (page -1) * COLUMN_NUMBER_TYPE_B * 4;
         }
 
         return count;

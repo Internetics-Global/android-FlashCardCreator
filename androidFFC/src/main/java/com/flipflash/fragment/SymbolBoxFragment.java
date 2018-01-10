@@ -32,7 +32,7 @@ public class SymbolBoxFragment extends Fragment {
     private static final String TAG = SymbolBoxFragment.class.getSimpleName();
 
     public View mContentView;
-    private final int  NUMBER_PAGE = 5;
+    private final int  NUMBER_PAGE = 7;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
