@@ -1,4 +1,4 @@
-include ':androidFFC', ':discreteSeekBar', ':mediapicker'
+include ':androidFFC', ':discreteSeekBar', ':mediapicker', ':AndroidSwipeLayout'
 include ':Viewflow'
 include ':NewQuickAction3D'
 include ':simpleSocialSharing'

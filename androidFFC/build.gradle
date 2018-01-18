@@ -163,8 +163,7 @@ dependencies {
     compile 'com.google.firebase:firebase-auth:9.0.1'
 
     compile 'com.google.android.gms:play-services-auth:9.0.1'
-
-    compile 'com.daimajia.swipelayout:library:1.1.9@aar'
+    compile project(path: ':AndroidSwipeLayout')
 }
 
 apply plugin: 'com.google.gms.google-services'
