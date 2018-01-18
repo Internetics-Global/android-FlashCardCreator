@@ -15,6 +15,14 @@
       },
       "oauth_client": [
         {
+          "client_id": "691893564635-ocqv44re26b0c2dl4h1ujruko70bjqen.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.flipflashcards.FFC_Android_dev",
+            "certificate_hash": "8d6a2ff1f9212d515a2c374be627d294d574b33e"
+          }
+        },
+        {
           "client_id": "691893564635-blg4ker5rrvpokeolu7khbd9g3urv7uu.apps.googleusercontent.com",
           "client_type": 3
         }
@@ -29,8 +37,20 @@
           "status": 1
         },
         "appinvite_service": {
-          "status": 1,
-          "other_platform_oauth_client": []
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "691893564635-i9r1arvp3lr1vbu8b3vc5ac73e74cql3.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.flipflash.FFC"
+              }
+            },
+            {
+              "client_id": "691893564635-blg4ker5rrvpokeolu7khbd9g3urv7uu.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
         },
         "ads_service": {
           "status": 2
