@@ -1463,7 +1463,9 @@ public class PlayActivity extends FragmentActivity implements SensorEventListene
             LOGD(TAG, "switchQuestionAnswerViewManually is aborted since it's processing ");
             return;
         } else {
-            mIsSwitchQuestionAnswerViewManually_Processing = true;
+            if (isManually) {
+                mIsSwitchQuestionAnswerViewManually_Processing = true;
+            }
         }
 
         if (isManually) { //在fixed delay或smart delay的auto scroll中，都是不允许手动切换question/answer view的
@@ -2361,7 +2363,7 @@ public class PlayActivity extends FragmentActivity implements SensorEventListene
         public void onStart(String utteranceId) {
 
             //我们在Q/A切换过程中不允许执行
-            if (mIsSwitchQuestionAnswerViewManually_Processing) {
+            if (mIsSwitchQuestionAnswerViewManually_Processing && (mIsAutoScroll == false)) {
                 return;
             }
 
@@ -2376,7 +2378,7 @@ public class PlayActivity extends FragmentActivity implements SensorEventListene
         public void onDone(String utteranceId) {
 
             //我们在Q/A切换过程中不允许执行
-            if (mIsSwitchQuestionAnswerViewManually_Processing) {
+            if (mIsSwitchQuestionAnswerViewManually_Processing && (mIsAutoScroll == false)) {
                 LOGD("UtteranceProgressListener","mIsSwitchQuestionAnswerViewManually_Processing == true");
                 return;
             }
