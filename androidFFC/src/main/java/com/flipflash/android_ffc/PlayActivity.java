@@ -1582,7 +1582,7 @@ public class PlayActivity extends FragmentActivity implements SensorEventListene
 
         Locale locale = null;
 
-        if (languageLocaleString != null) {
+        if (languageLocaleString != null && (languageLocaleString.toLowerCase().contains("null") == false)) {
 
             String[] array = languageLocaleString.split("-");
 
