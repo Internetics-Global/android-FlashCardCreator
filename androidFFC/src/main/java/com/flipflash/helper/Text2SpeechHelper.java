@@ -174,9 +174,64 @@ public class Text2SpeechHelper {
 
         HashMap<String,String> dict = new HashMap();
         dict.put("ar-SA","Arabic (Saudi Arabia) ");
+        dict.put("af-ZA","Afrikaans (South Africa) ");
+        dict.put("ar-AE","Arabic (U.A.E.) ");
+        dict.put("ar-BH","Arabic (Bahrain) ");
+        dict.put("ar-DZ","Arabic (Algeria) ");
+        dict.put("ar-EG","Arabic (Egypt) ");
+        dict.put("ar-IQ","Arabic (Iraq) ");
+        dict.put("ar-JO","Arabic (Jordan) ");
+        dict.put("ar-KW","Arabic (Kuwait) ");
+        dict.put("ar-LB","Arabic (Lebanon) ");
+        dict.put("ar-LY","Arabic (Libya) ");
+        dict.put("ar-MA","Arabic (Morocco) ");
+        dict.put("ar-OM","Arabic (Oman) ");
+        dict.put("ar-QA","Arabic (Qatar) ");
+        dict.put("ar-SY","Arabic (Syria) ");
+        dict.put("ar-TN","Arabic (Tunisia) ");
+        dict.put("ar-YE","Arabic (Yemen) ");
+        dict.put("az-AZ","Azeri (Latin) (Azerbaijan) ");
+        dict.put("be-BY","Belarusian (Belarus) ");
+        dict.put("bg-BG","Bulgarian (Bulgaria) ");
+        dict.put("bs-BA","Bosnian (Bosnia and Herzegovina) ");
+        dict.put("cy-GB","Welsh (United Kingdom) ");
+
         dict.put("cs-CZ","Czech (Czech Republic) ");
         dict.put("da-DK","Danish (Denmark) ");
         dict.put("de-DE","German(Germany) ");
+        dict.put("de-AT","German (Austria) ");
+        dict.put("de-CH","German (Switzerland) ");
+        dict.put("de-DE","German (Germany) ");
+        dict.put("de-LI","German (Liechtenstein) ");
+        dict.put("de-LU","German (Luxembourg) ");
+        dict.put("en-BZ","English (Belize) ");
+        dict.put("en-CA","English (Canada) ");
+        dict.put("en-CB","English (Caribbean) ");
+        dict.put("en-JM","English (Jamaica) ");
+        dict.put("en-NZ","English (New Zealand) ");
+        dict.put("en-PH","English (Republic of the Philippines) ");
+        dict.put("en-TT","English (Trinidad and Tobago) ");
+        dict.put("en-ZW","English (Zimbabwe) ");
+        dict.put("es-AR","Spanish (Argentina) ");
+        dict.put("es-BO","Spanish (Bolivia) ");
+        dict.put("es-CL","Spanish (Chile) ");
+        dict.put("es-CO","Spanish (Colombia) ");
+        dict.put("es-CR","Spanish (Costa Rica) ");
+        dict.put("es-DO","Spanish (Dominican Republic) ");
+        dict.put("es-EC","Spanish (Ecuador) ");
+        dict.put("es-ES","Spanish (Castilian) ");
+        dict.put("es-GT","Spanish (Guatemala) ");
+        dict.put("es-HN","Spanish (Honduras) ");
+        dict.put("es-NI","Spanish (Nicaragua) ");
+        dict.put("es-PA","Spanish (Panama) ");
+        dict.put("es-PE","Spanish (Peru) ");
+        dict.put("es-PR","Spanish (Puerto Rico) ");
+        dict.put("es-PY","Spanish (Paraguay) ");
+        dict.put("es-SV","Spanish (El Salvador) ");
+        dict.put("es-UY","Spanish (Uruguay) ");
+        dict.put("es-VE","Spanish (Venezuela) ");
+        dict.put("eu-ES","Basque (Spain) ");
+
         dict.put("el-GR","Modern Greek (Greece) ");
         dict.put("en-AU","English (Australia) ");
         dict.put("en-GB","English (United Kingdom) ");
@@ -187,33 +242,102 @@ public class Text2SpeechHelper {
         dict.put("es-ES","Spanish (Spain) ");
         dict.put("es-MX","Spanish (Mexico) ");
         dict.put("es-US","Spanish (United States) ");
+
+        dict.put("fa-IR","Farsi (Iran) ");
+        dict.put("fr-CA","French (Canada) ");
+        dict.put("fr-CH","French (Switzerland) ");
+        dict.put("fr-LU","French (Luxembourg) ");
+        dict.put("fr-MC","French (Principality of Monaco) ");
+        dict.put("gl-ES","Galician (Spain) ");
+        dict.put("gu-IN","Gujarati (India) ");
+
+
         dict.put("fi-FI","Finnish (Finland) ");
         dict.put("fr-CA","French (Canada) ");
         dict.put("fr-FR","French (France) ");
         dict.put("fr-BE","French (Belgium) ");
         dict.put("he-IL","Hebrew (Israel) ");
         dict.put("hi-IN","Hindi (India) ");
+        dict.put("hr-BA","Croatian (Bosnia and Herzegovina) ");
+        dict.put("hr-HR","Croatian (Croatia) ");
+        dict.put("hy-AM","Armenian (Armenia) ");
+
         dict.put("hu-HU","Hungarian (Hungary) ");
         dict.put("in-ID","Indonesia (Indonesia) ");
         dict.put("id-ID","Indonesian (Indonesia) ");
+        dict.put("is-IS","Icelandic (Iceland) ");
+
         dict.put("it-IT","Italian (Italy) ");
         dict.put("ja-JP","Japanese (Japan) ");
         dict.put("ko-KR","Korean (Republic of Korea) ");
+        dict.put("ka-GE","Georgian (Georgia) ");
+        dict.put("kk-KZ","Kazakh (Kazakhstan) ");
+        dict.put("kn-IN","Kannada (Indi ");
+        dict.put("ko-KR","Korean (Korea) ");
+        dict.put("kok-IN","Konkani (India) ");
+        dict.put("ky-KG","Kyrgyz (Kyrgyzstan) ");
+        dict.put("lt-LT","Lithuanian (Lithuania) ");
+        dict.put("lv-LV","Latvian (Latvia) ");
+        dict.put("mi-NZ","Maori (New Zealand) ");
+        dict.put("mk-MK","FYRO Macedonian (Former Yugoslav Republic of Macedonia) ");
+        dict.put("mn-MN","Mongolian (Mongolia) ");
+        dict.put("mr-IN","Marathi (India) ");
+        dict.put("ms-MY","Malay (Malaysia) ");
+        dict.put("ms-BN","Malay (Brunei Darussalam) ");
+        dict.put("mt-MT","Maltese (Malta) ");
+        dict.put("nn-NO","Norwegian (Nynorsk) (Norway) ");
+        dict.put("ns-ZA","Northern Sotho (South Africa) ");
+
         dict.put("nl-BE","Dutch (Belgium) ");
         dict.put("nl-NL","Dutch (Netherlands) ");
         dict.put("no-NO","Norwegian (Norway) ");
+
+        dict.put("pa-IN","Punjabi (India) ");
+        dict.put("ps-AR","Pashto (Afghanistan) ");
         dict.put("pl-PL","Polish (Poland) ");
         dict.put("pt-BR","Portuguese (Brazil) ");
         dict.put("pt-PT","Portuguese (Portugal) ");
+
+        dict.put("qu-BO","Quechua (Bolivia) ");
+        dict.put("qu-EC","Quechua (Ecuador) ");
+        dict.put("qu-PE","Quechua (Peru) ");
         dict.put("ro-RO","Romanian (Romania) ");
         dict.put("ru-RU","Russian (Russian Federation) ");
+
+        dict.put("se-FI","Sami (Northern) (Finland) ");
+        dict.put("se-NO","Sami (Northern) (Norway) ");
+        dict.put("se-SE","Sami (Northern) (Sweden) ");
+        dict.put("sl-SI","Slovenian (Slovenia) ");
+        dict.put("sq-AL","Albanian (Albania) ");
+        dict.put("sr-BA","Serbian (Latin) (Bosnia and Herzegovina) ");
+        dict.put("sr-SP","Serbian (Latin) (Serbia and Montenegro) ");
+        dict.put("sv-FI","Swedish (Finland) ");
+        dict.put("sw-KE","Swahili (Kenya) ");
+        dict.put("syr-SY","Syriac (Syria) ");
         dict.put("sk-SK","Slovak (Slovakia) ");
         dict.put("sv-SE","Swedish (Sweden) ");
+
+        dict.put("ta-IN","Tamil (India) ");
+        dict.put("te-IN","\tTelugu (India) ");
+        dict.put("tl-PH","Tagalog (Philippines) ");
+        dict.put("tn-ZA","Tswana (South Africa) ");
+        dict.put("uk-UA","Ukrainian (Ukraine) ");
+        dict.put("ur-PK","Urdu (Islamic Republic of Pakistan) ");
+        dict.put("uz-UZ","Uzbek (Latin) (Uzbekistan) ");
+        dict.put("uz-UZ","Uzbek (Cyrillic) (Uzbekistan) ");
+        dict.put("vi-VN","Vietnamese (Viet Nam) ");
+        dict.put("xh-ZA","Xhosa (South Africa) ");
+        dict.put("aaa","bbb ");
         dict.put("th-TH","Thai (Thailand) ");
         dict.put("tr-TR","Turkish (Turkey) ");
         dict.put("zh-CN","Chinese (China) ");
         dict.put("zh-HK","Chinese (Hong Kong) ");
         dict.put("zh-TW","Chinese (Taiwan) ");
+        dict.put("bn-BD","Bengali (Bangladesh) ");
+        dict.put("bn-IN","Bengali (India) ");
+        dict.put("zu-ZA","Zulu (South Africa) ");
+        dict.put("et-EE","Estonian (Estonia) ");
+        dict.put("fil-PH","Filipino (Philippines) ");
 
         return dict;
 
