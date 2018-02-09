@@ -10,6 +10,7 @@ import android.graphics.Bitmap;
 import android.graphics.Rect;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.v4.app.DialogFragment;
 import android.util.Base64;
 
@@ -523,7 +524,13 @@ public class CreateEditFragment extends DialogFragment implements TextView.OnEdi
 
         LOGD(TAG, "keyboardDidHideNotification: ");
 
-        mAutoPlaySpeedSeekbar.setAlwaysShowIndicator(true);
+        final Handler handler = new Handler();
+        handler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                mAutoPlaySpeedSeekbar.setAlwaysShowIndicator(true);
+            }
+        }, 600);
 
     }
 
