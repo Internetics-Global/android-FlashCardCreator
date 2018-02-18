@@ -304,7 +304,7 @@ public class PlayActivity extends FragmentActivity implements SensorEventListene
                 hideControlPanel();
             }
 
-        }, 5000);
+        }, 10000);
 
         mBaseView.getViewTreeObserver().addOnGlobalLayoutListener(mRotationChangeListener);
 
@@ -476,7 +476,7 @@ public class PlayActivity extends FragmentActivity implements SensorEventListene
                         hideControlPanel();
                     }
 
-                }, 4000);
+                }, 10000);
             }
         });
 
@@ -2271,7 +2271,7 @@ public class PlayActivity extends FragmentActivity implements SensorEventListene
                 hideControlPanel();
             }
 
-        }, 5000);
+        }, 10000);
     }
 
 
