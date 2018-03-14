@@ -79,7 +79,7 @@ public class VGViewPager extends AutoScrollViewPager {
 
             if (cardDetailFragment!=null) {
                 if (cardDetailFragment.mIsQuestionShowing) {
-                    if (cardDetailFragment.mCurrentCard.question.movieUriFormatStr.toLowerCase().contains("youtube")) {
+                    if (cardDetailFragment.mCurrentCard.question.movieUriFormatStr.toLowerCase().contains("youtu")) {
                         isYoutube = true;
                     }
 
@@ -92,7 +92,7 @@ public class VGViewPager extends AutoScrollViewPager {
                     }
 
                 } else {
-                    if (cardDetailFragment.mCurrentCard.answer.movieUriFormatStr.toLowerCase().contains("youtube")) {
+                    if (cardDetailFragment.mCurrentCard.answer.movieUriFormatStr.toLowerCase().contains("youtu")) {
                         isYoutube = true;
                     }
 
@@ -150,7 +150,7 @@ public class VGViewPager extends AutoScrollViewPager {
 
             if (cardDetailFragment != null) {
                 if (cardDetailFragment.mIsQuestionShowing) {
-                    if (cardDetailFragment.mCurrentCard.question.movieUriFormatStr2.toLowerCase().contains("youtube")) {
+                    if (cardDetailFragment.mCurrentCard.question.movieUriFormatStr2.toLowerCase().contains("youtu")) {
                         isYoutube = true;
                     }
 
@@ -163,7 +163,7 @@ public class VGViewPager extends AutoScrollViewPager {
                     }
 
                 } else {
-                    if (cardDetailFragment.mCurrentCard.answer.movieUriFormatStr2.toLowerCase().contains("youtube")) {
+                    if (cardDetailFragment.mCurrentCard.answer.movieUriFormatStr2.toLowerCase().contains("youtu")) {
                         isYoutube = true;
                     }
 

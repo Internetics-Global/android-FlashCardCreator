@@ -412,6 +412,10 @@ public class StringUtils {
     public static String getYouTubeIDFromLink(String youtubeLink) {
         if (StringUtils.isEmpty(youtubeLink)) {
             return "";
+        }  else if (youtubeLink.toLowerCase().contains("https://youtu.be/") || youtubeLink.toLowerCase().contains("http://youtu.be/")) {
+            Uri youtubeURL = Uri.parse(youtubeLink);
+            String youtubeIDStr = youtubeURL.getLastPathSegment();
+            return youtubeIDStr;
         }  else if (youtubeLink.toLowerCase().contains("youtube.com")) {
             Uri youtubeURL = Uri.parse(youtubeLink);
             String youtubeIDStr = youtubeURL.getQueryParameter("v");
