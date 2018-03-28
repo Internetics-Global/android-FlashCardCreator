@@ -133,19 +133,12 @@ public class MainActivity extends FragmentActivity implements
 
     private static final String TAG = MainActivity.class.getSimpleName();
 
-    /*
-     * createNewCardButtonClicked时：true
-     * 仅有当dismissCardCreateWindow的动画完成后，才置false
-     */
+
     private boolean           mIsCreatingCard = false;
 
     public  boolean           mIsEdittingCard = false;
 
-    /*
-     * 用于切换到后台后，自动关闭css toolbar用
-     * 在onResume中执行initializeCSSToolbar，然后置成false;
-     * 在onPause中执行removeCSSToolbar，然后置成true
-     */
+
     private boolean           mIsNecessaryToRestoreCSSToolbar = false;
 
     private boolean           mIsFromRestartApp = false;
@@ -170,14 +163,10 @@ public class MainActivity extends FragmentActivity implements
 
     private ArrayList<CardDetailFragment> mArrayCardDetailFragments;   //Special for snapshot(not include current card)
 
-    /*
-     * 所有非new create card的fragment，实际中用getActiveCardDetailFragment进行区分
-     */
+
     public  CardDetailFragment   mCardDetailFragment;
 
-    /*
-     * 仅仅new create card的fragment，注意与mCardDetailFragment区分，实际中，用getActiveCardDetailFragment进行区分
-     */
+
     public  CardDetailFragment   mNewCardDetailFragment;
 
     public  SymbolBoxFragment    mSymbolBoxFragment;
@@ -365,7 +354,6 @@ public class MainActivity extends FragmentActivity implements
 
         MenuItem playMenuItem = menu.findItem(R.id.actionbar_play);;
 
-        //在不同的屏幕尺寸下，我们需要隐藏或者显示
         if ((UIHelper.getScreenWidthDPUnit(this) >= 600) && (mIsCreatingCard == false)) {
             changeTemplatColorMenuItem.setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS);
             helpMenuItem.setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS);
@@ -435,11 +423,6 @@ public class MainActivity extends FragmentActivity implements
 
 
 
-    /*
-     * 包含两种：
-     * 1. 标准（pack list, new pack, edit, ...)
-     * 2. 只有save/cancel，用于create a new card
-     */
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
 
@@ -522,7 +505,7 @@ public class MainActivity extends FragmentActivity implements
                                                 final int finalWhich = which;
                                                 dialog.dismiss();
                                                 showSnapShotProgressDialog();
-                                                Handler handler = new Handler();  //如果没有这里的handler，则progress dialog可能无法出现
+                                                Handler handler = new Handler();
                                                         handler.postDelayed(new Runnable() {
 
                                                             @Override
@@ -871,7 +854,6 @@ public class MainActivity extends FragmentActivity implements
                 final View appMainView = findViewById(R.id.app_main);
 
                 if (appMainView.getHeight() > 0 && appMainView.getWidth() > 0) {
-                    //如果已经渲染完毕
                     showPackListView();
                 } else {
                     appMainView.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
@@ -886,7 +868,7 @@ public class MainActivity extends FragmentActivity implements
                             handler.postDelayed(new Runnable() {
                                 @Override
                                 public void run() {
-                                    showPackListView();//放在Handler中是一个trick，实际发现，如果没有这个，则不会显示pack list
+                                    showPackListView();
                                 }
 
                             }, 100); // 100ms delay
@@ -968,7 +950,7 @@ public class MainActivity extends FragmentActivity implements
                 } else {
                     if (mIsAllowDownload) {
 
-                        Global.fccURLForCurrentDownloadingPack =  packUri.toString();  //必须是ffc://这种形式,而不是http://
+                        Global.fccURLForCurrentDownloadingPack =  packUri.toString();
 
                         String downloableShareLink = packUri.toString().replace("fcc", "https").replace("www", "dl");
                         File downloadedZipFile = new File(FileOperationHelper.downloadedPackDirectory(), "downloadedPackZip.zip");
@@ -1251,9 +1233,6 @@ public class MainActivity extends FragmentActivity implements
     }
 
 
-    /**
-     * 来自 CardListFragment onItemSelected
-     */
     @Override
     public void onItemSelected(int selectedCardIndex,Pack currentPack,boolean isManuallyClicked) {
 
@@ -1263,9 +1242,6 @@ public class MainActivity extends FragmentActivity implements
             throw new IllegalStateException("when onItemSelected is called, currentPack should never be null");
         }
 
-        //CardListFragment中的mCurrentPack始终于SQLite一样，决定了这里的mCurrentPack
-        //因为是引用关系，所以这里的mCurrentPack一旦改变，也会影响CardListFragment中的mCurrentPack。一旦这改变保存到Sqlite，则重新从SQlite取一次，保证严格一致
-        //create new card中的因为是通过shadow copy过去的，所以不用担心影响到
         mCurrentPack = currentPack;
 //        mCustomTitleTextView.setText(mCurrentPack.packName);
 
@@ -1315,13 +1291,6 @@ public class MainActivity extends FragmentActivity implements
     }
 
 
-    /**
-     * 支持仅有一个或多个card的情况
-     * This is called by CardDetailFragment which represent current showing card in detail
-     *
-     * @param pack,       snapshot all the cards in this pack
-     * @param exceptCard, except this
-     */
     public void prepareDataForSnapShotAllExceptCurrentCard(Pack pack, Card exceptCard) {
         LOGD(TAG, "prepareDataForSnapShotAllExceptCurrentCard");
 
@@ -1333,14 +1302,9 @@ public class MainActivity extends FragmentActivity implements
         }
     }
 
-    /**
-     * 支持仅有一个或多个card的情况
-     * 两种情况：创建的新卡片，编辑的卡片
-     */
     public void cleanupDataForSnapShotAllExceptCurrent() {
         LOGD(TAG, "finishDataForSnapShotAllExceptCurrent");
 
-        //确保这个方法不被误用
         StackTraceElement[] stacktrace = Thread.currentThread().getStackTrace();
         StackTraceElement e = stacktrace[3];//maybe this number needs to be corrected
         String methodName = e.getMethodName();
@@ -1460,7 +1424,7 @@ public class MainActivity extends FragmentActivity implements
                 public void run() {
                     activeCardDetailFragment.saveEditedCard();
                 }
-            },500);//之所以需要有个延迟，因为需要时间去关闭键盘和reset vertical scroll view
+            },500);
 
         }
     }
@@ -1618,14 +1582,14 @@ public class MainActivity extends FragmentActivity implements
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
 
-                            DropboxAuthHelper.sharedHelper().startAuthenticationFromActivity(MainActivity.this);  //跳转到授权页，成功后，会到onResume进行处理。
+                            DropboxAuthHelper.sharedHelper().startAuthenticationFromActivity(MainActivity.this);
                         }
                     })
                     .setNegativeButton(R.string.DIALOG_STORAGE_SELECTION_GOOGLE_DRIVE, new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
 
-                            GoogleDriveAuthHelper.sharedHelper(MainActivity.this).startAuthenticationFromActivity(MainActivity.this);  //跳转到授权页，成功后，会到onResume进行处理。
+                            GoogleDriveAuthHelper.sharedHelper(MainActivity.this).startAuthenticationFromActivity(MainActivity.this);
 
                         }
                     })
@@ -1771,9 +1735,6 @@ public class MainActivity extends FragmentActivity implements
     }
 
 
-    /*
-     * 有条件的决定是否initializeCSSToolbar
-     */
     public void prepareCSSToolbar() {
         if ((mCSSToolbar == null) || (mCSSToolbar.getParent() == null)) {
             initializeCSSToolbar();
@@ -2051,9 +2012,7 @@ public class MainActivity extends FragmentActivity implements
         }
     }
 
-    /*
-     * 高亮显示当前选中的spinner item
-     */
+
     public void updateSpinnersHighlightedItem(CSS css,String tag) {
         LOGD(TAG, "updateSpinnersHighlightedItem");
         CSS currentCSS = css;
@@ -2076,12 +2035,11 @@ public class MainActivity extends FragmentActivity implements
         int sizeIndex = -1;
         int languageIndex = -1;
 
-        boolean semiTransparent = false;  //这个是非常特殊的,应客户要求属于colorArray,但其实从逻辑看很不合理
+        boolean semiTransparent = false;
 
         if (tag.equals(CardDetailFragment.TAG_SUBHEADING)) {
             alignHorizontalIndex = Arrays.asList(alignArray).indexOf(currentCSS.subheadingAlign);
 
-            //这里非常特殊，在iOS中，我们没有vertical center和vertical top的概念，只有vertical。所以如果是vertical，在android中认为是vertical center
             if (currentCSS.subheadingAlignVertical.equals(getString(R.string.ToolbarItem_Align_Vertical))) {
                 alignVerticalIndex = 4;
             } else {
@@ -2132,7 +2090,7 @@ public class MainActivity extends FragmentActivity implements
         }
 
         if (fontIndex == -1) {
-            fontIndex = 1;  //我们必须这么做，因为我们希望默认是选择default，而不是什么都不选中
+            fontIndex = 1;
         }
 
 //        if (languageIndex == 0) {
@@ -2151,7 +2109,7 @@ public class MainActivity extends FragmentActivity implements
         adapterFont.setSelection(fontIndexList);
 
         ArrayList sizeIndexList = new ArrayList<Integer>();
-        sizeIndexList.add(Integer.valueOf(sizeIndex+1));//+1因为我们之前剔除掉了
+        sizeIndexList.add(Integer.valueOf(sizeIndex+1));
         adapterSize.setSelection(sizeIndexList);
 
         ArrayList colorIndexList = new ArrayList<Integer>();
@@ -2395,7 +2353,6 @@ public class MainActivity extends FragmentActivity implements
 
         LOGD(TAG, "showSnapShotProgressDialog");
 
-        //TODO: 我们暂时没有提供进度条功能，以后加
         if (mSnapShotDialog == null) {
             mSnapShotDialog = new ProgressDialog(MainActivity.this);
             mSnapShotDialog.setMax(100);
@@ -2419,7 +2376,6 @@ public class MainActivity extends FragmentActivity implements
         }
     }
 
-    //TODO: 我们暂时没有提供进度条功能，以后加
     private void updateScreenshotProgressDialogWithProgress(int progress) {
 
         final int finalProgress = progress;
@@ -2645,9 +2601,7 @@ public class MainActivity extends FragmentActivity implements
 
 
 
-    /*
-     * 由于默认的spinner不支持highlight，所以需要这样些
-     */
+
     class HighLightArrayAdapter extends ArrayAdapter<CharSequence> {
 
         private ArrayList mSelectedList;

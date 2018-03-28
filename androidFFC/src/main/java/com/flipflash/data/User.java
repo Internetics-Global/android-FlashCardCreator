@@ -36,16 +36,12 @@ public class User {
         this.packs = new ArrayList<Pack>();
     }
 
-    /*
-     * 用于重置内存中的数据
-     * 一般情况下,无需reset,因为我们所使用的方式都是reference.比如mCurrentPack的更改会也会引起User.defaultUser().packs中的变化
-     */
     public static void reset(Context context,boolean isReset) {
 
         if (isReset) {
             mIsReset = true;
             defaultUser(context);
-            mIsReset = false; //一旦reset后，置false
+            mIsReset = false;
         }
 
 
@@ -187,9 +183,6 @@ public class User {
     }
 
 
-    /*
-     * 重新到数据库取
-     */
     public static Pack getPack(Context context,int packID) {
 
         long startTime = System.currentTimeMillis();

@@ -266,7 +266,6 @@ public class CreateSoundFragment extends DialogFragment {
         FileOperationHelper.moveFile(sourceFile.toString(), saveToPath);
 
         if (mIsCreatingCard) {
-          //我们在这里不做处理，而是在create card上处理
         } else {
             mCurrentCard.save(AppContext.getAppContext());
         }

@@ -232,10 +232,6 @@ public class AudioHelper {
     }
 
 
-    /*
-     * 实际上，这将控制整个stream的音频播放，而不仅仅是TTS，比如MediaPlayer的输出（如果MediaPlayer的stream也是同一类型
-     * 由于TTS没有单独的音量控制，所以只能采用这种方式，这种体验其实是不好的，但是也是唯一的方法.
-     */
     public static void muteTTS() {
         LOGD(TAG, "muteTTS");
         AudioManager audioManager=(AudioManager) AppContext.getAppContext().getSystemService(Context.AUDIO_SERVICE);
@@ -257,7 +253,7 @@ public class AudioHelper {
         AudioManager audioManager=(AudioManager) AppContext.getAppContext().getSystemService(Context.AUDIO_SERVICE);
         if (audioManager.isSpeakerphoneOn()) {
             return AudioManager.STREAM_MUSIC;
-        } else if (audioManager.isWiredHeadsetOn()) {   //只是检查Checks whether a wired headset is connected or not
+        } else if (audioManager.isWiredHeadsetOn()) {
             return AudioManager.STREAM_VOICE_CALL;
         } else {
             return AudioManager.STREAM_MUSIC;

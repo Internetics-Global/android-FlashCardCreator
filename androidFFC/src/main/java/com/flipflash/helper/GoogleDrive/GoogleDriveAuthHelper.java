@@ -153,9 +153,6 @@ public class GoogleDriveAuthHelper {
 
         mCredential.setSelectedAccountName(accountName);
 
-        //这里需要注意一个case: accountName（保存于SharedPreference)不为null，但是这时用户已经提前在系统设置中退出了accountName这个帐号，这时，即便执行了
-        //mCredential.setSelectedAccountName(accountName), mCredential.getSelectedAccountName()仍然得到的将是null。
-        //也就是说，mCredential.getSelectedAccountName返回的是真实的已经auth的信息
 
 
     }

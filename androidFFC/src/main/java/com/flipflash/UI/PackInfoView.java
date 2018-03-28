@@ -236,7 +236,6 @@ public class PackInfoView extends LinearLayout implements ViewPager.OnPageChange
 
         if (isRebuildViewPager) {
 
-            //不要使用notifyDataSetChanged(),因为这个方法的前提是,ListView的list指向不能被改变，需要从始至终指向同一个内存
             mViewPager.setAdapter(mAdapter);
         }
 
@@ -264,7 +263,6 @@ public class PackInfoView extends LinearLayout implements ViewPager.OnPageChange
         }
 
         if (_previousPage == -1 && position == 0) {
-            //系统自动调用onPageScrolled,即便没有scroll,这种情况是需要避免的
             return;
         }
 

@@ -108,7 +108,7 @@ public class AppStart extends Activity {
                 mChecker = new LicenseChecker(
                         getApplicationContext(), new ServerManagedPolicy(AppStart.this,
                         new AESObfuscator(SALT, getPackageName(), deviceId)),
-                        getString(R.string.lvl_public_key)  // Your public licensing key.key不是随意的,比如你手动更改其中的内容,就会crash app
+                        getString(R.string.lvl_public_key)
                 );
                 mChecker.checkAccess(mLicenseCheckerCallback);
 //                mHandler.sendEmptyMessageDelayed(0,200);
@@ -150,7 +150,7 @@ public class AppStart extends Activity {
         float cardDPHeightInPlayMode = dpHeight - 10 - 10;
         float ratio = cardDPHeightInPlayMode/cardDPHeightInEditMode;
         if (ratio >Global.scaleInPlayMode) {
-            Global.scaleInPlayMode = ratio;  //默认值是1.2，如果比这个数值更大，才进行赋值。这种情况只有在小屏手机中才有这个问题
+            Global.scaleInPlayMode = ratio;
         }
 
 
@@ -199,10 +199,6 @@ public class AppStart extends Activity {
                 return;
             }
 
-            //有几个注意点:
-            //1.模拟器上不能用(始终返回Policy.RETRY),除非模拟器有Google Play service
-            //2.必须是联网的.因为the licensing server must be accessible over the network
-            //3.测试时,你的Google Play账号,必须登记在developer console网站上
 
 
             if (Policy.NOT_LICENSED == reason) {
@@ -220,7 +216,6 @@ public class AppStart extends Activity {
             } else if (Policy.RETRY == reason) {
 
                 // If the reason received from the policy is RETRY, it was probably
-                // Due to a recoverable local or server error, such as when the network is not available to send the request,这就是为什么你需要前置Reachability检测的原因
                 Log.d("lvl","Policy.RETRY");
 
                 runOnUiThread(new Runnable() {
@@ -285,12 +280,6 @@ public class AppStart extends Activity {
 
             } else {
 
-//                ERROR_INVALID_PACKAGE_NAME = 1;  //防止别人下载你的app,然后换个名字上传到google play
-//                ERROR_NON_MATCHING_UID = 2;  //防止别人下载你的app,然后换个名字上传到google play
-//                ERROR_NOT_MARKET_MANAGED = 3; /
-//                ERROR_CHECK_IN_PROGRESS = 4;
-//                ERROR_INVALID_PUBLIC_KEY = 5; //因为public key是存放在代码中的,破戒者肯定无法更改,导致他永远不可能更改app_id和app_name
-//                ERROR_MISSING_PERMISSION = 6;
 
                 runOnUiThread(new Runnable() {
                     @Override

@@ -40,9 +40,7 @@ public class DropboxAuthHelper {
 
     private static DropboxAuthHelper mDropboxAuthHelper;
 
-    /*
-     * context没用
-     */
+
     public static DropboxAuthHelper sharedHelper() {
 
         if (mDropboxAuthHelper == null) {

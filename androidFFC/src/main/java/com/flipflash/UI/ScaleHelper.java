@@ -5,10 +5,7 @@ import android.app.Activity;
 import com.flipflash.android_ffc.R;
 import com.flipflash.util.UIHelper;
 
-/**
- * Created by bournewang on 7/21/14.
- * toolbar显示的text size并不是一个真实的尺寸(real size)，实际上只是一个名义尺寸(nominal size)，本帮助类的作用就在于此
- */
+
 public class ScaleHelper {
 
     private static final String TAG = ScaleHelper.class.getSimpleName();
@@ -17,7 +14,7 @@ public class ScaleHelper {
 
         String rawNominalSizeArray[] =  activity.getResources().getStringArray(R.array.css_size);
         int size = rawNominalSizeArray.length;
-        String returnArray[] = new String[size -1 ]; //去除第一个
+        String returnArray[] = new String[size -1 ];
 
         for (int i=1; i < size; i ++) {
             returnArray[i-1] = rawNominalSizeArray[i];
@@ -98,9 +95,7 @@ public class ScaleHelper {
         }
     }
 
-    /*
-     * array为string类型的数组，需要提前从小到大排序，可以转换成double
-     */
+
     private static int nearestIndexForArray(String array[],float elementVal) {
 
         int arrayLength = array.length;

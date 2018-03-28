@@ -41,12 +41,7 @@ public class PackParserHelper {
      */
     private static final int    ZAPFINO_RATIO_FROM_IOS    = 2;
 
-    /*
-      iPhone ＝ 640
-      iPad   = 1024
-      其他的，根据json数据screen_width进行获取
-      如果json中screen_width字段不存在，则 ＝ 0 （进行默认逻辑处理）
-     */
+
     private static float mScreenWidthFromSharedDevice; // the screen width whose device has shared the pack
 
     /**
@@ -70,8 +65,6 @@ public class PackParserHelper {
             Card resultCard = parseCardJsonFiles(cardDirectory, resultPack);
             resultCard.cardSN = i + 1;
 
-            //***************再次加工,重要
-            //从json获取到的filepath，只有文件名，没有路径，所以需要做如下操作：1. 定位到下载的地方；2. 拷贝到Images folder；3.组成uri格式的完整路径
 
             //coverImageUriFormatStr
             if (StringUtils.isCorrectImageName(resultCard.coverImageUriFormatStr)) {
@@ -190,7 +183,6 @@ public class PackParserHelper {
                 LOGD(TAG, "parse: resultCard.answer.audioUriFormatStr is empty");
             }
 
-            //***************再次加工,结束
 
 
             resultCard.packID = resultPack.packID; //this is necessary
@@ -291,14 +283,12 @@ public class PackParserHelper {
                 pack.jobTitle = "";
             }
 
-            //实际中,这个share_link不一定有值,因为share_link只有在第二次upload时才会写入到meta中,第一次upload是没有的
             if (obj.containsKey("share_link")) {
                 pack.shareLink = (String) obj.get("share_link");
             } else {
                 pack.shareLink = "";
             }
 
-            //实际中,file_name_on_aws 不一定有值,因为 file_name_on_aws 只有在第二次upload时才会写入到meta中,第一次upload是没有的
             if (obj.containsKey("file_name_on_aws")) {
                 pack.fileNameOnAWS = (String) obj.get("file_name_on_aws");
             } else {
@@ -306,7 +296,6 @@ public class PackParserHelper {
             }
 
 
-            //根据如上的解释,我们需要保存download link
             HashMap savedDownloadLinkageDict = Hawk.get("savedDownloadLinkage");
             if (savedDownloadLinkageDict == null) {
                 savedDownloadLinkageDict = new HashMap();
@@ -660,7 +649,6 @@ public class PackParserHelper {
                 subSize = 0;
             }
 
-            //step2: 根据平台不同进行初次缩放
 
             if (currentPack.platform.equals(UIHelper.getCurrentPlatform()) == true) {
                 if (subheadingSize >0) {
@@ -683,7 +671,7 @@ public class PackParserHelper {
 
 
             } else {
-                if (mScreenWidthFromSharedDevice == 0) { // mean no this field in pack json file  （兼容之前的版本）
+                if (mScreenWidthFromSharedDevice == 0) { // mean no this field in pack json file
 
                     //-----begin scale down policy with error protection
                     //step1: get which is trustworthy
@@ -807,8 +795,6 @@ public class PackParserHelper {
                     //-----end scale down policy with error protection
                 } else {
 
-                    //字体根据mScreenWidthFromSharedDevice和当前平台的width进行一定比例的缩放
-                    //最完美的做法是根据card size进行比较，但是改动会很大
                     float baseFontSizeFromSharedDevice = UIHelper.getBestFontSize(mScreenWidthFromSharedDevice);
                     int baseFontSizeOnCurrentDevice = standardCSSArrary[0];
                     float factor = baseFontSizeOnCurrentDevice/baseFontSizeFromSharedDevice;
@@ -819,7 +805,6 @@ public class PackParserHelper {
                         subheadingSize = standardCSSArrary[0];
                     }
 
-                    //zapfino且来源为iOS的特殊逻辑
                     if (card.question.css.subheadingFont.toLowerCase().contains("zapfino")
                             && (mScreenWidthFromSharedDevice == IPAD_WIDTH || mScreenWidthFromSharedDevice == IPHONE_WIDTH)) {
                         card.question.css.subheadingSize = (int)(subheadingSize * factor * ZAPFINO_RATIO_FROM_IOS);
@@ -832,7 +817,6 @@ public class PackParserHelper {
                        mainSize = standardCSSArrary[1];
                     }
 
-                    //zapfino且来源为iOS的特殊逻辑
                     if (card.question.css.mainFont.toLowerCase().contains("zapfino")
                             && (mScreenWidthFromSharedDevice == IPAD_WIDTH || mScreenWidthFromSharedDevice == IPHONE_WIDTH)) {
                         card.question.css.mainSize = (int)(mainSize * factor * ZAPFINO_RATIO_FROM_IOS);
@@ -845,7 +829,6 @@ public class PackParserHelper {
                         subSize = standardCSSArrary[2];
                     }
 
-                    //zapfino且来源为iOS的特殊逻辑
                     if (card.question.css.subFont.toLowerCase().contains("zapfino")
                             && (mScreenWidthFromSharedDevice == IPAD_WIDTH || mScreenWidthFromSharedDevice == IPHONE_WIDTH)) {
                         card.question.css.subSize = (int) (subSize * factor * ZAPFINO_RATIO_FROM_IOS);
@@ -1261,7 +1244,6 @@ public class PackParserHelper {
                     //-----end scale down policy with error protection
                 } else {
 
-                    //最完美的做法是根据card size进行比较，但是改动会很大
                     float baseFontSizeFromSharedDevice = UIHelper.getBestFontSize(mScreenWidthFromSharedDevice);
                     int baseFontSizeOnCurrentDevice = standardCSSArrary[3];
                     float factor = baseFontSizeOnCurrentDevice/baseFontSizeFromSharedDevice;
@@ -1270,7 +1252,6 @@ public class PackParserHelper {
                       subheadingSize = standardCSSArrary[3];
                     }
 
-                    //zapfino且来源为iOS的特殊逻辑
                     if (card.answer.css.subheadingFont.toLowerCase().contains("zapfino")
                             && (mScreenWidthFromSharedDevice == IPAD_WIDTH || mScreenWidthFromSharedDevice == IPHONE_WIDTH)) {
                         card.answer.css.subheadingSize = (int)(subheadingSize * factor * ZAPFINO_RATIO_FROM_IOS);
@@ -1283,7 +1264,6 @@ public class PackParserHelper {
                         mainSize = standardCSSArrary[4];
                     }
 
-                    //zapfino且来源为iOS的特殊逻辑
                     if (card.answer.css.mainFont.toLowerCase().contains("zapfino")
                             && (mScreenWidthFromSharedDevice == IPAD_WIDTH || mScreenWidthFromSharedDevice == IPHONE_WIDTH)) {
                         card.answer.css.mainSize = (int)(mainSize * factor * ZAPFINO_RATIO_FROM_IOS);
@@ -1295,7 +1275,6 @@ public class PackParserHelper {
                        subSize = standardCSSArrary[5];
                     }
 
-                    //zapfino且来源为iOS的特殊逻辑
                     if (card.answer.css.subFont.toLowerCase().contains("zapfino")
                             && (mScreenWidthFromSharedDevice == IPAD_WIDTH || mScreenWidthFromSharedDevice == IPHONE_WIDTH)) {
                         card.answer.css.subSize = (int) (subSize * factor * ZAPFINO_RATIO_FROM_IOS);

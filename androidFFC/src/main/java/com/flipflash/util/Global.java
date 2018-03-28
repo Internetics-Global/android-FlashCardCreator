@@ -13,7 +13,7 @@ public class Global {
      */
     public static final boolean  FFC_WITHOUT_SUBSCRIPTION = true;
 
-    public static       boolean   IS_DOGFOOD_BUILD =  false;  //是否开启debug模式
+    public static       boolean   IS_DOGFOOD_BUILD =  false;
 
     public static final String BucketPostfixAfterUserName = "55b5aa55673793805862";
 
@@ -26,7 +26,6 @@ public class Global {
     public static final int USER_ID = 314;
     public static final String defaultUserStr = "Default_User";
 
-    //名称必须与css_font（arrays.xml)保持一致，同iOS版本也一致
     public static final String fontName_Default      = "DejaVuSans.ttf";
     public static final String fontName_ArialBoldMT  = "Arial-BoldMT.ttf";
     public static final String fontName_Chalkduster  = "Chalkduster.ttf";
@@ -102,18 +101,11 @@ public class Global {
     public static Pack         previewPack;
 
 
-    /*
-     * 字体放大系统（edit mode vs play mode），在AppStart中进行初始化。
-     * 通过调整这个数值，可以用来验证triggerResizeTextToFitFrame的有效性
-     */
     public static float   scaleInPlayMode = 1.2f;
 
-    /*
-     * 注意，这个值同play.xml中的soulwolf:widthRatio="1.45" 一致
-     */
+
     public static float   ratioOfCardInPlayMode = 1.45f;
 
-    //ie, image2, logoImage的tag，用在VGViewPager
     public static final String mImage_Showing = "mImage_Showing";
     public static final String mImage2_Showing = "mImage2_Showing";
     public static final String mLogoImage_Showing = "mLogoImage_Showing";
@@ -144,9 +136,6 @@ public class Global {
     public static       int   maxDownloadableNoForCurrentDownloadingPack = 0;
     public static       String   fccURLForCurrentDownloadingPack = "";
 
-    /*
-     * 后门程序,用于是否关闭line number check
-     */
     public static       boolean   checkLineNumberWhenResizeTextToFitFrame = true;
 
 

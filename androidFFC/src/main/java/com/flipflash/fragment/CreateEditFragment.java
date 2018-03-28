@@ -428,7 +428,7 @@ public class CreateEditFragment extends DialogFragment implements TextView.OnEdi
 
                 List<MediaItem> mMediaSelectedList = MediaPickerActivity
                         .getMediaItemSelected(data);
-                MediaItem item = mMediaSelectedList.get(0);//因为是单选，所以永远是第一个
+                MediaItem item = mMediaSelectedList.get(0);
                 Uri selectedImageURI = item.getUriOrigin();
 
                 //step1: get image

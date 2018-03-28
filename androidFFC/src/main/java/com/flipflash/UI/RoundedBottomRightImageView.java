@@ -48,7 +48,7 @@ public class RoundedBottomRightImageView extends SimpleDraweeView{
         path.lineTo (0, this.getHeight());
         path.lineTo (0, 0);
         clipPath.addPath(path);
-        canvas.clipPath(clipPath); //依赖于硬件加速，在4.3上，硬件加速开启下是支持的；是如果4.3以下，硬件加速开启下，则失去这个效果
+        canvas.clipPath(clipPath);
         super.onDraw(canvas);
     }
 }

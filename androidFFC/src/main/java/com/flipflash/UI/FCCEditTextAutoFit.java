@@ -6,10 +6,7 @@ import android.util.AttributeSet;
 import android.util.Log;
 import android.util.TypedValue;
 
-/**
- * 注意，FCCEditTextAutoFit只适合于需要根据输入自动shrink的场景，比如creator, sidebar, job  title等，
- * 不适用于main,sub, subheading。
- */
+
 public class FCCEditTextAutoFit extends FCCEditText {
 
     private Paint mTestPaint;

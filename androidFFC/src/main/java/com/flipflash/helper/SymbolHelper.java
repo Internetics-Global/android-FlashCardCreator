@@ -11,9 +11,7 @@ public class SymbolHelper {
 
     private static final String TAG = SymbolHelper.class.getSimpleName();
 
-    /**
-     * 这是3个特殊的symbol，占用了普通的两倍距离，且有不同的含义
-     */
+
     public final static String    K_Space_Bar_Lowcase   = "space bar";
     public final static String    K_Line_Break_Lowcase  = "line break";
     public final static String    K_Delete_Lowcase      = "delete";

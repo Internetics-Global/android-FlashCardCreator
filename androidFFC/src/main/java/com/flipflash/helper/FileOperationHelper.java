@@ -155,11 +155,6 @@ public class FileOperationHelper {
     }
 
 
-    /*
-     * delete file except it's a placeholder file
-     * 返回true: 成功delete或者没有进行delete操作
-     * 返回false: 没有成功delete
-     */
     public  static boolean deleteFileExceptPlaceHolder(String fileName) {
 
         if (StringUtils.isEmptyOrPlaceHolder(fileName)) {
@@ -167,17 +162,14 @@ public class FileOperationHelper {
         }
 
         if (fileName.endsWith("/")) {
-            //表明这只是一个目录，不是一个文件
             return true;
         }
 
         File file;
         int index = fileName.indexOf("://");
         if (index == -1) {
-            //普通的file path
             file = new File(fileName);
         } else {
-            //uri格式
             file = new File(deleteUriSchemeHeader(fileName));
         }
 
@@ -188,9 +180,7 @@ public class FileOperationHelper {
 
     }
 
-    /*
-     * 有两种情况：content provider形式的(content://）和文件形式的(file:///)
-     */
+
     public static String getRealImagePathFromURI(Context context, Uri contentUri) {
 
         String uriHeader = contentUri.getScheme();

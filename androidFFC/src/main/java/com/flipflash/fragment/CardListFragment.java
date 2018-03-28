@@ -62,9 +62,7 @@ public class CardListFragment extends Fragment {
     //Adapter
     private SimpleDragSortCursorAdapter adapter;
 
-    /*
-     * 这个值的更新很重要，始终保证与SQlite中一致
-     */
+
     private Pack mCurrentPack;
 
     private List<HashMap<String, Object>> mCardArrayList;
@@ -96,10 +94,7 @@ public class CardListFragment extends Fragment {
 
     public interface Callbacks {
 
-        /*
-         * selectedCardIndex = cardSN -1
-         * 有两种来源：手动点击；比如card内容更新后的card list的更新回调
-         */
+
         public void onItemSelected(int selectedCardIndex,Pack currentPack,boolean isManuallyClicked);
 
     }
@@ -335,7 +330,6 @@ public class CardListFragment extends Fragment {
 
                     if (MutipleTargetHelper.isFullVersion()) {
 
-                        //这一步是必要的，因为有可能右边的卡片没有save（左边与右边的mCurrentPack是引用关系，不是独立的）。这时如果不重新去，就会有问题
                         mCurrentPack = User.getPack(AppContext.getAppContext(),mCurrentPack.packID);
 
                         mCallbacks.onItemSelected(position,mCurrentPack,true);

@@ -45,11 +45,6 @@ public class Pack implements Cloneable {
     public int    createDate;
     public int    autoPlaySpeed;
 
-    /*
-     * 由于我们无法再扩展数据库字段,所以这个字段实际上我们没用到,而是通过share preference字段本地存储.
-     * 这部分逻辑同iOS不一样,需要注意
-     */
-//    public boolean isAllowShare;
 
     public ArrayList<Card> cards;
 
@@ -285,7 +280,6 @@ No new card included
         card.save(context);
     }
 
-    // 这只是一个浅copy，而实际上，我们也只需要浅拷贝（这个方法用在create a new pack中）
     @Override
     public Object clone() {
         Pack sc = null;

@@ -72,9 +72,7 @@ public class DropboxShareHelper extends AsyncTask<Void, Long, Boolean> {
 
     private String mFilePathInDropbox;
 
-    /**
-     * true: 没有经过上传，设密码等，直接share (upload逻辑在S3UploadHelper）
-     */
+
     private boolean  mIsDirectShare;
 
 
@@ -103,7 +101,6 @@ public class DropboxShareHelper extends AsyncTask<Void, Long, Boolean> {
         mDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
         mDialog.setProgress(0);
         mDialog.setCancelable(false);
-        //与iOS不同的是，我们这里是不允许cancel的，原因在于：dropbox的share linkage生成，shorted linkage但都是不可中断的
         mDialog.setCanceledOnTouchOutside(false);
         mDialog.show();
     }
@@ -118,7 +115,6 @@ public class DropboxShareHelper extends AsyncTask<Void, Long, Boolean> {
         } else
         {
 
-            //这段逻辑用于解决：当在dropbox和google drive相互切换时
 
             boolean toSavePackUploadRecord = true;
             boolean toGenerateShareLink = true;
@@ -169,8 +165,6 @@ public class DropboxShareHelper extends AsyncTask<Void, Long, Boolean> {
             }
 
             if (toSavePackUploadRecord) {
-                //直到我们短链接生成并保存，我们才最终认为upload完成
-                //同时为了保证savePackUploadRecord的发生，我们认为无论是isEmpty(mCurrentPack.shareLink)，都需要保存
                 PackRecordHelper.savePackUploadRecord(mCurrentPack);
             }
         }
@@ -300,11 +294,7 @@ public class DropboxShareHelper extends AsyncTask<Void, Long, Boolean> {
     }
 
 
-    /*
-    用于自己创建的pack,自己share。有两种情况下会被调用
-    1. 自动被调用：.execute执行后
-    2. 手动被调用: 当已经保存了share link（比如上次share过），这时直接调用这个
-     */
+
     public void share() {
 
         if (StringUtils.isEmpty(mCurrentPack.shareLink)) {
@@ -320,7 +310,7 @@ public class DropboxShareHelper extends AsyncTask<Void, Long, Boolean> {
             taskExecutor.execute(new Runnable() {
                 @Override
                 public void run() {
-                    mCurrentPack.shareLink = generateRedirectedURL(ffcURL); //由于网络任务不允许在主线程
+                    mCurrentPack.shareLink = generateRedirectedURL(ffcURL);
                 }
             });
             taskExecutor.shutdown();

@@ -167,10 +167,7 @@ public class GoogleDriveUploadHelper {
 
     }
 
-    /*
-     * 与Dropbox不同，Google Drive允许同一文件夹下多个同一文件名存在（通过fileID）区分。我们的做法是：
-     * 1. 获取第一个具有相同文件名的fileID，然后通过update的方式，而不是通过upload方式（https://developers.google.com/drive/v2/reference/files/update）
-     */
+
     private String checkFileExist() throws IOException {
 
         LOGD(TAG, "checkFileExist");
@@ -216,9 +213,6 @@ public class GoogleDriveUploadHelper {
     }
 
 
-    /*
-     * 当文件存在时，我们通过update方式：http://www.labnol.org/internet/update-files-in-google-drive/28928/
-     */
     private void update(String currentFileID) throws IOException {
 
         LOGD(TAG, "update");
@@ -259,9 +253,7 @@ public class GoogleDriveUploadHelper {
 
     }
 
-    /*
-     * 仅当文件不存在时
-     */
+
     private void upload() {
 
         LOGD(TAG, "upload");

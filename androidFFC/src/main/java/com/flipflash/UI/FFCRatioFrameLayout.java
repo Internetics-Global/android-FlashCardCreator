@@ -36,13 +36,10 @@ public class FFCRatioFrameLayout extends RatioFrameLayout {
 
     @Override
     public boolean onTouchEvent(MotionEvent event) {
-        //为了避免hide/show control panel被不小心除触发（mBaseView.setOnClickListener）
         return true;
     }
 
-    /*
-     * isDisableTouchEvent不允许事件往下传递（在本项目中主要是view pager)
-     */
+
     @Override
     public boolean onInterceptTouchEvent(MotionEvent ev) {
         if (isDisableTouchEvent) {

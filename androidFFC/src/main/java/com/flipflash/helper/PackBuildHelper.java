@@ -149,7 +149,7 @@ public class PackBuildHelper {
                 }
             }
 
-            if ((card.answer.movieUriFormatStr.length() >0) && (card.answer.movieUriFormatStr.contains("http://") == false) && (card.answer.movieUriFormatStr.contains("https://") == false)) {  //有可能只是类似youtube的链接，而不是本地文件
+            if ((card.answer.movieUriFormatStr.length() >0) && (card.answer.movieUriFormatStr.contains("http://") == false) && (card.answer.movieUriFormatStr.contains("https://") == false)) {
                 String path = FileOperationHelper.deleteUriSchemeHeader(card.answer.movieUriFormatStr);
                 boolean isExist = (new File(path)).exists();
                 if (isExist) {
@@ -157,7 +157,7 @@ public class PackBuildHelper {
                 }
             }
 
-            if ((card.answer.movieUriFormatStr2.length() >0) && (card.answer.movieUriFormatStr2.contains("http://") == false) && (card.answer.movieUriFormatStr2.contains("https://") == false)) {  //有可能只是类似youtube的链接，而不是本地文件
+            if ((card.answer.movieUriFormatStr2.length() >0) && (card.answer.movieUriFormatStr2.contains("http://") == false) && (card.answer.movieUriFormatStr2.contains("https://") == false)) {
                 String path = FileOperationHelper.deleteUriSchemeHeader(card.answer.movieUriFormatStr2);
                 boolean isExist = (new File(path)).exists();
                 if (isExist) {
@@ -251,7 +251,7 @@ public class PackBuildHelper {
         summary.put("creator_nick_name", pack.creatorNickName);
         summary.put("job_title", pack.jobTitle);
         summary.put("platform", pack.platform);
-        summary.put("logo_image", StringUtils.lastComponentOfPath(pack.logoImageUriFormatStr));  //历史原因，在iOS中是存储在question/answer中的
+        summary.put("logo_image", StringUtils.lastComponentOfPath(pack.logoImageUriFormatStr));
         summary.put("platform", "Android");
         summary.put("auto_play_speed",String.format("%d",pack.autoPlaySpeed));
         summary.put("screen_width",String.format("%d", (int)(UIHelper.getScreenWidthDPUnit(mActivity))));
@@ -267,7 +267,7 @@ public class PackBuildHelper {
         } catch (PackageManager.NameNotFoundException e) {
             e.printStackTrace();
         }
-        summary.put("language_name", String.format("%d",versionCode));  //language_name这个字段暂时不用,我们用来保存build信息,以debug用.与iOS不一样的是,这个不存到sqlite
+        summary.put("language_name", String.format("%d",versionCode));
 
         FileWriter file;
         File savedPath = FileOperationHelper.getUploadPackJsonFile();

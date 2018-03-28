@@ -27,35 +27,20 @@ public class ToggleButton extends View {
 	private Spring spring ;
 	/** */
 	private float radius;
-	/** 开启颜色*/
 	private int onColor = Color.parseColor("#4ebb7f");
-	/** 关闭颜色*/
 	private int offBorderColor = Color.parseColor("#dadbda");
-	/** 灰色带颜色*/
 	private int offColor = Color.parseColor("#ffffff");
-	/** 手柄颜色*/
 	private int spotColor = Color.parseColor("#ffffff");
-	/** 边框颜色*/
 	private int borderColor = offBorderColor;
-	/** 画笔*/
 	private Paint paint ;
-	/** 开关状态*/
 	private boolean toggleOn = false;
-	/** 边框大小*/
 	private int borderWidth = 2;
-	/** 垂直中心*/
 	private float centerY;
-	/** 按钮的开始和结束位置*/
 	private float startX, endX;
-	/** 手柄X位置的最小和最大值*/
 	private float spotMinX, spotMaxX;
-	/**手柄大小 */
 	private int spotSize ;
-	/** 手柄X位置*/
 	private float spotX;
-	/** 关闭时内部灰色带高度*/
 	private float offLineWidth;
-	/** */
 	private RectF rect = new RectF();
 	
 	private OnToggleChanged listener;
@@ -130,17 +115,13 @@ public class ToggleButton extends View {
 		}
 	}
 	
-	/**
-	 * 设置显示成打开样式，不会触发toggle事件
-	 */
+
 	public void setToggleOn() {
 		toggleOn = true;
 		spring.setEndValue(toggleOn ? 1 : 0);
 	}
 	
-	/**
-	 * 设置显示成关闭样式，不会触发toggle事件
-	 */
+
 	public void setToggleOff() {
 		toggleOn = false;
 		spring.setEndValue(toggleOn ? 1 : 0);
@@ -203,28 +184,7 @@ public class ToggleButton extends View {
 	@Override
 	public void draw(Canvas canvas) {
 		
-		/*
-		final int height = getHeight();
-		//绘制背景（边框）
-		paint.setStrokeWidth(height);
-		paint.setColor(borderColor);
-		canvas.drawLine(startX, centerY, endX, centerY, paint);
-		//绘制灰色带
-		if(offLineWidth > 0){
-			paint.setStrokeWidth(offLineWidth);
-			paint.setColor(offColor);
-			canvas.drawLine(spotX, centerY, endX, centerY, paint);
-		}
-		//spot的边框
-		paint.setStrokeWidth(height);
-		paint.setColor(borderColor);
-		canvas.drawLine(spotX - 1, centerY, spotX + 1.1f, centerY, paint);
-		//spot
-		paint.setStrokeWidth(spotSize);
-		paint.setColor(spotColor);
-		canvas.drawLine(spotX, centerY, spotX + 0.1f, centerY, paint);
-		*/
-		
+
 		
 		//
 		rect.set(0, 0, getWidth(), getHeight());

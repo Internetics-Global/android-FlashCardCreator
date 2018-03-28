@@ -120,8 +120,6 @@ public class AWSUploadHelper {
                 boolean existing = false;
 
                 if (true) {
-                    //一般来说返回true，表明在AWS全局范围内存在（但并不表明在当前账号下存在)；
-                    // 但是在本应用中，由于bucket的命名的特殊性（见上面），可以说如果在全局范围内存在，也必定在当前账号下存在
                    existing = s3client.doesBucketExist(expectedBucketName);
                 } else {
                     List<Bucket> list = s3client.listBuckets();

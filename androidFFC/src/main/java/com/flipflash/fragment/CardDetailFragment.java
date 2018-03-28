@@ -165,28 +165,19 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnTouchL
     public boolean mIsCreatingCard = false;
     private boolean mIsPlayingCard = false;
 
-    /*
-     * true:表明正在进行snapshot
-     * we have different strategy on current showing card and other cards
-     */
+
     private boolean mIsSnapShotNotCurrent = false;
     public boolean mIsQuestionShowing = true;
 
 
-    /*
-     * 用于标识是否需要snapshot all。如果是当前fragment是发起方，切需要snapshot all，则当前fragment的这个值= true，其它fragment则为false
-     */
+
     private boolean mIsTakeSnapshotAllNeeded = false;
 
-    /*
-     * -1,表示永远不需要disable snapshot all功能，否则用于同步
-     * 需要设置成-1当：save已经存在的开片;save一个新创建的卡片，但是不需要snapshot all
-     */
+
     private static int mSnapshotAllCardsSemaphore = 0; //used to indicate all snapshots are done
 
-    private boolean mIsImage2Active = false; //我们有两个image(image和image2),这个变量用于区分
+    private boolean mIsImage2Active = false;
 
-    //用于auto resize 逻辑
     private ViewTreeObserver mVtoSubheading;
     private ViewTreeObserver mVtoMain;
     private ViewTreeObserver mVtoSub;
@@ -194,7 +185,6 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnTouchL
     private ViewTreeObserver.OnGlobalLayoutListener mVtoMainListener;
     private ViewTreeObserver.OnGlobalLayoutListener mVtoSubListener;
 
-    //需要的理由：由于需要多次addTextChangedListener，而Android系统又不提供统一的remove的功能，
     private TextWatcher mSubheadingTextWatcher;
     private TextWatcher mMainTextWatcher;
     private TextWatcher mSubTextWatcher;
@@ -219,24 +209,15 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnTouchL
     public final static  String TAG_JOB_TITLE             = "4003";
     public final static  String TAG_SIDE_BAR_TITLE        =  "4004";
 
-    /*
-     * triggerResizeTextToFitFrame中有诸多的限制条件，比如仅允许non-editable条件下。
-     * 这个标志位主要是为了不必需要的执行，而仅允许执行updateQuestionCSS(updateAnswerCSS)中setTextSize的执行后才执行
-     * 这个标志位一旦true，则不再false,因为我们的triggerResizeTextToFitFrame中仅仅在non-editabble中执行
-     */
+
     private boolean      mAllowToTriggerResizeTextToFitFrame = false;
     private DisplayImageOptions mDisplayImageOptions;
 
-    /*
-     * triggerResizeTextToFitFrame永远只是在卡片不可编辑上进行
-     */
+
     private Timer mResizeMonitorTimer;
 
 
-    /*
-     * Background
-     * To show a gif could take second. Before screenshoting, we have to wait for this to finish
-     */
+
     private LockObject mLockForScreenshotGif = new LockObject();
 
 
@@ -343,13 +324,7 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnTouchL
 
     }
 
-    /**
-     * 在new CardDetailFragment()后，立马调用
-     *
-     * @param currentPack
-     * @param currentCard:如果为null，则表示正在创建new card
-     * @param source
-     */
+
     public void setupParameters(Pack currentPack, Card currentCard, int source) {
 
         if (source == 1) {
@@ -394,9 +369,6 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnTouchL
     }
 
 
-    /*
-     * 与onPause匹配使用
-     */
     @Override
     public void onResume() {
         super.onResume();
@@ -429,7 +401,6 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnTouchL
             mContentBodyLinearLayout.getViewTreeObserver().removeOnGlobalLayoutListener(mContentBodyListener);
         }
 
-        //会在switchToAnswerView和switchToQuestionViewWithOption重置，所以不需要在onResume进行设置
         if (mResizeMonitorTimer != null) {
             mResizeMonitorTimer.cancel();
         }
@@ -548,23 +519,15 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnTouchL
     }
 
 
-    /*
-     * 这里所谓的content view就是subheading, main, sub的parent view。
-     * 由于需要避免看到resizing的过程，我们的策略是先隐藏，然后resizing结束后显示
-     */
     private void setContentViewVisibility() {
 
         if (mIsCreatingCard || isEditableMode()) {
-            mContentBodyLinearLayout.setVisibility(View.VISIBLE); //默认是隐藏的
+            mContentBodyLinearLayout.setVisibility(View.VISIBLE);
         } else {
             mContentBodyLinearLayout.setVisibility(View.INVISIBLE);
         }
     }
 
-    /*
-     * 监视resizing过程是否已经完成，如果已经完成，则显示内容
-     * 与setContentViewVisibility配合使用。
-     */
     private void resetResizingMonitorTimer() {
 
         if (isEditableMode() == false) {
@@ -616,12 +579,6 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnTouchL
     }
 
 
-
-
-    /*
-     * 此部分的逻辑用于takeSnapshotAll(): 当一个新的fragment生成后，自动进行screenshot
-     * 由于我们是动态布局（通过weight)，而ScrollView（见card.xml）中要求内容是确定的高度，而不是match_parent
-     */
     private ViewTreeObserver.OnGlobalLayoutListener mContentBodyListener = new ViewTreeObserver.OnGlobalLayoutListener() {
         @Override
         public void onGlobalLayout() {
@@ -634,13 +591,10 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnTouchL
                 mContentBodyLinearLayout.getViewTreeObserver().removeOnGlobalLayoutListener(this);
             }
 
-            //动态设置高度
             float marginPx = TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 10 + 10, getResources().getDisplayMetrics());
-            //不能用getActivity.findViewById，因为有两个card_content_body_fr_with_background_image
             View contentBodyBackground =  mContentView.findViewById(R.id.card_content_body_fr_with_background_image);
-            mContentBodyLinearLayout.getLayoutParams().height = contentBodyBackground.getHeight() - (int)marginPx;  //在ScrollView中，高度必须是一个固定值
+            mContentBodyLinearLayout.getLayoutParams().height = contentBodyBackground.getHeight() - (int)marginPx;
             if (isEditableMode() == false  || mIsPlayingCard) {
-                //不能scroll
                 LinearLayout.LayoutParams params = (LinearLayout.LayoutParams) mContentBodyLinearLayout.getLayoutParams();
                 params.bottomMargin = 0;
                 mContentBodyLinearLayout.setLayoutParams(params);
@@ -653,7 +607,6 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnTouchL
             if (mIsSnapShotNotCurrent) {
                 mIsSnapShotNotCurrent = false;
 
-                // 460ms 在onGlobalLayout调用后，需要一段时间完成onDraw方法（比如setText), 460是个经验值
                 Task.delay(460).continueWith(new Continuation<Void, String>() {
                     @Override
                     public String then(Task<Void> task) throws Exception {
@@ -941,7 +894,7 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnTouchL
 
             Uri selectedURI = data.getParcelableExtra("cropped_image_uri");
 
-            ImageSize targetSize = new ImageSize(1024, 1024); //但是最终是一个小于这个大小的图片（因为最终需要防止图片变形）
+            ImageSize targetSize = new ImageSize(1024, 1024);
             ImageLoader imageLoader = ImageLoader.getInstance();
             Bitmap scaledBitmap = imageLoader.loadImageSync(selectedURI.toString(),targetSize);
 
@@ -971,9 +924,6 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnTouchL
 
     }
 
-    /*
-    通过uri，获取video的thumbnail
-     */
     private void thumbnailImageFromVideoURL(Uri selectedURI) {
 
         Bitmap resultBitmap = UIHelper.getVideoThumbnail(AppContext.getAppContext(), selectedURI);
@@ -1114,9 +1064,6 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnTouchL
     }
 
 
-    /*
-    配置logo image view listener
-     */
     private void configureLogoImageView() {
 
         mLogoImage.setOnClickListener(new View.OnClickListener() {
@@ -1220,9 +1167,7 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnTouchL
         });
     }
 
-    /*
-        配置sound record&play imageview的click listner
-         */
+
     private void configureSoundRecordPlayImageView() {
 
         if (mPlayRecordImage == null) {
@@ -1245,9 +1190,7 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnTouchL
         });
     }
 
-    /**
-     * 配置background change imageview的click listner
-     */
+
     private void configureBackgroundChangeImageView() {
 
         LOGD(TAG, "configureBackgroundChangeImageView");
@@ -1331,12 +1274,7 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnTouchL
     }
 
 
-    /**
-     * 配置image view的click listner
-     * two choice
-     * 1. input a youtube linkage
-     * 2. select image/video from library
-     */
+
     private void setImageVideoClickListener() {
 
         //step1: configure image
@@ -1363,7 +1301,6 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnTouchL
                 });
 
             } else {
-                //不在play mode下，但是同时又不是自己创建的卡
                 mImage.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
@@ -1400,7 +1337,6 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnTouchL
                 });
 
             } else {
-                //不在play mode下，但是同时又不是自己创建的卡
                 mImage2.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
@@ -1418,9 +1354,7 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnTouchL
 
     }
 
-    /**
-     * 配置template change imageview的click listner
-     */
+
     private void configureChangeTemplateView() {
 
         if (mChangeTemplateImage == null) {
@@ -1575,9 +1509,7 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnTouchL
         questionQuickAction.show(mChangeTemplateImage);
     }
 
-    /**
-     * 配置logo url view的click listner
-     */
+
     private void configureLogoURLView() {
         mLogoURLImage.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -1613,9 +1545,7 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnTouchL
 
     }
 
-    /**
-     * 打开录制声音的view
-     */
+
     public void showCreateSoundView() {
 
         CreateSoundFragment dialogFragment = new CreateSoundFragment();
@@ -1703,11 +1633,11 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnTouchL
         int colorResourceID[] = (StringUtils.convertTemplateBackgroundStringToResourceID(mCurrentCard.templateBackground));
         mTitle.setTextColor(colorResourceID[4]);
 
-        updateQuestionViewTemplate();//updateQuestionContent，因为涉及到view的重定向
+        updateQuestionViewTemplate();
         updateQuestionContent();
         updateQuestionCSS();
 
-        resetResizingMonitorTimer();//必须放到updateAnswerCSS后，因为在play mode中，会在updateAnswerCSS中额外的setTextSize
+        resetResizingMonitorTimer();
 
         updateSemiTransparentPolicy();
 
@@ -1801,11 +1731,11 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnTouchL
         int colorResourceID[] = (StringUtils.convertTemplateBackgroundStringToResourceID(mCurrentCard.templateBackground));
         mTitle.setTextColor(colorResourceID[5]);
 
-        updateAnswerViewTemplate(); //必须放在updateAnswerContent，因为涉及到view的重定向
+        updateAnswerViewTemplate();
         updateAnswerContent();
         updateAnswerCSS();
 
-        resetResizingMonitorTimer(); //必须放到updateAnswerCSS后，因为在play mode中，会在updateAnswerCSS中额外的setTextSize
+        resetResizingMonitorTimer();
 
         updateSemiTransparentPolicy();
 
@@ -1834,9 +1764,7 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnTouchL
     };
 
 
-    /**
-     * 用于inflate后
-     */
+
     private void getAllViews() {
 
         if (mDisplayImageOptions == null) {
@@ -1893,7 +1821,6 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnTouchL
 
         mContentBodyLinearLayout = (LinearLayout) mContentView.findViewById(R.id.card_content_body);
         if (isEditableMode() || mIsCreatingCard) {
-            //在非edit模式下，我们是在resize结束后才显示的
             mContentBodyLinearLayout.setVisibility(View.VISIBLE);
         }
 
@@ -1909,7 +1836,6 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnTouchL
 
 
         if (mIsPlayingCard) {
-            //在play mode中，我们只有play sound button，且独立
         } else {
             mChangeTemplateImage = (ImageView) mContentView.findViewById(R.id.change_template_button);
             mChangeBackgroundImage = (ImageView) mContentView.findViewById(R.id.change_background_button);
@@ -2066,10 +1992,7 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnTouchL
 
     }
 
-    /**
-     * 由于mSubheading，mMain，mSub在不同的template下，指向的view不一样，所以每次更改template时，则都需要调用
-     * @param templateID
-     */
+
     private void updateContentViewsPointers(int templateID) {
 
         //OnTouchListener
@@ -2083,7 +2006,6 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnTouchL
         //EditorActionListener
         setTextsListener();
 
-        //Image的重新OnClickListener
         setImageVideoClickListener();
 
     }
@@ -2198,25 +2120,17 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnTouchL
     }
 
 
-    /*
-     * 最初想法这是一个one off的标志。当字体太小时，我们给予一个足够大的字体，这时可以认为这样只需要做一次。
-     * 但是实际中发现，这样会导致字体太大（同时文字又在合理的frame内），所以最后的做法是，这不再是一个一次性的标志，而是用来标志：字体增大的动作是否已经完成。
-     * 返回true: 当字体增加的动作已经彻底完成，或压根不需要做这个动作
-     */
+
     private boolean flag_Subheading_OneoffIncrease;
     private boolean flag_Main_OneoffIncrease;
     private boolean flag_Sub_OneoffIncrease;
 
-    /*
-     *用来判断resize是否完成，如果因为text空，则设置成true。需要以下三个都是true，才算最终完成
-     */
+
     private boolean flag_Subheading_ResizeFinished;
     private boolean flag_Main_ResizeFinished;
     private boolean flag_Sub_ResizeFinished;
 
-    /**仅在non-editable条件下工作
-     * 为了提高执行效率，仅仅当setTextSize自动引起的ViewTreeObserver.OnGlobalLayoutListener下触发（OnGlobalLayoutListener的触发可以通过setText或setTextSize)。
-     */
+
     private void triggerResizeTextToFitFrame(final EditText v, int targetLines) {
 
         if (Global.checkLineNumberWhenResizeTextToFitFrame == false) {
@@ -2233,13 +2147,11 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnTouchL
 
         synchronized (v) {   //TODO:  lint warning synchronization on local variable or method parameter
 
-            boolean isResized = false; //每次执行了setTextSize都会置成false;
+            boolean isResized = false;
 
             String tag = (String) v.getTag();
 
             if (isEditableMode()) {
-                //我们不允许在可编辑情况下进行自动resize，因为这是没有必要的
-               // LOGD(TAG, "triggerResizeTextToFitFrame: aborted since we don't do this in edit mode");
                 return;
             }
 
@@ -2265,13 +2177,11 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnTouchL
             }
 
 
-            //特殊逻辑，历史原因,sample pack中的这部分内容的line number不正确，需要二次修正
             if (v.getText().toString().contains("General knowledge")) {
                 Log.d("ccaa","coming the magic, textsize = " + v.getTextSize());
             }
 
 
-            //noOfLines有可能返回0： getLineCount() will give you the correct number of lines only after a layout pass. That means the TextView must have been drawn at least once.
             int noOfLines = v.getLineCount(); //this is very important, when setTextSize execute, getLineCount could possibly be zero
             int textHeight = noOfLines * v.getLineHeight();
             int viewHeight = v.getHeight();
@@ -2336,7 +2246,7 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnTouchL
                     (noOfLines > targetLines && targetLines > 0)) {
 
                 boolean highAccuracy = false;
-                if (noOfLines - targetLines <= 1 && (textHeight-viewHeight <10)) { //textHeight-viewHeight <10的限定原因是因为实际发现,如果没有这个,就会造成性能问题
+                if (noOfLines - targetLines <= 1 && (textHeight-viewHeight <10)) {
                     highAccuracy = true;
                 }
 
@@ -2407,7 +2317,6 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnTouchL
     private void removeEditTextListener() {
 
         //1.
-        // setOnEditorActionListener，我们不需要手工remove
 
         mVerticalScrollView.getViewTreeObserver().removeOnScrollChangedListener(mOnVerticalScrollViewChangedListener);
 
@@ -2514,7 +2423,6 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnTouchL
                 public void afterTextChanged(Editable s) {
                     if (mIsQuestionShowing) {
                         mCurrentPack.questionTitle = mTitle.getText().toString();
-                        //之所以做这个逻辑是因为即便是setText也会call这个方法，这在初始化card中将成为灾难
                         if ((!mIsPlayingCard)
                                 && (TAG_TITLE.equals(getCurrentFocusedViewTag()))) {
                             mIsTakeSnapshotAllNeeded = true;
@@ -2522,7 +2430,6 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnTouchL
                     } else {
                         mCurrentPack.answerTitle = mTitle.getText().toString();
                     }
-                    //LOGD(TAG, "afterTextChanged: mTitle has changed");
                 }
             };
 
@@ -2544,13 +2451,11 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnTouchL
                 @Override
                 public void afterTextChanged(Editable s) {
                     mCurrentPack.creatorNickName = mCreator.getText().toString();
-                    //之所以做这个逻辑是因为即便是setText也会call这个方法，这在初始化card中将成为灾难
                     if ((!mIsPlayingCard)
                             &&(TAG_CREATOR.equals(getCurrentFocusedViewTag()))) {
                         mIsTakeSnapshotAllNeeded = true;
                     }
 
-                    //LOGD(TAG, "afterTextChanged: mCreator has changed");
 
                 }
             };
@@ -2574,13 +2479,11 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnTouchL
                 public void afterTextChanged(Editable s) {
 
                     mCurrentPack.jobTitle = mJobTitle.getText().toString();
-                    //之所以做这个逻辑是因为即便是setText也会call这个方法，这在初始化card中将成为灾难
                     if ((!mIsPlayingCard)
                             && (TAG_JOB_TITLE.equals(getCurrentFocusedViewTag()))) {
                         mIsTakeSnapshotAllNeeded = true;
                     }
 
-                    //LOGD(TAG, "afterTextChanged: mJobTitle has changed");
 
                 }
             };
@@ -2600,7 +2503,6 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnTouchL
 
                 @Override
                 public void afterTextChanged(Editable s) {
-                    //之所以做这个逻辑是因为即便是setText也会call这个方法，这在初始化card中将成为灾难
                     mCurrentPack.sidebarTitle = mSidebarTitle.getText().toString();
                     if ((!mIsPlayingCard)
                             && (TAG_SIDE_BAR_TITLE.equals(getCurrentFocusedViewTag()))) {
@@ -2726,7 +2628,6 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnTouchL
                     }
                 }
 
-                //我们不允许在可编辑情况下进行自动resize，因为这是没有必要的
                 triggerResizeTextToFitFrame(mSubheading, maxLines);
             }
         };
@@ -2762,7 +2663,6 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnTouchL
                     }
                 }
 
-                //我们不允许在可编辑情况下进行自动resize，因为这是没有必要的
                 triggerResizeTextToFitFrame(mMain, maxLines);
             }
         };
@@ -2796,7 +2696,6 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnTouchL
                     }
                 }
 
-                //我们不允许在可编辑情况下进行自动resize，因为这是没有必要的
                 triggerResizeTextToFitFrame(mSub, maxLines);
             }
         };
@@ -2805,9 +2704,7 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnTouchL
 
     }
 
-    /*
-     *我们尽量避免输出null
-     */
+
     private String getCurrentFocusedViewTag() {
         View view = getActivity().getCurrentFocus();
         if (view == null) {
@@ -2822,9 +2719,7 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnTouchL
     }
 
 
-    /**
-     * question和answer上有些内容是一样的，我们不需要做两次，所以把通用的内容的更新放在这个方法中
-     */
+
     private void updateCommonContent() {
 
         ImageLoader imageLoader = ImageLoader.getInstance();
@@ -3142,16 +3037,16 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnTouchL
 
         LOGD(TAG, "saveNewCreatedCard: ");
 
-        mCurrentPack.addCard(AppContext.getAppContext(), mCurrentCard); //新截图没有包含
+        mCurrentPack.addCard(AppContext.getAppContext(), mCurrentCard);
 
         if (mIsTakeSnapshotAllNeeded) {
             mSnapshotAllCardsSemaphore = 0;
-            takeSnapshotAll(); //在这里会自动save包含新截图的数据，在之前必须先保存新增的卡片，即执行mCurrentPack.addCard
+            takeSnapshotAll();
             mCurrentPack.save(AppContext.getAppContext());
 
         } else {
-            mSnapshotAllCardsSemaphore = -1;  //表明不需要snapshot all cards,最多只是当前的
-            takeSnapshotCurrentCard();//在这里会自动save包含新截图的数据
+            mSnapshotAllCardsSemaphore = -1;
+            takeSnapshotCurrentCard();
         }
 
         mIsTakeSnapshotAllNeeded = false;
@@ -3159,11 +3054,7 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnTouchL
 
     }
 
-    /**
-     * 支持仅有一个card的情况
-     * Snap all the cards under current pack
-     * take care of notification updating master list view
-     */
+
     public void takeSnapshotAll() {
 
         LOGD(TAG, "takeSnapshotAll");
@@ -3178,9 +3069,6 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnTouchL
     }
 
 
-    /**
-     * 凡是call这个方法的，都会自动导致更新card list view。这也是从MainActivity或CardDetailFragment回调更新card list view的唯一途径
-     */
     Boolean subHeadingQuestionAlphaRevertNeeded = false;
     Boolean mainQuestionAlphaRevertNeeded = false;
     Boolean subQuestionAlphaRevertNeeded = false;
@@ -3286,10 +3174,8 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnTouchL
         if (mCurrentPack.cards.size() > 1) {
 
             if (mSnapshotAllCardsSemaphore == -1) {
-                //表示不需要snapshot所有卡片
                 ((MainActivity) getActivity()).cleanupDataForSnapShotAllExceptCurrent(); //并通知更新card list view
             } else {
-                //表示需要同步snapshot所有卡片后执行
                 mSnapshotAllCardsSemaphore++;
                 if (mSnapshotAllCardsSemaphore == mCurrentPack.cards.size()) {
                     mSnapshotAllCardsSemaphore = 0;
@@ -3297,15 +3183,11 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnTouchL
                 }
             }
         } else {
-            //如果只有一个卡片，则直接结束，并并通知更新card list view
             ((MainActivity) getActivity()).cleanupDataForSnapShotAllExceptCurrent();
         }
     }
 
-    /**
-     * 选某个主题颜色后的回调
-     * @param cardColorTemplateIndex
-     */
+
     public void cardColorTemplateSelectedPostAction(int cardColorTemplateIndex) {
 
         String templateBackground = StringUtils.convertTemplateBackgroundIndexToString(cardColorTemplateIndex);
@@ -3939,7 +3821,6 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnTouchL
         mMain.setVisibility(View.VISIBLE);
         mSub.setVisibility(View.VISIBLE);
 
-        //上布局
         LinearLayout top = new LinearLayout(getActivity());
         top.setOrientation(LinearLayout.VERTICAL);
 
@@ -3952,7 +3833,6 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnTouchL
         mContentBodyLinearLayout.addView(top);
 
 
-        //下布局
         LinearLayout bottom = new LinearLayout(getActivity());
         bottom.setOrientation(LinearLayout.HORIZONTAL);
 
@@ -4052,7 +3932,6 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnTouchL
         mSub.setVisibility(View.GONE);
 
 
-        //左布局
         LinearLayout left = new LinearLayout(getActivity());
         left.setOrientation(LinearLayout.VERTICAL);
 
@@ -4065,7 +3944,6 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnTouchL
 
         mContentBodyLinearLayout.addView(left);
 
-        //右布局
         LinearLayout right = new LinearLayout(getActivity());
         right.setOrientation(LinearLayout.VERTICAL);
 
@@ -4370,7 +4248,6 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnTouchL
         mSub.setVisibility(View.VISIBLE);
 
 
-        //左布局
         LinearLayout left = new LinearLayout(getActivity());
         left.setOrientation(LinearLayout.VERTICAL);
 
@@ -4383,7 +4260,6 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnTouchL
 
         mContentBodyLinearLayout.addView(left);
 
-        //右布局
         params = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,
                 ViewGroup.LayoutParams.MATCH_PARENT);
         LinearLayout right = new LinearLayout(getActivity());
@@ -4683,9 +4559,6 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnTouchL
 
 
 
-    /**
-     * 所谓CSS就是：颜色，字体，对其，大小
-     */
     private void updateQuestionCSS() {
 
         //step1: alignment
@@ -4701,7 +4574,6 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnTouchL
             scaleVal = (float) 1.0;
         }
 
-        //由于这是一个one off的标志，所以必须设置最后改变文字内容的地方，也就是这里
         flag_Subheading_OneoffIncrease = false;
         flag_Main_OneoffIncrease = false;
         flag_Sub_OneoffIncrease = false;
@@ -4724,9 +4596,7 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnTouchL
         mSub.setTypeface(FontHelper.fontFromName(getActivity(), mCurrentCard.question.css.subFont), Typeface.BOLD);
     }
 
-    /**
-     * 所谓CSS就是：颜色，字体，对其，大小
-     */
+
     private void updateAnswerCSS() {
 
         float scaleVal;
@@ -4743,7 +4613,6 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnTouchL
 
         //step2: size
 
-        //由于这是一个one off的标志，所以必须设置最后改变文字内容的地方，也就是这里
         flag_Subheading_OneoffIncrease = false;
         flag_Main_OneoffIncrease = false;
         flag_Sub_OneoffIncrease = false;
@@ -4787,7 +4656,7 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnTouchL
 
 
         //Step3: fill values
-        String[] sizeArray = ScaleHelper.getRealSizeStringArray(getActivity()); //我们不能从R.array.css_size获取，因为它仅仅是名义值，而不是真实的值
+        String[] sizeArray = ScaleHelper.getRealSizeStringArray(getActivity());
 
 
         String[] alignArray = getResources().getStringArray(R.array.css_align);
@@ -4796,11 +4665,10 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnTouchL
         switch (menuID) {
             case 0:   //stand for align
 
-                //由于CSS存储时，只有两个值Vertical或者空，所以对于Vertical Alignment，我们需要特殊化一下（兼容ios）
                 boolean isVerticalAlign = false;
                 if (subMenuID == 3) {
                     isVerticalAlign = true;
-                    alignArray[subMenuID + 1] = "Vertical";  //这里非常特殊，在iOS中，我们没有vertical center和vertical top的概念，只有vertical。所以如果是vertical，在android中认为是vertical center;否则为空
+                    alignArray[subMenuID + 1] = "Vertical";
                 } else if (subMenuID == 4) {
                     isVerticalAlign = true;
                     alignArray[subMenuID + 1] = ""; //vertical top
@@ -4839,7 +4707,7 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnTouchL
                     horizontalGravity = StringUtils.convertGravityStringToInt(currentCSS.subAlign);
                     verticallGravity = StringUtils.convertVerticalGravityStringToInt(currentCSS.subAlignVertical);
                 } else {
-                    horizontalGravity = StringUtils.convertGravityStringToInt("");  //为了兼容iOS（iOS中只有vertical,没有vertical center或top概念）
+                    horizontalGravity = StringUtils.convertGravityStringToInt("");
                     verticallGravity = StringUtils.convertVerticalGravityStringToInt("");
                 }
 
@@ -4849,7 +4717,7 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnTouchL
 
             case 1:   //stand for size
 
-                float size = Float.parseFloat(sizeArray[subMenuID]);  //是个纯text real size的数组，不带Size描述
+                float size = Float.parseFloat(sizeArray[subMenuID]);
 
                 if (editTextTag.equals(TAG_SUBHEADING)) {
                     currentCSS.subheadingSize = size;
@@ -5041,9 +4909,7 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnTouchL
 
     }
 
-    /*
-     * 键盘从出现到消失，Cursor is causing text to go up the screen
-     */
+
     private void restoreDefaultCursorPosition() {
 
         mSubheading.setSelection(0);
@@ -5052,9 +4918,7 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnTouchL
     }
 
 
-    /*
-     * 同saveNewCreatedCard所区别。这是的卡片是已经存在的，而不是正在创建的
-     */
+
     public void saveEditedCard() {
 
         LOGD(TAG, "saveEditedCard");
@@ -5063,7 +4927,7 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnTouchL
             throw new IllegalStateException("saveEditedCard should never be called when mIsCreatingCard = true");
         }
 
-        mSnapshotAllCardsSemaphore = -1; //表明不需要snapshot all cards,最多只是当前的
+        mSnapshotAllCardsSemaphore = -1;
 
         //step2: prepare update info in mast list view
         if (mIsTakeSnapshotAllNeeded && (mIsCreatingCard == false)) {
@@ -5341,26 +5205,13 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnTouchL
         return arrayList;
     }
 
-    /*
-     * 故事的背景：iOS在text2speech中行与行之间的朗读是间隔的（.5秒左右），但是Android是没有的，所以这里认为的制造一个间隔
-     */
+
     private String addNewLineCharactersIntoStr(String origionalStr) {
         if (StringUtils.isEmpty(origionalStr)) {
             return origionalStr;
         }
 
-//加\n在模拟器上可以看到停顿,但是在device上则没有任何效果,所以comment out this logic
-//        String resultStr = "";
-//
-//        String[] array = origionalStr.split("(?<=\n)|(?=\n)");  //默认split是干掉\n，而我们希望保留任何\n
-//        for (String item: array) {
-//            if (item.equals("\n") == false) {
-////                item = item + "\n\n";
-//                  item = item + "";
-//            }
-//            resultStr = resultStr + item;
-//
-//        }
+
 
         return origionalStr;
 
@@ -5576,7 +5427,7 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnTouchL
 
                         List<MediaItem> mMediaSelectedList = MediaPickerActivity
                                 .getMediaItemSelected(dataFinal);
-                        MediaItem item = mMediaSelectedList.get(0);//因为是单选，所以永远是第一个
+                        MediaItem item = mMediaSelectedList.get(0);
                         Uri selectedURI = item.getUriOrigin();
 
                         LOGD(TAG, "onActivityResult: ready to crop");
@@ -5592,7 +5443,7 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnTouchL
 
                         List<MediaItem> mMediaSelectedList = MediaPickerActivity
                                 .getMediaItemSelected(dataFinal);
-                        MediaItem item = mMediaSelectedList.get(0);//因为是单选，所以永远是第一个
+                        MediaItem item = mMediaSelectedList.get(0);
                         Uri selectedURI = item.getUriOrigin();
 
                         if (item.getType() == MediaItem.VIDEO) {

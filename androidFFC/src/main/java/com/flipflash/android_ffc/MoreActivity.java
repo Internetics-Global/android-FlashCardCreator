@@ -242,7 +242,6 @@ public class MoreActivity extends Activity {
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
-        //Parse暂时不支持区分sign up或sign in
         //https://github.com/ParsePlatform/ParseUI-Android/issues/79
 
         if (requestCode == Global.REQUEST_LOGIN) {

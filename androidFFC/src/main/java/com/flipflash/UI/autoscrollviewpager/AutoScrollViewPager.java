@@ -49,12 +49,9 @@ public class AutoScrollViewPager extends ViewPager {
     public static final int        SLIDE_BORDER_MODE_TO_PARENT = 2;
 
 
-    //其实就是两个pager之间的间隔
     private long                   pauseForAnswerMilliSeconds  = 0;
 
-    /**
-     * 其实就是一个pager的播放时间（不包括两个pager之间的间隔：pauseForAnswerMilliSeconds
-     * auto scroll time in milliseconds, default is {@link #DEFAULT_INTERVAL} **/
+
     private long                   interval                    = DEFAULT_INTERVAL;
     /** auto scroll direction, default is {@link #RIGHT} **/
     private int                    direction                   = RIGHT;

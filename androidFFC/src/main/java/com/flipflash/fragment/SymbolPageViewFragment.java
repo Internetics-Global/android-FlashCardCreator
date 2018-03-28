@@ -40,7 +40,7 @@ public class SymbolPageViewFragment extends Fragment implements TextView.OnTouch
     private int              mPageNumber;
     private int              mNumberOfSymbolsBeforePage;
 
-    private Typeface mTypeFace;  //引用它的原因是因为unicode需要特殊字体支持
+    private Typeface mTypeFace;
 
     private final static int ROW_NUMBER           = 4;
     private final static int COLUMN_NUMBER_TYPE_A = 11;
@@ -70,9 +70,7 @@ public class SymbolPageViewFragment extends Fragment implements TextView.OnTouch
 
     }
 
-    /**
-     * 每当keyboard的布局变化时，需要更新这里
-     */
+
     private void setupSymbols() {
 
         for (int i =0; i< ROW_NUMBER; i++) {
@@ -109,11 +107,11 @@ public class SymbolPageViewFragment extends Fragment implements TextView.OnTouch
 
                     HashMap<Integer,Integer> tag = new HashMap<>();
                     tag.put(Integer.valueOf(i),Integer.valueOf(j));
-                    symbolTextView.setTag(tag); //作为标志
+                    symbolTextView.setTag(tag);
                     symbolTextView.setOnTouchListener(this);
 
                 } else {
-                    symbolView.setVisibility(View.INVISIBLE);//表示symbol不存在，这时我们需要hidden
+                    symbolView.setVisibility(View.INVISIBLE);
                 }
 
 
@@ -128,23 +126,13 @@ public class SymbolPageViewFragment extends Fragment implements TextView.OnTouch
     }
 
 
-    /**
-     *
-     * @param resourceIDStr: 例如在“R.id.symbol_box_row_1"中指symbol_box_row_1
-     * @return
-     */
+
     private int getResourceID(String resourceIDStr) {
         int id = getResources().getIdentifier(resourceIDStr, "id", AppContext.getAppContext().getPackageName());
         return id;
     }
 
-    /**
-     * 每当keyboard的布局变化时，需要更新这里
-     * 根据所在行列，获取对应字符
-     * @param row
-     * @param column
-     * @return: 当返回为Null,表示越界
-     */
+
     private @Nullable String getText(int row, int column) {
         int index;
         if (mPageNumber == 0) {
@@ -173,11 +161,7 @@ public class SymbolPageViewFragment extends Fragment implements TextView.OnTouch
 
     }
 
-    /**
-     * 每当keyboard的布局变化时，需要更新这里
-     * @param page
-     * @return
-     */
+
     private int numberOfSymbolsBeforePage(int page) {
         int count = 0;
         if (page <= 0) {

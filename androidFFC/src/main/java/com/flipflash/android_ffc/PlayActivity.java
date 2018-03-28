@@ -98,7 +98,7 @@ public class PlayActivity extends FragmentActivity implements SensorEventListene
 
     private boolean     mIsAutoScroll;
     private boolean     mIsCyclePlay;
-    private boolean     mIsMuteSoundRecording = false;  //实际上不是真正的mute,在auto play模式中，实际上还是在播放，只是mute了
+    private boolean     mIsMuteSoundRecording = false;
 
     private boolean     mRunOnceFlag; //only allow to run once
 
@@ -115,19 +115,12 @@ public class PlayActivity extends FragmentActivity implements SensorEventListene
     private Handler        mText2Speech_AfterSoundRecording_Handler     = new Handler();
 
 
-    //我们在1秒后才开始Text2Speech.而不是切换Q/A或next card后立马进行
     private final int      K_Text2Speech_Delay_MilliSecond              = 1000;
     private Handler        mText2Speech_Delay_Handler                   = new Handler();
 
     // Used to avoid this problem: click to switch to answer card, but still get question text2speech, even worse no answer text2speech.
     // This seems to be a common issue on low performance device
     private Handler        mSafeSwitchForManualOnly_Delay_Handler          = new Handler();
-
-    /**
-     *  与iPhone不同的是，我们不需要这个
-     */
-//    private Handler        mDwellOnAnswerExpireHandler_ForFixedDelay    = new Handler();
-//    private Handler        mDwellOnQuestionExpireHandler_ForFixedDelay  = new Handler();
 
 
     private Handler        mA_ForText2SpeechFinishedHandler              = new Handler();
@@ -140,19 +133,12 @@ public class PlayActivity extends FragmentActivity implements SensorEventListene
 
     private boolean        mIsShuttingDown;
 
-    private boolean        mIsFixedDelayAutoScroll;  //用来区分是否是fixed delay 还是 smart  auto scroll
+    private boolean        mIsFixedDelayAutoScroll;
 
-    /*
-     * 两种case。主要是为了最开始（startActivity)的逻辑判断，之后如果因为原因2改变赋值为-1
-     * 1. 在启动PlayActivity时直接传入：//0, manually; 1, auto play; 2, auto play loop
-     * 2. 如果用户改变了mAutoScrollImageButton或mDwellTimeSeekBar，则永久性变成-1
-     */
+
     private int            mOneOffPlayType;
 
-    /*
-     * 当isAutoShowQuestionOnly = true时，intervalBetweenCardSeconds ＝ mPauseForAnswerSeekBar
-     * 当isAutoShowQuestionOnly ＝ false时,intervalBetweenCardSeconds = K_IntervalBetweenCardSeconds_ForQAOnly
-     */
+
     private final int      K_IntervalBetweenCardMilliSeconds_ForQAOnly      = 2000; //4 seconds
 
     private final int      K_Big_Enough_For_Endless_Repeated_Timer     =600000;
@@ -195,7 +181,6 @@ public class PlayActivity extends FragmentActivity implements SensorEventListene
 
         if (_PreviewOnly) {
 
-            //intent在传递数据时,需要序列化,为了减少麻烦,我们定义了这个Global.previewPack
             mCurrentPack = Global.previewPack;
 
         } else {
@@ -433,13 +418,11 @@ public class PlayActivity extends FragmentActivity implements SensorEventListene
         });
 
 
-        //特殊情况，当 width/height < Global.ratioOfCardInPlayMode
         double cardHeight = UIHelper.getScreenHeight(this) - UIHelper.getPixels(10 +10); //10 is top and bottom margin;
         double cardWidth = cardHeight * Global.ratioOfCardInPlayMode;
 
         double screenWidth = UIHelper.getScreenWidth(this);
         if (cardHeight *Global.ratioOfCardInPlayMode > screenWidth) {
-            //这时的卡片宽度和高度将重新需要计算
             double horizontalMargin = UIHelper.getPixels(10);
             cardWidth =  screenWidth - 2*horizontalMargin;
             double verticalMarin =  (cardHeight - cardWidth/Global.ratioOfCardInPlayMode)/2;
@@ -540,7 +523,7 @@ public class PlayActivity extends FragmentActivity implements SensorEventListene
 
         LOGD(TAG, "dwellTimeSeekBarProgressManuallyChanged");
 
-        mOneOffPlayType = -1;  //因为是one off的，所以一旦有新动作，需要重置
+        mOneOffPlayType = -1;
 
         stopAudio();
         stopTextToSpeech();
@@ -783,7 +766,7 @@ public class PlayActivity extends FragmentActivity implements SensorEventListene
 
         LOGD(TAG, "autoScrollImageButtonClicked");
 
-        mOneOffPlayType = -1; //因为是one off的，所以一旦有新动作，需要重置
+        mOneOffPlayType = -1;
 
         stopAudio();
         stopTextToSpeech();
@@ -823,26 +806,19 @@ public class PlayActivity extends FragmentActivity implements SensorEventListene
     }
 
 
-    /**
-     *  是Auto play中的其中一种（另外一种是fixed delay，就是用NSTimer进行固定时间间隔的切换卡片
-     *  这是一种智能的方式，只有文本读完了，才切换到下一个卡片
-     */
+
     private boolean isSmartDelay() {
-        //我们采用了一种非常特殊的方法，就是slider的值到了最小值时，isSmartDelay ＝ YES
 
         LOGD(TAG, "isSmartDelay");
 
 
-        //用作start activity后的首次判断：mOneOffPlayType一旦被mAutoScrollImageButton或mDwellTimeSeekBar改变，自动赋值-1
         if (mOneOffPlayType == 1 || mOneOffPlayType == 2) {
             return true;
         } else if (mOneOffPlayType == 0) {
             return false;
         } else {
-            //这时mOneOffPlayType ＝ -1，则无法判断
         }
 
-        //之后，用这个方法进行判断
         if (mIsAutoScroll &&mDwellTimeSeekBar.getProgress() == Global.k_MIN_Auto_Play_Speed) {
             return true;
         } else {
@@ -914,8 +890,6 @@ public class PlayActivity extends FragmentActivity implements SensorEventListene
 
 
         // Configure orientation sensor
-        // 我们把这个sensor的初始化逻辑放在这里，主要是为了防止误出发Q/A switch（比如加载card比较慢，然后用户又同时roll设备就会引起这个问题）
-//        Sensor orientationSensor = mSensorManager.getDefaultSensor(Sensor.TYPE_ORIENTATION);
         Sensor accelSensor = mSensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
         Sensor magSensor = mSensorManager.getDefaultSensor(Sensor.TYPE_MAGNETIC_FIELD);
 
@@ -1003,13 +977,7 @@ public class PlayActivity extends FragmentActivity implements SensorEventListene
             throw new IllegalArgumentException("ccaa, isSmartDelay should not be true or mIsAutoScroll should not be false");
         }
 
-        //2. 我们不再需要这段逻辑，因为：如果是fixed delay auto play,则我们通过mAutoScrollForFixedDelayTimer；如果是smart auto delay,我们通过setOnUtteranceProgressListener回调
-//        final int dwellTimeMilliSeconds = getDwellTimeMilliSeconds();
-//        final int pauseForAnswerMilliSeconds = getPauseForAnswerMilliSeconds();
-//
-//        mPager.setInterval(dwellTimeMilliSeconds);
-//        mPager.setPauseForAnswerMilliSeconds(pauseForAnswerMilliSeconds);
-//        mPager.startAutoScroll();
+
 
         //3. auto scroll timer
         int dwellMilliSecondsTotally = getDwellMilliSecondsTotally();
@@ -1063,9 +1031,6 @@ public class PlayActivity extends FragmentActivity implements SensorEventListene
         getWindow().clearFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
     }
 
-    /*
-     * 在切换到下一张卡片， onPageScrolled会被调用多次;首次运行，即使不滑动，也会被调用
-    */
 
     @Override
     public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
@@ -1090,7 +1055,6 @@ public class PlayActivity extends FragmentActivity implements SensorEventListene
 
             //LOGD(TAG, "onPageScrolled: "+ "onPageScrolled, page index=" + position + " .mPosition=" + mPosition);
 
-            //主要目的是及时释放内存，以防内存不断增加导致crash
             if (position-2 >=0) {
                 Card targetCard = getShuffleCardIndexWithPageNumber(position-2);
                 CardDetailFragment cardDetailFragment = new CardDetailFragment();
@@ -1156,7 +1120,6 @@ public class PlayActivity extends FragmentActivity implements SensorEventListene
 
         } else {
 
-            //一般滑动view pager，我们需要停止
 
             if (mTTSDelayHandler != null) {
                 mTTSDelayHandler.removeCallbacksAndMessages(null);
@@ -1177,7 +1140,6 @@ public class PlayActivity extends FragmentActivity implements SensorEventListene
                 mTTS.stop();
             }
 
-            //只会运行一次
             if (mRunOnceFlag == false) {
                 setActiveFragmentTag(0);
                 mRunOnceFlag = true;
@@ -1223,7 +1185,6 @@ public class PlayActivity extends FragmentActivity implements SensorEventListene
 
         switch (event.sensor.getType()) {
             case Sensor.TYPE_ORIENTATION: {
-                //roll(event.values[2]); 其中event.values[2]是度单位，需要转换成radius，其余则不需要改变
                 break;
             }
             case Sensor.TYPE_ACCELEROMETER: {
@@ -1251,7 +1212,7 @@ public class PlayActivity extends FragmentActivity implements SensorEventListene
                 SensorManager.getOrientation(R, orientation);
                 float rollVal = orientation[2]; // orientation contains: azimut, pitch and roll
 
-                roll( - rollVal); //这里有个负数，注意
+                roll( - rollVal);
             }
         }
 
@@ -1263,10 +1224,6 @@ public class PlayActivity extends FragmentActivity implements SensorEventListene
      */
     private long last_Flip_Time = 0;
 
-    /*
-     * 弧度和度的关系：rollRadius = (float)(rollDegress *3.14/180);
-     * 以下方法如果是通过TYPE_ORIENTATION，也可直接使用
-     */
     private void roll(float rollRadius) {
 
         LOGD("roll","rollVal:" + rollRadius);
@@ -1284,13 +1241,8 @@ public class PlayActivity extends FragmentActivity implements SensorEventListene
 
         if (mIsAutoScroll == false && mOneOffPlayType == 0 ) {
 
-            //范围-90到90
-            //Android: home在左边，屏幕在右边时: 上边靠近身体这边负数，远离身体正数 （home在右边，屏幕在左边时，相反）
-            //iOS:    home在左边，屏幕在右边时: 上边靠近身体这边正数，远离身体负数。与Android刚好相反。
-            //越是垂直，越是绝对数大，这在iOS和Android是一致的
 
             int orientation = getOrientation();
-            //LOGD(TAG, "onSensorChanged: oriention is: " + orientation + ";rollRadius = " + rollRadius);
 
             if (_lowestRollDegree == 0) {
                 _lowestRollDegree = rollRadius;
@@ -1423,9 +1375,6 @@ public class PlayActivity extends FragmentActivity implements SensorEventListene
     }
 
 
-    /**
-     *  由于是个延时调用，我们必须重新check
-     */
     private void switchQAFromTimerForFixedDelay() {
         LOGD(TAG, "switchQAFromTimerForFixedDelay");
 
@@ -1446,12 +1395,8 @@ public class PlayActivity extends FragmentActivity implements SensorEventListene
     }
 
 
-    /*
-     * 只有两种情况isManually ＝ true;
-     * 1. OnViewPagerClickListener
-     * 2. onSensorChanged （而sensor只是在manually play中才enable）
-     */
-    private boolean mIsSwitchQuestionAnswerViewManually_Processing = false;  //由于switch是个非常耗性能的动作，同时执行会有副作用
+
+    private boolean mIsSwitchQuestionAnswerViewManually_Processing = false;
     private void switchQuestionAnswerViewManually(boolean isManually) {
 
         LOGD(TAG, "switchQuestionAnswerViewManually");
@@ -1468,9 +1413,9 @@ public class PlayActivity extends FragmentActivity implements SensorEventListene
             }
         }
 
-        if (isManually) { //在fixed delay或smart delay的auto scroll中，都是不允许手动切换question/answer view的
+        if (isManually) {
             stopAllHandlers();
-            resetAutoHideControlPanelHandler(); //这个必要，因为stopAllHandlers中disable了，这时如果control panel is visible，就无法自动关闭了。
+            resetAutoHideControlPanelHandler();
             stopAllTimers();
         }
 
@@ -1758,19 +1703,14 @@ public class PlayActivity extends FragmentActivity implements SensorEventListene
     }
 
 
-    /*
-     *  只要 isTextToSpeech 或 isSmartDelay一个为真，就为执行如下逻辑。否则我们不执行audio或TextToSpeech
-     *1. 如果mIsMuteSoundRecording ＝ YES， 只执行TextToSpeech
-     *2. 如果mIsMuteSoundRecording ＝ NO， 则先audio，然后执行只执行TextToSpeech
-     */
+
     private void playbackOnCard(final CardDetailFragment cardDetailFragment) {
 
         LOGD(TAG, "playbackOnCard");
 
-        AudioHelper.unmuteTTS(); //我们需要确保这时音频的音量是可用的。
+        AudioHelper.unmuteTTS();
         AudioHelper.stopAndCleanAudio();
 
-        //需要确保remove delay的工作
         if (mText2Speech_Delay_Handler != null) {
             mText2Speech_Delay_Handler.removeCallbacksAndMessages(null);
         }
@@ -1844,7 +1784,7 @@ public class PlayActivity extends FragmentActivity implements SensorEventListene
                                     }
 
                                 }
-                            },durationForRecordedSound + 500);  //这里1000（1秒）是适当的，因为mPauseForAnswerSeekBar或K_IntervalBetweenCardSeconds_ForQAOnly都远大于这个数
+                            },durationForRecordedSound + 500);
 
                         }
 
@@ -1906,15 +1846,7 @@ public class PlayActivity extends FragmentActivity implements SensorEventListene
             }
         }
 
-//        //two cases:
-//        //1. normal text to speech
-//        //2. text to speech but mute, which is used in auto delay mode
-//        if (AppConfig.sharedInstance().isTextToSpeech() ||
-//                (AppConfig.sharedInstance().isTextToSpeech()== false && isSmartDelay())) {
-//            textToSpeechAllContentNow(cardDetailFragment);//先text-to-speech，然后再播放audio
-//        } else {
-//            playAudio();
-//        }
+
     }
 
     private int getText2SpeechDelayMilliSecond() {
@@ -1946,14 +1878,14 @@ public class PlayActivity extends FragmentActivity implements SensorEventListene
     private void stopTextToSpeech() {
         LOGD(TAG, "stopTextToSpeech");
 
-        mTextToSpeechContentArrayIndex = 0; //这个非常重要
+        mTextToSpeechContentArrayIndex = 0;
 
 
         if (mTTS!= null) {
             mTTS.stop();
         }
 
-        AudioHelper.unmuteTTS(); //这个非常重要
+        AudioHelper.unmuteTTS();
     }
 
 
@@ -2020,7 +1952,7 @@ public class PlayActivity extends FragmentActivity implements SensorEventListene
 
 
             HashMap<String, String> params = new HashMap<String, String>();
-            params.put(TextToSpeech.Engine.KEY_PARAM_UTTERANCE_ID, "stringId");//必不可少
+            params.put(TextToSpeech.Engine.KEY_PARAM_UTTERANCE_ID, "stringId");
 
             Locale locale = getSelectedLocale(targetLanguage);
             mTTS.setLanguage(locale);
@@ -2035,13 +1967,7 @@ public class PlayActivity extends FragmentActivity implements SensorEventListene
 
     }
 
-    /*
-      在VGViewPager，我们需要获取到当前显示的card的image,image2（而不是前一个card），所以需要设置标志，以方便查找
-      需要在如下方法中调用
-      1. 默认显示第一张卡片
-      2. 卡片的切换（因为这时,mImage等的指向会发生变化）
-      3. scroll到下一张卡片
-     */
+
     private void setActiveFragmentTag(int indexShowing) {
         LOGD(TAG, "setActiveFragmentTag");
         for (int i = 0; i < mFragments.size(); i ++) {
@@ -2112,9 +2038,7 @@ public class PlayActivity extends FragmentActivity implements SensorEventListene
         return fList;
     }
 
-    /*
-     * Shuffle后，不能再根据mCurrentPack.cards.get(pageNumber)来获取正确的mCurrentCard，而是需要如下的方法
-     */
+
     private Card getShuffleCardIndexWithPageNumber(int pageNumber) {
         if (mFragments == null) {
             mFragments = getFragments();
@@ -2310,10 +2234,6 @@ public class PlayActivity extends FragmentActivity implements SensorEventListene
         }
     }
 
-
-    /*
-     * 仅仅用于fixed delay mode
-     */
     class SwitchQATimerTask extends TimerTask {
         public void run() {
             runOnUiThread(new Runnable() {
@@ -2362,7 +2282,6 @@ public class PlayActivity extends FragmentActivity implements SensorEventListene
         @Override
         public void onStart(String utteranceId) {
 
-            //我们在Q/A切换过程中不允许执行
             if (mIsSwitchQuestionAnswerViewManually_Processing && (mIsAutoScroll == false)) {
                 return;
             }
@@ -2371,13 +2290,9 @@ public class PlayActivity extends FragmentActivity implements SensorEventListene
 
         }
 
-        /*
-         * 一定是在非UI线程中
-         */
         @Override
         public void onDone(String utteranceId) {
 
-            //我们在Q/A切换过程中不允许执行
             if (mIsSwitchQuestionAnswerViewManually_Processing && (mIsAutoScroll == false)) {
                 LOGD("UtteranceProgressListener","mIsSwitchQuestionAnswerViewManually_Processing == true");
                 return;
@@ -2398,7 +2313,7 @@ public class PlayActivity extends FragmentActivity implements SensorEventListene
                     mTTSDelayHandler = null;
                 }
                 HashMap<String, String> params = new HashMap<String, String>();
-                params.put(TextToSpeech.Engine.KEY_PARAM_UTTERANCE_ID, "stringId");//必不可少
+                params.put(TextToSpeech.Engine.KEY_PARAM_UTTERANCE_ID, "stringId");
                 if (textToSpeechArray.size() > mTextToSpeechContentArrayIndex && (mTTS != null)) {
 
                     HashMap<String,String> hashMap = textToSpeechArray.get(mTextToSpeechContentArrayIndex);
@@ -2485,18 +2400,12 @@ public class PlayActivity extends FragmentActivity implements SensorEventListene
         }
     };
 
-    /*
-     * 触发当：
-     * 1. view created
-     * 2. 切换到下一个卡片或QA switch
-     * 3. 或者landscape到reverse landscape
-     */
+
     private ViewTreeObserver.OnGlobalLayoutListener mRotationChangeListener = new ViewTreeObserver.OnGlobalLayoutListener() {
         @Override
         public void onGlobalLayout() {
             LOGD(TAG, "onGlobalLayout");
 
-            //但是我们无法确定是否在rotating,只能确定它的确经过了一个rotation动作
 
             resetRoll = true;
         }
@@ -2511,7 +2420,6 @@ public class PlayActivity extends FragmentActivity implements SensorEventListene
             if (intent.getAction().equals(Intent.ACTION_HEADSET_PLUG)) {
                 int state = intent.getIntExtra("state", -1);
 
-                //由于Activity首次起来时也会调用onReceive，而我们只希望在后续改变进行通知，所以加了这个条件。
                 if (original_audio_stream_state == -1) {
                     original_audio_stream_state = state;
                     return;
@@ -2559,7 +2467,6 @@ public class PlayActivity extends FragmentActivity implements SensorEventListene
         public void onSwipeLeft() {
             super.onSwipeLeft();
 
-            //实际中，我们没有用到，而是让view pager自身处理左右滑动的回调
 
         }
 
@@ -2567,7 +2474,6 @@ public class PlayActivity extends FragmentActivity implements SensorEventListene
         public void onSwipeRight() {
             super.onSwipeRight();
 
-            //实际中，我们没有用到，而是让view pager自身处理左右滑动的回调
         }
 
         @Override

@@ -49,7 +49,7 @@ public class OnSwipeTouchListener implements OnTouchListener {
     }
 
     public boolean onTouch(View v, MotionEvent event) {
-        return gestureDetector.onTouchEvent(event);  //这是重点
+        return gestureDetector.onTouchEvent(event);
     }
 
     private final class GestureListener extends SimpleOnGestureListener {
@@ -69,7 +69,6 @@ public class OnSwipeTouchListener implements OnTouchListener {
             return super.onSingleTapConfirmed(e);
         }
 
-        // //这个方法只会执行一次，不用担心会执行多次
         @Override
         public boolean onFling(MotionEvent e1, MotionEvent e2, float velocityX, float velocityY) {
             boolean result = false;
@@ -85,7 +84,7 @@ public class OnSwipeTouchListener implements OnTouchListener {
                             onSwipeRight();
                         else
                             onSwipeLeft();
-                        result = false; //这个必须返回false,否则view page滑动过程就会中断有问题
+                        result = false;
                     } else {
                         return false;
                     }
@@ -97,7 +96,7 @@ public class OnSwipeTouchListener implements OnTouchListener {
                             onSwipeBottom();
                         else
                             onSwipeTop();
-                        result = false; //这个必须返回false,否则view page滑动过程就会中断有问题
+                        result = false;
                     } else {
                         return false;
                     }

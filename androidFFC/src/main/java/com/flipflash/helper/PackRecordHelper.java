@@ -42,14 +42,10 @@ public class PackRecordHelper {
         edit.commit();
     }
 
-    /*
-     * 如果最近的修改时间晚于上次上传的时间，则需要重新上传
-     */
+
     public static boolean checkUploadPackNecessary(Pack currentPack) {
 
         if (true) {
-            //之所以disable这个逻辑，因为这个会引起误解，不如用户没有改变任何的数据，但是想改变max downloaded和password。
-            // 所以，这里索性无论何种情况，都重新来一次upload的所有流程。
             return true;
         } else {
 

@@ -86,9 +86,7 @@ public class UIHelper {
         return resizeBitmap;
     }
 
-    /*
-     * imageWidth 最终希望的图片宽度
-     */
+
     public static Bitmap bitmapFromUri(Activity activity,Uri imageUri, int imageWidth) {
 
         Bitmap resultBitmap = null;
@@ -120,7 +118,7 @@ public class UIHelper {
                     resultBitmap = UIHelper.resizeImageTo(activity, imageUri,imageWidth);
                 }
                 cursor.close();
-            } else { //普通，比如file:///storage/emulated/0/cropped_cached.jpg
+            } else {
                 resultBitmap = UIHelper.resizeImageTo(activity, imageUri, imageWidth);
             }
         }
@@ -201,9 +199,7 @@ public class UIHelper {
         return b;
     }
 
-    /*
-     * 单位是pixel
-     */
+
     public static Bitmap getRoundedBottomRightCornerBitmap(Bitmap bitmap, int pixels) {
         Bitmap output = Bitmap.createBitmap(bitmap.getWidth(), bitmap
                 .getHeight(), Bitmap.Config.ARGB_8888);
@@ -249,9 +245,6 @@ public class UIHelper {
     }
 
 
-    /*
-    所有的图片，视频，音频资源都保存在这个目录下面。
-     */
     public static File saveImageToCaches(Bitmap savedBitmap) {
 
 
@@ -279,11 +272,9 @@ public class UIHelper {
 
         Bitmap bMap;
         if (isInternetVideo) {
-            //我们暂时没有更好的方法获取来自http://的thumbnail图片，比如youtube。期待更加的解决方案
             bMap = BitmapFactory.decodeResource(context.getResources(), R.drawable.video_placeholder);
         } else {
 
-            //支持file://或content://,本地或者remote(比如picasa, Google photo)
 
             String path = getRealPathFromURI(context,uri);
 
@@ -519,7 +510,6 @@ public class UIHelper {
         v.draw(canvas);
 
 
-        //在我们的例子中，宽度永远是大于高度的
         int outWidth = 400;
         int outHeight = (inHeight * outWidth) / inWidth;
 
@@ -715,16 +705,6 @@ public class UIHelper {
         }
     }
 
-    /* 与getBestFontSize配合使用
-     * 返回含义
-     * index = 0   <!-- for question subheading 默认大小 -->
-     * index = 1   <!-- for question main 默认大小，也是question缩放比例计算的参考 -->
-     * index = 2   <!-- for question sub 默认大小 -->
-     * index=  3   <!-- for answer subheading 默认大小 -->
-     * index = 4   <!-- for answer main 默认大小,也是answer缩放比例计算的参考 -->
-     * index = 5   <!-- for answer sub 默认大小 -->
-     * index = 6   <!-- 最大尺寸 -->
-     */
     public static int[] getReferenceFontSizeArrayForCurrentDevice() {
 
         float screenDPSize = getScreenWidthDPUnit();
@@ -832,7 +812,6 @@ public class UIHelper {
         } else if (screenDPSize >=500) {
             val= 22;
         } else if (screenDPSize >=450) {
-            //这里是iPhone的指标。
             val= 17;
         } else if (screenDPSize >=350) {
             val= 15;
@@ -865,10 +844,7 @@ public class UIHelper {
         return output;
     }
 
-    /*
-     * 仅是CardBackgroundImage的大小，不包括sidebar和title部分
-     * 我们不能直接去获取R.id.card_background_image，因为这时view有可能还没有inflater
-     */
+
     public static int getCardBackgroundWidth(Activity activity,Boolean isPlayCard) {
         int width;
         if (isPlayCard) {
@@ -880,10 +856,7 @@ public class UIHelper {
         return width;
     }
 
-    /*
-     * 仅是CardBackgroundImage的大小，不包括sidebar和title部分
-     * 我们不能直接去获取R.id.card_background_image，因为这时view有可能还没有inflater
-     */
+
     public static int getCardBackgroundHeight(Activity activity,Boolean isPlayCard) {
         int height;
         if (isPlayCard) {

@@ -30,10 +30,9 @@ public class AWSUtils {
         if (FirebaseAuth.getInstance().getCurrentUser() == null) {
             throw  new IllegalStateException("Should not be here, Parse account should be registered beforehand");
         }
-        String expectedBucketName = FirebaseAuth.getInstance().getCurrentUser().getEmail().toLowerCase(); //bucket name必须是low case的，这是aws要求的
+        String expectedBucketName = FirebaseAuth.getInstance().getCurrentUser().getEmail().toLowerCase();
 
         expectedBucketName = StringUtils.removeAllCharactersExceptAlphanumericFromString(expectedBucketName);
-        //AWS对于bucket是有命名要求的：http://docs.rightscale.com/faq/clouds/aws/What_are_valid_S3_bucket_names.html
         expectedBucketName = String.format("%s-%s",expectedBucketName, Global.BucketPostfixAfterUserName);
 
         return expectedBucketName;

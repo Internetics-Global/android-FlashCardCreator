@@ -62,9 +62,7 @@ public class AWSShareHelper extends AsyncTask<Void, Long, Boolean> {
     private Activity   mActivity;
     private Pack       mCurrentPack;
 
-    /**
-     * true: 没有经过上传，设密码等，直接share (upload逻辑在S3UploadHelper）
-     */
+
     private boolean    mIsDirectShare;
 
     private ProgressDialog mDialog = null;
@@ -87,7 +85,6 @@ public class AWSShareHelper extends AsyncTask<Void, Long, Boolean> {
     protected void onPreExecute() {
         super.onPreExecute();
 
-        //与Dropbox不同的是，我们只需要生成短链接，但是实际中也是发现这也可能有几秒，所以是必须的
         if (StringUtils.isEmpty(mCurrentPack.shareLink)) {
             mDialog = new ProgressDialog(mActivity);
             mDialog.setMax(100);
@@ -106,7 +103,6 @@ public class AWSShareHelper extends AsyncTask<Void, Long, Boolean> {
 
         String fullPath_S3 = AWSUtils.fullPath_On_S3(mCurrentPack);
         if (fullPath_S3 == null) {
-            //upload的动作一定在share前面，一旦upload后，会写入full path到meta info，所以这里的fullPath_S3一定有值
             throw  new IllegalArgumentException("check code, make sure to upload firstly before calling AWSShareHelper");
         }
 
@@ -120,16 +116,12 @@ public class AWSShareHelper extends AsyncTask<Void, Long, Boolean> {
                 } else {
                     mCurrentPack.save(mActivity);
 
-                    //直到我们短链接生成并保存，我们才最终认为upload完成
-                    //同时为了保证savePackUploadRecord的发生，我们认为无论是isEmpty(mCurrentPack.shareLink)，都需要保存
                     PackRecordHelper.savePackUploadRecord(mCurrentPack);
 
                 }
             } else {
             }
 
-            //直到我们短链接生成并保存，我们才最终认为upload完成
-            //同时为了保证savePackUploadRecord的发生，我们认为无论是isEmpty(mCurrentPack.shareLink)，都需要保存
             PackRecordHelper.savePackUploadRecord(mCurrentPack);
 
 
@@ -273,7 +265,7 @@ public class AWSShareHelper extends AsyncTask<Void, Long, Boolean> {
             taskExecutor.execute(new Runnable() {
                 @Override
                 public void run() {
-                    mCurrentPack.shareLink = generateRedirectedURL(ffcURL);//由于网络任务不允许在主线程
+                    mCurrentPack.shareLink = generateRedirectedURL(ffcURL);
                 }
             });
             taskExecutor.shutdown();

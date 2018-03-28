@@ -10,9 +10,7 @@ public class FontHelper {
 
     private static final String TAG = FontHelper.class.getSimpleName();
 
-    /**
-     * 与css_font(arrays.xml）的对应关系,index次序不能颠倒
-     */
+
     public static Typeface fontFromArrayIndex(Context context,int index) {
 
         switch (index) {

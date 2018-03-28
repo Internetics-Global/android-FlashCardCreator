@@ -120,21 +120,14 @@ public class StringUtils {
         return pattern.matcher(str).matches();
     }
 
-    /**
-     * 在写入到json文件中，我们不再关心它的目录，因为在不同平台(android,ios)，这个目录是不一样的
-     * @return
-     */
+
     public static String lastComponentOfPath(Uri uri) {
         String path = uri.getPath();
         String last = path.substring(path.lastIndexOf("/") + 1);
         return last;
     }
 
-    /**
-     * 在写入到json文件中，我们不再关心它的目录，因为在不同平台(android,ios)，这个目录是不一样的
-     * @param stringUri
-     * @return
-     */
+
     public static String lastComponentOfPath(String stringUri) {
         String path = Uri.parse(stringUri).getPath();
         String last = path.substring(path.lastIndexOf("/") + 1);
@@ -345,7 +338,6 @@ public class StringUtils {
         String splitStr =  System.getProperty ("line.separator");
         String[] lines = str.split(splitStr);
 
-        //由于split方法会对末尾的\n进行不正确处理，导致会忽略掉末尾的换行符，所以需要执行这个逻辑
         int length = 0;
         int i = 0;
         for (String item: lines) {
@@ -364,7 +356,6 @@ public class StringUtils {
 
         i = 0;
         for (String strLine:lines) {
-            //注意，replaceAll或replaceFirst里面是正则表达式，而replace则不是
             String trimmedStr = strLine.replaceAll("\\s+$", "");
             if (i == lines.length - 1) {
                 result = result + trimmedStr;

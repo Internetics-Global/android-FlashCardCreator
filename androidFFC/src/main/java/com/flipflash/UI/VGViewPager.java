@@ -27,9 +27,6 @@ import static com.flipflash.util.LogUtils.LOGD;
  */
 public class VGViewPager extends AutoScrollViewPager {
 
-    /*
-     *核心是必须时刻保持对current CardDetailFragment保持引用
-     */
     public WeakReference<CardDetailFragment> mCardDetailFragmentWeakReference;
 
     private static final String TAG = VGViewPager.class.getSimpleName();
@@ -45,9 +42,6 @@ public class VGViewPager extends AutoScrollViewPager {
     }
 
 
-    /*
-     * 作用：决定touch event是否可以向下传递：传递到sub view中
-     */
     @Override
     public boolean onInterceptTouchEvent(MotionEvent event) {
         LOGD(TAG, "onInterceptTouchEvent: " + event.toString());
@@ -60,14 +54,12 @@ public class VGViewPager extends AutoScrollViewPager {
         float hitYInScreen =  event.getY() + location[1];
 
 
-        //由于ViewPager包含多个card，而通过findViewById会只获取到第一个，这样就会出现问题（比如当前显示第二个卡片，但是这里就会获取到第一个）
         ImageView logo_image = (ImageView)findViewWithTag(Global.mLogoImage_Showing);
         if ((logo_image != null) && isViewContains(logo_image,hitXInScreen,hitYInScreen)) {
             LOGD(TAG, "onInterceptTouchEvent: touch location in logo_image");
             return false;
         }
 
-        //当image包含视频时，isEnabled() = true
         MultimediaView image = (MultimediaView)findViewWithTag(Global.mImage_Showing);
         if ((image != null) && (image.getVisibility() == VISIBLE) && (image.isEnabled() == true)) {
 
@@ -139,7 +131,6 @@ public class VGViewPager extends AutoScrollViewPager {
 
         }
 
-        //当image包含视频时，isEnabled() = true
         MultimediaView image2 = (MultimediaView)findViewWithTag(Global.mImage2_Showing);
         if ((image2 != null) && (image2.getVisibility() == VISIBLE) && (image2.isEnabled() == true)) {
 
@@ -218,9 +209,7 @@ public class VGViewPager extends AutoScrollViewPager {
 
     }
 
-    /*
-      rx, ry都是先对于屏幕的坐标
-     */
+
     private boolean isViewContains(View view, float rx, float ry) {
         int[] l = new int[2];
         view.getLocationOnScreen(l);
@@ -236,10 +225,7 @@ public class VGViewPager extends AutoScrollViewPager {
     }
 
 
-    /*
-      youtube的icon只是 imageview的1/5，我们希望touch area只作用在icon上。
-      0.4的值来源于UIHelper
-     */
+
     private boolean isYoutbeIconContains(View view, float rx, float ry) {
         int[] l = new int[2];
         view.getLocationOnScreen(l);
@@ -257,18 +243,14 @@ public class VGViewPager extends AutoScrollViewPager {
         return true;
     }
 
-    /*
-     * 对于gif,我们有 play/stop and full screen button
-     */
+
     private boolean isGifControlBarContain(View view, float rx, float ry) {
         View bar = view.findViewById(R.id.gif_control_bar_fl);
         boolean result = isViewContains(bar,rx,ry);
         return result;
     }
 
-    /*
-     * 对于local video,我们有 play/stop and full screen button
-     */
+
     private boolean isLocalVideoControlBarContain(View view, float rx, float ry) {
         View bar = view.findViewById(R.id.video_control_bar_fl);
         boolean result = isViewContains(bar,rx,ry);
@@ -279,13 +261,11 @@ public class VGViewPager extends AutoScrollViewPager {
     private static int swipeActionCount = 0;
 
 
-    /*
-     * 作用：决定touch event是否可以向上传递：parent view
-     */
+
     @Override
     public boolean onTouchEvent(MotionEvent ev) {
 
-        super.onTouchEvent(ev);  //从源代码可以看到，这个必不可少，而实践中也发现如果少了这个，就无法滑动了。
+        super.onTouchEvent(ev);
 
         return true;
 
