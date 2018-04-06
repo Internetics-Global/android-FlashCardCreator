@@ -162,7 +162,7 @@ public class PackListFragment extends Fragment {
             public void onClick(View v) {
 
                 Intent intent = new Intent(getActivity(), WebViewActivity.class);
-                intent.putExtra("url", "http://www.flipflashcards.com/packs");
+                intent.putExtra("url", "http://www.flipflashcards.com/tutorials/tutorial-videos/?theme=internetics_blank");
                 startActivity(intent);
             }
         });
@@ -173,7 +173,7 @@ public class PackListFragment extends Fragment {
             public void onClick(View v) {
 
                 Intent intent = new Intent(getActivity(), WebViewActivity.class);
-                intent.putExtra("url", "http://www.flipflashcards.com/quick-start-tutorial/");
+                intent.putExtra("url", "http://www.flipflashcards.com/tutorial-packs/ios-tutorial-packs/?theme=internetics_blank");
                 startActivity(intent);
             }
         });
@@ -183,7 +183,7 @@ public class PackListFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(getActivity(), WebViewActivity.class);
-                intent.putExtra("url", "http://www.flipflashcards.com/newuser");
+                intent.putExtra("url", "http://www.flipflashcards.com/getting-started/new-user/?theme=internetics_blank");
                 startActivity(intent);
             }
         });
@@ -334,7 +334,7 @@ public class PackListFragment extends Fragment {
                         @Override
                         public void onClick(View view) {
                             Intent intent = new Intent(getActivity(), WebViewActivity.class);
-                            intent.putExtra("url", "http://www.flipflashcards.com/packs");
+                            intent.putExtra("url", "http://www.flipflashcards.com/tutorials/tutorial-videos/?theme=internetics_blank");
                             startActivity(intent);
                         }
                     });
