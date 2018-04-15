@@ -1955,6 +1955,8 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnTouchL
 //            screenshotPack.isAllowShare = mCurrentPack.isAllowShare;
             previewPack.autoPlaySpeed = mCurrentPack.autoPlaySpeed;
             previewPack.platform = mCurrentPack.platform;
+            previewPack.jobTitle = mCurrentPack.jobTitle;
+            previewPack.logoImageUriFormatStr = mCurrentPack.logoImageUriFormatStr;
 
             previewPack.shareLink = "";
             previewPack.fileNameOnAWS = "";
