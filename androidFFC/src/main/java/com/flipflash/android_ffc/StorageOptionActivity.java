@@ -5,7 +5,10 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
+import android.view.MotionEvent;
 import android.view.View;
+import android.view.ViewConfiguration;
 import android.view.WindowManager;
 import android.widget.Button;
 
@@ -118,6 +121,58 @@ public class StorageOptionActivity extends Activity{
             }
         });
 
+        setup5TapsForFFCDrive();
+
+    }
+
+    private void setup5TapsForFFCDrive() {
+
+        findViewById(R.id.rl_storage_option_scrollview).setOnTouchListener(new View.OnTouchListener() {
+            Handler handler = new Handler();
+
+            int numberOfTaps = 0;
+            long lastTapTimeMs = 0;
+            long touchDownMs = 0;
+
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+
+                switch (event.getAction()) {
+                    case MotionEvent.ACTION_DOWN:
+                        touchDownMs = System.currentTimeMillis();
+                        break;
+                    case MotionEvent.ACTION_UP:
+                        handler.removeCallbacksAndMessages(null);
+
+                        if ((System.currentTimeMillis() - touchDownMs) > ViewConfiguration.getTapTimeout()) {
+                            //it was not a tap
+
+                            numberOfTaps = 0;
+                            lastTapTimeMs = 0;
+                            break;
+                        }
+
+                        if (numberOfTaps > 0
+                                && (System.currentTimeMillis() - lastTapTimeMs) < ViewConfiguration.getDoubleTapTimeout()) {
+                            numberOfTaps += 1;
+                        } else {
+                            numberOfTaps = 1;
+                        }
+
+                        lastTapTimeMs = System.currentTimeMillis();
+
+                        if (numberOfTaps == 5) {
+                            if (findViewById(R.id.rl_storage_option_aws).getVisibility() == View.VISIBLE) {
+                                findViewById(R.id.rl_storage_option_aws).setVisibility(View.INVISIBLE);
+                            } else {
+                                findViewById(R.id.rl_storage_option_aws).setVisibility(View.VISIBLE);
+                            }
+                        }
+                }
+
+                return true;
+            }
+        });
     }
 
 

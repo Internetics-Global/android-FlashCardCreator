@@ -3,6 +3,7 @@
             android:layout_width="fill_parent"
             android:layout_height="match_parent"
             android:orientation="vertical"
+            android:id="@+id/rl_storage_option_scrollview"
             android:background="@android:color/black"
             android:scrollbars="none">
 
@@ -68,6 +69,7 @@
             style="@style/h_line" />
 
         <RelativeLayout
+            android:visibility="invisible"
             android:id="@+id/rl_storage_option_aws"
             style="@style/option_item_rl" >
 
