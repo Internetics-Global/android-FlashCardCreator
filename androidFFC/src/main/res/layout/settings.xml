@@ -190,6 +190,7 @@
 
         <RelativeLayout
             android:id="@+id/rl_send_log"
+            android:visibility="invisible"
             style="@style/option_item_rl" >
 
             <TextView
