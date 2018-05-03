@@ -162,7 +162,7 @@ public class PackListFragment extends Fragment {
             public void onClick(View v) {
 
                 Intent intent = new Intent(getActivity(), WebViewActivity.class);
-                intent.putExtra("url", "http://www.flipflashcards.com/tutorials/tutorial-videos/?theme=internetics_blank");
+                intent.putExtra("url", "http://www.flipflashcards.com/getting-started/free-packs/");
                 startActivity(intent);
             }
         });
@@ -302,17 +302,13 @@ public class PackListFragment extends Fragment {
 
                     ImageView coverImageView = (ImageView) convertView.findViewById(R.id.pack_cover_image);
                     TextView coverImageAnnotation = (TextView) convertView.findViewById(R.id.pack_cover_image_annotation);
-                    if (MutipleTargetHelper.isFullVersion() == false) {
-                        coverImageView.setImageResource(R.drawable.create_new_pack_dimmed);
-                        coverImageAnnotation.setTextColor(Color.DKGRAY);
-                    } else {
-                        //use default
-                    }
+//                    if (MutipleTargetHelper.isFullVersion() == false) {
+//                        coverImageView.setImageResource(R.drawable.create_new_pack_dimmed);
+//                        coverImageAnnotation.setTextColor(Color.DKGRAY);
+//                    } else {
+//                        //use default
+//                    }
 
-                    if (MutipleTargetHelper.isFullVersion() == false) {
-                        convertView.setVisibility(View.INVISIBLE);
-                        convertView.setEnabled(false);
-                    }
 
                     ImageView libraryImageView = (ImageView) convertView.findViewById(R.id.library_image);
 
