@@ -162,7 +162,7 @@ public class PackListFragment extends Fragment {
             public void onClick(View v) {
 
                 Intent intent = new Intent(getActivity(), WebViewActivity.class);
-                intent.putExtra("url", "http://www.flipflashcards.com/getting-started/free-packs/");
+                intent.putExtra("url", "http://www.flipflashcards.com/tutorials/tutorial-videos/?theme=internetics_blank");
                 startActivity(intent);
             }
         });
@@ -330,7 +330,7 @@ public class PackListFragment extends Fragment {
                         @Override
                         public void onClick(View view) {
                             Intent intent = new Intent(getActivity(), WebViewActivity.class);
-                            intent.putExtra("url", "http://www.flipflashcards.com/tutorials/tutorial-videos/?theme=internetics_blank");
+                            intent.putExtra("url", "http://www.flipflashcards.com/getting-started/free-packs/");
                             startActivity(intent);
                         }
                     });
