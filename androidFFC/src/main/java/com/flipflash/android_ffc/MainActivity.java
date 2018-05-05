@@ -444,11 +444,6 @@ public class MainActivity extends FragmentActivity implements
 //            }
             case R.id.actionbar_edit:
 
-                if (MutipleTargetHelper.isFullVersion() == false) {
-                    MutipleTargetHelper.showAlertToUpgradeToFullVersion();
-                    break;
-                }
-
                 if (mCurrentPack == null) {
                     break;
                 }
