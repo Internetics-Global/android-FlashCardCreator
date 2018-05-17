@@ -16,18 +16,14 @@
 #   public *;
 #}
 
-# 不提示warnning  (一般是与keep class一起组合使用),没有这个,也会导致failure
 -dontwarn com.squareup.**
 
 
 # Keep picasso
-# 不混淆某个包所有类或某个类class、某个接口interface, 不混淆指定类则把**换成类名
 -keep class com.squareup.picasso.** { *; }
-# 不混淆类及其成员
 -keepclasseswithmembers class * {
     @com.squareup.picasso.** *;
 }
-# 不混淆类的成员
 -keepclassmembers class * {
     @com.squareup.picasso.** *;
 }
@@ -38,7 +34,6 @@
     public void onEvent*(**);
 }
 
-# 用到反射及注解需要加上下面三个规则:http://proguard.sourceforge.net/manual/attributes.html
 -keepattributes Signature
 -keepattributes *Annotation*
 -keepattributes EnclosingMethod
@@ -50,12 +45,10 @@
 
 
 
-#不混淆Parcelable的子类，防止android.os.BadParcelableException
 -keep class * implements android.os.Parcelable {
   public static final android.os.Parcelable$Creator *;
 }
 
-#不混淆Serializable的子类
 # Explicitly preserve all serialization members. The Serializable interface
 # is only a marker interface, so it wouldn't save them.
 -keepclassmembers class * implements java.io.Serializable {
@@ -104,4 +97,6 @@
 -keep class com.flipflash.fragment.CardDetailFragment {
   void beginScreenshot(boolean);
 }
+
+-dontwarn org.apache.**
 
