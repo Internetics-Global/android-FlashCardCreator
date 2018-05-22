@@ -21,10 +21,7 @@ public class MutipleTargetHelper {
     private static final String K_No_Ad_Version_Flag  = "K_No_Ad_Version_Flag";
 
     public static boolean isFullVersion() {
-
-        return true;
-
-  //     return Hawk.get(K_Full_Version_Flag,false);
+      return Hawk.get(K_Full_Version_Flag,false);
 
     }
     public static boolean isNoAdVersion() {
