@@ -26,12 +26,16 @@ import com.anjlab.android.iab.v3.TransactionDetails;
 import com.flipflash.android_ffc.AppStart;
 import com.flipflash.android_ffc.MainActivity;
 import com.flipflash.android_ffc.R;
+import com.flipflash.event.DownloadCancelEvent;
+import com.flipflash.event.PurchasedSuccessEvent;
 import com.flipflash.util.MutipleTargetHelper;
 import com.flipflash.util.UIHelper;
 import com.orhanobut.hawk.Hawk;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import de.greenrobot.event.EventBus;
 
 import static com.flipflash.util.LogUtils.LOGD;
 
@@ -190,9 +194,11 @@ public class PurchaseFragment extends android.app.DialogFragment implements Bill
 
             if (mBillingProcessor.isPurchased(DOLLAR_1_PURCHASE_ID)) {
                 MutipleTargetHelper.setNoAdVersionFlag(true);
+                EventBus.getDefault().post(new PurchasedSuccessEvent());
                 showSimpleAlertDialogWidthMessageWithRelaunch(getString(R.string.iap_restore_1dollar_success));
             } else if (mBillingProcessor.isPurchased(DOLLAR_5_PURCHASE_ID)) {
                 MutipleTargetHelper.setFullVersionFlag(true);
+                EventBus.getDefault().post(new PurchasedSuccessEvent());
                 showSimpleAlertDialogWidthMessageWithRelaunch(getString(R.string.iap_restore_5dollar_success));
             } else {
                 showSimpleAlertDialogWidthMessage(getString(R.string.iap_not_purchased_before));
@@ -239,9 +245,11 @@ public class PurchaseFragment extends android.app.DialogFragment implements Bill
         if (productId.equals(DOLLAR_1_PURCHASE_ID)) {
             result = true;
             MutipleTargetHelper.setNoAdVersionFlag(true);
+            EventBus.getDefault().post(new PurchasedSuccessEvent());
         } else if (productId.equals(DOLLAR_5_PURCHASE_ID)) {
             result = true;
             MutipleTargetHelper.setFullVersionFlag(true);
+            EventBus.getDefault().post(new PurchasedSuccessEvent());
         }
 
         if (result) {
@@ -308,11 +316,13 @@ public class PurchaseFragment extends android.app.DialogFragment implements Bill
         if (mBillingProcessor.isPurchased(DOLLAR_5_PURCHASE_ID) && MutipleTargetHelper.isFullVersion() == false) {
             MutipleTargetHelper.setFullVersionFlag(true);
             showSimpleAlertDialogWidthMessageWithRelaunch(getString(R.string.iap_restore_5dollar_success));
+            EventBus.getDefault().post(new PurchasedSuccessEvent());
         } else {
 
             if (mBillingProcessor.isPurchased(DOLLAR_1_PURCHASE_ID) && MutipleTargetHelper.isNoAdVersion() == false) {
                 MutipleTargetHelper.setNoAdVersionFlag(true);
                 showSimpleAlertDialogWidthMessageWithRelaunch(getString(R.string.iap_restore_1dollar_success));
+                EventBus.getDefault().post(new PurchasedSuccessEvent());
             }
         }
 

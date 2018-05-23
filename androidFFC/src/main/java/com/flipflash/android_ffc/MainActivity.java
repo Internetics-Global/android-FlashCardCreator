@@ -62,6 +62,7 @@ import com.flipflash.data.CSS;
 import com.flipflash.event.DownloadCancelEvent;
 import com.flipflash.event.FacebookShareFinishEvent;
 import com.flipflash.event.MultiMediaFullscreenEvent;
+import com.flipflash.event.PurchasedSuccessEvent;
 import com.flipflash.event.WebViewMessageEvent;
 import com.flipflash.fragment.PurchaseFragment;
 import com.flipflash.helper.AWS.AWSShareHelper;
@@ -2755,6 +2756,12 @@ public class MainActivity extends FragmentActivity implements
                     }
 
                 }, 500); // 5000ms delay
+
+    }
+
+    public void onEventMainThread(PurchasedSuccessEvent event) {
+
+        checkAdView();
 
     }
 
