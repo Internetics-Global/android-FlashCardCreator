@@ -2225,6 +2225,11 @@ public class MainActivity extends FragmentActivity implements
 
     }
 
+    private void removeAdView() {
+        final ImageView imageView = (ImageView) findViewById(R.id.ad_image_view);
+        imageView.setVisibility(View.GONE);
+    }
+
     public void checkAdView() {
 
         if (mPackDownloadHelper == null || mPackDownloadHelper.isDownloading() == false) {
@@ -2761,7 +2766,7 @@ public class MainActivity extends FragmentActivity implements
 
     public void onEventMainThread(PurchasedSuccessEvent event) {
 
-        checkAdView();
+        removeAdView();
 
     }
 
