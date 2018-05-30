@@ -62,6 +62,7 @@ import com.flipflash.data.CSS;
 import com.flipflash.event.DownloadCancelEvent;
 import com.flipflash.event.FacebookShareFinishEvent;
 import com.flipflash.event.MultiMediaFullscreenEvent;
+import com.flipflash.event.PurchasedStatusChangeUpdateEvent;
 import com.flipflash.event.PurchasedSuccessEvent;
 import com.flipflash.event.WebViewMessageEvent;
 import com.flipflash.fragment.PurchaseFragment;
@@ -2230,6 +2231,16 @@ public class MainActivity extends FragmentActivity implements
         imageView.setVisibility(View.GONE);
     }
 
+    private void removeAdViewIfAllowed() {
+        final ImageView imageView = (ImageView) findViewById(R.id.ad_image_view);
+
+        if (MutipleTargetHelper.isFullVersion() == false && MutipleTargetHelper.isNoAdVersion() == false) {
+
+        } else {
+            imageView.setVisibility(View.GONE);
+        }
+    }
+
     public void checkAdView() {
 
         if (mPackDownloadHelper == null || mPackDownloadHelper.isDownloading() == false) {
@@ -2767,6 +2778,12 @@ public class MainActivity extends FragmentActivity implements
     public void onEventMainThread(PurchasedSuccessEvent event) {
 
         removeAdView();
+
+    }
+
+    public void onEventMainThread(PurchasedStatusChangeUpdateEvent event) {
+
+        removeAdViewIfAllowed();
 
     }
 

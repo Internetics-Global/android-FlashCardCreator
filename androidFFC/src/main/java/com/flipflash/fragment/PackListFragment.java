@@ -40,6 +40,8 @@ import com.flipflash.android_ffc.R;
 import com.flipflash.android_ffc.WebViewActivity;
 import com.flipflash.data.Pack;
 import com.flipflash.data.User;
+import com.flipflash.event.PurchasedStatusChangeUpdateEvent;
+import com.flipflash.event.PurchasedSuccessEvent;
 import com.flipflash.util.AppConfig;
 import com.flipflash.util.AppContext;
 import com.flipflash.util.Global;
@@ -51,6 +53,8 @@ import com.nostra13.universalimageloader.core.ImageLoader;
 
 import java.io.FileNotFoundException;
 
+
+import de.greenrobot.event.EventBus;
 
 import static com.flipflash.util.LogUtils.LOGD;
 
@@ -607,6 +611,7 @@ public class PackListFragment extends Fragment {
 
     @Override
     public void onDestroy() {
+        EventBus.getDefault().post(new PurchasedStatusChangeUpdateEvent());
         mGallery.setAdapter(null);
         mGallery.setOnItemClickListener(null);
         super.onDestroy();
