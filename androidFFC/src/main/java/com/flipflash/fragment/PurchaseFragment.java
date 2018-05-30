@@ -408,12 +408,12 @@ public class PurchaseFragment extends android.app.DialogFragment implements Bill
         alertDialogBuilder.setPositiveButton("Close", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
-                Intent mStartActivity = new Intent(getActivity(), AppStart.class);
-                int mPendingIntentId = 123456;
-                PendingIntent mPendingIntent = PendingIntent.getActivity(getActivity(), mPendingIntentId,    mStartActivity, PendingIntent.FLAG_CANCEL_CURRENT);
-                AlarmManager mgr = (AlarmManager)getActivity().getSystemService(Context.ALARM_SERVICE);
-                mgr.set(AlarmManager.RTC, System.currentTimeMillis() + 100, mPendingIntent);
-                System.exit(0);
+//                Intent mStartActivity = new Intent(getActivity(), AppStart.class);
+//                int mPendingIntentId = 123456;
+//                PendingIntent mPendingIntent = PendingIntent.getActivity(getActivity(), mPendingIntentId,    mStartActivity, PendingIntent.FLAG_CANCEL_CURRENT);
+//                AlarmManager mgr = (AlarmManager)getActivity().getSystemService(Context.ALARM_SERVICE);
+//                mgr.set(AlarmManager.RTC, System.currentTimeMillis() + 100, mPendingIntent);
+//                System.exit(0);
             }
         });
         alertDialogBuilder
@@ -422,9 +422,29 @@ public class PurchaseFragment extends android.app.DialogFragment implements Bill
 
     }
 
+    @Override
+    public void onStop() {
+        super.onStop();
+
+        boolean result = mBillingProcessor.loadOwnedPurchasesFromGoogle();
+
+        if (result) {
+
+            if (mBillingProcessor.isPurchased(DOLLAR_1_PURCHASE_ID)) {
+                MutipleTargetHelper.setNoAdVersionFlag(true);
+                EventBus.getDefault().post(new PurchasedSuccessEvent());
+            } else if (mBillingProcessor.isPurchased(DOLLAR_5_PURCHASE_ID)) {
+                MutipleTargetHelper.setFullVersionFlag(true);
+                EventBus.getDefault().post(new PurchasedSuccessEvent());
+            } else {
+            }
+
+        }
+    }
 
     @Override
     public void onDestroy() {
+
 
         LOGD(TAG, "onDestroy");
 
