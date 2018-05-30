@@ -414,6 +414,10 @@ public class PurchaseFragment extends android.app.DialogFragment implements Bill
 //                AlarmManager mgr = (AlarmManager)getActivity().getSystemService(Context.ALARM_SERVICE);
 //                mgr.set(AlarmManager.RTC, System.currentTimeMillis() + 100, mPendingIntent);
 //                System.exit(0);
+                Intent homeIntent = new Intent(Intent.ACTION_MAIN);
+                homeIntent.addCategory( Intent.CATEGORY_HOME );
+                homeIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                startActivity(homeIntent);
             }
         });
         alertDialogBuilder
