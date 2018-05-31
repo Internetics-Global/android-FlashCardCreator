@@ -52,6 +52,8 @@ public class PurchaseFragment extends android.app.DialogFragment implements Bill
     
     private Button restorePurchaseButton;
 
+    private boolean isButtonManuallyClicked = false;
+
 
     private BillingProcessor mBillingProcessor;
 
@@ -181,6 +183,8 @@ public class PurchaseFragment extends android.app.DialogFragment implements Bill
 
     private void restorePurchaseButtonClicked() {
 
+        isButtonManuallyClicked = true;
+
         LOGD(TAG, "restorePurchaseButtonClicked");
 
         if (mLocalizedPriceUpdated == false) {
@@ -211,6 +215,8 @@ public class PurchaseFragment extends android.app.DialogFragment implements Bill
 
     private void dollar5PurchaseButtonClicked() {
 
+        isButtonManuallyClicked = true;
+
         LOGD(TAG, "dollar5PurchaseButtonClicked");
 
         if (mLocalizedPriceUpdated == false) {
@@ -223,6 +229,8 @@ public class PurchaseFragment extends android.app.DialogFragment implements Bill
     }
 
     private void dollar1PurchaseButtonClicked() {
+
+        isButtonManuallyClicked = true;
 
         LOGD(TAG, "dollar1PurchaseButtonClicked");
 
@@ -315,13 +323,17 @@ public class PurchaseFragment extends android.app.DialogFragment implements Bill
 
         if (mBillingProcessor.isPurchased(DOLLAR_5_PURCHASE_ID) && MutipleTargetHelper.isFullVersion() == false) {
             MutipleTargetHelper.setFullVersionFlag(true);
-            showSimpleAlertDialogWidthMessageWithRelaunch(getString(R.string.iap_restore_5dollar_success));
+            if (isButtonManuallyClicked) {
+                showSimpleAlertDialogWidthMessageWithRelaunch(getString(R.string.iap_restore_5dollar_success));
+            }
             EventBus.getDefault().post(new PurchasedSuccessEvent());
         } else {
 
             if (mBillingProcessor.isPurchased(DOLLAR_1_PURCHASE_ID) && MutipleTargetHelper.isNoAdVersion() == false) {
                 MutipleTargetHelper.setNoAdVersionFlag(true);
-                showSimpleAlertDialogWidthMessageWithRelaunch(getString(R.string.iap_restore_1dollar_success));
+                if (isButtonManuallyClicked) {
+                    showSimpleAlertDialogWidthMessageWithRelaunch(getString(R.string.iap_restore_1dollar_success));
+                }
                 EventBus.getDefault().post(new PurchasedSuccessEvent());
             }
         }
