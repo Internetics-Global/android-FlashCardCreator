@@ -28,6 +28,7 @@ import com.flipflash.android_ffc.MainActivity;
 import com.flipflash.android_ffc.R;
 import com.flipflash.event.DownloadCancelEvent;
 import com.flipflash.event.PurchasedSuccessEvent;
+import com.flipflash.util.Global;
 import com.flipflash.util.MutipleTargetHelper;
 import com.flipflash.util.UIHelper;
 import com.orhanobut.hawk.Hawk;
@@ -57,10 +58,6 @@ public class PurchaseFragment extends android.app.DialogFragment implements Bill
 
     private BillingProcessor mBillingProcessor;
 
-    private static final String DOLLAR_1_PURCHASE_ID = "com.flipflash.flipflashcards.removeads";
-    private static final String DOLLAR_5_PURCHASE_ID = "com.flipflash.flipflashcards.full";
-    // if filled library will provide protection against Freedom alike Play Market simulators
-    private static final String MERCHANT_ID=null;
 
     private boolean mLocalizedPriceUpdated = false;
 
@@ -177,7 +174,7 @@ public class PurchaseFragment extends android.app.DialogFragment implements Bill
 
         String GOOGLE_IAP_LICENCE_KEY = getString(R.string.lvl_public_key);
 
-        mBillingProcessor = new BillingProcessor(getActivity(),MERCHANT_ID,GOOGLE_IAP_LICENCE_KEY,this);
+        mBillingProcessor = new BillingProcessor(getActivity(),Global.MERCHANT_ID,GOOGLE_IAP_LICENCE_KEY,this);
 
     }
 
@@ -196,11 +193,11 @@ public class PurchaseFragment extends android.app.DialogFragment implements Bill
 
         if (result) {
 
-            if (mBillingProcessor.isPurchased(DOLLAR_1_PURCHASE_ID)) {
+            if (mBillingProcessor.isPurchased(Global.DOLLAR_1_PURCHASE_ID)) {
                 MutipleTargetHelper.setNoAdVersionFlag(true);
                 EventBus.getDefault().post(new PurchasedSuccessEvent());
                 showSimpleAlertDialogWidthMessageWithRelaunch(getString(R.string.iap_restore_1dollar_success));
-            } else if (mBillingProcessor.isPurchased(DOLLAR_5_PURCHASE_ID)) {
+            } else if (mBillingProcessor.isPurchased(Global.DOLLAR_5_PURCHASE_ID)) {
                 MutipleTargetHelper.setFullVersionFlag(true);
                 EventBus.getDefault().post(new PurchasedSuccessEvent());
                 showSimpleAlertDialogWidthMessageWithRelaunch(getString(R.string.iap_restore_5dollar_success));
@@ -224,7 +221,7 @@ public class PurchaseFragment extends android.app.DialogFragment implements Bill
             return;
         }
 
-        mBillingProcessor.purchase(getActivity(), DOLLAR_5_PURCHASE_ID);
+        mBillingProcessor.purchase(getActivity(), Global.DOLLAR_5_PURCHASE_ID);
 
     }
 
@@ -239,7 +236,7 @@ public class PurchaseFragment extends android.app.DialogFragment implements Bill
             return;
         }
 
-        mBillingProcessor.purchase(getActivity(), DOLLAR_1_PURCHASE_ID);
+        mBillingProcessor.purchase(getActivity(), Global.DOLLAR_1_PURCHASE_ID);
 
     }
 
@@ -250,11 +247,11 @@ public class PurchaseFragment extends android.app.DialogFragment implements Bill
         LOGD(TAG, "onProductPurchased");
 
         boolean result = false;
-        if (productId.equals(DOLLAR_1_PURCHASE_ID)) {
+        if (productId.equals(Global.DOLLAR_1_PURCHASE_ID)) {
             result = true;
             MutipleTargetHelper.setNoAdVersionFlag(true);
             EventBus.getDefault().post(new PurchasedSuccessEvent());
-        } else if (productId.equals(DOLLAR_5_PURCHASE_ID)) {
+        } else if (productId.equals(Global.DOLLAR_5_PURCHASE_ID)) {
             result = true;
             MutipleTargetHelper.setFullVersionFlag(true);
             EventBus.getDefault().post(new PurchasedSuccessEvent());
@@ -321,7 +318,7 @@ public class PurchaseFragment extends android.app.DialogFragment implements Bill
 
 
 
-        if (mBillingProcessor.isPurchased(DOLLAR_5_PURCHASE_ID) && MutipleTargetHelper.isFullVersion() == false) {
+        if (mBillingProcessor.isPurchased(Global.DOLLAR_5_PURCHASE_ID) && MutipleTargetHelper.isFullVersion() == false) {
             MutipleTargetHelper.setFullVersionFlag(true);
             if (isButtonManuallyClicked) {
                 showSimpleAlertDialogWidthMessageWithRelaunch(getString(R.string.iap_restore_5dollar_success));
@@ -329,7 +326,7 @@ public class PurchaseFragment extends android.app.DialogFragment implements Bill
             EventBus.getDefault().post(new PurchasedSuccessEvent());
         } else {
 
-            if (mBillingProcessor.isPurchased(DOLLAR_1_PURCHASE_ID) && MutipleTargetHelper.isNoAdVersion() == false) {
+            if (mBillingProcessor.isPurchased(Global.DOLLAR_1_PURCHASE_ID) && MutipleTargetHelper.isNoAdVersion() == false) {
                 MutipleTargetHelper.setNoAdVersionFlag(true);
                 if (isButtonManuallyClicked) {
                     showSimpleAlertDialogWidthMessageWithRelaunch(getString(R.string.iap_restore_1dollar_success));
@@ -340,8 +337,8 @@ public class PurchaseFragment extends android.app.DialogFragment implements Bill
 
 
         ArrayList<String> list = new ArrayList<>(2);
-        list.add(DOLLAR_1_PURCHASE_ID);
-        list.add(DOLLAR_5_PURCHASE_ID);
+        list.add(Global.DOLLAR_1_PURCHASE_ID);
+        list.add(Global.DOLLAR_5_PURCHASE_ID);
 
         List<SkuDetails> skuList =  mBillingProcessor.getPurchaseListingDetails(list);
         if (skuList == null || skuList.size() == 0) {
@@ -365,11 +362,11 @@ public class PurchaseFragment extends android.app.DialogFragment implements Bill
 
                 LOGD(TAG,"Available product:" + item.productId + " with price:" + item.priceText);
 
-                if (item.productId.equals(DOLLAR_5_PURCHASE_ID)) {
+                if (item.productId.equals(Global.DOLLAR_5_PURCHASE_ID)) {
                     dollar5Sku = item;
                 }
 
-                if (item.productId.equals(DOLLAR_1_PURCHASE_ID)) {
+                if (item.productId.equals(Global.DOLLAR_1_PURCHASE_ID)) {
                     dollar1Sku = item;
                 }
 
@@ -443,10 +440,10 @@ public class PurchaseFragment extends android.app.DialogFragment implements Bill
 
         if (result) {
 
-            if (mBillingProcessor.isPurchased(DOLLAR_1_PURCHASE_ID)) {
+            if (mBillingProcessor.isPurchased(Global.DOLLAR_1_PURCHASE_ID)) {
                 MutipleTargetHelper.setNoAdVersionFlag(true);
                 EventBus.getDefault().post(new PurchasedSuccessEvent());
-            } else if (mBillingProcessor.isPurchased(DOLLAR_5_PURCHASE_ID)) {
+            } else if (mBillingProcessor.isPurchased(Global.DOLLAR_5_PURCHASE_ID)) {
                 MutipleTargetHelper.setFullVersionFlag(true);
                 EventBus.getDefault().post(new PurchasedSuccessEvent());
             } else {

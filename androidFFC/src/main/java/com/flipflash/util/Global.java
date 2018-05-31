@@ -158,6 +158,12 @@ public class Global {
     public static final int REQUEST_CODE_GOOGLE_DRIVE_REQUEST_PERMISSION = 322;
 
 
+    public static final String DOLLAR_1_PURCHASE_ID = "com.flipflash.flipflashcards.removeads";
+    public static final String DOLLAR_5_PURCHASE_ID = "com.flipflash.flipflashcards.full";
+    // if filled library will provide protection against Freedom alike Play Market simulators
+    public static final String MERCHANT_ID=null;
+
+
     /**
      * detect network
      *

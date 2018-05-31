@@ -51,6 +51,8 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.anjlab.android.iab.v3.BillingProcessor;
+import com.anjlab.android.iab.v3.TransactionDetails;
 import com.daimajia.androidanimations.library.Techniques;
 import com.daimajia.androidanimations.library.YoYo;
 import com.dropbox.core.v2.files.FileMetadata;
@@ -131,7 +133,7 @@ import de.greenrobot.event.EventBus;
  * Also responsbile for managing Actionbar(or Option Menu)
  */
 public class MainActivity extends FragmentActivity implements
-        CardListFragment.Callbacks, PackInfoView.PackInfoViewDelegate{
+        CardListFragment.Callbacks, PackInfoView.PackInfoViewDelegate, BillingProcessor.IBillingHandler{
 
     private static final String TAG = MainActivity.class.getSimpleName();
 
@@ -195,6 +197,8 @@ public class MainActivity extends FragmentActivity implements
     private GoogleDriveShareHelper mGoogleDriveShareHelper;
     private DropboxShareHelper     mDropboxShareHelper;
     private AWSShareHelper         mAWSShareHelper;
+
+    private BillingProcessor mBillingProcessor;
 
 
     @Override
@@ -1170,6 +1174,8 @@ public class MainActivity extends FragmentActivity implements
 
         LOGD(TAG, "onStart");
 
+        setupPurchase();
+
         //EasyTracker.getInstance().activityStart(this);
 
     }
@@ -1204,6 +1210,8 @@ public class MainActivity extends FragmentActivity implements
     @Override
     protected void onDestroy() {
         super.onDestroy();
+
+        mBillingProcessor = null;
 
         LOGD(TAG, "onDestroy");
 
@@ -2612,6 +2620,53 @@ public class MainActivity extends FragmentActivity implements
     }
 
 
+
+    @Override
+    public void onProductPurchased(@NonNull String productId, @Nullable TransactionDetails details) {
+
+    }
+
+    @Override
+    public void onPurchaseHistoryRestored() {
+
+    }
+
+    @Override
+    public void onBillingError(int errorCode, @Nullable Throwable error) {
+
+    }
+
+    @Override
+    public void onBillingInitialized() {
+
+        if (mBillingProcessor.isPurchased(Global.DOLLAR_5_PURCHASE_ID) && MutipleTargetHelper.isFullVersion() == false) {
+            MutipleTargetHelper.setFullVersionFlag(true);
+            removeAdViewIfAllowed();
+        } else {
+
+            if (mBillingProcessor.isPurchased(Global.DOLLAR_1_PURCHASE_ID) && MutipleTargetHelper.isNoAdVersion() == false) {
+                MutipleTargetHelper.setNoAdVersionFlag(true);
+                removeAdViewIfAllowed();
+            }
+        }
+
+    }
+
+
+    private void setupPurchase() {
+
+        boolean isAvailable = BillingProcessor.isIabServiceAvailable(MainActivity.this);
+        if(!isAvailable) {
+            return;
+        } else {
+            LOGD(TAG, "Google In-app Billing is ready");
+        }
+
+        String GOOGLE_IAP_LICENCE_KEY = getString(R.string.lvl_public_key);
+
+        mBillingProcessor = new BillingProcessor(MainActivity.this,Global.MERCHANT_ID,GOOGLE_IAP_LICENCE_KEY,this);
+
+    }
 
 
     class HighLightArrayAdapter extends ArrayAdapter<CharSequence> {
