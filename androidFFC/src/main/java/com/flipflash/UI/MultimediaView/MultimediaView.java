@@ -5,8 +5,10 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.Animatable;
+import android.graphics.drawable.Drawable;
 import android.media.MediaPlayer;
 import android.net.Uri;
+import android.os.Build;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.util.AttributeSet;
@@ -258,7 +260,7 @@ public class MultimediaView extends FrameLayout {
             mVideoButton = (ImageButton) findViewById(R.id.video_button);
             mVideoHolderViewFrameLayout = (FrameLayout) findViewById(R.id.video_holder_view_fl);
             mVideoView = (ScalableVideoView) findViewById(R.id.videoView);
-            mVideoView.setBackgroundColor(Color.GREEN);
+      //      mVideoView.setBackgroundColor(Color.GREEN);
             mVideoFullscreenButton = (ImageButton) findViewById(R.id.video_fullscreen_button);
 
             mVideoButton.setOnClickListener(new OnClickListener() {
@@ -282,6 +284,7 @@ public class MultimediaView extends FrameLayout {
         }
 
     }
+
 
     private void mGifFullscreenButtonClicked() {
 
