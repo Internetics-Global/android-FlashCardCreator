@@ -436,19 +436,21 @@ public class PurchaseFragment extends android.app.DialogFragment implements Bill
     public void onStop() {
         super.onStop();
 
-        boolean result = mBillingProcessor.loadOwnedPurchasesFromGoogle();
+        if (mBillingProcessor != null) {
+            boolean result = mBillingProcessor.loadOwnedPurchasesFromGoogle();
 
-        if (result) {
+            if (result) {
 
-            if (mBillingProcessor.isPurchased(Global.DOLLAR_1_PURCHASE_ID)) {
-                MutipleTargetHelper.setNoAdVersionFlag(true);
-                EventBus.getDefault().post(new PurchasedSuccessEvent());
-            } else if (mBillingProcessor.isPurchased(Global.DOLLAR_5_PURCHASE_ID)) {
-                MutipleTargetHelper.setFullVersionFlag(true);
-                EventBus.getDefault().post(new PurchasedSuccessEvent());
-            } else {
+                if (mBillingProcessor.isPurchased(Global.DOLLAR_1_PURCHASE_ID)) {
+                    MutipleTargetHelper.setNoAdVersionFlag(true);
+                    EventBus.getDefault().post(new PurchasedSuccessEvent());
+                } else if (mBillingProcessor.isPurchased(Global.DOLLAR_5_PURCHASE_ID)) {
+                    MutipleTargetHelper.setFullVersionFlag(true);
+                    EventBus.getDefault().post(new PurchasedSuccessEvent());
+                } else {
+                }
+
             }
-
         }
     }
 
