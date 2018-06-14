@@ -257,6 +257,10 @@ public class PackListFragment extends Fragment {
 
         } else {
 
+            if (mUser.packs == null || mUser.packs.size() < position) {
+                return;
+            }
+
             LOGD(TAG, "galleryItemClicked: " + "Index of pack in pack list is:" + position);
 
             Pack selectPack = mUser.packs.get(position-1);
@@ -345,8 +349,7 @@ public class PackListFragment extends Fragment {
             }
 
 
-            if ((position != 0)&&(mUser.packs.size() > 0)) {
-
+            if ((position != 0)&&(mUser.packs.size() >= position)) {
 
                 ImageView coverImageView = (ImageView) convertView.findViewById(R.id.pack_cover_image);
 
@@ -463,6 +466,10 @@ public class PackListFragment extends Fragment {
 
     private void deleteButtonClicked(int position) {
 
+        if (mUser.packs == null || mUser.packs.size() < position) {
+            return;
+        }
+
         final Pack currentPack = mUser.packs.get(position -1);
 
         if (currentPack.packID == ((MainActivity) getActivity()).packIDForMasterViewPack) {
@@ -493,6 +500,10 @@ public class PackListFragment extends Fragment {
     }
 
     private void editButtonClicked(final int position) {
+
+        if (mUser.packs == null || mUser.packs.size() < position) {
+            return;
+        }
 
         final Pack currentPack = mUser.packs.get(position -1);
 
@@ -551,6 +562,10 @@ public class PackListFragment extends Fragment {
 
     private void playImageViewButtonClicked(int position) {
 
+        if (mUser.packs == null || mUser.packs.size() < position) {
+            return;
+        }
+
         final Pack currentPack = mUser.packs.get(position -1);
 
         if (currentPack ==null || currentPack.cards.size() == 0) {
@@ -590,6 +605,10 @@ public class PackListFragment extends Fragment {
 
 
     private void gotoPackEditView(int position) {
+
+        if (mUser.packs == null || mUser.packs.size() < position) {
+            return;
+        }
 
         Pack currentPack = mUser.packs.get(position -1);
 
