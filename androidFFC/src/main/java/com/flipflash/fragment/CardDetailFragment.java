@@ -2423,6 +2423,10 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnTouchL
 
                 @Override
                 public void afterTextChanged(Editable s) {
+                    if (mCurrentPack == null) {
+                         return;
+                    }
+
                     if (mIsQuestionShowing) {
                         mCurrentPack.questionTitle = mTitle.getText().toString();
                         if ((!mIsPlayingCard)
@@ -2452,6 +2456,10 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnTouchL
 
                 @Override
                 public void afterTextChanged(Editable s) {
+                    if (mCurrentPack == null) {
+                        return;
+                    }
+
                     mCurrentPack.creatorNickName = mCreator.getText().toString();
                     if ((!mIsPlayingCard)
                             &&(TAG_CREATOR.equals(getCurrentFocusedViewTag()))) {
@@ -2479,6 +2487,9 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnTouchL
 
                 @Override
                 public void afterTextChanged(Editable s) {
+                    if (mCurrentPack == null) {
+                        return;
+                    }
 
                     mCurrentPack.jobTitle = mJobTitle.getText().toString();
                     if ((!mIsPlayingCard)
@@ -2505,6 +2516,10 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnTouchL
 
                 @Override
                 public void afterTextChanged(Editable s) {
+                    if (mCurrentPack == null || mSidebarTitle== null) {
+                        return;
+                    }
+
                     mCurrentPack.sidebarTitle = mSidebarTitle.getText().toString();
                     if ((!mIsPlayingCard)
                             && (TAG_SIDE_BAR_TITLE.equals(getCurrentFocusedViewTag()))) {
@@ -2536,6 +2551,9 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnTouchL
             @Override
             public void afterTextChanged(Editable s) {
                 //LOGD(TAG, "afterTextChanged: on subheading: " + s.toString() + " with line count = " + maxLines);
+                if (mCurrentCard == null || mSubheading == null) {
+                    return;
+                }
 
                 if (mIsQuestionShowing) {
                     mCurrentCard.question.subheading = mSubheading.getText().toString();
@@ -2563,6 +2581,9 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnTouchL
             @Override
             public void afterTextChanged(Editable s) {
                 //LOGD(TAG, "afterTextChanged: on main: " + s.toString() + " with line count = " + maxLines);
+                if (mCurrentCard == null || mMain == null) {
+                    return;
+                }
 
                 if (mIsQuestionShowing) {
                     mCurrentCard.question.main = mMain.getText().toString();
@@ -2591,6 +2612,9 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnTouchL
             @Override
             public void afterTextChanged(Editable s) {
                 //LOGD(TAG, "afterTextChanged: on sub: " + s.toString() + " with line count = " + maxLines);
+                if (mCurrentPack == null || mSub == null) {
+                    return;
+                }
 
                 if (mIsQuestionShowing) {
                     mCurrentCard.question.sub = mSub.getText().toString();
