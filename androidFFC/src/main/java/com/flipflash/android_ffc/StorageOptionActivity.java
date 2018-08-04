@@ -121,7 +121,7 @@ public class StorageOptionActivity extends Activity{
             }
         });
 
-        setup5TapsForFFCDrive();
+        //setup5TapsForFFCDrive();
 
     }
 
