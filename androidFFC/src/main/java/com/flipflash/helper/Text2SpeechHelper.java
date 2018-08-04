@@ -327,7 +327,6 @@ public class Text2SpeechHelper {
         dict.put("uz-UZ","Uzbek (Cyrillic) (Uzbekistan) ");
         dict.put("vi-VN","Vietnamese (Viet Nam) ");
         dict.put("xh-ZA","Xhosa (South Africa) ");
-        dict.put("aaa","bbb ");
         dict.put("th-TH","Thai (Thailand) ");
         dict.put("tr-TR","Turkish (Turkey) ");
         dict.put("zh-CN","Chinese (China) ");
@@ -338,6 +337,12 @@ public class Text2SpeechHelper {
         dict.put("zu-ZA","Zulu (South Africa) ");
         dict.put("et-EE","Estonian (Estonia) ");
         dict.put("fil-PH","Filipino (Philippines) ");
+
+        dict.put("km-KH","Cambodia - Khmer");
+        dict.put("nb-NO","Norway - Norwegian (Bokmal)");
+        dict.put("ne-NP","Nepal - Nepali");
+        dict.put("si-LK","Sri Lanka - Sinhala");
+        dict.put("yue-HK","Chinese, Cantonese");
 
         return dict;
 
