@@ -260,6 +260,7 @@ public class Text2SpeechHelper {
         dict.put("ta-IN","India - Tamil ");
         dict.put("te-IN","India - Telugu ");
         dict.put("id-ID","Indonesia - Indonesian ");
+        dict.put("in-ID","Indonesia - Indonesian ");
         dict.put("fa-IR","Iran - Persian ");
         dict.put("ar-IQ","Iraq - Arabic ");
         dict.put("en-IE","Ireland - English ");
