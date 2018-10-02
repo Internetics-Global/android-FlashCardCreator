@@ -318,6 +318,7 @@ public class Text2SpeechHelper {
         dict.put("bo-CN","People's Republic of China - Tibetan ");
         dict.put("ug-CN","People's Republic of China - Uyghur ");
         dict.put("ii-CN","People's Republic of China - Yi ");
+        dict.put("yue-HK","Chinese - Hong Kong ");
         dict.put("quz-PE","Peru - Quechua ");
         dict.put("es-PE","Peru - Spanish ");
         dict.put("fil-PH","Philippines - Filipino ");
