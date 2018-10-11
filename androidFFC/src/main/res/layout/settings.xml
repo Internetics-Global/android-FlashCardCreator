@@ -186,6 +186,22 @@
         <View
             style="@style/h_line" />
 
+        <RelativeLayout
+            android:id="@+id/rl_upgrade_full_version"
+            style="@style/option_item_rl" >
+
+            <TextView
+                android:id="@+id/upgrade_full_version_textview"
+                style="@style/option_item_text_parent"
+                android:text= "Upgrade to full version"
+                android:textColor="@android:color/white"
+                android:textSize="16dp" />
+        </RelativeLayout>
+
+
+        <View
+            style="@style/h_line" />
+
 
 
         <RelativeLayout

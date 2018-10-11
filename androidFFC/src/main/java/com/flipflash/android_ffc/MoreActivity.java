@@ -190,7 +190,7 @@ public class MoreActivity extends Activity {
         findViewById(R.id.rl_storage_option).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (MutipleTargetHelper.isFullVersion() == false) {
+                if (MutipleTargetHelper.isFullVersion() == false ) {
                 } else {
                     startActivity(new Intent(MoreActivity.this, StorageOptionActivity.class));
                 }
@@ -212,6 +212,20 @@ public class MoreActivity extends Activity {
         } else {
             textView.setTextColor(Color.WHITE);
         }
+
+        if (MutipleTargetHelper.isFullVersion() == false && MutipleTargetHelper.isNoAdVersion() == true) {
+            findViewById(R.id.rl_upgrade_full_version).setVisibility(View.VISIBLE);
+        } else {
+            findViewById(R.id.rl_upgrade_full_version).setVisibility(View.INVISIBLE);
+        }
+
+        findViewById(R.id.rl_upgrade_full_version).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                finish();
+                MutipleTargetHelper.showPurchaseView();
+            }
+        });
 
 
         findViewById(R.id.rl_send_log).setOnClickListener(new View.OnClickListener() {
