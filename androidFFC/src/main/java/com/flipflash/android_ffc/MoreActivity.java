@@ -14,9 +14,11 @@ import android.view.WindowManager;
 import android.widget.TextView;
 
 import com.flipflash.UI.togglebutton.ToggleButton;
+import com.flipflash.fragment.PurchaseFragment;
 import com.flipflash.helper.Dropbox.DropboxAuthHelper;
 import com.flipflash.helper.GoogleDrive.GoogleDriveAuthHelper;
 import com.flipflash.util.AppConfig;
+import com.flipflash.util.AppContext;
 import com.flipflash.util.Global;
 import com.flipflash.util.MutipleTargetHelper;
 import com.orhanobut.hawk.Hawk;
@@ -222,8 +224,9 @@ public class MoreActivity extends Activity {
         findViewById(R.id.rl_upgrade_full_version).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                finish();
-                MutipleTargetHelper.showPurchaseView();
+
+                android.app.DialogFragment dialogFragment = new PurchaseFragment();
+                dialogFragment.show(MoreActivity.this.getFragmentManager(),"PurchaseFragment");
             }
         });
 
