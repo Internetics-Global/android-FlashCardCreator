@@ -1598,18 +1598,18 @@ public class MainActivity extends FragmentActivity implements
 
                         }
                     })
-                    .setPositiveButton(R.string.DIALOG_STORAGE_SELECTION_AWS, new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialogInterface, int i) {
-
-                            new SweetAlertDialog(MainActivity.this)
-                                    .setTitleText(getString(R.string.DIALOG_AlERT))
-                                    .setContentText(getString(R.string.AWS_DRIVE_LOGIN_REQUIRED))
-                                    .show();
-
-
-                        }
-                    })
+//                    .setPositiveButton(R.string.DIALOG_STORAGE_SELECTION_AWS, new DialogInterface.OnClickListener() {
+//                        @Override
+//                        public void onClick(DialogInterface dialogInterface, int i) {
+//
+//                            new SweetAlertDialog(MainActivity.this)
+//                                    .setTitleText(getString(R.string.DIALOG_AlERT))
+//                                    .setContentText(getString(R.string.AWS_DRIVE_LOGIN_REQUIRED))
+//                                    .show();
+//
+//
+//                        }
+//                    })
                     .show();
         }
 
