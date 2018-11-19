@@ -1,17 +1,21 @@
 package com.flipflash.fragment;
 
+import android.Manifest;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.content.res.Configuration;
 import android.graphics.Bitmap;
 import android.graphics.Rect;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
+import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.DialogFragment;
+import android.support.v4.content.ContextCompat;
 import android.util.Base64;
 
 import android.util.DisplayMetrics;
@@ -244,6 +248,16 @@ public class CreateEditFragment extends DialogFragment implements TextView.OnEdi
 
 
     private void didClickedImageSelectionButton() {
+
+        if (ContextCompat.checkSelfPermission(getActivity(),
+                Manifest.permission.READ_EXTERNAL_STORAGE)
+                != PackageManager.PERMISSION_GRANTED) {
+
+            ActivityCompat.requestPermissions(getActivity(),
+                    new String[]{Manifest.permission.READ_EXTERNAL_STORAGE},
+                    1);
+            return;
+        }
 
         new AlertDialog.Builder(getActivity())
                 .setTitle(R.string.DIALOG_PACK_LIST_IMAGE_SELECTION)
