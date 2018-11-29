@@ -1562,6 +1562,22 @@ public class CardDetailFragment extends Fragment implements FCCEditText.OnTouchL
 
     public void showCreateSoundView() {
 
+        if (Build.VERSION.SDK_INT >= 23) {
+            if (ContextCompat.checkSelfPermission(getActivity(), Manifest.permission.RECORD_AUDIO) ==
+                    PackageManager.PERMISSION_GRANTED) {
+                // put your code for Version>=Marshmallow
+            } else {
+                if (shouldShowRequestPermissionRationale(Manifest.permission.RECORD_AUDIO)) {
+                    Toast.makeText(getActivity(),
+                            "App required access to audio", Toast.LENGTH_SHORT).show();
+                }
+                requestPermissions(new String[]{Manifest.permission.RECORD_AUDIO
+                }, 0);
+                return;
+            }
+
+        }
+
         CreateSoundFragment dialogFragment = new CreateSoundFragment();
         dialogFragment.mIsCreatingCard = mIsCreatingCard;
         dialogFragment.mCurrentCard = mCurrentCard;

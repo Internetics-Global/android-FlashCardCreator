@@ -345,17 +345,6 @@ public class MediaPickerActivity extends AppCompatActivity implements
             }
             if (file != null) {
 
-                //hack way to fix the crash of android.os.FileUriExposedException
-                // https://stackoverflow.com/questions/38200282/android-os-fileuriexposedexception-file-storage-emulated-0-test-txt-exposed
-                if(Build.VERSION.SDK_INT>=24){
-                    try{
-                        Method m = StrictMode.class.getMethod("disableDeathOnFileUriExposure");
-                        m.invoke(null);
-                    }catch(Exception e){
-                        e.printStackTrace();
-                    }
-                }
-
                 mPhotoFileCapture = file;
                 takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT,
                         Uri.fromFile(file));

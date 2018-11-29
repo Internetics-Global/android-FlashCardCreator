@@ -19,6 +19,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.os.StrictMode;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.DialogFragment;
@@ -111,6 +112,7 @@ import com.nostra13.universalimageloader.core.listener.SimpleImageLoadingListene
 import com.orhanobut.hawk.Hawk;
 
 import java.io.File;
+import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -770,6 +772,17 @@ public class MainActivity extends FragmentActivity implements
         super.onResume();
 
         LOGD(TAG, "onResume");
+
+        //hack way to fix the crash of android.os.FileUriExposedException
+        // https://stackoverflow.com/questions/38200282/android-os-fileuriexposedexception-file-storage-emulated-0-test-txt-exposed
+        if(Build.VERSION.SDK_INT>=24){
+            try{
+                Method m = StrictMode.class.getMethod("disableDeathOnFileUriExposure");
+                m.invoke(null);
+            }catch(Exception e){
+                e.printStackTrace();
+            }
+        }
 
 //if our targetAPI is 23, we have to add this. We can not set targetAPI= 23 since it could raise permission other issues, see my evernote
 //        boolean permissionAuthorized = false;
@@ -2695,7 +2708,7 @@ public class MainActivity extends FragmentActivity implements
             if (mSelectedList!= null && mSelectedList.contains(Integer.valueOf(position))) {
                 itemView.setBackgroundColor(Color.rgb(56,184,226));
             } else {
-                itemView.setBackgroundColor(Color.DKGRAY);
+                itemView.setBackgroundColor(Color.LTGRAY);
             }
 
             return itemView;
