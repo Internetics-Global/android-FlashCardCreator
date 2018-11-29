@@ -2695,7 +2695,7 @@ public class MainActivity extends FragmentActivity implements
             if (mSelectedList!= null && mSelectedList.contains(Integer.valueOf(position))) {
                 itemView.setBackgroundColor(Color.rgb(56,184,226));
             } else {
-                itemView.setBackgroundColor(Color.TRANSPARENT);
+                itemView.setBackgroundColor(Color.DKGRAY);
             }
 
             return itemView;
