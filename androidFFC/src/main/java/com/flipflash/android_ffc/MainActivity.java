@@ -1803,22 +1803,22 @@ public class MainActivity extends FragmentActivity implements
 
         HighLightArrayAdapter adapterFont = new HighLightArrayAdapter(this,
                 R.layout.spinner,getResources().getTextArray(R.array.css_font_nominal));
-        adapterFont.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        adapterFont.setDropDownViewResource(R.layout.spinner_item);
         spinnerFont.setAdapter(adapterFont);
 
         HighLightArrayAdapter adapterAlign = new HighLightArrayAdapter(this,
                 R.layout.spinner,getResources().getStringArray(R.array.css_align));
-        adapterAlign.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        adapterAlign.setDropDownViewResource(R.layout.spinner_item);
         spinnerAlign.setAdapter(adapterAlign);
 
         HighLightArrayAdapter adapterColor = new HighLightArrayAdapter(this,
                 R.layout.spinner,getResources().getStringArray(R.array.css_color));
-        adapterColor.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        adapterColor.setDropDownViewResource(R.layout.spinner_item);
         spinnerColor.setAdapter(adapterColor);
 
         HighLightArrayAdapter adapterSize = new HighLightArrayAdapter(this,
                 R.layout.spinner,getResources().getStringArray(R.array.css_size));
-        adapterSize.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        adapterSize.setDropDownViewResource(R.layout.spinner_item);
         spinnerSize.setAdapter(adapterSize);
 
         if (mLanguageSpinnerArray == null || mLanguageSpinnerArray.length <=1) {
@@ -1826,7 +1826,7 @@ public class MainActivity extends FragmentActivity implements
         }
         final HighLightArrayAdapter adapterLanguage = new HighLightArrayAdapter(this,
                 R.layout.spinner,mLanguageSpinnerArray);
-        adapterLanguage.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        adapterLanguage.setDropDownViewResource(R.layout.spinner_item);
         spinnerLanguage.setAdapter(adapterLanguage);
 
         spinnerFont.setSelection(0);
