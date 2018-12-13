@@ -71,11 +71,6 @@ public class AudioHelper {
         stopAndCleanAudio();
 
         try {
-
-            //Hope this could resolve crash issue
-            mRecorder.setOutputFormat(MediaRecorder.OutputFormat.MPEG_4);
-            mRecorder.setAudioEncoder(MediaRecorder.AudioEncoder.AAC);
-            
             mRecorder.prepare();
             mRecorder.start();
             LOGD(TAG, "startRecord: mRecorder.start() is executed");

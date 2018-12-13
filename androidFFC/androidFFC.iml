@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<module external.linked.project.id=":androidFFC" external.linked.project.path="$MODULE_DIR$" external.root.project.path="$MODULE_DIR$/.." external.system.id="GRADLE" external.system.module.group="android-FlashCardCreator" external.system.module.version="unspecified" type="JAVA_MODULE" version="4">
+<module external.linked.project.id=":androidFFC" external.linked.project.path="$MODULE_DIR$" external.root.project.path="$MODULE_DIR$/.." external.system.id="GRADLE" type="JAVA_MODULE" version="4">
   <component name="FacetManager">
     <facet type="android-gradle" name="Android-Gradle">
       <configuration>
@@ -63,13 +63,6 @@
       <sourceFolder url="file://$MODULE_DIR$/src/main/java" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/src/main/rs" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/src/main/shaders" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/src/androidTest/res" type="java-test-resource" />
-      <sourceFolder url="file://$MODULE_DIR$/src/androidTest/resources" type="java-test-resource" />
-      <sourceFolder url="file://$MODULE_DIR$/src/androidTest/assets" type="java-test-resource" />
-      <sourceFolder url="file://$MODULE_DIR$/src/androidTest/aidl" isTestSource="true" />
-      <sourceFolder url="file://$MODULE_DIR$/src/androidTest/java" isTestSource="true" />
-      <sourceFolder url="file://$MODULE_DIR$/src/androidTest/rs" isTestSource="true" />
-      <sourceFolder url="file://$MODULE_DIR$/src/androidTest/shaders" isTestSource="true" />
       <sourceFolder url="file://$MODULE_DIR$/src/test/res" type="java-test-resource" />
       <sourceFolder url="file://$MODULE_DIR$/src/test/resources" type="java-test-resource" />
       <sourceFolder url="file://$MODULE_DIR$/src/test/assets" type="java-test-resource" />
@@ -77,6 +70,13 @@
       <sourceFolder url="file://$MODULE_DIR$/src/test/java" isTestSource="true" />
       <sourceFolder url="file://$MODULE_DIR$/src/test/rs" isTestSource="true" />
       <sourceFolder url="file://$MODULE_DIR$/src/test/shaders" isTestSource="true" />
+      <sourceFolder url="file://$MODULE_DIR$/src/androidTest/res" type="java-test-resource" />
+      <sourceFolder url="file://$MODULE_DIR$/src/androidTest/resources" type="java-test-resource" />
+      <sourceFolder url="file://$MODULE_DIR$/src/androidTest/assets" type="java-test-resource" />
+      <sourceFolder url="file://$MODULE_DIR$/src/androidTest/aidl" isTestSource="true" />
+      <sourceFolder url="file://$MODULE_DIR$/src/androidTest/java" isTestSource="true" />
+      <sourceFolder url="file://$MODULE_DIR$/src/androidTest/rs" isTestSource="true" />
+      <sourceFolder url="file://$MODULE_DIR$/src/androidTest/shaders" isTestSource="true" />
       <excludeFolder url="file://$MODULE_DIR$/build/.DS_Store" />
       <excludeFolder url="file://$MODULE_DIR$/build/intermediates/assets" />
       <excludeFolder url="file://$MODULE_DIR$/build/intermediates/blame" />
@@ -132,7 +132,6 @@
       <excludeFolder url="file://$MODULE_DIR$/build/intermediates/manifests" />
       <excludeFolder url="file://$MODULE_DIR$/build/intermediates/multi-dex" />
       <excludeFolder url="file://$MODULE_DIR$/build/intermediates/pre-dexed" />
-      <excludeFolder url="file://$MODULE_DIR$/build/intermediates/proguard-rules" />
       <excludeFolder url="file://$MODULE_DIR$/build/intermediates/res" />
       <excludeFolder url="file://$MODULE_DIR$/build/intermediates/rs" />
       <excludeFolder url="file://$MODULE_DIR$/build/intermediates/shaders" />
@@ -143,86 +142,86 @@
     </content>
     <orderEntry type="jdk" jdkName="Android API 22 Platform" jdkType="Android SDK" />
     <orderEntry type="sourceFolder" forTests="false" />
-    <orderEntry type="library" exported="" name="__local_jars__:/Users/liang.wang/Documents/Private/android-FlashCardCreator/androidFFC/libs/aws-android-sdk-core-2.2.1.jar:unspecified@jar" level="project" />
-    <orderEntry type="library" exported="" name="com.android.support:multidex-1.0.1" level="project" />
-    <orderEntry type="library" exported="" name="com.makeramen:roundedimageview-2.0.1" level="project" />
-    <orderEntry type="library" exported="" name="com.squareup.okio:okio:1.8.0@jar" level="project" />
-    <orderEntry type="library" exported="" name="com.google.api-client:google-api-client-android:1.22.0@jar" level="project" />
-    <orderEntry type="library" exported="" name="com.facebook.fresco:fbcore-0.13.0" level="project" />
-    <orderEntry type="library" exported="" name="com.google.code.gson:gson:2.4@jar" level="project" />
-    <orderEntry type="library" exported="" name="com.isseiaoki:simplecropview-1.0.9" level="project" />
-    <orderEntry type="library" exported="" name="com.google.firebase:firebase-core-9.0.1" level="project" />
-    <orderEntry type="library" exported="" name="com.google.android.gms:play-services-basement-9.0.1" level="project" />
-    <orderEntry type="library" exported="" name="com.google.firebase:firebase-analytics-9.0.1" level="project" />
-    <orderEntry type="library" exported="" name="com.google.guava:guava-jdk5:17.0@jar" level="project" />
-    <orderEntry type="library" exported="" name="com.nineoldandroids:library:2.4.0@jar" level="project" />
-    <orderEntry type="library" exported="" name="com.google.android.gms:play-services-auth-9.0.1" level="project" />
-    <orderEntry type="library" exported="" name="asia.ivity.android:drag-sort-listview-1.0" level="project" />
-    <orderEntry type="library" exported="" name="com.daimajia.easing:library-1.0.1" level="project" />
-    <orderEntry type="library" exported="" name="com.google.android.gms:play-services-base-9.0.1" level="project" />
-    <orderEntry type="library" exported="" name="com.google.code.findbugs:jsr305:2.0.1@jar" level="project" />
-    <orderEntry type="library" exported="" name="com.squareup.okhttp3:okhttp:3.3.1@jar" level="project" />
-    <orderEntry type="library" exported="" name="__local_jars__:/Users/liang.wang/Documents/Private/android-FlashCardCreator/androidFFC/libs/libGoogleAnalyticsV2.jar:unspecified@jar" level="project" />
-    <orderEntry type="library" exported="" name="com.android.support:support-fragment-25.2.0" level="project" />
-    <orderEntry type="library" exported="" name="com.daimajia.androidanimations:library-1.1.3" level="project" />
-    <orderEntry type="library" exported="" name="com.fasterxml.jackson.core:jackson-core:2.7.4@jar" level="project" />
-    <orderEntry type="library" exported="" name="com.google.firebase:firebase-iid-9.0.1" level="project" />
-    <orderEntry type="library" exported="" name="com.google.http-client:google-http-client-android:1.22.0@jar" level="project" />
-    <orderEntry type="library" exported="" name="com.google.firebase:firebase-auth-module-9.0.1" level="project" />
-    <orderEntry type="library" exported="" name="com.google.oauth-client:google-oauth-client:1.22.0@jar" level="project" />
-    <orderEntry type="library" exported="" name="com.google.http-client:google-http-client-jackson2:1.22.0@jar" level="project" />
-    <orderEntry type="library" exported="" name="com.google.firebase:firebase-common-9.0.1" level="project" />
-    <orderEntry type="library" exported="" name="com.android.support:support-core-utils-25.2.0" level="project" />
-    <orderEntry type="library" exported="" name="com.google.android.gms:play-services-tasks-9.0.1" level="project" />
-    <orderEntry type="library" exported="" name="com.google.firebase:firebase-auth-common-9.0.1" level="project" />
-    <orderEntry type="library" exported="" name="com.facebook.stetho:stetho:1.1.0@jar" level="project" />
-    <orderEntry type="library" exported="" name="com.google.firebase:firebase-auth-9.0.1" level="project" />
-    <orderEntry type="library" exported="" name="com.dropbox.core:dropbox-core-sdk:2.1.2@jar" level="project" />
-    <orderEntry type="library" exported="" name="com.squareup.haha:haha:2.0.3@jar" level="project" />
-    <orderEntry type="library" exported="" name="com.parse.bolts:bolts-android:1.2.0@jar" level="project" />
-    <orderEntry type="library" exported="" name="com.google.android.gms:play-services-auth-base-9.0.1" level="project" />
-    <orderEntry type="library" exported="" name="com.github.orhanobut:hawk-1.22" level="project" />
-    <orderEntry type="library" exported="" name="net.soulwolf.widget:ratiolayout-1.0.0" level="project" />
-    <orderEntry type="library" exported="" name="com.pnikosis:materialish-progress-1.0" level="project" />
-    <orderEntry type="library" exported="" name="com.facebook.fresco:imagepipeline-base-0.13.0" level="project" />
-    <orderEntry type="library" exported="" name="com.squareup.leakcanary:leakcanary-analyzer-1.5.4" level="project" />
-    <orderEntry type="library" exported="" name="com.google.api-client:google-api-client:1.22.0@jar" level="project" />
-    <orderEntry type="library" exported="" name="com.facebook.fresco:fresco-0.13.0" level="project" />
-    <orderEntry type="library" exported="" name="com.facebook.fresco:animated-base-0.13.0" level="project" />
-    <orderEntry type="library" exported="" name="__local_jars__:/Users/liang.wang/Documents/Private/android-FlashCardCreator/androidFFC/libs/aws-android-sdk-cognito-2.2.1.jar:unspecified@jar" level="project" />
-    <orderEntry type="library" exported="" name="cn.pedant.sweetalert:library-1.3" level="project" />
-    <orderEntry type="library" exported="" name="com.facebook.fresco:drawee-0.13.0" level="project" />
-    <orderEntry type="library" exported="" scope="TEST" name="com.android.support:multidex-instrumentation-1.0.1" level="project" />
-    <orderEntry type="library" exported="" name="com.android.support:support-core-ui-25.2.0" level="project" />
-    <orderEntry type="library" exported="" name="__local_jars__:/Users/liang.wang/Documents/Private/android-FlashCardCreator/androidFFC/libs/ParseCrashReporting-1.8.3.jar:unspecified@jar" level="project" />
-    <orderEntry type="library" exported="" name="com.android.support:support-media-compat-25.2.0" level="project" />
-    <orderEntry type="library" exported="" name="com.google.http-client:google-http-client-gson:1.22.0@jar" level="project" />
-    <orderEntry type="library" exported="" name="com.google.apis:google-api-services-drive:v3-rev52-1.22.0@jar" level="project" />
-    <orderEntry type="library" exported="" name="com.facebook.fresco:imagepipeline-0.13.0" level="project" />
-    <orderEntry type="library" exported="" name="com.google.http-client:google-http-client:1.22.0@jar" level="project" />
-    <orderEntry type="library" exported="" name="__local_jars__:/Users/liang.wang/Documents/Private/android-FlashCardCreator/androidFFC/libs/zip4j_1.3.2.jar:unspecified@jar" level="project" />
-    <orderEntry type="library" exported="" name="commons-io:commons-io:2.6@jar" level="project" />
-    <orderEntry type="library" exported="" name="com.google.firebase:firebase-analytics-impl-9.0.1" level="project" />
-    <orderEntry type="library" exported="" name="com.android.support:support-v4-25.2.0" level="project" />
-    <orderEntry type="library" exported="" name="__local_jars__:/Users/liang.wang/Documents/Private/android-FlashCardCreator/androidFFC/libs/httpmime-4.0.3.jar:unspecified@jar" level="project" />
-    <orderEntry type="library" exported="" name="com.android.support:appcompat-v7-22.1.1" level="project" />
-    <orderEntry type="library" exported="" name="__local_jars__:/Users/liang.wang/Documents/Private/android-FlashCardCreator/androidFFC/libs/aws-android-sdk-sdb-2.2.1.jar:unspecified@jar" level="project" />
-    <orderEntry type="library" exported="" name="android_target_tooltip_ccaa_22112014:@aar" level="project" />
-    <orderEntry type="library" exported="" name="commons-cli:commons-cli:1.2@jar" level="project" />
-    <orderEntry type="library" exported="" name="__local_jars__:/Users/liang.wang/Documents/Private/android-FlashCardCreator/androidFFC/libs/json_simple-1.1.jar:unspecified@jar" level="project" />
-    <orderEntry type="library" exported="" name="com.nostra13.universalimageloader:universal-image-loader:1.9.4@jar" level="project" />
-    <orderEntry type="library" exported="" name="com.anjlab.android.iab.v3:library:1.0.44@jar" level="project" />
-    <orderEntry type="library" exported="" name="com.facebook.android:facebook-android-sdk-4.6.0" level="project" />
-    <orderEntry type="library" exported="" name="com.android.support:support-compat-25.2.0" level="project" />
-    <orderEntry type="library" exported="" name="com.facebook.fresco:animated-gif-0.13.0" level="project" />
-    <orderEntry type="library" exported="" name="de.greenrobot:eventbus:2.4.0@jar" level="project" />
-    <orderEntry type="library" exported="" name="__local_jars__:/Users/liang.wang/Documents/Private/android-FlashCardCreator/androidFFC/libs/aws-android-sdk-s3-2.2.1.jar:unspecified@jar" level="project" />
-    <orderEntry type="library" exported="" name="com.facebook.rebound:rebound:0.3.8@jar" level="project" />
-    <orderEntry type="library" exported="" name="com.squareup.leakcanary:leakcanary-android-1.5.4" level="project" />
-    <orderEntry type="library" exported="" name="com.github.lzyzsd:circleprogress-1.1.0" level="project" />
-    <orderEntry type="library" exported="" name="me.relex:circleindicator-1.1.3" level="project" />
-    <orderEntry type="library" exported="" name="com.android.support:support-annotations:25.3.1@jar" level="project" />
-    <orderEntry type="library" exported="" name="com.squareup.leakcanary:leakcanary-watcher:1.5.4@jar" level="project" />
+    <orderEntry type="library" exported="" name="Gradle: __local_jars__:/Users/internetics/Documents/Project/android-FlashCardCreator/androidFFC/libs/zip4j_1.3.2.jar:unspecified@jar" level="project" />
+    <orderEntry type="library" exported="" name="Gradle: com.google.android.gms:play-services-basement-9.0.1" level="project" />
+    <orderEntry type="library" exported="" name="Gradle: com.android.support:support-annotations:25.3.1@jar" level="project" />
+    <orderEntry type="library" exported="" name="Gradle: com.android.support:support-fragment-25.2.0" level="project" />
+    <orderEntry type="library" exported="" name="Gradle: com.makeramen:roundedimageview-2.0.1" level="project" />
+    <orderEntry type="library" exported="" name="Gradle: com.google.api-client:google-api-client-android:1.22.0@jar" level="project" />
+    <orderEntry type="library" exported="" name="Gradle: com.pnikosis:materialish-progress-1.0" level="project" />
+    <orderEntry type="library" exported="" name="Gradle: commons-cli:commons-cli:1.2@jar" level="project" />
+    <orderEntry type="library" exported="" name="Gradle: android_target_tooltip_ccaa_22112014:@aar" level="project" />
+    <orderEntry type="library" exported="" name="Gradle: com.squareup.haha:haha:2.0.3@jar" level="project" />
+    <orderEntry type="library" exported="" name="Gradle: com.squareup.leakcanary:leakcanary-android-1.5.4" level="project" />
+    <orderEntry type="library" exported="" name="Gradle: commons-io:commons-io:2.6@jar" level="project" />
+    <orderEntry type="library" exported="" name="Gradle: com.android.support:multidex-1.0.1" level="project" />
+    <orderEntry type="library" exported="" name="Gradle: __local_jars__:/Users/internetics/Documents/Project/android-FlashCardCreator/androidFFC/libs/aws-android-sdk-core-2.2.1.jar:unspecified@jar" level="project" />
+    <orderEntry type="library" exported="" name="Gradle: com.android.support:support-compat-25.2.0" level="project" />
+    <orderEntry type="library" exported="" name="Gradle: __local_jars__:/Users/internetics/Documents/Project/android-FlashCardCreator/androidFFC/libs/json_simple-1.1.jar:unspecified@jar" level="project" />
+    <orderEntry type="library" exported="" name="Gradle: com.google.firebase:firebase-auth-9.0.1" level="project" />
+    <orderEntry type="library" exported="" name="Gradle: me.relex:circleindicator-1.1.3" level="project" />
+    <orderEntry type="library" exported="" name="Gradle: asia.ivity.android:drag-sort-listview-1.0" level="project" />
+    <orderEntry type="library" exported="" name="Gradle: com.android.support:appcompat-v7-22.1.1" level="project" />
+    <orderEntry type="library" exported="" name="Gradle: com.google.http-client:google-http-client:1.22.0@jar" level="project" />
+    <orderEntry type="library" exported="" name="Gradle: com.squareup.leakcanary:leakcanary-watcher:1.5.4@jar" level="project" />
+    <orderEntry type="library" exported="" name="Gradle: __local_jars__:/Users/internetics/Documents/Project/android-FlashCardCreator/androidFFC/libs/aws-android-sdk-sdb-2.2.1.jar:unspecified@jar" level="project" />
+    <orderEntry type="library" exported="" name="Gradle: com.github.lzyzsd:circleprogress-1.1.0" level="project" />
+    <orderEntry type="library" exported="" scope="TEST" name="Gradle: com.android.support:multidex-instrumentation-1.0.1" level="project" />
+    <orderEntry type="library" exported="" name="Gradle: com.facebook.rebound:rebound:0.3.8@jar" level="project" />
+    <orderEntry type="library" exported="" name="Gradle: __local_jars__:/Users/internetics/Documents/Project/android-FlashCardCreator/androidFFC/libs/aws-android-sdk-cognito-2.2.1.jar:unspecified@jar" level="project" />
+    <orderEntry type="library" exported="" name="Gradle: com.anjlab.android.iab.v3:library:1.0.44@jar" level="project" />
+    <orderEntry type="library" exported="" name="Gradle: net.soulwolf.widget:ratiolayout-1.0.0" level="project" />
+    <orderEntry type="library" exported="" name="Gradle: com.parse.bolts:bolts-android:1.2.0@jar" level="project" />
+    <orderEntry type="library" exported="" name="Gradle: __local_jars__:/Users/internetics/Documents/Project/android-FlashCardCreator/androidFFC/libs/ParseCrashReporting-1.8.3.jar:unspecified@jar" level="project" />
+    <orderEntry type="library" exported="" name="Gradle: com.google.android.gms:play-services-base-9.0.1" level="project" />
+    <orderEntry type="library" exported="" name="Gradle: de.greenrobot:eventbus:2.4.0@jar" level="project" />
+    <orderEntry type="library" exported="" name="Gradle: com.google.api-client:google-api-client:1.22.0@jar" level="project" />
+    <orderEntry type="library" exported="" name="Gradle: com.isseiaoki:simplecropview-1.0.9" level="project" />
+    <orderEntry type="library" exported="" name="Gradle: com.google.oauth-client:google-oauth-client:1.22.0@jar" level="project" />
+    <orderEntry type="library" exported="" name="Gradle: com.google.http-client:google-http-client-gson:1.22.0@jar" level="project" />
+    <orderEntry type="library" exported="" name="Gradle: com.google.code.gson:gson:2.4@jar" level="project" />
+    <orderEntry type="library" exported="" name="Gradle: com.google.firebase:firebase-iid-9.0.1" level="project" />
+    <orderEntry type="library" exported="" name="Gradle: __local_jars__:/Users/internetics/Documents/Project/android-FlashCardCreator/androidFFC/libs/httpmime-4.0.3.jar:unspecified@jar" level="project" />
+    <orderEntry type="library" exported="" name="Gradle: com.facebook.android:facebook-android-sdk-4.6.0" level="project" />
+    <orderEntry type="library" exported="" name="Gradle: com.google.firebase:firebase-common-9.0.1" level="project" />
+    <orderEntry type="library" exported="" name="Gradle: com.google.firebase:firebase-analytics-impl-9.0.1" level="project" />
+    <orderEntry type="library" exported="" name="Gradle: com.android.support:support-media-compat-25.2.0" level="project" />
+    <orderEntry type="library" exported="" name="Gradle: com.google.firebase:firebase-auth-common-9.0.1" level="project" />
+    <orderEntry type="library" exported="" name="Gradle: com.squareup.okhttp3:okhttp:3.3.1@jar" level="project" />
+    <orderEntry type="library" exported="" name="Gradle: com.daimajia.androidanimations:library-1.1.3" level="project" />
+    <orderEntry type="library" exported="" name="Gradle: com.google.firebase:firebase-auth-module-9.0.1" level="project" />
+    <orderEntry type="library" exported="" name="Gradle: com.nostra13.universalimageloader:universal-image-loader:1.9.4@jar" level="project" />
+    <orderEntry type="library" exported="" name="Gradle: com.github.orhanobut:hawk-1.22" level="project" />
+    <orderEntry type="library" exported="" name="Gradle: com.google.http-client:google-http-client-android:1.22.0@jar" level="project" />
+    <orderEntry type="library" exported="" name="Gradle: com.facebook.fresco:imagepipeline-0.13.0" level="project" />
+    <orderEntry type="library" exported="" name="Gradle: com.google.http-client:google-http-client-jackson2:1.22.0@jar" level="project" />
+    <orderEntry type="library" exported="" name="Gradle: com.google.code.findbugs:jsr305:2.0.1@jar" level="project" />
+    <orderEntry type="library" exported="" name="Gradle: com.daimajia.easing:library-1.0.1" level="project" />
+    <orderEntry type="library" exported="" name="Gradle: com.nineoldandroids:library:2.4.0@jar" level="project" />
+    <orderEntry type="library" exported="" name="Gradle: com.facebook.fresco:fresco-0.13.0" level="project" />
+    <orderEntry type="library" exported="" name="Gradle: com.squareup.okio:okio:1.8.0@jar" level="project" />
+    <orderEntry type="library" exported="" name="Gradle: com.google.android.gms:play-services-auth-9.0.1" level="project" />
+    <orderEntry type="library" exported="" name="Gradle: com.android.support:support-core-ui-25.2.0" level="project" />
+    <orderEntry type="library" exported="" name="Gradle: com.facebook.fresco:animated-base-0.13.0" level="project" />
+    <orderEntry type="library" exported="" name="Gradle: com.google.firebase:firebase-analytics-9.0.1" level="project" />
+    <orderEntry type="library" exported="" name="Gradle: cn.pedant.sweetalert:library-1.3" level="project" />
+    <orderEntry type="library" exported="" name="Gradle: com.android.support:support-v4-25.2.0" level="project" />
+    <orderEntry type="library" exported="" name="Gradle: com.facebook.fresco:imagepipeline-base-0.13.0" level="project" />
+    <orderEntry type="library" exported="" name="Gradle: com.google.firebase:firebase-core-9.0.1" level="project" />
+    <orderEntry type="library" exported="" name="Gradle: com.fasterxml.jackson.core:jackson-core:2.7.4@jar" level="project" />
+    <orderEntry type="library" exported="" name="Gradle: com.facebook.stetho:stetho:1.1.0@jar" level="project" />
+    <orderEntry type="library" exported="" name="Gradle: com.google.apis:google-api-services-drive:v3-rev52-1.22.0@jar" level="project" />
+    <orderEntry type="library" exported="" name="Gradle: com.dropbox.core:dropbox-core-sdk:2.1.2@jar" level="project" />
+    <orderEntry type="library" exported="" name="Gradle: com.google.android.gms:play-services-tasks-9.0.1" level="project" />
+    <orderEntry type="library" exported="" name="Gradle: __local_jars__:/Users/internetics/Documents/Project/android-FlashCardCreator/androidFFC/libs/libGoogleAnalyticsV2.jar:unspecified@jar" level="project" />
+    <orderEntry type="library" exported="" name="Gradle: com.facebook.fresco:drawee-0.13.0" level="project" />
+    <orderEntry type="library" exported="" name="Gradle: com.google.android.gms:play-services-auth-base-9.0.1" level="project" />
+    <orderEntry type="library" exported="" name="Gradle: com.facebook.fresco:animated-gif-0.13.0" level="project" />
+    <orderEntry type="library" exported="" name="Gradle: com.squareup.leakcanary:leakcanary-analyzer-1.5.4" level="project" />
+    <orderEntry type="library" exported="" name="Gradle: com.google.guava:guava-jdk5:17.0@jar" level="project" />
+    <orderEntry type="library" exported="" name="Gradle: com.facebook.fresco:fbcore-0.13.0" level="project" />
+    <orderEntry type="library" exported="" name="Gradle: __local_jars__:/Users/internetics/Documents/Project/android-FlashCardCreator/androidFFC/libs/aws-android-sdk-s3-2.2.1.jar:unspecified@jar" level="project" />
+    <orderEntry type="library" exported="" name="Gradle: com.android.support:support-core-utils-25.2.0" level="project" />
     <orderEntry type="module" module-name="NewQuickAction3D" exported="" />
     <orderEntry type="module" module-name="lvl" exported="" />
     <orderEntry type="module" module-name="Viewflow" exported="" />
