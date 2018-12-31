@@ -288,11 +288,11 @@ public class AWSShareHelper extends AsyncTask<Void, Long, Boolean> {
     public void showShareSocialListAlert() {
         new AlertDialog.Builder(mActivity)
                 .setTitle("Share")
-                .setItems(new String[] {"Facebook","Twitter","Email","Copy","Exit"}, new DialogInterface.OnClickListener() {
+                .setItems(new String[] {"Twitter","Email","Copy","Exit"}, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         dialog.dismiss();
-                        if (which != 4) {
+                        if (which != 3) {
                             shareActionOnItemSelected(which,mCurrentPack.shareLink);
                         }
                     }
@@ -304,7 +304,7 @@ public class AWSShareHelper extends AsyncTask<Void, Long, Boolean> {
 
     private void shareActionOnItemSelected (int position,String shareLink) {
         String finalPostString = StringUtils.getShareMessage(mActivity,shareLink);
-        switch (position) {
+        switch (position + 1) {
             case 0: {
                 shareToFacebook(shareLink);
                 break;
