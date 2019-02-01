@@ -74,7 +74,7 @@ public class CropActivity extends Activity {
             case R.id.action_crop_edit_save: {
                 Bitmap tempBitmap = cropImageView.getCroppedBitmap();
                 Bitmap bitmap = UIHelper.resizeImageTo(CropActivity.this, tempBitmap, 1024);
-                String path = Environment.getExternalStorageDirectory().toString();
+                String path = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DCIM).toString();
                 File filename = new File(path, "cropped_cached.jpg");
                 FileOutputStream out = null;
                 try {
