@@ -1,5 +1,6 @@
 package com.flipflash.helper.GoogleDrive;
 
+import android.accounts.Account;
 import android.app.Activity;
 import android.content.Context;
 import android.content.SharedPreferences;
@@ -115,7 +116,7 @@ public class GoogleDriveAuthHelper {
             throw new IllegalStateException("mCredential should not be null");
         }
 
-        mCredential.setSelectedAccountName(accountName);
+        mCredential.setSelectedAccount(new Account(accountName,"com.android.example"));
         saveCredential(accountName);
 
         mDrive = new Drive.Builder(AndroidHttp.newCompatibleTransport(), new GsonFactory(), mCredential).build();
