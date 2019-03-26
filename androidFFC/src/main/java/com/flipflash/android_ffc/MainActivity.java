@@ -1603,14 +1603,19 @@ public class MainActivity extends FragmentActivity implements
                             DropboxAuthHelper.sharedHelper().startAuthenticationFromActivity(MainActivity.this);
                         }
                     })
-                    .setNegativeButton(R.string.DIALOG_STORAGE_SELECTION_GOOGLE_DRIVE, new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialog, int which) {
 
-                            GoogleDriveAuthHelper.sharedHelper(MainActivity.this).startAuthenticationFromActivity(MainActivity.this);
 
-                        }
-                    })
+//
+//                  .setNegativeButton(R.string.DIALOG_STORAGE_SELECTION_GOOGLE_DRIVE, new DialogInterface.OnClickListener() {
+//                        @Override
+//                        public void onClick(DialogInterface dialog, int which) {
+//
+//                            GoogleDriveAuthHelper.sharedHelper(MainActivity.this).startAuthenticationFromActivity(MainActivity.this);
+//
+//                        }
+//                    })
+
+
 //                    .setPositiveButton(R.string.DIALOG_STORAGE_SELECTION_AWS, new DialogInterface.OnClickListener() {
 //                        @Override
 //                        public void onClick(DialogInterface dialogInterface, int i) {

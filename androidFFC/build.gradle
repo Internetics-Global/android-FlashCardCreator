@@ -43,8 +43,8 @@ android {
             applicationId "com.flipflashcards.FFC_Android"
             minSdkVersion 16
             targetSdkVersion 26
-            versionCode 7400
-            versionName '2.01'
+            versionCode 7450
+            versionName '2.02'
             multiDexEnabled true
         }
     }
